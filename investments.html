@@ -13,11 +13,14 @@
   --muted2: rgba(11,18,32,.46);
   --line: rgba(11,18,32,.12);
   --brand:#0b4ea2;
+
   --max: 1180px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+
   --r:16px;
   --shadow: 0 18px 45px rgba(2,6,23,.10);
 }
+
 *{ box-sizing:border-box; }
 html,body{ margin:0; padding:0; }
 body{
@@ -27,25 +30,52 @@ body{
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
+
 a{ color: var(--brand); text-decoration:none; }
 a:hover{ text-decoration: underline; text-underline-offset: 3px; }
-.container{ width: min(var(--max), calc(100% - 56px)); margin: 0 auto; }
+
+.container{
+  width: min(var(--max), calc(100% - 56px));
+  margin: 0 auto;
+}
 
 .site-header{
-  position: sticky; top: 0; z-index: 50;
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background: rgba(255,255,255,.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
 .header-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 16px 0; gap: 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 16px 0;
+  gap: 24px;
 }
-.brand{ display:flex; flex-direction:column; gap:2px; }
-.brand-title{ font-weight: 850; letter-spacing: -.2px; line-height: 1.1; color: var(--ink); }
-.brand-sub{ font-size: 13px; color: var(--muted2); }
-
-.nav{ display:flex; gap: 18px; align-items:center; flex-wrap:wrap; }
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  color: var(--ink);
+  min-width: 280px;
+}
+.brand-title{
+  font-weight: 850;
+  letter-spacing: -.2px;
+  line-height: 1.1;
+}
+.brand-sub{
+  font-size: 13px;
+  color: var(--muted2);
+}
+.nav{
+  display:flex;
+  gap: 18px;
+  align-items:center;
+  flex-wrap: wrap;
+}
 .nav a{
   color: var(--ink);
   font-weight: 650;
@@ -56,34 +86,67 @@ a:hover{ text-decoration: underline; text-underline-offset: 3px; }
 .nav a:hover{ border-bottom-color: rgba(11,18,32,.18); text-decoration:none; }
 .nav a.is-active{ border-bottom-color: var(--ink); }
 
-.section{ padding: 30px 0 44px; }
-.kicker{
-  font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--muted2); margin-bottom: 10px;
+.section{
+  padding: 30px 0 44px;
 }
-h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
-.lead{ margin:0 0 18px; color: var(--muted); max-width: 95ch; }
+.kicker{
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 10px;
+}
+h1{
+  margin: 0 0 6px;
+  font-size: 34px;
+  letter-spacing: -.3px;
+}
+.lead{
+  margin: 0 0 18px;
+  color: var(--muted);
+  max-width: 95ch;
+}
 
+/* ===== Portfolio box ===== */
 .portfolio{
   border: 1px solid var(--line);
   border-radius: 16px;
   padding: 18px;
   background: #fff;
   box-shadow: var(--shadow);
+  margin-bottom: 26px;
 }
 .portfolio-top{
-  display:flex; justify-content:space-between; gap: 16px;
-  align-items:flex-start; flex-wrap: wrap;
+  display:flex;
+  justify-content:space-between;
+  gap: 16px;
+  align-items:flex-start;
+  flex-wrap: wrap;
 }
-.p-title{ font-weight: 850; letter-spacing: -.2px; }
-.p-sub{ color: var(--muted2); font-size: 13px; margin-top: 4px; }
+.p-title{
+  font-weight: 850;
+  letter-spacing: -.2px;
+}
+.p-sub{
+  color: var(--muted2);
+  font-size: 13px;
+  margin-top: 4px;
+}
 
-.statusline{ margin-top:8px; font-size:13px; color: var(--muted); }
+.statusline{
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
 .statusline strong{ color: var(--ink); }
-.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+.mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+}
 
 .badge{
-  display:inline-flex; align-items:center; gap:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   padding: 6px 10px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -95,12 +158,23 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 .badge.ok{ border-color: rgba(10,122,58,.20); color: rgba(10,122,58,.95); }
 .badge.warn{ border-color: rgba(180,35,24,.20); color: rgba(180,35,24,.92); }
 
-.p-actions{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.p-actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
 .p-btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding: 10px 12px; border-radius: 12px;
-  border: 1px solid var(--line); background: #fff;
-  color: var(--ink); font-weight: 750; cursor: pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 750;
+  cursor: pointer;
 }
 .p-btn:hover{ background: rgba(11,18,32,.03); }
 
@@ -128,7 +202,41 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   margin-top: 6px;
   font-size: 18px;
 }
-.kpi .sub{ margin-top: 4px; color: var(--muted); font-size: 13px; }
+.kpi .sub{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel{
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  background:#fff;
+  margin-top: 14px;
+}
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.panel-title{
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.panel-sub{
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.chart-wrap{
+  margin-top: 10px;
+}
+canvas{ width:100% !important; height: 220px !important; }
 
 .table-wrap{
   overflow:auto;
@@ -178,6 +286,7 @@ summary{ cursor:pointer; font-weight: 850; }
   font-size:12px;
   color: var(--muted);
 }
+
 .note{
   margin-top: 14px;
   padding-top: 14px;
@@ -185,12 +294,16 @@ summary{ cursor:pointer; font-weight: 850; }
   font-size: 13px;
   color: var(--muted);
 }
+
 @media (max-width: 900px){
   .container{ width: min(var(--max), calc(100% - 34px)); }
   .header-inner{ flex-direction: column; align-items:flex-start; }
   .p-kpis{ grid-template-columns: 1fr 1fr; }
+  canvas{ height: 220px !important; }
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -214,7 +327,7 @@ summary{ cursor:pointer; font-weight: 850; }
   <h1>Investments</h1>
   <p class="lead">
     Prices are loaded from <span class="mono">./data/quotes.json</span> (shared across devices).
-    Quotes are refreshed by a scheduled GitHub Action.
+    Performance history is loaded from <span class="mono">./data/performance.json</span> and updates via a scheduled GitHub Action.
   </p>
 
   <section class="portfolio">
@@ -232,8 +345,10 @@ summary{ cursor:pointer; font-weight: 850; }
           <span id="quoteError" style="display:none; margin-left:10px;" class="mono"></span>
         </div>
       </div>
+
       <div class="p-actions">
         <button class="p-btn" id="reloadBtn">Reload quotes</button>
+        <button class="p-btn" id="reloadPerfBtn">Reload performance</button>
         <button class="p-btn" id="toggleThesisBtn">Expand all theses</button>
       </div>
     </div>
@@ -258,6 +373,22 @@ summary{ cursor:pointer; font-weight: 850; }
         <div class="label">Since Inception</div>
         <div class="value mono" id="si">—</div>
         <div class="sub">Return vs initial capital.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Performance since inception (NAV)</div>
+        <div class="panel-sub">
+          Inception: <span id="inception" class="mono">—</span> ·
+          Last snapshot: <span id="perfLast" class="mono">—</span>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="perfChart" aria-label="Portfolio NAV chart" role="img"></canvas>
+      </div>
+      <div class="note" style="border-top:none; padding-top:10px;">
+        History is stored in <span class="mono">data/performance.json</span> and is appended daily by your GitHub Action.
       </div>
     </div>
 
@@ -290,14 +421,18 @@ summary{ cursor:pointer; font-weight: 850; }
 </main>
 
 <script>
-/* ========= CONFIG (EDIT HERE TO ADD/REMOVE STOCKS OR CHANGE ENTRY PRICES) ========= */
+/* =============================================================================
+   CONFIG (EDIT HERE)
+   - Change entry prices in `entry`
+   - Add/remove stocks in `targetDollars`, `entry`, and `meta`
+   ========================================================================== */
 const TOTAL_CAPITAL = 100000;
 
-// allocations (USD); rest stays in constant cash
+// allocations (USD); rest stays constant cash
 const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000 };
 
 // entry prices
-const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53 };
+const entry = { AGI:42.855, FSM:10.46, GAU:2.765, NFGC:2.735, VGZ:2.675, NEWP:3.58 };
 
 // meta + thesis
 const meta = {
@@ -308,15 +443,16 @@ const meta = {
   VGZ:{ name:"Vista Gold", stage:"Developer", thesis:["Long-dated gold leverage.","Milestone-driven rerating.","Small sizing due to timeline."], watch:["milestones","partnering","capex","jurisdiction"] },
   NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] }
 };
-/* ========= END CONFIG ========= */
+/* ============================================================================= */
 
 const tickers = Object.keys(targetDollars);
 const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
 
-// Constant cash FIX
+// Constant cash (do NOT recalc as TOTAL - invested each time)
 const INITIAL_INVESTED = Object.values(targetDollars).reduce((a,b)=>a+b,0);
 const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
 
+// DOM + format
 const el = id => document.getElementById(id);
 const fmtUSD0 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
 const fmtUSD2 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
@@ -351,7 +487,13 @@ async function loadSharedQuotes(){
   if(!res.ok) throw new Error("Failed to load ./data/quotes.json");
   return await res.json();
 }
+async function loadPerformance(){
+  const res = await fetch("./data/performance.json?cb=" + Date.now(), { cache: "no-store" });
+  if(!res.ok) throw new Error("Failed to load ./data/performance.json");
+  return await res.json();
+}
 
+/* ===== Table ===== */
 function renderTableSkeleton(){
   const tbody = el("rows");
   tbody.innerHTML = "";
@@ -428,6 +570,7 @@ function updateKPIs(prices){
   el("si").textContent = fmtPct(si);
 }
 
+/* ===== Theses ===== */
 function renderTheses(){
   const wrap = el("thesisBlocks");
   wrap.innerHTML = "";
@@ -451,7 +594,8 @@ function renderTheses(){
   }
 }
 
-function applyAll(q){
+/* ===== Apply Quotes ===== */
+function applyQuotes(q){
   const prices = normalizePrices(q.prices);
   for(const t of tickers){
     if(prices[t]) updateRow(t, prices[t]);
@@ -474,16 +618,88 @@ function applyAll(q){
   }
 }
 
-async function boot(){
-  el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
-  renderTableSkeleton();
-  renderTheses();
+/* ===== Performance Chart ===== */
+let perfChart = null;
+
+function renderPerfChart(perf){
+  const hist = Array.isArray(perf?.nav_history) ? perf.nav_history : [];
+  el("inception").textContent = perf?.inception || "—";
+  el("perfLast").textContent = hist.length ? hist[hist.length - 1].date : "—";
+
+  const labels = hist.map(x => x.date);
+  const navs = hist.map(x => Number(x.nav));
+
+  const ctx = document.getElementById("perfChart");
+
+  if(perfChart){
+    perfChart.destroy();
+    perfChart = null;
+  }
+
+  // Empty state
+  if(!hist.length){
+    perfChart = new Chart(ctx, {
+      type: "line",
+      data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 2, tension: 0.25 }] },
+      options: {
+        plugins:{ legend:{ display:false }, tooltip:{ enabled:false } },
+        scales:{ x:{ display:false }, y:{ display:false } }
+      }
+    });
+    return;
+  }
+
+  perfChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "NAV (USD)",
+        data: navs,
+        borderWidth: 2,
+        tension: 0.25,
+        pointRadius: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          callbacks:{
+            label: (item) => "NAV: " + fmtUSD0(item.parsed.y)
+          }
+        }
+      },
+      scales:{
+        x:{
+          ticks:{ maxTicksLimit: 8, color: "rgba(11,18,32,.46)" },
+          grid:{ color: "rgba(11,18,32,.08)" }
+        },
+        y:{
+          ticks:{
+            color: "rgba(11,18,32,.46)",
+            callback: (v) => "$" + Number(v).toLocaleString()
+          },
+          grid:{ color: "rgba(11,18,32,.08)" }
+        }
+      }
+    }
+  });
+}
+
+/* ===== Boot ===== */
+async function bootQuotes(){
+  el("quoteStatus").textContent = "loading quotes…";
+  setBadge("warn", "loading");
+  setError("");
 
   try{
     const q = await loadSharedQuotes();
     el("quotesAsOf").textContent = q.asof_iso || "—";
     el("lastTS").textContent = q.last_trading_day || "—";
-    applyAll(q);
+    applyQuotes(q);
   }catch(e){
     el("quoteStatus").textContent = "failed to load quotes.json";
     setBadge("warn", "no quotes.json");
@@ -491,7 +707,31 @@ async function boot(){
   }
 }
 
-el("reloadBtn").addEventListener("click", boot);
+async function bootPerformance(){
+  try{
+    const p = await loadPerformance();
+    renderPerfChart(p);
+  }catch(e){
+    el("inception").textContent = "—";
+    el("perfLast").textContent = "—";
+    // Render empty chart state + show a light status message in console
+    renderPerfChart({ inception:"—", nav_history: [] });
+  }
+}
+
+async function boot(){
+  el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
+  el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+
+  renderTableSkeleton();
+  renderTheses();
+
+  await Promise.all([bootQuotes(), bootPerformance()]);
+}
+
+/* ===== UI ===== */
+el("reloadBtn").addEventListener("click", bootQuotes);
+el("reloadPerfBtn").addEventListener("click", bootPerformance);
 
 let expanded = false;
 el("toggleThesisBtn").addEventListener("click", ()=>{
