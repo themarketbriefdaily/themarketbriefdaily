@@ -7,6 +7,126 @@
   <meta name="description" content="Professional market intelligence for metals and macro. Market structure, physical supply, and transmission mechanisms." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
+
+  <style>
+    /* --- HERO SLIDESHOW (scoped to hero only) --- */
+    .hero-panel { position: relative; }
+
+    .hero-carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px; /* matches your aesthetic */
+    }
+
+    .hero-slides {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      transition: transform 520ms cubic-bezier(.2,.9,.2,1);
+      will-change: transform;
+    }
+
+    .hero-slide {
+      padding: 0; /* the inner panel already has spacing */
+    }
+
+    /* Make each slide use same typographic rhythm as your current hero-panel */
+    .hero-slide .hero-eyebrow { margin-bottom: 10px; }
+    .hero-slide h1 { margin: 0 0 14px; }
+    .hero-slide p { margin: 0 0 18px; }
+
+    /* Controls */
+    .hero-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .hero-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .hero-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.40);
+      background: rgba(255,255,255,.18);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .hero-dot[aria-current="true"]{
+      background: rgba(255,255,255,.92);
+      border-color: rgba(255,255,255,.92);
+    }
+
+    .hero-arrow {
+      border: 1px solid rgba(255,255,255,.24);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .hero-arrow:hover {
+      background: rgba(0,0,0,.26);
+      border-color: rgba(255,255,255,.35);
+    }
+
+    .hero-progress {
+      flex: 1;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      overflow: hidden;
+      margin-left: 6px;
+    }
+
+    .hero-progress > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: rgba(255,255,255,.88);
+      transform-origin: left;
+    }
+
+    /* Small label chip for “Latest post” slide */
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.92);
+      margin-bottom: 12px;
+    }
+
+    .hero-chip .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.85);
+      display: inline-block;
+    }
+
+    /* Keep controls readable on mobile */
+    @media (max-width: 720px){
+      .hero-controls { flex-wrap: wrap; }
+      .hero-progress { width: 100%; order: 3; margin-left: 0; }
+    }
+  </style>
 </head>
 
 <body>
@@ -39,23 +159,69 @@
 
     <div class="container hero-inner">
       <div class="hero-panel">
-        <div class="hero-eyebrow">Independent research</div>
-        <h1>Institutional-grade market analysis for metals and macro</h1>
-        <p>
-          We focus on the mechanics behind price formation: inventory buffers, delivery windows,
-          funding and lease regimes, positioning pressure, and macro transmission across rates, FX,
-          and commodities.
-        </p>
 
-        <div class="hero-actions">
-          <a class="btn primary" href="/posts.html">Read latest</a>
-          <a class="btn" href="/investments.html">Watchlist</a>
-          <a class="btn" href="/about.html">Method</a>
+        <!-- Carousel wrapper -->
+        <div class="hero-carousel" id="heroCarousel" aria-roledescription="carousel" aria-label="Featured slides">
+          <div class="hero-slides" id="heroSlides">
+
+            <!-- SLIDE 1 (your current copy) -->
+            <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 1 of 2">
+              <div class="hero-eyebrow">Independent research</div>
+              <h1>Institutional-grade market analysis for metals and macro</h1>
+              <p>
+                We focus on the mechanics behind price formation: inventory buffers, delivery windows,
+                funding and lease regimes, positioning pressure, and macro transmission across rates, FX,
+                and commodities.
+              </p>
+
+              <div class="hero-actions">
+                <a class="btn primary" href="/posts.html">Read latest</a>
+                <a class="btn" href="/investments.html">Watchlist</a>
+                <a class="btn" href="/about.html">Method</a>
+              </div>
+
+              <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
+                For informational purposes only. Not investment advice. See
+                <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">disclaimer</a>.
+              </div>
+            </div>
+
+            <!-- SLIDE 2 (latest post highlight) -->
+            <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="Slide 2 of 2">
+              <div class="hero-chip"><span class="dot"></span> Latest post</div>
+              <h1>What Japan’s New Prime Minister Means for U.S. Stocks</h1>
+              <p>
+                A macro and market breakdown: interest rates, carry mechanics, capital flows, and how Japan’s policy shift
+                can transmit into U.S. equities and bonds.
+              </p>
+
+              <div class="hero-actions">
+                <a class="btn primary" href="/posts/2026-02-12-japan-pm-us-stocks.html">Read the report</a>
+                <a class="btn" href="/posts.html">View all posts</a>
+              </div>
+
+              <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
+                Feb 12, 2026 · Macro · Informational only — not investment advice.
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
-          For informational purposes only. Not investment advice. See <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">disclaimer</a>.
+        <!-- Controls -->
+        <div class="hero-controls" aria-label="Carousel controls">
+          <button class="hero-arrow" type="button" id="heroPrev" aria-label="Previous slide">←</button>
+
+          <div class="hero-dots" role="tablist" aria-label="Choose slide">
+            <button class="hero-dot" type="button" id="dot0" aria-label="Go to slide 1" aria-current="true"></button>
+            <button class="hero-dot" type="button" id="dot1" aria-label="Go to slide 2" aria-current="false"></button>
+          </div>
+
+          <button class="hero-arrow" type="button" id="heroNext" aria-label="Next slide">→</button>
+
+          <div class="hero-progress" aria-hidden="true"><span id="heroProg"></span></div>
         </div>
+
       </div>
     </div>
 
@@ -137,5 +303,82 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    (function(){
+      const slidesEl = document.getElementById("heroSlides");
+      const carouselEl = document.getElementById("heroCarousel");
+      const progEl = document.getElementById("heroProg");
+      const btnPrev = document.getElementById("heroPrev");
+      const btnNext = document.getElementById("heroNext");
+      const dots = [
+        document.getElementById("dot0"),
+        document.getElementById("dot1"),
+      ];
+
+      const slideCount = dots.length;
+      let index = 0;
+      let timer = null;
+      let startTs = null;
+
+      const INTERVAL_MS = 9000; // 9s per slide
+
+      function setIndex(i){
+        index = (i + slideCount) % slideCount;
+        slidesEl.style.transform = `translateX(-${index * 100}%)`;
+
+        dots.forEach((d, di) => d.setAttribute("aria-current", di === index ? "true" : "false"));
+        resetProgress();
+      }
+
+      function resetProgress(){
+        // restart progress bar animation
+        startTs = performance.now();
+        progEl.style.width = "0%";
+      }
+
+      function tick(){
+        if (!startTs) startTs = performance.now();
+        const elapsed = performance.now() - startTs;
+        const pct = Math.min(100, (elapsed / INTERVAL_MS) * 100);
+        progEl.style.width = pct + "%";
+        if (elapsed >= INTERVAL_MS){
+          setIndex(index + 1);
+        }
+        timer = requestAnimationFrame(tick);
+      }
+
+      function start(){
+        stop();
+        resetProgress();
+        timer = requestAnimationFrame(tick);
+      }
+
+      function stop(){
+        if (timer) cancelAnimationFrame(timer);
+        timer = null;
+      }
+
+      btnPrev.addEventListener("click", () => setIndex(index - 1));
+      btnNext.addEventListener("click", () => setIndex(index + 1));
+      dots.forEach((d, di) => d.addEventListener("click", () => setIndex(di)));
+
+      // Pause on hover/focus
+      carouselEl.addEventListener("mouseenter", stop);
+      carouselEl.addEventListener("mouseleave", start);
+      carouselEl.addEventListener("focusin", stop);
+      carouselEl.addEventListener("focusout", start);
+
+      // Keyboard support
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") setIndex(index - 1);
+        if (e.key === "ArrowRight") setIndex(index + 1);
+      });
+
+      // Init
+      setIndex(0);
+      start();
+    })();
+  </script>
 </body>
 </html>
