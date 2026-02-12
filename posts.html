@@ -4,63 +4,61 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Posts | The Market Brief Daily</title>
-  <meta name="description" content="All posts from The Market Brief Daily." />
+  <meta name="description" content="Research archive from The Market Brief Daily." />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
+
 <body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">
-        <a class="brand-mark" href="/" aria-label="Home">
-          <img class="brand-logo" src="/assets/images/logo.png" alt="MarketBriefDaily logo" />
-          <span class="brand-text">The Market Brief Daily</span>
-        </a>
-        <div class="brand-sub">Market structure • Physical supply • Macro transmission</div>
-      </div>
+      <a class="brand" href="/" aria-label="Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
+
       <nav class="nav" aria-label="Primary">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link is-active" href="/posts.html">Posts</a>
-        <a class="nav-link" href="/investments.html">Investments</a>
-        <a class="nav-link" href="/about.html">About</a>
-        <a class="nav-link" href="/contact.html">Contact</a>
+        <a href="/">Home</a>
+        <a class="is-active" href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main class="section">
+  <main id="content" class="page">
     <div class="container">
-      <div class="card">
-        <div class="card-kicker">Posts</div>
-        <h1 class="card-title">Research & analysis</h1>
-        <p class="card-sub">Mechanics-first notes across metals and macro. (Add new posts by duplicating the blocks below.)</p>
+      <header class="page-header">
+        <div class="page-kicker">Posts</div>
+        <h1 class="page-title">Research & analysis</h1>
+        <p class="page-lead">
+          Mechanics-first notes across metals and macro. Keep URLs consistent and add new posts by duplicating the blocks below.
+        </p>
+      </header>
 
-        <div class="post-list">
-
-          <!-- POST 1 -->
-          <article class="post-item">
-            <div class="post-meta">
-              <span class="tag">Metals</span>
-              <time datetime="2026-02-07">Feb 07, 2026</time>
-            </div>
-            <a class="post-title" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
-              Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch
-            </a>
-            <p class="post-excerpt">
-              Registered vs eligible inventory, delivery windows, lease rates, and why volatility risk rises when buffers thin.
-            </p>
-          </article>
-
-          <!-- Add more posts here -->
-
-        </div>
-
-        <div class="note">
-          <div class="note-title">Tip</div>
-          <p class="muted" style="margin:0;">
-            Keep URLs consistent: <code>/posts/YYYY-MM-DD-title.html</code>. This helps SEO and prevents broken links.
+      <section class="block" aria-label="Posts list">
+        <article class="post">
+          <div class="post-meta">
+            <span>Metals</span>
+            <time datetime="2026-02-07">Feb 07, 2026</time>
+          </div>
+          <a class="post-title" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
+            Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch
+          </a>
+          <p class="post-excerpt">
+            Registered vs eligible inventory, delivery windows, and lease-rate signals—why volatility risk rises when buffers thin.
           </p>
-        </div>
+        </article>
+      </section>
 
+      <div class="note">
+        Tip: Keep URLs consistent: <code>/posts/YYYY-MM-DD-title.html</code>. This helps SEO and prevents broken links.
       </div>
     </div>
   </main>
@@ -69,9 +67,10 @@
     <div class="container footer-inner">
       <div>
         <div class="footer-brand">The Market Brief Daily</div>
-        <div class="footer-muted">Market structure & physical supply analysis.</div>
+        <div class="footer-sub">Market structure & physical supply analysis.</div>
       </div>
-      <div class="footer-right">
+      <div class="footer-links">
+        <a href="/posts.html">Posts</a>
         <a href="/about.html">About</a>
         <a href="/disclaimer.html">Disclaimer</a>
       </div>
