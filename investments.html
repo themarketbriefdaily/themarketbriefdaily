@@ -1,694 +1,160 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Investments | The Market Brief Daily</title>
-  <meta name="description" content="Portfolio overview, holdings, weights, and investment theses." />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Investments | MarketBriefDaily</title>
 
-  <style>
-    :root{
-      --bg:#070A0F;
-      --panel:#0B1020;
-      --panel2:#0A0F1A;
-      --border:rgba(255,255,255,.08);
-      --muted:rgba(255,255,255,.62);
-      --text:rgba(255,255,255,.92);
-      --soft:rgba(255,255,255,.04);
-      --good:#34D399;
-      --bad:#FB7185;
-      --warn:#FBBF24;
-      --accent:#93C5FD;
-      --accent2:#A78BFA;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      --radius:16px;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-    }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family:var(--sans);
-      background:
-        radial-gradient(900px 500px at 15% 0%, rgba(147,197,253,.10), transparent 60%),
-        radial-gradient(900px 500px at 85% 0%, rgba(167,139,250,.10), transparent 60%),
-        radial-gradient(900px 700px at 50% 120%, rgba(255,255,255,.06), transparent 60%),
-        var(--bg);
-      color:var(--text);
-      letter-spacing:.2px;
-    }
-    a{ color:inherit; text-decoration:none; }
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:28px 18px 64px;
-    }
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:10px 2px 22px;
-    }
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-    .brand .kicker{
-      font-family:var(--mono);
-      color:var(--muted);
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:1.6px;
-    }
-    .brand h1{
-      margin:0;
-      font-size:22px;
-      font-weight:650;
-      line-height:1.15;
-    }
-    .nav{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .pill{
-      border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      padding:8px 12px;
-      border-radius:999px;
-      color:rgba(255,255,255,.82);
-      font-size:13px;
-      transition:transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .pill:hover{
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.14);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-    }
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#0b1220;
+  --muted: rgba(11,18,32,.68);
+  --muted2: rgba(11,18,32,.46);
+  --line: rgba(11,18,32,.12);
+  --brand:#0b4ea2;
+  --max: 1180px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  --r:16px;
+  --shadow: 0 18px 45px rgba(2,6,23,.10);
+}
+*{ box-sizing:border-box; }
+body{
+  margin:0; font-family:var(--font); color:var(--ink); background:#fff; line-height:1.65;
+}
+.container{ width:min(var(--max), calc(100% - 56px)); margin:0 auto; }
+h1{ font-size:34px; letter-spacing:-.3px; margin:0 0 6px; }
+.sub{ color:var(--muted); margin-bottom:22px; }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:14px;
-    }
-    @media (max-width: 900px){
-      .grid{ grid-template-columns:1fr; }
-    }
+.portfolio{
+  border:1px solid var(--line); border-radius:16px; padding:18px; background:#fff; box-shadow:var(--shadow);
+}
+.p-kpis{
+  display:grid; grid-template-columns: repeat(4,1fr); gap:12px; margin-bottom:16px;
+}
+.kpi{ border:1px solid var(--line); border-radius:14px; padding:12px; }
+.kpi .label{ font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted2); }
+.kpi .value{ font-weight:850; font-size:18px; margin-top:6px; }
 
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .card .head{
-      padding:16px 16px 12px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      background:
-        radial-gradient(500px 200px at 25% 0%, rgba(147,197,253,.12), transparent 60%),
-        radial-gradient(500px 200px at 75% 0%, rgba(167,139,250,.10), transparent 60%);
-    }
-    .title{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .title .label{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:1.4px;
-    }
-    .title .big{
-      font-size:18px;
-      font-weight:650;
-      margin:0;
-    }
-    .asof{
-      text-align:right;
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.45;
-      padding-top:2px;
-      white-space:nowrap;
-    }
+.table-wrap{ overflow:auto; border:1px solid var(--line); border-radius:16px; }
+table{ width:100%; border-collapse:collapse; min-width:980px; }
+th,td{ padding:12px; border-bottom:1px solid var(--line); font-size:14px; }
+th{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); text-align:left; }
 
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-      padding:14px 16px 16px;
-    }
-    @media (max-width: 520px){
-      .stats{ grid-template-columns:1fr; }
-    }
-    .stat{
-      background:rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:14px;
-      padding:12px 12px;
-      min-height:74px;
-    }
-    .stat .k{
-      font-family:var(--mono);
-      color:var(--muted);
-      font-size:11px;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      margin-bottom:6px;
-    }
-    .stat .v{
-      font-size:18px;
-      font-weight:700;
-      margin:0;
-      line-height:1.1;
-    }
-    .stat .s{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-    }
+input{ width:90px; padding:6px 8px; border-radius:10px; border:1px solid var(--line); }
+input:focus{ outline:none; border-color:rgba(11,78,162,.35); box-shadow:0 0 0 3px rgba(11,78,162,.10); }
 
-    .tablewrap{
-      padding:0 16px 14px;
-    }
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.06);
-      background:rgba(255,255,255,.02);
-    }
-    thead th{
-      font-family:var(--mono);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:1.2px;
-      color:rgba(255,255,255,.70);
-      text-align:left;
-      padding:12px 12px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      background:rgba(255,255,255,.03);
-      white-space:nowrap;
-    }
-    tbody td{
-      padding:12px 12px;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      vertical-align:top;
-      font-size:13px;
-      color:rgba(255,255,255,.84);
-    }
-    tbody tr:last-child td{ border-bottom:none; }
-    .mono{ font-family:var(--mono); }
-    .muted{ color:var(--muted); }
-    .right{ text-align:right; }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.09);
-      background:rgba(255,255,255,.03);
-      font-size:12px;
-      color:rgba(255,255,255,.82);
-      white-space:nowrap;
-    }
-    .dot{
-      width:8px; height:8px; border-radius:999px;
-      background:rgba(255,255,255,.28);
-    }
-    .dot.good{ background:var(--good); }
-    .dot.bad{ background:var(--bad); }
-    .dot.warn{ background:var(--warn); }
+.pos{ color:#0a7a3a; font-weight:800; }
+.neg{ color:#b42318; font-weight:800; }
 
-    details{
-      border-top:1px solid rgba(255,255,255,.06);
-      background:rgba(255,255,255,.01);
-    }
-    details > summary{
-      cursor:pointer;
-      list-style:none;
-      padding:12px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      color:rgba(255,255,255,.86);
-      font-weight:600;
-    }
-    details > summary::-webkit-details-marker{ display:none; }
-    .chev{
-      font-family:var(--mono);
-      color:var(--muted);
-      font-size:12px;
-    }
-    .note{
-      padding:0 16px 14px;
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.55;
-    }
+details{ border:1px solid var(--line); border-radius:14px; padding:10px 12px; margin-top:12px; }
+summary{ cursor:pointer; font-weight:750; }
+small{ color:var(--muted2); }
 
-    .side{
-      display:grid;
-      gap:14px;
-      align-content:start;
-    }
-    .mini{
-      padding:16px;
-    }
-    .mini h2{
-      margin:0 0 10px;
-      font-size:15px;
-      font-weight:650;
-    }
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:10px;
-      padding:10px 0;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      font-size:13px;
-      color:rgba(255,255,255,.84);
-    }
-    .kv:last-child{ border-bottom:none; }
-    .kv .k{ color:var(--muted); }
-    .small{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.5;
-      margin-top:10px;
-    }
-
-    .ctaRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:rgba(255,255,255,.88);
-      font-size:13px;
-      cursor:pointer;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      user-select:none;
-    }
-    .btn:hover{
-      transform:translateY(-1px);
-      border-color:rgba(255,255,255,.16);
-      background:rgba(255,255,255,.06);
-    }
-    .btn.primary{
-      border-color:rgba(147,197,253,.30);
-      background:linear-gradient(180deg, rgba(147,197,253,.16), rgba(147,197,253,.06));
-    }
-
-    footer{
-      margin-top:14px;
-      color:rgba(255,255,255,.55);
-      font-size:12px;
-      line-height:1.6;
-      padding:0 2px;
-    }
-    code{
-      font-family:var(--mono);
-      background:rgba(255,255,255,.06);
-      padding:2px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.08);
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="kicker">The Market Brief Daily</div>
-        <h1>Investments</h1>
+<div class="container">
+  <h1>Public Model Portfolio</h1>
+  <div class="sub">Institutional-style transparency · $100,000 total capital · small position sizing · high cash</div>
+
+  <section class="portfolio">
+
+    <div class="p-kpis">
+      <div class="kpi">
+        <div class="label">Total Capital</div>
+        <div class="value" id="totalCap">$100,000</div>
       </div>
-      <nav class="nav">
-        <a class="pill" href="./index.html">Home</a>
-        <a class="pill" href="./investments.html">Investments</a>
-        <a class="pill" href="./about.html">About</a>
-        <a class="pill" href="./disclaimer.html">Disclaimer</a>
-      </nav>
-    </header>
-
-    <div class="grid">
-      <!-- MAIN -->
-      <section class="card">
-        <div class="head">
-          <div class="title">
-            <div class="label">Portfolio overview</div>
-            <p class="big">Public Model Portfolio</p>
-          </div>
-          <div class="asof">
-            As of <span id="asof"></span><br/>
-            Base currency: <span class="mono">USD</span>
-          </div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="k">Total capital</div>
-            <p class="v mono" id="totalCapital">$100,000</p>
-            <div class="s">Model portfolio starting value.</div>
-          </div>
-          <div class="stat">
-            <div class="k">Invested</div>
-            <p class="v mono" id="invested">$0</p>
-            <div class="s">Sum of position market values.</div>
-          </div>
-          <div class="stat">
-            <div class="k">Cash</div>
-            <p class="v mono" id="cash">$0</p>
-            <div class="s">Held intentionally high for optionality.</div>
-          </div>
-        </div>
-
-        <div class="tablewrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Ticker</th>
-                <th class="right">Allocation</th>
-                <th class="right">Market Value</th>
-                <th class="right">Return</th>
-                <th>Stage</th>
-              </tr>
-            </thead>
-            <tbody id="rows"></tbody>
-          </table>
-        </div>
-
-        <details open>
-          <summary>
-            <span>Position theses (click any holding below)</span>
-            <span class="chev">▼</span>
-          </summary>
-          <div class="note muted">
-            Each position is sized small by design. This is a research-led, risk-aware portfolio intended to avoid forced decision-making during volatility.
-          </div>
-        </details>
-
-        <div id="thesisBlocks"></div>
-      </section>
-
-      <!-- SIDE -->
-      <aside class="side">
-        <section class="card mini">
-          <h2>Risk & construction</h2>
-
-          <div class="kv">
-            <div class="k">Max single-position weight</div>
-            <div class="mono">~2%</div>
-          </div>
-          <div class="kv">
-            <div class="k">Style</div>
-            <div class="mono">Barbell</div>
-          </div>
-          <div class="kv">
-            <div class="k">Core bias</div>
-            <div class="mono">Metals cycle / miners</div>
-          </div>
-          <div class="kv">
-            <div class="k">Cash posture</div>
-            <div class="mono">High</div>
-          </div>
-
-          <p class="small">
-            This page is designed to read like an institutional tear sheet: allocations, current return placeholders, and concise theses.
-            Edit the holdings list in the page source to reflect your real position sizes and performance.
-          </p>
-
-          <div class="ctaRow">
-            <button class="btn primary" id="toggleReturns">Toggle returns: placeholders</button>
-            <button class="btn" id="expandAll">Expand all theses</button>
-          </div>
-        </section>
-
-        <section class="card mini">
-          <h2>How returns are shown</h2>
-          <p class="small">
-            Returns are set to placeholders by default (<code>—</code>) because you didn’t provide entry prices or current marks.
-            Once you have entries, you can add <code>entry</code> and <code>last</code> prices per holding and this page can compute returns automatically.
-          </p>
-          <p class="small">
-            If you want that, tell me whether you prefer:
-            <br/>• manual input (you type prices), or
-            <br/>• a lightweight JSON file you update per rebalance.
-          </p>
-        </section>
-      </aside>
+      <div class="kpi">
+        <div class="label">Invested</div>
+        <div class="value" id="invested">$0</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Cash</div>
+        <div class="value" id="cash">$0</div>
+      </div>
+      <div class="kpi">
+        <div class="label">P/L</div>
+        <div class="value" id="pl">$0</div>
+      </div>
     </div>
 
-    <footer>
-      <strong>Disclaimer:</strong> This is a model portfolio for informational purposes only and not investment advice. Investing involves risk, including loss of principal.
-    </footer>
-  </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Asset</th>
+            <th>Ticker</th>
+            <th>Shares</th>
+            <th>Entry</th>
+            <th>Current</th>
+            <th>Market Value</th>
+            <th>P/L ($)</th>
+            <th>P/L (%)</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
 
-  <script>
-    // ---------- CONFIG: edit holdings here ----------
-    // Total cash available: 100k USD
-    const TOTAL_CAPITAL = 100000;
+  </section>
+</div>
 
-    // Small allocations per stock, high cash. Values are in USD.
-    // You can change "value" to your actual market value when you start tracking.
-    // Return placeholders can be replaced by computed returns later.
-    const holdings = [
-      {
-        name: "Alamos Gold",
-        ticker: "AGI",
-        stage: "Producer",
-        risk: "good",
-        value: 2000, // 2.0%
-        returnPct: null, // null = placeholder
-        thesis: [
-          "Established producer with operating mines; lower relative risk inside miners.",
-          "Focus on production growth guidance and discipline on all-in sustaining costs (AISC).",
-          "Position sized small; thesis depends on execution and metal price cycle."
-        ],
-        watch: ["AISC trend", "production guidance updates", "capex vs free cash flow", "jurisdictional risk"]
-      },
-      {
-        name: "Fortuna Mining",
-        ticker: "FSM",
-        stage: "Producer",
-        risk: "warn",
-        value: 1500, // 1.5%
-        returnPct: null,
-        thesis: [
-          "Gold/silver hybrid exposure with geographically diversified assets.",
-          "Intended as a volatility-tolerant satellite position, not a core holding.",
-          "Thesis improves if margins expand as metals recover."
-        ],
-        watch: ["jurisdiction stability", "margin/cost control", "metal price sensitivity", "balance sheet"]
-      },
-      {
-        name: "Galiano Gold",
-        ticker: "GAU",
-        stage: "Turnaround / Small Cap",
-        risk: "warn",
-        value: 1000, // 1.0%
-        returnPct: null,
-        thesis: [
-          "Smaller cap, higher beta; positioned as a turnaround story.",
-          "Upside depends on operational improvements + resource updates.",
-          "Single-asset concentration risk acknowledged; sized accordingly."
-        ],
-        watch: ["resource estimate updates", "operational KPIs", "country risk (Ghana)", "financing/dilution"]
-      },
-      {
-        name: "New Found Gold",
-        ticker: "NFGC",
-        stage: "Developer",
-        risk: "bad",
-        value: 800, // 0.8%
-        returnPct: null,
-        thesis: [
-          "High-grade discovery narrative; development-stage optionality.",
-          "Risk is pre-revenue financing and dilution; timeline risk acknowledged.",
-          "Sized very small: asymmetric upside attempt, not a conviction-sized bet."
-        ],
-        watch: ["permits/milling path", "drill results consistency", "financing terms", "timeline to first production"]
-      },
-      {
-        name: "Vista Gold",
-        ticker: "VGZ",
-        stage: "Developer",
-        risk: "bad",
-        value: 700, // 0.7%
-        returnPct: null,
-        thesis: [
-          "Long-dated leverage to gold price; value realization depends on project development.",
-          "High sensitivity to macro/metal regime shifts; low carry while waiting.",
-          "Sized small due to long timeline and pre-cashflow nature."
-        ],
-        watch: ["project milestones", "partnering/financing", "capex assumptions", "jurisdiction dynamics (Australia)"]
-      },
-      {
-        name: "New Pacific Metals",
-        ticker: "NEWP",
-        stage: "Developer (Silver)",
-        risk: "bad",
-        value: 1000, // 1.0%
-        returnPct: null,
-        thesis: [
-          "Large undeveloped silver projects; geared to a silver upside regime.",
-          "Elevated political/jurisdiction risk; acknowledged explicitly.",
-          "Sized small; thesis is optionality + cycle exposure, not certainty."
-        ],
-        watch: ["Bolivia policy risk", "community relations", "resource advancement", "silver price cycle"]
-      }
-    ];
+<script>
+const TOTAL = 100000;
 
-    // ---------- RENDER ----------
-    const fmtUSD = (n) => n.toLocaleString(undefined, {style:"currency", currency:"USD", maximumFractionDigits:0});
-    const fmtPct = (x) => (x >= 0 ? "+" : "") + x.toFixed(2) + "%";
+// 🔧 EDIT CURRENT PRICES HERE (update weekly/daily)
+const prices = {
+  AGI: 45.10,
+  FSM: 9.82,
+  GAU: 2.41,
+  NFGC: 3.02,
+  VGZ: 2.21,
+  NEWP: 3.91
+};
 
-    const invested = holdings.reduce((s,h)=>s+h.value,0);
-    const cash = Math.max(0, TOTAL_CAPITAL - invested);
+// 🔒 Your entries (locked)
+const positions = [
+  { name:"Alamos Gold", ticker:"AGI", shares:50, entry:42.855 },
+  { name:"Fortuna Mining", ticker:"FSM", shares:70, entry:10.46 },
+  { name:"Galiano Gold", ticker:"GAU", shares:150, entry:2.765 },
+  { name:"New Found Gold", ticker:"NFGC", shares:120, entry:2.735 },
+  { name:"Vista Gold", ticker:"VGZ", shares:180, entry:2.675 },
+  { name:"New Pacific Metals", ticker:"NEWP", shares:140, entry:3.58 }
+];
 
-    document.getElementById("asof").textContent =
-      new Date().toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"});
+const rows = document.getElementById("rows");
+let invested = 0, totalPL = 0;
 
-    document.getElementById("totalCapital").textContent = fmtUSD(TOTAL_CAPITAL);
-    document.getElementById("invested").textContent = fmtUSD(invested);
-    document.getElementById("cash").textContent = fmtUSD(cash);
+positions.forEach(p=>{
+  const cur = prices[p.ticker];
+  const mv = p.shares * cur;
+  const cost = p.shares * p.entry;
+  const pl = mv - cost;
+  const plPct = (pl / cost) * 100;
 
-    const rows = document.getElementById("rows");
-    const thesisBlocks = document.getElementById("thesisBlocks");
+  invested += mv;
+  totalPL += pl;
 
-    function allocationPct(value){
-      return (value / TOTAL_CAPITAL) * 100;
-    }
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${p.name}</td>
+    <td><strong>${p.ticker}</strong></td>
+    <td>${p.shares}</td>
+    <td>$${p.entry.toFixed(2)}</td>
+    <td><input value="${cur.toFixed(2)}" disabled /></td>
+    <td>$${mv.toFixed(0)}</td>
+    <td class="${pl>=0?'pos':'neg'}">$${pl.toFixed(0)}</td>
+    <td class="${pl>=0?'pos':'neg'}">${plPct.toFixed(2)}%</td>
+  `;
+  rows.appendChild(tr);
+});
 
-    function stageBadge(stage, risk){
-      const dotClass = risk === "good" ? "good" : (risk === "warn" ? "warn" : "bad");
-      return `<span class="badge"><span class="dot ${dotClass}"></span>${stage}</span>`;
-    }
+document.getElementById("invested").textContent = "$" + invested.toFixed(0);
+document.getElementById("cash").textContent = "$" + (TOTAL - invested).toFixed(0);
+document.getElementById("pl").textContent = (totalPL>=0?"+":"") + "$" + totalPL.toFixed(0);
+</script>
 
-    function returnCell(h){
-      if (h.returnPct === null) return `<span class="mono muted ret">—</span>`;
-      const cls = h.returnPct >= 0 ? "mono" : "mono";
-      const color = h.returnPct >= 0 ? "style='color: var(--good)'" : "style='color: var(--bad)'";
-      return `<span class="${cls} ret" ${color}>${fmtPct(h.returnPct)}</span>`;
-    }
-
-    holdings.forEach((h, idx) => {
-      const alloc = allocationPct(h.value);
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>
-          <div style="display:flex; flex-direction:column; gap:3px;">
-            <strong>${h.name}</strong>
-            <span class="muted" style="font-size:12px;">Position ${idx+1} • sized small by design</span>
-          </div>
-        </td>
-        <td class="mono">${h.ticker}</td>
-        <td class="right mono">${alloc.toFixed(2)}%</td>
-        <td class="right mono">${fmtUSD(h.value)}</td>
-        <td class="right">${returnCell(h)}</td>
-        <td>${stageBadge(h.stage, h.risk)}</td>
-      `;
-      rows.appendChild(tr);
-
-      const block = document.createElement("details");
-      block.className = "card";
-      block.style.margin = "12px 16px 16px";
-      block.style.boxShadow = "none";
-      block.style.borderRadius = "14px";
-      block.style.background = "rgba(255,255,255,.02)";
-      block.innerHTML = `
-        <summary>
-          <span>${h.name} <span class="muted" style="font-weight:500;">(${h.ticker})</span></span>
-          <span class="chev">View thesis</span>
-        </summary>
-        <div class="note">
-          <div style="display:grid; gap:10px; padding-top:2px;">
-            <div>
-              <div class="muted" style="font-family:var(--mono); font-size:11px; letter-spacing:1.2px; text-transform:uppercase;">Thesis</div>
-              <ul style="margin:8px 0 0 18px; color:rgba(255,255,255,.84); line-height:1.55;">
-                ${h.thesis.map(x => `<li>${x}</li>`).join("")}
-              </ul>
-            </div>
-            <div>
-              <div class="muted" style="font-family:var(--mono); font-size:11px; letter-spacing:1.2px; text-transform:uppercase;">What to watch</div>
-              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
-                ${h.watch.map(w => `<span class="badge"><span class="dot"></span>${w}</span>`).join("")}
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      thesisBlocks.appendChild(block);
-    });
-
-    // Add cash row visually (not a thesis block)
-    const cashRow = document.createElement("tr");
-    cashRow.innerHTML = `
-      <td>
-        <div style="display:flex; flex-direction:column; gap:3px;">
-          <strong>Cash</strong>
-          <span class="muted" style="font-size:12px;">Dry powder / optionality</span>
-        </div>
-      </td>
-      <td class="mono">USD</td>
-      <td class="right mono">${allocationPct(cash).toFixed(2)}%</td>
-      <td class="right mono">${fmtUSD(cash)}</td>
-      <td class="right"><span class="mono muted ret">—</span></td>
-      <td><span class="badge"><span class="dot"></span>Liquidity</span></td>
-    `;
-    rows.appendChild(cashRow);
-
-    // ---------- UI controls ----------
-    const toggleBtn = document.getElementById("toggleReturns");
-    let showingPlaceholders = true;
-
-    toggleBtn.addEventListener("click", () => {
-      showingPlaceholders = !showingPlaceholders;
-      // This toggles display style only; actual return values are placeholders (null).
-      const cells = document.querySelectorAll(".ret");
-      cells.forEach(el => {
-        el.style.opacity = showingPlaceholders ? "1" : "0.55";
-      });
-      toggleBtn.textContent = showingPlaceholders
-        ? "Toggle returns: placeholders"
-        : "Toggle returns: dimmed view";
-    });
-
-    document.getElementById("expandAll").addEventListener("click", () => {
-      const blocks = thesisBlocks.querySelectorAll("details");
-      const anyClosed = Array.from(blocks).some(d => !d.open);
-      blocks.forEach(d => d.open = anyClosed);
-      document.getElementById("expandAll").textContent = anyClosed ? "Collapse all theses" : "Expand all theses";
-    });
-  </script>
 </body>
 </html>
