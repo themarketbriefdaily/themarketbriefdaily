@@ -14,112 +14,127 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <div class="brand">
-        <a class="brand-mark" href="/" aria-label="The Market Brief Daily Home">
-          <img class="brand-logo" src="/assets/images/logo.png" alt="MarketBriefDaily logo" />
-          <span class="brand-text">The Market Brief Daily</span>
-        </a>
-        <div class="brand-sub">Market structure • Physical supply • Macro transmission</div>
-      </div>
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="MarketBriefDaily logo" />
+        <span class="brand-name">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
 
       <nav class="nav" aria-label="Primary">
-        <a class="nav-link is-active" href="/">Home</a>
-        <a class="nav-link" href="/posts.html">Posts</a>
-        <a class="nav-link" href="/investments.html">Investments</a>
-        <a class="nav-link" href="/about.html">About</a>
-        <a class="nav-link" href="/contact.html">Contact</a>
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main id="content" class="section">
-    <div class="container">
-
-      <section class="hero">
-        <div class="badge">Independent research • Mechanics-first • Risk-aware</div>
-        <h1>Clear market analysis for metals & macro.</h1>
-        <p class="lead">
-          MarketBriefDaily covers the mechanics behind price: inventory buffers, delivery windows, funding/lease rates,
+  <!-- HERO IMAGE -->
+  <section class="hero" aria-label="Hero">
+    <div class="container hero-inner">
+      <div class="hero-card">
+        <div class="hero-badge">Independent research • Mechanics-first • Risk-aware</div>
+        <h1>Institutional-grade market analysis—without the noise.</h1>
+        <p>
+          MarketBriefDaily focuses on the mechanics behind price: inventory buffers, delivery windows, funding/lease rates,
           positioning, and macro transmission across rates, FX, and commodities.
         </p>
 
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <div class="hero-actions">
           <a class="btn btn-primary" href="/posts.html">Read latest</a>
           <a class="btn" href="/investments.html">Watchlist</a>
-        </div>
-      </section>
-
-      <div style="height:16px;"></div>
-
-      <section class="card">
-        <div class="card-kicker">Featured</div>
-        <h2 class="card-title" style="margin-bottom:10px;">Latest research</h2>
-
-        <div class="post-list">
-          <article class="post-item">
-            <div class="post-meta">
-              <span class="tag">Metals</span>
-              <time datetime="2026-02-07">Feb 07, 2026</time>
-            </div>
-            <a class="post-title" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
-              Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch
-            </a>
-            <p class="post-excerpt">
-              Registered vs eligible inventory, delivery windows, and lease-rate signals—why volatility risk rises when buffers thin.
-            </p>
-          </article>
+          <a class="btn" href="/about.html">Method</a>
         </div>
 
-        <div class="note">
-          <div class="note-title">Disclosure</div>
-          <p class="card-sub" style="margin:0;">
-            For informational purposes only. Not investment advice. See the <a href="/disclaimer.html">disclaimer</a>.
+        <div class="small" style="margin-top:10px;">
+          For informational purposes only. Not investment advice. See <a href="/disclaimer.html">disclaimer</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="content" class="section">
+    <div class="container">
+      <div class="grid">
+
+        <!-- Latest -->
+        <section class="card" aria-label="Latest research">
+          <div class="card-kicker">Latest</div>
+          <h2 class="card-title">Recent research</h2>
+          <p class="card-sub">New posts are added to the Posts page. This is the current featured report.</p>
+
+          <div class="post-list">
+            <article class="post-item">
+              <div class="post-meta">
+                <span class="tag">Metals</span>
+                <time datetime="2026-02-07">Feb 07, 2026</time>
+              </div>
+              <a class="post-title" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
+                Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch
+              </a>
+              <p class="post-excerpt">
+                Registered vs eligible inventory, delivery windows, and lease-rate signals—why volatility risk rises when buffers thin.
+              </p>
+            </article>
+          </div>
+
+          <div style="margin-top:12px;">
+            <a class="btn btn-primary" href="/posts.html">Browse all posts</a>
+          </div>
+        </section>
+
+        <!-- Method -->
+        <section class="card" aria-label="Method">
+          <div class="card-kicker">Method</div>
+          <h2 class="card-title">How we think</h2>
+          <p class="card-sub">
+            The goal isn’t prediction theater. It’s risk framing: what changed, why it matters, and what to watch next.
           </p>
-        </div>
-      </section>
 
-      <div style="height:16px;"></div>
-
-      <section class="card">
-        <div class="card-kicker">Method</div>
-        <h2 class="card-title">What we track</h2>
-        <p class="card-sub">
-          The goal isn’t prediction theater. It’s risk framing: what changed, why it matters, and what to watch next.
-        </p>
-
-        <div class="post-list">
-          <div class="post-item">
-            <div class="post-meta">
-              <span class="tag tag-blue">Market structure</span>
-              <span>Mechanics</span>
+          <div class="post-list">
+            <div class="post-item">
+              <div class="post-meta">
+                <span class="tag tag-blue">Market structure</span>
+                <span>Mechanics</span>
+              </div>
+              <p class="post-excerpt" style="margin:0;">
+                Delivery windows, exchange inventories, futures-physical linkage, settlement incentives, and positioning pressure.
+              </p>
             </div>
-            <p class="post-excerpt" style="margin:0;">
-              Delivery windows, exchange inventories, futures-physical linkage, settlement incentives, and positioning pressure.
-            </p>
+
+            <div class="post-item">
+              <div class="post-meta">
+                <span class="tag">Physical tightness</span>
+                <span>Supply</span>
+              </div>
+              <p class="post-excerpt" style="margin:0;">
+                Lease/funding regimes, availability constraints, and conditions where physical and paper diverge.
+              </p>
+            </div>
+
+            <div class="post-item">
+              <div class="post-meta">
+                <span class="tag tag-blue">Macro transmission</span>
+                <span>Rates → FX → Commodities</span>
+              </div>
+              <p class="post-excerpt" style="margin:0;">
+                How macro variables propagate into risk assets—what matters, what’s noise, and what to watch next.
+              </p>
+            </div>
           </div>
 
-          <div class="post-item">
-            <div class="post-meta">
-              <span class="tag">Physical tightness</span>
-              <span>Supply</span>
-            </div>
-            <p class="post-excerpt" style="margin:0;">
-              Lease/funding regimes, availability constraints, and the conditions under which physical and paper diverge.
+          <div class="note">
+            <div class="note-title">Quality standard</div>
+            <p class="card-sub" style="margin:0;">
+              Clear mechanics, conservative claims, and a practical “what to watch” list—so the work is actionable.
             </p>
           </div>
+        </section>
 
-          <div class="post-item">
-            <div class="post-meta">
-              <span class="tag tag-blue">Macro transmission</span>
-              <span>Rates → FX → Commodities</span>
-            </div>
-            <p class="post-excerpt" style="margin:0;">
-              How macro variables propagate into risk assets—what matters, what’s noise, and what to watch next.
-            </p>
-          </div>
-        </div>
-      </section>
-
+      </div>
     </div>
   </main>
 
@@ -132,6 +147,7 @@
       <div class="footer-right">
         <a href="/posts.html">Posts</a>
         <a href="/investments.html">Investments</a>
+        <a href="/contact.html">Contact</a>
         <a href="/disclaimer.html">Disclaimer</a>
       </div>
     </div>
