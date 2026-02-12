@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Investments | The Market Brief Daily</title>
-  <meta name="description" content="Watchlist and research notes for selected metals equities and development-stage projects." />
+  <meta name="description" content="Watchlist and research list with a model portfolio tracker." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
@@ -36,12 +36,77 @@
     <div class="container">
       <header class="page-header">
         <div class="page-kicker">Investments</div>
-        <h1 class="page-title">Watchlist / research list</h1>
+        <h1 class="page-title">Watchlist + model portfolio</h1>
         <p class="page-lead">
-          A structured list of names discussed for research purposes. Not investment advice. Mining equities and
-          development-stage projects are high risk and volatile. See <a href="/disclaimer.html">disclaimer</a>.
+          A structured research list with a local model portfolio tracker. Informational only — not investment advice.
+          See <a href="/disclaimer.html">disclaimer</a>.
         </p>
       </header>
+
+      <!-- Portfolio summary + P&L -->
+      <section class="portfolio" aria-label="Portfolio summary">
+        <div class="portfolio-top">
+          <div>
+            <div class="p-title">Model Portfolio (Local)</div>
+            <div class="p-sub">
+              Starts with <b>$100,000</b> USD. Prices are manually entered (saved in your browser). Charts are embedded on the right.
+            </div>
+          </div>
+          <div class="p-actions">
+            <button class="p-btn" id="btnReset">Reset to default</button>
+            <button class="p-btn" id="btnClearPrices">Clear prices</button>
+          </div>
+        </div>
+
+        <div class="p-kpis">
+          <div class="kpi">
+            <div class="label">Net liquidation</div>
+            <div class="value" id="kpiNet">$—</div>
+            <div class="sub" id="kpiNetSub">Cash + holdings value</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Total P&L</div>
+            <div class="value" id="kpiPnL">$—</div>
+            <div class="sub" id="kpiPnLSub">Based on entry vs current</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Cash</div>
+            <div class="value" id="kpiCash">$—</div>
+            <div class="sub">Unallocated model cash</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Exposure</div>
+            <div class="value" id="kpiExposure">$—</div>
+            <div class="sub">Market value invested</div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:14px;">
+          <b>How it works:</b> Enter your <b>Entry Price</b> and <b>Current Price</b> for each name. Shares are calculated from the allocation.
+          Everything saves automatically in your browser.
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="table-wrap" aria-label="Holdings table">
+          <table>
+            <thead>
+              <tr>
+                <th>Stock</th>
+                <th>Risk</th>
+                <th>Allocation</th>
+                <th>Entry Price</th>
+                <th>Current Price</th>
+                <th>Shares</th>
+                <th>Market Value</th>
+                <th>P&L</th>
+                <th>P&L %</th>
+              </tr>
+            </thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
+        </div>
+      </section>
 
       <div class="inv-grid">
 
@@ -120,130 +185,62 @@
           </div>
 
           <div class="note">
-            <b>Disclosure:</b> informational only; not investment advice. For limitations and conflicts, see the <a href="/disclaimer.html">disclaimer</a>.
+            <b>Disclosure:</b> informational only; not investment advice. See <a href="/disclaimer.html">disclaimer</a>.
           </div>
         </section>
 
-        <!-- RIGHT: prices/charts -->
-        <aside aria-label="Prices and charts">
+        <!-- RIGHT: charts -->
+        <aside aria-label="Charts">
           <div class="kicker">Market data</div>
-          <h2>Prices & mini charts</h2>
+          <h2>Charts</h2>
           <p class="lead">Embedded from TradingView. If a symbol doesn’t load, adjust its exchange prefix.</p>
 
           <div class="tv-stack">
 
-            <!-- AGI -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSE:AGI",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true,
-                  "largeChartUrl": "",
-                  "chartOnly": false
-                }
+                {"symbol":"NYSE:AGI","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
 
-            <!-- FSM -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSE:FSM",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true
-                }
+                {"symbol":"NYSE:FSM","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
 
-            <!-- GAU -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSEAMERICAN:GAU",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true
-                }
+                {"symbol":"NYSEAMERICAN:GAU","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
 
-            <!-- NFGC -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSEAMERICAN:NFGC",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true
-                }
+                {"symbol":"NYSEAMERICAN:NFGC","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
 
-            <!-- VGZ -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSEAMERICAN:VGZ",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true
-                }
+                {"symbol":"NYSEAMERICAN:VGZ","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
 
-            <!-- NEWP (might be TSX/TSXV depending on listing) -->
             <div class="tv-box">
-              <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
+              <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                {
-                  "symbol": "NYSE:NEWP",
-                  "width": "100%",
-                  "height": "220",
-                  "locale": "en",
-                  "dateRange": "12M",
-                  "colorTheme": "light",
-                  "isTransparent": false,
-                  "autosize": true
-                }
+                {"symbol":"NYSE:NEWP","width":"100%","height":"220","locale":"en","dateRange":"12M","colorTheme":"light","isTransparent":false,"autosize":true}
                 </script>
               </div>
             </div>
@@ -268,5 +265,141 @@
       </div>
     </div>
   </footer>
+
+  <!-- Portfolio engine (client-side only) -->
+  <script>
+    const STORAGE_KEY = "mbd_portfolio_v1";
+
+    const DEFAULT_PORTFOLIO = {
+      baseCurrency: "USD",
+      startingCash: 100000,
+      holdings: [
+        { name:"Alamos Gold", ticker:"AGI", risk:"Lower", allocation: 28000, entry: "", current: "" },
+        { name:"Fortuna Mining", ticker:"FSM", risk:"Lower", allocation: 22000, entry: "", current: "" },
+        { name:"Galiano Gold", ticker:"GAU", risk:"Medium", allocation: 18000, entry: "", current: "" },
+        { name:"Newfound Gold", ticker:"NFGC", risk:"Higher", allocation: 12000, entry: "", current: "" },
+        { name:"Vista Gold", ticker:"VGZ", risk:"Higher", allocation:  8000, entry: "", current: "" },
+        { name:"New Pacific Metals", ticker:"NEWP", risk:"Higher", allocation: 12000, entry: "", current: "" },
+      ]
+    };
+
+    function money(n){
+      if (n === null || n === undefined || Number.isNaN(n)) return "—";
+      return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
+    }
+    function money2(n){
+      if (n === null || n === undefined || Number.isNaN(n)) return "—";
+      return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
+    }
+    function pct(n){
+      if (n === null || n === undefined || Number.isNaN(n)) return "—";
+      return (n*100).toFixed(2) + "%";
+    }
+
+    function loadPortfolio(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return structuredClone(DEFAULT_PORTFOLIO);
+      try { return JSON.parse(raw); }
+      catch { return structuredClone(DEFAULT_PORTFOLIO); }
+    }
+    function savePortfolio(p){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+    }
+
+    function calcRow(h){
+      const entry = parseFloat(h.entry);
+      const current = parseFloat(h.current);
+
+      // shares computed from allocation and entry price if provided
+      let shares = null;
+      if (!Number.isNaN(entry) && entry > 0) shares = h.allocation / entry;
+
+      let mkt = null, pnl = null, pnlPct = null;
+      if (shares !== null && !Number.isNaN(current) && current > 0){
+        mkt = shares * current;
+        pnl = mkt - h.allocation;
+        pnlPct = pnl / h.allocation;
+      }
+      return { entry, current, shares, mkt, pnl, pnlPct };
+    }
+
+    function render(){
+      const p = loadPortfolio();
+      const body = document.getElementById("holdingsBody");
+      body.innerHTML = "";
+
+      let invested = 0;
+      let mktTotal = 0;
+      let pnlTotal = 0;
+
+      p.holdings.forEach((h, idx) => {
+        invested += h.allocation;
+
+        const r = calcRow(h);
+        if (r.mkt !== null) mktTotal += r.mkt;
+        if (r.pnl !== null) pnlTotal += r.pnl;
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td>
+            <div><b>${h.name}</b> <small>(${h.ticker})</small></div>
+          </td>
+          <td>${h.risk}</td>
+          <td>${money(h.allocation)}</td>
+          <td><input class="p-in" inputmode="decimal" placeholder="e.g. 12.34" value="${h.entry}" data-idx="${idx}" data-field="entry"></td>
+          <td><input class="p-in" inputmode="decimal" placeholder="e.g. 13.10" value="${h.current}" data-idx="${idx}" data-field="current"></td>
+          <td>${r.shares === null ? "—" : r.shares.toFixed(4)}</td>
+          <td>${r.mkt === null ? "—" : money2(r.mkt)}</td>
+          <td class="${r.pnl === null ? "" : (r.pnl >= 0 ? "pos" : "neg")}">${r.pnl === null ? "—" : money2(r.pnl)}</td>
+          <td class="${r.pnlPct === null ? "" : (r.pnlPct >= 0 ? "pos" : "neg")}">${r.pnlPct === null ? "—" : pct(r.pnlPct)}</td>
+        `;
+
+        body.appendChild(tr);
+      });
+
+      const cash = Math.max(0, p.startingCash - invested);
+      const net = cash + mktTotal;
+
+      document.getElementById("kpiCash").textContent = money(cash);
+      document.getElementById("kpiExposure").textContent = money2(mktTotal);
+      document.getElementById("kpiNet").textContent = money2(net);
+      document.getElementById("kpiPnL").textContent = (pnlTotal === 0 && mktTotal === 0) ? "$—" : money2(pnlTotal);
+
+      // sublabels
+      document.getElementById("kpiPnLSub").textContent = (mktTotal === 0) ? "Enter prices to compute" : "Sum of holdings P&L";
+      document.getElementById("kpiNetSub").textContent = (mktTotal === 0) ? "Cash only until priced" : "Cash + market value";
+    }
+
+    function wire(){
+      document.addEventListener("input", (e) => {
+        const t = e.target;
+        if (!t.classList.contains("p-in")) return;
+
+        const idx = parseInt(t.getAttribute("data-idx"), 10);
+        const field = t.getAttribute("data-field");
+
+        const p = loadPortfolio();
+        p.holdings[idx][field] = t.value;
+        savePortfolio(p);
+        render();
+      });
+
+      document.getElementById("btnReset").addEventListener("click", () => {
+        savePortfolio(structuredClone(DEFAULT_PORTFOLIO));
+        render();
+      });
+
+      document.getElementById("btnClearPrices").addEventListener("click", () => {
+        const p = loadPortfolio();
+        p.holdings = p.holdings.map(h => ({...h, entry:"", current:""}));
+        savePortfolio(p);
+        render();
+      });
+    }
+
+    wire();
+    render();
+  </script>
 </body>
 </html>
