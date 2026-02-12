@@ -4,103 +4,107 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Posts | The Market Brief Daily</title>
-  <meta name="description" content="Newsroom archive of Market Brief Daily research." />
+  <meta name="description" content="Research & analysis. Auto-updated from Substack." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
 
+  <!-- Minimal “newsroom” styles (kept local so you don’t have to edit style.css yet) -->
   <style>
+    .newsroom-header{margin: 26px 0 18px;}
     .newsroom-grid{
       display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 18px;
-      margin-top: 22px;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      margin-top:16px;
     }
-    .card{
-      grid-column: span 6;
+    @media (max-width: 980px){ .newsroom-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width: 640px){ .newsroom-grid{ grid-template-columns:1fr; } }
+
+    .news-card{
+      display:block;
       background:#fff;
       border:1px solid rgba(15,23,42,.10);
       border-radius:16px;
       overflow:hidden;
-      box-shadow: 0 10px 22px rgba(15,23,42,.06);
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      box-shadow:0 10px 30px rgba(2,6,23,.06);
+      transition:transform .15s ease, box-shadow .15s ease;
+      text-decoration:none;
+      color:inherit;
     }
-    .card:hover{
-      transform: translateY(-2px);
-      box-shadow: 0 16px 30px rgba(15,23,42,.10);
-      border-color: rgba(15,23,42,.16);
+    .news-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 40px rgba(2,6,23,.10);
     }
-    .card a{ display:block; text-decoration:none; color:inherit; }
-    .thumb{
-      position:relative;
-      aspect-ratio: 16/9;
-      background:#0b1220;
-    }
-    .thumb img{
+    .news-thumb{
       width:100%;
-      height:100%;
+      aspect-ratio:16/9;
       object-fit:cover;
       display:block;
-      filter:saturate(1.05) contrast(1.02);
+      background:#f1f5f9;
     }
-    .thumb:after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 55%);
-      pointer-events:none;
-    }
-    .tag{
-      position:absolute;
-      left:12px; top:12px;
-      background: rgba(255,255,255,.92);
-      border:1px solid rgba(15,23,42,.14);
-      color: rgba(15,23,42,.9);
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:700;
-    }
-    .card-body{ padding: 14px 16px 16px; }
-    .meta{
+    .news-body{ padding:16px 16px 18px; }
+    .news-meta{
       display:flex;
       justify-content:space-between;
-      gap:12px;
-      color: rgba(15,23,42,.62);
-      font-size:13px;
-      margin-bottom:6px;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color:rgba(15,23,42,.60);
+      margin-bottom:10px;
     }
-    .headline{
-      font-size:18px;
-      line-height:1.22;
-      letter-spacing:-.01em;
-      margin:0 0 8px;
-      color: rgba(15,23,42,.96);
-      font-weight:800;
+    .news-tag{
+      display:inline-flex;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(2,132,199,.10);
+      color:rgba(2,132,199,1);
+      font-weight:600;
+      letter-spacing:.02em;
     }
-    .dek{
+    .news-title{
+      margin:0 0 10px;
+      font-size:16px;
+      line-height:1.35;
+      font-weight:750;
+      color:#0f172a;
+    }
+    .news-excerpt{
       margin:0;
-      color: rgba(15,23,42,.72);
       font-size:14px;
-      line-height:1.45;
+      line-height:1.55;
+      color:rgba(15,23,42,.72);
     }
-
-    /* featured card spans full width */
-    .featured{
-      grid-column: span 12;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:18px;
-      margin-bottom: 2px;
+    .newsroom-note{
+      margin-top:12px;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius:14px;
+      padding:12px 14px;
+      background:#fff;
+      color:rgba(15,23,42,.72);
+      box-shadow:0 8px 24px rgba(2,6,23,.05);
+      display:none;
     }
-    .featured .card{ grid-column: span 12; display:grid; grid-template-columns: 1.1fr .9fr; }
-    .featured .thumb{ aspect-ratio:auto; min-height: 320px; }
-    .featured .headline{ font-size:26px; }
-
-    @media (max-width: 860px){
-      .card{ grid-column: span 12; }
-      .featured .card{ grid-template-columns: 1fr; }
-      .featured .thumb{ min-height: 220px; }
-      .featured .headline{ font-size:22px; }
+    .newsroom-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
     }
+    .btn-lite{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.14);
+      background:#fff;
+      color:#0f172a;
+      text-decoration:none;
+      font-weight:650;
+      font-size:14px;
+      box-shadow:0 10px 24px rgba(2,6,23,.06);
+    }
+    .btn-lite:hover{ box-shadow:0 14px 34px rgba(2,6,23,.10); }
   </style>
 </head>
 
@@ -109,7 +113,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/" aria-label="Home">
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
         <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
         <span class="brand-stack">
           <span class="brand-title">The Market Brief Daily</span>
@@ -129,76 +133,29 @@
 
   <main id="content" class="page">
     <div class="container">
-      <header class="page-header">
-        <div class="page-kicker">Newsroom</div>
-        <h1 class="page-title">Research & Analysis</h1>
+      <header class="page-header newsroom-header">
+        <div class="page-kicker">Posts</div>
+        <h1 class="page-title">Research & analysis</h1>
         <p class="page-lead">
-          Macro, metals, and market-structure analysis. Click a story to read the full article.
+          Auto-updated from Substack. Click any story card to read the full article.
         </p>
-      </header>
 
-      <section class="newsroom-grid" aria-label="Posts grid">
-
-        <!-- Featured (most recent) -->
-        <div class="featured">
-          <article class="card">
-            <a href="/posts/2026-02-12-japan-pm-us-stocks.html">
-              <div class="thumb">
-                <span class="tag">Macro</span>
-                <img src="/assets/images/posts/japan-pm-us-stocks.jpg" alt="Japan PM and U.S. stocks cover">
-              </div>
-              <div class="card-body">
-                <div class="meta">
-                  <span>Feb 12, 2026</span>
-                  <span>Macro</span>
-                </div>
-                <h2 class="headline">What Japan’s New Prime Minister Means for U.S. Stocks</h2>
-                <p class="dek">Rates, FX, carry mechanics, reserves, and transmission into U.S. equities and bonds.</p>
-              </div>
-            </a>
-          </article>
+        <div class="newsroom-actions">
+          <a class="btn-lite" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Open Substack</a>
+          <a class="btn-lite" href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS feed</a>
         </div>
 
-        <!-- Druckenmiller post -->
-        <article class="card">
-          <a href="/posts/2026-02-09-druckenmiller-shadow.html">
-            <div class="thumb">
-              <span class="tag">Macro</span>
-              <img src="/assets/images/posts/druckenmiller-shadow.jpg" alt="Druckenmiller’s Shadow cover image">
-            </div>
-            <div class="card-body">
-              <div class="meta">
-                <span>Feb 09, 2026</span>
-                <span>Macro</span>
-              </div>
-              <h2 class="headline">Druckenmiller’s Shadow: Why Two Key U.S. Economic Posts May Be Thinking Like One Investor</h2>
-              <p class="dek">Shared frameworks, policy “coordination,” and how macro doctrine can shift the distribution of outcomes.</p>
-            </div>
-          </a>
-        </article>
+        <div id="feedStatus" class="newsroom-note"></div>
+      </header>
 
-        <!-- Silver post -->
-        <article class="card">
-          <a href="/posts/2026-02-07-silver-market-outlook.html">
-            <div class="thumb">
-              <span class="tag">Metals</span>
-              <img src="/assets/images/posts/silver-outlook.jpg" alt="Silver market outlook cover image">
-            </div>
-            <div class="card-body">
-              <div class="meta">
-                <span>Feb 07, 2026</span>
-                <span>Metals</span>
-              </div>
-              <h2 class="headline">Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch</h2>
-              <p class="dek">Registered vs eligible inventory, delivery windows, and lease-rate signals—why volatility risk rises when buffers thin.</p>
-            </div>
-          </a>
-        </article>
-
+      <section aria-label="Newsroom">
+        <div id="newsGrid" class="newsroom-grid"></div>
       </section>
 
-      <div class="note" style="margin-top:20px;">
-        <b>Tip:</b> Add new posts by duplicating a card block and creating the matching <code>/posts/YYYY-MM-DD-title.html</code> page.
+      <div style="height:22px;"></div>
+
+      <div class="note">
+        <b>Disclosure:</b> informational only; not investment advice. See <a href="/disclaimer.html">disclaimer</a>.
       </div>
     </div>
   </main>
@@ -209,12 +166,130 @@
         <div class="footer-brand">The Market Brief Daily</div>
         <div class="footer-sub">Market structure & physical supply analysis.</div>
       </div>
+
       <div class="footer-links">
         <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
         <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
         <a href="/disclaimer.html">Disclaimer</a>
       </div>
     </div>
   </footer>
+
+  <script>
+    // === Substack auto-feed (static-site friendly) ===
+    const SUBSTACK_FEED = "https://marketbriefdaily.substack.com/feed";
+    // rss2json is used because many RSS feeds don't allow direct browser fetch (CORS)
+    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+    // Cache in localStorage for 30 minutes
+    const CACHE_KEY = "mbd_substack_feed_cache_v1";
+    const CACHE_TTL_MS = 30 * 60 * 1000;
+
+    function stripHtml(html){
+      const tmp = document.createElement("div");
+      tmp.innerHTML = html || "";
+      return (tmp.textContent || tmp.innerText || "").trim();
+    }
+
+    function fmtDate(d){
+      try {
+        return new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"});
+      } catch {
+        return "";
+      }
+    }
+
+    function pickImage(item){
+      if (item.thumbnail) return item.thumbnail;
+      if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+      const m = (item.content || "").match(/<img[^>]+src="([^">]+)"/i);
+      if (m && m[1]) return m[1];
+      // fallback: your own site hero image if you have one (or keep this as gray background)
+      return "/assets/images/hero.jpg";
+    }
+
+    function guessTag(item){
+      const t = (stripHtml(item.categories?.[0]) || "").toLowerCase();
+      if (t.includes("metal")) return "Metals";
+      if (t.includes("macro")) return "Macro";
+      if (t.includes("fx") || t.includes("currency")) return "FX";
+      if (t.includes("rates") || t.includes("bond")) return "Rates";
+      // simple keyword heuristics
+      const text = (stripHtml(item.title) + " " + stripHtml(item.description)).toLowerCase();
+      if (text.includes("silver") || text.includes("gold")) return "Metals";
+      if (text.includes("japan") || text.includes("treasury") || text.includes("fed")) return "Macro";
+      return "Research";
+    }
+
+    function render(items){
+      const grid = document.getElementById("newsGrid");
+      grid.innerHTML = "";
+
+      items.slice(0, 24).forEach(item => {
+        const title = stripHtml(item.title);
+        const link = item.link;
+        const date = fmtDate(item.pubDate);
+        const img = pickImage(item);
+        const tag = guessTag(item);
+        const excerptRaw = stripHtml(item.description || item.content);
+        const excerpt = (excerptRaw.length > 170 ? excerptRaw.slice(0, 170) + "…" : excerptRaw);
+
+        const a = document.createElement("a");
+        a.className = "news-card";
+        a.href = link;
+        a.target = "_blank";
+        a.rel = "noopener";
+
+        a.innerHTML = `
+          <img class="news-thumb" src="${img}" alt="">
+          <div class="news-body">
+            <div class="news-meta">
+              <span class="news-tag">${tag}</span>
+              <span>${date}</span>
+            </div>
+            <h3 class="news-title">${title}</h3>
+            <p class="news-excerpt">${excerpt}</p>
+          </div>
+        `;
+        grid.appendChild(a);
+      });
+    }
+
+    async function loadFeed(){
+      // use cache if available
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached){
+        try{
+          const c = JSON.parse(cached);
+          if (Date.now() - c.time < CACHE_TTL_MS && Array.isArray(c.items) && c.items.length){
+            render(c.items);
+            return;
+          }
+        }catch{}
+      }
+
+      const status = document.getElementById("feedStatus");
+
+      try{
+        const url = RSS2JSON + encodeURIComponent(SUBSTACK_FEED);
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("Feed fetch failed");
+        const data = await res.json();
+        if (!data.items || !Array.isArray(data.items)) throw new Error("No items returned");
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), items: data.items }));
+        render(data.items);
+      }catch(err){
+        status.style.display = "block";
+        status.innerHTML = `Couldn’t load the Substack feed right now. You can still read posts on
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack</a>.`;
+        console.error(err);
+      }
+    }
+
+    loadFeed();
+  </script>
 </body>
 </html>
