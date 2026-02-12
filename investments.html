@@ -15,7 +15,6 @@
   --brand:#0b4ea2;
   --max: 1180px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
-  --r:16px;
   --shadow: 0 18px 45px rgba(2,6,23,.10);
 }
 *{ box-sizing:border-box; }
@@ -27,52 +26,38 @@ body{
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
-a{ color: var(--brand); text-decoration:none; }
-a:hover{ text-decoration: underline; text-underline-offset: 3px; }
 .container{ width: min(var(--max), calc(100% - 56px)); margin: 0 auto; }
 
 .site-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: sticky; top: 0; z-index: 50;
   background: rgba(255,255,255,.92);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
 .header-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 16px 0;
-  gap: 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 16px 0; gap: 24px;
 }
 .brand{ display:flex; flex-direction:column; gap:2px; }
 .brand-title{ font-weight: 850; letter-spacing: -.2px; line-height: 1.1; }
 .brand-sub{ font-size: 13px; color: var(--muted2); }
 
-.nav{
-  display:flex;
-  gap: 18px;
-  align-items:center;
-  flex-wrap:wrap;
-}
+.nav{ display:flex; gap: 18px; align-items:center; flex-wrap:wrap; }
 .nav a{
   color: var(--ink);
   font-weight: 650;
   font-size: 14px;
   padding: 10px 2px 8px;
   border-bottom: 2px solid transparent;
+  text-decoration:none;
 }
-.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); text-decoration:none; }
+.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); }
 .nav a.is-active{ border-bottom-color: var(--ink); }
 
 .section{ padding: 30px 0 44px; }
 .kicker{
-  font-size: 12px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 10px;
+  font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--muted2); margin-bottom: 10px;
 }
 h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 .lead{ margin:0 0 18px; color: var(--muted); max-width: 95ch; }
@@ -84,40 +69,35 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   background: #fff;
   box-shadow: var(--shadow);
 }
+
 .portfolio-top{
-  display:flex;
-  justify-content:space-between;
-  gap: 16px;
-  align-items:flex-start;
-  flex-wrap: wrap;
+  display:flex; justify-content:space-between; gap: 16px;
+  align-items:flex-start; flex-wrap: wrap;
 }
 .p-title{ font-weight: 850; letter-spacing: -.2px; }
 .p-sub{ color: var(--muted2); font-size: 13px; margin-top: 4px; }
 
-.statusline{
-  margin-top:8px;
-  font-size:13px;
-  color: var(--muted);
-}
+.statusline{ margin-top:8px; font-size:13px; color: var(--muted); }
 .statusline strong{ color: var(--ink); }
-
-.p-actions{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-.p-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding: 10px 12px;
-  border-radius: 12px;
+.badge{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 6px 10px;
   border: 1px solid var(--line);
-  background: #fff;
-  color: var(--ink);
-  font-weight: 750;
-  cursor: pointer;
+  border-radius: 999px;
+  background:#fff;
+  font-size:12px;
+  color: var(--muted);
+  margin-left: 10px;
+}
+.badge.ok{ border-color: rgba(10,122,58,.20); color: rgba(10,122,58,.95); }
+.badge.warn{ border-color: rgba(180,35,24,.20); color: rgba(180,35,24,.92); }
+
+.p-actions{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.p-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: #fff;
+  color: var(--ink); font-weight: 750; cursor: pointer;
 }
 .p-btn:hover{ background: rgba(11,18,32,.03); }
 
@@ -145,19 +125,7 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   margin-top: 6px;
   font-size: 18px;
 }
-.kpi .sub{
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.chartbox{
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 12px;
-  margin-top: 14px;
-}
-canvas{ width:100%; height:260px; display:block; }
+.kpi .sub{ margin-top: 4px; color: var(--muted); font-size: 13px; }
 
 .table-wrap{
   overflow:auto;
@@ -245,8 +213,7 @@ summary{ cursor:pointer; font-weight: 850; }
   <div class="kicker">Public model portfolio</div>
   <h1>Investments</h1>
   <p class="lead">
-    Prices auto-load from <span class="mono">./data/quotes.json</span> (shared across devices). You can still manually refresh intraday prices.
-    Free-tier Alpha Vantage is rate-limited, so manual refresh fetches sequentially.
+    Prices load from <span class="mono">./data/quotes.json</span> (shared across devices). If any ticker is missing, the page falls back to Alpha Vantage to fill the gaps.
   </p>
 
   <section class="portfolio">
@@ -260,12 +227,12 @@ summary{ cursor:pointer; font-weight: 850; }
         </div>
         <div class="statusline">
           <strong>Status:</strong> <span id="quoteStatus" class="mono">loading…</span>
+          <span id="healthBadge" class="badge" style="display:none;"></span>
           <span id="quoteError" style="display:none; margin-left:10px;" class="mono"></span>
         </div>
       </div>
       <div class="p-actions">
         <button class="p-btn" id="refreshQuotesBtn">Refresh intraday prices</button>
-        <button class="p-btn" id="refreshHistoryBtn">Refresh history (slow)</button>
         <button class="p-btn" id="toggleThesisBtn">Expand all theses</button>
       </div>
     </div>
@@ -289,15 +256,7 @@ summary{ cursor:pointer; font-weight: 850; }
       <div class="kpi">
         <div class="label">Since Inception</div>
         <div class="value mono" id="si">—</div>
-        <div class="sub">Return since inception date.</div>
-      </div>
-    </div>
-
-    <div class="chartbox">
-      <div class="kicker" style="margin:0 0 8px;">Performance since inception (NAV)</div>
-      <canvas id="navChart" width="1200" height="320"></canvas>
-      <div class="note" id="chartNote">
-        History not loaded. Click “Refresh history (slow)” once (cached in your browser).
+        <div class="sub">Return vs initial capital.</div>
       </div>
     </div>
 
@@ -325,81 +284,37 @@ summary{ cursor:pointer; font-weight: 850; }
 
     <div class="note">
       <strong>Disclosure:</strong> informational model portfolio only; not investment advice.
-      Auto quotes require you to maintain <span class="mono">data/quotes.json</span> via GitHub Actions (recommended).
     </div>
   </section>
 </main>
 
 <script>
 /* ========= CONFIG ========= */
-
-// You explicitly asked to hardcode the key here.
 const AV_KEY = "GUY8S89NSG15NVYH";
-
-// free-tier safe delay: ~5 requests/min. 6 tickers => ~70s refresh.
 const QUOTE_DELAY_MS = 14000;
 
-// Capital + inception
 const TOTAL_CAPITAL = 100000;
-const INCEPTION_DATE = "2026-02-01";
 
-// Allocation model (small allocations; rest stays as constant cash)
-const targetDollars = {
-  AGI: 2000,
-  FSM: 1500,
-  GAU: 1000,
-  NFGC: 800,
-  VGZ: 700,
-  NEWP: 1000
-};
+// Small allocations (rest stays constant cash)
+const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000 };
 
-// Entry prices (edit these to change purchase price)
-const entry = {
-  AGI: 42.19,
-  FSM: 10.39,
-  GAU: 2.7300,
-  NFGC: 2.6900,
-  VGZ: 2.6300,
-  NEWP: 3.5300
-};
+// Entry prices
+const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53 };
 
-// Metadata + theses
+// Meta + thesis
 const meta = {
-  AGI: { name:"Alamos Gold", stage:"Producer",
-    thesis:["Established producer; lower relative risk within miners.","Watch AISC trend and execution vs guidance.","Sized small; cycle + execution thesis."],
-    watch:["AISC trend","guidance updates","capex vs FCF","jurisdiction risk"]
-  },
-  FSM: { name:"Fortuna Mining", stage:"Producer",
-    thesis:["Gold/silver hybrid with geographic diversification.","Satellite position; thesis improves with margin expansion.","Sized small due to miner beta."],
-    watch:["cost control","jurisdiction stability","balance sheet","metal sensitivity"]
-  },
-  GAU: { name:"Galiano Gold", stage:"Turnaround / Small Cap",
-    thesis:["Turnaround / execution story in smaller cap.","Single-asset concentration risk acknowledged.","Sized small to reflect idiosyncratic risk."],
-    watch:["resource updates","operational KPIs","financing/dilution","country risk"]
-  },
-  NFGC: { name:"New Found Gold", stage:"Developer",
-    thesis:["High-grade discovery optionality; pre-revenue risk.","Primary risk: financing/dilution + timeline.","Very small sizing: asymmetric attempt."],
-    watch:["drill continuity","permits/mill path","financing terms","timeline"]
-  },
-  VGZ: { name:"Vista Gold", stage:"Developer",
-    thesis:["Long-dated gold leverage; milestones matter.","Macro regime sensitivity; low carry while waiting.","Small sizing due to timeline/project risk."],
-    watch:["milestones","partnering/financing","capex assumptions","jurisdiction"]
-  },
-  NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)",
-    thesis:["Silver optionality via undeveloped projects.","High jurisdiction/political risk; sized accordingly.","Thesis: cycle exposure + advancement."],
-    watch:["policy risk","community relations","resource advancement","silver cycle"]
-  }
+  AGI:{ name:"Alamos Gold", stage:"Producer", thesis:["Established producer; lower relative risk.","Watch AISC and guidance execution.","Sized small; cycle+execution."], watch:["AISC","guidance","capex","jurisdiction"] },
+  FSM:{ name:"Fortuna Mining", stage:"Producer", thesis:["Gold/silver hybrid with diversification.","Satellite position; margin expansion thesis.","Sized small due to miner beta."], watch:["costs","jurisdiction","balance sheet","metal sensitivity"] },
+  GAU:{ name:"Galiano Gold", stage:"Turnaround / Small Cap", thesis:["Turnaround/execution story.","Single-asset concentration acknowledged.","Sized small for idiosyncratic risk."], watch:["resource","operations","financing","country risk"] },
+  NFGC:{ name:"New Found Gold", stage:"Developer", thesis:["High-grade optionality; pre-revenue.","Financing/dilution + timeline risk.","Very small sizing."], watch:["drilling","permits","financing","timeline"] },
+  VGZ:{ name:"Vista Gold", stage:"Developer", thesis:["Long-dated gold leverage.","Milestone-driven rerating.","Small sizing due to timeline."], watch:["milestones","partnering","capex","jurisdiction"] },
+  NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] }
 };
 
-/* ========= DERIVED CONSTANTS (IMPORTANT FIX) ========= */
-
-// tickers are taken from targetDollars (single source)
 const tickers = Object.keys(targetDollars);
-
-// shares are derived from target dollars and entry
 const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
 
-// FIX: constant cash, not TOTAL - invested (otherwise NAV is always TOTAL)
+// Constant cash FIX
 const INITIAL_INVESTED = Object.values(targetDollars).reduce((a,b)=>a+b,0);
 const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
 
@@ -412,42 +327,53 @@ const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
 function setError(msg){
   const e = el("quoteError");
-  if(!msg){
-    e.style.display="none";
-    e.textContent="";
-    return;
-  }
+  if(!msg){ e.style.display="none"; e.textContent=""; return; }
   e.style.display="inline";
   e.style.color="#b42318";
   e.textContent = "· " + msg;
 }
 
-/* ========= SHARED QUOTES LOADER (C) ========= */
+function setBadge(kind, text){
+  const b = el("healthBadge");
+  b.style.display = "inline-flex";
+  b.className = "badge " + (kind === "ok" ? "ok" : "warn");
+  b.textContent = text;
+}
+
+function normalizePrices(prices){
+  // returns a new object of numeric prices only
+  const out = {};
+  if(!prices || typeof prices !== "object") return out;
+  for(const [k,v] of Object.entries(prices)){
+    const sym = String(k).trim().toUpperCase();
+    const num = (typeof v === "number") ? v : Number(String(v).replace(/[^0-9.\-]/g,""));
+    if(sym && Number.isFinite(num) && num > 0) out[sym] = num;
+  }
+  return out;
+}
+
+/* ========= SHARED QUOTES ========= */
 async function loadSharedQuotes(){
   const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
   if(!res.ok) throw new Error("Failed to load ./data/quotes.json");
   return await res.json();
 }
 
-/* ========= QUOTES (manual) ========= */
+/* ========= ALPHA VANTAGE QUOTE ========= */
 async function fetchQuote(symbol){
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(AV_KEY)}`;
   const res = await fetch(url, {cache:"no-store"});
   const data = await res.json();
-
   if(data.Note) throw new Error("Rate limited by Alpha Vantage. Wait ~60s then try again.");
   if(data["Error Message"]) throw new Error("Alpha Vantage error for " + symbol);
-
   const q = data["Global Quote"];
   if(!q || !q["05. price"]) throw new Error("No quote returned for " + symbol);
-
-  return {
-    price: Number(q["05. price"]),
-    ts: (q["07. latest trading day"] || "")
-  };
+  const price = Number(q["05. price"]);
+  if(!Number.isFinite(price) || price <= 0) throw new Error("Bad price returned for " + symbol);
+  return { price, ts: (q["07. latest trading day"] || "") };
 }
 
-/* ========= TABLE + KPI RENDER ========= */
+/* ========= TABLE + KPI ========= */
 function renderTableSkeleton(){
   const tbody = el("rows");
   tbody.innerHTML = "";
@@ -455,7 +381,6 @@ function renderTableSkeleton(){
     const sh = shares[t];
     const cost = sh * entry[t];
     const tr = document.createElement("tr");
-    tr.id = `row_${t}`;
     tr.innerHTML = `
       <td><strong>${meta[t].name}</strong><br/><small>${meta[t].stage}</small></td>
       <td class="mono"><strong>${t}</strong></td>
@@ -495,10 +420,12 @@ function updateRow(t, price){
 function updateKPIs(latestPx){
   let holdingsMV = 0;
   let plTotal = 0;
+  let pricedCount = 0;
 
   for(const t of tickers){
     const px = latestPx[t];
     if(!px) continue;
+    pricedCount++;
     const sh = shares[t];
     const mv = sh * px;
     const cost = sh * entry[t];
@@ -506,27 +433,32 @@ function updateKPIs(latestPx){
     plTotal += (mv - cost);
   }
 
-  // NAV moves now because cash is constant
   const nav = holdingsMV + INITIAL_CASH;
   const si = ((nav / TOTAL_CAPITAL) - 1) * 100;
 
   el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
-  el("nav").textContent = (holdingsMV>0) ? fmtUSD0(nav) : "—";
-  el("pl").textContent = (holdingsMV>0) ? ((plTotal>=0?"+":"") + fmtUSD0(plTotal)) : "—";
-  el("si").textContent = (holdingsMV>0) ? fmtPct(si) : "—";
+
+  if(pricedCount === 0){
+    el("nav").textContent = "—";
+    el("pl").textContent = "—";
+    el("si").textContent = "—";
+  } else {
+    el("nav").textContent = fmtUSD0(nav);
+    el("pl").textContent = (plTotal>=0?"+":"") + fmtUSD0(plTotal);
+    el("si").textContent = fmtPct(si);
+  }
 }
 
-/* ========= THESES ========= */
 function renderTheses(){
   const wrap = el("thesisBlocks");
   wrap.innerHTML = "";
   for(const t of tickers){
     const d = document.createElement("details");
     d.innerHTML = `
-      <summary>${meta[t].name} <span class="mono" style="color:var(--muted2); font-weight:650;">(${t})</span></summary>
+      <summary>${meta[t].name} <span class="mono" style="color:rgba(11,18,32,.46); font-weight:650;">(${t})</span></summary>
       <div class="note" style="border-top:none; padding-top:8px;">
         <div class="kicker" style="margin:0 0 6px;">Thesis</div>
-        <ul style="margin:0 0 10px 18px; color:var(--muted);">
+        <ul style="margin:0 0 10px 18px; color:rgba(11,18,32,.68);">
           ${meta[t].thesis.map(x=>`<li>${x}</li>`).join("")}
         </ul>
         <div class="kicker" style="margin:0 0 6px;">What to watch</div>
@@ -539,43 +471,65 @@ function renderTheses(){
   }
 }
 
-/* ========= NAV CHART PLACEHOLDER ========= */
-function drawPlaceholder(canvas, msg){
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle = "rgba(11,18,32,.65)";
-  ctx.font = "14px system-ui";
-  ctx.fillText(msg, 54, 46);
+/* ========= LOAD FLOW ========= */
+async function applyPricesEverywhere(prices){
+  // prices is normalized numeric map
+  for(const t of tickers){
+    if(prices[t]) updateRow(t, prices[t]);
+  }
+  updateKPIs(prices);
 }
-drawPlaceholder(el("navChart"), "History not loaded. Click “Refresh history (slow)”. (Cached after first run.)");
 
-/* ========= MANUAL INTRADAY REFRESH ========= */
-async function refreshQuotes(){
+async function fillMissingViaAlphaVantage(prices){
+  // For any ticker missing, fetch one-by-one (rate-limited)
+  let lastTradingDay = "";
+  for(let i=0;i<tickers.length;i++){
+    const t = tickers[i];
+    if(prices[t]) continue;
+
+    el("quoteStatus").textContent = `filling missing: ${t}…`;
+    try{
+      const q = await fetchQuote(t);
+      prices[t] = q.price;
+      updateRow(t, q.price);
+      updateKPIs(prices);
+      if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
+    }catch(e){
+      setError(e.message);
+      // don't stop the whole process; continue
+    }
+    await sleep(QUOTE_DELAY_MS);
+  }
+  return lastTradingDay;
+}
+
+/* ========= MANUAL REFRESH ========= */
+async function refreshAllViaAlphaVantage(){
   setError("");
-  const latestPx = {};
-  el("quoteStatus").textContent = "refreshing (rate-limited)…";
-  el("lastTS").textContent = "—";
+  const prices = {};
+  el("quoteStatus").textContent = "refreshing intraday (rate-limited)…";
 
+  let lastTradingDay = "";
   for(let i=0;i<tickers.length;i++){
     const t = tickers[i];
     el("quoteStatus").textContent = `fetching ${t} (${i+1}/${tickers.length})…`;
-
     try{
       const q = await fetchQuote(t);
-      latestPx[t] = q.price;
+      prices[t] = q.price;
       updateRow(t, q.price);
-      updateKPIs(latestPx);
-      if(q.ts) el("lastTS").textContent = q.ts;
-    }catch(err){
-      setError(err.message);
+      updateKPIs(prices);
+      if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
+    }catch(e){
+      setError(e.message);
       el("quoteStatus").textContent = "error";
       return;
     }
-
     if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
   }
 
-  el("quoteStatus").textContent = `ok (${tickers.length} quotes)`;
+  el("lastTS").textContent = lastTradingDay || el("lastTS").textContent;
+  el("quoteStatus").textContent = "ok (intraday refreshed)";
+  setBadge("ok", "intraday");
 }
 
 /* ========= BUTTONS ========= */
@@ -586,44 +540,43 @@ el("toggleThesisBtn").addEventListener("click", ()=>{
   blocks.forEach(d => d.open = expanded);
   el("toggleThesisBtn").textContent = expanded ? "Collapse all theses" : "Expand all theses";
 });
+el("refreshQuotesBtn").addEventListener("click", refreshAllViaAlphaVantage);
 
-el("refreshQuotesBtn").addEventListener("click", refreshQuotes);
-
-// Leave history button as a stub (you can paste your history module in here)
-el("refreshHistoryBtn").addEventListener("click", ()=>{
-  setError("History refresh not included in this file. If you want, I’ll merge the history module back in cleanly.");
-});
-
-/* ========= INIT (C) ========= */
+/* ========= INIT ========= */
 (async function init(){
   el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
   el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+
   renderTableSkeleton();
   renderTheses();
 
-  // Default KPI values (before prices)
-  el("nav").textContent = "—";
-  el("pl").textContent = "—";
-  el("si").textContent = "—";
-
-  try {
+  try{
     const q = await loadSharedQuotes();
+
     el("quotesAsOf").textContent = q.asof_iso ? q.asof_iso : "—";
     el("lastTS").textContent = q.last_trading_day || "—";
-    el("quoteStatus").textContent = "auto-loaded (shared quotes)";
 
-    // apply prices everywhere
-    for (const t of tickers){
-      if (q.prices && q.prices[t]) updateRow(t, q.prices[t]);
+    const prices = normalizePrices(q.prices);
+    await applyPricesEverywhere(prices);
+
+    // Health info
+    const have = Object.keys(prices).length;
+    if(have === tickers.length){
+      el("quoteStatus").textContent = "auto-loaded (shared quotes)";
+      setBadge("ok", "shared quotes complete");
+    } else {
+      el("quoteStatus").textContent = `shared quotes partial (${have}/${tickers.length})`;
+      setBadge("warn", "missing symbols — filling");
+      const extraDay = await fillMissingViaAlphaVantage(prices);
+      if(extraDay) el("lastTS").textContent = extraDay;
+      const have2 = Object.keys(prices).length;
+      el("quoteStatus").textContent = `ready (${have2}/${tickers.length} priced)`;
     }
-    updateKPIs(q.prices || {});
-    setError("");
 
-  } catch (e){
-    // If quotes.json isn't there yet, page still works. User can click manual refresh.
-    el("quotesAsOf").textContent = "—";
+  }catch(e){
     el("quoteStatus").textContent = "no shared quotes (yet)";
-    setError("Add ./data/quotes.json (and optional GitHub Actions updater) for cross-device auto pricing.");
+    setBadge("warn", "no quotes.json");
+    setError("Create data/quotes.json (and schedule updates) or use manual refresh.");
   }
 })();
 </script>
