@@ -15,6 +15,7 @@
   --brand:#0b4ea2;
   --max: 1180px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  --r:16px;
   --shadow: 0 18px 45px rgba(2,6,23,.10);
 }
 *{ box-sizing:border-box; }
@@ -26,6 +27,8 @@ body{
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
+a{ color: var(--brand); text-decoration:none; }
+a:hover{ text-decoration: underline; text-underline-offset: 3px; }
 .container{ width: min(var(--max), calc(100% - 56px)); margin: 0 auto; }
 
 .site-header{
@@ -39,7 +42,7 @@ body{
   padding: 16px 0; gap: 24px;
 }
 .brand{ display:flex; flex-direction:column; gap:2px; }
-.brand-title{ font-weight: 850; letter-spacing: -.2px; line-height: 1.1; }
+.brand-title{ font-weight: 850; letter-spacing: -.2px; line-height: 1.1; color: var(--ink); }
 .brand-sub{ font-size: 13px; color: var(--muted2); }
 
 .nav{ display:flex; gap: 18px; align-items:center; flex-wrap:wrap; }
@@ -49,9 +52,8 @@ body{
   font-size: 14px;
   padding: 10px 2px 8px;
   border-bottom: 2px solid transparent;
-  text-decoration:none;
 }
-.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); }
+.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); text-decoration:none; }
 .nav a.is-active{ border-bottom-color: var(--ink); }
 
 .section{ padding: 30px 0 44px; }
@@ -78,6 +80,7 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 
 .statusline{ margin-top:8px; font-size:13px; color: var(--muted); }
 .statusline strong{ color: var(--ink); }
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
 .badge{
   display:inline-flex; align-items:center; gap:8px;
@@ -158,7 +161,6 @@ td small{ color: var(--muted2); }
 
 .pos{ color: #0a7a3a; font-weight: 850; }
 .neg{ color: #b42318; font-weight: 850; }
-.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
 
 .details{ margin-top: 14px; display:grid; gap: 10px; }
 details{
@@ -176,7 +178,6 @@ summary{ cursor:pointer; font-weight: 850; }
   font-size:12px;
   color: var(--muted);
 }
-
 .note{
   margin-top: 14px;
   padding-top: 14px;
@@ -184,7 +185,6 @@ summary{ cursor:pointer; font-weight: 850; }
   font-size: 13px;
   color: var(--muted);
 }
-
 @media (max-width: 900px){
   .container{ width: min(var(--max), calc(100% - 34px)); }
   .header-inner{ flex-direction: column; align-items:flex-start; }
@@ -213,7 +213,8 @@ summary{ cursor:pointer; font-weight: 850; }
   <div class="kicker">Public model portfolio</div>
   <h1>Investments</h1>
   <p class="lead">
-    Prices load from <span class="mono">./data/quotes.json</span> (shared across devices). If any ticker is missing, the page falls back to Alpha Vantage to fill the gaps (rate-limited).
+    Prices are loaded from <span class="mono">./data/quotes.json</span> (shared across devices).
+    Quotes are refreshed by a scheduled GitHub Action.
   </p>
 
   <section class="portfolio">
@@ -232,7 +233,7 @@ summary{ cursor:pointer; font-weight: 850; }
         </div>
       </div>
       <div class="p-actions">
-        <button class="p-btn" id="refreshQuotesBtn">Refresh intraday prices</button>
+        <button class="p-btn" id="reloadBtn">Reload quotes</button>
         <button class="p-btn" id="toggleThesisBtn">Expand all theses</button>
       </div>
     </div>
@@ -289,31 +290,16 @@ summary{ cursor:pointer; font-weight: 850; }
 </main>
 
 <script>
-/* ========= CONFIG ========= */
-const AV_KEY = "GUY8S89NSG15NVYH";
-const QUOTE_DELAY_MS = 14000;
-
+/* ========= CONFIG (EDIT HERE TO ADD/REMOVE STOCKS OR CHANGE ENTRY PRICES) ========= */
 const TOTAL_CAPITAL = 100000;
 
-// Small allocations (rest stays constant cash)
+// allocations (USD); rest stays in constant cash
 const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000 };
 
-// Entry prices
-const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53 };
+// entry prices
+const entry = { AGI:42.855, FSM:10.46, GAU:2.765, NFGC:2.735, VGZ:2.675, NEWP:3.58 };
 
-// IMPORTANT: Alpha Vantage symbol mapping
-// If "AGI" fails, try "AGI.TO" OR use the US listing symbol if applicable.
-// Keep the LEFT keys exactly your internal tickers.
-const AV_SYMBOL = {
-  AGI: "AGI",
-  FSM: "FSM",
-  GAU: "GAU",
-  NFGC: "NFGC",
-  VGZ: "VGZ",
-  NEWP: "NEWP"
-};
-
-// Meta + thesis
+// meta + thesis
 const meta = {
   AGI:{ name:"Alamos Gold", stage:"Producer", thesis:["Established producer; lower relative risk.","Watch AISC and guidance execution.","Sized small; cycle+execution."], watch:["AISC","guidance","capex","jurisdiction"] },
   FSM:{ name:"Fortuna Mining", stage:"Producer", thesis:["Gold/silver hybrid with diversification.","Satellite position; margin expansion thesis.","Sized small due to miner beta."], watch:["costs","jurisdiction","balance sheet","metal sensitivity"] },
@@ -322,6 +308,7 @@ const meta = {
   VGZ:{ name:"Vista Gold", stage:"Developer", thesis:["Long-dated gold leverage.","Milestone-driven rerating.","Small sizing due to timeline."], watch:["milestones","partnering","capex","jurisdiction"] },
   NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] }
 };
+/* ========= END CONFIG ========= */
 
 const tickers = Object.keys(targetDollars);
 const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
@@ -330,12 +317,10 @@ const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[
 const INITIAL_INVESTED = Object.values(targetDollars).reduce((a,b)=>a+b,0);
 const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
 
-/* ========= UTIL ========= */
 const el = id => document.getElementById(id);
 const fmtUSD0 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
 const fmtUSD2 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
 const fmtPct = n => (n>=0?"+":"") + n.toFixed(2) + "%";
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
 function setError(msg){
   const e = el("quoteError");
@@ -344,14 +329,12 @@ function setError(msg){
   e.style.color="#b42318";
   e.textContent = "· " + msg;
 }
-
 function setBadge(kind, text){
   const b = el("healthBadge");
   b.style.display = "inline-flex";
   b.className = "badge " + (kind === "ok" ? "ok" : "warn");
   b.textContent = text;
 }
-
 function normalizePrices(prices){
   const out = {};
   if(!prices || typeof prices !== "object") return out;
@@ -363,30 +346,12 @@ function normalizePrices(prices){
   return out;
 }
 
-/* ========= SHARED QUOTES ========= */
 async function loadSharedQuotes(){
   const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
   if(!res.ok) throw new Error("Failed to load ./data/quotes.json");
   return await res.json();
 }
 
-/* ========= ALPHA VANTAGE QUOTE ========= */
-async function fetchQuote(avSymbol){
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(avSymbol)}&apikey=${encodeURIComponent(AV_KEY)}`;
-  const res = await fetch(url, {cache:"no-store"});
-  const data = await res.json();
-
-  if(data.Note) throw new Error("Rate limited by Alpha Vantage. Wait ~60s then try again.");
-  if(data["Error Message"]) throw new Error("Alpha Vantage error: " + data["Error Message"]);
-
-  const q = data["Global Quote"];
-  if(!q || !q["05. price"]) throw new Error("No quote returned (symbol may be unsupported)");
-  const price = Number(q["05. price"]);
-  if(!Number.isFinite(price) || price <= 0) throw new Error("Bad quote price returned");
-  return { price, ts: (q["07. latest trading day"] || "") };
-}
-
-/* ========= TABLE + KPI ========= */
 function renderTableSkeleton(){
   const tbody = el("rows");
   tbody.innerHTML = "";
@@ -395,7 +360,7 @@ function renderTableSkeleton(){
     const cost = sh * entry[t];
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><strong>${meta[t].name}</strong><br/><small>${meta[t].stage}</small></td>
+      <td><strong>${meta[t]?.name || t}</strong><br/><small>${meta[t]?.stage || ""}</small></td>
       <td class="mono"><strong>${t}</strong></td>
       <td class="mono">${sh.toFixed(4)}</td>
       <td class="mono">${fmtUSD2(entry[t])}</td>
@@ -404,7 +369,7 @@ function renderTableSkeleton(){
       <td class="mono" id="mv_${t}">—</td>
       <td class="mono" id="pl_${t}">—</td>
       <td class="mono" id="plp_${t}">—</td>
-      <td>${meta[t].stage}</td>
+      <td>${meta[t]?.stage || ""}</td>
     `;
     tbody.appendChild(tr);
   }
@@ -430,20 +395,13 @@ function updateRow(t, price){
   plpEl.className = `mono ${cls}`;
 }
 
-function markRowNA(t){
-  el(`last_${t}`).textContent = "N/A";
-  el(`mv_${t}`).textContent = "—";
-  el(`pl_${t}`).textContent = "—";
-  el(`plp_${t}`).textContent = "—";
-}
-
-function updateKPIs(latestPx){
+function updateKPIs(prices){
   let holdingsMV = 0;
   let plTotal = 0;
   let pricedCount = 0;
 
   for(const t of tickers){
-    const px = latestPx[t];
+    const px = prices[t];
     if(!px) continue;
     pricedCount++;
     const sh = shares[t];
@@ -462,11 +420,12 @@ function updateKPIs(latestPx){
     el("nav").textContent = "—";
     el("pl").textContent = "—";
     el("si").textContent = "—";
-  } else {
-    el("nav").textContent = fmtUSD0(nav);
-    el("pl").textContent = (plTotal>=0?"+":"") + fmtUSD0(plTotal);
-    el("si").textContent = fmtPct(si);
+    return;
   }
+
+  el("nav").textContent = fmtUSD0(nav);
+  el("pl").textContent = (plTotal>=0?"+":"") + fmtUSD0(plTotal);
+  el("si").textContent = fmtPct(si);
 }
 
 function renderTheses(){
@@ -474,16 +433,17 @@ function renderTheses(){
   wrap.innerHTML = "";
   for(const t of tickers){
     const d = document.createElement("details");
+    const m = meta[t] || { name:t, stage:"", thesis:[], watch:[] };
     d.innerHTML = `
-      <summary>${meta[t].name} <span class="mono" style="color:rgba(11,18,32,.46); font-weight:650;">(${t})</span></summary>
+      <summary>${m.name} <span class="mono" style="color:rgba(11,18,32,.46); font-weight:650;">(${t})</span></summary>
       <div class="note" style="border-top:none; padding-top:8px;">
         <div class="kicker" style="margin:0 0 6px;">Thesis</div>
         <ul style="margin:0 0 10px 18px; color:rgba(11,18,32,.68);">
-          ${meta[t].thesis.map(x=>`<li>${x}</li>`).join("")}
+          ${(m.thesis||[]).map(x=>`<li>${x}</li>`).join("")}
         </ul>
         <div class="kicker" style="margin:0 0 6px;">What to watch</div>
         <div class="tags">
-          ${meta[t].watch.map(w=>`<span class="tag">${w}</span>`).join("")}
+          ${(m.watch||[]).map(w=>`<span class="tag">${w}</span>`).join("")}
         </div>
       </div>
     `;
@@ -491,83 +451,48 @@ function renderTheses(){
   }
 }
 
-/* ========= APPLY PRICES ========= */
-function applyPricesEverywhere(prices){
+function applyAll(q){
+  const prices = normalizePrices(q.prices);
   for(const t of tickers){
     if(prices[t]) updateRow(t, prices[t]);
   }
   updateKPIs(prices);
-}
 
-/* ========= FILL MISSING (SAFE: DOES NOT BLOCK) ========= */
-async function fillMissingViaAlphaVantage(prices){
-  let lastTradingDay = "";
-  let ok = 0, fail = 0;
-
-  for(let i=0;i<tickers.length;i++){
-    const t = tickers[i];
-    if(prices[t]) { ok++; continue; }
-
-    el("quoteStatus").textContent = `filling missing: ${t} (${ok} ok / ${fail} fail)…`;
-
-    try{
-      const avSym = AV_SYMBOL[t] || t;
-      const q = await fetchQuote(avSym);
-      prices[t] = q.price;
-      updateRow(t, q.price);
-      updateKPIs(prices);
-      if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
-      ok++;
-    }catch(e){
-      fail++;
-      markRowNA(t);
-      setError(`${t}: ${e.message}`);
-    }
-
-    if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
+  const have = Object.keys(prices).length;
+  if(have === 0){
+    el("quoteStatus").textContent = "quotes loaded, but prices missing";
+    setBadge("warn", "no prices");
+    setError("Your data/quotes.json has empty or invalid prices. Fix the GitHub Action.");
+  } else if(have < tickers.length){
+    el("quoteStatus").textContent = `partial quotes (${have}/${tickers.length})`;
+    setBadge("warn", `${tickers.length - have} missing`);
+    setError("Some symbols missing in quotes.json (likely symbol mapping).");
+  } else {
+    el("quoteStatus").textContent = "ok (shared quotes)";
+    setBadge("ok", "priced");
+    setError("");
   }
-
-  el("quoteStatus").textContent = `ready (${ok} priced, ${fail} missing)`;
-  setBadge(fail === 0 ? "ok" : "warn", fail === 0 ? "all symbols priced" : `${fail} symbols missing`);
-  return lastTradingDay;
 }
 
-/* ========= MANUAL REFRESH (SAFE: DOES NOT BLOCK) ========= */
-async function refreshAllViaAlphaVantage(){
-  setError("");
-  const prices = {};
-  el("quoteStatus").textContent = "refreshing intraday (rate-limited)…";
+async function boot(){
+  el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
+  renderTableSkeleton();
+  renderTheses();
 
-  let lastTradingDay = "";
-  let ok = 0, fail = 0;
-
-  for(let i=0;i<tickers.length;i++){
-    const t = tickers[i];
-    el("quoteStatus").textContent = `fetching ${t} (${i+1}/${tickers.length})…`;
-
-    try{
-      const avSym = AV_SYMBOL[t] || t;
-      const q = await fetchQuote(avSym);
-      prices[t] = q.price;
-      updateRow(t, q.price);
-      updateKPIs(prices);
-      if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
-      ok++;
-    }catch(e){
-      fail++;
-      markRowNA(t);
-      setError(`${t}: ${e.message}`);
-    }
-
-    if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
+  try{
+    const q = await loadSharedQuotes();
+    el("quotesAsOf").textContent = q.asof_iso || "—";
+    el("lastTS").textContent = q.last_trading_day || "—";
+    applyAll(q);
+  }catch(e){
+    el("quoteStatus").textContent = "failed to load quotes.json";
+    setBadge("warn", "no quotes.json");
+    setError(String(e.message || e));
   }
-
-  if(lastTradingDay) el("lastTS").textContent = lastTradingDay;
-  el("quoteStatus").textContent = `intraday refreshed (${ok} priced, ${fail} missing)`;
-  setBadge(fail === 0 ? "ok" : "warn", fail === 0 ? "intraday complete" : `${fail} symbols missing`);
 }
 
-/* ========= BUTTONS ========= */
+el("reloadBtn").addEventListener("click", boot);
+
 let expanded = false;
 el("toggleThesisBtn").addEventListener("click", ()=>{
   const blocks = document.querySelectorAll("#thesisBlocks details");
@@ -575,42 +500,8 @@ el("toggleThesisBtn").addEventListener("click", ()=>{
   blocks.forEach(d => d.open = expanded);
   el("toggleThesisBtn").textContent = expanded ? "Collapse all theses" : "Expand all theses";
 });
-el("refreshQuotesBtn").addEventListener("click", refreshAllViaAlphaVantage);
 
-/* ========= INIT ========= */
-(async function init(){
-  el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
-  el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
-
-  renderTableSkeleton();
-  renderTheses();
-
-  try{
-    const q = await loadSharedQuotes();
-    el("quotesAsOf").textContent = q.asof_iso ? q.asof_iso : "—";
-    el("lastTS").textContent = q.last_trading_day || "—";
-
-    const prices = normalizePrices(q.prices);
-    applyPricesEverywhere(prices);
-
-    const have = Object.keys(prices).length;
-    if(have === tickers.length){
-      el("quoteStatus").textContent = "auto-loaded (shared quotes)";
-      setBadge("ok", "shared quotes complete");
-      setError("");
-    } else {
-      el("quoteStatus").textContent = `shared quotes partial (${have}/${tickers.length})`;
-      setBadge("warn", "missing symbols — filling");
-      const extraDay = await fillMissingViaAlphaVantage(prices);
-      if(extraDay) el("lastTS").textContent = extraDay;
-    }
-
-  }catch(e){
-    el("quoteStatus").textContent = "no shared quotes (yet)";
-    setBadge("warn", "no quotes.json");
-    setError("Create data/quotes.json (and schedule updates) or use manual refresh.");
-  }
-})();
+boot();
 </script>
 </body>
 </html>
