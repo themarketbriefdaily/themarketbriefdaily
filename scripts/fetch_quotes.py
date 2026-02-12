@@ -3,44 +3,62 @@ import os
 import time
 from datetime import datetime, timezone
 import urllib.request
+import urllib.parse
 
-API_KEY = os.environ.get("ALPHAVANTAGE_KEY", "").strip()
-if not API_KEY:
-    raise SystemExit("Missing ALPHAVANTAGE_KEY env var")
+# Hardcoded (you requested this)
+API_KEY = "GUY8S89NSG15NVYH"
 
-# IMPORTANT: match your internal tickers to Alpha Vantage symbols here
-# If AGI fails, try "AGI.TO" OR the US listing symbol if one exists.
+# IMPORTANT:
+# Alpha Vantage often needs exchange suffixes for non-US listings.
+# If a symbol returns no data, change it here (e.g. "AGI.TO", "NFG.TO", etc).
 SYMBOLS = {
     "AGI": "AGI",
     "FSM": "FSM",
     "GAU": "GAU",
     "NFGC": "NFGC",
     "VGZ": "VGZ",
-    "NEWP": "NEWP"
+    "NEWP": "NEWP",
 }
 
-def fetch_quote(av_symbol: str):
-    url = (
-        "https://www.alphavantage.co/query"
-        f"?function=GLOBAL_QUOTE&symbol={av_symbol}&apikey={API_KEY}"
-    )
-    with urllib.request.urlopen(url, timeout=30) as resp:
-        data = json.loads(resp.read().decode("utf-8"))
+INTERVAL = "5min"   # intraday cadence
 
+def http_get_json(url: str):
+    with urllib.request.urlopen(url, timeout=30) as resp:
+        raw = resp.read().decode("utf-8", errors="replace")
+    return json.loads(raw)
+
+def fetch_latest_intraday(av_symbol: str):
+    # TIME_SERIES_INTRADAY is more reliable than GLOBAL_QUOTE
+    params = {
+        "function": "TIME_SERIES_INTRADAY",
+        "symbol": av_symbol,
+        "interval": INTERVAL,
+        "outputsize": "compact",
+        "apikey": API_KEY,
+    }
+    url = "https://www.alphavantage.co/query?" + urllib.parse.urlencode(params)
+    data = http_get_json(url)
+
+    # Handle plan / throttling payloads
     if "Note" in data:
         raise RuntimeError(f"Rate limited: {data['Note']}")
+    if "Information" in data:
+        raise RuntimeError(f"Information: {data['Information']}")
     if "Error Message" in data:
         raise RuntimeError(f"API error: {data['Error Message']}")
 
-    q = data.get("Global Quote", {})
-    if not q or "05. price" not in q:
-        raise RuntimeError("No Global Quote returned")
+    ts_key = f"Time Series ({INTERVAL})"
+    series = data.get(ts_key)
+    if not series or not isinstance(series, dict):
+        raise RuntimeError("No intraday series returned (symbol unsupported or empty)")
 
-    price = float(q["05. price"])
-    day = q.get("07. latest trading day", "")
-    if price <= 0:
-        raise RuntimeError("Bad price")
-    return price, day
+    # latest timestamp key in the dict
+    latest_ts = sorted(series.keys())[-1]
+    bar = series[latest_ts]
+    last = float(bar["4. close"])
+    if last <= 0:
+        raise RuntimeError("Bad close price")
+    return last, latest_ts
 
 def main():
     out = {
@@ -48,26 +66,28 @@ def main():
         "last_trading_day": "—",
         "source": "alphavantage",
         "prices": {},
-        "errors": {}
+        "errors": {},
     }
 
-    last_day = ""
-    items = list(SYMBOLS.items())
+    # best-effort: fill what we can, never crash the whole run
+    last_ts_seen = ""
 
+    items = list(SYMBOLS.items())
     for i, (internal, avsym) in enumerate(items):
         try:
-            price, day = fetch_quote(avsym)
-            out["prices"][internal] = price
-            if day and day > last_day:
-                last_day = day
+            px, last_ts = fetch_latest_intraday(avsym)
+            out["prices"][internal] = px
+            if last_ts and last_ts > last_ts_seen:
+                last_ts_seen = last_ts
         except Exception as e:
             out["errors"][internal] = str(e)
 
-        # stay under free-tier throttle (~5 req/min)
+        # Free tier is tight. Slow it down.
         if i < len(items) - 1:
             time.sleep(15)
 
-    out["last_trading_day"] = last_day or "—"
+    # AlphaVantage intraday timestamps are local-exchange time; still useful as "last update"
+    out["last_trading_day"] = last_ts_seen or "—"
 
     os.makedirs("data", exist_ok=True)
     with open("data/quotes.json", "w", encoding="utf-8") as f:
