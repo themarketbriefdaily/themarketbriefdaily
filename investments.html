@@ -69,7 +69,6 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   background: #fff;
   box-shadow: var(--shadow);
 }
-
 .portfolio-top{
   display:flex; justify-content:space-between; gap: 16px;
   align-items:flex-start; flex-wrap: wrap;
@@ -79,6 +78,7 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 
 .statusline{ margin-top:8px; font-size:13px; color: var(--muted); }
 .statusline strong{ color: var(--ink); }
+
 .badge{
   display:inline-flex; align-items:center; gap:8px;
   padding: 6px 10px;
@@ -213,7 +213,7 @@ summary{ cursor:pointer; font-weight: 850; }
   <div class="kicker">Public model portfolio</div>
   <h1>Investments</h1>
   <p class="lead">
-    Prices load from <span class="mono">./data/quotes.json</span> (shared across devices). If any ticker is missing, the page falls back to Alpha Vantage to fill the gaps.
+    Prices load from <span class="mono">./data/quotes.json</span> (shared across devices). If any ticker is missing, the page falls back to Alpha Vantage to fill the gaps (rate-limited).
   </p>
 
   <section class="portfolio">
@@ -301,6 +301,18 @@ const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:10
 // Entry prices
 const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53 };
 
+// IMPORTANT: Alpha Vantage symbol mapping
+// If "AGI" fails, try "AGI.TO" OR use the US listing symbol if applicable.
+// Keep the LEFT keys exactly your internal tickers.
+const AV_SYMBOL = {
+  AGI: "AGI",
+  FSM: "FSM",
+  GAU: "GAU",
+  NFGC: "NFGC",
+  VGZ: "VGZ",
+  NEWP: "NEWP"
+};
+
 // Meta + thesis
 const meta = {
   AGI:{ name:"Alamos Gold", stage:"Producer", thesis:["Established producer; lower relative risk.","Watch AISC and guidance execution.","Sized small; cycle+execution."], watch:["AISC","guidance","capex","jurisdiction"] },
@@ -341,7 +353,6 @@ function setBadge(kind, text){
 }
 
 function normalizePrices(prices){
-  // returns a new object of numeric prices only
   const out = {};
   if(!prices || typeof prices !== "object") return out;
   for(const [k,v] of Object.entries(prices)){
@@ -360,16 +371,18 @@ async function loadSharedQuotes(){
 }
 
 /* ========= ALPHA VANTAGE QUOTE ========= */
-async function fetchQuote(symbol){
-  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(AV_KEY)}`;
+async function fetchQuote(avSymbol){
+  const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(avSymbol)}&apikey=${encodeURIComponent(AV_KEY)}`;
   const res = await fetch(url, {cache:"no-store"});
   const data = await res.json();
+
   if(data.Note) throw new Error("Rate limited by Alpha Vantage. Wait ~60s then try again.");
-  if(data["Error Message"]) throw new Error("Alpha Vantage error for " + symbol);
+  if(data["Error Message"]) throw new Error("Alpha Vantage error: " + data["Error Message"]);
+
   const q = data["Global Quote"];
-  if(!q || !q["05. price"]) throw new Error("No quote returned for " + symbol);
+  if(!q || !q["05. price"]) throw new Error("No quote returned (symbol may be unsupported)");
   const price = Number(q["05. price"]);
-  if(!Number.isFinite(price) || price <= 0) throw new Error("Bad price returned for " + symbol);
+  if(!Number.isFinite(price) || price <= 0) throw new Error("Bad quote price returned");
   return { price, ts: (q["07. latest trading day"] || "") };
 }
 
@@ -415,6 +428,13 @@ function updateRow(t, price){
   const plpEl = el(`plp_${t}`);
   plpEl.textContent = fmtPct(plPct);
   plpEl.className = `mono ${cls}`;
+}
+
+function markRowNA(t){
+  el(`last_${t}`).textContent = "N/A";
+  el(`mv_${t}`).textContent = "—";
+  el(`pl_${t}`).textContent = "—";
+  el(`plp_${t}`).textContent = "—";
 }
 
 function updateKPIs(latestPx){
@@ -471,65 +491,80 @@ function renderTheses(){
   }
 }
 
-/* ========= LOAD FLOW ========= */
-async function applyPricesEverywhere(prices){
-  // prices is normalized numeric map
+/* ========= APPLY PRICES ========= */
+function applyPricesEverywhere(prices){
   for(const t of tickers){
     if(prices[t]) updateRow(t, prices[t]);
   }
   updateKPIs(prices);
 }
 
+/* ========= FILL MISSING (SAFE: DOES NOT BLOCK) ========= */
 async function fillMissingViaAlphaVantage(prices){
-  // For any ticker missing, fetch one-by-one (rate-limited)
   let lastTradingDay = "";
+  let ok = 0, fail = 0;
+
   for(let i=0;i<tickers.length;i++){
     const t = tickers[i];
-    if(prices[t]) continue;
+    if(prices[t]) { ok++; continue; }
 
-    el("quoteStatus").textContent = `filling missing: ${t}…`;
+    el("quoteStatus").textContent = `filling missing: ${t} (${ok} ok / ${fail} fail)…`;
+
     try{
-      const q = await fetchQuote(t);
+      const avSym = AV_SYMBOL[t] || t;
+      const q = await fetchQuote(avSym);
       prices[t] = q.price;
       updateRow(t, q.price);
       updateKPIs(prices);
       if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
+      ok++;
     }catch(e){
-      setError(e.message);
-      // don't stop the whole process; continue
+      fail++;
+      markRowNA(t);
+      setError(`${t}: ${e.message}`);
     }
-    await sleep(QUOTE_DELAY_MS);
+
+    if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
   }
+
+  el("quoteStatus").textContent = `ready (${ok} priced, ${fail} missing)`;
+  setBadge(fail === 0 ? "ok" : "warn", fail === 0 ? "all symbols priced" : `${fail} symbols missing`);
   return lastTradingDay;
 }
 
-/* ========= MANUAL REFRESH ========= */
+/* ========= MANUAL REFRESH (SAFE: DOES NOT BLOCK) ========= */
 async function refreshAllViaAlphaVantage(){
   setError("");
   const prices = {};
   el("quoteStatus").textContent = "refreshing intraday (rate-limited)…";
 
   let lastTradingDay = "";
+  let ok = 0, fail = 0;
+
   for(let i=0;i<tickers.length;i++){
     const t = tickers[i];
     el("quoteStatus").textContent = `fetching ${t} (${i+1}/${tickers.length})…`;
+
     try{
-      const q = await fetchQuote(t);
+      const avSym = AV_SYMBOL[t] || t;
+      const q = await fetchQuote(avSym);
       prices[t] = q.price;
       updateRow(t, q.price);
       updateKPIs(prices);
       if(q.ts && q.ts > lastTradingDay) lastTradingDay = q.ts;
+      ok++;
     }catch(e){
-      setError(e.message);
-      el("quoteStatus").textContent = "error";
-      return;
+      fail++;
+      markRowNA(t);
+      setError(`${t}: ${e.message}`);
     }
+
     if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
   }
 
-  el("lastTS").textContent = lastTradingDay || el("lastTS").textContent;
-  el("quoteStatus").textContent = "ok (intraday refreshed)";
-  setBadge("ok", "intraday");
+  if(lastTradingDay) el("lastTS").textContent = lastTradingDay;
+  el("quoteStatus").textContent = `intraday refreshed (${ok} priced, ${fail} missing)`;
+  setBadge(fail === 0 ? "ok" : "warn", fail === 0 ? "intraday complete" : `${fail} symbols missing`);
 }
 
 /* ========= BUTTONS ========= */
@@ -552,25 +587,22 @@ el("refreshQuotesBtn").addEventListener("click", refreshAllViaAlphaVantage);
 
   try{
     const q = await loadSharedQuotes();
-
     el("quotesAsOf").textContent = q.asof_iso ? q.asof_iso : "—";
     el("lastTS").textContent = q.last_trading_day || "—";
 
     const prices = normalizePrices(q.prices);
-    await applyPricesEverywhere(prices);
+    applyPricesEverywhere(prices);
 
-    // Health info
     const have = Object.keys(prices).length;
     if(have === tickers.length){
       el("quoteStatus").textContent = "auto-loaded (shared quotes)";
       setBadge("ok", "shared quotes complete");
+      setError("");
     } else {
       el("quoteStatus").textContent = `shared quotes partial (${have}/${tickers.length})`;
       setBadge("warn", "missing symbols — filling");
       const extraDay = await fillMissingViaAlphaVantage(prices);
       if(extraDay) el("lastTS").textContent = extraDay;
-      const have2 = Object.keys(prices).length;
-      el("quoteStatus").textContent = `ready (${have2}/${tickers.length} priced)`;
     }
 
   }catch(e){
