@@ -27,6 +27,8 @@ body{
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
+a{ color: var(--brand); text-decoration:none; }
+a:hover{ text-decoration: underline; text-underline-offset: 3px; }
 .container{ width: min(var(--max), calc(100% - 56px)); margin: 0 auto; }
 
 .site-header{
@@ -38,29 +40,39 @@ body{
   border-bottom: 1px solid var(--line);
 }
 .header-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 16px 0; gap: 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 16px 0;
+  gap: 24px;
 }
 .brand{ display:flex; flex-direction:column; gap:2px; }
 .brand-title{ font-weight: 850; letter-spacing: -.2px; line-height: 1.1; }
 .brand-sub{ font-size: 13px; color: var(--muted2); }
 
-.nav{ display:flex; gap: 18px; align-items:center; flex-wrap:wrap; }
+.nav{
+  display:flex;
+  gap: 18px;
+  align-items:center;
+  flex-wrap:wrap;
+}
 .nav a{
   color: var(--ink);
   font-weight: 650;
   font-size: 14px;
   padding: 10px 2px 8px;
   border-bottom: 2px solid transparent;
-  text-decoration:none;
 }
-.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); }
+.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); text-decoration:none; }
 .nav a.is-active{ border-bottom-color: var(--ink); }
 
 .section{ padding: 30px 0 44px; }
 .kicker{
-  font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--muted2); margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 10px;
 }
 h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 .lead{ margin:0 0 18px; color: var(--muted); max-width: 95ch; }
@@ -72,10 +84,12 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   background: #fff;
   box-shadow: var(--shadow);
 }
-
 .portfolio-top{
-  display:flex; justify-content:space-between; gap: 16px;
-  align-items:flex-start; flex-wrap: wrap;
+  display:flex;
+  justify-content:space-between;
+  gap: 16px;
+  align-items:flex-start;
+  flex-wrap: wrap;
 }
 .p-title{ font-weight: 850; letter-spacing: -.2px; }
 .p-sub{ color: var(--muted2); font-size: 13px; margin-top: 4px; }
@@ -87,9 +101,16 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
 }
 .statusline strong{ color: var(--ink); }
 
-.p-actions{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.p-actions{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
 .p-btn{
-  display:inline-flex; align-items:center; justify-content:center;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid var(--line);
@@ -124,7 +145,19 @@ h1{ margin:0 0 6px; font-size: 34px; letter-spacing: -.3px; }
   margin-top: 6px;
   font-size: 18px;
 }
-.kpi .sub{ margin-top: 4px; color: var(--muted); font-size: 13px; }
+.kpi .sub{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.chartbox{
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  margin-top: 14px;
+}
+canvas{ width:100%; height:260px; display:block; }
 
 .table-wrap{
   overflow:auto;
@@ -176,14 +209,6 @@ summary{ cursor:pointer; font-weight: 850; }
   color: var(--muted);
 }
 
-.chartbox{
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 12px;
-  margin-top: 14px;
-}
-canvas{ width:100%; height:260px; display:block; }
-
 .note{
   margin-top: 14px;
   padding-top: 14px;
@@ -220,8 +245,8 @@ canvas{ width:100%; height:260px; display:block; }
   <div class="kicker">Public model portfolio</div>
   <h1>Investments</h1>
   <p class="lead">
-    Intraday marks are fetched from Alpha Vantage. Free-tier is rate-limited, so quotes update sequentially.
-    Table never blanks — it loads immediately and fills intraday marks as they arrive.
+    Prices auto-load from <span class="mono">./data/quotes.json</span> (shared across devices). You can still manually refresh intraday prices.
+    Free-tier Alpha Vantage is rate-limited, so manual refresh fetches sequentially.
   </p>
 
   <section class="portfolio">
@@ -230,10 +255,11 @@ canvas{ width:100%; height:260px; display:block; }
         <div class="p-title">Portfolio Overview</div>
         <div class="p-sub">
           As of <span id="asof" class="mono">—</span> ·
-          Last trading day: <span id="lastTS" class="mono">—</span>
+          Last trading day: <span id="lastTS" class="mono">—</span> ·
+          Quotes file timestamp: <span id="quotesAsOf" class="mono">—</span>
         </div>
         <div class="statusline">
-          <strong>Status:</strong> <span id="quoteStatus" class="mono">ready</span>
+          <strong>Status:</strong> <span id="quoteStatus" class="mono">loading…</span>
           <span id="quoteError" style="display:none; margin-left:10px;" class="mono"></span>
         </div>
       </div>
@@ -247,13 +273,13 @@ canvas{ width:100%; height:260px; display:block; }
     <div class="p-kpis">
       <div class="kpi">
         <div class="label">Total Capital</div>
-        <div class="value mono" id="totalCap">$100,000</div>
+        <div class="value mono" id="totalCap">—</div>
         <div class="sub">Model capital.</div>
       </div>
       <div class="kpi">
         <div class="label">Portfolio Value (NAV)</div>
         <div class="value mono" id="nav">—</div>
-        <div class="sub">Invested + cash.</div>
+        <div class="sub">Holdings + constant cash.</div>
       </div>
       <div class="kpi">
         <div class="label">P/L</div>
@@ -299,27 +325,45 @@ canvas{ width:100%; height:260px; display:block; }
 
     <div class="note">
       <strong>Disclosure:</strong> informational model portfolio only; not investment advice.
-      Intraday pricing depends on Alpha Vantage availability and rate limits.
+      Auto quotes require you to maintain <span class="mono">data/quotes.json</span> via GitHub Actions (recommended).
     </div>
   </section>
 </main>
 
 <script>
 /* ========= CONFIG ========= */
+
+// You explicitly asked to hardcode the key here.
 const AV_KEY = "GUY8S89NSG15NVYH";
 
-// free-tier safe delay: ~5 requests/minute. 6 tickers => ~70s refresh.
+// free-tier safe delay: ~5 requests/min. 6 tickers => ~70s refresh.
 const QUOTE_DELAY_MS = 14000;
 
+// Capital + inception
 const TOTAL_CAPITAL = 100000;
 const INCEPTION_DATE = "2026-02-01";
 
-// Small allocations (change whenever you want)
-const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000 };
+// Allocation model (small allocations; rest stays as constant cash)
+const targetDollars = {
+  AGI: 2000,
+  FSM: 1500,
+  GAU: 1000,
+  NFGC: 800,
+  VGZ: 700,
+  NEWP: 1000
+};
 
-// Your entry prices
-const entry = { AGI:42.20, FSM:10.39, GAU:2.69, NFGC:2.69, VGZ:2.65, NEWP:3.53 };
+// Entry prices (edit these to change purchase price)
+const entry = {
+  AGI: 42.19,
+  FSM: 10.39,
+  GAU: 2.7300,
+  NFGC: 2.6900,
+  VGZ: 2.6300,
+  NEWP: 3.5300
+};
 
+// Metadata + theses
 const meta = {
   AGI: { name:"Alamos Gold", stage:"Producer",
     thesis:["Established producer; lower relative risk within miners.","Watch AISC trend and execution vs guidance.","Sized small; cycle + execution thesis."],
@@ -347,8 +391,17 @@ const meta = {
   }
 };
 
+/* ========= DERIVED CONSTANTS (IMPORTANT FIX) ========= */
+
+// tickers are taken from targetDollars (single source)
 const tickers = Object.keys(targetDollars);
+
+// shares are derived from target dollars and entry
 const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
+
+// FIX: constant cash, not TOTAL - invested (otherwise NAV is always TOTAL)
+const INITIAL_INVESTED = Object.values(targetDollars).reduce((a,b)=>a+b,0);
+const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
 
 /* ========= UTIL ========= */
 const el = id => document.getElementById(id);
@@ -369,7 +422,14 @@ function setError(msg){
   e.textContent = "· " + msg;
 }
 
-/* ========= QUOTES ========= */
+/* ========= SHARED QUOTES LOADER (C) ========= */
+async function loadSharedQuotes(){
+  const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
+  if(!res.ok) throw new Error("Failed to load ./data/quotes.json");
+  return await res.json();
+}
+
+/* ========= QUOTES (manual) ========= */
 async function fetchQuote(symbol){
   const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${encodeURIComponent(symbol)}&apikey=${encodeURIComponent(AV_KEY)}`;
   const res = await fetch(url, {cache:"no-store"});
@@ -387,7 +447,7 @@ async function fetchQuote(symbol){
   };
 }
 
-/* ========= TABLE RENDER ========= */
+/* ========= TABLE + KPI RENDER ========= */
 function renderTableSkeleton(){
   const tbody = el("rows");
   tbody.innerHTML = "";
@@ -433,24 +493,27 @@ function updateRow(t, price){
 }
 
 function updateKPIs(latestPx){
-  let invested = 0;
+  let holdingsMV = 0;
   let plTotal = 0;
+
   for(const t of tickers){
-    if(!latestPx[t]) continue;
+    const px = latestPx[t];
+    if(!px) continue;
     const sh = shares[t];
-    const mv = sh * latestPx[t];
+    const mv = sh * px;
     const cost = sh * entry[t];
-    invested += mv;
+    holdingsMV += mv;
     plTotal += (mv - cost);
   }
-  const cash = Math.max(0, TOTAL_CAPITAL - invested);
-  const nav = invested + cash;
+
+  // NAV moves now because cash is constant
+  const nav = holdingsMV + INITIAL_CASH;
   const si = ((nav / TOTAL_CAPITAL) - 1) * 100;
 
   el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
-  el("nav").textContent = isFinite(nav) ? fmtUSD0(nav) : "—";
-  el("pl").textContent = isFinite(plTotal) ? ((plTotal>=0?"+":"") + fmtUSD0(plTotal)) : "—";
-  el("si").textContent = isFinite(si) ? fmtPct(si) : "—";
+  el("nav").textContent = (holdingsMV>0) ? fmtUSD0(nav) : "—";
+  el("pl").textContent = (holdingsMV>0) ? ((plTotal>=0?"+":"") + fmtUSD0(plTotal)) : "—";
+  el("si").textContent = (holdingsMV>0) ? fmtPct(si) : "—";
 }
 
 /* ========= THESES ========= */
@@ -476,7 +539,7 @@ function renderTheses(){
   }
 }
 
-/* ========= HISTORY (kept as-is minimal) ========= */
+/* ========= NAV CHART PLACEHOLDER ========= */
 function drawPlaceholder(canvas, msg){
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -486,7 +549,7 @@ function drawPlaceholder(canvas, msg){
 }
 drawPlaceholder(el("navChart"), "History not loaded. Click “Refresh history (slow)”. (Cached after first run.)");
 
-/* ========= QUOTE REFRESH ========= */
+/* ========= MANUAL INTRADAY REFRESH ========= */
 async function refreshQuotes(){
   setError("");
   const latestPx = {};
@@ -512,7 +575,6 @@ async function refreshQuotes(){
     if(i < tickers.length - 1) await sleep(QUOTE_DELAY_MS);
   }
 
-  localStorage.setItem("mbd_lastQuotes", JSON.stringify({ savedAt: Date.now(), latestPx, lastTS: el("lastTS").textContent }));
   el("quoteStatus").textContent = `ok (${tickers.length} quotes)`;
 }
 
@@ -527,33 +589,41 @@ el("toggleThesisBtn").addEventListener("click", ()=>{
 
 el("refreshQuotesBtn").addEventListener("click", refreshQuotes);
 
-// history button left intentionally (you can paste your prior history code here)
+// Leave history button as a stub (you can paste your history module in here)
 el("refreshHistoryBtn").addEventListener("click", ()=>{
-  setError("History refresh not wired in this patch. Keep your previous history module or tell me and I’ll merge it cleanly.");
+  setError("History refresh not included in this file. If you want, I’ll merge the history module back in cleanly.");
 });
 
-/* ========= INIT ========= */
-(function init(){
+/* ========= INIT (C) ========= */
+(async function init(){
   el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
   el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
   renderTableSkeleton();
   renderTheses();
 
-  // Load cached quotes if available (fills immediately)
-  try{
-    const cached = JSON.parse(localStorage.getItem("mbd_lastQuotes") || "null");
-    if(cached && cached.latestPx){
-      for(const t of tickers){
-        if(cached.latestPx[t]) updateRow(t, cached.latestPx[t]);
-      }
-      updateKPIs(cached.latestPx);
-      el("quoteStatus").textContent = "cached quotes loaded";
-      el("lastTS").textContent = cached.lastTS || "—";
-    }else{
-      el("quoteStatus").textContent = "ready · click Refresh intraday prices";
+  // Default KPI values (before prices)
+  el("nav").textContent = "—";
+  el("pl").textContent = "—";
+  el("si").textContent = "—";
+
+  try {
+    const q = await loadSharedQuotes();
+    el("quotesAsOf").textContent = q.asof_iso ? q.asof_iso : "—";
+    el("lastTS").textContent = q.last_trading_day || "—";
+    el("quoteStatus").textContent = "auto-loaded (shared quotes)";
+
+    // apply prices everywhere
+    for (const t of tickers){
+      if (q.prices && q.prices[t]) updateRow(t, q.prices[t]);
     }
-  }catch{
-    el("quoteStatus").textContent = "ready · click Refresh intraday prices";
+    updateKPIs(q.prices || {});
+    setError("");
+
+  } catch (e){
+    // If quotes.json isn't there yet, page still works. User can click manual refresh.
+    el("quotesAsOf").textContent = "—";
+    el("quoteStatus").textContent = "no shared quotes (yet)";
+    setError("Add ./data/quotes.json (and optional GitHub Actions updater) for cross-device auto pricing.");
   }
 })();
 </script>
