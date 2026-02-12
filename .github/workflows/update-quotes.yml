@@ -3,7 +3,6 @@ name: Update intraday quotes
 on:
   workflow_dispatch:
   schedule:
-    # every 30 minutes (UTC). You can change it.
     - cron: "*/30 * * * *"
 
 permissions:
