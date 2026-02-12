@@ -24,9 +24,12 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Fetch quotes (Alpha Vantage)
+      - name: Fetch quotes
         run: |
+          python --version
           python scripts/fetch_quotes.py
+          echo "---- quotes.json ----"
+          cat data/quotes.json
 
       - name: Commit and push if changed
         run: |
