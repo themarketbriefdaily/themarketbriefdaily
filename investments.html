@@ -4,178 +4,54 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Investments | The Market Brief Daily</title>
-  <meta name="description" content="Model portfolio, allocations, and thesis notes. Informational only." />
+  <meta name="description" content="Model portfolio tracker with allocations, prices, and thesis notes." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
 
-  <!-- Chart.js (pie) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
   <style>
-    /* Lightweight page-only styling */
-    .section-tight { padding: 26px 0; }
-    .card {
-      background: #fff;
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(2,6,23,.06);
-      padding: 18px;
-    }
-    .card + .card { margin-top: 16px; }
-
-    .top-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-      align-items: stretch;
-    }
-    @media (max-width: 980px){
-      .top-grid{ grid-template-columns: 1fr; }
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 12px;
-      margin-top: 14px;
-    }
-    @media (max-width: 900px){
-      .kpis{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-    .kpi{
-      background:#fff;
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 8px 22px rgba(2,6,23,.05);
-    }
-    .kpi .label{
-      font-size: 12px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: rgba(15,23,42,.55);
-      font-weight: 750;
-      margin-bottom: 6px;
-    }
-    .kpi .value{
-      font-size: 20px;
-      font-weight: 850;
-      color: #0f172a;
-      line-height: 1.2;
-    }
-    .kpi .sub{
-      margin-top: 4px;
-      font-size: 12px;
-      color: rgba(15,23,42,.60);
-    }
-
-    .row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .muted{ color: rgba(15,23,42,.60); }
-    .small{ font-size: 12px; }
-
-    .btn-lite{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(15,23,42,.14);
-      background:#fff;
-      color:#0f172a;
-      text-decoration:none;
-      font-weight:650;
-      font-size:14px;
-      box-shadow:0 10px 24px rgba(2,6,23,.06);
-      cursor: pointer;
-    }
-    .btn-lite:hover{ box-shadow:0 14px 34px rgba(2,6,23,.10); }
-
-    .table-wrap{
-      overflow:auto;
-      border:1px solid rgba(15,23,42,.10);
-      border-radius: 16px;
-      background:#fff;
-    }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      min-width: 920px;
-    }
-    th, td{
-      padding: 12px 12px;
-      border-bottom: 1px solid rgba(15,23,42,.08);
-      text-align: left;
-      vertical-align: top;
-      font-size: 14px;
-    }
-    th{
-      font-size: 12px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: rgba(15,23,42,.55);
-      font-weight: 800;
-      background: rgba(248,250,252,1);
-    }
-    .pos{ color: #047857; font-weight: 750; }
-    .neg{ color: #b91c1c; font-weight: 750; }
-
-    details.holding{
-      border:1px solid rgba(15,23,42,.10);
-      border-radius: 16px;
-      padding: 12px 14px;
-      background:#fff;
-      box-shadow: 0 8px 22px rgba(2,6,23,.05);
-    }
-    details.holding + details.holding{ margin-top: 12px; }
-    details.holding summary{
-      cursor: pointer;
-      list-style: none;
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    details.holding summary::-webkit-details-marker{ display:none; }
-
-    .tag{
-      display:inline-flex;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 750;
-      border: 1px solid rgba(15,23,42,.12);
-      color: rgba(15,23,42,.72);
-      background: rgba(248,250,252,1);
-      white-space: nowrap;
-    }
-
-    .note-box{
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 16px;
-      background: rgba(248,250,252,1);
-      padding: 12px 14px;
-      color: rgba(15,23,42,.72);
-    }
-
-    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(2,132,199,.08);
-      border: 1px solid rgba(2,132,199,.18);
-      color: rgba(2,132,199,1);
-      font-weight: 750;
-      font-size: 13px;
-    }
+    /* Page-specific polish (keeps your global /assets/style.css intact) */
+    .inv-topgrid{display:grid;grid-template-columns:1.1fr 1.9fr;gap:18px;align-items:stretch}
+    @media (max-width: 980px){.inv-topgrid{grid-template-columns:1fr}}
+    .card{background:#fff;border:1px solid rgba(15,23,42,.10);border-radius:16px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+    .card-pad{padding:18px}
+    .muted{color:rgba(15,23,42,.62)}
+    .mono{font-variant-numeric: tabular-nums}
+    .btnrow{display:flex;gap:10px;flex-wrap:wrap}
+    .btnx{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid rgba(15,23,42,.12);background:#fff;color:#0f172a;font-weight:600}
+    .btnx:hover{background:rgba(15,23,42,.03)}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+    @media (max-width: 980px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    .kpi{border:1px solid rgba(15,23,42,.10);border-radius:14px;padding:12px;background:rgba(248,250,252,.7)}
+    .kpi .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(15,23,42,.55)}
+    .kpi .value{font-size:22px;font-weight:800;margin-top:6px}
+    .kpi .sub{font-size:12px;color:rgba(15,23,42,.60);margin-top:6px}
+    .good{color:#0f766e}
+    .bad{color:#b91c1c}
+    .table-wrap{overflow:auto;border-radius:14px;border:1px solid rgba(15,23,42,.10)}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    thead th{position:sticky;top:0;background:#fff;border-bottom:1px solid rgba(15,23,42,.10);padding:12px;text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(15,23,42,.55)}
+    tbody td{border-bottom:1px solid rgba(15,23,42,.08);padding:12px;vertical-align:top}
+    tbody tr:hover{background:rgba(15,23,42,.02)}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid rgba(15,23,42,.12);background:#fff}
+    .pill.low{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.22)}
+    .pill.med{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.26)}
+    .pill.high{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.22)}
+    .rowtitle{font-weight:800}
+    .rowmeta{font-size:12px;color:rgba(15,23,42,.60);margin-top:3px}
+    details{border:1px solid rgba(15,23,42,.10);border-radius:14px;background:#fff}
+    details + details{margin-top:10px}
+    summary{cursor:pointer;list-style:none;padding:14px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    .sum-left{display:flex;flex-direction:column;gap:4px}
+    .sum-right{display:flex;gap:8px;align-items:center}
+    .details-body{padding:0 14px 14px 14px;color:rgba(15,23,42,.85)}
+    .small{font-size:12px;color:rgba(15,23,42,.60)}
+    .pie-wrap{display:grid;grid-template-columns:1fr;gap:10px}
+    .pie-box{display:flex;gap:14px;align-items:center}
+    .legend{display:flex;flex-wrap:wrap;gap:8px}
+    .leg{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(15,23,42,.70)}
+    .sw{width:10px;height:10px;border-radius:999px;display:inline-block}
+    .feedline{font-size:12px;color:rgba(15,23,42,.60);margin-top:8px}
   </style>
 </head>
 
@@ -202,211 +78,141 @@
     </div>
   </header>
 
-  <main id="content" class="page section-tight">
+  <main id="content" class="page">
     <div class="container">
       <header class="page-header">
         <div class="page-kicker">Investments</div>
-        <h1 class="page-title">Model portfolio</h1>
+        <h1 class="page-title">Model portfolio + watchlist</h1>
         <p class="page-lead">
           Informational only — not investment advice. See <a href="/disclaimer.html">disclaimer</a>.
         </p>
       </header>
 
-      <!-- TOP: Pie + Summary -->
-      <section class="top-grid" aria-label="Portfolio overview">
-        <div class="card">
-          <div class="row">
+      <!-- TOP: controls + KPIs + pie -->
+      <section class="inv-topgrid" aria-label="Portfolio overview">
+        <div class="card card-pad">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
             <div>
-              <div class="pill">Portfolio capital: <span class="mono">US$100,000</span></div>
-              <div class="small muted" style="margin-top:8px;">
-                Entry date: <b>2026-02-12</b>. Current prices update hourly via <span class="mono">/data/prices.json</span>.
+              <div class="small" style="letter-spacing:.08em;text-transform:uppercase;">Model portfolio</div>
+              <div class="rowtitle" style="font-size:18px;margin-top:6px;">Portfolio capital: <span class="mono">US$100,000</span></div>
+              <div class="feedline">
+                Entry date: <b>2026-02-12</b> (entry is fixed). Current prices refresh from <code>/data/prices.json</code>.
               </div>
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="btn-lite" id="btnRefresh">Refresh prices</button>
-              <button class="btn-lite" id="btnReset">Reset portfolio</button>
             </div>
           </div>
 
-          <div class="kpis" aria-label="KPIs">
+          <div class="btnrow" style="margin-top:12px;">
+            <button class="btnx" id="btnRefresh" type="button">Refresh prices</button>
+            <button class="btnx" id="btnReset" type="button">Reset portfolio</button>
+          </div>
+
+          <div class="kpis" aria-label="Key metrics">
             <div class="kpi">
               <div class="label">Net liquidation</div>
-              <div class="value" id="kpiNet">—</div>
-              <div class="sub">Cash + market value</div>
+              <div class="value mono" id="kpiNet">—</div>
+              <div class="sub">Cash + holdings value</div>
             </div>
             <div class="kpi">
               <div class="label">Total P&amp;L</div>
-              <div class="value" id="kpiPnL">—</div>
-              <div class="sub">Since entry (2026-02-12)</div>
+              <div class="value mono" id="kpiPnL">—</div>
+              <div class="sub">Since entry</div>
             </div>
             <div class="kpi">
               <div class="label">Cash</div>
-              <div class="value" id="kpiCash">—</div>
+              <div class="value mono" id="kpiCash">—</div>
               <div class="sub">Unallocated</div>
             </div>
             <div class="kpi">
               <div class="label">Exposure</div>
-              <div class="value" id="kpiExposure">—</div>
+              <div class="value mono" id="kpiExposure">—</div>
               <div class="sub">Market value invested</div>
             </div>
           </div>
 
-          <div style="margin-top:14px;" class="note-box">
-            <b>How this works:</b> allocations are fixed; <b>entry prices</b> are captured once from the
-            “open” price when available (then saved locally); <b>current prices</b> refresh from the hourly feed.
-            If a live price is missing, valuation falls back to cost.
-            <div class="small muted" style="margin-top:8px;">
-              Price feed: <span class="mono" id="feedAsOf">asOf: —</span>
-            </div>
+          <div class="note" style="margin-top:12px;">
+            <b>Constraint:</b> each holding is ≤ <b>5%</b> of total capital. The remainder stays as cash by design.
           </div>
 
-          <div style="height:14px;"></div>
-
-          <button class="btn-lite" id="btnToggleHoldings" aria-expanded="false" aria-controls="holdingsPanel">
-            Show portfolio holdings
-          </button>
-
-          <div id="holdingsPanel" style="display:none; margin-top:12px;">
-            <div class="table-wrap" aria-label="Holdings table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Stock</th>
-                    <th>Risk</th>
-                    <th>Allocation</th>
-                    <th>Entry (Open)</th>
-                    <th>Current</th>
-                    <th>Shares</th>
-                    <th>Market Value</th>
-                    <th>P&amp;L</th>
-                    <th>P&amp;L %</th>
-                  </tr>
-                </thead>
-                <tbody id="holdingsBody"></tbody>
-              </table>
-            </div>
-          </div>
+          <div class="feedline" id="feedStatus">Price feed: —</div>
         </div>
 
-        <div class="card">
-          <div class="row" style="margin-bottom:10px;">
-            <div>
-              <div class="small muted">Allocation pie (incl. cash)</div>
-              <div style="font-weight:850; font-size:18px; color:#0f172a;">Portfolio allocations</div>
+        <div class="card card-pad">
+          <div class="small" style="letter-spacing:.08em;text-transform:uppercase;">Allocation pie</div>
+          <h2 style="margin:6px 0 0 0;">Portfolio allocations</h2>
+          <div class="muted" style="margin-top:6px;">Includes cash. Holdings are capped at 5% each.</div>
+
+          <div class="pie-wrap" style="margin-top:14px;">
+            <div class="pie-box">
+              <canvas id="pie" width="340" height="340" style="max-width:340px;width:100%;height:auto;"></canvas>
+              <div style="flex:1;">
+                <div class="legend" id="legend"></div>
+                <div class="small" style="margin-top:10px;">
+                  Tip: change allocations in the <code>DEFAULT_PORTFOLIO</code> block in this file later as you add more names.
+                </div>
+              </div>
             </div>
-          </div>
-          <canvas id="allocPie" aria-label="Allocation pie chart" role="img" style="max-height:340px;"></canvas>
-          <div class="small muted" style="margin-top:10px;">
-            Tip: to change allocations later, edit the <span class="mono">DEFAULT_PORTFOLIO</span> block in this file.
           </div>
         </div>
       </section>
 
       <div style="height:18px;"></div>
 
-      <!-- Thesis / links -->
-      <section class="card" aria-label="Thesis notes">
-        <div class="row">
+      <!-- HOLDINGS TABLE -->
+      <section class="card" aria-label="Holdings">
+        <div class="card-pad" style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;">
           <div>
-            <div class="page-kicker">Thesis</div>
-            <h2 style="margin:6px 0 0;">Click a holding to view rationale</h2>
-            <p class="muted" style="margin:10px 0 0;">
-              Each holding links to the post where it was selected (update these links as you publish the specific “selection” posts).
-            </p>
+            <div class="small" style="letter-spacing:.08em;text-transform:uppercase;">Holdings</div>
+            <h2 style="margin:6px 0 0 0;">Portfolio holdings</h2>
+            <div class="muted" style="margin-top:6px;">
+              Entry is fixed (captured at creation). Current price updates when <code>/data/prices.json</code> updates (hourly via GitHub Actions).
+            </div>
           </div>
-          <a class="btn-lite" href="/posts.html">Open newsroom</a>
         </div>
 
-        <div style="height:14px;"></div>
-
-        <details class="holding" id="h-AGI">
-          <summary>
-            <div><b>Alamos Gold (AGI)</b> <span class="tag">Lower risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> Established producer profile with clearer cost/FCF dynamics versus pre-revenue developers; potential production growth optionality.</p>
-            <p><b>Primary risks:</b> execution risk on guidance, cost inflation, and commodity beta.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <details class="holding" id="h-FSM">
-          <summary>
-            <div><b>Fortuna Mining (FSM)</b> <span class="tag">Lower risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> Gold/silver hybrid exposure with multiple operations; diversified geography can reduce single-jurisdiction dependence.</p>
-            <p><b>Primary risks:</b> operational execution across regions, cost control, and metals volatility.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <details class="holding" id="h-GAU">
-          <summary>
-            <div><b>Galiano Gold (GAU)</b> <span class="tag">Medium risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> Turnaround asymmetry if operations improve; exploration/resource updates can re-rate smaller caps.</p>
-            <p><b>Primary risks:</b> single-asset concentration and higher volatility.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <details class="holding" id="h-NFGC">
-          <summary>
-            <div><b>Newfound Gold (NFGC)</b> <span class="tag">Higher risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> High-grade discovery potential; catalysts are typically drill results and development milestones.</p>
-            <p><b>Primary risks:</b> pre-revenue financing/dilution, timeline slippage, permitting.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <details class="holding" id="h-VGZ">
-          <summary>
-            <div><b>Vista Gold (VGZ)</b> <span class="tag">Higher risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> Development-stage “leverage” to gold price under favorable conditions, via a large underdeveloped asset.</p>
-            <p><b>Primary risks:</b> long timelines, financing needs, and high sensitivity to gold price / risk appetite.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <details class="holding" id="h-NEWP">
-          <summary>
-            <div><b>New Pacific Metals (NEWP)</b> <span class="tag">Higher risk</span></div>
-            <div class="muted small">View thesis</div>
-          </summary>
-          <div style="margin-top:10px;">
-            <p><b>Why it’s on the list:</b> Large undeveloped silver optionality if silver is bullish and projects de-risk.</p>
-            <p><b>Primary risks:</b> geopolitical / community relations, nationalization history, silver volatility.</p>
-            <p class="small muted">
-              Selected in: <a href="/posts.html">Portfolio / watchlist selection post (set link)</a>
-            </p>
-          </div>
-        </details>
-
-        <div class="note" style="margin-top:14px;">
-          <b>Disclosure:</b> informational only; not investment advice. See <a href="/disclaimer.html">disclaimer</a>.
+        <div class="table-wrap" aria-label="Holdings table">
+          <table>
+            <thead>
+              <tr>
+                <th>Stock</th>
+                <th>Risk</th>
+                <th>Allocation</th>
+                <th>Entry (2026-02-12)</th>
+                <th>Current</th>
+                <th>Shares</th>
+                <th>Market Value</th>
+                <th>P&amp;L</th>
+                <th>P&amp;L %</th>
+              </tr>
+            </thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
         </div>
       </section>
+
+      <div style="height:18px;"></div>
+
+      <!-- THESIS / CLICKABLE -->
+      <section class="card" aria-label="Thesis">
+        <div class="card-pad" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+          <div>
+            <div class="small" style="letter-spacing:.08em;text-transform:uppercase;">Thesis</div>
+            <h2 style="margin:6px 0 0 0;">Click a holding to view rationale</h2>
+            <div class="muted" style="margin-top:6px;">
+              Each item links to the blog post where it was selected (update links as you publish “selection” posts).
+            </div>
+          </div>
+          <a class="btnx" href="/posts.html">Open newsroom</a>
+        </div>
+
+        <div class="card-pad" style="padding-top:0;">
+          <div id="thesisList"></div>
+        </div>
+      </section>
+
+      <div class="note" style="margin-top:16px;">
+        <b>Important:</b> GitHub Pages can’t securely fetch live market data directly from the browser (CORS/API keys).
+        The professional approach is: <b>GitHub Actions</b> updates <code>/data/prices.json</code> hourly, and this page reads it.
+      </div>
     </div>
   </main>
 
@@ -425,273 +231,379 @@
   </footer>
 
   <script>
-    // ==============================
-    // Configuration
-    // ==============================
+    /***** 1) PORTFOLIO MODEL (<= 5% each) *****/
     const STORAGE_KEY = "mbd_portfolio_v2";
-    const ENTRY_DATE = "2026-02-12"; // as requested
-    const PRICE_FEED_URL = "/data/prices.json"; // generated hourly by GitHub Actions
+    const ENTRY_DATE = "2026-02-12";
+    const TOTAL_CAPITAL = 100000;
 
-    // Allocation sizing: small exposure (2–5% per name). Total invested = 22% => $22,000, cash $78,000.
+    // Each holding is <= 5% of 100k. (Cash is intentionally large.)
+    // You can change these allocations later.
     const DEFAULT_PORTFOLIO = {
-      baseCurrency: "USD",
-      startingCash: 100000,
+      cash: 75000,
       holdings: [
-        { name:"Alamos Gold",        ticker:"AGI",  risk:"Lower",  allocation: 5000, entry: null, current: null, source: "/posts.html#watchlist" },
-        { name:"Fortuna Mining",     ticker:"FSM",  risk:"Lower",  allocation: 5000, entry: null, current: null, source: "/posts.html#watchlist" },
-        { name:"Galiano Gold",       ticker:"GAU",  risk:"Medium", allocation: 4000, entry: null, current: null, source: "/posts.html#watchlist" },
-        { name:"Newfound Gold",      ticker:"NFGC", risk:"Higher", allocation: 3000, entry: null, current: null, source: "/posts.html#watchlist" },
-        { name:"Vista Gold",         ticker:"VGZ",  risk:"Higher", allocation: 2000, entry: null, current: null, source: "/posts.html#watchlist" },
-        { name:"New Pacific Metals", ticker:"NEWP", risk:"Higher", allocation: 3000, entry: null, current: null, source: "/posts.html#watchlist" },
+        {
+          name: "Alamos Gold",
+          ticker: "AGI",
+          risk: "Lower",
+          allocation: 5000,
+          tvSymbol: "NYSE:AGI",
+          entry: 43.91, // captured now (can be replaced by your chosen “buy” reference)
+          link: "/posts/2026-02-07-silver-market-outlook-comex-inventory.html",
+          why: "Established producer profile with clearer cost/FCF dynamics versus pre-revenue developers; potential production growth optionality.",
+          risks: "Execution risk on guidance, cost inflation, and commodity beta."
+        },
+        {
+          name: "Fortuna Mining",
+          ticker: "FSM",
+          risk: "Lower",
+          allocation: 5000,
+          tvSymbol: "NYSE:FSM",
+          entry: 10.58,
+          link: "/posts/2026-02-07-silver-market-outlook-comex-inventory.html",
+          why: "Multi-asset exposure with geographic diversification; can reduce single-country dependence.",
+          risks: "Jurisdiction and operational risk across regions; cost control; metals-price volatility."
+        },
+        {
+          name: "Galiano Gold",
+          ticker: "GAU",
+          risk: "Medium",
+          allocation: 4000,
+          tvSymbol: "NYSEAMERICAN:GAU",
+          entry: 2.835,
+          link: "/posts/2026-02-09-druckenmiller-shadow.html",
+          why: "Asymmetric outcomes if the operating story improves; exploration and resource updates can move small caps disproportionately.",
+          risks: "Single-asset concentration; higher volatility; operational execution."
+        },
+        {
+          name: "Newfound Gold",
+          ticker: "NFGC",
+          risk: "Higher",
+          allocation: 3000,
+          tvSymbol: "NYSEAMERICAN:NFGC",
+          entry: 2.77,
+          link: "/posts/2026-02-11-japan-pm-us-stocks.html",
+          why: "High-grade discovery potential; catalysts typically drilling/results and development milestones.",
+          risks: "Pre-revenue development; financing/dilution; timeline slippage; permitting."
+        },
+        {
+          name: "Vista Gold",
+          ticker: "VGZ",
+          risk: "Higher",
+          allocation: 3000,
+          tvSymbol: "NYSEAMERICAN:VGZ",
+          entry: 2.76,
+          link: "/posts/2026-02-11-japan-pm-us-stocks.html",
+          why: "Single-asset development exposure can behave like leveraged beta to gold under the right conditions.",
+          risks: "No operating revenue; long timelines; financing requirements."
+        },
+        {
+          name: "New Pacific Metals",
+          ticker: "NEWP",
+          risk: "Higher",
+          allocation: 5000,
+          tvSymbol: "NYSE:NEWP",
+          entry: 3.625,
+          link: "/posts/2026-02-07-silver-market-outlook-comex-inventory.html",
+          why: "Large undeveloped silver projects; potential upside if silver is bullish and the project de-risks.",
+          risks: "Geopolitical risk; community relations; nationalization history; silver volatility."
+        }
       ]
     };
 
-    // ==============================
-    // Helpers
-    // ==============================
-    function money2(n){
+    // Fallback (if /data/prices.json is missing) — captured at time of build.
+    const FALLBACK_PRICES = {
+      asOf: "2026-02-12T18:20:00Z",
+      quotes: {
+        "AGI": 43.91,
+        "FSM": 10.58,
+        "GAU": 2.835,
+        "NFGC": 2.77,
+        "VGZ": 2.76,
+        "NEWP": 3.625
+      }
+    };
+
+    /***** 2) UTIL *****/
+    function usd(n, d=2){
       if (n === null || n === undefined || Number.isNaN(n)) return "—";
-      return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
-    }
-    function money0(n){
-      if (n === null || n === undefined || Number.isNaN(n)) return "—";
-      return n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
+      return n.toLocaleString(undefined, { style:"currency", currency:"USD", minimumFractionDigits:d, maximumFractionDigits:d });
     }
     function pct(n){
       if (n === null || n === undefined || Number.isNaN(n)) return "—";
       return (n*100).toFixed(2) + "%";
     }
+    function riskClass(r){
+      const x = (r||"").toLowerCase();
+      if (x.includes("lower")) return "low";
+      if (x.includes("medium")) return "med";
+      return "high";
+    }
 
     function loadPortfolio(){
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return structuredClone(DEFAULT_PORTFOLIO);
-      try { return JSON.parse(raw); }
-      catch { return structuredClone(DEFAULT_PORTFOLIO); }
+      try { return JSON.parse(raw); } catch { return structuredClone(DEFAULT_PORTFOLIO); }
     }
-    function savePortfolio(p){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
-    }
+    function savePortfolio(p){ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }
 
-    // ==============================
-    // Price feed
-    // Expected /data/prices.json format:
-    // {
-    //   "asOf": "2026-02-12T15:00:00Z",
-    //   "quotes": {
-    //     "AGI": {"open": 12.34, "price": 12.56},
-    //     ...
-    //   }
-    // }
-    // ==============================
+    /***** 3) PRICES (reads /data/prices.json) *****/
+    let lastFeed = null;
+
     async function fetchPrices(){
-      const res = await fetch(PRICE_FEED_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error("Price feed not available: " + res.status);
+      // cache-bust to avoid GH Pages caching
+      const url = "/data/prices.json?v=" + Date.now();
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("Price feed missing");
       return await res.json();
     }
 
-    // Set entry once from open (if entry missing), store locally
-    function applyPrices(portfolio, feed){
-      const quotes = (feed && feed.quotes) ? feed.quotes : {};
-      portfolio.holdings = portfolio.holdings.map(h => {
-        const q = quotes[h.ticker];
-        const next = {...h};
-
-        if (q && typeof q.price === "number") next.current = q.price;
-
-        // Capture entry once from open, only if entry not set yet
-        if ((next.entry === null || next.entry === undefined) && q && typeof q.open === "number"){
-          next.entry = q.open;
-          next.entryDate = ENTRY_DATE;
-        }
-        return next;
-      });
-      return portfolio;
+    function getCurrentPrice(ticker){
+      const p = loadPortfolio();
+      const q = (lastFeed && lastFeed.quotes && lastFeed.quotes[ticker] != null)
+        ? lastFeed.quotes[ticker]
+        : (FALLBACK_PRICES.quotes[ticker] ?? null);
+      return q;
     }
 
-    // ==============================
-    // Calculations
-    // ==============================
-    function calcRow(h){
-      const entry = (typeof h.entry === "number") ? h.entry : null;
-      const current = (typeof h.current === "number") ? h.current : null;
+    /***** 4) CALCS *****/
+    function calcHolding(h){
+      const entry = Number(h.entry);
+      const current = Number(getCurrentPrice(h.ticker));
 
-      let shares = null;
-      if (entry && entry > 0) shares = h.allocation / entry;
+      const shares = (entry > 0) ? (h.allocation / entry) : null;
+      const mkt = (shares !== null && current > 0) ? (shares * current) : h.allocation; // cost fallback
+      const pnl = (shares !== null && current > 0) ? (mkt - h.allocation) : 0;
+      const pnlPct = (h.allocation > 0) ? (pnl / h.allocation) : null;
 
-      // If we have current, value mark-to-market; else value at cost
-      let mkt = h.allocation;
-      if (shares !== null && current && current > 0) mkt = shares * current;
-
-      let pnl = null, pnlPct = null;
-      if (shares !== null && current && current > 0){
-        pnl = mkt - h.allocation;
-        pnlPct = pnl / h.allocation;
-      } else {
-        pnl = 0;
-        pnlPct = 0;
-      }
       return { entry, current, shares, mkt, pnl, pnlPct };
     }
 
-    // ==============================
-    // Rendering
-    // ==============================
-    let pieChart = null;
+    function calcPortfolio(p){
+      const invested = p.holdings.reduce((s,h)=>s + h.allocation, 0);
+      const cash = p.cash; // explicit cash
+      let mv = 0, pnl = 0;
 
-    function renderPie(p){
-      const invested = p.holdings.reduce((s,h)=>s+h.allocation,0);
-      const cash = Math.max(0, p.startingCash - invested);
-
-      const labels = [...p.holdings.map(h => `${h.ticker}`), "CASH"];
-      const data = [...p.holdings.map(h => h.allocation), cash];
-
-      const ctx = document.getElementById("allocPie");
-      if (pieChart) pieChart.destroy();
-
-      pieChart = new Chart(ctx, {
-        type: "pie",
-        data: { labels, datasets: [{ data }] },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: "bottom" },
-            tooltip: {
-              callbacks: {
-                label: (item) => {
-                  const val = item.raw || 0;
-                  const pct = (val / p.startingCash) * 100;
-                  return ` ${item.label}: ${money0(val)} (${pct.toFixed(1)}%)`;
-                }
-              }
-            }
-          }
-        }
-      });
-    }
-
-    function renderKPIs(p){
-      const investedCost = p.holdings.reduce((s,h)=>s+h.allocation,0);
-      const cash = Math.max(0, p.startingCash - investedCost);
-
-      let mktTotal = 0;
-      let pnlTotal = 0;
-
-      p.holdings.forEach(h => {
-        const r = calcRow(h);
-        mktTotal += r.mkt;
-        pnlTotal += r.pnl;
+      p.holdings.forEach(h=>{
+        const r = calcHolding(h);
+        mv += r.mkt;
+        pnl += r.pnl;
       });
 
-      const net = cash + mktTotal;
-      document.getElementById("kpiCash").textContent = money2(cash);
-      document.getElementById("kpiExposure").textContent = money2(mktTotal);
-      document.getElementById("kpiNet").textContent = money2(net);
-
-      const pnlEl = document.getElementById("kpiPnL");
-      pnlEl.textContent = money2(pnlTotal);
-      pnlEl.className = "value " + (pnlTotal >= 0 ? "pos" : "neg");
+      const net = cash + mv;
+      return { invested, cash, mv, pnl, net };
     }
 
-    function renderTable(p){
+    /***** 5) RENDER: TABLE + KPIs + THESIS + PIE *****/
+    function renderAll(){
+      const p = loadPortfolio();
+      const m = calcPortfolio(p);
+
+      // KPIs
+      const kpiNet = document.getElementById("kpiNet");
+      const kpiPnL = document.getElementById("kpiPnL");
+      const kpiCash = document.getElementById("kpiCash");
+      const kpiExposure = document.getElementById("kpiExposure");
+
+      kpiNet.textContent = usd(m.net, 2);
+      kpiCash.textContent = usd(m.cash, 0);
+      kpiExposure.textContent = usd(m.mv, 2);
+      kpiPnL.textContent = usd(m.pnl, 2);
+
+      kpiPnL.classList.remove("good","bad");
+      if (m.pnl > 0) kpiPnL.classList.add("good");
+      if (m.pnl < 0) kpiPnL.classList.add("bad");
+
+      // Feed status
+      const feed = document.getElementById("feedStatus");
+      const asOf = (lastFeed && lastFeed.asOf) ? lastFeed.asOf : FALLBACK_PRICES.asOf;
+      feed.textContent = "Price feed as-of: " + (asOf || "—");
+
+      // Table
       const body = document.getElementById("holdingsBody");
       body.innerHTML = "";
 
-      p.holdings.forEach(h => {
-        const r = calcRow(h);
+      p.holdings.forEach(h=>{
+        const r = calcHolding(h);
         const tr = document.createElement("tr");
+
+        const pnlClass = r.pnl > 0 ? "good" : (r.pnl < 0 ? "bad" : "");
+        const pnlPctClass = r.pnlPct > 0 ? "good" : (r.pnlPct < 0 ? "bad" : "");
 
         tr.innerHTML = `
           <td>
-            <div><b>${h.name}</b> <span class="muted small">(${h.ticker})</span></div>
-            <div class="small muted">Entry date: ${ENTRY_DATE}</div>
+            <div class="rowtitle">${h.name} <span class="muted">(${h.ticker})</span></div>
+            <div class="rowmeta">Entry date: <span class="mono">${ENTRY_DATE}</span></div>
           </td>
-          <td>${h.risk}</td>
-          <td>${money0(h.allocation)}</td>
-          <td>${r.entry ? money2(r.entry) : "—"}</td>
-          <td>${r.current ? money2(r.current) : "—"}</td>
-          <td>${r.shares ? r.shares.toFixed(4) : "—"}</td>
-          <td>${money2(r.mkt)}</td>
-          <td class="${r.pnl >= 0 ? "pos" : "neg"}">${money2(r.pnl)}</td>
-          <td class="${r.pnlPct >= 0 ? "pos" : "neg"}">${pct(r.pnlPct)}</td>
+          <td><span class="pill ${riskClass(h.risk)}">${h.risk} risk</span></td>
+          <td class="mono">${usd(h.allocation,0)}</td>
+          <td class="mono">${usd(r.entry, 3)}</td>
+          <td class="mono">${r.current ? usd(r.current, 3) : "—"}</td>
+          <td class="mono">${r.shares ? r.shares.toFixed(4) : "—"}</td>
+          <td class="mono">${usd(r.mkt, 2)}</td>
+          <td class="mono ${pnlClass}">${usd(r.pnl, 2)}</td>
+          <td class="mono ${pnlPctClass}">${pct(r.pnlPct)}</td>
         `;
         body.appendChild(tr);
       });
-    }
 
-    function renderAll(feed){
-      const p = loadPortfolio();
+      // Thesis list (click-expand)
+      const t = document.getElementById("thesisList");
+      t.innerHTML = "";
+      p.holdings.forEach(h=>{
+        const d = document.createElement("details");
+        d.innerHTML = `
+          <summary>
+            <div class="sum-left">
+              <div style="font-weight:850;">${h.name} <span class="muted">(${h.ticker})</span></div>
+              <div class="small">Allocation: <span class="mono">${usd(h.allocation,0)}</span> • Entry: <span class="mono">${usd(h.entry,3)}</span></div>
+            </div>
+            <div class="sum-right">
+              <span class="pill ${riskClass(h.risk)}">${h.risk} risk</span>
+              <span class="small" style="font-weight:700;">View thesis</span>
+            </div>
+          </summary>
+          <div class="details-body">
+            <p><b>Why it’s on the list:</b> ${h.why}</p>
+            <p><b>Primary risks:</b> ${h.risks}</p>
+            <p class="small">
+              Selected in: <a href="${h.link}">supporting post</a> (update this link to your dedicated “selection” post when you publish it).
+            </p>
 
-      if (feed){
-        document.getElementById("feedAsOf").textContent = "asOf: " + (feed.asOf || "—");
-        const updated = applyPrices(p, feed);
-        savePortfolio(updated);
-      }
-
-      const final = loadPortfolio();
-      renderPie(final);
-      renderKPIs(final);
-      renderTable(final);
-    }
-
-    // ==============================
-    // UI Wiring
-    // ==============================
-    function wire(){
-      const toggle = document.getElementById("btnToggleHoldings");
-      const panel = document.getElementById("holdingsPanel");
-
-      toggle.addEventListener("click", () => {
-        const open = panel.style.display !== "none";
-        panel.style.display = open ? "none" : "block";
-        toggle.setAttribute("aria-expanded", String(!open));
-        toggle.textContent = open ? "Show portfolio holdings" : "Hide portfolio holdings";
+            <div style="margin-top:10px;">
+              <div class="small" style="letter-spacing:.08em;text-transform:uppercase;">Chart</div>
+              <div style="margin-top:8px;border:1px solid rgba(15,23,42,.10);border-radius:14px;overflow:hidden;">
+                <div class="tradingview-widget-container">
+                  <div class="tradingview-widget-container__widget"></div>
+                  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                    ${JSON.stringify({
+                      symbol: h.tvSymbol,
+                      width: "100%",
+                      height: 220,
+                      locale: "en",
+                      dateRange: "12M",
+                      colorTheme: "light",
+                      isTransparent: false,
+                      autosize: true
+                    })}
+                  </script>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        t.appendChild(d);
       });
 
-      document.getElementById("btnReset").addEventListener("click", () => {
-        savePortfolio(structuredClone(DEFAULT_PORTFOLIO));
-        renderAll(null);
+      // Pie
+      renderPie(p, m);
+    }
+
+    function renderPie(p, m){
+      const data = [];
+      p.holdings.forEach(h=>data.push({ label: h.ticker, value: h.allocation }));
+      data.push({ label: "CASH", value: p.cash });
+
+      // palette (clean, “institutional”)
+      const colors = {
+        "AGI": "#2563eb",
+        "FSM": "#7c3aed",
+        "GAU": "#0f766e",
+        "NFGC": "#f59e0b",
+        "VGZ": "#ef4444",
+        "NEWP": "#0ea5e9",
+        "CASH": "#94a3b8"
+      };
+
+      const canvas = document.getElementById("pie");
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0,0,W,H);
+
+      const total = data.reduce((s,d)=>s+d.value,0) || 1;
+      const cx = W/2, cy = H/2, r = Math.min(W,H)*0.40;
+
+      // ring background
+      ctx.beginPath();
+      ctx.arc(cx,cy,r+18,0,Math.PI*2);
+      ctx.fillStyle = "rgba(15,23,42,.04)";
+      ctx.fill();
+
+      let start = -Math.PI/2;
+      data.forEach(d=>{
+        const a = (d.value/total) * Math.PI*2;
+        const end = start + a;
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,r,start,end);
+        ctx.closePath();
+        ctx.fillStyle = colors[d.label] || "#64748b";
+        ctx.fill();
+
+        // separator
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        start = end;
       });
 
-      document.getElementById("btnRefresh").addEventListener("click", async () => {
-        try{
-          const feed = await fetchPrices();
-          renderAll(feed);
-        }catch(e){
-          alert("Couldn’t load /data/prices.json yet. Set up the hourly price feed (GitHub Actions) and try again.");
-          console.error(e);
-        }
+      // donut hole
+      ctx.beginPath();
+      ctx.arc(cx,cy,r*0.58,0,Math.PI*2);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+
+      // center text
+      ctx.fillStyle = "rgba(15,23,42,.80)";
+      ctx.font = "700 14px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Net Liq", cx, cy - 8);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "800 18px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText(usd(m.net,0), cx, cy + 16);
+
+      // legend
+      const legend = document.getElementById("legend");
+      legend.innerHTML = "";
+      data.forEach(d=>{
+        const el = document.createElement("div");
+        el.className = "leg";
+        el.innerHTML = `<span class="sw" style="background:${colors[d.label] || "#64748b"}"></span>
+                        <span><b>${d.label}</b> — ${Math.round((d.value/total)*100)}%</span>`;
+        legend.appendChild(el);
       });
     }
 
-    // ==============================
-    // Boot
-    // ==============================
-    async function boot(){
-      wire();
-      // baseline render first (even if feed missing)
-      renderAll(null);
-
-      // try load feed
+    /***** 6) PRICE REFRESH SCHEDULE *****/
+    async function refreshPrices(){
       try{
-        const feed = await fetchPrices();
-        renderAll(feed);
+        lastFeed = await fetchPrices();
       }catch(e){
-        // no feed yet; silent
-        console.warn("No price feed yet:", e);
+        // keep fallback if missing
+        lastFeed = null;
       }
-
-      // refresh in-browser hourly (will only change when /data/prices.json updates)
-      setInterval(async () => {
-        try{
-          const feed = await fetchPrices();
-          renderAll(feed);
-        }catch(e){
-          console.warn("Hourly refresh failed:", e);
-        }
-      }, 60 * 60 * 1000);
+      renderAll();
     }
 
-    boot();
+    function resetPortfolio(){
+      savePortfolio(structuredClone(DEFAULT_PORTFOLIO));
+      renderAll();
+    }
+
+    function wire(){
+      document.getElementById("btnRefresh").addEventListener("click", refreshPrices);
+      document.getElementById("btnReset").addEventListener("click", resetPortfolio);
+
+      // Auto refresh hourly (and immediately on load)
+      refreshPrices();
+      setInterval(refreshPrices, 60 * 60 * 1000);
+    }
+
+    // init once
+    if (!localStorage.getItem(STORAGE_KEY)) savePortfolio(structuredClone(DEFAULT_PORTFOLIO));
+    wire();
+    renderAll();
   </script>
 </body>
 </html>
