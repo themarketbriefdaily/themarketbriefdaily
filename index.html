@@ -4,65 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily</title>
-  <meta name="description" content="Market structure, physical supply, and macro transmission — clear, mechanics-first research." />
+  <meta name="description" content="Professional market intelligence for metals and macro. Market structure, physical supply, and transmission mechanisms." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
-
-  <style>
-    /* Compact featured strip – isolated styles so it won't break your layout */
-    .featured-strip { margin-top: 14px; }
-    .featured-link{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: #ffffff;
-      border: 1px solid rgba(15,23,42,.10);
-      box-shadow: 0 10px 22px rgba(15,23,42,.06);
-      text-decoration:none;
-      color: inherit;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .featured-link:hover{
-      border-color: rgba(15,23,42,.16);
-      box-shadow: 0 16px 30px rgba(15,23,42,.10);
-      transform: translateY(-1px);
-    }
-    .featured-badge{
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .02em;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(16,185,129,.10); /* soft green */
-      border: 1px solid rgba(16,185,129,.22);
-      color: rgba(15,23,42,.92);
-      white-space: nowrap;
-    }
-    .featured-title{
-      font-weight: 800;
-      color: rgba(15,23,42,.96);
-      line-height: 1.2;
-      flex: 1;
-      min-width: 0;
-    }
-    .featured-meta{
-      font-size: 13px;
-      color: rgba(15,23,42,.62);
-      white-space: nowrap;
-    }
-    .featured-cta{
-      font-weight: 800;
-      color: rgba(15,23,42,.92);
-      white-space: nowrap;
-    }
-    @media (max-width: 860px){
-      .featured-link{ flex-wrap: wrap; gap:10px; }
-      .featured-meta{ width:100%; }
-      .featured-cta{ margin-left:auto; }
-    }
-  </style>
 </head>
 
 <body>
@@ -70,7 +14,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/" aria-label="Home">
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
         <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
         <span class="brand-stack">
           <span class="brand-title">The Market Brief Daily</span>
@@ -88,86 +32,88 @@
     </div>
   </header>
 
-  <main id="content" class="page">
-    <div class="container">
+  <!-- HERO -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
 
-      <!-- HERO (simple, like before) -->
-      <section class="hero" aria-label="Homepage hero">
-        <div class="page-kicker">Independent research • Mechanics-first • Risk-aware</div>
-        <h1 class="page-title" style="margin-top:10px;">
-          Clear market analysis for metals & macro.
-        </h1>
-        <p class="page-lead" style="max-width: 72ch;">
-          MarketBriefDaily covers the mechanics behind price: inventory buffers, delivery windows,
-          funding/lease rates, positioning, and macro transmission across rates, FX, and commodities.
+    <div class="container hero-inner">
+      <div class="hero-panel">
+        <div class="hero-eyebrow">Independent research</div>
+        <h1>Institutional-grade market analysis for metals and macro</h1>
+        <p>
+          We focus on the mechanics behind price formation: inventory buffers, delivery windows,
+          funding and lease regimes, positioning pressure, and macro transmission across rates, FX,
+          and commodities.
         </p>
 
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top: 14px;">
-          <a class="p-btn" href="/posts.html" style="text-decoration:none;">Read latest</a>
-          <a class="p-btn" href="/investments.html" style="text-decoration:none;">Watchlist</a>
+        <div class="hero-actions">
+          <a class="btn primary" href="/posts.html">Read latest</a>
+          <a class="btn" href="/investments.html">Watchlist</a>
+          <a class="btn" href="/about.html">Method</a>
         </div>
 
-        <div class="note" style="margin-top:16px;">
-          <b>Disclosure:</b> Content is for informational purposes only and does not constitute investment advice.
-          See the <a href="/disclaimer.html">full disclaimer</a>.
+        <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
+          For informational purposes only. Not investment advice. See <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">disclaimer</a>.
         </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- ✅ Featured strip (small bar under hero) -->
-      <section class="featured-strip" aria-label="Featured story">
-        <a class="featured-link" href="/posts/2026-02-12-japan-pm-us-stocks.html">
-          <span class="featured-badge">Featured</span>
-          <span class="featured-title">What Japan’s New Prime Minister Means for U.S. Stocks</span>
-          <span class="featured-meta">Feb 12, 2026 · Macro</span>
-          <span class="featured-cta">Read →</span>
-        </a>
-      </section>
+    <div class="hero-fade" aria-hidden="true"></div>
+  </section>
 
-      <!-- LATEST RESEARCH (simple) -->
-      <section style="margin-top: 22px;">
+  <!-- CONTENT -->
+  <main id="content" class="section">
+    <div class="container grid">
+
+      <!-- Latest -->
+      <section aria-label="Latest research">
         <div class="kicker">Latest</div>
         <h2>Recent research</h2>
-        <p class="lead">Browse the full archive on the <a href="/posts.html">Posts</a> page.</p>
+        <p class="lead">Featured report. Browse the full archive on the Posts page.</p>
 
-        <div class="table-wrap" style="margin-top: 12px;">
-          <div style="padding: 16px;">
-            <div style="display:flex; justify-content:space-between; gap:12px; color: rgba(15,23,42,.62); font-size: 13px;">
-              <span><b>Macro</b></span>
-              <span>Feb 12, 2026</span>
+        <div class="block">
+          <article class="post">
+            <div class="post-meta">
+              <span>Metals</span>
+              <time datetime="2026-02-07">Feb 07, 2026</time>
             </div>
-            <div style="margin-top: 8px; font-weight: 900; font-size: 18px; line-height: 1.25;">
-              <a href="/posts/2026-02-12-japan-pm-us-stocks.html" style="text-decoration:none;">
-                What Japan’s New Prime Minister Means for U.S. Stocks
-              </a>
-            </div>
-            <div style="margin-top: 6px; color: rgba(15,23,42,.72); line-height: 1.5;">
-              A macro and market breakdown: rates, FX, carry mechanics, reserves, and transmission into U.S. assets.
-            </div>
-          </div>
+            <a class="post-title" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
+              Silver Market Outlook: Physical Tightness, COMEX Inventory, and What Investors Should Watch
+            </a>
+            <p class="post-excerpt">
+              Registered vs eligible inventory, delivery windows, and lease-rate signals—why volatility risk rises when buffers thin.
+            </p>
+          </article>
         </div>
       </section>
 
-      <!-- METHOD -->
-      <section style="margin-top: 24px;">
+      <!-- Method -->
+      <section aria-label="Method">
         <div class="kicker">Method</div>
         <h2>How we think</h2>
-        <p class="lead">
-          Clear mechanics, conservative claims, and a practical “what to watch” list.
-        </p>
+        <p class="lead">Clear mechanics, conservative claims, and a practical “what to watch” list.</p>
 
-        <div class="table-wrap" style="margin-top: 12px;">
-          <div style="padding: 16px; display:grid; grid-template-columns: 1fr; gap: 10px;">
-            <div>
-              <b>Market structure</b> — delivery windows, exchange inventories, futures-physical linkage,
-              settlement incentives, and positioning pressure.
-            </div>
-            <div>
-              <b>Physical tightness</b> — lease/funding regimes, availability constraints, and conditions where
-              physical and paper diverge.
-            </div>
-            <div>
-              <b>Macro transmission</b> — how rates, FX, and liquidity propagate into commodities and risk assets.
-            </div>
+        <div class="block">
+          <div class="post">
+            <div class="post-title">Market structure</div>
+            <p class="post-excerpt">
+              Delivery windows, exchange inventories, futures–physical linkage, settlement incentives, and positioning pressure.
+            </p>
+          </div>
+
+          <div class="post">
+            <div class="post-title">Physical tightness</div>
+            <p class="post-excerpt">
+              Lease and funding regimes, availability constraints, and conditions where paper and physical diverge.
+            </p>
+          </div>
+
+          <div class="post">
+            <div class="post-title">Macro transmission</div>
+            <p class="post-excerpt">
+              How rates, FX, and liquidity propagate into commodity and risk-asset pricing.
+            </p>
           </div>
         </div>
       </section>
@@ -181,9 +127,12 @@
         <div class="footer-brand">The Market Brief Daily</div>
         <div class="footer-sub">Market structure & physical supply analysis.</div>
       </div>
+
       <div class="footer-links">
         <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
         <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
         <a href="/disclaimer.html">Disclaimer</a>
       </div>
     </div>
