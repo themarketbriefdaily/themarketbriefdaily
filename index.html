@@ -4,24 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily</title>
-  <meta name="description" content="Institutional-grade market analysis across metals and macro. Market structure, physical supply, and transmission mechanisms." />
+  <meta name="description" content="Professional market intelligence for metals and macro. Market structure, physical supply, and transmission mechanisms." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 
 <body>
+  <a class="skip-link" href="#content">Skip to content</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/">
-        <img class="brand-logo" src="/assets/images/logo.png" alt="MarketBriefDaily logo" />
-        <div>
-          <div class="brand-name">The Market Brief Daily</div>
-          <div class="brand-sub">Market structure • Physical supply • Macro transmission</div>
-        </div>
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
       </a>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a class="is-active" href="/">Home</a>
         <a href="/posts.html">Posts</a>
         <a href="/investments.html">Investments</a>
@@ -32,35 +33,44 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
     <div class="container hero-inner">
-      <div class="hero-copy">
+      <div class="hero-panel">
         <div class="hero-eyebrow">Independent research</div>
-        <h1>Professional market intelligence for metals and macro</h1>
+        <h1>Institutional-grade market analysis for metals and macro</h1>
         <p>
           We focus on the mechanics behind price formation: inventory buffers, delivery windows,
-          funding and lease regimes, positioning pressure, and transmission channels across rates,
-          FX, and commodities.
+          funding and lease regimes, positioning pressure, and macro transmission across rates, FX,
+          and commodities.
         </p>
 
         <div class="hero-actions">
-          <a class="btn primary" href="/posts.html">Read latest research</a>
-          <a class="btn" href="/investments.html">View watchlist</a>
-          <a class="btn" href="/about.html">Our method</a>
+          <a class="btn primary" href="/posts.html">Read latest</a>
+          <a class="btn" href="/investments.html">Watchlist</a>
+          <a class="btn" href="/about.html">Method</a>
+        </div>
+
+        <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
+          For informational purposes only. Not investment advice. See <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">disclaimer</a>.
         </div>
       </div>
     </div>
+
+    <div class="hero-fade" aria-hidden="true"></div>
   </section>
 
   <!-- CONTENT -->
-  <main class="section">
+  <main id="content" class="section">
     <div class="container grid">
 
       <!-- Latest -->
-      <section>
+      <section aria-label="Latest research">
         <div class="kicker">Latest</div>
         <h2>Recent research</h2>
-        <p class="lead">Featured report. Full archive available in Posts.</p>
+        <p class="lead">Featured report. Browse the full archive on the Posts page.</p>
 
         <div class="block">
           <article class="post">
@@ -79,26 +89,23 @@
       </section>
 
       <!-- Method -->
-      <section>
+      <section aria-label="Method">
         <div class="kicker">Method</div>
         <h2>How we think</h2>
-        <p class="lead">
-          Clear mechanics, conservative claims, and a practical “what to watch” list.
-        </p>
+        <p class="lead">Clear mechanics, conservative claims, and a practical “what to watch” list.</p>
 
         <div class="block">
           <div class="post">
             <div class="post-title">Market structure</div>
             <p class="post-excerpt">
-              Delivery windows, exchange inventories, futures-physical linkage, settlement incentives,
-              and positioning pressure.
+              Delivery windows, exchange inventories, futures–physical linkage, settlement incentives, and positioning pressure.
             </p>
           </div>
 
           <div class="post">
             <div class="post-title">Physical tightness</div>
             <p class="post-excerpt">
-              Lease and funding regimes, availability constraints, and divergence between paper and physical markets.
+              Lease and funding regimes, availability constraints, and conditions where paper and physical diverge.
             </p>
           </div>
 
@@ -116,7 +123,11 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div class="footer-brand">The Market Brief Daily</div>
+      <div>
+        <div class="footer-brand">The Market Brief Daily</div>
+        <div class="footer-sub">Market structure & physical supply analysis.</div>
+      </div>
+
       <div class="footer-links">
         <a href="/posts.html">Posts</a>
         <a href="/investments.html">Investments</a>
@@ -126,6 +137,5 @@
       </div>
     </div>
   </footer>
-
 </body>
 </html>
