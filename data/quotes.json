@@ -1,15 +1,14 @@
 {
-  "asof_iso": "2026-02-13T18:50:13.035067+00:00",
+  "asof_iso": "2026-02-13T18:53:17.503332+00:00",
   "last_trading_day": "2026-02-12",
   "source": "alphavantage_free",
   "prices": {
-    "AGI": 42.19
+    "AGI": 42.19,
+    "FSM": 10.39,
+    "GAU": 2.73,
+    "NFGC": 2.69,
+    "VGZ": 2.63,
+    "NEWP": 3.53
   },
-  "errors": {
-    "FSM": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "GAU": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "NFGC": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "VGZ": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "NEWP": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints"
-  }
+  "errors": {}
 }
