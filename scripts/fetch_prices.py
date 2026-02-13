@@ -14,6 +14,7 @@ TICKERS = {
     "NFGC": "nfgc.us",
     "VGZ": "vgz.us",
     "NEWP": "newp.us",
+    "GOOGL": "googl.us",
 }
 
 def fetch_csv(symbol: str) -> str:
