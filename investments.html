@@ -429,10 +429,26 @@ summary{ cursor:pointer; font-weight: 850; }
 const TOTAL_CAPITAL = 100000;
 
 // allocations (USD); rest stays constant cash
-const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000 };
+const targetDollars = {
+  AGI:2000,
+  FSM:1500,
+  GAU:1000,
+  NFGC:800,
+  VGZ:700,
+  NEWP:1000,
+  GOOGL:1000
+};
 
 // entry prices
-const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53 };
+const entry = {
+  AGI:42.19,
+  FSM:10.39,
+  GAU:2.73,
+  NFGC:2.69,
+  VGZ:2.63,
+  NEWP:3.53,
+  GOOGL:306.55
+};
 
 // meta + thesis
 const meta = {
@@ -441,7 +457,20 @@ const meta = {
   GAU:{ name:"Galiano Gold", stage:"Turnaround / Small Cap", thesis:["Turnaround/execution story.","Single-asset concentration acknowledged.","Sized small for idiosyncratic risk."], watch:["resource","operations","financing","country risk"] },
   NFGC:{ name:"New Found Gold", stage:"Developer", thesis:["High-grade optionality; pre-revenue.","Financing/dilution + timeline risk.","Very small sizing."], watch:["drilling","permits","financing","timeline"] },
   VGZ:{ name:"Vista Gold", stage:"Developer", thesis:["Long-dated gold leverage.","Milestone-driven rerating.","Small sizing due to timeline."], watch:["milestones","partnering","capex","jurisdiction"] },
-  NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] }
+  NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] },
+
+  // NEW: Alphabet / Google
+  GOOGL:{
+    name:"Alphabet (Google)",
+    stage:"Platform / AI Infrastructure",
+    thesis:[
+      "AI is driving dispersion within software: commoditised workflow tools face substitution risk, while infrastructure and deeply integrated platforms compound.",
+      "Google controls high-intent distribution (Search, Android, YouTube) and large-scale data, enabling AI features at the point of intent and monetisation tied to outcomes rather than seats.",
+      "AI adoption increases demand for compute, security, and monitoring; Google Cloud is positioned to capture incremental AI workloads as enterprise complexity rises.",
+      "Portfolio role: liquid, high-quality AI platform exposure with multiple monetisation engines (ads, cloud, subscriptions) and durable moats."
+    ],
+    watch:["Search monetization + AI UI","Cloud margin + AI attach rate","Capex intensity","Regulatory/antitrust","Model performance vs peers"]
+  }
 };
 /* ============================================================================= */
 
@@ -640,7 +669,7 @@ function renderPerfChart(perf){
   if(!hist.length){
     perfChart = new Chart(ctx, {
       type: "line",
-      data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 2, tension: 0.25 }] },
+      data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 2, tension: 0.25, pointRadius: 0 }] },
       options: {
         plugins:{ legend:{ display:false }, tooltip:{ enabled:false } },
         scales:{ x:{ display:false }, y:{ display:false } }
@@ -714,7 +743,6 @@ async function bootPerformance(){
   }catch(e){
     el("inception").textContent = "—";
     el("perfLast").textContent = "—";
-    // Render empty chart state + show a light status message in console
     renderPerfChart({ inception:"—", nav_history: [] });
   }
 }
