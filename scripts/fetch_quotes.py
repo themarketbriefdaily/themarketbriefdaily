@@ -14,6 +14,7 @@ SYMBOLS = {
     "NFGC": "NFGC",
     "VGZ": "VGZ",
     "NEWP": "NEWP",
+    "GOOGL": "GOOGL",
 }
 
 def http_get_json(params: dict) -> dict:
