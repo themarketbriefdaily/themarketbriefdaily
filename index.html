@@ -4,13 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily</title>
-  <meta name="description" content="Independent institutional-grade market analysis." />
+  <meta name="description" content="Independent institutional-grade analysis of commodity markets, macro transmission, and quantitative investment strategies." />
   <meta name="theme-color" content="#060c1a" />
+  <meta property="og:title" content="The Market Brief Daily" />
+  <meta property="og:description" content="Independent institutional-grade market analysis." />
+  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="/assets/style.css" />
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a class="brand" href="/" aria-label="Home">
         <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
@@ -28,14 +31,36 @@
       </nav>
     </div>
   </header>
+
   <section class="hero" aria-label="Hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-inner">
-      <div class="hero-eyebrow">Independent Research</div>
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Independent Research
+      </div>
       <h1>We analyse <span class="grad">markets and macro</span></h1>
       <p class="hero-desc">Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative investment strategies — delivered clearly and without bias.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">4</div>
+          <div class="hero-stat-lbl">Model Funds</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">3</div>
+          <div class="hero-stat-lbl">Research Pillars</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">0</div>
+          <div class="hero-stat-lbl">Conflicts of Interest</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">100%</div>
+          <div class="hero-stat-lbl">Independent</div>
+        </div>
+      </div>
       <div class="hero-actions">
-        <a class="btn primary" href="/posts.html">Read latest</a>
+        <a class="btn primary" href="/posts.html">Read latest →</a>
         <a class="btn ghost" href="/investments.html">Our Funds</a>
         <a class="btn ghost" href="/about.html">About</a>
       </div>
@@ -61,24 +86,28 @@
         </div>
         <div class="funds-grid">
           <a class="fund-card f1 reveal reveal-delay-1" href="/investments.html">
+            <div class="fund-card-arrow">↗</div>
             <div class="fund-card-num">Fund I · Active</div>
             <div class="fund-card-title">Fund I — Active</div>
             <p class="fund-card-desc">Dynamic sector rotation across precious metals, ESG, and consumer staples based on macro risk signals.</p>
             <div class="fund-card-tags"><span class="tag-pill">GLD 20%</span><span class="tag-pill">ESGU 40%</span><span class="tag-pill">XLP 40%</span></div>
           </a>
           <a class="fund-card f2 reveal reveal-delay-2" href="/investments.html">
+            <div class="fund-card-arrow">↗</div>
             <div class="fund-card-num">Fund II · Tracker</div>
             <div class="fund-card-title">Fund II — Tracker</div>
             <p class="fund-card-desc">Market-cap weighted index replication. Broad exposure with minimal cost drag.</p>
             <div class="fund-card-tags"><span class="tag-pill">SPY 100%</span></div>
           </a>
           <a class="fund-card f3 reveal reveal-delay-3" href="/investments.html">
+            <div class="fund-card-arrow">↗</div>
             <div class="fund-card-num">Fund III · Fama-French</div>
             <div class="fund-card-title">Fund III — Fama-French</div>
             <p class="fund-card-desc">Small-cap value tilt informed by Fama-French factor premia for long-run outperformance.</p>
             <div class="fund-card-tags"><span class="tag-pill">VBR 60%</span><span class="tag-pill">IJS 40%</span></div>
           </a>
           <a class="fund-card f4 reveal reveal-delay-4" href="/investments.html">
+            <div class="fund-card-arrow">↗</div>
             <div class="fund-card-num">Fund IV · ESG</div>
             <div class="fund-card-title">Fund IV — ESG</div>
             <p class="fund-card-desc">Sustainability-screened portfolio spanning US large-cap, US broad market, and emerging markets.</p>
@@ -105,14 +134,17 @@
             <div class="reveal"><div class="kicker">Method</div><h2>How we think</h2></div>
             <div class="method-box reveal reveal-delay-1">
               <div class="method-item">
+                <div class="method-item-num">01</div>
                 <div class="method-title">Market structure</div>
                 <p class="method-desc">We analyse positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before they resolve in price.</p>
               </div>
               <div class="method-item">
+                <div class="method-item-num">02</div>
                 <div class="method-title">Physical tightness</div>
                 <p class="method-desc">COMEX inventory, warehouse flows, and lease rates reveal physical supply constraints that futures markets are slow to price.</p>
               </div>
               <div class="method-item">
+                <div class="method-item-num">03</div>
                 <div class="method-title">Macro transmission</div>
                 <p class="method-desc">How rate cycles, dollar dynamics, and liquidity conditions transmit into commodity markets and risk assets — traced precisely.</p>
               </div>
@@ -121,7 +153,22 @@
         </div>
       </div>
     </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-inner reveal">
+          <div class="cta-eyebrow">Stay informed</div>
+          <h2 class="cta-title">Rigorous analysis, delivered with clarity</h2>
+          <p class="cta-desc">Follow our Substack for regular deep-dives on metals markets, macro dynamics, and quantitative investment strategy.</p>
+          <div class="cta-actions">
+            <a class="btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Follow on Substack →</a>
+            <a class="btn ghost" href="/posts.html">Browse posts</a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
@@ -137,18 +184,28 @@
       </div>
     </div>
   </footer>
+
   <script>
+  // Sticky header shadow on scroll
+  (function(){
+    var header=document.getElementById('siteHeader');
+    if(!header)return;
+    window.addEventListener('scroll',function(){
+      if(window.scrollY>10)header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    },{passive:true});
+  })();
   // Canvas particles
   (function(){
     var canvas=document.getElementById('heroCanvas');
     if(!canvas)return;
-    var ctx=canvas.getContext('2d'),W=0,H=0,N=70,mouse={x:-9999,y:-9999};
+    var ctx=canvas.getContext('2d'),W=0,H=0,N=80,mouse={x:-9999,y:-9999};
     var pts=[];
     function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
     function rnd(a,b){return Math.random()*(b-a)+a;}
-    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00012,vy:rnd(-1,1)*0.00012,r:rnd(1.5,3)});
-    window.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/W;mouse.y=(e.clientY-r.top)/H;});
-    window.addEventListener('resize',resize);
+    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00012,vy:rnd(-1,1)*0.00012,r:rnd(1.2,2.8)});
+    window.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/W;mouse.y=(e.clientY-r.top)/H;},{passive:true});
+    window.addEventListener('resize',resize,{passive:true});
     resize();
     function frame(){
       ctx.clearRect(0,0,W,H);
@@ -161,10 +218,10 @@
         p.x+=p.vx;p.y+=p.vy;
         if(p.x<0)p.x+=1;if(p.x>1)p.x-=1;if(p.y<0)p.y+=1;if(p.y>1)p.y-=1;
         var px=p.x*W,py=p.y*H;
-        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,0.7)';ctx.fill();
+        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(96,165,250,0.65)';ctx.fill();
         for(var j=i+1;j<N;j++){
           var q=pts[j],qx=q.x*W,qy=q.y*H,ex=px-qx,ey=py-qy,dist=Math.sqrt(ex*ex+ey*ey);
-          if(dist<130){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(59,130,246,'+((1-dist/130)*0.4)+')';ctx.lineWidth=0.5;ctx.stroke();}
+          if(dist<140){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(96,165,250,'+((1-dist/140)*0.35)+')';ctx.lineWidth=0.6;ctx.stroke();}
         }
       }
       requestAnimationFrame(frame);
@@ -175,7 +232,7 @@
   (function(){
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('visible');});return;}
-    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.12});
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.10});
     els.forEach(function(el){io.observe(el);});
   })();
   // Ticker RSS
