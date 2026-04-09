@@ -456,13 +456,13 @@
     }
 
     /* Fallback: if GSAP is unavailable show hidden elements immediately */
-    .no-gsap h1,
-    .no-gsap .hero p,
-    .no-gsap .hero-actions,
-    .no-gsap .section-head,
-    .no-gsap .about-inner{
-      opacity:1!important;
-      transform:none!important;
+    html.no-gsap h1,
+    html.no-gsap .hero p,
+    html.no-gsap .hero-actions,
+    html.no-gsap .section-head,
+    html.no-gsap .about-inner{
+      opacity:1;
+      transform:none;
     }
   </style>
 </head>
@@ -1044,7 +1044,8 @@
       initAll();
     }
 
-    // Secondary safety net: window load fires after all resources including external scripts
+    // Secondary safety net: ensures init runs after the full page (including
+    // async resources) has settled — guards against rare DOMContentLoaded races
     window.addEventListener('load', initAll);
 
     console.log('Script loaded');
