@@ -2,24 +2,192 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Investments | The Market Brief Daily</title>
-  <meta name="description" content="Four model funds with benchmark-relative performance and interactive visuals." />
-  <link rel="stylesheet" href="/assets/investments.css" />
-  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script defer src="/assets/investments.js"></script>
+  <meta name="description" content="Four model investment strategies with benchmark-relative performance." />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --bg:#060c1a;
+      --bg2:#0b1428;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.04);
+      --line:rgba(255,255,255,.1);
+      --ink:#eef2ff;
+      --muted:rgba(238,242,255,.65);
+      --muted2:rgba(238,242,255,.45);
+      --brand:#3b82f6;
+      --ok:#10b981;
+      --bad:#ef4444;
+      --max:1240px;
+      --r:16px;
+      --shadow:0 12px 38px rgba(0,0,0,.35);
+      --font:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(900px 500px at 85% -10%, rgba(59,130,246,.18), transparent 60%),
+        radial-gradient(700px 420px at -10% 20%, rgba(139,92,246,.14), transparent 60%),
+        var(--bg);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    a{color:var(--brand);text-decoration:none}
+    .container{width:min(var(--max), calc(100% - 40px));margin:0 auto}
+
+    /* Header */
+    .site-header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(6,12,26,.75);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+    .header-inner{
+      height:68px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;color:var(--ink)}
+    .brand-logo{width:38px;height:38px;border-radius:10px;object-fit:cover}
+    .brand-title{font-size:14px;font-weight:800;letter-spacing:-.01em}
+    .brand-sub{font-size:11px;color:var(--muted2)}
+    .nav{display:flex;gap:6px;flex-wrap:wrap}
+    .nav a{
+      color:var(--muted);font-size:13px;font-weight:600;
+      padding:8px 10px;border-radius:8px;transition:.18s;
+    }
+    .nav a:hover{color:var(--ink);background:var(--panel2)}
+    .nav a.is-active{color:var(--ink);background:rgba(59,130,246,.16);box-shadow:inset 0 0 0 1px rgba(59,130,246,.3)}
+
+    /* Hero */
+    .hero{padding:84px 0 34px}
+    .kicker{
+      font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin-bottom:10px;
+    }
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(2rem,5vw,3.2rem);
+      line-height:1.08;
+      letter-spacing:-.03em;
+      font-weight:850;
+      background:linear-gradient(135deg,#fff,#dbeafe 46%,#93c5fd 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .lead{margin:0;color:var(--muted);max-width:760px}
+
+    /* Funds grid */
+    .funds-grid{display:grid;grid-template-columns:1fr;gap:22px;padding:24px 0 60px}
+    .fund{
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      background:linear-gradient(180deg,var(--panel),rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+
+    .fund-visual{
+      min-height:340px;
+      border-right:1px solid var(--line);
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+    .fund-visual::after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,transparent 30%,rgba(6,12,26,.45));
+    }
+
+    .fund-body{padding:22px 22px 16px;display:flex;flex-direction:column;gap:14px}
+    .fund-head{
+      display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+      border-bottom:1px solid var(--line);padding-bottom:12px;
+    }
+    .fund-code{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .fund-name{font-size:1.25rem;font-weight:800;line-height:1.2}
+    .fund-stage{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-top:6px}
+    .fund-desc{font-size:.94rem;color:var(--muted)}
+
+    .stats{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;
+    }
+    .s-label{font-size:10px;color:var(--muted2);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .s-val{
+      font-size:1.15rem;font-weight:800;margin-top:4px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    }
+    .pos{color:var(--ok)} .neg{color:var(--bad)}
+
+    .alloc{display:flex;flex-wrap:wrap;gap:6px}
+    .pill{
+      font-size:11px;font-weight:700;
+      padding:4px 8px;border-radius:999px;
+      border:1px solid rgba(59,130,246,.35);
+      background:rgba(59,130,246,.12);
+      color:#bfdbfe;
+    }
+
+    .chart-wrap{
+      margin-top:auto;
+      border-top:1px solid var(--line);
+      padding-top:12px;
+    }
+    .chart-title{font-size:12px;font-weight:700}
+    .chart-sub{font-size:11px;color:var(--muted2);margin:2px 0 8px}
+    .mini{
+      height:145px;border:1px solid var(--line);border-radius:10px;padding:8px;
+      background:linear-gradient(135deg,rgba(255,255,255,.015),transparent);
+    }
+
+    .legend{display:flex;gap:14px;font-size:11px;color:var(--muted2);margin-top:8px}
+    .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:middle}
+
+    /* Thesis */
+    .thesis-section{padding:8px 0 70px}
+    .thesis-title{font-size:1.8rem;font-weight:800;letter-spacing:-.02em;margin:0 0 8px}
+    .thesis-lead{margin:0 0 14px;color:var(--muted)}
+    .thesis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .thesis{
+      border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:14px;
+    }
+    .thesis h3{margin:0 0 8px;font-size:1rem}
+    .thesis ul{margin:0;padding-left:18px;color:var(--muted);font-size:.93rem}
+    .thesis li{margin-bottom:6px}
+
+    /* Footer */
+    .site-footer{border-top:1px solid var(--line);background:rgba(11,20,40,.45);padding:26px 0}
+    .footer-inner{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .footer-brand{font-size:14px;font-weight:700}
+    .footer-sub{font-size:12px;color:var(--muted2)}
+    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    .footer-links a{font-size:12px;color:var(--muted)}
+    .footer-links a:hover{color:var(--ink)}
+
+    @media (max-width:1060px){
+      .fund{grid-template-columns:1fr}
+      .fund-visual{border-right:none;border-bottom:1px solid var(--line)}
+      .thesis-grid{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/" aria-label="Home">
-        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
-        <span class="brand-stack">
-          <span class="brand-title">The Market Brief Daily</span>
-          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
-        </span>
+      <a class="brand" href="/">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="Logo" />
+        <div>
+          <div class="brand-title">The Market Brief Daily</div>
+          <div class="brand-sub">Market structure • Physical supply • Macro transmission</div>
+        </div>
       </a>
-      <nav class="nav" aria-label="Primary">
+      <nav class="nav">
         <a href="/">Home</a>
         <a href="/posts.html">Posts</a>
         <a class="is-active" href="/investments.html">Investments</a>
@@ -34,7 +202,7 @@
       <div class="container">
         <div class="kicker">Portfolio</div>
         <h1>Investment Strategies</h1>
-        <p class="lead">Four distinct model funds with benchmark-relative performance and interactive visual storytelling.</p>
+        <p class="lead">Four distinct model funds with benchmark-relative performance and institutional-grade positioning logic.</p>
       </div>
     </section>
 
@@ -43,9 +211,9 @@
     </section>
 
     <section class="container thesis-section">
-      <div class="kicker">Research Framework</div>
-      <h2>Investment Thesis</h2>
-      <p class="thesis-lead">Core rationale and risk monitoring for each fund.</p>
+      <div class="kicker">Method</div>
+      <h2 class="thesis-title">Investment Thesis</h2>
+      <p class="thesis-lead">Core rationale and risk monitoring framework for each strategy.</p>
       <div id="thesisGrid" class="thesis-grid"></div>
     </section>
   </main>
@@ -64,5 +232,157 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const funds = [
+      {
+        id:"f1", code:"F1", name:"Fund I — Active", stage:"Active Rotation",
+        desc:"Dynamic sector rotation across precious metals, ESG, and consumer staples driven by macro risk signals.",
+        allocation:["GLD","ESGU","XLP"],
+        r1y:12.45, bench:"XLP", benchR:9.15, color:"#60a5fa",
+        img:"/assets/images/investments/fund1-bg.webp",
+        thesis:["Macro regime shifts alter sector leadership.","Precious metals hedge inflation + real rate compression.","Staples for defense during liquidity stress."]
+      },
+      {
+        id:"f2", code:"F2", name:"Fund II — Tracker", stage:"Market-Cap Weighted",
+        desc:"Broad market-cap weighted tracking via total market exposure (not SPY directly).",
+        allocation:["VTI"],
+        r1y:8.32, bench:"SPY", benchR:8.32, color:"#a78bfa",
+        img:"/assets/images/investments/fund2-bg.webp",
+        thesis:["Systematic broad-beta exposure.","Low-friction implementation.","Acts as core comparator sleeve."]
+      },
+      {
+        id:"f3", code:"F3", name:"Fund III — Fama-French", stage:"Factor Tilt",
+        desc:"Small-cap value tilt using classic factor premia and cyclical mean reversion.",
+        allocation:["VBR","IJS"],
+        r1y:15.67, bench:"SPY", benchR:8.32, color:"#f472b6",
+        img:"/assets/images/investments/fund3-bg.webp",
+        thesis:["Small/value premia can persist over long horizons.","Cyclical rebounds create asymmetric upside.","Diversifies large-cap growth concentration."]
+      },
+      {
+        id:"f4", code:"F4", name:"Fund IV — ESG", stage:"Sustainability",
+        desc:"Sustainability-screened multi-region sleeve across US and emerging exposures.",
+        allocation:["ESGU","ESGV","ESGE"],
+        r1y:9.18, bench:"ESGU", benchR:7.85, color:"#34d399",
+        img:"/assets/images/investments/fund4-bg.webp",
+        thesis:["Quality/governance bias through ESG filters.","Secular transition themes with risk discipline.","Balanced developed + emerging opportunity set."]
+      }
+    ];
+
+    const charts = {};
+    const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+
+    function makeSeries(seed=1, drift=0.0012, vol=0.007, n=60){
+      let v=100, out=[];
+      for(let i=0;i<n;i++){
+        const noise=(Math.sin((i+seed)*1.17)+Math.cos((i+seed)*0.71))*0.5;
+        v *= (1 + drift + noise*vol*0.18);
+        out.push(v);
+      }
+      return out;
+    }
+
+    function renderFunds(){
+      const grid = document.getElementById("fundsGrid");
+      grid.innerHTML = funds.map(f=>{
+        const rel = f.r1y - f.benchR;
+        return `
+          <article class="fund">
+            <div class="fund-visual" style="background-image:url('${f.img}')"></div>
+            <div class="fund-body">
+              <div class="fund-head">
+                <div>
+                  <div class="fund-code" style="color:${f.color}">${f.code}</div>
+                  <div class="fund-name">${f.name}</div>
+                  <div class="fund-stage">${f.stage}</div>
+                </div>
+              </div>
+              <p class="fund-desc">${f.desc}</p>
+
+              <div class="stats">
+                <div>
+                  <div class="s-label">1Y Return</div>
+                  <div class="s-val ${f.r1y>=0?'pos':'neg'}">${fmtPct(f.r1y)}</div>
+                </div>
+                <div>
+                  <div class="s-label">vs ${f.bench}</div>
+                  <div class="s-val ${rel>=0?'pos':'neg'}">${fmtPct(rel)}</div>
+                </div>
+              </div>
+
+              <div class="alloc">${f.allocation.map(t=>`<span class="pill">${t}</span>`).join("")}</div>
+
+              <div class="chart-wrap">
+                <div class="chart-title">Performance vs Benchmark</div>
+                <div class="chart-sub">${f.code} (solid) vs ${f.bench} (dashed)</div>
+                <div class="mini"><canvas id="chart-${f.id}"></canvas></div>
+                <div class="legend">
+                  <span><i style="background:${f.color}"></i>${f.code}</span>
+                  <span><i style="background:rgba(148,163,184,.7)"></i>${f.bench}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderThesis(){
+      const grid = document.getElementById("thesisGrid");
+      grid.innerHTML = funds.map(f=>`
+        <article class="thesis">
+          <h3>${f.name}</h3>
+          <ul>${f.thesis.map(x=>`<li>${x}</li>`).join("")}</ul>
+        </article>
+      `).join("");
+    }
+
+    function renderCharts(){
+      funds.forEach((f, idx)=>{
+        const ctx = document.getElementById(`chart-${f.id}`).getContext("2d");
+        const a = makeSeries(idx+3, 0.0015, 0.012);
+        const b = makeSeries(idx+12, 0.0011, 0.009);
+        if(charts[f.id]) charts[f.id].destroy();
+
+        charts[f.id] = new Chart(ctx,{
+          type:"line",
+          data:{
+            labels:Array.from({length:a.length},(_,i)=>i+1),
+            datasets:[
+              {
+                data:a,
+                borderColor:f.color,
+                backgroundColor:f.color+"22",
+                borderWidth:2,
+                pointRadius:0,
+                tension:.35,
+                fill:true
+              },
+              {
+                data:b,
+                borderColor:"rgba(148,163,184,.75)",
+                borderDash:[6,5],
+                borderWidth:1.5,
+                pointRadius:0,
+                tension:.35,
+                fill:false
+              }
+            ]
+          },
+          options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{legend:{display:false},tooltip:{enabled:false}},
+            scales:{x:{display:false},y:{display:false}}
+          }
+        });
+      });
+    }
+
+    renderFunds();
+    renderThesis();
+    renderCharts();
+    window.addEventListener("resize", renderCharts);
+  </script>
 </body>
 </html>
