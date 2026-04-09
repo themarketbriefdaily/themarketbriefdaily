@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- GSAP for reveal polish (scroll is native smooth + JS with header offset) -->
+  <!-- GSAP for reveal polish -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -68,6 +68,7 @@
       width:100%;height:100%;
       opacity:.90;
       filter:saturate(1.05);
+      display:block;
     }
     .bg-scrim{
       position:absolute;inset:0;
@@ -98,10 +99,11 @@
       font-size:15px;font-weight:900;letter-spacing:-.01em;
       color:var(--ink);text-decoration:none;white-space:nowrap;
       transition:opacity .2s;
+      cursor:pointer;
     }
     .brand:hover{opacity:.75}
     nav{display:flex;gap:28px;align-items:center;margin-left:auto}
-    nav a{font-size:13px;font-weight:800;color:var(--muted);text-decoration:none;transition:color .2s}
+    nav a{font-size:13px;font-weight:800;color:var(--muted);text-decoration:none;transition:color .2s;cursor:pointer}
     nav a:hover{color:var(--ink)}
     @media (max-width:768px){ header{padding:0 20px} nav{display:none} }
     @media (max-width:1200px){ header{padding:0 32px} }
@@ -172,7 +174,7 @@
     .btn.ghost:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
     @media (max-width:768px){ .hero-inner{padding:0 20px} .btn{width:100%} }
 
-    /* Market tape section (TradingView embed) */
+    /* Market tape section */
     .tape-section{
       border-top:1px solid var(--line);
       border-bottom:1px solid var(--line);
@@ -205,7 +207,6 @@
     }
     .tape-box::before{left:0;background:linear-gradient(to right,#fff,rgba(255,255,255,0))}
     .tape-box::after{right:0;background:linear-gradient(to left,#fff,rgba(255,255,255,0))}
-    .tape-box .tradingview-widget-container{position:relative;z-index:1}
     @media (max-width:1200px){ .tape-inner{padding:0 32px;grid-template-columns:1fr} }
     @media (max-width:768px){ .tape-inner{padding:0 20px} }
 
@@ -232,6 +233,7 @@
       transform-style:preserve-3d;
       perspective:1200px;
       outline:none;
+      height:560px;
     }
     .card-shell{
       position:relative;
@@ -244,6 +246,7 @@
       transform-style:preserve-3d;
       will-change: transform;
       transition: transform .18s var(--ease);
+      height:100%;
     }
 
     /* Tilt + glare */
@@ -263,7 +266,8 @@
       position:relative;
       transform-style:preserve-3d;
       transition: transform .95s cubic-bezier(.2,.9,.2,1);
-      height:560px;
+      height:100%;
+      width:100%;
       will-change: transform;
     }
     .face{
@@ -271,12 +275,19 @@
       backface-visibility:hidden;
       -webkit-backface-visibility:hidden;
       display:flex;flex-direction:column;
+      width:100%;
+      height:100%;
+    }
+    .front{
+      z-index:2;
     }
     .back{
       transform:rotateY(180deg);
+      z-index:1;
       padding:18px;
       gap:10px;
       background:rgba(255,255,255,.92);
+      overflow-y:auto;
     }
 
     /* Desktop hover flips physically */
@@ -353,7 +364,7 @@
     }
 
     /* Back chart */
-    .back-head{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+    .back-head{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px;flex-wrap:wrap}
     .back-title{font-weight:950;letter-spacing:-.02em;font-size:14px}
     .back-sub{font-size:12px;color:var(--muted);margin-top:4px}
     .bench-pill{font-family:var(--mono);font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid rgba(2,8,23,.12);background:rgba(2,8,23,.03);white-space:nowrap;height:fit-content}
@@ -363,10 +374,11 @@
       background:linear-gradient(135deg, rgba(0,102,255,.06), rgba(2,8,23,.02));
       box-shadow:0 18px 44px rgba(2,8,23,.10);
       padding:12px;
-      height:230px;
+      height:200px;
+      margin:10px 0;
     }
     .chart-box canvas{width:100%!important;height:100%!important}
-    .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900}
+    .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900;margin:10px 0}
     .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
 
     /* About / News section */
@@ -453,11 +465,11 @@
 
   <header>
     <div class="header-inner">
-      <a class="brand" href="#top" data-scroll="#top">The Market Brief Daily</a>
+      <a class="brand" href="#" onclick="scrollToHash('#top'); return false;">The Market Brief Daily</a>
       <nav>
-        <a href="#market" data-scroll="#market">Market</a>
-        <a href="#funds" data-scroll="#funds">Funds</a>
-        <a href="#about" data-scroll="#about">About</a>
+        <a href="#" onclick="scrollToHash('#market'); return false;">Market</a>
+        <a href="#" onclick="scrollToHash('#funds'); return false;">Funds</a>
+        <a href="#" onclick="scrollToHash('#about'); return false;">About</a>
         <a href="/posts.html">Posts</a>
       </nav>
     </div>
@@ -468,9 +480,9 @@
       <h1>We analyse <span style="color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text">markets and macro</span></h1>
       <p>Institutional-grade analysis of market structure, physical supply constraints, and macro transmission — delivered clearly and without bias.</p>
       <div class="hero-actions">
-        <a class="btn primary" href="#news" data-scroll="#news">Read latest</a>
-        <a class="btn ghost" href="#funds" data-scroll="#funds">Explore funds</a>
-        <a class="btn ghost" href="#about" data-scroll="#about">About</a>
+        <a class="btn primary" href="#" onclick="scrollToHash('#news'); return false;">Read latest</a>
+        <a class="btn ghost" href="#" onclick="scrollToHash('#funds'); return false;">Explore funds</a>
+        <a class="btn ghost" href="#" onclick="scrollToHash('#about'); return false;">About</a>
       </div>
     </div>
   </section>
@@ -533,8 +545,8 @@
             We publish clear, defensible analysis designed for decision makers.
           </p>
           <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="mini" href="#market" data-scroll="#market">Market data</a>
-            <a class="mini" href="#funds" data-scroll="#funds">Fund strategies</a>
+            <a class="mini" href="#" onclick="scrollToHash('#market'); return false;">Market data</a>
+            <a class="mini" href="#" onclick="scrollToHash('#funds'); return false;">Fund strategies</a>
             <a class="mini" href="/contact.html">Contact</a>
           </div>
         </div>
@@ -567,24 +579,32 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // --------------------------
-    // 1) Shifting network background (dynamic)
+    // 1) Shifting network background (FIXED)
     // --------------------------
     function initNetworkBackground(){
       const canvas = document.getElementById('networkBg');
-      if(!canvas) return;
+      if(!canvas){
+        console.warn('Canvas not found');
+        return;
+      }
       if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const ctx = canvas.getContext('2d');
+      if(!ctx){
+        console.warn('Canvas context failed');
+        return;
+      }
 
       let W = 0, H = 0, DPR = 1;
       function resize(){
         DPR = Math.min(window.devicePixelRatio || 1, 2);
         W = canvas.width = Math.floor(window.innerWidth * DPR);
         H = canvas.height = Math.floor(window.innerHeight * DPR);
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
       }
-      window.addEventListener('resize', resize);
+      
+      window.addEventListener('resize', resize, {passive: true});
       resize();
 
       const N = Math.max(70, Math.min(140, Math.floor((window.innerWidth * window.innerHeight) / 18000)));
@@ -610,7 +630,10 @@
       }, { passive:true });
 
       let t = 0;
+      let animating = true;
+
       function frame(){
+        if(!animating) return;
         t += 0.008;
 
         ctx.clearRect(0,0,W,H);
@@ -692,11 +715,13 @@
 
         requestAnimationFrame(frame);
       }
+      
       frame();
+      console.log('Network background initialized');
     }
 
     // --------------------------
-    // 2) Smooth scroll with header offset (for buttons + nav)
+    // 2) Smooth scroll with header offset
     // --------------------------
     function scrollToHash(hash){
       const el = document.querySelector(hash);
@@ -708,29 +733,17 @@
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
 
-    function initSmoothScrollLinks(){
-      document.addEventListener('click', (e)=>{
-        const a = e.target.closest('[data-scroll]');
-        if(!a) return;
-        const hash = a.getAttribute('data-scroll');
-        if(!hash || !hash.startsWith('#')) return;
-        e.preventDefault();
-        scrollToHash(hash);
-        history.replaceState(null, '', hash);
-      });
-    }
-
     // --------------------------
-    // 3) Fund cards (tilt + hover flip + chart on back)
+    // 3) Fund cards (FIXED - better initialization)
     // --------------------------
     const funds = [
-      { id:"f1", code:"Fund I",  name:"Active Rotation", short:"Macro rotation across gold + ESG + staples", bench:"AOR", color:"#0066ff", img:"/assets/images/investments/fund1-bg.webp",
+      { id:"f1", code:"Fund I",  name:"Active Rotation", short:"Macro rotation across gold + ESG + staples", bench:"AOR", color:"#0066ff", 
         desc:"Dynamic sleeve allocation driven by macro risk signals. Designed for regime shifts and convexity." },
-      { id:"f2", code:"Fund II", name:"Market Tracker", short:"Broad market exposure with minimal drift", bench:"SPY", color:"#7c3aed", img:"/assets/images/investments/fund2-bg.webp",
+      { id:"f2", code:"Fund II", name:"Market Tracker", short:"Broad market exposure with minimal drift", bench:"SPY", color:"#7c3aed", 
         desc:"Market-cap weighted exposure for clean beta. Core sleeve designed to be transparent and efficient." },
-      { id:"f3", code:"Fund III",name:"Value Factor", short:"Small-cap value tilt (factor premia)", bench:"SPY", color:"#db2777", img:"/assets/images/investments/fund3-bg.webp",
+      { id:"f3", code:"Fund III",name:"Value Factor", short:"Small-cap value tilt (factor premia)", bench:"SPY", color:"#db2777", 
         desc:"Systematic tilt toward value and size premia. Built for multi-year compounding and mean reversion cycles." },
-      { id:"f4", code:"Fund IV", name:"ESG Global", short:"Sustainability-screened global allocation", bench:"ACWI", color:"#0ea5e9", img:"/assets/images/investments/fund4-bg.webp",
+      { id:"f4", code:"Fund IV", name:"ESG Global", short:"Sustainability-screened global allocation", bench:"ACWI", color:"#0ea5e9", 
         desc:"Global equity sleeve with sustainability screens. Designed for broad participation with governance bias." }
     ];
 
@@ -739,9 +752,14 @@
     const isTouch = matchMedia('(hover: none), (pointer: coarse)').matches;
 
     async function loadMarket(){
-      const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
-      if(!res.ok) throw new Error('Missing /assets/data/market.json');
-      return res.json();
+      try {
+        const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
+        if(!res.ok) throw new Error('Market data not found');
+        return res.json();
+      } catch(e){
+        console.warn('Market data load failed:', e);
+        return null;
+      }
     }
 
     function seriesToIndex(series){
@@ -757,12 +775,10 @@
       const benchIdx = seriesToIndex(benchSeries);
       if(!benchIdx) return;
 
-      // Optional real fund series later: FUND_F1, FUND_F2, ...
       const fundKey = `FUND_${fund.id.toUpperCase()}`;
       const realFund = marketCache?.series?.[fundKey];
       let fundIdx = realFund ? seriesToIndex(realFund) : null;
 
-      // Model series if you don't have NAV series yet
       if(!fundIdx){
         const seed = fund.id.charCodeAt(1) * 19;
         fundIdx = benchIdx.map((p,i)=>{
@@ -785,27 +801,33 @@
       const a = fundIdx.map(p => p.v);
       const b = benchIdx.map(p => p.v);
 
-      charts.set(fund.id, new Chart(canvas, {
-        type:'line',
-        data:{
-          labels,
-          datasets:[
-            { data:a, borderColor:fund.color, backgroundColor: fund.color+'18', borderWidth:2.2, pointRadius:0, tension:.35, fill:true },
-            { data:b, borderColor:'rgba(2,8,23,.45)', borderDash:[7,6], borderWidth:1.8, pointRadius:0, tension:.35, fill:false }
-          ]
-        },
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          plugins:{ legend:{display:false}, tooltip:{enabled:false} },
-          scales:{ x:{display:false}, y:{display:false} },
-          animation:{ duration:650, easing:'easeOutQuart' }
-        }
-      }));
+      try {
+        charts.set(fund.id, new Chart(canvas, {
+          type:'line',
+          data:{
+            labels,
+            datasets:[
+              { data:a, borderColor:fund.color, backgroundColor: fund.color+'18', borderWidth:2.2, pointRadius:0, tension:.35, fill:true },
+              { data:b, borderColor:'rgba(2,8,23,.45)', borderDash:[7,6], borderWidth:1.8, pointRadius:0, tension:.35, fill:false }
+            ]
+          },
+          options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{ legend:{display:false}, tooltip:{enabled:false} },
+            scales:{ x:{display:false}, y:{display:false} },
+            animation:{ duration:650, easing:'easeOutQuart' }
+          }
+        }));
+      } catch(e){
+        console.warn('Chart creation failed:', e);
+      }
     }
 
     function renderFunds(){
       const grid = document.getElementById('fundGrid');
+      if(!grid) return;
+      
       grid.innerHTML = funds.map(f => `
         <article class="fund-card" tabindex="0" data-fund="${f.id}">
           <div class="card-shell">
@@ -813,8 +835,7 @@
             <div class="card-inner">
               <!-- FRONT -->
               <div class="face front">
-                <div class="media">
-                  <img src="${f.img}" alt="${f.name}" loading="lazy">
+                <div class="media" style="background:linear-gradient(135deg, ${f.color}33, ${f.color}22)">
                   <div class="overlay">
                     <div class="code">${f.code}</div>
                     <div class="name">${f.name}</div>
@@ -845,7 +866,7 @@
                 <div class="back-head">
                   <div>
                     <div class="back-title">${f.code} vs ${f.bench}</div>
-                    <div class="back-sub">Indexed to 100. Fund (solid) vs benchmark (dashed).</div>
+                    <div class="back-sub">Indexed to 100</div>
                   </div>
                   <div class="bench-pill">BENCH: ${f.bench}</div>
                 </div>
@@ -859,7 +880,7 @@
                   <span><i style="background:rgba(2,8,23,.45)"></i>${f.bench}</span>
                 </div>
 
-                <div class="actions" style="margin-top:auto">
+                <div class="actions">
                   <button class="mini" type="button" data-action="flip" data-fund="${f.id}">← Back</button>
                   <a class="mini primary" href="/investments.html">All funds</a>
                 </div>
@@ -870,6 +891,7 @@
       `).join("");
 
       initCardInteractions();
+      console.log('Fund cards rendered');
     }
 
     function initCardInteractions(){
@@ -914,7 +936,6 @@
           target.s=1.02;
           if(!raf) raf=requestAnimationFrame(apply);
 
-          // warm chart on hover so flip is instant
           const id = card.getAttribute('data-fund');
           const fund = funds.find(x=>x.id===id);
           if(fund) ensureBackChart(fund);
@@ -929,7 +950,6 @@
         card.addEventListener('pointerenter', onEnter, {passive:true});
         card.addEventListener('pointerleave', onLeave, {passive:true});
 
-        // Touch: tap card body flips
         if(isTouch){
           card.addEventListener('click', (e)=>{
             if(e.target.closest('a')) return;
@@ -944,7 +964,6 @@
         }
       });
 
-      // Flip buttons work everywhere
       document.addEventListener('click', (e)=>{
         const btn = e.target.closest('button[data-action="flip"]');
         if(!btn) return;
@@ -960,40 +979,7 @@
     }
 
     // --------------------------
-    // 4) News feed (optional)
-    // --------------------------
-    function initNews(){
-      const list = document.getElementById('newsList');
-      const FEED = 'https://marketbriefdaily.substack.com/feed';
-      const API = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED);
-
-      fetch(API)
-        .then(r=>r.json())
-        .then(d=>{
-          const items = (d.items || []).slice(0,3);
-          if(!items.length) throw new Error('No RSS items');
-          list.innerHTML = items.map(it => `
-            <a class="news-item" href="${it.link}" target="_blank" rel="noopener">
-              <div class="news-meta">
-                <span class="tag">Research</span>
-                <span>${new Date(it.pubDate).toLocaleDateString()}</span>
-              </div>
-              <div class="news-title">${escapeHtml(it.title)}</div>
-              <div class="news-desc">${escapeHtml(stripHtml(it.description || '')).slice(0, 150)}…</div>
-            </a>
-          `).join('');
-        })
-        .catch(()=>{
-          // fallback stays as-is
-        });
-    }
-    function stripHtml(s){ return s.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim(); }
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-    }
-
-    // --------------------------
-    // 5) Reveal polish
+    // 4) Reveal polish
     // --------------------------
     function initReveals(){
       const tl = gsap.timeline();
@@ -1011,18 +997,30 @@
     }
 
     // --------------------------
-    // Boot
+    // Boot (FIXED - use DOMContentLoaded)
     // --------------------------
-    window.addEventListener('load', async ()=>{
+    function initAll(){
+      console.log('Initializing...');
       initNetworkBackground();
-      initSmoothScrollLinks();
       initReveals();
       renderFunds();
-      initNews();
 
-      try { marketCache = await loadMarket(); }
-      catch(e){ console.warn(e); }
-    });
+      loadMarket().then(data => {
+        if(data) {
+          marketCache = data;
+          console.log('Market data loaded');
+        }
+      });
+    }
+
+    // Use DOMContentLoaded for earlier init
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+      initAll();
+    }
+
+    console.log('Script loaded');
   </script>
 </body>
 </html>
