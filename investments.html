@@ -135,7 +135,7 @@
       border: 1px solid var(--glass-border);
       border-radius: var(--r);
       overflow: hidden;
-      animation: fundCardEntry .6s ease-out backwards;
+      animation: fundCardEntry .8s cubic-bezier(.34, .1, .68, .55) backwards;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
@@ -148,14 +148,22 @@
     .fund-card:nth-child(4) { animation-delay: .4s; }
 
     @keyframes fundCardEntry {
-      from { opacity: 0; transform: translateY(40px) scale(.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { 
+        opacity: 0; 
+        transform: translateY(50px) scale(.97); 
+        filter: blur(10px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+        filter: blur(0);
+      }
     }
 
     .fund-card:hover {
-      border-color: rgba(59, 130, 246, .2);
-      box-shadow: var(--shadow-lg);
-      transition: all .3s cubic-bezier(.34, .1, .68, .55);
+      border-color: rgba(59, 130, 246, .3);
+      box-shadow: 0 20px 60px rgba(59, 130, 246, .25);
+      transition: all .4s cubic-bezier(.34, .1, .68, .55);
     }
 
     /* SVG Visual Section */
@@ -172,12 +180,21 @@
       transition: background .3s ease;
     }
 
-    .fund-card.f1 .fund-visual { background: linear-gradient(135deg, rgba(59, 130, 246, .1), rgba(59, 130, 246, .05)); }
-    .fund-card.f2 .fund-visual { background: linear-gradient(135deg, rgba(139, 92, 246, .1), rgba(139, 92, 246, .05)); }
-    .fund-card.f3 .fund-visual { background: linear-gradient(135deg, rgba(236, 72, 153, .1), rgba(236, 72, 153, .05)); }
-    .fund-card.f4 .fund-visual { background: linear-gradient(135deg, rgba(20, 184, 166, .1), rgba(20, 184, 166, .05)); }
+    .fund-card.f1 .fund-visual { background: linear-gradient(135deg, rgba(59, 130, 246, .12), rgba(59, 130, 246, .03)); }
+    .fund-card.f2 .fund-visual { background: linear-gradient(135deg, rgba(139, 92, 246, .12), rgba(139, 92, 246, .03)); }
+    .fund-card.f3 .fund-visual { background: linear-gradient(135deg, rgba(236, 72, 153, .12), rgba(236, 72, 153, .03)); }
+    .fund-card.f4 .fund-visual { background: linear-gradient(135deg, rgba(20, 184, 166, .12), rgba(20, 184, 166, .03)); }
 
-    svg { width: 300px; height: 300px; filter: drop-shadow(0 10px 30px rgba(59, 130, 246, .2)); }
+    .fund-visual:hover {
+      background: linear-gradient(135deg, rgba(59, 130, 246, .15), rgba(59, 130, 246, .08));
+    }
+
+    svg { 
+      width: 320px; 
+      height: 320px; 
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, .3));
+      will-change: transform;
+    }
 
     /* Fund Content */
     .fund-content {
@@ -615,155 +632,525 @@
     const fundKeys = Object.keys(funds);
     const charts = {};
 
-    // SVG Visuals
+    // =====================================================
+    // GOLD COINS - Luxurious floating with depth
+    // =====================================================
     function createGoldVisualization() {
       return `
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <radialGradient id="goldRadial" cx="35%" cy="35%">
+              <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+              <stop offset="40%" style="stop-color:#fbbf24;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#b45309;stop-opacity:1" />
+            </radialGradient>
+            <filter id="goldShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="8" stdDeviation="4" flood-opacity="0.3"/>
+              <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
+            </filter>
+            <filter id="goldGlow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
               <feMerge>
                 <feMergeNode in="coloredBlur"/>
                 <feMergeNode in="SourceGraphic"/>
               </feMerge>
             </filter>
           </defs>
-          <!-- Gold coins -->
-          <circle cx="150" cy="100" r="35" fill="url(#goldGrad)" filter="url(#glow)" class="coin coin1"/>
-          <circle cx="100" cy="160" r="30" fill="url(#goldGrad)" opacity="0.8" class="coin coin2"/>
-          <circle cx="200" cy="170" r="32" fill="url(#goldGrad)" opacity="0.85" class="coin coin3"/>
-          <!-- Shine effect -->
-          <ellipse cx="140" cy="85" rx="12" ry="8" fill="white" opacity="0.6"/>
-          <ellipse cx="95" cy="150" rx="10" ry="6" fill="white" opacity="0.5"/>
-          <ellipse cx="195" cy="155" rx="11" ry="7" fill="white" opacity="0.55"/>
+          
+          <!-- Background shimmer -->
+          <rect width="300" height="300" fill="none"/>
+          
+          <!-- Large coin (center-back) -->
+          <g class="coin-group coin-1">
+            <circle cx="150" cy="110" r="40" fill="url(#goldRadial)" filter="url(#goldShadow)"/>
+            <circle cx="145" cy="105" r="8" fill="white" opacity="0.4"/>
+            <circle cx="148" cy="108" r="4" fill="white" opacity="0.6"/>
+          </g>
+          
+          <!-- Left coin -->
+          <g class="coin-group coin-2">
+            <circle cx="95" cy="170" r="32" fill="url(#goldRadial)" filter="url(#goldShadow)" opacity="0.85"/>
+            <circle cx="91" cy="166" r="6" fill="white" opacity="0.35"/>
+            <circle cx="93" cy="168" r="3" fill="white" opacity="0.5"/>
+          </g>
+          
+          <!-- Right coin -->
+          <g class="coin-group coin-3">
+            <circle cx="210" cy="175" r="35" fill="url(#goldRadial)" filter="url(#goldShadow)" opacity="0.9"/>
+            <circle cx="206" cy="171" r="7" fill="white" opacity="0.38"/>
+            <circle cx="208" cy="173" r="3.5" fill="white" opacity="0.55"/>
+          </g>
+          
+          <!-- Floating particles -->
+          <circle cx="130" cy="80" r="1.5" fill="#fbbf24" class="particle particle-1" opacity="0"/>
+          <circle cx="170" cy="90" r="1" fill="#fbbf24" class="particle particle-2" opacity="0"/>
+          <circle cx="110" cy="140" r="1.2" fill="#fbbf24" class="particle particle-3" opacity="0"/>
+          <circle cx="220" cy="130" r="1" fill="#fbbf24" class="particle particle-4" opacity="0"/>
+          
           <style>
-            @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-            @keyframes spin { 0% { transform: rotateZ(0deg); } 100% { transform: rotateZ(360deg); } }
-            .coin1 { animation: float 4s ease-in-out infinite; }
-            .coin2 { animation: float 5s ease-in-out infinite 0.5s; }
-            .coin3 { animation: float 6s ease-in-out infinite 1s; }
+            @keyframes floatSmoothCoin1 {
+              0% { transform: translateY(0) translateX(0) scale(0.98); }
+              25% { transform: translateY(-20px) translateX(-5px) scale(1); }
+              50% { transform: translateY(-28px) translateX(8px) scale(1.02); }
+              75% { transform: translateY(-15px) translateX(-3px) scale(1); }
+              100% { transform: translateY(0) translateX(0) scale(0.98); }
+            }
+            
+            @keyframes floatSmoothCoin2 {
+              0% { transform: translateY(0) translateX(0) scale(1); }
+              25% { transform: translateY(-25px) translateX(8px) scale(0.98); }
+              50% { transform: translateY(-18px) translateX(-6px) scale(0.96); }
+              75% { transform: translateY(-30px) translateX(10px) scale(0.99); }
+              100% { transform: translateY(0) translateX(0) scale(1); }
+            }
+            
+            @keyframes floatSmoothCoin3 {
+              0% { transform: translateY(0) translateX(0) scale(0.99); }
+              25% { transform: translateY(-22px) translateX(-8px) scale(1.01); }
+              50% { transform: translateY(-32px) translateX(5px) scale(1); }
+              75% { transform: translateY(-12px) translateX(-4px) scale(0.98); }
+              100% { transform: translateY(0) translateX(0) scale(0.99); }
+            }
+            
+            @keyframes particleFloat {
+              0% { opacity: 0; transform: translateY(0); }
+              20% { opacity: 1; }
+              80% { opacity: 1; }
+              100% { opacity: 0; transform: translateY(-60px); }
+            }
+            
+            .coin-1 { animation: floatSmoothCoin1 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; transform-origin: 150px 110px; }
+            .coin-2 { animation: floatSmoothCoin2 9s cubic-bezier(0.42, 0.05, 0.58, 0.95) infinite 0.3s; transform-origin: 95px 170px; }
+            .coin-3 { animation: floatSmoothCoin3 10s cubic-bezier(0.48, 0.05, 0.52, 0.95) infinite 0.6s; transform-origin: 210px 175px; }
+            
+            .particle-1 { animation: particleFloat 5s ease-out infinite; }
+            .particle-2 { animation: particleFloat 5.5s ease-out infinite 0.8s; }
+            .particle-3 { animation: particleFloat 6s ease-out infinite 1.2s; }
+            .particle-4 { animation: particleFloat 5.8s ease-out infinite 0.4s; }
           </style>
         </svg>
       `;
     }
 
+    // =====================================================
+    // ANIMATED CHART - Professional data viz
+    // =====================================================
     function createChartVisualization() {
       return `
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="chartGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-              <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.2" />
-              <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            <linearGradient id="barGradUp" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.3" />
+              <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.8" />
             </linearGradient>
+            <filter id="chartShadow">
+              <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.2"/>
+            </filter>
           </defs>
-          <!-- Chart bars -->
-          <rect x="50" y="180" width="25" height="80" fill="#8b5cf6" class="bar bar1" opacity="0.8"/>
-          <rect x="95" y="150" width="25" height="110" fill="#8b5cf6" class="bar bar2" opacity="0.85"/>
-          <rect x="140" y="120" width="25" height="140" fill="#8b5cf6" class="bar bar3" opacity="0.9"/>
-          <rect x="185" y="100" width="25" height="160" fill="#8b5cf6" class="bar bar4" opacity="0.85"/>
+          
+          <!-- Grid background -->
+          <g class="grid" opacity="0.1">
+            <line x1="40" y1="240" x2="260" y2="240" stroke="#8b5cf6" stroke-width="1"/>
+            <line x1="40" y1="180" x2="260" y2="180" stroke="#8b5cf6" stroke-width="1"/>
+            <line x1="40" y1="120" x2="260" y2="120" stroke="#8b5cf6" stroke-width="1"/>
+            <line x1="40" y1="60" x2="260" y2="60" stroke="#8b5cf6" stroke-width="1"/>
+          </g>
+          
+          <!-- Bars with gradient -->
+          <g class="bars">
+            <rect x="55" y="160" width="30" height="80" fill="url(#barGradUp)" filter="url(#chartShadow)" class="bar bar-1"/>
+            <rect x="105" y="120" width="30" height="120" fill="url(#barGradUp)" filter="url(#chartShadow)" class="bar bar-2"/>
+            <rect x="155" y="80" width="30" height="160" fill="url(#barGradUp)" filter="url(#chartShadow)" class="bar bar-3"/>
+            <rect x="205" y="60" width="30" height="180" fill="url(#barGradUp)" filter="url(#chartShadow)" class="bar bar-4"/>
+          </g>
+          
           <!-- Trend line -->
-          <polyline points="62.5,180 107.5,150 152.5,120 197.5,100" stroke="#a78bfa" stroke-width="2" fill="none" stroke-linecap="round" class="trend"/>
-          <!-- Grid -->
-          <line x1="40" y1="260" x2="230" y2="260" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
-          <line x1="40" y1="200" x2="230" y2="200" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
-          <line x1="40" y1="140" x2="230" y2="140" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
+          <g class="trend-line">
+            <polyline points="70,170 120,135 170,100 220,70" stroke="#c4b5fd" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="70" cy="170" r="3" fill="#c4b5fd" opacity="0.8"/>
+            <circle cx="120" cy="135" r="3" fill="#c4b5fd" opacity="0.8"/>
+            <circle cx="170" cy="100" r="3" fill="#c4b5fd" opacity="0.8"/>
+            <circle cx="220" cy="70" r="3" fill="#c4b5fd" opacity="0.8"/>
+          </g>
+          
+          <!-- Axis labels -->
+          <text x="70" y="265" font-size="10" fill="#8b5cf6" opacity="0.6" text-anchor="middle">Q1</text>
+          <text x="120" y="265" font-size="10" fill="#8b5cf6" opacity="0.6" text-anchor="middle">Q2</text>
+          <text x="170" y="265" font-size="10" fill="#8b5cf6" opacity="0.6" text-anchor="middle">Q3</text>
+          <text x="220" y="265" font-size="10" fill="#8b5cf6" opacity="0.6" text-anchor="middle">Q4</text>
+          
           <style>
-            @keyframes growBar { 0% { height: 0; } 100% { height: 100%; } }
-            .bar1 { animation: growBar 1s ease-out; }
-            .bar2 { animation: growBar 1s ease-out 0.2s both; }
-            .bar3 { animation: growBar 1s ease-out 0.4s both; }
-            .bar4 { animation: growBar 1s ease-out 0.6s both; }
-            .trend { animation: dashMove 2s ease-in-out infinite; }
-            @keyframes dashMove { 0% { stroke-dashoffset: 300; } 100% { stroke-dashoffset: 0; } }
+            @keyframes barGrowth {
+              0% { 
+                height: 0 !important; 
+                y: 240 !important;
+              }
+              60% { 
+                height: calc(100% + 20px);
+              }
+              100% { 
+                height: 100%;
+              }
+            }
+            
+            @keyframes trendDraw {
+              0% { 
+                stroke-dasharray: 300;
+                stroke-dashoffset: 300;
+              }
+              100% { 
+                stroke-dasharray: 300;
+                stroke-dashoffset: 0;
+              }
+            }
+            
+            @keyframes dotPulse {
+              0%, 100% { r: 3; opacity: 0.8; }
+              50% { r: 5; opacity: 0.4; }
+            }
+            
+            .bar-1 { animation: barGrowth 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+            .bar-2 { animation: barGrowth 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.15s; }
+            .bar-3 { animation: barGrowth 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.3s; }
+            .bar-4 { animation: barGrowth 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.45s; }
+            
+            .trend-line polyline { 
+              animation: trendDraw 2s ease-in-out 0.8s forwards;
+              stroke-dasharray: 300;
+            }
+            
+            circle[cx="70"] { animation: dotPulse 2s ease-in-out infinite 1.2s; }
+            circle[cx="120"] { animation: dotPulse 2s ease-in-out infinite 1.4s; }
+            circle[cx="170"] { animation: dotPulse 2s ease-in-out infinite 1.6s; }
+            circle[cx="220"] { animation: dotPulse 2s ease-in-out infinite 1.8s; }
           </style>
         </svg>
       `;
     }
 
+    // =====================================================
+    // ROCKET - Powerful upward motion
+    // =====================================================
     function createRocketVisualization() {
       return `
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+            <linearGradient id="rocketBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ff6b8a;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#ec4899;stop-opacity:1" />
               <stop offset="100%" style="stop-color:#be123c;stop-opacity:1" />
             </linearGradient>
+            <radialGradient id="windowGlow">
+              <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.9" />
+              <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.4" />
+            </radialGradient>
+            <filter id="rocketGlow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <linearGradient id="flameGrad1" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#f59e0b;stop-opacity:0.8" />
+              <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0" />
+            </linearGradient>
+            <linearGradient id="flameGrad2" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#ff8c42;stop-opacity:0.8" />
+              <stop offset="100%" style="stop-color:#ff8c42;stop-opacity:0" />
+            </linearGradient>
           </defs>
+          
           <!-- Rocket body -->
-          <ellipse cx="150" cy="120" rx="25" ry="40" fill="url(#rocketGrad)" class="rocket-body"/>
+          <ellipse cx="150" cy="120" rx="28" ry="50" fill="url(#rocketBody)" filter="url(#rocketGlow)"/>
+          
           <!-- Window -->
-          <circle cx="150" cy="100" r="8" fill="#60a5fa" opacity="0.8"/>
+          <circle cx="150" cy="95" r="10" fill="url(#windowGlow)" filter="url(#rocketGlow)"/>
+          <circle cx="150" cy="95" r="7" fill="#93c5fd" opacity="0.6"/>
+          
           <!-- Left fin -->
-          <polygon points="125,160 110,180 120,165" fill="#ec4899"/>
+          <polygon points="122,165 100,190 115,170" fill="#be123c" opacity="0.9"/>
+          
           <!-- Right fin -->
-          <polygon points="175,160 190,180 180,165" fill="#ec4899"/>
-          <!-- Flame 1 -->
-          <polygon points="140,165 145,200 150,170" fill="#fbbf24" class="flame flame1" opacity="0.9"/>
-          <!-- Flame 2 -->
-          <polygon points="150,170 160,205 155,175" fill="#f59e0b" class="flame flame2" opacity="0.8"/>
-          <!-- Flame 3 -->
-          <polygon points="160,165 155,200 150,170" fill="#fbbf24" class="flame flame3" opacity="0.7"/>
+          <polygon points="178,165 200,190 185,170" fill="#be123c" opacity="0.9"/>
+          
+          <!-- Main flame -->
+          <path d="M 140 180 Q 135 210 140 240 Q 150 215 150 180 Q 165 210 160 240 Q 165 210 160 180 Z" fill="url(#flameGrad1)" class="flame flame-center"/>
+          
+          <!-- Left flame accent -->
+          <path d="M 130 185 Q 125 210 130 235 Q 135 215 130 185 Z" fill="url(#flameGrad2)" class="flame flame-left" opacity="0.8"/>
+          
+          <!-- Right flame accent -->
+          <path d="M 170 185 Q 175 210 170 235 Q 165 215 170 185 Z" fill="url(#flameGrad2)" class="flame flame-right" opacity="0.8"/>
+          
+          <!-- Glow particles -->
+          <circle cx="145" cy="250" r="1" fill="#fbbf24" class="spark spark-1" opacity="0"/>
+          <circle cx="155" cy="255" r="0.8" fill="#ff6b6b" class="spark spark-2" opacity="0"/>
+          <circle cx="150" cy="260" r="1.2" fill="#fbbf24" class="spark spark-3" opacity="0"/>
+          
           <!-- Stars -->
-          <circle cx="80" cy="60" r="2" fill="#60a5fa" class="star star1" opacity="0"/>
-          <circle cx="220" cy="80" r="2" fill="#60a5fa" class="star star2" opacity="0"/>
-          <circle cx="100" cy="200" r="2" fill="#60a5fa" class="star star3" opacity="0"/>
+          <polygon points="80,60 85,70 95,70 87,76 90,86 80,80 70,86 73,76 65,70 75,70" fill="#60a5fa" opacity="0" class="star star-1"/>
+          <polygon points="230,80 235,90 245,90 237,96 240,106 230,100 220,106 223,96 215,90 225,90" fill="#60a5fa" opacity="0" class="star star-2"/>
+          
           <style>
-            @keyframes rocketFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-            @keyframes flameFlicker { 0%, 100% { transform: scaleY(1); } 25% { transform: scaleY(1.1); } 50% { transform: scaleY(0.9); } 75% { transform: scaleY(1.15); } }
-            @keyframes starTwinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-            .rocket-body { animation: rocketFloat 3s ease-in-out infinite; }
-            .flame1 { animation: flameFlicker 0.3s ease-in-out infinite; }
-            .flame2 { animation: flameFlicker 0.3s ease-in-out infinite 0.1s; }
-            .flame3 { animation: flameFlicker 0.3s ease-in-out infinite 0.2s; }
-            .star1 { animation: starTwinkle 2s ease-in-out infinite; }
-            .star2 { animation: starTwinkle 2.5s ease-in-out infinite 0.5s; }
-            .star3 { animation: starTwinkle 2s ease-in-out infinite 1s; }
+            @keyframes rocketLift {
+              0% { 
+                transform: translateY(0) scale(0.95) rotateZ(-0.5deg);
+                opacity: 0;
+              }
+              5% { opacity: 1; }
+              50% {
+                transform: translateY(-80px) scale(1) rotateZ(0deg);
+              }
+              100% {
+                transform: translateY(-120px) scale(1.02) rotateZ(0.5deg);
+              }
+            }
+            
+            @keyframes flameFlutter {
+              0%, 100% { 
+                d: path('M 140 180 Q 135 210 140 240 Q 150 215 150 180 Q 165 210 160 240 Q 165 210 160 180 Z');
+              }
+              25% { 
+                d: path('M 138 180 Q 132 212 138 242 Q 150 213 150 180 Q 168 212 162 242 Q 167 212 162 180 Z');
+              }
+              50% { 
+                d: path('M 142 180 Q 137 208 142 238 Q 150 214 150 180 Q 163 208 158 238 Q 163 208 158 180 Z');
+              }
+              75% { 
+                d: path('M 139 180 Q 133 211 139 241 Q 150 215 150 180 Q 167 211 161 241 Q 166 211 161 180 Z');
+              }
+            }
+            
+            @keyframes flameSide {
+              0%, 100% { 
+                transform: scaleY(1) rotateZ(0deg);
+              }
+              50% { 
+                transform: scaleY(1.15) rotateZ(-2deg);
+              }
+            }
+            
+            @keyframes sparkBurst {
+              0% {
+                opacity: 1;
+                transform: translateY(0) translateX(0);
+              }
+              100% {
+                opacity: 0;
+                transform: translateY(-50px) translateX(var(--x));
+              }
+            }
+            
+            @keyframes starTwinkle {
+              0%, 100% { opacity: 0; }
+              30% { opacity: 1; }
+              70% { opacity: 1; }
+            }
+            
+            ellipse { animation: rocketLift 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+            circle[cx="150"] { animation: rocketLift 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+            polygon { animation: rocketLift 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; }
+            
+            .flame-center { animation: flameFlutter 0.4s ease-in-out infinite; }
+            .flame-left { animation: flameSide 0.3s ease-in-out infinite; }
+            .flame-right { animation: flameSide 0.35s ease-in-out infinite 0.1s; }
+            
+            .spark-1 { animation: sparkBurst 1.5s ease-out infinite 0.2s; --x: 15px; }
+            .spark-2 { animation: sparkBurst 1.8s ease-out infinite 0.4s; --x: -12px; }
+            .spark-3 { animation: sparkBurst 1.6s ease-out infinite 0.1s; --x: 8px; }
+            
+            .star-1 { animation: starTwinkle 3s ease-in-out infinite; }
+            .star-2 { animation: starTwinkle 3.5s ease-in-out infinite 1s; }
           </style>
         </svg>
       `;
     }
 
+    // =====================================================
+    // TREE - Living, breathing nature
+    // =====================================================
     function createTreeVisualization() {
       return `
         <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="treeGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <linearGradient id="trunkGrad" x1="0%" y1="100%" x2="100%" y2="0%">
               <stop offset="0%" style="stop-color:#78350f;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#92400e;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#92400e;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#b45309;stop-opacity:0.8" />
             </linearGradient>
+            <radialGradient id="foliageGrad" cx="40%" cy="40%">
+              <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
+              <stop offset="70%" style="stop-color:#10b981;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+            </radialGradient>
+            <radialGradient id="sunGlow">
+              <stop offset="0%" style="stop-color:#fef08a;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:0.8" />
+              <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.2" />
+            </radialGradient>
+            <filter id="treeShadow">
+              <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.25"/>
+            </filter>
           </defs>
+          
+          <!-- Sky background -->
+          <rect width="300" height="300" fill="none"/>
+          
           <!-- Trunk -->
-          <rect x="135" y="180" width="30" height="80" fill="url(#treeGrad)"/>
-          <!-- Foliage layers -->
-          <circle cx="150" cy="100" r="50" fill="#10b981" class="foliage foliage1"/>
-          <circle cx="120" cy="130" r="35" fill="#059669" class="foliage foliage2"/>
-          <circle cx="180" cy="130" r="35" fill="#059669" class="foliage foliage3"/>
-          <!-- Sun (hidden, shows on hover) -->
-          <circle cx="220" cy="60" r="20" fill="#fbbf24" class="sun" opacity="0"/>
-          <circle cx="220" cy="60" r="25" fill="#fbbf24" opacity="0.3" class="sun-glow" r="25"/>
-          <!-- Leaves falling -->
-          <circle cx="100" cy="120" r="3" fill="#10b981" class="leaf leaf1" opacity="0"/>
-          <circle cx="130" cy="110" r="2.5" fill="#10b981" class="leaf leaf2" opacity="0"/>
-          <circle cx="170" cy="115" r="3" fill="#10b981" class="leaf leaf3" opacity="0"/>
-          <circle cx="200" cy="125" r="2.5" fill="#10b981" class="leaf leaf4" opacity="0"/>
+          <rect x="135" y="170" width="30" height="110" fill="url(#trunkGrad)" filter="url(#treeShadow)"/>
+          <ellipse cx="150" cy="175" rx="16" ry="8" fill="#92400e" opacity="0.4"/>
+          
+          <!-- Main foliage (three layers) -->
+          <g class="foliage-group">
+            <!-- Back layer -->
+            <circle cx="150" cy="85" r="60" fill="url(#foliageGrad)" filter="url(#treeShadow)" opacity="0.8" class="foliage-back"/>
+            
+            <!-- Mid layer left -->
+            <circle cx="110" cy="120" r="45" fill="url(#foliageGrad)" filter="url(#treeShadow)" opacity="0.85" class="foliage-left"/>
+            
+            <!-- Mid layer right -->
+            <circle cx="190" cy="120" r="45" fill="url(#foliageGrad)" filter="url(#treeShadow)" opacity="0.85" class="foliage-right"/>
+            
+            <!-- Front layer -->
+            <circle cx="150" cy="130" r="55" fill="url(#foliageGrad)" filter="url(#treeShadow)" opacity="0.9" class="foliage-front"/>
+          </g>
+          
+          <!-- Sun (hidden initially, appears on hover) -->
+          <g class="sun-group" opacity="0">
+            <circle cx="240" cy="50" r="25" fill="url(#sunGlow)" class="sun-main"/>
+            <circle cx="240" cy="50" r="30" fill="#fbbf24" opacity="0.2" class="sun-halo"/>
+            <line x1="240" y1="15" x2="240" y2="5" stroke="#fbbf24" stroke-width="2" class="sun-ray"/>
+            <line x1="240" y1="85" x2="240" y2="95" stroke="#fbbf24" stroke-width="2" class="sun-ray"/>
+            <line x1="275" y1="50" x2="285" y2="50" stroke="#fbbf24" stroke-width="2" class="sun-ray"/>
+            <line x1="205" y1="50" x2="195" y2="50" stroke="#fbbf24" stroke-width="2" class="sun-ray"/>
+          </g>
+          
+          <!-- Falling leaves -->
+          <g class="leaves">
+            <ellipse cx="110" cy="100" rx="4" ry="6" fill="#10b981" class="leaf leaf-1" opacity="0" transform="rotate(25)"/>
+            <ellipse cx="140" cy="90" rx="3.5" ry="5" fill="#10b981" class="leaf leaf-2" opacity="0" transform="rotate(45)"/>
+            <ellipse cx="170" cy="110" rx="4" ry="6" fill="#10b981" class="leaf leaf-3" opacity="0" transform="rotate(65)"/>
+            <ellipse cx="130" cy="130" rx="3.5" ry="5" fill="#10b981" class="leaf leaf-4" opacity="0" transform="rotate(85)"/>
+            <ellipse cx="180" cy="140" rx="4" ry="6" fill="#10b981" class="leaf leaf-5" opacity="0" transform="rotate(20)"/>
+          </g>
+          
           <style>
-            @keyframes sway { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(2deg); } 75% { transform: rotate(-2deg); } }
-            @keyframes sunRise { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
-            @keyframes leafFall { 0% { transform: translateY(-100px) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(200px) translateX(30px); opacity: 0; } }
-            .foliage { animation: sway 4s ease-in-out infinite; transform-origin: 150px 180px; }
-            .foliage1 { animation-duration: 4s; }
-            .foliage2 { animation-duration: 5s; animation-delay: 0.5s; }
-            .foliage3 { animation-duration: 5.5s; animation-delay: 1s; }
-            .sun { animation: sunRise 0.6s ease-out forwards; }
-            .sun-glow { animation: sunRise 0.6s ease-out forwards; }
-            .leaf1 { animation: leafFall 3s ease-in infinite; }
-            .leaf2 { animation: leafFall 3.5s ease-in infinite 0.3s; }
-            .leaf3 { animation: leafFall 3s ease-in infinite 0.6s; }
-            .leaf4 { animation: leafFall 3.5s ease-in infinite 0.9s; }
+            @keyframes treeSway {
+              0%, 100% { 
+                transform: rotate(0deg);
+              }
+              25% { 
+                transform: rotate(1.5deg);
+              }
+              50% { 
+                transform: rotate(0deg);
+              }
+              75% { 
+                transform: rotate(-1.5deg);
+              }
+            }
+            
+            @keyframes foliageBreathe {
+              0%, 100% {
+                r: 45;
+                opacity: 0.85;
+              }
+              50% {
+                r: 47;
+                opacity: 0.88;
+              }
+            }
+            
+            @keyframes sunRise {
+              0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(20px);
+              }
+              100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+              }
+            }
+            
+            @keyframes sunGlowPulse {
+              0%, 100% {
+                r: 30;
+                opacity: 0.2;
+              }
+              50% {
+                r: 32;
+                opacity: 0.35;
+              }
+            }
+            
+            @keyframes rayRotate {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+            
+            @keyframes leafFall {
+              0% {
+                opacity: 0;
+                transform: translateY(-40px) translateX(0) rotateZ(0deg) rotateX(0deg);
+              }
+              10% {
+                opacity: 1;
+              }
+              90% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+                transform: translateY(120px) translateX(var(--x-drift)) rotateZ(360deg) rotateX(180deg);
+              }
+            }
+            
+            .foliage-group {
+              animation: treeSway 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+              transform-origin: 150px 180px;
+            }
+            
+            .foliage-back {
+              animation: foliageBreathe 5s ease-in-out infinite;
+            }
+            
+            .foliage-left {
+              animation: foliageBreathe 5.5s ease-in-out infinite 0.3s;
+            }
+            
+            .foliage-right {
+              animation: foliageBreathe 5.2s ease-in-out infinite 0.5s;
+            }
+            
+            .foliage-front {
+              animation: foliageBreathe 5.8s ease-in-out infinite 0.7s;
+            }
+            
+            .sun-group {
+              animation: sunRise 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            }
+            
+            .sun-halo {
+              animation: sunGlowPulse 2s ease-in-out infinite;
+            }
+            
+            .sun-ray {
+              animation: rayRotate 20s linear infinite;
+              transform-origin: 240px 50px;
+            }
+            
+            .leaf-1 { animation: leafFall 3.5s ease-in infinite; --x-drift: 25px; }
+            .leaf-2 { animation: leafFall 4s ease-in infinite 0.5s; --x-drift: -18px; }
+            .leaf-3 { animation: leafFall 3.8s ease-in infinite 1s; --x-drift: 20px; }
+            .leaf-4 { animation: leafFall 4.2s ease-in infinite 1.5s; --x-drift: -22px; }
+            .leaf-5 { animation: leafFall 3.6s ease-in infinite 2s; --x-drift: 15px; }
           </style>
         </svg>
       `;
@@ -973,12 +1360,14 @@
           visual.addEventListener('mouseenter', () => {
             const fund = funds[key];
             if (fund.visualType === 'tree') {
-              const sun = visual.querySelector('.sun');
+              const sunGroup = visual.querySelector('.sun-group');
               const leaves = visual.querySelectorAll('.leaf');
-              if (sun) sun.style.animation = 'none'; // Reset
-              if (sun) sun.offsetHeight; // Trigger reflow
-              if (sun) sun.style.animation = '';
-              leaves.forEach(leaf => {
+              if (sunGroup) {
+                sunGroup.style.animation = 'none';
+                sunGroup.offsetHeight;
+                sunGroup.style.animation = '';
+              }
+              leaves.forEach((leaf, i) => {
                 leaf.style.animation = 'none';
                 leaf.offsetHeight;
                 leaf.style.animation = '';
