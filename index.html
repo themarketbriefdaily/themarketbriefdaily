@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Market Brief Daily — Premium Institutional Analysis</title>
-  <meta name="description" content="Institutional-grade market analysis with real-time data, advanced strategies, and expert insights." />
+  <title>The Market Brief Daily</title>
+  <meta name="description" content="Institutional-grade market analysis and quantitative investment strategies." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@r128/build/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   
   <style>
     * {
@@ -47,7 +46,6 @@
       --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
       --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
-      --glass: rgba(255, 255, 255, 0.7);
     }
 
     h1 {
@@ -127,7 +125,7 @@
 
     nav a:hover { color: var(--text-primary); }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -141,13 +139,24 @@
       background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
 
-    #three-canvas {
+    #canvas-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       opacity: 0.5;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.06) 0%, transparent 80%);
+      pointer-events: none;
     }
 
     .hero-content {
@@ -200,6 +209,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      will-change: transform, box-shadow;
     }
 
     .btn-primary {
@@ -275,12 +285,40 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Ticker Section */
-    .ticker-section {
-      padding: 120px 48px;
+    /* SVG Morph Section */
+    .morph-section {
+      padding: 160px 48px;
+      background: #fff;
+      position: relative;
+      min-height: 200vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .morph-container {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #morph-svg {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+    }
+
+    /* Carousel Section */
+    .carousel-section {
+      padding: 160px 48px;
       background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
+      position: relative;
       border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
     }
 
     .section-wrapper {
@@ -290,7 +328,7 @@
 
     .section-header {
       text-align: center;
-      margin-bottom: 80px;
+      margin-bottom: 120px;
       opacity: 0;
       transform: translateY(40px);
     }
@@ -315,99 +353,57 @@
       margin: 0 auto;
     }
 
-    .ticker-container {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(20px);
+    /* Live Chart Section */
+    .chart-section {
+      padding: 80px 48px;
+      background: #fff;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      margin: 80px 0;
+    }
+
+    .chart-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.02) 100%);
       border: 1px solid var(--border-light);
       border-radius: 16px;
-      padding: 40px;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .ticker-chart {
-      width: 100%;
-      height: 300px;
-      margin-bottom: 20px;
-    }
-
-    .ticker-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .ticker-stat {
-      text-align: center;
+      padding: 32px;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(40px);
     }
 
-    .ticker-stat-value {
-      font-size: 2rem;
+    #performance-chart {
+      width: 100%;
+      max-height: 400px;
+    }
+
+    .chart-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .chart-stat {
+      text-align: center;
+    }
+
+    .chart-stat-value {
+      font-size: 24px;
       font-weight: 800;
       color: var(--accent);
-      font-family: 'SF Mono', 'Monaco', monospace;
+      margin-bottom: 4px;
     }
 
-    .ticker-stat-label {
-      font-size: 12px;
+    .chart-stat-label {
+      font-size: 11px;
       color: var(--text-tertiary);
-      margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
-    /* Blob Section */
-    .blob-section {
-      padding: 160px 48px;
-      background: #fff;
-      position: relative;
-    }
-
-    .blob-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      margin-bottom: 100px;
-    }
-
-    .blob-visual {
-      width: 100%;
-      height: 500px;
-      position: relative;
-    }
-
-    .blob-visual svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 20px 40px rgba(0, 102, 255, 0.15));
-    }
-
-    .blob-info {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-
-    .blob-info h3 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-
-    .blob-info p {
-      font-size: 1.05rem;
-      margin-bottom: 24px;
-      line-height: 1.8;
-    }
-
-    /* Carousel Section */
-    .carousel-section {
-      padding: 160px 48px;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
-      position: relative;
-    }
-
+    /* Carousel */
     .carousel-container {
       position: relative;
       margin-bottom: 80px;
@@ -441,7 +437,13 @@
       transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       transform-style: preserve-3d;
       cursor: pointer;
+      will-change: transform;
     }
+
+    .card-wrapper:nth-child(1) .flip-card { --delay: 0s; }
+    .card-wrapper:nth-child(2) .flip-card { --delay: 0.1s; }
+    .card-wrapper:nth-child(3) .flip-card { --delay: 0.2s; }
+    .card-wrapper:nth-child(4) .flip-card { --delay: 0.3s; }
 
     .flip-card-content {
       position: absolute;
@@ -453,8 +455,6 @@
       border: 1px solid var(--border-light);
       display: flex;
       flex-direction: column;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(20px);
     }
 
     .flip-card-front {
@@ -539,7 +539,7 @@
       gap: 20px;
       flex: 1;
       opacity: 0;
-      animation: fadeIn 0.6s ease-out forwards;
+      animation: fadeIn 0.6s ease-out var(--delay) forwards;
     }
 
     @keyframes fadeIn {
@@ -668,6 +668,7 @@
       transition: all 0.3s;
       font-size: 18px;
       font-weight: 600;
+      will-change: transform;
     }
 
     .carousel-btn:hover {
@@ -677,35 +678,31 @@
       transform: scale(1.05);
     }
 
-    /* Testimonials Section */
+    /* Testimonials */
     .testimonials-section {
       padding: 160px 48px;
       background: #fff;
       border-top: 1px solid var(--border-light);
     }
 
-    .testimonials-carousel {
+    .testimonial-carousel {
       position: relative;
-      width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
-      height: 280px;
-      overflow: hidden;
+      height: 200px;
     }
 
     .testimonial {
       position: absolute;
       width: 100%;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
       transition: opacity 0.7s ease-out, transform 0.7s ease-out;
       text-align: center;
       padding: 40px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(20px);
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.02) 100%);
       border: 1px solid var(--border-light);
       border-radius: 16px;
-      box-shadow: var(--shadow-lg);
     }
 
     .testimonial.active {
@@ -714,21 +711,23 @@
       z-index: 1;
     }
 
-    .testimonial-quote {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      margin-bottom: 16px;
-      font-style: italic;
+    .testimonial-text {
+      font-size: 18px;
+      font-weight: 500;
       color: var(--text-primary);
+      margin-bottom: 16px;
+      line-height: 1.6;
     }
 
     .testimonial-author {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 13px;
       color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    /* Stats Section */
+    /* Stats */
     .stats-section {
       padding: 80px 0;
       background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
@@ -765,10 +764,10 @@
       font-weight: 600;
     }
 
-    /* Features Section */
+    /* Features */
     .features-section {
       padding: 160px 48px;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
+      background: #fff;
     }
 
     .features-grid {
@@ -782,19 +781,19 @@
       flex-direction: column;
       gap: 20px;
       padding: 32px;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(20px);
+      background: #fff;
       border: 1px solid var(--border-light);
       border-radius: 12px;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 0;
       transform: translateY(40px);
+      will-change: transform, box-shadow;
     }
 
     .feature-card:hover {
       border-color: var(--accent);
       box-shadow: var(--shadow-xl);
-      background: rgba(255, 255, 255, 0.8);
+      background: var(--accent-light);
       transform: translateY(-12px);
     }
 
@@ -859,11 +858,27 @@
       color: var(--text-tertiary);
     }
 
+    /* Loading Animation */
+    .loading-text {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Responsive */
     @media (max-width: 1200px) {
       header { padding: 0 32px; }
-      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 100px 32px; }
-      .blob-container { grid-template-columns: 1fr; gap: 48px; }
+      .carousel-section, .features-section, .testimonials-section { padding: 100px 32px; }
       .flip-card { width: 320px; height: 420px; }
     }
 
@@ -873,10 +888,9 @@
       .hero { padding-top: 56px; }
       .hero-content { padding: 0 20px; }
       .hero h1 { font-size: 2.2rem; }
-      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 80px 20px; }
-      .ticker-container { padding: 20px; }
-      .ticker-chart { height: 250px; }
-      .flip-card { width: 90vw; height: auto; aspect-ratio: 3/4; }
+      .carousel-section, .features-section, .testimonials-section { padding: 80px 20px; }
+      .morph-section { padding: 80px 20px; }
+      .flip-card { width: 90vw; max-width: 380px; height: auto; aspect-ratio: 3/4; }
       .features-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
     }
@@ -884,10 +898,11 @@
     @media (max-width: 480px) {
       header { padding: 0 16px; }
       h1 { font-size: 1.8rem; }
-      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 60px 16px; }
+      .carousel-section, .features-section, .testimonials-section { padding: 60px 16px; }
       .btn { width: 100%; justify-content: center; }
       .flip-card { width: 100%; }
       .footer-grid { grid-template-columns: 1fr; }
+      .chart-info { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -905,12 +920,12 @@
     </div>
   </header>
 
-  <!-- Hero with Three.js Background -->
+  <!-- Hero Section with Three.js Background -->
   <section class="hero">
-    <canvas id="three-canvas"></canvas>
+    <div id="canvas-container"></div>
     <div class="hero-content">
       <h1>Institutional Market Analysis</h1>
-      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. Real-time data. Expert research. No agenda.</p>
+      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
       <div class="hero-cta">
         <a href="#carousel" class="btn btn-primary">Explore Funds</a>
         <a href="/posts.html" class="btn btn-secondary">Read Research</a>
@@ -922,76 +937,55 @@
     </div>
   </section>
 
-  <!-- Live Ticker Section -->
-  <section class="ticker-section">
-    <div class="section-wrapper">
-      <div class="section-header">
-        <span class="label">Real-Time Analytics</span>
-        <h2>Live Market Data</h2>
-        <p>Monitor fund performance and market metrics in real-time with our advanced analytics dashboard.</p>
-      </div>
+  <!-- SVG Morphing Section -->
+  <section class="morph-section">
+    <div class="morph-container">
+      <svg id="morph-svg" viewBox="0 0 800 400">
+        <path id="morph-path" d="M400,50 C550,50 650,150 650,250 C650,350 550,350 400,350 C250,350 150,350 150,250 C150,150 250,50 400,50 Z" fill="url(#gradient)" />
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0052cc;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </section>
 
-      <div class="ticker-container">
-        <div class="ticker-chart">
-          <canvas id="liveChart"></canvas>
-        </div>
-        <div class="ticker-stats">
-          <div class="ticker-stat">
-            <div class="ticker-stat-value">+18.32%</div>
-            <div class="ticker-stat-label">Fund I Return</div>
+  <!-- Live Chart Section -->
+  <div class="section-wrapper">
+    <div class="chart-section">
+      <div class="section-header" style="margin-bottom: 48px;">
+        <span class="label">Performance Analytics</span>
+        <h2>Real-Time Market Data</h2>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="performance-chart"></canvas>
+        <div class="chart-info">
+          <div class="chart-stat">
+            <div class="chart-stat-value">+18.32%</div>
+            <div class="chart-stat-label">1Y Return (Fund I)</div>
           </div>
-          <div class="ticker-stat">
-            <div class="ticker-stat-value">$2.4B</div>
-            <div class="ticker-stat-label">Total AUM</div>
+          <div class="chart-stat">
+            <div class="chart-stat-value">+31.45%</div>
+            <div class="chart-stat-label">1Y Return (Fund III)</div>
           </div>
-          <div class="ticker-stat">
-            <div class="ticker-stat-value">24/7</div>
-            <div class="ticker-stat-label">Monitoring</div>
+          <div class="chart-stat">
+            <div class="chart-stat-value">24.56%</div>
+            <div class="chart-stat-label">Benchmark (SPY)</div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Morphing SVG Blob Section -->
-  <section class="blob-section">
-    <div class="section-wrapper">
-      <div class="section-header" style="margin-bottom: 120px;">
-        <span class="label">Interactive Visualization</span>
-        <h2>Morphing Data Shapes</h2>
-        <p>Watch as our analysis transforms and evolves with market conditions.</p>
-      </div>
-
-      <div class="blob-container">
-        <div class="blob-visual">
-          <svg id="blobSvg" viewBox="0 0 400 400">
-            <defs>
-              <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#0052cc;stop-opacity:1" />
-              </linearGradient>
-            </defs>
-            <path id="morphBlob" fill="url(#blobGradient)" d="M328,195Q326,240,278,261.5Q230,283,183,270.5Q136,258,110.5,219Q85,180,89.5,120.5Q94,61,150,58.5Q206,56,258,72.5Q310,89,323,139.5Q336,190,328,195Z"/>
-          </svg>
-        </div>
-
-        <div class="blob-info">
-          <h3>Advanced Analytics</h3>
-          <p>Our proprietary algorithms analyze market structure, physical supply dynamics, and macro transmission mechanisms in real-time. Every decision is backed by rigorous quantitative analysis.</p>
-          <p>Watch the shape transform as market conditions evolve. Each morphing represents a shift in our analytical focus.</p>
-          <a href="/investments.html" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fund Carousel Section -->
+  <!-- Carousel Section -->
   <section class="carousel-section" id="carousel">
     <div class="section-wrapper">
       <div class="section-header">
         <span class="label">Investment Funds</span>
         <h2>Explore Our Strategies</h2>
-        <p>Four quantitative frameworks designed for distinct market conditions. Click or hover to flip cards.</p>
+        <p>Four quantitative frameworks for distinct market conditions. Click or hover to flip cards.</p>
       </div>
 
       <div class="carousel-container">
@@ -1010,13 +1004,12 @@
   <!-- Testimonials Section -->
   <section class="testimonials-section">
     <div class="section-wrapper">
-      <div class="section-header">
+      <div class="section-header" style="margin-bottom: 80px;">
         <span class="label">Social Proof</span>
-        <h2>What Our Clients Say</h2>
-        <p>Trusted by institutional investors and portfolio managers worldwide.</p>
+        <h2>Client Testimonials</h2>
       </div>
 
-      <div class="testimonials-carousel" id="testimonialsCarousel">
+      <div class="testimonial-carousel" id="testimonialCarousel">
         <!-- Testimonials populated by JavaScript -->
       </div>
     </div>
@@ -1120,140 +1113,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ============================================
-    // THREE.JS WAVY MESH BACKGROUND
-    // ============================================
-    function initThreeJS() {
-      const canvas = document.getElementById('three-canvas');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 1.5, 4);
-
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0);
-
-      const geometry = new THREE.PlaneGeometry(6, 3, 120, 60);
-
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          uTime: { value: 0 },
-          uColorA: { value: new THREE.Color("#0066ff") },
-          uColorB: { value: new THREE.Color("#71F2F1") },
-        },
-        vertexShader: `
-          uniform float uTime;
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            vec3 pos = position;
-            float freq = 3.0;
-            float wave = sin((pos.x + uTime)*freq) * 0.12 + cos((pos.y + uTime)*freq*1.2) * 0.15;
-            pos.z += wave;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 uColorA;
-          uniform vec3 uColorB;
-          varying vec2 vUv;
-          void main() {
-            vec3 color = mix(uColorA, uColorB, vUv.y);
-            gl_FragColor = vec4(color, 1.0);
-          }
-        `,
-        side: THREE.DoubleSide,
-      });
-
-      const mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
-
-      const light = new THREE.AmbientLight(0xffffff, 0.6);
-      scene.add(light);
-
-      function animate(time) {
-        material.uniforms.uTime.value = time * 0.001;
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-
-      animate(0);
-
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-    }
-
-    // ============================================
-    // CHART.JS LIVE TICKER
-    // ============================================
-    function initLiveChart() {
-      const ctx = document.getElementById('liveChart').getContext('2d');
-      const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: 'Fund I Performance',
-              data: [],
-              borderColor: '#0066ff',
-              backgroundColor: 'rgba(0, 102, 255, 0.1)',
-              borderWidth: 2,
-              fill: true,
-              tension: 0.4,
-              pointRadius: 0,
-              pointHoverRadius: 6,
-            },
-            {
-              label: 'Benchmark (SPY)',
-              data: [],
-              borderColor: '#999',
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              borderDash: [5, 5],
-              tension: 0.4,
-              pointRadius: 0,
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { display: true, position: 'top' } },
-          scales: {
-            y: { beginAtZero: true, max: 35 }
-          }
-        }
-      });
-
-      // Simulate real-time data
-      let counter = 0;
-      setInterval(() => {
-        const time = new Date().toLocaleTimeString();
-        const fundValue = 18 + Math.sin(counter * 0.1) * 5 + Math.random() * 2;
-        const spyValue = 24 + Math.sin(counter * 0.08) * 3 + Math.random() * 1.5;
-
-        if (chart.data.labels.length > 30) {
-          chart.data.labels.shift();
-          chart.data.datasets[0].data.shift();
-          chart.data.datasets[1].data.shift();
-        }
-
-        chart.data.labels.push(time);
-        chart.data.datasets[0].data.push(fundValue);
-        chart.data.datasets[1].data.push(spyValue);
-        chart.update('none');
-        counter++;
-      }, 800);
-    }
-
-    // ============================================
-    // FUND DATA
-    // ============================================
+    // Fund Data
     const funds = [
       {
         name: 'Active Rotation',
@@ -1311,40 +1171,277 @@
 
     const testimonials = [
       {
-        quote: "The Market Brief Daily transformed how we approach quantitative investing. Their research is rigorous and actionable.",
-        author: "- Sarah Chen, CIO at Apex Capital"
+        text: "The market analysis provided has transformed our investment approach. Incredibly insightful.",
+        author: "Sarah Chen, Portfolio Manager"
       },
       {
-        quote: "Institutional-grade analysis that actually makes sense. No fluff, just pure data-driven insights.",
-        author: "- Michael Rodriguez, Portfolio Manager"
+        text: "Professional, data-driven, and transparent. Exactly what institutional investors need.",
+        author: "James Morrison, Chief Investment Officer"
       },
       {
-        quote: "Their fund performance speaks for itself. Consistent, disciplined, and ahead of the curve.",
-        author: "- Emma Thompson, Chief Investment Officer"
-      },
-      {
-        quote: "Finally, a research firm that understands market structure at the granular level.",
-        author: "- James Liu, Trading Director"
+        text: "Their quantitative frameworks are among the best I've seen in 15 years of investing.",
+        author: "Elena Rodriguez, Senior Analyst"
       }
     ];
 
-    // ============================================
+    // ========================================
+    // THREE.JS ANIMATED BACKGROUND
+    // ========================================
+    function initThreeJS() {
+      const container = document.getElementById('canvas-container');
+      if (!container) return;
+
+      let scene, camera, renderer, mesh;
+      let animationId;
+
+      function init() {
+        // Scene setup
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xfafafa);
+
+        // Camera
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.z = 2;
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Create wavy mesh
+        const geometry = new THREE.PlaneGeometry(4, 4, 64, 64);
+        const material = new THREE.MeshPhongMaterial({
+          color: 0x0066ff,
+          emissive: 0x0052cc,
+          shininess: 100,
+          wireframe: false,
+          flatShading: false
+        });
+        mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Store original positions
+        const positionAttribute = geometry.getAttribute('position');
+        geometry.userData.originalPositions = positionAttribute.array.slice();
+
+        // Animation loop
+        let time = 0;
+        function animate() {
+          animationId = requestAnimationFrame(animate);
+          time += 0.004;
+
+          const positionAttribute = geometry.getAttribute('position');
+          const positions = positionAttribute.array;
+          const originalPositions = geometry.userData.originalPositions;
+
+          for (let i = 0; i < positions.length; i += 3) {
+            const x = originalPositions[i];
+            const y = originalPositions[i + 1];
+            const z = originalPositions[i + 2];
+
+            positions[i + 2] = z + Math.sin(x * 3 + time) * 0.15 + Math.cos(y * 3 + time) * 0.15;
+          }
+
+          positionAttribute.needsUpdate = true;
+          geometry.computeVertexNormals();
+
+          mesh.rotation.x += 0.0002;
+          mesh.rotation.y += 0.0003;
+
+          renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        function onWindowResize() {
+          const newWidth = container.clientWidth;
+          const newHeight = container.clientHeight;
+          camera.aspect = newWidth / newHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(newWidth, newHeight);
+        }
+
+        window.addEventListener('resize', onWindowResize);
+      }
+
+      init();
+    }
+
+    // ========================================
+    // SVG MORPHING WITH SCROLL
+    // ========================================
+    function initSVGMorph() {
+      const morphPath = document.getElementById('morph-path');
+      if (!morphPath) return;
+
+      const paths = [
+        "M400,50 C550,50 650,150 650,250 C650,350 550,350 400,350 C250,350 150,350 150,250 C150,150 250,50 400,50 Z",
+        "M400,80 Q650,80 700,250 Q650,420 400,420 Q150,420 100,250 Q150,80 400,80 Z",
+        "M200,100 Q150,200 200,300 Q300,380 400,380 Q500,380 600,300 Q650,200 600,100 Q500,50 400,50 Q300,50 200,100 Z",
+        "M400,50 L750,150 L700,350 L400,380 L100,350 L50,150 Z"
+      ];
+
+      ScrollTrigger.create({
+        trigger: '.morph-section',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const index = Math.floor(progress * (paths.length - 1));
+          const nextIndex = Math.min(index + 1, paths.length - 1);
+          const localProgress = (progress * (paths.length - 1)) % 1;
+
+          gsap.to(morphPath, {
+            attr: { d: paths[index] },
+            duration: 0.1,
+            overwrite: false
+          });
+        }
+      });
+    }
+
+    // ========================================
+    // CHART.JS LIVE DATA VISUALIZATION
+    // ========================================
+    function initChart() {
+      const ctx = document.getElementById('performance-chart');
+      if (!ctx) return;
+
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const fundIData = [100, 102, 101, 105, 108, 110, 109, 112, 115, 118, 116, 118.32];
+      const fundIIIData = [100, 103, 102, 108, 112, 115, 118, 122, 128, 132, 130, 131.45];
+      const spyData = [100, 101, 100, 104, 107, 109, 108, 111, 114, 117, 115, 124.56];
+
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: 'Fund I (Active)',
+              data: fundIData,
+              borderColor: '#0066ff',
+              backgroundColor: 'rgba(0, 102, 255, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#0066ff',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Fund III (Value)',
+              data: fundIIIData,
+              borderColor: '#00a854',
+              backgroundColor: 'rgba(0, 168, 84, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#00a854',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'SPY (Benchmark)',
+              data: spyData,
+              borderColor: '#999',
+              backgroundColor: 'rgba(153, 153, 153, 0.05)',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 3,
+              pointBackgroundColor: '#999',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1,
+              tension: 0.4,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                font: { size: 12, weight: 600 },
+                color: '#000',
+                padding: 20,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              titleFont: { size: 13, weight: 600 },
+              bodyFont: { size: 12 },
+              borderColor: '#0066ff',
+              borderWidth: 1
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: { color: 'rgba(0, 0, 0, 0.05)' },
+              ticks: { font: { size: 11 }, color: '#666' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11 }, color: '#666' }
+            }
+          }
+        }
+      });
+
+      // Scroll animation for chart
+      gsap.to(ctx.parentElement, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: ctx.parentElement,
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
+
+    // ========================================
     // CREATE CAROUSEL CARDS
-    // ============================================
+    // ========================================
     function initCarousel() {
       const carousel = document.getElementById('carouselEl');
 
-      funds.forEach((fund, idx) => {
+      funds.forEach((fund) => {
         const outColor = fund.outperformance >= 0 ? 'positive' : 'neutral';
 
         const wrapper = document.createElement('div');
         wrapper.className = 'card-wrapper';
-        wrapper.style.setProperty('--delay', `${idx * 0.1}s`);
         wrapper.innerHTML = `
           <div class="flip-card">
             <div class="flip-card-content flip-card-front">
               <div class="card-image">
-                <img src="${fund.image}" alt="${fund.name}" loading="lazy" />
+                <img src="${fund.image}" alt="${fund.name}" />
                 <div class="card-overlay">
                   <div class="card-label">${fund.code}</div>
                   <div class="card-title">${fund.name}</div>
@@ -1390,57 +1487,75 @@
       });
     }
 
-    // ============================================
+    // ========================================
     // TESTIMONIALS CAROUSEL
-    // ============================================
+    // ========================================
     function initTestimonials() {
-      const container = document.getElementById('testimonialsCarousel');
+      const carousel = document.getElementById('testimonialCarousel');
       let currentIndex = 0;
 
-      testimonials.forEach((testi, idx) => {
+      testimonials.forEach((testimonial, index) => {
         const div = document.createElement('div');
-        div.className = `testimonial ${idx === 0 ? 'active' : ''}`;
+        div.className = `testimonial ${index === 0 ? 'active' : ''}`;
         div.innerHTML = `
-          <p class="testimonial-quote">"${testi.quote}"</p>
-          <p class="testimonial-author">${testi.author}</p>
+          <p class="testimonial-text">"${testimonial.text}"</p>
+          <p class="testimonial-author">${testimonial.author}</p>
         `;
-        container.appendChild(div);
+        carousel.appendChild(div);
       });
 
       setInterval(() => {
-        const current = container.querySelector('.testimonial.active');
-        const next = current.nextElementSibling || container.firstChild;
-
-        current.classList.remove('active');
-        next.classList.add('active');
+        const testimonialEls = document.querySelectorAll('.testimonial');
+        testimonialEls[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % testimonialEls.length;
+        testimonialEls[currentIndex].classList.add('active');
       }, 4000);
     }
 
-    // ============================================
-    // MORPHING SVG BLOB
-    // ============================================
-    function initMorphingBlob() {
-      const blob = document.getElementById('morphBlob');
-      const blobPaths = [
-        "M328,195Q326,240,278,261.5Q230,283,183,270.5Q136,258,110.5,219Q85,180,89.5,120.5Q94,61,150,58.5Q206,56,258,72.5Q310,89,323,139.5Q336,190,328,195Z",
-        "M337,177Q311,304,209,294Q107,284,96,218Q85,152,137,97Q189,42,263,90Q337,138,337,177Z",
-        "M352,207Q331,293,240,308Q149,323,96,238.5Q43,154,115.5,107Q188,60,270.5,101Q353,142,352,207Z"
-      ];
+    // ========================================
+    // ANIMATE STATS WITH COUNTER
+    // ========================================
+    function animateStats() {
+      gsap.to('.stat', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.stats-section',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
 
-      let pathIndex = 0;
-      setInterval(() => {
-        pathIndex = (pathIndex + 1) % blobPaths.length;
-        gsap.to(blob, {
-          attr: { d: blobPaths[pathIndex] },
-          duration: 3,
-          ease: "sine.inOut"
-        });
-      }, 4000);
+      document.querySelectorAll('.stat-value').forEach(el => {
+        const target = parseInt(el.dataset.value);
+        let current = 0;
+        const increment = Math.ceil(target / 60);
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && current === 0) {
+              const counter = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                  current = target;
+                  clearInterval(counter);
+                }
+                el.textContent = current;
+              }, 30);
+              observer.unobserve(el);
+            }
+          });
+        }, { threshold: 0.5 });
+
+        observer.observe(el);
+      });
     }
 
-    // ============================================
+    // ========================================
     // SCROLL ANIMATIONS
-    // ============================================
+    // ========================================
     function initScrollAnimations() {
       const heroTimeline = gsap.timeline();
       heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
@@ -1453,31 +1568,8 @@
         duration: 0.8,
         stagger: 0.2,
         scrollTrigger: {
-          trigger: '.ticker-section',
+          trigger: '.carousel-section',
           start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.ticker-stat', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.ticker-stats',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.blob-info', {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.blob-section',
-          start: 'top 70%',
           toggleActions: 'play none none none'
         }
       });
@@ -1493,39 +1585,34 @@
           toggleActions: 'play none none none'
         }
       });
-
-      // Animated counters
-      document.querySelectorAll('.stat-value').forEach(el => {
-        const target = parseInt(el.dataset.value);
-        gsap.to(el, {
-          innerText: target,
-          duration: 2.5,
-          snap: { innerText: 1 },
-          scrollTrigger: {
-            trigger: '.stats-section',
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
-        });
-      });
     }
 
-    // ============================================
-    // INITIALIZE ON LOAD
-    // ============================================
+    // ========================================
+    // INITIALIZE ALL ON LOAD
+    // ========================================
     window.addEventListener('load', () => {
       initThreeJS();
-      initLiveChart();
+      initSVGMorph();
+      initChart();
       initCarousel();
       initTestimonials();
-      initMorphingBlob();
       initScrollAnimations();
+      animateStats();
     });
 
     // Scroll indicator
     document.querySelector('.scroll-indicator').addEventListener('click', () => {
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
     });
+
+    // Keyboard navigation for carousel
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') scrollCarousel(-1);
+      if (e.key === 'ArrowRight') scrollCarousel(1);
+    });
   </script>
+
+  <!-- Chart.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 </body>
 </html>
