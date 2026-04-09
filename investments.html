@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -38,11 +38,49 @@
     h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:950;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;background:linear-gradient(135deg,#0b1220,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{margin:0;color:var(--muted);max-width:760px;margin:14px auto 0;font-size:1.08rem;line-height:1.8}
 
+    /* Dashboard Modal */
+    .dashboard-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;overflow-y:auto;padding:20px}
+    .dashboard-modal.active{display:flex;align-items:flex-start;justify-content:center;padding-top:80px}
+    .dashboard-content{background:#fff;border-radius:22px;max-width:1400px;width:100%;box-shadow:var(--shadow-xl);animation:slideUp .4s var(--ease);position:relative}
+    @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+    
+    .dashboard-header{display:flex;align-items:center;justify-content:space-between;padding:32px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:16px}
+    .dashboard-title{font-size:2rem;font-weight:950;letter-spacing:-.02em}
+    .dashboard-close{font-size:32px;font-weight:300;color:var(--muted);cursor:pointer;transition:all .2s;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+    .dashboard-close:hover{color:var(--ink);background:rgba(0,102,255,.05);border-radius:8px}
+
+    .timeframe-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .timeframe-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:850;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.06em}
+    .timeframe-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .timeframe-btn.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:var(--accent)}
+
+    .dashboard-body{padding:32px}
+    
+    .metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:32px}
+    @media (max-width:1200px){.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:768px){.metrics-grid{grid-template-columns:1fr}}
+
+    .metric-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:linear-gradient(135deg,rgba(0,102,255,.05),rgba(2,8,23,.01))}
+    .metric-label{font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+    .metric-value{font-size:1.8rem;font-weight:950;font-family:var(--mono);margin-bottom:4px}
+    .metric-value.pos{color:var(--ok)}
+    .metric-value.neg{color:var(--bad)}
+    .metric-sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+    .chart-section{margin-top:32px}
+    .chart-title{font-size:16px;font-weight:950;margin-bottom:16px;letter-spacing:-.01em}
+    .chart-wrapper{border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:20px;height:400px}
+    .chart-wrapper canvas{width:100%!important;height:100%!important}
+
+    .legend-section{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:13px}
+    .legend-item{display:flex;align-items:center;gap:8px}
+    .legend-item i{display:inline-block;width:14px;height:14px;border-radius:3px}
+
     /* Funds section */
     .funds-section{padding:80px 48px;background:#fff}
     .funds-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:60px}
 
-    .fund-card{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.95);box-shadow:var(--shadow-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;transition:all .4s var(--ease)}
+    .fund-card{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.95);box-shadow:var(--shadow-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;transition:all .4s var(--ease);cursor:pointer}
     .fund-card:hover{transform:translateY(-8px);border-color:rgba(0,102,255,.2);box-shadow:var(--shadow-xl);box-shadow:0 20px 60px rgba(0,102,255,.15)}
 
     .fund-img{height:100%;min-height:360px;background:linear-gradient(135deg,rgba(0,102,255,.2),rgba(14,165,233,.12));background-size:cover;background-position:center;position:relative;overflow:hidden;border-right:1px solid var(--line)}
@@ -51,7 +89,7 @@
     .fund-img::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.1),transparent 40%,rgba(0,0,0,.15));z-index:1}
     .fund-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(11,18,32,.2));z-index:2}
 
-    .fund-body{padding:32px;display:flex;flex-direction:column;gap:16px}
+    .fund-body{padding:32px;display:flex;flex-direction:column;gap:16px;position:relative;z-index:3}
     .fund-header{border-bottom:1px solid var(--line);padding-bottom:16px}
     .fund-code{font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-bottom:8px}
     .fund-name{font-size:1.4rem;font-weight:950;letter-spacing:-.02em;line-height:1.2}
@@ -77,6 +115,9 @@
     .legend-item{display:flex;align-items:center;gap:6px}
     .legend-item i{display:inline-block;width:12px;height:12px;border-radius:2px}
 
+    .dashboard-cta{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-weight:950;cursor:pointer;transition:all .2s;margin-top:12px;width:100%;text-align:center}
+    .dashboard-cta:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,102,255,.25)}
+
     /* Thesis section */
     .thesis-section{padding:140px 48px;background:#fff}
     .thesis-title{font-size:clamp(2rem,4vw,3rem);font-weight:950;letter-spacing:-.02em;text-align:center}
@@ -97,7 +138,7 @@
     .footer-col a:hover{color:var(--ink)}
     .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
     @media (max-width:1200px){.fund-card{grid-template-columns:1fr}.fund-img{border-right:none;border-bottom:1px solid var(--line)}.thesis-grid{grid-template-columns:1fr}}
-    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}}
+    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.timeframe-buttons{width:100%}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
   </style>
 </head>
 
@@ -115,11 +156,46 @@
     </div>
   </header>
 
+  <!-- Dashboard Modal -->
+  <div class="dashboard-modal" id="dashboardModal">
+    <div class="dashboard-content">
+      <div class="dashboard-header">
+        <div>
+          <div class="dashboard-title" id="dashboardTitle">Fund Dashboard</div>
+        </div>
+        <span class="dashboard-close" onclick="closeDashboard()">×</span>
+      </div>
+
+      <div style="padding:0 32px">
+        <div style="display:flex;gap:8px;margin:24px 0;flex-wrap:wrap">
+          <button class="timeframe-btn active" onclick="changeDashboardTimeframe('1m', this)">1M</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('3m', this)">3M</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('6m', this)">6M</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('1y', this)">1Y</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('3y', this)">3Y</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('5y', this)">5Y</button>
+        </div>
+      </div>
+
+      <div class="dashboard-body">
+        <div class="metrics-grid" id="metricsGrid"></div>
+        
+        <div class="chart-section">
+          <div class="chart-title">Performance vs Benchmark</div>
+          <div class="chart-wrapper">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+          <div class="legend-section" id="legendSection"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section class="hero">
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Four distinct model funds with benchmark-relative performance and institutional-grade positioning logic.</p>
+      <p class="lead">Click on any fund to view detailed performance analytics and risk metrics.</p>
     </div>
   </section>
 
@@ -171,22 +247,24 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Generate daily YTD data (Jan 1 - Apr 10, 2026)
-    function generateDailyYTD(startReturn, volatility) {
+    // Generate daily data for multiple timeframes
+    function generateDailyData(startReturn, volatility, monthsBack) {
       const days = [];
       const today = new Date(2026, 3, 10); // April 10, 2026
-      const ytdStart = new Date(2026, 0, 1); // January 1, 2026
-      const dayCount = Math.floor((today - ytdStart) / (1000 * 60 * 60 * 24)) + 1;
+      const start = new Date(today);
+      start.setMonth(start.getMonth() - monthsBack);
+
+      const dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
 
       let value = 100;
       const dailyReturn = startReturn / 100 / dayCount;
-      const dailyVol = volatility / 100 / Math.sqrt(252); // 252 trading days
+      const dailyVol = volatility / 100 / Math.sqrt(252);
 
       for (let i = 0; i < dayCount; i++) {
         const randomShock = (Math.random() - 0.5) * 2;
         value *= (1 + dailyReturn + randomShock * dailyVol);
         
-        const date = new Date(ytdStart);
+        const date = new Date(start);
         date.setDate(date.getDate() + i);
         days.push({
           date: date,
@@ -196,10 +274,64 @@
       return days;
     }
 
-    // Format date for chart label
-    function formatDateShort(date) {
-      const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-      return months[date.getMonth()] + ' ' + date.getDate();
+    // Calculate metrics
+    function calculateMetrics(fundData, benchData) {
+      const fundReturns = [];
+      const benchReturns = [];
+
+      for (let i = 1; i < fundData.length; i++) {
+        fundReturns.push((fundData[i].value - fundData[i-1].value) / fundData[i-1].value);
+        benchReturns.push((benchData[i].value - benchData[i-1].value) / benchData[i-1].value);
+      }
+
+      const fundReturn = (fundData[fundData.length-1].value / fundData[0].value - 1) * 100;
+      const benchReturn = (benchData[benchData.length-1].value / benchData[0].value - 1) * 100;
+
+      // Volatility (annualized)
+      const fundVol = Math.sqrt(252) * Math.sqrt(fundReturns.reduce((a, b) => a + Math.pow(b - fundReturns.reduce((x, y) => x + y) / fundReturns.length, 2), 0) / fundReturns.length) * 100;
+      const benchVol = Math.sqrt(252) * Math.sqrt(benchReturns.reduce((a, b) => a + Math.pow(b - benchReturns.reduce((x, y) => x + y) / benchReturns.length, 2), 0) / benchReturns.length) * 100;
+
+      // Beta
+      const avgFundReturn = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
+      const avgBenchReturn = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - avgFundReturn) * (benchReturns[i] - avgBenchReturn), 0) / fundReturns.length;
+      const benchVariance = benchReturns.reduce((sum, r) => sum + Math.pow(r - avgBenchReturn, 2), 0) / benchReturns.length;
+      const beta = covariance / benchVariance;
+
+      // Alpha (annualized)
+      const riskFreeRate = 0.04; // 4% risk-free rate
+      const alpha = fundReturn - (riskFreeRate + beta * (benchReturn - riskFreeRate));
+
+      // Sharpe Ratio (annualized)
+      const sharpe = fundVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / fundVol : 0;
+
+      // Max Drawdown
+      let maxDD = 0;
+      let peak = fundData[0].value;
+      for (let i = 1; i < fundData.length; i++) {
+        if (fundData[i].value > peak) peak = fundData[i].value;
+        const dd = (peak - fundData[i].value) / peak * 100;
+        if (dd > maxDD) maxDD = dd;
+      }
+
+      // Sortino Ratio (annualized, only downside volatility)
+      const downReturns = fundReturns.filter(r => r < avgFundReturn);
+      const downVol = downReturns.length > 0 
+        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r - avgFundReturn, 2), 0) / downReturns.length) * 100
+        : fundVol;
+      const sortino = downVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / downVol : 0;
+
+      return {
+        fundReturn: fundReturn,
+        benchReturn: benchReturn,
+        alpha: alpha,
+        beta: beta,
+        sharpe: sharpe,
+        maxDrawdown: maxDD,
+        fundVol: fundVol,
+        benchVol: benchVol,
+        sortino: sortino
+      };
     }
 
     const funds = [
@@ -283,13 +415,192 @@
 
     const charts = {};
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+    let currentDashboardFund = null;
+    let currentTimeframe = '1m';
+    let dashboardChart = null;
+
+    function formatDateShort(date) {
+      const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+      return months[date.getMonth()] + ' ' + date.getDate();
+    }
+
+    function openDashboard(fundId) {
+      currentDashboardFund = funds.find(f => f.id === fundId);
+      document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
+      document.getElementById('dashboardModal').classList.add('active');
+      updateDashboard('1m');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDashboard() {
+      document.getElementById('dashboardModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function changeDashboardTimeframe(timeframe, button) {
+      currentTimeframe = timeframe;
+      document.querySelectorAll('.timeframe-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      updateDashboard(timeframe);
+    }
+
+    function updateDashboard(timeframe) {
+      const monthsMap = { '1m': 1, '3m': 3, '6m': 6, '1y': 12, '3y': 36, '5y': 60 };
+      const months = monthsMap[timeframe];
+
+      const fundData = generateDailyData(currentDashboardFund.r1y, 15, months);
+      const benchmarks = {
+        'AOR': 16.45, 'SPY': 11.56, 'ACWX': 18.64
+      };
+      const benchReturn = benchmarks[currentDashboardFund.bench] || 11.56;
+      const benchData = generateDailyData(benchReturn, 12, months);
+
+      const metrics = calculateMetrics(fundData, benchData);
+
+      // Update metrics grid
+      const metricsGrid = document.getElementById('metricsGrid');
+      metricsGrid.innerHTML = `
+        <div class="metric-card">
+          <div class="metric-label">Fund Return</div>
+          <div class="metric-value ${metrics.fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.fundReturn)}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Benchmark Return</div>
+          <div class="metric-value ${metrics.benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.benchReturn)}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Alpha</div>
+          <div class="metric-value ${metrics.alpha >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.alpha)}</div>
+          <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Beta</div>
+          <div class="metric-value">${metrics.beta.toFixed(2)}</div>
+          <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sharpe Ratio</div>
+          <div class="metric-value ${metrics.sharpe >= 0 ? 'pos' : 'neg'}">${metrics.sharpe.toFixed(2)}</div>
+          <div class="metric-sub">Annualized</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sortino Ratio</div>
+          <div class="metric-value ${metrics.sortino >= 0 ? 'pos' : 'neg'}">${metrics.sortino.toFixed(2)}</div>
+          <div class="metric-sub">Downside adjusted</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Max Drawdown</div>
+          <div class="metric-value neg">${fmtPct(-metrics.maxDrawdown)}</div>
+          <div class="metric-sub">Peak to trough</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Volatility</div>
+          <div class="metric-value">${metrics.fundVol.toFixed(2)}%</div>
+          <div class="metric-sub">Annualized</div>
+        </div>
+      `;
+
+      // Update chart
+      updateDashboardChart(fundData, benchData, currentDashboardFund.color);
+    }
+
+    function updateDashboardChart(fundData, benchData, color) {
+      const labels = fundData.map((d, i) => i % Math.max(1, Math.floor(fundData.length / 50)) === 0 ? formatDateShort(d.date) : '');
+      
+      const ctx = document.getElementById('dashboardChart').getContext('2d');
+      if (dashboardChart) dashboardChart.destroy();
+
+      dashboardChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: currentDashboardFund.code,
+              data: fundData.map(d => d.value),
+              borderColor: color,
+              backgroundColor: color + '12',
+              borderWidth: 2.5,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+              pointBackgroundColor: color,
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: currentDashboardFund.bench,
+              data: benchData.map(d => d.value),
+              borderColor: 'rgba(2,8,23,.45)',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+              tension: 0.3,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              enabled: true,
+              backgroundColor: 'rgba(0,0,0,.9)',
+              titleColor: '#fff',
+              bodyColor: '#eef2ff',
+              borderColor: color,
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 6,
+              titleFont: { weight: 'bold', size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                title: function(context) {
+                  if (context.length > 0) {
+                    const dataIndex = context[0].dataIndex;
+                    return fundData[dataIndex].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                  }
+                  return '';
+                },
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
+                }
+              }
+            }
+          },
+          scales: {
+            x: { 
+              display: true,
+              grid: { display: false },
+              ticks: { font: { size: 11, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+            },
+            y: { 
+              display: true,
+              grid: { color: 'rgba(2,8,23,.05)' },
+              ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+            }
+          }
+        }
+      });
+
+      // Update legend
+      document.getElementById('legendSection').innerHTML = `
+        <div class="legend-item"><i style="background:${color}"></i><span>${currentDashboardFund.code}</span></div>
+        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i><span>${currentDashboardFund.bench}</span></div>
+      `;
+    }
 
     function renderFunds() {
       const grid = document.getElementById("fundsGrid");
       grid.innerHTML = funds.map(f => {
         const rel = f.r1y - f.benchR;
         return `
-          <article class="fund-card">
+          <article class="fund-card" onclick="openDashboard('${f.id}')">
             <div class="fund-img">
               <img src="${f.img}" alt="${f.name}" onerror="this.src='https://via.placeholder.com/400x360?text=${f.name}'">
             </div>
@@ -315,20 +626,7 @@
 
               <div class="fund-alloc">${f.allocation.map(t => `<span class="pill">${t}</span>`).join("")}</div>
 
-              <div class="fund-chart">
-                <canvas id="chart-${f.id}"></canvas>
-              </div>
-
-              <div class="fund-legend">
-                <div class="legend-item">
-                  <i style="background:${f.color}"></i>
-                  <span>${f.code}</span>
-                </div>
-                <div class="legend-item">
-                  <i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i>
-                  <span>${f.bench}</span>
-                </div>
-              </div>
+              <button class="dashboard-cta">View Analytics →</button>
             </div>
           </article>
         `;
@@ -345,119 +643,25 @@
       `).join("");
     }
 
-    function renderCharts() {
-      funds.forEach(f => {
-        const canvas = document.getElementById(`chart-${f.id}`);
-        if (!canvas) return;
+    // Close modal on outside click
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('dashboardModal');
+      if (e.target === modal) closeDashboard();
+    });
 
-        const ctx = canvas.getContext("2d");
-        const fundData = generateDailyYTD(f.r1y, 15); // 15% annual volatility
-        const benchData = generateDailyYTD(f.benchR, 12); // 12% annual volatility
-
-        if (charts[f.id]) charts[f.id].destroy();
-
-        // Create labels every 10th day for readability
-        const labels = fundData.map((d, i) => i % 10 === 0 ? formatDateShort(d.date) : '').filter(l => l);
-        const labelIndices = fundData.map((d, i) => i % 10 === 0 ? i : null).filter(i => i !== null);
-
-        // Create full dataset but only label some points
-        const fullLabels = fundData.map((_, i) => '');
-        labelIndices.forEach((idx, order) => {
-          fullLabels[idx] = labels[order];
-        });
-
-        const fundValues = fundData.map(d => d.value);
-        const benchValues = benchData.map(d => d.value);
-
-        charts[f.id] = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: fullLabels,
-            datasets: [
-              {
-                label: f.code,
-                data: fundValues,
-                borderColor: f.color,
-                backgroundColor: f.color + '12',
-                borderWidth: 2.5,
-                pointRadius: 0,
-                pointHoverRadius: 6,
-                pointBackgroundColor: f.color,
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                tension: 0.3,
-                fill: true
-              },
-              {
-                label: f.bench,
-                data: benchValues,
-                borderColor: "rgba(2,8,23,.45)",
-                borderDash: [5, 5],
-                borderWidth: 2,
-                pointRadius: 0,
-                pointHoverRadius: 6,
-                tension: 0.3,
-                fill: false
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                enabled: true,
-                backgroundColor: 'rgba(0,0,0,.9)',
-                titleColor: '#fff',
-                bodyColor: '#eef2ff',
-                borderColor: f.color,
-                borderWidth: 1,
-                padding: 12,
-                cornerRadius: 6,
-                titleFont: { weight: 'bold', size: 12 },
-                bodyFont: { size: 11 },
-                callbacks: {
-                  title: function(context) {
-                    if (context.length > 0) {
-                      const dataIndex = context[0].dataIndex;
-                      return fundData[dataIndex].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                    }
-                    return '';
-                  },
-                  label: function(context) {
-                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
-                  }
-                }
-              }
-            },
-            scales: {
-              x: { 
-                display: true,
-                grid: { display: false },
-                ticks: { font: { size: 11, weight: '900' }, color: 'rgba(2,8,23,.5)' }
-              },
-              y: { 
-                display: true,
-                grid: { color: 'rgba(2,8,23,.05)' },
-                ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' },
-                min: Math.min(...fundValues, ...benchValues) * 0.98,
-                max: Math.max(...fundValues, ...benchValues) * 1.02
-              }
-            }
-          }
-        });
-      });
-    }
+    // Close modal on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDashboard();
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
       renderFunds();
       renderThesis();
-      renderCharts();
     });
 
-    window.addEventListener("resize", renderCharts);
+    window.addEventListener("resize", () => {
+      if (dashboardChart) dashboardChart.resize();
+    });
   </script>
 </body>
 </html>
