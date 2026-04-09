@@ -61,42 +61,42 @@
     @media (max-width:768px){.section{padding:80px 20px}.fund-grid{grid-template-columns:1fr}}
 
     /* 3D FLIP CARD */
-    .fund-card{height:600px;cursor:pointer;perspective:1000px;position:relative;z-index:3}
-    .card-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d;transform:rotateY(0deg)}
+    .fund-card{height:580px;cursor:pointer;perspective:1000px;position:relative;z-index:3}
+    .card-inner{position:relative;width:100%;height:100%;transition:transform 0.6s cubic-bezier(.2,.9,.2,1);transform-style:preserve-3d;transform:rotateY(0deg)}
     .fund-card:hover .card-inner, .fund-card.flipped .card-inner{transform:rotateY(180deg)}
     
-    .card-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;box-shadow:var(--shadow-xl);overflow:hidden}
+    .card-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;box-shadow:var(--shadow-xl);overflow:hidden;border:1px solid var(--line)}
     .card-front{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column}
     .card-back{transform:rotateY(180deg);background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:24px;display:flex;flex-direction:column;gap:12px;overflow-y:auto}
 
-    .card-img{height:240px;background:linear-gradient(135deg,rgba(0,102,255,.2),rgba(14,165,233,.12));overflow:hidden;border-bottom:1px solid var(--line);position:relative}
+    .card-img{height:200px;background:linear-gradient(135deg,rgba(0,102,255,.2),rgba(14,165,233,.12));overflow:hidden;border-bottom:1px solid var(--line);position:relative}
     .card-img img{width:100%;height:100%;object-fit:cover;transition:all .6s var(--ease)}
-    .fund-card:hover .card-img img{transform:scale(1.15);filter:brightness(1.1)}
-    .card-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,102,255,.5),rgba(0,82,204,.4));display:flex;flex-direction:column;justify-content:flex-end;padding:20px;color:#fff;z-index:2}
-    .card-code{font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;opacity:.9;margin-bottom:8px}
-    .card-name{font-size:22px;font-weight:950;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
-    .card-sub{font-size:13px;opacity:.85}
+    .fund-card:hover .card-img img{transform:scale(1.08);filter:brightness(1.05)}
+    
+    .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent);display:flex;flex-direction:column;justify-content:flex-end;padding:16px;color:#fff;z-index:2}
+    .card-code{font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+    .card-name{font-size:20px;font-weight:950;letter-spacing:-.02em;line-height:1.1;margin-top:4px}
 
-    .card-body{padding:20px;display:flex;flex-direction:column;gap:12px;flex:1}
-    .card-desc{color:var(--muted);font-size:14px;line-height:1.7}
+    .card-body{padding:20px;display:flex;flex-direction:column;gap:14px;flex:1}
+    .card-desc{color:var(--muted);font-size:14px;line-height:1.7;flex:1}
     .card-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(0,102,255,.08),rgba(2,8,23,.02));border-radius:12px;padding:12px}
     .card-meta-label{font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
-    .card-meta-value{font-family:var(--mono);font-weight:950;font-size:16px;margin-top:4px}
+    .card-meta-value{font-family:var(--mono);font-weight:950;font-size:15px;margin-top:4px}
 
-    .card-actions{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+    .card-actions{display:flex;gap:10px;flex-wrap:wrap}
     .mini{display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 12px 30px rgba(2,8,23,.10);cursor:pointer;text-decoration:none;transition:all .18s var(--ease);user-select:none}
     .mini:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
     .mini.primary{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.35);box-shadow:0 16px 42px rgba(0,102,255,.22)}
 
-    .chart-header{border-bottom:1px solid var(--line);padding-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    .chart-header{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
     .chart-title{font-weight:950;font-size:14px}
-    .chart-sub{font-size:12px;color:var(--muted);margin-top:4px}
-    .bench-pill{font-family:var(--mono);font-size:11px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid rgba(2,8,23,.12);background:rgba(2,8,23,.03)}
+    .chart-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .bench-pill{font-family:var(--mono);font-size:11px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid rgba(2,8,23,.12);background:rgba(2,8,23,.03);white-space:nowrap}
 
-    .chart-box{border:1px solid rgba(2,8,23,.10);border-radius:12px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:12px;height:200px;margin:10px 0}
+    .chart-box{border:1px solid rgba(2,8,23,.10);border-radius:12px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:12px;height:220px;margin:10px 0;flex:1}
     .chart-box canvas{width:100%!important;height:100%!important}
 
-    .chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900;margin:10px 0}
+    .chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
     .chart-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
 
     .news-section{padding:140px 48px;background:#fff;position:relative}
@@ -109,7 +109,7 @@
     .news-body{padding:24px;display:flex;flex-direction:column;gap:12px;flex:1}
     .news-date{font-size:12px;font-weight:950;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em}
     .news-title{font-size:18px;font-weight:950;color:var(--ink);line-height:1.4}
-    .news-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:12px}
+    .news-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:12px;flex:1}
     .news-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:950;color:var(--accent);text-decoration:none;margin-top:auto}
     @media (max-width:768px){.news-grid{grid-template-columns:1fr}}
 
@@ -120,7 +120,6 @@
     .about-content ul{list-style:none;padding:0;margin-bottom:32px}
     .about-content li{font-size:15px;color:var(--muted);line-height:1.8;padding-left:24px;position:relative;margin-bottom:12px}
     .about-content li:before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:950}
-    
     .team-grid{display:grid;grid-template-columns:1fr;gap:18px}
     .team-member{border:1px solid var(--line);border-radius:12px;padding:18px;background:linear-gradient(135deg,rgba(0,102,255,.05),rgba(2,8,23,.01))}
     .team-name{font-weight:950;margin-bottom:6px;color:var(--ink)}
@@ -371,24 +370,44 @@
     // ===== FUND CARDS =====
     const funds = [
       { 
-        id: "f1", code: "Fund I", name: "Active Rotation", bench: "AOR", color: "#0066ff", 
-        desc: "Dynamic macro rotation across gold, ESG, and staples.",
-        img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240'%3E%3Crect fill='%230066ff' width='400' height='240'/%3E%3Ctext x='200' y='120' font-size='24' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EActive Rotation Fund%3C/text%3E%3C/svg%3E"
+        id: "f1", 
+        code: "Fund I", 
+        name: "Active Rotation", 
+        short: "Macro rotation across gold + ESG + staples",
+        bench: "AOR", 
+        color: "#0066ff", 
+        desc: "Dynamic sleeve allocation driven by macro risk signals. Designed for regime shifts and convexity.",
+        img: "https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund1-bg.webp"
       },
       { 
-        id: "f2", code: "Fund II", name: "Market Tracker", bench: "SPY", color: "#7c3aed", 
-        desc: "Broad market exposure with minimal tracking error.",
-        img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240'%3E%3Crect fill='%237c3aed' width='400' height='240'/%3E%3Ctext x='200' y='120' font-size='24' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EMarket Tracker Fund%3C/text%3E%3C/svg%3E"
+        id: "f2", 
+        code: "Fund II", 
+        name: "Market Tracker", 
+        short: "Broad market exposure with minimal drift",
+        bench: "SPY", 
+        color: "#7c3aed", 
+        desc: "Market-cap weighted exposure for clean beta. Core sleeve designed for transparency and efficiency.",
+        img: "https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp"
       },
       { 
-        id: "f3", code: "Fund III", name: "Value Factor", bench: "SPY", color: "#db2777", 
-        desc: "Small-cap value tilt capturing factor premia.",
-        img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240'%3E%3Crect fill='%23db2777' width='400' height='240'/%3E%3Ctext x='200' y='120' font-size='24' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EValue Factor Fund%3C/text%3E%3C/svg%3E"
+        id: "f3", 
+        code: "Fund III", 
+        name: "Value Factor", 
+        short: "Small-cap value tilt (factor premia)",
+        bench: "SPY", 
+        color: "#db2777", 
+        desc: "Systematic tilt toward value and size premia. Built for multi-year compounding and mean reversion.",
+        img: "https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp"
       },
       { 
-        id: "f4", code: "Fund IV", name: "ESG Global", bench: "ACWI", color: "#0ea5e9", 
-        desc: "Sustainability-screened global equity.",
-        img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='240'%3E%3Crect fill='%230ea5e9' width='400' height='240'/%3E%3Ctext x='200' y='120' font-size='24' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EESG Global Fund%3C/text%3E%3C/svg%3E"
+        id: "f4", 
+        code: "Fund IV", 
+        name: "ESG Global", 
+        short: "Sustainability-screened global allocation",
+        bench: "ACWI", 
+        color: "#0ea5e9", 
+        desc: "Global equity sleeve with sustainability screens. Designed for broad participation with governance bias.",
+        img: "https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp"
       }
     ];
 
@@ -402,18 +421,17 @@
             <!-- FRONT -->
             <div class="card-face card-front">
               <div class="card-img">
-                <img src="${f.img}" alt="${f.name}">
-                <div class="card-img-overlay">
+                <img src="${f.img}" alt="${f.name}" onerror="this.src='https://via.placeholder.com/400x200?text=${f.name}'">
+                <div class="card-overlay">
                   <div class="card-code">${f.code}</div>
                   <div class="card-name">${f.name}</div>
-                  <div class="card-sub">vs ${f.bench}</div>
                 </div>
               </div>
               <div class="card-body">
                 <div class="card-desc">${f.desc}</div>
                 <div class="card-meta">
                   <div><div class="card-meta-label">Benchmark</div><div class="card-meta-value">${f.bench}</div></div>
-                  <div><div class="card-meta-label">Performance</div><div class="card-meta-value">Click flip</div></div>
+                  <div><div class="card-meta-label">Flip to see</div><div class="card-meta-value">Chart</div></div>
                 </div>
                 <div class="card-actions">
                   <a class="mini primary" href="#">Details</a>
@@ -427,7 +445,7 @@
               <div class="chart-header">
                 <div>
                   <div class="chart-title">${f.code} vs ${f.bench}</div>
-                  <div class="chart-sub">Performance indexed to 100</div>
+                  <div class="chart-sub">12-month performance indexed to 100</div>
                 </div>
                 <div class="bench-pill">${f.bench}</div>
               </div>
@@ -458,13 +476,15 @@
           chartInstances.get(f.id).destroy();
         }
 
+        // 12-month timeline
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const fundData = [100];
         const benchData = [100];
 
+        // Generate realistic performance data
         for (let i = 0; i < 11; i++) {
-          const fundChange = (Math.random() - 0.42) * 2.5;
-          const benchChange = (Math.random() - 0.42) * 2;
+          const fundChange = (Math.random() - 0.42) * 2.8;
+          const benchChange = (Math.random() - 0.42) * 2.2;
           fundData.push(fundData[i] * (1 + fundChange / 100));
           benchData.push(benchData[i] * (1 + benchChange / 100));
         }
@@ -479,8 +499,11 @@
                 data: fundData,
                 borderColor: f.color,
                 backgroundColor: f.color + '15',
-                borderWidth: 2.5,
-                pointRadius: 0,
+                borderWidth: 2.8,
+                pointRadius: 3,
+                pointBackgroundColor: f.color,
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
                 tension: 0.4,
                 fill: true
               },
@@ -499,13 +522,39 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+              intersect: false,
+              mode: 'index'
+            },
             plugins: {
               legend: { display: false },
-              tooltip: { enabled: false }
+              tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                padding: 12,
+                borderRadius: 8,
+                titleFont: { weight: 'bold', size: 13 },
+                bodyFont: { size: 12 },
+                displayColors: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1);
+                  }
+                }
+              }
             },
             scales: {
-              x: { display: false },
-              y: { display: false }
+              x: {
+                display: true,
+                grid: { display: false },
+                ticks: { font: { size: 11, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+              },
+              y: {
+                display: true,
+                grid: { color: 'rgba(2,8,23,.05)' },
+                ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' },
+                min: Math.min(...fundData, ...benchData) * 0.95,
+                max: Math.max(...fundData, ...benchData) * 1.05
+              }
             }
           }
         });
@@ -522,26 +571,25 @@
           title: "Market Structure Evolution",
           date: "April 9, 2025",
           desc: "Examining how institutional flows reshape market microstructure in modern derivatives markets.",
-          img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%230066ff' width='400' height='200'/%3E%3Ctext x='200' y='100' font-size='18' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EMarket Structure%3C/text%3E%3C/svg%3E"
+          color: "#0066ff"
         },
         {
           title: "Physical Supply Constraints",
           date: "April 7, 2025",
           desc: "How commodity supply bottlenecks are transmitting through financial markets and inflation expectations.",
-          img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%237c3aed' width='400' height='200'/%3E%3Ctext x='200' y='100' font-size='18' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3ESupply Dynamics%3C/text%3E%3C/svg%3E"
+          color: "#7c3aed"
         },
         {
           title: "Macro Transmission Mechanisms",
           date: "April 5, 2025",
           desc: "Tracing policy signals through yield curves, credit spreads, and real economy expectations.",
-          img: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect fill='%23db2777' width='400' height='200'/%3E%3Ctext x='200' y='100' font-size='18' fill='white' text-anchor='middle' dy='.3em' font-weight='bold'%3EMacro Transmission%3C/text%3E%3C/svg%3E"
+          color: "#db2777"
         }
       ];
 
       newsGrid.innerHTML = news.map(n => `
         <div class="news-card">
-          <div class="news-img">
-            <img src="${n.img}" alt="${n.title}">
+          <div class="news-img" style="background:linear-gradient(135deg,${n.color},rgba(255,255,255,.2))">
           </div>
           <div class="news-body">
             <div class="news-date">${n.date}</div>
