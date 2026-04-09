@@ -30,6 +30,7 @@
   </header>
   <section class="hero" aria-label="Hero">
     <canvas id="heroCanvas"></canvas>
+    <div class="hero-glow"></div>
     <div class="hero-inner">
       <div class="hero-eyebrow">Independent Research</div>
       <h1>We analyse <span class="grad">markets and macro</span></h1>
@@ -105,14 +106,17 @@
             <div class="reveal"><div class="kicker">Method</div><h2>How we think</h2></div>
             <div class="method-box reveal reveal-delay-1">
               <div class="method-item">
+                <div class="method-icon">📊</div>
                 <div class="method-title">Market structure</div>
                 <p class="method-desc">We analyse positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before they resolve in price.</p>
               </div>
               <div class="method-item">
+                <div class="method-icon">⚙️</div>
                 <div class="method-title">Physical tightness</div>
                 <p class="method-desc">COMEX inventory, warehouse flows, and lease rates reveal physical supply constraints that futures markets are slow to price.</p>
               </div>
               <div class="method-item">
+                <div class="method-icon">🔗</div>
                 <div class="method-title">Macro transmission</div>
                 <p class="method-desc">How rate cycles, dollar dynamics, and liquidity conditions transmit into commodity markets and risk assets — traced precisely.</p>
               </div>
@@ -138,44 +142,47 @@
     </div>
   </footer>
   <script>
-  // Canvas particles
+  // Canvas particles with enhanced animation
   (function(){
     var canvas=document.getElementById('heroCanvas');
     if(!canvas)return;
-    var ctx=canvas.getContext('2d'),W=0,H=0,N=70,mouse={x:-9999,y:-9999};
+    var ctx=canvas.getContext('2d'),W=0,H=0,N=85,mouse={x:-9999,y:-9999},time=0;
     var pts=[];
     function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
     function rnd(a,b){return Math.random()*(b-a)+a;}
-    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00012,vy:rnd(-1,1)*0.00012,r:rnd(1.5,3)});
+    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00015,vy:rnd(-1,1)*0.00015,r:rnd(1.2,3.5),base_r:rnd(1.2,3.5),pulse:Math.random()*Math.PI*2});
     window.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/W;mouse.y=(e.clientY-r.top)/H;});
     window.addEventListener('resize',resize);
     resize();
     function frame(){
       ctx.clearRect(0,0,W,H);
+      time+=0.005;
       for(var i=0;i<N;i++){
         var p=pts[i];
         var dx=p.x-mouse.x,dy=p.y-mouse.y,d2=dx*dx+dy*dy;
-        if(d2<0.01){var f=(0.01-d2)/0.01*0.0001;p.vx+=dx*f;p.vy+=dy*f;}
+        if(d2<0.015){var f=(0.015-d2)/0.015*0.00015;p.vx+=dx*f;p.vy+=dy*f;}
         var spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
-        if(spd>0.0003){p.vx*=0.0003/spd;p.vy*=0.0003/spd;}
+        if(spd>0.0004){p.vx*=0.0004/spd;p.vy*=0.0004/spd;}
         p.x+=p.vx;p.y+=p.vy;
         if(p.x<0)p.x+=1;if(p.x>1)p.x-=1;if(p.y<0)p.y+=1;if(p.y>1)p.y-=1;
+        p.pulse+=0.02;
+        p.r=p.base_r+Math.sin(p.pulse)*0.8;
         var px=p.x*W,py=p.y*H;
-        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,0.7)';ctx.fill();
+        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,'+(0.4+Math.sin(time+i)*0.3)+')';ctx.fill();
         for(var j=i+1;j<N;j++){
           var q=pts[j],qx=q.x*W,qy=q.y*H,ex=px-qx,ey=py-qy,dist=Math.sqrt(ex*ex+ey*ey);
-          if(dist<130){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(59,130,246,'+((1-dist/130)*0.4)+')';ctx.lineWidth=0.5;ctx.stroke();}
+          if(dist<150){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(59,130,246,'+((1-dist/150)*0.3)+')';ctx.lineWidth=0.6;ctx.stroke();}
         }
       }
       requestAnimationFrame(frame);
     }
     frame();
   })();
-  // Scroll reveal
+  // Scroll reveal with stagger
   (function(){
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('visible');});return;}
-    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.12});
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.1});
     els.forEach(function(el){io.observe(el);});
   })();
   // Ticker RSS
