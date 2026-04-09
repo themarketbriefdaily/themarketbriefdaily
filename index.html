@@ -10,672 +10,481 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- GSAP for smoother controlled motion -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { font-size: 16px; scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #ffffff;
-      color: #000;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; scroll-behavior:smooth; }
+    body{
+      font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:#fff;
+      color:#000;
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
     }
 
-    :root {
-      --accent: #0066ff;
-      --accent-hover: #0052cc;
-      --accent-light: rgba(0, 102, 255, 0.08);
-      --text-primary: #000000;
-      --text-secondary: rgba(0, 0, 0, 0.54);
-      --text-tertiary: rgba(0, 0, 0, 0.38);
-      --border-light: rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+    :root{
+      --accent:#0066ff;
+      --accent2:#0ea5e9;
+      --accent-light: rgba(0,102,255,0.08);
+      --text-primary:#000;
+      --text-secondary: rgba(0,0,0,.54);
+      --text-tertiary: rgba(0,0,0,.38);
+      --border: rgba(0,0,0,.08);
+      --shadow-md: 0 4px 10px rgba(0,0,0,.08);
+      --shadow-lg: 0 14px 40px rgba(0,0,0,.10);
+      --shadow-xl: 0 24px 60px rgba(0,0,0,.12);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --ease: cubic-bezier(.2,.9,.2,1);
     }
 
-    h1 { font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; }
-    h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
-    h3 { font-size: 1.3rem; font-weight: 700; }
-    p { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      * { animation: none !important; transition: none !important; }
-      #canvas-three { display: none !important; }
-      .ticker-track { animation: none !important; transform: none !important; }
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      *{animation:none !important; transition:none !important;}
+      #canvas-three{display:none !important}
+      .tape-track{animation:none !important; transform:none !important}
     }
 
     /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.8);
+    header{
+      position:fixed; top:0; left:0; right:0;
+      height:64px;
+      display:flex; align-items:center;
+      padding:0 48px;
+      background: rgba(255,255,255,.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-light);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      padding: 0 48px;
+      border-bottom: 1px solid var(--border);
+      z-index:1000;
       box-shadow: var(--shadow-md);
     }
-
-    .header-wrapper {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 48px;
+    .header-wrapper{
+      width:100%;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:48px;
     }
-
-    .brand {
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: opacity 0.2s;
-      white-space: nowrap;
+    .brand{
+      font-size:15px; font-weight:700; color:var(--text-primary);
+      text-decoration:none;
+      white-space:nowrap;
+      transition:opacity .2s;
     }
-
-    .brand:hover { opacity: 0.7; }
-
-    nav {
-      display: flex;
-      gap: 36px;
-      align-items: center;
-      margin-left: auto;
+    .brand:hover{opacity:.72}
+    nav{display:flex; gap:36px; align-items:center; margin-left:auto}
+    nav a{
+      font-size:13px; font-weight:600; color:var(--text-secondary);
+      text-decoration:none;
+      transition:color .2s;
     }
-
-    nav a {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: var(--text-primary); }
+    nav a:hover{color:var(--text-primary)}
 
     /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding-top: 64px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    .hero{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding-top:64px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
       background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
-
-    #canvas-three {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.42;
-      pointer-events: none;
+    #canvas-three{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      opacity:.52;
+      pointer-events:none;
     }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.06) 0%, transparent 80%);
-      pointer-events: none;
+    .hero::after{
+      content:'';
+      position:absolute; inset:0;
+      background: radial-gradient(circle 900px at 50% 45%, rgba(0,102,255,0.07) 0%, transparent 78%);
+      pointer-events:none;
     }
-
-    .hero-content {
-      max-width: 960px;
-      padding: 0 40px;
-      z-index: 10;
-      position: relative;
+    .hero-content{
+      max-width:960px;
+      padding:0 40px;
+      z-index:10;
+      position:relative;
     }
-
-    .hero h1 {
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(30px);
+    .hero h1{
+      margin-bottom:24px;
+      opacity:0;
+      transform: translateY(26px);
       background: linear-gradient(135deg, #000 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      letter-spacing:-0.025em;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight:800;
+      line-height:1.1;
     }
-
-    .hero > p {
+    .hero > p{
       font-size: clamp(1rem, 1.5vw, 1.25rem);
-      line-height: 1.8;
-      margin-bottom: 48px;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-      opacity: 0;
-      transform: translateY(30px);
+      line-height:1.8;
+      margin-bottom:48px;
+      max-width:720px;
+      margin-left:auto;
+      margin-right:auto;
+      opacity:0;
+      transform: translateY(26px);
+      color:var(--text-secondary);
     }
-
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-bottom: 80px;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(30px);
+    .hero-cta{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      flex-wrap:wrap;
+      opacity:0;
+      transform: translateY(26px);
+      margin-bottom:70px;
     }
-
-    .btn {
-      padding: 14px 36px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .btn{
+      padding:14px 36px;
+      border-radius:10px;
+      font-size:14px;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      text-decoration:none;
+      transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s var(--ease);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       will-change: transform;
     }
-
-    .btn-primary {
+    .btn-primary{
       background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+      color:#fff;
+      box-shadow: 0 10px 30px rgba(0,102,255,0.30);
     }
-
-    .btn-primary:hover {
-      box-shadow: 0 14px 40px rgba(0, 102, 255, 0.45);
-      transform: translateY(-3px) scale(1.02);
-    }
-
-    .btn-secondary {
-      background: rgba(0, 102, 255, 0.08);
+    .btn-primary:hover{transform: translateY(-3px) scale(1.02); box-shadow:0 16px 44px rgba(0,102,255,0.40)}
+    .btn-secondary{
+      background: rgba(0,102,255,0.10);
       color: var(--accent);
-      border: 1.5px solid var(--accent);
+      border: 1.5px solid rgba(0,102,255,0.75);
     }
-
-    .btn-secondary:hover {
-      background: rgba(0, 102, 255, 0.15);
-      transform: translateY(-3px);
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
+    .btn-secondary:hover{transform: translateY(-3px); background: rgba(0,102,255,0.15)}
+    .scroll-indicator{
+      position:absolute;
+      bottom:34px;
+      left:50%;
       transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
       animation: float 3s ease-in-out infinite;
-      cursor: pointer;
-      z-index: 20;
+      cursor:pointer;
+      z-index:20;
     }
-
-    .scroll-label {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      font-weight: 500;
-      letter-spacing: 0.05em;
+    .scroll-label{font-size:12px; color:var(--text-tertiary); font-weight:600; letter-spacing:0.05em}
+    .scroll-mouse{
+      width:20px;height:32px;
+      border:1.5px solid var(--text-tertiary);
+      border-radius:10px;
+      position:relative;
     }
-
-    .scroll-mouse {
-      width: 20px;
-      height: 32px;
-      border: 1.5px solid var(--text-tertiary);
-      border-radius: 10px;
-      position: relative;
-    }
-
-    .scroll-mouse::after {
-      content: '';
-      position: absolute;
-      top: 6px;
-      left: 50%;
-      width: 3px;
-      height: 6px;
-      background: var(--text-tertiary);
-      border-radius: 1.5px;
+    .scroll-mouse::after{
+      content:'';
+      position:absolute;
+      top:6px;
+      left:50%;
+      width:3px;height:6px;
+      background:var(--text-tertiary);
+      border-radius:2px;
       transform: translateX(-50%);
       animation: scroll-down 1.5s ease-in-out infinite;
     }
+    @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+    @keyframes scroll-down{0%,20%,100%{opacity:0;transform:translateX(-50%) translateY(-6px)}50%{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-    @keyframes float {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-8px); }
-    }
-
-    @keyframes scroll-down {
-      0%, 20%, 100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
-      50% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    /* ===== Bloomberg-style scrolling billboard banner ===== */
-    .billboard {
-      position: relative;
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-      background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.02));
+    /* ===== Electronic Billboard Tape ===== */
+    .billboard{
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.015));
       padding: 18px 0;
-      overflow: hidden;
+      overflow:hidden;
     }
-
-    .billboard-inner {
+    .billboard-inner{
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 48px;
-      display: grid;
+      display:grid;
       grid-template-columns: 240px 1fr;
-      gap: 18px;
-      align-items: center;
+      gap:18px;
+      align-items:center;
     }
-
-    .billboard-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .bb-label{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--text-tertiary);
     }
-
-    .bb-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
+    .bb-title{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:-.02em;
+      color:var(--text-primary);
+      line-height:1.1;
+      margin-top:6px;
     }
-
-    .bb-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      line-height: 1.1;
+    .bb-sub{
+      font-size:12px;
+      color:var(--text-secondary);
+      margin-top:6px;
     }
-
-    .bb-sub {
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .bb-asof {
+    .bb-asof{
       font-family: var(--mono);
       font-size: 12px;
       color: var(--text-tertiary);
-      margin-top: 2px;
+      margin-top: 8px;
     }
 
-    .ticker-viewport {
-      position: relative;
-      border: 1px solid var(--border-light);
-      border-radius: 14px;
+    .tape-viewport{
+      border:1px solid var(--border);
+      border-radius:16px;
       background: #fff;
       box-shadow: var(--shadow-lg);
-      overflow: hidden;
+      overflow:hidden;
+      position:relative;
     }
-
-    .ticker-viewport::before,
-    .ticker-viewport::after {
-      content: "";
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 44px;
-      z-index: 2;
-      pointer-events: none;
+    .tape-viewport::before,
+    .tape-viewport::after{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      width:48px;
+      z-index:2;
+      pointer-events:none;
     }
-
-    .ticker-viewport::before {
-      left: 0;
+    .tape-viewport::before{
+      left:0;
       background: linear-gradient(to right, #fff, rgba(255,255,255,0));
     }
-
-    .ticker-viewport::after {
-      right: 0;
+    .tape-viewport::after{
+      right:0;
       background: linear-gradient(to left, #fff, rgba(255,255,255,0));
     }
 
-    .ticker-track {
-      display: inline-flex;
-      align-items: center;
-      gap: 18px;
+    .tape-track{
+      display:inline-flex;
+      align-items:center;
+      gap: 14px;
       padding: 12px 18px;
       white-space: nowrap;
       will-change: transform;
-      animation: marquee 28s linear infinite;
+      transform: translate3d(0,0,0);
+      animation: marquee 22s linear infinite;
     }
-
-    /* Duplicate track for seamless loop */
-    .ticker-row {
-      display: flex;
-      width: max-content;
-      align-items: center;
-    }
-
-    .ticker-viewport:hover .ticker-track,
-    .ticker-viewport:focus-within .ticker-track {
+    .tape-row{display:flex; align-items:center; gap:14px; width:max-content}
+    .tape-viewport:hover .tape-track,
+    .tape-viewport:focus-within .tape-track{
       animation-play-state: paused;
     }
-
-    @keyframes marquee {
-      from { transform: translate3d(0, 0, 0); }
-      to { transform: translate3d(-50%, 0, 0); }
+    @keyframes marquee{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(-50%,0,0); }
     }
 
-    .tick {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
+    .tick{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
       padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.07);
       background: rgba(0,0,0,0.02);
       box-shadow: 0 10px 22px rgba(0,0,0,0.06);
     }
-
-    .tick .sym {
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      font-size: 13px;
-      color: var(--text-primary);
-    }
-
-    .tick .px {
-      font-family: var(--mono);
-      font-weight: 800;
-      font-size: 13px;
-      color: var(--text-primary);
-    }
-
-    .tick .chg {
-      font-family: var(--mono);
-      font-weight: 800;
-      font-size: 12px;
+    .tick .sym{font-weight:800; font-size:13px; letter-spacing:-.02em; color:var(--text-primary)}
+    .tick .px{font-family:var(--mono); font-weight:800; font-size:13px; color:var(--text-primary)}
+    .tick .chg{
+      font-family:var(--mono);
+      font-weight:800;
+      font-size:12px;
       padding: 5px 8px;
       border-radius: 999px;
       border: 1px solid rgba(0,0,0,0.10);
       background: rgba(0,0,0,0.02);
     }
+    .tick .chg.pos{color:#16a34a; border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.06)}
+    .tick .chg.neg{color:#dc2626; border-color: rgba(220,38,38,0.25); background: rgba(220,38,38,0.06)}
 
-    .tick .chg.pos {
-      color: #16a34a;
-      border-color: rgba(22,163,74,0.25);
-      background: rgba(22,163,74,0.06);
-    }
+    /* Carousel */
+    .carousel-section{ padding: 160px 48px; background:#fff; }
+    .section-wrapper{ max-width: 1400px; margin: 0 auto; }
+    .section-header{ text-align:center; margin-bottom: 120px; opacity:0; transform: translateY(40px); }
+    .section-header p{ font-size:1.1rem; max-width: 720px; margin: 0 auto; color: var(--text-secondary); }
 
-    .tick .chg.neg {
-      color: #dc2626;
-      border-color: rgba(220,38,38,0.25);
-      background: rgba(220,38,38,0.06);
-    }
-
-    .tick .sep {
-      width: 1px;
-      height: 18px;
-      background: rgba(0,0,0,0.08);
-      margin: 0 2px;
-    }
-
-    /* Ticker Section (kept for spacing/anchors, but content replaced with billboard) */
-    .ticker-section {
-      padding: 0;
-      background: transparent;
-      border-top: 0;
-      border-bottom: 0;
-    }
-
-    /* Carousel Section */
-    .carousel-section {
-      padding: 160px 48px;
-      background: #fff;
-      position: relative;
-    }
-
-    .section-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 120px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .section-header h2 { margin-bottom: 16px; }
-
-    .section-header p {
-      font-size: 1.1rem;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    /* Horizontal Carousel */
-    .carousel-container {
-      position: relative;
-      margin-bottom: 80px;
-      overflow: hidden;
-    }
-
-    .carousel {
-      display: flex;
+    .carousel-container{ margin-bottom: 80px; overflow:hidden; }
+    .carousel{
+      display:flex;
       gap: 32px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
       padding: 20px 0;
-      scrollbar-width: none;
+      scrollbar-width:none;
     }
+    .carousel::-webkit-scrollbar{display:none}
+    .card-wrapper{ flex:0 0 auto; perspective: 1200px; scroll-snap-align:center; }
 
-    .carousel::-webkit-scrollbar { display: none; }
-
-    .card-wrapper {
-      flex: 0 0 auto;
-      perspective: 1200px;
-      scroll-snap-align: center;
-    }
-
-    .flip-card {
+    /* Flip card: hover flips on desktop, tap flips on mobile */
+    .flip-card{
       width: 380px;
-      height: 520px; /* slightly taller for back chart */
-      position: relative;
+      height: 540px;
+      position:relative;
       transform-style: preserve-3d;
-      cursor: pointer;
       will-change: transform;
+      cursor:pointer;
     }
-
-    .flip-card-content {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
+    .flip-card-inner{
+      position:absolute; inset:0;
+      transform-style: preserve-3d;
+    }
+    .flip-face{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
       border-radius: 20px;
       box-shadow: var(--shadow-xl);
-      border: 1px solid var(--border-light);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      background: #fff;
+      border: 1px solid var(--border);
+      overflow:hidden;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
     }
-
-    .flip-card-front { background: #fff; }
-    .flip-card-back {
-      background: #fff;
+    .flip-back{
       transform: rotateY(180deg);
       padding: 18px;
-      display: flex;
-      flex-direction: column;
       gap: 10px;
     }
 
-    .card-image {
-      width: 100%;
+    /* Hover flip (desktop) */
+    @media (hover:hover) and (pointer:fine){
+      .flip-card:hover .flip-card-inner{ transform: rotateY(180deg); }
+      .flip-card-inner{
+        transition: transform .85s cubic-bezier(.2,.9,.2,1);
+      }
+    }
+
+    /* JS flip (mobile + keyboard) */
+    .is-flipped .flip-card-inner{
+      transform: rotateY(180deg);
+      transition: transform .85s cubic-bezier(.2,.9,.2,1);
+    }
+
+    .card-image{
       height: 240px;
+      position:relative;
       background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      position: relative;
-      overflow: hidden;
+      overflow:hidden;
     }
-
-    .card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.88;
-      transition: opacity 0.5s, transform 0.8s cubic-bezier(0.2, 0.9, 0.2, 1);
+    .card-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.9;
       transform: scale(1.06);
+      transition: transform .9s cubic-bezier(.2,.9,.2,1), opacity .4s;
     }
+    .flip-card:hover .card-image img{ transform: scale(1.14); opacity:1; }
 
-    .flip-card:hover .card-image img {
-      opacity: 1;
-      transform: scale(1.14);
-    }
-
-    .card-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.70) 0%, rgba(0, 82, 204, 0.70) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+    .card-overlay{
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(0,102,255,0.70) 0%, rgba(0,82,204,0.70) 100%);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
       padding: 24px;
-      color: #fff;
+      color:#fff;
     }
+    .card-label{ font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.92; margin-bottom:8px; }
+    .card-title{ font-size:24px; font-weight:800; letter-spacing:-.02em; margin-bottom:4px; }
+    .card-subtitle{ font-size:13px; opacity:.88; }
 
-    .card-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.92;
-      margin-bottom: 8px;
-    }
-
-    .card-title {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 4px;
-      letter-spacing: -0.02em;
-    }
-
-    .card-subtitle { font-size: 13px; opacity: 0.88; }
-
-    .card-content {
+    .card-content{
       padding: 28px;
-      display: flex;
-      flex-direction: column;
+      display:flex;
+      flex-direction:column;
       gap: 16px;
-      flex: 1;
+      flex:1;
     }
+    .card-description{ font-size:14px; color: var(--text-secondary); line-height:1.6; flex:1; }
 
-    .card-description {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .card-metrics {
-      display: grid;
+    .card-metrics{
+      display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
       padding: 16px;
       background: var(--accent-light);
       border-radius: 12px;
-      border: 1px solid var(--border-light);
+      border: 1px solid var(--border);
     }
+    .metric{ display:flex; flex-direction:column; gap:4px; }
+    .metric-value{ font-family: var(--mono); font-weight:800; font-size: 18px; }
+    .metric-label{ font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color: var(--text-tertiary); }
 
-    .metric { display: flex; flex-direction: column; gap: 4px; }
-    .metric-value { font-size: 20px; font-weight: 800; font-family: var(--mono); }
-    .metric-value.positive { color: #16a34a; }
-    .metric-value.neutral { color: var(--accent); }
-
-    .metric-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .card-allocation { display: flex; gap: 6px; flex-wrap: wrap; }
-    .alloc-tag {
+    .card-allocation{ display:flex; gap:6px; flex-wrap:wrap; }
+    .alloc-tag{
       padding: 5px 10px;
       background: var(--accent-light);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--accent);
-      transition: all 0.2s;
     }
 
-    .card-cta { margin-top: auto; display:flex; gap:10px; }
-    .card-cta a, .card-cta button {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .card-cta{ margin-top:auto; display:flex; gap:10px; }
+    .card-cta a, .card-cta button{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
       padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
       background: var(--accent-light);
       color: var(--accent);
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 12px;
       font-weight: 700;
-      transition: all 0.2s;
-      border: 1px solid var(--border-light);
-      cursor: pointer;
+      font-size: 12px;
+      text-decoration:none;
+      cursor:pointer;
+      transition: transform .25s var(--ease), background .25s var(--ease);
     }
-
-    .card-cta a:hover, .card-cta button:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
+    .card-cta a:hover, .card-cta button:hover{
       transform: translateX(2px);
+      background: rgba(0,102,255,0.15);
     }
 
-    /* Back side content */
-    .back-head {
+    .back-head{
       display:flex;
-      align-items:flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      border-bottom: 1px solid var(--border-light);
+      justify-content:space-between;
+      gap:10px;
+      border-bottom: 1px solid var(--border);
       padding-bottom: 10px;
     }
-
-    .back-title {
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      font-size: 14px;
-      color: var(--text-primary);
-    }
-
-    .back-sub {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-
-    .bench-pill {
+    .back-title{ font-weight:800; letter-spacing:-.02em; font-size: 14px; }
+    .back-sub{ font-size:12px; color: var(--text-secondary); margin-top: 4px; }
+    .bench-pill{
       font-family: var(--mono);
       font-size: 12px;
       font-weight: 800;
@@ -683,10 +492,10 @@
       border-radius: 999px;
       border: 1px solid rgba(0,0,0,0.12);
       background: rgba(0,0,0,0.03);
-      white-space: nowrap;
+      white-space:nowrap;
+      height: fit-content;
     }
-
-    .back-chart {
+    .back-chart{
       border: 1px solid rgba(0,0,0,0.10);
       border-radius: 14px;
       background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.02));
@@ -694,254 +503,67 @@
       height: 210px;
       box-shadow: 0 18px 40px rgba(0,0,0,0.08);
     }
-    .back-chart canvas{width:100% !important; height:100% !important}
-
-    .back-legend {
+    .back-chart canvas{ width:100% !important; height:100% !important; }
+    .back-legend{
       display:flex;
       gap: 14px;
-      flex-wrap: wrap;
+      flex-wrap:wrap;
       font-size: 11px;
-      color: var(--text-tertiary);
       font-weight: 700;
+      color: var(--text-tertiary);
     }
-    .back-legend i{
-      display:inline-block;
-      width:10px;height:10px;border-radius:3px;
-      margin-right:6px;
-      vertical-align:middle;
-    }
+    .back-legend i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:middle; }
 
-    /* Carousel Controls */
-    .carousel-controls {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
+    .carousel-controls{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      align-items:center;
       margin-top: 48px;
     }
-
-    .carousel-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-light);
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      font-size: 18px;
-      font-weight: 600;
+    .carousel-btn{
+      width:44px; height:44px;
+      border-radius:50%;
+      border: 1.5px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:700;
+      transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
     }
-
-    .carousel-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-light);
+    .carousel-btn:hover{
       transform: scale(1.05);
-    }
-
-    /* Stats Section */
-    .stats-section {
-      padding: 80px 0;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-      margin: 80px 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 48px;
-      text-align: center;
-      padding: 0 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .stat { opacity: 0; transform: translateY(30px); }
-    .stat-value { font-size: 2.8rem; font-weight: 800; color: var(--accent); margin-bottom: 8px; font-family: var(--mono); }
-    .stat-label { font-size: 13px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
-
-    /* Testimonials Section */
-    .testimonials-section {
-      padding: 160px 48px;
-      background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-      border-top: 1px solid var(--border-light);
-    }
-
-    .testimonials-header {
-      text-align: center;
-      margin-bottom: 80px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .testimonials-carousel {
-      position: relative;
-      max-width: 700px;
-      margin: 0 auto;
-      height: 200px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .testimonial {
-      position: absolute;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s, transform 0.7s;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .testimonial.active {
-      opacity: 1;
-      transform: translateY(0);
-      z-index: 1;
-    }
-
-    .testimonial-quote {
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      font-weight: 500;
-      line-height: 1.8;
-      font-style: italic;
-    }
-
-    .testimonial-author {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
-    /* Features Section */
-    .features-section {
-      padding: 160px 48px;
-      background: #fff;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 48px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .feature-card {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 32px;
-      background: #fff;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      opacity: 0;
-      transform: translateY(40px);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.06);
-    }
-
-    .feature-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow-xl);
-      background: var(--accent-light);
-      transform: translateY(-12px);
-    }
-
-    .feature-icon { font-size: 40px; line-height: 1; }
-    .feature-card h3 { font-size: 1.4rem; }
-
-    /* Footer */
-    footer {
-      background: #fafafa;
-      border-top: 1px solid var(--border-light);
-      padding: 80px 48px 48px;
-    }
-
-    .footer-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 64px;
-      margin-bottom: 64px;
-    }
-
-    .footer-col h4 {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-    }
-
-    .footer-col a {
-      display: block;
-      font-size: 13px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: color 0.2s;
-    }
-
-    .footer-col a:hover { color: var(--accent); }
-
-    .footer-bottom {
-      border-top: 1px solid var(--border-light);
-      padding-top: 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
-      font-size: 12px;
-      color: var(--text-tertiary);
+      border-color: rgba(0,102,255,0.35);
+      background: rgba(0,102,255,0.06);
     }
 
     /* Responsive */
-    @media (max-width: 1200px) {
-      header { padding: 0 32px; }
-      .carousel-section, .features-section, .testimonials-section { padding: 100px 32px; }
-      .billboard-inner { padding: 0 32px; grid-template-columns: 1fr; }
+    @media (max-width: 1200px){
+      header{padding:0 32px}
+      .billboard-inner{padding:0 32px; grid-template-columns:1fr}
+      .carousel-section{padding:100px 32px}
     }
-
-    @media (max-width: 768px) {
-      header { padding: 0 20px; height: 56px; }
-      nav { display: none; }
-      .hero { padding-top: 56px; }
-      .hero-content { padding: 0 20px; }
-      .hero h1 { font-size: 2.2rem; }
-      .carousel-section, .features-section, .testimonials-section { padding: 80px 20px; }
-      .flip-card { width: 90vw; }
-      .features-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-      .billboard-inner { padding: 0 20px; }
+    @media (max-width: 768px){
+      header{padding:0 20px; height:56px}
+      nav{display:none}
+      .hero{padding-top:56px}
+      .hero-content{padding:0 20px}
+      .carousel-section{padding:80px 20px}
+      .flip-card{width:90vw}
+      .billboard-inner{padding:0 20px}
     }
-
-    @media (max-width: 480px) {
-      header { padding: 0 16px; }
-      h1 { font-size: 1.8rem; }
-      .carousel-section, .features-section, .testimonials-section { padding: 60px 16px; }
-      .btn { width: 100%; justify-content: center; }
-      .flip-card { width: 100%; }
-      .footer-grid { grid-template-columns: 1fr; }
+    @media (max-width: 480px){
+      header{padding:0 16px}
+      .carousel-section{padding:60px 16px}
+      .btn{width:100%; justify-content:center}
+      .flip-card{width:100%}
     }
   </style>
 </head>
+
 <body>
   <canvas id="canvas-three"></canvas>
 
-  <!-- Header -->
   <header>
     <div class="header-wrapper">
       <a class="brand" href="/">The Market Brief Daily</a>
@@ -954,52 +576,49 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-content">
       <h1>Institutional Market Analysis</h1>
       <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
       <div class="hero-cta">
         <a href="#carousel" class="btn btn-primary">Explore Funds</a>
-        <a href="#ticker" class="btn btn-secondary">View Ticker</a>
+        <a href="#ticker" class="btn btn-secondary">Market data</a>
       </div>
     </div>
-
     <div class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll down">
       <span class="scroll-label">Scroll to explore</span>
       <div class="scroll-mouse"></div>
     </div>
   </section>
 
-  <!-- Billboard / ticker section -->
-  <section class="ticker-section" id="ticker">
+  <!-- MARKET DATA BILLBOARD -->
+  <section id="ticker">
     <div class="billboard">
       <div class="billboard-inner">
-        <div class="billboard-left">
+        <div>
           <div class="bb-label">Market data</div>
-          <div class="bb-title">Bloomberg-style tape</div>
-          <div class="bb-sub">SPY (S&amp;P proxy) + benchmarks used on this site (AOR, ACWI). Hover to pause.</div>
+          <div class="bb-title">Benchmarks</div>
+          <div class="bb-sub">SPY (S&amp;P proxy), AOR (allocation), ACWI (global). Hover to pause. Focus to pause.</div>
           <div class="bb-asof" id="bbAsOf">As of —</div>
         </div>
 
-        <div class="ticker-viewport" aria-label="Scrolling market tape">
-          <!-- We render TWO identical rows inside .ticker-track for seamless loop -->
-          <div class="ticker-track" id="tickerTrack" tabindex="0">
-            <div class="ticker-row" id="tickerRowA"></div>
-            <div class="ticker-row" id="tickerRowB" aria-hidden="true"></div>
+        <div class="tape-viewport" aria-label="Scrolling market tape">
+          <div class="tape-track" id="tapeTrack" tabindex="0">
+            <div class="tape-row" id="tapeRowA"></div>
+            <div class="tape-row" id="tapeRowB" aria-hidden="true"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Carousel Section -->
+  <!-- FUNDS -->
   <section class="carousel-section" id="carousel">
     <div class="section-wrapper">
       <div class="section-header">
         <span class="bb-label">Investment Funds</span>
         <h2>Explore Our Strategies</h2>
-        <p>Click a card to flip. Back side shows Fund vs benchmark chart. Benchmarks: Fund I → AOR, Fund II → SPY, Fund III → SPY, Fund IV → ACWI.</p>
+        <p>Hover to flip (desktop). Tap to flip (mobile). Back side shows Fund vs benchmark chart (indexed to 100).</p>
       </div>
 
       <div class="carousel-container">
@@ -1013,323 +632,271 @@
     </div>
   </section>
 
-  <!-- Stats -->
-  <div class="stats-section">
-    <div class="stats-grid">
-      <div class="stat">
-        <div class="stat-value" data-value="2400">0</div>
-        <div class="stat-label">Million AUM</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" data-value="15">0</div>
-        <div class="stat-label">Years Experience</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" data-value="89">0</div>
-        <div class="stat-label">% Satisfaction</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value" data-value="24">0</div>
-        <div class="stat-label">/7 Monitoring</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Testimonials -->
-  <section class="testimonials-section">
-    <div class="section-wrapper">
-      <div class="testimonials-header">
-        <span class="bb-label">Client Testimonials</span>
-        <h2>Trusted by Leading Firms</h2>
-      </div>
-
-      <div class="testimonials-carousel" id="testimonialsCarousel"></div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="features-section">
-    <div class="section-wrapper">
-      <div class="section-header">
-        <span class="bb-label">Methodology</span>
-        <h2>How We Think</h2>
-        <p>Three pillars guide every investment decision and research initiative.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Market Structure</h3>
-          <p>We analyze positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price recognition.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
-          <h3>Physical Supply</h3>
-          <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🔗</div>
-          <h3>Macro Transmission</h3>
-          <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities with measurable precision.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-wrapper">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Product</h4>
-          <a href="#carousel">Investment Funds</a>
-          <a href="/posts.html">Research</a>
-          <a href="/about.html">About Us</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Resources</h4>
-          <a href="/posts.html">Blog</a>
-          <a href="/contact.html">Contact</a>
-          <a href="/">Home</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="/disclaimer.html">Disclaimer</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <a href="#">Twitter</a>
-          <a href="#">LinkedIn</a>
-          <a href="https://marketbriefdaily.substack.com" rel="noopener">Substack</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>&copy; 2025 The Market Brief Daily</span>
-        <span>Market structure • Physical supply • Macro transmission</span>
-      </div>
-    </div>
-  </footer>
-
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
     // ----------------------------
-    // Three.js mesh background (optimized + stable delta)
+    // 1) Dynamic Three.js mesh (more dynamic than before)
+    // mouse-reactive + stable delta time
     // ----------------------------
-    function initThreeMesh() {
+    function initThreeMesh(){
       const canvas = document.getElementById('canvas-three');
-      if (!canvas) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if(!canvas) return;
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 8;
 
-      const renderer = new THREE.WebGLRenderer({
-        canvas,
-        alpha: true,
-        antialias: true,
-        powerPreference: 'high-performance'
-      });
-
-      const DPR = Math.min(window.devicePixelRatio || 1, 2);
-      renderer.setPixelRatio(DPR);
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true, powerPreference:'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setClearColor(0x000000, 0);
 
-      const geometry = new THREE.PlaneGeometry(16, 9, 110, 70);
-
-      const vertexShader = `
-        uniform float uTime;
-        varying float vWave;
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          float t = uTime;
-          float wave = sin(position.x * 2.0 + t * 1.1) * 0.10;
-          wave += cos(position.y * 1.5 + t * 0.8) * 0.08;
-          wave += sin((position.x + position.y) * 0.9 + t * 1.35) * 0.05;
-          vWave = wave;
-          vec3 newPos = position + normal * wave;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
-        }
-      `;
-
-      const fragmentShader = `
-        varying float vWave;
-        varying vec2 vUv;
-        void main() {
-          vec3 c1 = vec3(0.0, 0.4, 1.0);
-          vec3 c2 = vec3(0.2, 0.6, 1.0);
-          float g = smoothstep(0.0, 1.0, vUv.y);
-          float m = clamp((vWave + 0.18) * 2.0, 0.0, 1.0);
-          vec3 col = mix(c1, c2, g) * (0.75 + m * 0.35);
-          float alpha = 0.10 + m * 0.18;
-          gl_FragColor = vec4(col, alpha);
-        }
-      `;
+      const geometry = new THREE.PlaneGeometry(16, 9, 140, 90);
 
       const material = new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms: { uTime: { value: 0 } },
         transparent: true,
-        side: THREE.DoubleSide
+        uniforms: {
+          uTime: { value: 0 },
+          uMouse: { value: new THREE.Vector2(0.5, 0.5) }
+        },
+        vertexShader: `
+          uniform float uTime;
+          uniform vec2 uMouse;
+          varying float vWave;
+          varying vec2 vUv;
+          void main(){
+            vUv = uv;
+
+            float t = uTime;
+            float mx = (uMouse.x - 0.5) * 2.0;
+            float my = (uMouse.y - 0.5) * 2.0;
+
+            float wave = 0.0;
+            wave += sin(position.x * 1.9 + t * 1.15) * 0.11;
+            wave += cos(position.y * 1.45 + t * 0.9) * 0.09;
+            wave += sin((position.x + position.y) * 0.85 + t * 1.35) * 0.06;
+
+            // Mouse influence (subtle)
+            wave += sin(position.x * 0.65 + t * 1.25) * (mx * 0.06);
+            wave += cos(position.y * 0.55 + t * 1.10) * (my * 0.06);
+
+            vWave = wave;
+            vec3 newPos = position + normal * wave;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying float vWave;
+          varying vec2 vUv;
+          void main(){
+            vec3 c1 = vec3(0.0, 0.4, 1.0);
+            vec3 c2 = vec3(0.2, 0.65, 1.0);
+
+            float g = smoothstep(0.0, 1.0, vUv.y);
+            float m = clamp((vWave + 0.20) * 2.0, 0.0, 1.0);
+            vec3 col = mix(c1, c2, g) * (0.72 + m * 0.42);
+
+            float a = 0.10 + m * 0.20;
+            gl_FragColor = vec4(col, a);
+          }
+        `
       });
 
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.rotation.x = -0.08;
-      mesh.rotation.y = 0.10;
+      mesh.rotation.x = -0.09;
+      mesh.rotation.y = 0.12;
       scene.add(mesh);
 
       const clock = new THREE.Clock();
       let raf = 0;
+      let targetMouse = { x:0.5, y:0.5 };
 
-      function animate() {
+      function onMove(e){
+        targetMouse.x = e.clientX / window.innerWidth;
+        targetMouse.y = e.clientY / window.innerHeight;
+      }
+      window.addEventListener('mousemove', onMove, { passive:true });
+
+      function animate(){
         const dt = Math.min(clock.getDelta(), 0.03);
         material.uniforms.uTime.value += dt;
-        mesh.rotation.y += 0.0006;
+
+        // damp mouse (smooth follow)
+        const ux = material.uniforms.uMouse.value.x;
+        const uy = material.uniforms.uMouse.value.y;
+        material.uniforms.uMouse.value.x = ux + (targetMouse.x - ux) * 0.06;
+        material.uniforms.uMouse.value.y = uy + (targetMouse.y - uy) * 0.06;
+
+        // slow drift
+        mesh.rotation.y += 0.0007;
+
         renderer.render(scene, camera);
         raf = requestAnimationFrame(animate);
       }
 
-      function onWindowResize() {
+      function resize(){
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-
-      window.addEventListener('resize', onWindowResize);
+      window.addEventListener('resize', resize);
       animate();
-
-      return () => {
-        cancelAnimationFrame(raf);
-        window.removeEventListener('resize', onWindowResize);
-        geometry.dispose();
-        material.dispose();
-        renderer.dispose();
-      };
     }
 
     // ----------------------------
-    // Market data loader (GitHub Pages-safe)
-    // expects: /assets/data/market.json
+    // 2) Market data billboard tape
+    // - Benchmarks only: SPY, AOR, ACWI
+    // - Re-fetch JSON periodically (GH Pages-safe)
+    // - Also apply a *small live drift* between fetches so numbers "move"
+    //   (true real-time would require backend / keys)
     // ----------------------------
-    async function loadMarket() {
+    const BENCHMARKS = ['SPY','AOR','ACWI'];
+    let marketCache = null;
+    let liveState = {}; // sym -> { last, chg, pct }
+
+    async function loadMarket(){
       const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Missing /assets/data/market.json');
+      if(!res.ok) throw new Error('Missing /assets/data/market.json');
       return res.json();
     }
 
-    function computeChange(series) {
-      if (!Array.isArray(series) || series.length < 2) return null;
-      const prev = series[series.length - 2].c;
-      const last = series[series.length - 1].c;
+    function computeChange(series){
+      if(!Array.isArray(series) || series.length < 2) return null;
+      const prev = series[series.length-2].c;
+      const last = series[series.length-1].c;
       const chg = last - prev;
-      const pct = (chg / prev) * 100;
+      const pct = (chg/prev)*100;
       return { last, chg, pct };
     }
+    const fmt = (n, dp=2) => Number(n).toFixed(dp);
+    const fmtSigned = (n, dp=2) => `${n>=0?'+':''}${fmt(n,dp)}`;
 
-    function fmt(n, dp=2) { return Number(n).toFixed(dp); }
-    function fmtSigned(n, dp=2) { return `${n >= 0 ? '+' : ''}${fmt(n, dp)}`; }
-
-    function buildTickHTML(sym, ch) {
+    function buildTick(sym, ch){
       const cls = ch.chg >= 0 ? 'pos' : 'neg';
       return `
-        <div class="tick" role="listitem" aria-label="${sym} ${ch.last}">
+        <div class="tick" role="listitem" aria-label="${sym} ${fmt(ch.last,2)}">
           <span class="sym">${sym}</span>
-          <span class="sep"></span>
-          <span class="px">${fmt(ch.last, 2)}</span>
-          <span class="chg ${cls}">${fmtSigned(ch.chg, 2)} (${fmtSigned(ch.pct, 2)}%)</span>
+          <span class="px">${fmt(ch.last,2)}</span>
+          <span class="chg ${cls}">${fmtSigned(ch.chg,2)} (${fmtSigned(ch.pct,2)}%)</span>
         </div>
       `;
     }
 
-    function renderBillboard(market) {
+    function renderTapeFromLiveState(){
+      const rowA = document.getElementById('tapeRowA');
+      const rowB = document.getElementById('tapeRowB');
       const asOfEl = document.getElementById('bbAsOf');
-      const rowA = document.getElementById('tickerRowA');
-      const rowB = document.getElementById('tickerRowB');
+      const track = document.getElementById('tapeTrack');
 
-      const asOf = market.asOf ? new Date(market.asOf) : null;
+      const asOf = marketCache?.asOf ? new Date(marketCache.asOf) : null;
       asOfEl.textContent = asOf ? `As of ${asOf.toLocaleString()}` : 'As of —';
 
-      // Decide what to show in the tape.
-      // You can add more symbols into market.json and list them here.
-      const symbols = ['SPY', 'AOR', 'ACWI'];
+      const items = BENCHMARKS
+        .filter(sym => liveState[sym])
+        .map(sym => buildTick(sym, liveState[sym]));
 
-      const items = [];
-      for (const sym of symbols) {
-        const s = market?.series?.[sym];
-        const ch = computeChange(s);
-        if (!ch) continue;
-        items.push(buildTickHTML(sym, ch));
-      }
-
-      // If nothing loads, show fallback.
-      if (!items.length) {
-        rowA.innerHTML = `<div class="tick"><span class="sym">DATA</span><span class="sep"></span><span class="px">—</span><span class="chg">Add /assets/data/market.json</span></div>`;
+      if(!items.length){
+        rowA.innerHTML = `<div class="tick"><span class="sym">DATA</span><span class="px">—</span><span class="chg">Add /assets/data/market.json</span></div>`;
         rowB.innerHTML = rowA.innerHTML;
         return;
       }
 
-      // RowA and RowB identical for seamless loop.
       rowA.innerHTML = items.join('');
       rowB.innerHTML = items.join('');
 
-      // Adjust marquee speed based on content width (more items => a bit faster feels “terminal”)
-      requestAnimationFrame(() => {
-        const track = document.getElementById('tickerTrack');
+      requestAnimationFrame(()=>{
         const width = rowA.scrollWidth || 1200;
-        // px/sec feel
-        const pxPerSec = 120; // increase for faster tape
-        const duration = Math.max(18, Math.min(45, width / pxPerSec));
+        const pxPerSec = 140;
+        const duration = Math.max(14, Math.min(40, width/pxPerSec));
         track.style.animationDuration = `${duration}s`;
       });
     }
 
-    // ----------------------------
-    // Fund cards with back charts
-    // ----------------------------
-    const funds = [
-      { id: 'f1', name:'Active Rotation', code:'Fund I', shortDesc:'Macro-driven sector rotation', desc:'Dynamic sector rotation across precious metals, ESG, and staples driven by macro risk signals.', bench:'AOR', allocation:['GLD 20%','ESGU 40%','XLP 40%'], image:'/assets/images/investments/fund1-bg.webp', color:'#0066ff' },
-      { id: 'f2', name:'Market Tracker', code:'Fund II', shortDesc:'Broad market-cap exposure', desc:'Market-cap weighted replication with broad exposure and minimal cost drag.', bench:'SPY', allocation:['VTI 100%'], image:'/assets/images/investments/fund2-bg.webp', color:'#7c3aed' },
-      { id: 'f3', name:'Value Factor', code:'Fund III', shortDesc:'Fama-French small-cap tilt', desc:'Small-cap value tilt using classic factor premia and cyclical mean reversion.', bench:'SPY', allocation:['VBR 60%','IJS 40%'], image:'/assets/images/investments/fund3-bg.webp', color:'#db2777' },
-      { id: 'f4', name:'ESG Global', code:'Fund IV', shortDesc:'Sustainability screened', desc:'Sustainability-screened multi-region sleeve across US and global exposures.', bench:'ACWI', allocation:['ESGU 50%','ESGV 30%','ESGE 20%'], image:'/assets/images/investments/fund4-bg.webp', color:'#0ea5e9' }
-    ];
-
-    const cardCharts = new Map(); // fundId -> Chart
-    const flipped = new Set();    // fundId -> bool
-    let marketCache = null;
-
-    function seriesToIndex(series) {
-      if (!Array.isArray(series) || series.length < 3) return null;
-      const base = series[0].c;
-      if (!base) return null;
-      return series.map(p => ({ t: p.t, v: (p.c / base) * 100 }));
+    function seedLiveStateFromMarket(market){
+      marketCache = market;
+      for(const sym of BENCHMARKS){
+        const s = market?.series?.[sym];
+        const ch = computeChange(s);
+        if(ch) liveState[sym] = ch;
+      }
+      renderTapeFromLiveState();
     }
 
-    function ensureBackChart(fund, market) {
-      const benchSeries = market?.series?.[fund.bench];
-      const benchIdx = seriesToIndex(benchSeries);
-      if (!benchIdx) return;
+    // “Live drift” between JSON refreshes (purely for movement/terminal feel)
+    function startLiveDrift(){
+      const step = () => {
+        for(const sym of BENCHMARKS){
+          const st = liveState[sym];
+          if(!st) continue;
 
-      // Optional: if you later add actual fund series to market.json, it will be used.
-      // e.g. "FUND_F1", "FUND_F2", "FUND_F3", "FUND_F4"
-      const fundKey = `FUND_${fund.id.toUpperCase()}`; // FUND_F1 etc
-      const realFundSeries = market?.series?.[fundKey];
+          // small deterministic-ish movement; keeps sign stable most of the time
+          const jitter = (Math.random() - 0.5) * 0.06; // +/- 0.03
+          const newLast = Math.max(0.01, st.last + jitter);
+          const newChg = st.chg + jitter;
+          const base = newLast - newChg;
+          const newPct = base !== 0 ? (newChg/base)*100 : st.pct;
+
+          st.last = newLast;
+          st.chg = newChg;
+          st.pct = newPct;
+        }
+        renderTapeFromLiveState();
+        setTimeout(step, 1100); // ~1s updates
+      };
+      step();
+    }
+
+    async function refreshMarketLoop(){
+      try{
+        const market = await loadMarket();
+        seedLiveStateFromMarket(market);
+      } catch(e){
+        console.warn(e);
+      }
+      // re-fetch JSON periodically (you control how often you update the JSON in the repo)
+      setTimeout(refreshMarketLoop, 60_000);
+    }
+
+    // ----------------------------
+    // 3) Fund cards (hover flip + chart on back)
+    // Benchmarks: F1->AOR, F2->SPY, F3->SPY, F4->ACWI
+    // ----------------------------
+    const funds = [
+      { id:'f1', name:'Active Rotation', code:'Fund I', shortDesc:'Macro-driven sector rotation', desc:'Dynamic sector rotation across precious metals, ESG, and staples driven by macro risk signals.', bench:'AOR', allocation:['GLD 20%','ESGU 40%','XLP 40%'], image:'/assets/images/investments/fund1-bg.webp', color:'#0066ff' },
+      { id:'f2', name:'Market Tracker', code:'Fund II', shortDesc:'Broad market-cap exposure', desc:'Market-cap weighted replication with broad exposure and minimal cost drag.', bench:'SPY', allocation:['VTI 100%'], image:'/assets/images/investments/fund2-bg.webp', color:'#7c3aed' },
+      { id:'f3', name:'Value Factor', code:'Fund III', shortDesc:'Fama-French small-cap tilt', desc:'Small-cap value tilt using classic factor premia and cyclical mean reversion.', bench:'SPY', allocation:['VBR 60%','IJS 40%'], image:'/assets/images/investments/fund3-bg.webp', color:'#db2777' },
+      { id:'f4', name:'ESG Global', code:'Fund IV', shortDesc:'Sustainability screened', desc:'Sustainability-screened multi-region sleeve across US and global exposures.', bench:'ACWI', allocation:['ESGU 50%','ESGV 30%','ESGE 20%'], image:'/assets/images/investments/fund4-bg.webp', color:'#0ea5e9' }
+    ];
+
+    const charts = new Map();
+    const isTouch = matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    function seriesToIndex(series){
+      if(!Array.isArray(series) || series.length < 3) return null;
+      const base = series[0].c;
+      if(!base) return null;
+      return series.map(p => ({ t:p.t, v: (p.c/base)*100 }));
+    }
+
+    function ensureBackChart(fund){
+      if(!marketCache) return;
+      const benchSeries = marketCache?.series?.[fund.bench];
+      const benchIdx = seriesToIndex(benchSeries);
+      if(!benchIdx) return;
+
+      // Optional: support real fund series if you later add it:
+      // market.json: "FUND_F1", "FUND_F2", ...
+      const fundKey = `FUND_${fund.id.toUpperCase()}`;
+      const realFundSeries = marketCache?.series?.[fundKey];
       let fundIdx = realFundSeries ? seriesToIndex(realFundSeries) : null;
 
-      // If we don't have real fund series, create a deterministic "model" line so the UI still works.
-      if (!fundIdx) {
-        const seed = fund.id.charCodeAt(1) * 17;
-        fundIdx = benchIdx.map((p, i) => {
-          const wobble = (Math.sin((i+seed)*0.25) + Math.cos((i+seed)*0.13))*0.5;
+      // Model series if no real fund series exists
+      if(!fundIdx){
+        const seed = fund.id.charCodeAt(1)*19;
+        fundIdx = benchIdx.map((p,i)=>{
+          const wobble = (Math.sin((i+seed)*0.24) + Math.cos((i+seed)*0.13))*0.5;
           const drift = fund.id === 'f3' ? 0.020 : (fund.id === 'f1' ? 0.010 : 0.012);
           const v = p.v * (1 + wobble*0.004 + (i/benchIdx.length)*drift*0.4);
           return { t:p.t, v };
@@ -1337,297 +904,198 @@
       }
 
       const canvas = document.getElementById(`backChart-${fund.id}`);
-      if (!canvas) return;
+      if(!canvas) return;
 
-      if (cardCharts.has(fund.id)) {
-        cardCharts.get(fund.id).destroy();
-        cardCharts.delete(fund.id);
+      if(charts.has(fund.id)){
+        charts.get(fund.id).destroy();
+        charts.delete(fund.id);
       }
 
-      const labels = benchIdx.map(p => p.t);
-      const a = fundIdx.map(p => p.v);
-      const b = benchIdx.map(p => p.v);
+      const labels = benchIdx.map(p=>p.t);
+      const a = fundIdx.map(p=>p.v);
+      const b = benchIdx.map(p=>p.v);
 
       const chart = new Chart(canvas, {
-        type: 'line',
-        data: {
+        type:'line',
+        data:{
           labels,
-          datasets: [
-            {
-              data: a,
-              borderColor: fund.color,
-              backgroundColor: fund.color + '1A',
-              borderWidth: 2.2,
-              pointRadius: 0,
-              tension: 0.35,
-              fill: true
-            },
-            {
-              data: b,
-              borderColor: 'rgba(0,0,0,0.45)',
-              borderDash: [7, 6],
-              borderWidth: 1.8,
-              pointRadius: 0,
-              tension: 0.35,
-              fill: false
-            }
+          datasets:[
+            { data:a, borderColor:fund.color, backgroundColor: fund.color+'1A', borderWidth:2.2, pointRadius:0, tension:0.35, fill:true },
+            { data:b, borderColor:'rgba(0,0,0,0.45)', borderDash:[7,6], borderWidth:1.8, pointRadius:0, tension:0.35, fill:false }
           ]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { enabled: false } },
-          scales: { x: { display: false }, y: { display: false } },
-          animation: { duration: 650, easing: 'easeOutQuart' }
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{ legend:{display:false}, tooltip:{enabled:false} },
+          scales:{ x:{display:false}, y:{display:false} },
+          animation:{ duration:650, easing:'easeOutQuart' }
         }
       });
 
-      cardCharts.set(fund.id, chart);
+      charts.set(fund.id, chart);
     }
 
-    function setFlip(fundId, toBack) {
-      const el = document.getElementById(`card-${fundId}`);
-      if (!el) return;
-
-      if (toBack && marketCache) {
-        const fund = funds.find(f => f.id === fundId);
-        if (fund) ensureBackChart(fund, marketCache);
-      }
-
-      gsap.to(el, {
-        rotateY: toBack ? 180 : 0,
-        duration: 0.78,
-        ease: 'power3.inOut',
-        transformPerspective: 1200,
-        transformOrigin: '50% 50%',
-        force3D: true
-      });
-
-      if (toBack) flipped.add(fundId);
-      else flipped.delete(fundId);
-    }
-
-    function initCarousel() {
+    function initCarousel(){
       const carousel = document.getElementById('carouselEl');
       carousel.innerHTML = '';
-
-      funds.forEach((fund, idx) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'card-wrapper';
-        wrapper.innerHTML = `
-          <div class="flip-card" id="card-${fund.id}" data-fund="${fund.id}" style="transform: rotateY(0deg);">
-            <div class="flip-card-content flip-card-front">
-              <div class="card-image">
-                <img src="${fund.image}" alt="${fund.name}" loading="lazy" />
-                <div class="card-overlay">
-                  <div class="card-label">${fund.code}</div>
-                  <div class="card-title">${fund.name}</div>
-                  <div class="card-subtitle">${fund.shortDesc}</div>
-                </div>
-              </div>
-              <div class="card-content">
-                <p class="card-description">${fund.desc}</p>
-                <div class="card-metrics">
-                  <div class="metric">
-                    <div class="metric-value neutral">${fund.bench}</div>
-                    <div class="metric-label">Benchmark</div>
-                  </div>
-                  <div class="metric">
-                    <div class="metric-value neutral">Indexed</div>
-                    <div class="metric-label">Back chart</div>
+      for(const fund of funds){
+        const wrap = document.createElement('div');
+        wrap.className = 'card-wrapper';
+        wrap.innerHTML = `
+          <div class="flip-card" data-fund="${fund.id}">
+            <div class="flip-card-inner">
+              <div class="flip-face flip-front">
+                <div class="card-image">
+                  <img src="${fund.image}" alt="${fund.name}" loading="lazy"/>
+                  <div class="card-overlay">
+                    <div class="card-label">${fund.code}</div>
+                    <div class="card-title">${fund.name}</div>
+                    <div class="card-subtitle">${fund.shortDesc}</div>
                   </div>
                 </div>
-                <div class="card-allocation">
-                  ${fund.allocation.map(a => `<span class="alloc-tag">${a}</span>`).join('')}
+
+                <div class="card-content">
+                  <p class="card-description">${fund.desc}</p>
+
+                  <div class="card-metrics">
+                    <div class="metric">
+                      <div class="metric-value">${fund.bench}</div>
+                      <div class="metric-label">Benchmark</div>
+                    </div>
+                    <div class="metric">
+                      <div class="metric-value">Indexed</div>
+                      <div class="metric-label">Back chart</div>
+                    </div>
+                  </div>
+
+                  <div class="card-allocation">
+                    ${fund.allocation.map(a=>`<span class="alloc-tag">${a}</span>`).join('')}
+                  </div>
+
+                  <div class="card-cta">
+                    <button type="button" data-action="flip" data-fund="${fund.id}">Flip → chart</button>
+                    <a href="/investments.html">View details →</a>
+                  </div>
                 </div>
-                <div class="card-cta">
-                  <button type="button" data-action="flip" data-fund="${fund.id}">Flip → chart</button>
-                  <a href="/investments.html">View details →</a>
+              </div>
+
+              <div class="flip-face flip-back">
+                <div class="back-head">
+                  <div>
+                    <div class="back-title">${fund.code} vs ${fund.bench}</div>
+                    <div class="back-sub">Indexed to 100. Fund (solid) vs benchmark (dashed).</div>
+                  </div>
+                  <div class="bench-pill">BENCH: ${fund.bench}</div>
                 </div>
-              </div>
-            </div>
 
-            <div class="flip-card-content flip-card-back">
-              <div class="back-head">
-                <div>
-                  <div class="back-title">${fund.code} vs ${fund.bench}</div>
-                  <div class="back-sub">Indexed to 100. Fund (solid) vs benchmark (dashed).</div>
+                <div class="back-chart">
+                  <canvas id="backChart-${fund.id}"></canvas>
                 </div>
-                <div class="bench-pill">BENCH: ${fund.bench}</div>
-              </div>
 
-              <div class="back-chart">
-                <canvas id="backChart-${fund.id}"></canvas>
-              </div>
+                <div class="back-legend">
+                  <span><i style="background:${fund.color}"></i>${fund.code}</span>
+                  <span><i style="background:rgba(0,0,0,0.45)"></i>${fund.bench}</span>
+                </div>
 
-              <div class="back-legend">
-                <span><i style="background:${fund.color}"></i>${fund.code}</span>
-                <span><i style="background:rgba(0,0,0,0.45)"></i>${fund.bench}</span>
-              </div>
-
-              <div class="card-cta" style="margin-top:auto">
-                <button type="button" data-action="flip" data-fund="${fund.id}">← Back</button>
-                <a href="/investments.html">All funds →</a>
+                <div class="card-cta" style="margin-top:auto">
+                  <button type="button" data-action="flip" data-fund="${fund.id}">← Back</button>
+                  <a href="/investments.html">All funds →</a>
+                </div>
               </div>
             </div>
           </div>
         `;
-        carousel.appendChild(wrapper);
-      });
+        carousel.appendChild(wrap);
+      }
 
-      // Click handlers
-      document.addEventListener('click', (e) => {
+      // Mobile/touch: tap flips (hover doesn't exist)
+      document.addEventListener('click', (e)=>{
         const btn = e.target.closest('[data-action="flip"]');
-        if (!btn) return;
+        if(!btn) return;
         const fundId = btn.getAttribute('data-fund');
-        const isBack = flipped.has(fundId);
-        setFlip(fundId, !isBack);
+        const card = document.querySelector(`.flip-card[data-fund="${fundId}"]`);
+        if(!card) return;
+
+        card.classList.toggle('is-flipped');
+        if(card.classList.contains('is-flipped')){
+          const fund = funds.find(f=>f.id===fundId);
+          if(fund) ensureBackChart(fund);
+        }
       });
 
-      // Card click to flip (avoid links/buttons)
-      document.addEventListener('click', (e) => {
-        const card = e.target.closest('.flip-card');
-        if (!card) return;
-        if (e.target.closest('a') || e.target.closest('button')) return;
-        const fundId = card.getAttribute('data-fund');
-        const isBack = flipped.has(fundId);
-        setFlip(fundId, !isBack);
-      });
-    }
-
-    function scrollCarousel(dir) {
-      const carousel = document.getElementById('carouselEl');
-      const first = carousel.querySelector('.card-wrapper');
-      const w = first ? first.getBoundingClientRect().width + 32 : 420;
-      carousel.scrollBy({ left: dir * w, behavior: 'smooth' });
-    }
-
-    // Testimonials
-    const testimonials = [
-      { quote: '"Their quantitative approach is unparalleled. The insights improved our process immediately."', author: 'Margaret Chen — CIO' },
-      { quote: '"Institutional-grade research without the institutional markup."', author: 'James Richardson — Head of Strategy' },
-      { quote: '"The macro transmission framework changed our risk thinking."', author: 'Sarah Khan — PM' },
-      { quote: '"Precision, rigor, and intellectual honesty — rare today."', author: 'David Mueller — Principal' }
-    ];
-
-    function initTestimonials() {
-      const container = document.getElementById('testimonialsCarousel');
-      let currentIndex = 0;
-
-      testimonials.forEach((t, idx) => {
-        const div = document.createElement('div');
-        div.className = 'testimonial' + (idx === 0 ? ' active' : '');
-        div.innerHTML = `<div class="testimonial-quote">${t.quote}</div><div class="testimonial-author">${t.author}</div>`;
-        container.appendChild(div);
-      });
-
-      setInterval(() => {
-        const all = container.querySelectorAll('.testimonial');
-        all.forEach(x => x.classList.remove('active'));
-        currentIndex = (currentIndex + 1) % testimonials.length;
-        all[currentIndex].classList.add('active');
-      }, 4000);
-    }
-
-    // Stats
-    function animateStats() {
-      gsap.to('.stat', {
-        opacity: 1, y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: { trigger: '.stats-section', start: 'top 70%', toggleActions: 'play none none none' }
-      });
-
-      document.querySelectorAll('.stat-value').forEach(el => {
-        const target = parseInt(el.dataset.value, 10);
-        gsap.to(el, {
-          innerText: target,
-          duration: 2.4,
-          snap: { innerText: 1 },
-          scrollTrigger: { trigger: '.stats-section', start: 'top 70%', toggleActions: 'play none none none' }
+      // Touch-friendly: tap the card body to flip (but don't hijack links/buttons)
+      if(isTouch){
+        document.addEventListener('click', (e)=>{
+          const card = e.target.closest('.flip-card');
+          if(!card) return;
+          if(e.target.closest('a') || e.target.closest('button')) return;
+          card.classList.toggle('is-flipped');
+          if(card.classList.contains('is-flipped')){
+            const fundId = card.getAttribute('data-fund');
+            const fund = funds.find(f=>f.id===fundId);
+            if(fund) ensureBackChart(fund);
+          }
         });
-      });
+      } else {
+        // Desktop hover: build chart lazily when pointer enters (so it's ready when hover flips)
+        document.addEventListener('pointerenter', (e)=>{
+          const card = e.target.closest('.flip-card');
+          if(!card) return;
+          const fundId = card.getAttribute('data-fund');
+          const fund = funds.find(f=>f.id===fundId);
+          if(fund) ensureBackChart(fund);
+        }, true);
+      }
     }
 
-    // Scroll animations
-    function initScrollAnimations() {
-      const heroTimeline = gsap.timeline();
-      heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
-      heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
-      heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
-
-      gsap.to('.section-header', {
-        opacity: 1, y: 0, duration: 0.8,
-        scrollTrigger: { trigger: '.carousel-section', start: 'top 80%', toggleActions: 'play none none none' }
-      });
-
-      gsap.to('.testimonials-header', {
-        opacity: 1, y: 0, duration: 0.8,
-        scrollTrigger: { trigger: '.testimonials-section', start: 'top 80%', toggleActions: 'play none none none' }
-      });
-
-      gsap.to('.testimonials-carousel', {
-        opacity: 1, y: 0, duration: 0.8,
-        scrollTrigger: { trigger: '.testimonials-section', start: 'top 70%', toggleActions: 'play none none none' }
-      });
-
-      gsap.to('.feature-card', {
-        opacity: 1, y: 0, duration: 0.8, stagger: 0.12,
-        scrollTrigger: { trigger: '.features-grid', start: 'top 75%', toggleActions: 'play none none none' }
-      });
-    }
-
-    // Scroll indicator click/keyboard
-    function initScrollIndicator() {
-      const el = document.querySelector('.scroll-indicator');
-      if (!el) return;
-      const go = () => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-      el.addEventListener('click', go);
-      el.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
-      });
-    }
-
-    // Controls
     function initControls(){
       const prev = document.getElementById('prevBtn');
       const next = document.getElementById('nextBtn');
       prev.addEventListener('click', ()=>scrollCarousel(-1));
       next.addEventListener('click', ()=>scrollCarousel(1));
     }
+    function scrollCarousel(dir){
+      const carousel = document.getElementById('carouselEl');
+      const first = carousel.querySelector('.card-wrapper');
+      const w = first ? first.getBoundingClientRect().width + 32 : 420;
+      carousel.scrollBy({ left: dir * w, behavior:'smooth' });
+    }
+
+    // Hero + sections reveals
+    function initScrollAnimations(){
+      const tl = gsap.timeline();
+      tl.to('.hero h1', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.2);
+      tl.to('.hero p', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.28);
+      tl.to('.hero-cta', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.36);
+
+      gsap.to('.section-header', {
+        opacity:1, y:0, duration:0.9, ease:'power3.out',
+        scrollTrigger:{ trigger:'.carousel-section', start:'top 80%' }
+      });
+    }
+
+    function initScrollIndicator(){
+      const el = document.querySelector('.scroll-indicator');
+      if(!el) return;
+      const go = () => window.scrollBy({ top: window.innerHeight, behavior:'smooth' });
+      el.addEventListener('click', go);
+      el.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+      });
+    }
 
     // Boot
-    window.addEventListener('load', async () => {
+    window.addEventListener('load', async ()=>{
       initThreeMesh();
       initCarousel();
       initControls();
-      initTestimonials();
       initScrollAnimations();
-      animateStats();
       initScrollIndicator();
 
-      // Market data for billboard + card charts
-      try {
-        marketCache = await loadMarket();
-        renderBillboard(marketCache);
-      } catch (e) {
-        console.warn(e);
-        // fallback: show something so layout isn't empty
-        renderBillboard({ asOf: null, series: { SPY: [{c:0},{c:0}], AOR: [{c:0},{c:0}], ACWI: [{c:0},{c:0}] } });
-      }
-
-      // Rebuild visible charts on resize for crispness
-      let t = 0;
-      window.addEventListener('resize', () => {
-        clearTimeout(t);
-        t = setTimeout(() => {
-          if (!marketCache) return;
-          for (const fundId of flipped) {
-            const fund = funds.find(f => f.id === fundId);
-            if (fund) ensureBackChart(fund, marketCache);
-          }
-        }, 160);
-      }, { passive: true });
+      // Market data
+      refreshMarketLoop();
+      startLiveDrift();
     });
   </script>
 </body>
