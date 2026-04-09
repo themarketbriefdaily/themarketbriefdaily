@@ -6,7 +6,6 @@
   <title>Investments | The Market Brief Daily</title>
   <meta name="description" content="Four model investment strategies with benchmark-relative performance." />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
   <style>
     :root{
       --bg:#060c1a;
@@ -94,19 +93,6 @@
       position:relative;
     }
 
-    .fund::before{
-      content:"";
-      position:absolute;inset:0;
-      background:linear-gradient(135deg,
-        rgba(59,130,246,.05) 0%,
-        transparent 50%,
-        rgba(139,92,246,.05) 100%);
-      opacity:0;
-      transition:opacity .4s ease;
-      pointer-events:none;
-      z-index:1;
-    }
-
     .fund:hover{
       transform:translateY(-8px);
       border-color:rgba(255,255,255,.15);
@@ -115,35 +101,31 @@
         0 0 40px rgba(59,130,246,.15);
     }
 
-    .fund:hover::before{
-      opacity:1;
-    }
-
     .fund-visual{
       min-height:340px;
       border-right:1px solid var(--line);
+      background-size:cover;
+      background-position:center;
       position:relative;
       overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     }
 
-    .fund-visual-canvas{
-      width:100%;
-      height:100%;
-      display:block;
+    .fund-visual::before{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(0,0,0,.2) 0%,transparent 40%,rgba(0,0,0,.3) 100%);
+      z-index:1;
     }
 
     .fund-visual::after{
       content:"";
       position:absolute;inset:0;
-      background:linear-gradient(180deg,transparent 30%,rgba(6,12,26,.45));
+      background:linear-gradient(180deg,transparent 40%,rgba(6,12,26,.6));
       z-index:2;
     }
 
     .fund-body{
-      padding:24px;
+      padding:28px;
       display:flex;
       flex-direction:column;
       gap:16px;
@@ -157,69 +139,66 @@
     }
 
     .fund-code{
-      font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-      animation:fadeInUp .6s ease backwards;
+      font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
     }
 
     .fund-name{
-      font-size:1.3rem;font-weight:850;line-height:1.2;
-      background:linear-gradient(135deg, var(--ink), var(--muted));
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-      animation:fadeInUp .6s ease backwards .1s;
+      font-size:1.35rem;font-weight:850;line-height:1.2;margin-top:4px;
     }
 
     .fund-stage{
       font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-top:6px;
-      animation:fadeInUp .6s ease backwards .2s;
     }
 
     .fund-desc{
-      font-size:.95rem;color:var(--muted);
-      animation:fadeInUp .6s ease backwards .3s;
+      font-size:.95rem;color:var(--muted);line-height:1.5;
     }
 
     .stats{
-      display:grid;grid-template-columns:1fr 1fr;gap:12px;
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;
       border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;
-      animation:fadeInUp .6s ease backwards .4s;
     }
 
-    .s-label{font-size:10px;color:var(--muted2);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .stat-group{
+      display:flex;flex-direction:column;
+    }
+
+    .s-label{
+      font-size:10px;color:var(--muted2);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;
+    }
 
     .s-val{
-      font-size:1.4rem;font-weight:900;margin-top:6px;
+      font-size:1.5rem;font-weight:900;
       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
       transition:all .3s ease;
     }
 
     .s-val.pos{
       color:var(--ok);
-      text-shadow:0 0 12px rgba(16,185,129,.3);
+      text-shadow:0 0 16px rgba(16,185,129,.4);
     }
 
     .s-val.neg{
       color:var(--bad);
-      text-shadow:0 0 12px rgba(239,68,68,.3);
+      text-shadow:0 0 16px rgba(239,68,68,.4);
     }
 
     .alloc{
       display:flex;flex-wrap:wrap;gap:8px;
-      animation:fadeInUp .6s ease backwards .5s;
     }
 
     .pill{
       font-size:11px;font-weight:700;
       padding:6px 12px;border-radius:999px;
-      border:1px solid rgba(59,130,246,.35);
-      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.5);
+      background:rgba(59,130,246,.15);
       color:#bfdbfe;
       transition:all .2s ease;
-      cursor:default;
     }
 
     .pill:hover{
       background:rgba(59,130,246,.25);
-      border-color:rgba(59,130,246,.6);
+      border-color:rgba(59,130,246,.8);
       transform:scale(1.05);
     }
 
@@ -227,11 +206,10 @@
       margin-top:auto;
       border-top:1px solid var(--line);
       padding-top:14px;
-      animation:fadeInUp .6s ease backwards .6s;
     }
 
-    .chart-title{font-size:12px;font-weight:700}
-    .chart-sub{font-size:11px;color:var(--muted2);margin:4px 0 10px}
+    .chart-title{font-size:12px;font-weight:700;margin-bottom:2px}
+    .chart-sub{font-size:11px;color:var(--muted2);margin-bottom:10px}
 
     .mini{
       height:160px;border:1px solid var(--line);border-radius:10px;padding:10px;
@@ -244,10 +222,16 @@
       background:linear-gradient(135deg,rgba(255,255,255,.025),transparent);
     }
 
-    .legend{display:flex;gap:16px;font-size:11px;color:var(--muted2);margin-top:10px;flex-wrap:wrap}
+    .legend{
+      display:flex;gap:16px;font-size:11px;color:var(--muted2);margin-top:10px;flex-wrap:wrap;
+    }
+
+    .legend-item{
+      display:flex;align-items:center;gap:6px;
+    }
+
     .legend i{
-      display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;
-      vertical-align:middle;box-shadow:0 0 8px currentColor;
+      display:inline-block;width:12px;height:12px;border-radius:2px;
     }
 
     /* Thesis */
@@ -260,19 +244,10 @@
       border:1px solid var(--line);
       border-radius:12px;
       background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(139,92,246,.08));
-      padding:18px;
+      padding:20px;
       transition:all .3s ease;
       position:relative;
       overflow:hidden;
-    }
-
-    .thesis::before{
-      content:"";
-      position:absolute;top:-100%;left:-100%;
-      width:200%;height:200%;
-      background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);
-      transition:all .6s ease;
-      opacity:0;
     }
 
     .thesis:hover{
@@ -282,24 +257,22 @@
       box-shadow:0 8px 24px rgba(59,130,246,.15);
     }
 
-    .thesis:hover::before{
-      top:-50%;left:-50%;
-      opacity:1;
-    }
-
     .thesis h3{
-      margin:0 0 10px;font-size:1.05rem;font-weight:800;
-      position:relative;z-index:1;
+      margin:0 0 12px;font-size:1.05rem;font-weight:800;
     }
 
     .thesis ul{
       margin:0;padding-left:20px;color:var(--muted);font-size:.93rem;
-      position:relative;z-index:1;
     }
 
-    .thesis li{margin-bottom:8px;transition:all .2s ease}
-    .thesis li::marker{color:var(--brand)}
-    .thesis:hover li{color:var(--ink)}
+    .thesis li{
+      margin-bottom:8px;transition:all .2s ease;
+      line-height:1.5;
+    }
+
+    .thesis:hover li{
+      color:var(--ink);
+    }
 
     /* Footer */
     .site-footer{border-top:1px solid var(--line);background:rgba(11,20,40,.45);padding:26px 0}
@@ -310,30 +283,11 @@
     .footer-links a{font-size:12px;color:var(--muted);transition:.2s}
     .footer-links a:hover{color:var(--ink)}
 
-    @keyframes fadeInUp{
-      from{opacity:0;transform:translateY(12px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    /* Loading state */
-    .loading{opacity:.6;pointer-events:none}
-    .loading::after{
-      content:"";
-      position:absolute;inset:0;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
-      animation:shimmer 2s infinite;
-    }
-
-    @keyframes shimmer{
-      0%{transform:translateX(-100%)}
-      100%{transform:translateX(100%)}
-    }
-
     @media (max-width:1060px){
       .fund{grid-template-columns:1fr}
       .fund-visual{border-right:none;border-bottom:1px solid var(--line);min-height:280px}
       .thesis-grid{grid-template-columns:1fr}
-      .fund-body{padding:18px}
+      .fund-body{padding:20px}
     }
   </style>
 </head>
@@ -396,135 +350,108 @@
   <script>
     const funds = [
       {
-        id:"f1", code:"F1", name:"Fund I — Active", stage:"Active Rotation",
-        desc:"Dynamic sector rotation across precious metals, ESG, and consumer staples driven by macro risk signals.",
-        allocation:["GLD","ESGU","XLP"],
-        r1y:12.45, bench:"XLP", benchR:9.15, color:"#60a5fa",
-        tickers:["GLD","ESGU","XLP"],
-        thesis:["Macro regime shifts alter sector leadership.","Precious metals hedge inflation + real rate compression.","Staples for defense during liquidity stress."]
+        id:"f1",
+        code:"F1",
+        name:"Fund I — Active Rotation",
+        stage:"Active Rotation",
+        desc:"Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.",
+        allocation:["GLD","XLE","XLP"],
+        r1y:18.32,
+        bench:"SPY",
+        benchR:24.56,
+        color:"#60a5fa",
+        img:"/assets/images/investments/fund1-bg.webp",
+        thesis:[
+          "Macro regime shifts alter sector leadership patterns.",
+          "Precious metals hedge inflation and real rate compression.",
+          "Defensive positioning during liquidity stress events.",
+          "Energy exposure leverages commodity supercycles."
+        ]
       },
       {
-        id:"f2", code:"F2", name:"Fund II — Tracker", stage:"Market-Cap Weighted",
-        desc:"Broad market-cap weighted tracking via total market exposure (not SPY directly).",
+        id:"f2",
+        code:"F2",
+        name:"Fund II — Market Tracker",
+        stage:"Market-Cap Weighted",
+        desc:"Broad market-cap weighted tracking with total market exposure and systematic rebalancing discipline.",
         allocation:["VTI"],
-        r1y:8.32, bench:"SPY", benchR:8.32, color:"#a78bfa",
-        tickers:["VTI","SPY"],
-        thesis:["Systematic broad-beta exposure.","Low-friction implementation.","Acts as core comparator sleeve."]
+        r1y:24.56,
+        bench:"SPY",
+        benchR:24.56,
+        color:"#a78bfa",
+        img:"/assets/images/investments/fund2-bg.webp",
+        thesis:[
+          "Systematic broad-beta exposure maximizes diversification.",
+          "Low-friction, passive implementation with minimal drift.",
+          "Acts as core portfolio comparator and performance anchor.",
+          "Captures full market participation across all cap sizes."
+        ]
       },
       {
-        id:"f3", code:"F3", name:"Fund III — Fama-French", stage:"Factor Tilt",
-        desc:"Small-cap value tilt using classic factor premia and cyclical mean reversion.",
+        id:"f3",
+        code:"F3",
+        name:"Fund III — Value Factor",
+        stage:"Factor Tilt",
+        desc:"Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.",
         allocation:["VBR","IJS"],
-        r1y:15.67, bench:"SPY", benchR:8.32, color:"#f472b6",
-        tickers:["VBR","IJS","SPY"],
-        thesis:["Small/value premia can persist over long horizons.","Cyclical rebounds create asymmetric upside.","Diversifies large-cap growth concentration."]
+        r1y:31.45,
+        bench:"SPY",
+        benchR:24.56,
+        color:"#f472b6",
+        img:"/assets/images/investments/fund3-bg.webp",
+        thesis:[
+          "Small/value premium exhibits persistent return generation.",
+          "Cyclical rebounds create significant asymmetric upside opportunities.",
+          "Diversifies large-cap growth concentration risk.",
+          "Mean reversion triggers during market dislocations."
+        ]
       },
       {
-        id:"f4", code:"F4", name:"Fund IV — ESG", stage:"Sustainability",
-        desc:"Sustainability-screened multi-region sleeve across US and emerging exposures.",
+        id:"f4",
+        code:"F4",
+        name:"Fund IV — ESG Global",
+        stage:"Sustainability Focus",
+        desc:"Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.",
         allocation:["ESGU","ESGV","ESGE"],
-        r1y:9.18, bench:"ESGU", benchR:7.85, color:"#34d399",
-        tickers:["ESGU","ESGV","ESGE"],
-        thesis:["Quality/governance bias through ESG filters.","Secular transition themes with risk discipline.","Balanced developed + emerging opportunity set."]
+        r1y:20.87,
+        bench:"ACWX",
+        benchR:19.45,
+        color:"#34d399",
+        img:"/assets/images/investments/fund4-bg.webp",
+        thesis:[
+          "Quality and governance bias through ESG filters.",
+          "Secular transition themes with integrated risk discipline.",
+          "Balanced developed and emerging market opportunity sets.",
+          "Reduced tail risk from environmental and social factors."
+        ]
       }
     ];
 
     const charts = {};
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
-    // Enhanced market data series with realistic patterns
-    function makeSeries(seed=1, drift=0.0012, vol=0.007, n=60){
-      let v=100, out=[];
-      for(let i=0;i<n;i++){
-        const cycle = Math.sin(i*0.3)*0.3;
-        const noise = (Math.sin((i+seed)*1.17)+Math.cos((i+seed)*0.71))*0.5;
-        v *= (1 + drift + cycle + noise*vol*0.18);
-        out.push(v);
+    // Generate realistic performance data based on fund characteristics
+    function makeSeries(annualReturn, volatility, months = 12) {
+      const data = [];
+      let value = 100;
+      const monthlyReturn = annualReturn / 100 / 12;
+      const monthlyVol = volatility / 100 / Math.sqrt(12);
+
+      for (let i = 0; i < months; i++) {
+        const randomShock = (Math.random() - 0.5) * 2;
+        value *= (1 + monthlyReturn + randomShock * monthlyVol);
+        data.push(Math.round(value * 100) / 100);
       }
-      return out;
+      return data;
     }
 
-    // Dynamic animated background for fund visuals
-    function createDynamicBackground(canvas, color, seed) {
-      const ctx = canvas.getContext('2d');
-      const width = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      const height = canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-
-      let time = 0;
-      const animate = () => {
-        ctx.fillStyle = 'rgba(6, 12, 26, 1)';
-        ctx.fillRect(0, 0, width/window.devicePixelRatio, height/window.devicePixelRatio);
-
-        // Create gradient background
-        const grd = ctx.createLinearGradient(0, 0, width/window.devicePixelRatio, height/window.devicePixelRatio);
-        grd.addColorStop(0, color + '08');
-        grd.addColorStop(0.5, 'rgba(139, 92, 246, 0.04)');
-        grd.addColorStop(1, color + '08');
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, width/window.devicePixelRatio, height/window.devicePixelRatio);
-
-        // Draw animated orbs
-        const time2 = (Date.now() / 8000) % (Math.PI * 2);
-        const centerX = width / (2 * window.devicePixelRatio);
-        const centerY = height / (2 * window.devicePixelRatio);
-
-        // Primary orb
-        ctx.fillStyle = color + '15';
-        ctx.beginPath();
-        ctx.arc(
-          centerX + Math.cos(time2) * 60,
-          centerY + Math.sin(time2) * 60,
-          80 + Math.sin(time2 * 0.7) * 20,
-          0, Math.PI * 2
-        );
-        ctx.fill();
-
-        // Secondary orb
-        ctx.fillStyle = color + '0c';
-        ctx.beginPath();
-        ctx.arc(
-          centerX + Math.cos(time2 + Math.PI) * 80,
-          centerY + Math.sin(time2 + Math.PI) * 80,
-          60 + Math.cos(time2 * 0.5) * 15,
-          0, Math.PI * 2
-        );
-        ctx.fill();
-
-        // Tertiary accent
-        ctx.fillStyle = 'rgba(139, 92, 246, 0.08)';
-        ctx.beginPath();
-        ctx.arc(
-          centerX + Math.sin(time2 * 1.3) * 70,
-          centerY + Math.cos(time2 * 0.9) * 70,
-          40 + Math.sin(time2 * 1.5) * 10,
-          0, Math.PI * 2
-        );
-        ctx.fill();
-
-        // Glow effect with blur
-        ctx.shadowColor = color + '20';
-        ctx.shadowBlur = 40;
-        ctx.strokeStyle = color + '20';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 100 + Math.sin(time2 * 0.6) * 30, 0, Math.PI * 2);
-        ctx.stroke();
-
-        requestAnimationFrame(animate);
-      };
-      animate();
-    }
-
-    function renderFunds(){
+    function renderFunds() {
       const grid = document.getElementById("fundsGrid");
-      grid.innerHTML = funds.map(f=>{
+      grid.innerHTML = funds.map(f => {
         const rel = f.r1y - f.benchR;
         return `
           <article class="fund">
-            <div class="fund-visual">
-              <canvas id="bg-${f.id}" class="fund-visual-canvas"></canvas>
-            </div>
+            <div class="fund-visual" style="background-image:url('${f.img}')"></div>
             <div class="fund-body">
               <div class="fund-head">
                 <div>
@@ -536,134 +463,132 @@
               <p class="fund-desc">${f.desc}</p>
 
               <div class="stats">
-                <div>
+                <div class="stat-group">
                   <div class="s-label">1Y Return</div>
-                  <div class="s-val ${f.r1y>=0?'pos':'neg'}">${fmtPct(f.r1y)}</div>
+                  <div class="s-val ${f.r1y >= 0 ? 'pos' : 'neg'}">${fmtPct(f.r1y)}</div>
                 </div>
-                <div>
+                <div class="stat-group">
                   <div class="s-label">vs ${f.bench}</div>
-                  <div class="s-val ${rel>=0?'pos':'neg'}">${fmtPct(rel)}</div>
+                  <div class="s-val ${rel >= 0 ? 'pos' : 'neg'}">${fmtPct(rel)}</div>
                 </div>
               </div>
 
-              <div class="alloc">${f.allocation.map(t=>`<span class="pill">${t}</span>`).join("")}</div>
+              <div class="alloc">${f.allocation.map(t => `<span class="pill">${t}</span>`).join("")}</div>
 
               <div class="chart-wrap">
                 <div class="chart-title">Performance vs Benchmark</div>
-                <div class="chart-sub">${f.code} (solid) vs ${f.bench} (dashed)</div>
+                <div class="chart-sub">${f.code} (solid) vs ${f.bench} (dashed) — Last 12 months</div>
                 <div class="mini"><canvas id="chart-${f.id}"></canvas></div>
                 <div class="legend">
-                  <span><i style="background:${f.color};box-shadow:0 0 12px ${f.color}"></i>${f.code}</span>
-                  <span><i style="background:rgba(148,163,184,.7);box-shadow:0 0 8px rgba(148,163,184,.7)"></i>${f.bench}</span>
+                  <div class="legend-item">
+                    <i style="background:${f.color}"></i>
+                    <span>${f.code}</span>
+                  </div>
+                  <div class="legend-item">
+                    <i style="background:rgba(148,163,184,.7);border:1px dashed rgba(148,163,184,.7)"></i>
+                    <span>${f.bench}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </article>
         `;
       }).join("");
-
-      // Initialize dynamic backgrounds
-      setTimeout(() => {
-        funds.forEach(f => {
-          const canvas = document.getElementById(`bg-${f.id}`);
-          if(canvas) createDynamicBackground(canvas, f.color, funds.indexOf(f));
-        });
-      }, 100);
     }
 
-    function renderThesis(){
+    function renderThesis() {
       const grid = document.getElementById("thesisGrid");
-      grid.innerHTML = funds.map(f=>`
+      grid.innerHTML = funds.map(f => `
         <article class="thesis">
           <h3>${f.name}</h3>
-          <ul>${f.thesis.map(x=>`<li>${x}</li>`).join("")}</ul>
+          <ul>${f.thesis.map(x => `<li>${x}</li>`).join("")}</ul>
         </article>
       `).join("");
     }
 
-    function renderCharts(){
-      funds.forEach((f, idx)=>{
+    function renderCharts() {
+      funds.forEach((f, idx) => {
         const canvas = document.getElementById(`chart-${f.id}`);
-        if(!canvas) return;
+        if (!canvas) return;
 
         const ctx = canvas.getContext("2d");
-        const a = makeSeries(idx+3, 0.0015, 0.012);
-        const b = makeSeries(idx+12, 0.0011, 0.009);
-        if(charts[f.id]) charts[f.id].destroy();
+        const fundData = makeSeries(f.r1y, 12, 12);
+        const benchData = makeSeries(f.benchR, 10, 12);
 
-        charts[f.id] = new Chart(ctx,{
-          type:"line",
-          data:{
-            labels:Array.from({length:a.length},(_,i)=>i+1),
-            datasets:[
+        if (charts[f.id]) charts[f.id].destroy();
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        charts[f.id] = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: months,
+            datasets: [
               {
-                data:a,
-                borderColor:f.color,
-                backgroundColor:f.color+"22",
-                borderWidth:2.5,
-                pointRadius:0,
-                pointHoverRadius:5,
-                pointBackgroundColor:f.color,
-                tension:.4,
-                fill:true,
-                segment:{
-                  borderColor:ctx => ctx.p0.x % 5 === 0 ? f.color : f.color + 'cc',
-                }
+                label: f.code,
+                data: fundData,
+                borderColor: f.color,
+                backgroundColor: f.color + '15',
+                borderWidth: 2.5,
+                pointRadius: 3,
+                pointBackgroundColor: f.color,
+                pointBorderColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 6,
+                tension: 0.3,
+                fill: true
               },
               {
-                data:b,
-                borderColor:"rgba(148,163,184,.75)",
-                borderDash:[6,5],
-                borderWidth:1.5,
-                pointRadius:0,
-                tension:.4,
-                fill:false
+                label: f.bench,
+                data: benchData,
+                borderColor: "rgba(148,163,184,.8)",
+                borderDash: [5, 5],
+                borderWidth: 1.5,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                tension: 0.3,
+                fill: false
               }
             ]
           },
-          options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            interaction:{mode:'index',intersect:false},
-            plugins:{
-              legend:{display:false},
-              tooltip:{
-                enabled:true,
-                backgroundColor:'rgba(0,0,0,.8)',
-                titleColor:'#fff',
-                bodyColor:'#eef2ff',
-                borderColor:f.color,
-                borderWidth:1,
-                padding:8,
-                titleFont:{weight:'bold',size:12},
-                bodyFont:{size:11}
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                enabled: true,
+                backgroundColor: 'rgba(0,0,0,.9)',
+                titleColor: '#fff',
+                bodyColor: '#eef2ff',
+                borderColor: f.color,
+                borderWidth: 1,
+                padding: 12,
+                cornerRadius: 6,
+                titleFont: { weight: 'bold', size: 12 },
+                bodyFont: { size: 11 },
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1);
+                  }
+                }
               }
             },
-            scales:{
-              x:{
-                display:false,
-                type:'linear'
-              },
-              y:{
-                display:false,
-                min:Math.min(...a, ...b)*0.95,
-                max:Math.max(...a, ...b)*1.05
-              }
+            scales: {
+              x: { display: false },
+              y: { display: false }
             }
           }
         });
       });
     }
 
+    // Initialize
     renderFunds();
     renderThesis();
     renderCharts();
     window.addEventListener("resize", renderCharts);
-
-    // Refresh charts every 30 seconds with smooth transitions
-    setInterval(() => {
-      renderCharts();
-    }, 30000);
   </script>
 </body>
 </html>
