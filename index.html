@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   
   <style>
     * {
@@ -32,25 +34,19 @@
       overflow-x: hidden;
     }
 
-    /* Refined color system */
     :root {
       --bg-white: #ffffff;
       --bg-light: #f8f8f8;
-      --bg-dark: #fafafa;
       --text-primary: #000000;
       --text-secondary: rgba(0, 0, 0, 0.54);
       --text-tertiary: rgba(0, 0, 0, 0.38);
       --border-light: rgba(0, 0, 0, 0.08);
-      --border-subtle: rgba(0, 0, 0, 0.04);
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
       --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
       --accent: #0066ff;
       --accent-hover: #0052cc;
     }
 
-    /* Typography Scale */
     h1 {
       font-size: clamp(2.8rem, 6vw, 4.5rem);
       font-weight: 800;
@@ -102,7 +98,7 @@
       display: flex;
       align-items: center;
       padding: 0 48px;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     }
 
     .header-wrapper {
@@ -158,7 +154,7 @@
       background: var(--accent);
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
       height: 100vh;
       display: flex;
@@ -172,14 +168,19 @@
       background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
 
-    .hero::before {
-      content: '';
+    #hero-canvas {
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.03) 0%, transparent 80%);
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.05) 0%, transparent 80%);
       pointer-events: none;
     }
 
@@ -192,6 +193,8 @@
 
     .hero h1 {
       margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .hero > p {
@@ -202,6 +205,8 @@
       max-width: 720px;
       margin-left: auto;
       margin-right: auto;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .hero-cta {
@@ -210,6 +215,8 @@
       justify-content: center;
       margin-bottom: 80px;
       flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .btn {
@@ -239,21 +246,17 @@
       transform: translateY(-2px);
     }
 
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
     .btn-secondary {
       background: var(--bg-light);
       color: var(--text-primary);
       border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-md);
     }
 
     .btn-secondary:hover {
       background: #f0f0f0;
       border-color: var(--border-light);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-lg);
       transform: translateY(-2px);
     }
 
@@ -307,7 +310,7 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Section Base */
+    /* Section */
     .section {
       padding: 140px 48px;
     }
@@ -325,16 +328,22 @@
     .section-header .label {
       display: inline-block;
       margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .section-header h2 {
       margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .section-header > p {
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     /* Funds Section */
@@ -369,6 +378,13 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+
+    .fund-container.reversed .fund-info {
+      opacity: 0;
+      transform: translateX(40px);
     }
 
     .fund-tag {
@@ -435,7 +451,7 @@
     .allocation-item {
       padding: 10px 16px;
       background: var(--bg-light);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-light);
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
@@ -462,15 +478,22 @@
       background: var(--bg-light);
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--border-light);
+      opacity: 0;
+      transform: translateY(40px);
     }
 
     .fund-visual img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* Features/Approach Section */
+    .fund-visual:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Approach Section */
     .approach-section {
       background: #fafafa;
     }
@@ -486,6 +509,8 @@
       flex-direction: column;
       gap: 20px;
       padding: 0;
+      opacity: 0;
+      transform: translateY(40px);
     }
 
     .feature-icon {
@@ -509,11 +534,28 @@
       color: #fff;
       text-align: center;
       padding: 140px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-bg-accent {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     .cta-section h2 {
       color: #fff;
       margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .cta-section p {
@@ -521,6 +563,10 @@
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto 48px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .cta-buttons {
@@ -528,6 +574,8 @@
       gap: 16px;
       justify-content: center;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     .btn-light {
@@ -671,16 +719,8 @@
         justify-content: center;
       }
 
-      .scroll-indicator {
-        display: none;
-      }
-
       .section {
         padding: 80px 20px;
-      }
-
-      .section-header {
-        margin-bottom: 60px;
       }
 
       .fund-container {
@@ -778,6 +818,8 @@
 
   <!-- Hero -->
   <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1>Institutional market analysis made simple</h1>
       <p>We dissect commodity markets, macro transmission, and quantitative strategies. Research without agenda.</p>
@@ -975,6 +1017,7 @@
 
   <!-- CTA Section -->
   <section class="cta-section">
+    <div class="cta-bg-accent"></div>
     <div class="section-wrapper">
       <h2>Start with institutional-grade analysis</h2>
       <p>Explore rigorous market research or browse quantitative investment funds built on genuine data frameworks.</p>
@@ -1024,5 +1067,200 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ============================================
+    // ANIMATED HERO CANVAS BACKGROUND
+    // ============================================
+    function initHeroCanvas() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let time = 0;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function createParticles() {
+        particles = [];
+        for (let i = 0; i < 80; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 2 + 1,
+            opacity: Math.random() * 0.5 + 0.2
+          });
+        }
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        time += 0.002;
+
+        particles.forEach((p, i) => {
+          // Update position
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Wrap around edges
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+
+          // Pulse opacity
+          p.opacity = 0.2 + Math.sin(time + i) * 0.3;
+
+          // Draw particle
+          ctx.fillStyle = `rgba(0, 102, 255, ${p.opacity})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Draw connections
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 150) {
+              ctx.strokeStyle = `rgba(0, 102, 255, ${(1 - dist / 150) * 0.2})`;
+              ctx.lineWidth = 0.5;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+        });
+
+        requestAnimationFrame(drawParticles);
+      }
+
+      resizeCanvas();
+      createParticles();
+      drawParticles();
+
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        createParticles();
+      });
+    }
+
+    // ============================================
+    // GSAP SCROLL ANIMATIONS
+    // ============================================
+    function initScrollAnimations() {
+      // Hero Content Fade In
+      const heroTimeline = gsap.timeline();
+      heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
+      heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
+      heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
+
+      // Section Headers
+      gsap.utils.toArray('.section-header .label, .section-header h2, .section-header > p').forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.1,
+          scrollTrigger: {
+            trigger: el.closest('.section-header'),
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+
+      // Fund Cards Slide In
+      gsap.utils.toArray('.fund-info').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: el.closest('.fund-container'),
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+
+      gsap.utils.toArray('.fund-visual').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+
+      // Feature Cards Staggered
+      gsap.to('.feature-card', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: '.features-grid',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      // CTA Section
+      gsap.utils.toArray('.cta-section h2, .cta-section p').forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: i * 0.1,
+          scrollTrigger: {
+            trigger: '.cta-section',
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+
+      // Parallax effect on fund images
+      gsap.utils.toArray('.fund-visual').forEach((el) => {
+        gsap.to(el, {
+          yPercent: 5,
+          opacity: 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1
+          }
+        });
+      });
+    }
+
+    // ============================================
+    // INITIALIZE
+    // ============================================
+    window.addEventListener('load', () => {
+      initHeroCanvas();
+      initScrollAnimations();
+    });
+
+    // Smooth scroll for scroll indicator
+    document.querySelector('.scroll-indicator').addEventListener('click', () => {
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
