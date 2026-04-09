@@ -20,7 +20,7 @@
     @media (max-width:768px){:root{--headerH:56px}}
 
     .section-bg{position:relative;background:#fff}
-    .section-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5}
+    .section-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.7}
     .section-canvas-wrap canvas{width:100%;height:100%;display:block}
     .section-content{position:relative;z-index:2}
 
@@ -36,8 +36,8 @@
     section{scroll-margin-top:calc(var(--headerH) + 14px)}
 
     .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:var(--headerH);text-align:center;position:relative;overflow:hidden;background:#fff}
-    .hero-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none}
-    .hero-canvas-wrap canvas{width:100%;height:100%;display:block;opacity:.6}
+    .hero-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.75}
+    .hero-canvas-wrap canvas{width:100%;height:100%;display:block}
     .hero-inner{max-width:980px;padding:0 40px;z-index:2;position:relative}
     h1{font-size:clamp(3rem,8vw,5rem);font-weight:950;line-height:1.05;letter-spacing:-.03em;margin:0 0 18px;opacity:0;transform:translateY(22px);background:linear-gradient(135deg,#0b1220,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
     .hero p{max-width:760px;margin:0 auto 38px;font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.8;color:var(--muted);opacity:0;transform:translateY(22px)}
@@ -145,11 +145,11 @@
 <body>
   <header>
     <div class="header-inner">
-      <a class="brand" onclick="smoothScroll('#hero')">The Market Brief Daily</a>
+      <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
-        <a onclick="smoothScroll('#funds')">Funds</a>
-        <a onclick="smoothScroll('#insights')">Insights</a>
-        <a onclick="smoothScroll('#about')">About</a>
+        <a href="/investments.html">Funds</a>
+        <a href="#insights">Insights</a>
+        <a href="/about.html">About</a>
         <a href="/posts.html">Posts</a>
       </nav>
     </div>
@@ -161,9 +161,9 @@
       <h1>We analyse <span>markets and macro</span></h1>
       <p>Institutional-grade analysis of market structure, physical supply constraints, and macro transmission — delivered clearly and without bias.</p>
       <div class="hero-actions">
-        <a class="btn primary" onclick="smoothScroll('#insights')">Read insights</a>
-        <a class="btn ghost" onclick="smoothScroll('#funds')">Explore funds</a>
-        <a class="btn ghost" onclick="smoothScroll('#about')">About us</a>
+        <a class="btn primary" href="#insights">Read insights</a>
+        <a class="btn ghost" href="/investments.html">Explore funds</a>
+        <a class="btn ghost" href="/about.html">About us</a>
       </div>
     </div>
   </section>
@@ -257,13 +257,13 @@
         <h4>Research</h4>
         <a href="#insights">Latest insights</a>
         <a href="/posts.html">All posts</a>
-        <a href="#funds">Funds</a>
+        <a href="/investments.html">Funds</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="#about">About us</a>
-        <a href="#">Contact</a>
-        <a href="#">Team</a>
+        <a href="/about.html">About us</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/investments.html">Investments</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
@@ -280,7 +280,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ===== NETWORK ANIMATION FUNCTION =====
+    // ===== ENHANCED NETWORK ANIMATION =====
     function createNetworkAnimation(canvasId) {
       const canvas = document.getElementById(canvasId);
       if (!canvas) return;
@@ -296,16 +296,17 @@
       }
       resize();
 
+      // More particles for visibility
+      const count = Math.max(80, Math.min(180, Math.floor(window.innerWidth * parentHeight / 15000)));
       const particles = [];
-      const count = Math.max(40, Math.min(90, Math.floor(window.innerWidth * parentHeight / 30000)));
 
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * window.innerWidth,
           y: Math.random() * parentHeight,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          r: Math.random() * 1.5 + 0.8,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 2 + 1.2,
           phase: Math.random() * Math.PI * 2
         });
       }
@@ -315,9 +316,10 @@
         ctx.clearRect(0, 0, window.innerWidth, parentHeight);
         time += 0.015;
 
+        // Enhanced background gradient
         const grad = ctx.createRadialGradient(window.innerWidth * 0.5, parentHeight * 0.3, 0, window.innerWidth * 0.5, parentHeight * 0.3, parentHeight);
-        grad.addColorStop(0, 'rgba(0,102,255,0.06)');
-        grad.addColorStop(0.5, 'rgba(14,165,233,0.03)');
+        grad.addColorStop(0, 'rgba(0,102,255,0.12)');
+        grad.addColorStop(0.4, 'rgba(14,165,233,0.08)');
         grad.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, window.innerWidth, parentHeight);
@@ -333,14 +335,15 @@
           if (p.y > parentHeight) p.y = 0;
         });
 
+        // Draw connections with enhanced visibility
         for (let i = 0; i < particles.length; i++) {
           for (let j = i + 1; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 120) {
-              ctx.strokeStyle = `rgba(0,102,255,${(1 - dist / 120) * 0.1})`;
-              ctx.lineWidth = 1;
+            if (dist < 140) {
+              ctx.strokeStyle = `rgba(0,102,255,${(1 - dist / 140) * 0.18})`;
+              ctx.lineWidth = 1.2;
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
@@ -349,31 +352,21 @@
           }
         }
 
-        particles.forEach(p => {
-          const pulse = 0.5 + Math.sin(p.phase + time) * 0.35;
-          ctx.fillStyle = `rgba(0,102,255,${0.12 + pulse * 0.12})`;
+        // Draw nodes with enhanced visibility
+        for (const p of particles) {
+          const pulse = 0.6 + Math.sin(p.phase + time) * 0.4;
+          ctx.fillStyle = `rgba(0,102,255,${0.2 + pulse * 0.18})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fill();
-        });
+        }
 
         requestAnimationFrame(animate);
       }
       animate();
     }
 
-    // ===== SMOOTH SCROLL =====
-    function smoothScroll(id) {
-      const el = document.querySelector(id);
-      if (!el) return;
-      const offset = 80;
-      window.scrollTo({
-        top: el.offsetTop - offset,
-        behavior: 'smooth'
-      });
-    }
-
-    // ===== FUND CARDS DATA FROM INVESTMENTS PAGE =====
+    // ===== FUND CARDS DATA =====
     const funds = [
       {
         id: "f1",
@@ -495,7 +488,6 @@
       createCharts();
     }
 
-    // Generate realistic performance data
     function makeSeries(annualReturn, volatility, months = 12) {
       const data = [];
       let value = 100;
@@ -627,7 +619,7 @@
             <div class="news-date">${n.date}</div>
             <div class="news-title">${n.title}</div>
             <div class="news-desc">${n.desc}</div>
-            <a class="news-link" href="#">Read article →</a>
+            <a class="news-link" href="/posts.html">Read article →</a>
           </div>
         </div>
       `).join('');
