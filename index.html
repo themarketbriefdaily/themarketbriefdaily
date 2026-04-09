@@ -4,90 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily</title>
-  <meta name="description" content="Professional market intelligence for metals and macro. Market structure, physical supply, and transmission mechanisms." />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Independent institutional-grade market analysis." />
+  <meta name="theme-color" content="#060c1a" />
   <link rel="stylesheet" href="/assets/style.css" />
-
-  <style>
-    /* Small featured bar under hero */
-    .featured-strip{
-      background:#fff;
-      border-top:1px solid rgba(15,23,42,.08);
-      border-bottom:1px solid rgba(15,23,42,.08);
-    }
-    .featured-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      padding:14px 0;
-    }
-    .featured-left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width:0;
-    }
-    .featured-label{
-      font-size:12px;
-      font-weight:750;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:rgba(15,23,42,.55);
-    }
-    .featured-link{
-      font-size:15px;
-      font-weight:750;
-      color:#0f172a;
-      text-decoration:none;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width: 68vw;
-      display:block;
-    }
-    .featured-link:hover{ text-decoration:underline; text-underline-offset:3px; }
-    .featured-meta{
-      font-size:12px;
-      color:rgba(15,23,42,.60);
-    }
-    .featured-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(15,23,42,.14);
-      background:#fff;
-      color:#0f172a;
-      text-decoration:none;
-      font-weight:650;
-      font-size:14px;
-      box-shadow:0 10px 24px rgba(2,6,23,.06);
-      flex:0 0 auto;
-    }
-    .featured-btn:hover{ box-shadow:0 14px 34px rgba(2,6,23,.10); }
-
-    @media (max-width: 700px){
-      .featured-inner{ flex-direction:column; align-items:flex-start; }
-      .featured-link{ max-width: 92vw; }
-    }
-  </style>
 </head>
-
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
-
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
+      <a class="brand" href="/" aria-label="Home">
         <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
         <span class="brand-stack">
           <span class="brand-title">The Market Brief Daily</span>
           <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
         </span>
       </a>
-
       <nav class="nav" aria-label="Primary">
         <a class="is-active" href="/">Home</a>
         <a href="/posts.html">Posts</a>
@@ -97,122 +28,106 @@
       </nav>
     </div>
   </header>
-
-  <!-- HERO -->
   <section class="hero" aria-label="Hero">
-    <div class="hero-bg" aria-hidden="true"></div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-
-    <div class="container hero-inner">
-      <div class="hero-panel">
-        <div class="hero-eyebrow">Independent research</div>
-        <h1>Institutional-grade market analysis for metals and macro</h1>
-        <p>
-          We focus on the mechanics behind price formation: inventory buffers, delivery windows,
-          funding and lease regimes, positioning pressure, and macro transmission across rates, FX,
-          and commodities.
-        </p>
-
-        <div class="hero-actions">
-          <a class="btn primary" href="/posts.html">Read latest</a>
-          <a class="btn" href="/investments.html">Watchlist</a>
-          <a class="btn" href="/about.html">Method</a>
-        </div>
-
-        <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80);">
-          For informational purposes only. Not investment advice. See
-          <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">disclaimer</a>.
-        </div>
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Independent Research</div>
+      <h1>We analyse <span class="grad">markets and macro</span></h1>
+      <p class="hero-desc">Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative investment strategies — delivered clearly and without bias.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="/posts.html">Read latest</a>
+        <a class="btn ghost" href="/investments.html">Our Funds</a>
+        <a class="btn ghost" href="/about.html">About</a>
       </div>
-    </div>
-
-    <div class="hero-fade" aria-hidden="true"></div>
-  </section>
-
-  <!-- Featured story strip (auto updates from Substack) -->
-  <section class="featured-strip" aria-label="Featured story">
-    <div class="container featured-inner">
-      <div class="featured-left">
-        <div class="featured-label">Featured story</div>
-
-        <!-- Fallback link (will be replaced by JS if feed loads) -->
-        <a id="featuredLink" class="featured-link" href="/posts.html">
-          Latest post loading…
-        </a>
-
-        <div id="featuredMeta" class="featured-meta">Auto-updated from Substack</div>
-      </div>
-
-      <a class="featured-btn" href="/posts.html">View all posts</a>
+      <p class="hero-note">Not investment advice. For informational purposes only.</p>
     </div>
   </section>
 
-  <!-- CONTENT -->
-  <main id="content" class="section">
-    <div class="container grid">
+  <div class="ticker-bar" id="tickerBar">
+    <div class="container ticker-inner">
+      <span class="ticker-label-pill">Latest</span>
+      <a class="ticker-latest-link" id="featuredLink" href="/posts.html">Loading latest research…</a>
+      <a class="ticker-cta" href="/posts.html">View all →</a>
+    </div>
+  </div>
 
-      <!-- Latest -->
-      <section aria-label="Latest research">
-        <div class="kicker">Latest</div>
-        <h2>Recent research</h2>
-        <p class="lead">Browse the full archive on the Posts page.</p>
+  <main id="content">
+    <section class="section">
+      <div class="container">
+        <div class="reveal">
+          <div class="kicker">Investment Funds</div>
+          <h2>Four distinct strategies</h2>
+          <p class="lead">Model portfolios built on rigorous quantitative frameworks — from active macro rotation to factor-driven small-cap value tilt.</p>
+        </div>
+        <div class="funds-grid">
+          <a class="fund-card f1 reveal reveal-delay-1" href="/investments.html">
+            <div class="fund-card-num">Fund I · Active</div>
+            <div class="fund-card-title">Fund I — Active</div>
+            <p class="fund-card-desc">Dynamic sector rotation across precious metals, ESG, and consumer staples based on macro risk signals.</p>
+            <div class="fund-card-tags"><span class="tag-pill">GLD 20%</span><span class="tag-pill">ESGU 40%</span><span class="tag-pill">XLP 40%</span></div>
+          </a>
+          <a class="fund-card f2 reveal reveal-delay-2" href="/investments.html">
+            <div class="fund-card-num">Fund II · Tracker</div>
+            <div class="fund-card-title">Fund II — Tracker</div>
+            <p class="fund-card-desc">Market-cap weighted index replication. Broad exposure with minimal cost drag.</p>
+            <div class="fund-card-tags"><span class="tag-pill">SPY 100%</span></div>
+          </a>
+          <a class="fund-card f3 reveal reveal-delay-3" href="/investments.html">
+            <div class="fund-card-num">Fund III · Fama-French</div>
+            <div class="fund-card-title">Fund III — Fama-French</div>
+            <p class="fund-card-desc">Small-cap value tilt informed by Fama-French factor premia for long-run outperformance.</p>
+            <div class="fund-card-tags"><span class="tag-pill">VBR 60%</span><span class="tag-pill">IJS 40%</span></div>
+          </a>
+          <a class="fund-card f4 reveal reveal-delay-4" href="/investments.html">
+            <div class="fund-card-num">Fund IV · ESG</div>
+            <div class="fund-card-title">Fund IV — ESG</div>
+            <p class="fund-card-desc">Sustainability-screened portfolio spanning US large-cap, US broad market, and emerging markets.</p>
+            <div class="fund-card-tags"><span class="tag-pill">ESGU 50%</span><span class="tag-pill">ESGV 30%</span><span class="tag-pill">ESGE 20%</span></div>
+          </a>
+        </div>
+      </div>
+    </section>
 
-        <div class="block">
-          <article class="post">
-            <div class="post-meta">
-              <span>Research</span>
-              <time datetime="2026-02-12">Feb 12, 2026</time>
+    <section class="section" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="container">
+        <div class="posts-grid-section">
+          <div>
+            <div class="reveal"><div class="kicker">Latest</div><h2>Recent research</h2></div>
+            <div class="post-list">
+              <a class="post-item reveal reveal-delay-1" href="/posts.html">
+                <div class="post-meta"><span class="post-tag">Research</span><span>See all posts</span></div>
+                <div class="post-title">Browse our latest research on Substack</div>
+                <p class="post-excerpt">Regular analysis covering metals, macro, and quantitative strategy. All posts are auto-loaded from our Substack feed.</p>
+              </a>
             </div>
-            <a class="post-title" href="/posts.html">
-              See the newsroom for the latest post.
-            </a>
-            <p class="post-excerpt">
-              Posts update automatically from Substack (no manual HTML needed).
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <!-- Method -->
-      <section aria-label="Method">
-        <div class="kicker">Method</div>
-        <h2>How we think</h2>
-        <p class="lead">Clear mechanics, conservative claims, and a practical “what to watch” list.</p>
-
-        <div class="block">
-          <div class="post">
-            <div class="post-title">Market structure</div>
-            <p class="post-excerpt">
-              Delivery windows, exchange inventories, futures–physical linkage, settlement incentives, and positioning pressure.
-            </p>
           </div>
-
-          <div class="post">
-            <div class="post-title">Physical tightness</div>
-            <p class="post-excerpt">
-              Lease and funding regimes, availability constraints, and conditions where paper and physical diverge.
-            </p>
-          </div>
-
-          <div class="post">
-            <div class="post-title">Macro transmission</div>
-            <p class="post-excerpt">
-              How rates, FX, and liquidity propagate into commodity and risk-asset pricing.
-            </p>
+          <div>
+            <div class="reveal"><div class="kicker">Method</div><h2>How we think</h2></div>
+            <div class="method-box reveal reveal-delay-1">
+              <div class="method-item">
+                <div class="method-title">Market structure</div>
+                <p class="method-desc">We analyse positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before they resolve in price.</p>
+              </div>
+              <div class="method-item">
+                <div class="method-title">Physical tightness</div>
+                <p class="method-desc">COMEX inventory, warehouse flows, and lease rates reveal physical supply constraints that futures markets are slow to price.</p>
+              </div>
+              <div class="method-item">
+                <div class="method-title">Macro transmission</div>
+                <p class="method-desc">How rate cycles, dollar dynamics, and liquidity conditions transmit into commodity markets and risk assets — traced precisely.</p>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-
-    </div>
+      </div>
+    </section>
   </main>
-
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
         <div class="footer-brand">The Market Brief Daily</div>
-        <div class="footer-sub">Market structure & physical supply analysis.</div>
+        <div class="footer-sub">Market structure &amp; physical supply analysis.</div>
       </div>
-
       <div class="footer-links">
         <a href="/posts.html">Posts</a>
         <a href="/investments.html">Investments</a>
@@ -222,74 +137,60 @@
       </div>
     </div>
   </footer>
-
   <script>
-    // Pull the latest post title + link from Substack and show in the featured bar
-    const SUBSTACK_FEED = "https://marketbriefdaily.substack.com/feed";
-    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
-
-    const CACHE_KEY = "mbd_substack_featured_cache_v1";
-    const CACHE_TTL_MS = 30 * 60 * 1000;
-
-    function stripHtml(html){
-      const tmp = document.createElement("div");
-      tmp.innerHTML = html || "";
-      return (tmp.textContent || tmp.innerText || "").trim();
-    }
-    function fmtDate(d){
-      try {
-        return new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"});
-      } catch { return ""; }
-    }
-
-    async function loadFeatured(){
-      const linkEl = document.getElementById("featuredLink");
-      const metaEl = document.getElementById("featuredMeta");
-
-      // cache
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached){
-        try{
-          const c = JSON.parse(cached);
-          if (Date.now() - c.time < CACHE_TTL_MS && c.item){
-            linkEl.textContent = c.item.title;
-            linkEl.href = c.item.link;
-            linkEl.target = "_blank";
-            linkEl.rel = "noopener";
-            metaEl.textContent = `${c.item.date} • Market Brief Daily (Substack)`;
-            return;
-          }
-        }catch{}
+  // Canvas particles
+  (function(){
+    var canvas=document.getElementById('heroCanvas');
+    if(!canvas)return;
+    var ctx=canvas.getContext('2d'),W=0,H=0,N=70,mouse={x:-9999,y:-9999};
+    var pts=[];
+    function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+    function rnd(a,b){return Math.random()*(b-a)+a;}
+    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00012,vy:rnd(-1,1)*0.00012,r:rnd(1.5,3)});
+    window.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/W;mouse.y=(e.clientY-r.top)/H;});
+    window.addEventListener('resize',resize);
+    resize();
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<N;i++){
+        var p=pts[i];
+        var dx=p.x-mouse.x,dy=p.y-mouse.y,d2=dx*dx+dy*dy;
+        if(d2<0.01){var f=(0.01-d2)/0.01*0.0001;p.vx+=dx*f;p.vy+=dy*f;}
+        var spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+        if(spd>0.0003){p.vx*=0.0003/spd;p.vy*=0.0003/spd;}
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0)p.x+=1;if(p.x>1)p.x-=1;if(p.y<0)p.y+=1;if(p.y>1)p.y-=1;
+        var px=p.x*W,py=p.y*H;
+        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,0.7)';ctx.fill();
+        for(var j=i+1;j<N;j++){
+          var q=pts[j],qx=q.x*W,qy=q.y*H,ex=px-qx,ey=py-qy,dist=Math.sqrt(ex*ex+ey*ey);
+          if(dist<130){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(59,130,246,'+((1-dist/130)*0.4)+')';ctx.lineWidth=0.5;ctx.stroke();}
+        }
       }
-
-      try{
-        const url = RSS2JSON + encodeURIComponent(SUBSTACK_FEED);
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error("Feed fetch failed");
-        const data = await res.json();
-        if (!data.items || !data.items.length) throw new Error("No items");
-
-        const item = data.items[0];
-        const title = stripHtml(item.title);
-        const date = fmtDate(item.pubDate);
-
-        linkEl.textContent = title;
-        linkEl.href = item.link;
-        linkEl.target = "_blank";
-        linkEl.rel = "noopener";
-        metaEl.textContent = `${date} • Market Brief Daily (Substack)`;
-
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), item: { title, link: item.link, date } }));
-      }catch(err){
-        // fallback: keep it pointing to /posts.html
-        linkEl.textContent = "View latest posts";
-        linkEl.href = "/posts.html";
-        metaEl.textContent = "Auto-updated from Substack (feed unavailable right now)";
-        console.error(err);
-      }
+      requestAnimationFrame(frame);
     }
-
-    loadFeatured();
+    frame();
+  })();
+  // Scroll reveal
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('visible');});return;}
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.12});
+    els.forEach(function(el){io.observe(el);});
+  })();
+  // Ticker RSS
+  (function(){
+    var link=document.getElementById('featuredLink');
+    if(!link)return;
+    var FEED='https://marketbriefdaily.substack.com/feed';
+    var API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(FEED);
+    fetch(API).then(function(r){return r.json();}).then(function(d){
+      var item=d.items&&d.items[0];
+      if(!item)return;
+      link.textContent=item.title;
+      link.href=item.link;
+    }).catch(function(){});
+  })();
   </script>
 </body>
 </html>
