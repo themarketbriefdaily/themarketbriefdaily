@@ -24,7 +24,7 @@
       --f3: #ec4899;
       --f4: #14b8a6;
       --font: 'Inter', 'Helvetica Neue', sans-serif;
-      --max: 1280px;
+      --max: 1400px;
       --r: 12px;
     }
 
@@ -72,7 +72,7 @@
 
     .brand-logo { width: 38px; height: 38px; border-radius: 8px; object-fit: contain; }
     .brand-stack { display: flex; flex-direction: column; gap: 1px; }
-    .brand-title { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; line-height: 1.2; }
+    .brand-title { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
     .brand-sub { font-size: 11px; color: var(--muted2); letter-spacing: .02em; }
 
     .nav { display: flex; align-items: center; gap: 4px; }
@@ -89,132 +89,56 @@
     .nav a.is-active { color: var(--ink); background: rgba(59, 130, 246, .15); }
 
     /* Page Header */
-    .page-header { padding: 100px 0 80px; position: relative; overflow: hidden; }
-    .page-header::before {
-      content: '';
-      position: absolute;
-      top: -300px;
-      right: -300px;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(59, 130, 246, .15), transparent);
-      animation: float 20s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(40px) translateX(-20px); } }
-
-    .page-header-content { position: relative; z-index: 1; }
-
-    .kicker {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 12px;
-      animation: slideInDown .6s ease-out;
-    }
-
-    h1 {
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      font-weight: 800;
-      letter-spacing: -.02em;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      animation: slideInDown .6s ease-out .1s both;
-    }
-
-    .lead {
-      font-size: 1.125rem;
-      color: var(--muted);
-      max-width: 700px;
-      line-height: 1.7;
-      animation: slideInDown .6s ease-out .2s both;
-    }
-
-    @keyframes slideInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* KPI Grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      margin: 80px 0 60px;
-      animation: fadeInUp .6s ease-out .3s both;
-    }
-
-    .kpi-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--r);
-      padding: 24px;
-      transition: all .3s cubic-bezier(.34, .1, .68, .55);
+    .page-header {
+      padding: 100px 0 60px;
       position: relative;
       overflow: hidden;
     }
 
-    .kpi-card::before {
+    .page-header::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(59, 130, 246, .1), transparent);
-      opacity: 0;
-      transition: opacity .3s ease;
+      top: -400px;
+      right: -400px;
+      width: 1000px;
+      height: 1000px;
+      background: radial-gradient(circle, rgba(59, 130, 246, .12), transparent);
+      animation: float 25s ease-in-out infinite;
       pointer-events: none;
+      z-index: 0;
     }
 
-    .kpi-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-lg);
-      border-color: rgba(59, 130, 246, .2);
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(60px) translateX(-40px); } }
 
-    .kpi-card:hover::before { opacity: 1; }
+    .page-header-content { position: relative; z-index: 1; }
+    .kicker { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
+    h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 16px; }
+    .lead { font-size: 1.125rem; color: var(--muted); max-width: 700px; line-height: 1.7; }
 
-    .kpi-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 10px; }
-    .kpi-value { font-size: 32px; font-weight: 800; color: var(--ink); font-family: ui-monospace, 'SF Mono', Menlo, monospace; margin-bottom: 6px; }
-    .kpi-value.positive { color: var(--positive); }
-    .kpi-value.negative { color: var(--negative); }
-    .kpi-sub { font-size: 12px; color: var(--muted2); }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Funds Section */
-    .funds-section { padding: 80px 0; position: relative; }
-    .section-intro { margin-bottom: 60px; animation: fadeInUp .6s ease-out both; }
-    .section-kicker { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
-    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 16px; color: var(--ink); }
+    /* Funds Grid */
+    .funds-section { padding: 60px 0 80px; }
+    .section-intro { margin-bottom: 60px; }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; margin-bottom: 16px; }
     .section-desc { font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.7; }
 
     .funds-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      grid-template-columns: 1fr;
+      gap: 40px;
       margin-bottom: 60px;
     }
 
-    /* Fund Card - Dynamic */
+    /* Fund Card - Full Width */
     .fund-card {
       position: relative;
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--r);
-      padding: 32px 28px;
-      text-decoration: none;
-      color: var(--ink);
-      transition: all .3s cubic-bezier(.34, .1, .68, .55);
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
       animation: fundCardEntry .6s ease-out backwards;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
     }
 
     .fund-card:nth-child(1) { animation-delay: .1s; }
@@ -223,65 +147,57 @@
     .fund-card:nth-child(4) { animation-delay: .4s; }
 
     @keyframes fundCardEntry {
-      from { opacity: 0; transform: translateY(30px) scale(.95); }
+      from { opacity: 0; transform: translateY(40px) scale(.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Animated background gradient */
-    .fund-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        from 0deg,
-        rgba(59, 130, 246, 0),
-        rgba(59, 130, 246, .1),
-        rgba(59, 130, 246, 0)
-      );
-      animation: rotate 8s linear infinite;
-      pointer-events: none;
-      opacity: 0;
-      z-index: 0;
-    }
-
-    .fund-card.f1::before { --gradient-color: var(--f1); }
-    .fund-card.f2::before { --gradient-color: var(--f2); }
-    .fund-card.f3::before { --gradient-color: var(--f3); }
-    .fund-card.f4::before { --gradient-color: var(--f4); }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .fund-card:hover::before { opacity: 1; }
-
-    /* Top border accent */
-    .fund-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, currentColor, transparent);
-    }
-
-    .fund-card.f1::after { color: var(--f1); }
-    .fund-card.f2::after { color: var(--f2); }
-    .fund-card.f3::after { color: var(--f3); }
-    .fund-card.f4::after { color: var(--f4); }
-
     .fund-card:hover {
-      transform: translateY(-16px);
-      box-shadow: var(--shadow-lg);
       border-color: rgba(59, 130, 246, .2);
+      box-shadow: var(--shadow-lg);
+      transition: all .3s cubic-bezier(.34, .1, .68, .55);
     }
 
-    .fund-content { position: relative; z-index: 1; }
+    /* 3D Canvas Section */
+    .fund-visual {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(59, 130, 246, .05), rgba(139, 92, 246, .05));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      border-right: 1px solid var(--glass-border);
+    }
+
+    .fund-card.f1 .fund-visual { background: linear-gradient(135deg, rgba(59, 130, 246, .1), rgba(59, 130, 246, .05)); }
+    .fund-card.f2 .fund-visual { background: linear-gradient(135deg, rgba(139, 92, 246, .1), rgba(139, 92, 246, .05)); }
+    .fund-card.f3 .fund-visual { background: linear-gradient(135deg, rgba(236, 72, 153, .1), rgba(236, 72, 153, .05)); }
+    .fund-card.f4 .fund-visual { background: linear-gradient(135deg, rgba(20, 184, 166, .1), rgba(20, 184, 166, .05)); }
+
+    canvas { display: block; }
+
+    /* Fund Content */
+    .fund-content {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+
+    .fund-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .fund-title-group {
+      flex: 1;
+    }
 
     .fund-num {
       font-size: 11px;
@@ -289,7 +205,7 @@
       letter-spacing: .10em;
       text-transform: uppercase;
       opacity: .7;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
 
     .fund-card.f1 .fund-num { color: var(--f1); }
@@ -298,30 +214,36 @@
     .fund-card.f4 .fund-num { color: var(--f4); }
 
     .fund-name {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
-      margin-bottom: 12px;
-      line-height: 1.3;
+      line-height: 1.2;
       letter-spacing: -.01em;
+      margin-bottom: 8px;
+    }
+
+    .fund-stage {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted2);
     }
 
     .fund-desc {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       line-height: 1.6;
-      margin-bottom: 24px;
-      flex-grow: 1;
+      margin-bottom: 8px;
     }
 
-    /* Performance Metrics - Animated */
+    /* Metrics Grid */
     .fund-metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 16px;
       padding: 16px 0;
       border-top: 1px solid var(--glass-border);
       border-bottom: 1px solid var(--glass-border);
-      margin-bottom: 16px;
     }
 
     .metric {
@@ -339,7 +261,7 @@
     }
 
     .metric-value {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 800;
       font-family: ui-monospace, 'SF Mono', Menlo, monospace;
       color: var(--ink);
@@ -351,10 +273,9 @@
     .metric-value.positive { color: var(--positive); }
     .metric-value.negative { color: var(--negative); }
 
-    /* Animated indicator dot */
     .metric-indicator {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
       animation: pulse 2s ease-in-out infinite;
@@ -365,10 +286,10 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .6; transform: scale(1.2); }
+      50% { opacity: .6; transform: scale(1.3); }
     }
 
-    /* Allocation Tags */
+    /* Allocation */
     .fund-allocation {
       display: flex;
       gap: 6px;
@@ -383,88 +304,54 @@
       background: rgba(59, 130, 246, .1);
       color: var(--brand);
       border: 1px solid rgba(59, 130, 246, .2);
-      transition: all .2s ease;
     }
 
-    .fund-card:hover .allocation-tag {
-      background: rgba(59, 130, 246, .15);
-      border-color: rgba(59, 130, 246, .3);
-    }
-
-    /* Chart Section */
-    .chart-section {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--r);
+    /* Chart Container */
+    .fund-chart-section {
       padding: 40px;
-      margin-bottom: 80px;
-      animation: fadeInUp .6s ease-out .5s both;
-    }
-
-    .chart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-      gap: 24px;
+      border-top: 1px solid var(--glass-border);
+      background: linear-gradient(135deg, rgba(59, 130, 246, .02), transparent);
     }
 
     .chart-title {
-      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-      font-weight: 800;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
       color: var(--ink);
-      letter-spacing: -.01em;
     }
 
     .chart-meta {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted2);
-    }
-
-    .chart-meta span {
-      color: var(--muted);
-      font-weight: 600;
+      margin-bottom: 16px;
     }
 
     .chart-container {
       position: relative;
-      height: 340px;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, .02), rgba(139, 92, 246, .02));
-      border-radius: 8px;
-      padding: 20px;
+      height: 200px;
+      margin-bottom: 16px;
     }
 
-    canvas {
-      width: 100% !important;
-      height: 300px !important;
-    }
+    canvas.chart { width: 100% !important; height: 200px !important; }
 
     .chart-legend {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      padding-top: 24px;
-      border-top: 1px solid var(--glass-border);
+      display: flex;
+      gap: 24px;
+      font-size: 12px;
+      color: var(--muted);
     }
 
     .legend-item {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
       flex-shrink: 0;
-    }
-
-    .legend-label {
-      font-size: 13px;
-      color: var(--muted);
     }
 
     /* Thesis Section */
@@ -499,17 +386,10 @@
       gap: 12px;
     }
 
-    .thesis-title-group { flex: 1; }
-    .thesis-name { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
-
-    .thesis-meta {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
+    .thesis-name { font-size: 16px; font-weight: 800; color: var(--ink); }
+    .thesis-meta { display: flex; gap: 10px; align-items: center; }
     .thesis-ticker { font-size: 12px; color: var(--brand); font-family: ui-monospace; font-weight: 800; }
-    .thesis-stage { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted2); padding: 2px 8px; background: rgba(255, 255, 255, .05); border-radius: 4px; }
+    .thesis-stage { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted2); padding: 2px 8px; background: rgba(255, 255, 255, .05); border-radius: 4px; }
 
     .thesis-toggle {
       width: 32px;
@@ -556,19 +436,16 @@
     .footer-links a:hover { color: var(--ink); }
     .footer-links a:hover::after { width: 100%; }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .funds-grid { grid-template-columns: repeat(2, 1fr); }
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .chart-legend { grid-template-columns: 1fr; }
+    @media (max-width: 1024px) {
+      .fund-card { grid-template-columns: 1fr; }
+      .fund-visual { border-right: none; border-bottom: 1px solid var(--glass-border); min-height: 300px; }
     }
 
     @media (max-width: 768px) {
-      .funds-grid { grid-template-columns: 1fr; gap: 16px; }
-      .kpi-grid { grid-template-columns: 1fr; gap: 16px; }
-      .nav a { padding: 6px 8px; font-size: 13px; }
-      .page-header { padding: 60px 0 40px; }
-      .chart-section { padding: 24px; }
+      .fund-content { padding: 24px; max-height: none; }
+      .fund-chart-section { padding: 24px; }
+      .chart-container { height: 180px; }
+      .canvas.chart { height: 180px !important; }
     }
   </style>
 
@@ -579,7 +456,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="/" aria-label="Home">
-        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <img class="brand-logo" src="/assets/images/logo.png" alt="logo" />
         <span class="brand-stack">
           <span class="brand-title">The Market Brief Daily</span>
           <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
@@ -600,32 +477,7 @@
       <div class="container page-header-content">
         <div class="kicker">Portfolio</div>
         <h1>Investment Strategies</h1>
-        <p class="lead">Model portfolios built on rigorous quantitative frameworks — from active macro rotation to factor-driven small-cap value tilt.</p>
-      </div>
-    </section>
-
-    <section class="container">
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-label">Total Capital</div>
-          <div class="kpi-value" id="totalCap">$100,000</div>
-          <div class="kpi-sub">Model capital</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Portfolio NAV</div>
-          <div class="kpi-value positive" id="nav">$108,340</div>
-          <div class="kpi-sub">Holdings + cash</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Total P/L</div>
-          <div class="kpi-value positive" id="pl">+$8,340</div>
-          <div class="kpi-sub">Mark-to-market</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Since Inception</div>
-          <div class="kpi-value positive" id="si">+8.34%</div>
-          <div class="kpi-sub">Total return</div>
-        </div>
+        <p class="lead">Four distinct quantitative strategies. Real-time performance tracking, institutional-grade analysis, and detailed investment thesis for each fund.</p>
       </div>
     </section>
 
@@ -638,35 +490,6 @@
         </div>
 
         <div class="funds-grid" id="fundsGrid"></div>
-      </div>
-    </section>
-
-    <section class="container">
-      <div class="chart-section">
-        <div class="chart-header">
-          <div>
-            <div class="chart-title">Performance Since Inception</div>
-            <div class="chart-meta">
-              Inception: <span id="inception">2025-02-12</span> · Last update: <span id="perfLast">Today</span>
-            </div>
-          </div>
-          <div class="chart-meta" style="text-align: right;">
-            Status: <span id="quoteStatus" style="color: var(--brand); font-weight: 700;">✓ priced</span>
-          </div>
-        </div>
-        <div class="chart-container">
-          <canvas id="perfChart"></canvas>
-        </div>
-        <div class="chart-legend">
-          <div class="legend-item">
-            <div class="legend-dot" style="background: linear-gradient(135deg, #3b82f6, #1e40af);"></div>
-            <div class="legend-label">Portfolio NAV</div>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"></div>
-            <div class="legend-label">Benchmark Comparison</div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -684,7 +507,7 @@
 
     <section class="container" style="margin-bottom: 80px;">
       <div style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 24px; font-size: 12px; color: var(--muted);">
-        <strong>Disclosure:</strong> This is an informational model portfolio only. Not investment advice. Performance history from <code style="color: var(--brand);">data/performance.json</code>.
+        <strong>Disclosure:</strong> This is an informational model portfolio only. Not investment advice. Performance tracking is informational.
       </div>
     </section>
   </main>
@@ -713,21 +536,37 @@
         ticker: "F1",
         description: "Dynamic sector rotation across precious metals, ESG, and consumer staples based on macro risk signals.",
         allocation: ["GLD", "ESGU", "XLP"],
-        thesis: ["Macro regime shifts drive sector rotation", "Precious metals inflation hedge", "ESG positioning captures flows", "Consumer staples defensive value"],
-        watch: ["Yield curve", "Inflation expectations", "Risk flows", "Macro positioning"],
+        thesis: [
+          "Macro regime shifts drive sector rotation signals",
+          "Precious metals provide inflation hedge during rates cycles",
+          "ESG positioning captures sustainability rotation flows",
+          "Consumer staples offer defensive characteristics"
+        ],
+        watch: ["Yield curve inversion", "Inflation expectations", "Risk-on/risk-off flows", "Macro positioning"],
         return1y: 12.45,
-        returnBench: 8.32
+        benchmark: "XLY", // Consumer Discretionary vs Consumer Staples blend
+        benchmarkReturn: 9.15,
+        color: "#3b82f6",
+        canvasId: "canvas1"
       },
       fund2: {
         name: "Fund II — Tracker",
-        stage: "Index Replication",
+        stage: "Index Replication (Market-Cap)",
         ticker: "F2",
-        description: "Market-cap weighted index replication. Broad exposure with minimal cost drag.",
-        allocation: ["SPY"],
-        thesis: ["Broad market exposure", "Low-cost implementation", "Benchmark proxy", "Efficient capital allocation"],
-        watch: ["Market breadth", "Sector leadership", "Valuation levels", "Liquidity"],
+        description: "Market-cap weighted broad index replication. Broad exposure with minimal cost drag.",
+        allocation: ["VTI"],
+        thesis: [
+          "Broad market exposure captures systematic returns",
+          "Low-cost implementation through index replication",
+          "Market-cap weighting reflects investor positioning",
+          "Efficient capital allocation with minimal drag"
+        ],
+        watch: ["Market breadth", "Sector leadership", "Valuation levels", "Liquidity conditions"],
         return1y: 8.32,
-        returnBench: 0.00
+        benchmark: "VTI", // Total Stock Market Index
+        benchmarkReturn: 8.32,
+        color: "#8b5cf6",
+        canvasId: "canvas2"
       },
       fund3: {
         name: "Fund III — Fama-French",
@@ -735,10 +574,18 @@
         ticker: "F3",
         description: "Small-cap value tilt informed by Fama-French factor premia for long-run outperformance.",
         allocation: ["VBR", "IJS"],
-        thesis: ["Small-cap value factor", "Mean reversion cycles", "Diversification from growth", "Factor rotation alpha"],
-        watch: ["Value vs Growth", "Small-cap momentum", "Mean reversion", "Factor cycles"],
+        thesis: [
+          "Small-cap value factor has positive historical premia",
+          "Mean reversion in value cycles creates alpha opportunities",
+          "Diversification from large-cap growth exposure",
+          "Factor rotation captures cyclical opportunities"
+        ],
+        watch: ["Value vs Growth spread", "Small-cap momentum", "Mean reversion signals", "Factor cycles"],
         return1y: 15.67,
-        returnBench: 8.32
+        benchmark: "SPY", // Large-cap benchmark
+        benchmarkReturn: 8.32,
+        color: "#ec4899",
+        canvasId: "canvas3"
       },
       fund4: {
         name: "Fund IV — ESG",
@@ -746,14 +593,210 @@
         ticker: "F4",
         description: "Sustainability-screened portfolio spanning US large-cap, US broad market, and emerging markets.",
         allocation: ["ESGU", "ESGV", "ESGE"],
-        thesis: ["ESG screens capture quality", "Emerging market diversification", "Sustainable secular trend", "Risk mitigation benefits"],
-        watch: ["ESG ratings", "EM volatility", "Governance metrics", "Sustainability scores"],
+        thesis: [
+          "ESG screens capture quality and governance premiums",
+          "Emerging market exposure provides diversification",
+          "Sustainable investing aligns with secular trends",
+          "ESG factors provide risk mitigation benefits"
+        ],
+        watch: ["ESG rating changes", "EM volatility", "Governance metrics", "Sustainability scores"],
         return1y: 9.18,
-        returnBench: 8.32
+        benchmark: "IUSB", // Broad US + Emerging Market ESG proxy
+        benchmarkReturn: 7.85,
+        color: "#14b8a6",
+        canvasId: "canvas4"
       }
     };
 
     const fundKeys = Object.keys(funds);
+    const charts = {};
+
+    // 3D Canvas Animation
+    function create3DCanvas(canvasId, color) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = canvas.offsetWidth;
+      const h = canvas.height = canvas.offsetHeight;
+
+      let particles = [];
+      for (let i = 0; i < 50; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          z: Math.random() * 100,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          vz: (Math.random() - 0.5) * 1,
+          r: Math.random() * 3 + 1
+        });
+      }
+
+      function animate() {
+        ctx.fillStyle = 'rgba(6, 12, 26, 1)';
+        ctx.fillRect(0, 0, w, h);
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.z += p.vz;
+
+          if (p.x < 0) p.x = w;
+          if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h;
+          if (p.y > h) p.y = 0;
+          if (p.z < 0 || p.z > 100) p.vz *= -1;
+
+          const scale = p.z / 100;
+          const opacity = scale * 0.7 + 0.3;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * scale, 0, Math.PI * 2);
+          ctx.fillStyle = color.replace(')', `, ${opacity})`);
+          ctx.fill();
+
+          // Connect particles
+          particles.forEach(p2 => {
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 100) {
+              ctx.strokeStyle = color.replace(')', `, ${opacity * (1 - dist / 100) * 0.3})`);
+              ctx.lineWidth = 0.5;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          });
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    // Convert hex to rgb for canvas
+    function hexToRgb(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 'rgb(59, 130, 246';
+    }
+
+    // Generate mock performance data
+    function generateMockData() {
+      const data = [];
+      let nav = 100000;
+      const startDate = new Date('2025-02-12');
+
+      for (let i = 0; i < 60; i++) {
+        nav += (Math.random() - 0.48) * 500;
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        data.push({
+          date: date.toISOString().split('T')[0],
+          nav: Math.round(nav)
+        });
+      }
+      return data;
+    }
+
+    function generateBenchmarkData() {
+      const data = [];
+      let nav = 100000;
+      const startDate = new Date('2025-02-12');
+
+      for (let i = 0; i < 60; i++) {
+        nav += (Math.random() - 0.49) * 400;
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        data.push({
+          date: date.toISOString().split('T')[0],
+          nav: Math.round(nav)
+        });
+      }
+      return data;
+    }
+
+    function renderChart(canvasEl, fundData) {
+      const data = generateMockData();
+      const benchData = generateBenchmarkData();
+      const labels = data.map(d => d.date);
+      const fundNavs = data.map(d => d.nav);
+      const benchNavs = benchData.map(d => d.nav);
+
+      const ctx = canvasEl.getContext("2d");
+
+      if (charts[canvasEl.id]) {
+        charts[canvasEl.id].destroy();
+      }
+
+      charts[canvasEl.id] = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: fundData.ticker,
+              data: fundNavs,
+              borderColor: fundData.color,
+              borderWidth: 2.5,
+              backgroundColor: fundData.color.replace(')', ', 0.05)'),
+              tension: 0.35,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+              fill: true
+            },
+            {
+              label: fundData.benchmark,
+              data: benchNavs,
+              borderColor: 'rgba(148, 163, 184, .6)',
+              borderWidth: 1.5,
+              borderDash: [5, 5],
+              backgroundColor: 'transparent',
+              tension: 0.35,
+              pointRadius: 0,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "rgba(6, 12, 26, .95)",
+              titleColor: "#eef2ff",
+              bodyColor: "#eef2ff",
+              borderColor: "rgba(59, 130, 246, .4)",
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: (item) => item.dataset.label + ": $" + Number(item.parsed.y).toLocaleString()
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 5, color: "rgba(238, 242, 255, .4)", font: { size: 10 } },
+              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+            },
+            y: {
+              ticks: {
+                color: "rgba(238, 242, 255, .4)",
+                font: { size: 10 },
+                callback: (v) => "$" + (v / 1000).toFixed(0) + "k"
+              },
+              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+            }
+          }
+        }
+      });
+    }
 
     function renderFundsGrid() {
       const grid = document.getElementById("fundsGrid");
@@ -761,50 +804,89 @@
 
       fundKeys.forEach((key, idx) => {
         const fund = funds[key];
-        const returnDiff = fund.return1y - fund.returnBench;
-        const isPositive = returnDiff >= 0;
         const fundClass = `f${idx + 1}`;
+        const returnDiff = fund.return1y - fund.benchmarkReturn;
+        const isPositive = returnDiff >= 0;
 
-        const card = document.createElement("a");
-        card.href = "#";
+        const card = document.createElement("div");
         card.className = `fund-card ${fundClass}`;
         card.innerHTML = `
-          <div class="fund-content">
-            <div class="fund-num">${fund.ticker}</div>
-            <div class="fund-name">${fund.name}</div>
-            <div class="fund-desc">${fund.description}</div>
-            
-            <div class="fund-metrics">
-              <div class="metric">
-                <div class="metric-label">1Y Return</div>
-                <div class="metric-value ${fund.return1y >= 0 ? 'positive' : 'negative'}">
-                  <span class="metric-indicator"></span>
-                  ${fund.return1y >= 0 ? '+' : ''}${fund.return1y.toFixed(2)}%
+          <div class="fund-visual">
+            <canvas id="${fund.canvasId}"></canvas>
+          </div>
+
+          <div>
+            <div class="fund-content">
+              <div class="fund-header">
+                <div class="fund-title-group">
+                  <div class="fund-num">${fund.ticker}</div>
+                  <div class="fund-name">${fund.name}</div>
+                  <div class="fund-stage">${fund.stage}</div>
                 </div>
               </div>
-              <div class="metric">
-                <div class="metric-label">vs SPY</div>
-                <div class="metric-value ${isPositive ? 'positive' : 'negative'}">
-                  <span class="metric-indicator"></span>
-                  ${isPositive ? '+' : ''}${returnDiff.toFixed(2)}%
+
+              <div class="fund-desc">${fund.description}</div>
+
+              <div class="fund-metrics">
+                <div class="metric">
+                  <div class="metric-label">1Y Return</div>
+                  <div class="metric-value ${fund.return1y >= 0 ? 'positive' : 'negative'}">
+                    <span class="metric-indicator"></span>
+                    +${fund.return1y.toFixed(2)}%
+                  </div>
                 </div>
+                <div class="metric">
+                  <div class="metric-label">vs ${fund.benchmark}</div>
+                  <div class="metric-value ${isPositive ? 'positive' : 'negative'}">
+                    <span class="metric-indicator"></span>
+                    ${isPositive ? '+' : ''}${returnDiff.toFixed(2)}%
+                  </div>
+                </div>
+              </div>
+
+              <div class="fund-allocation">
+                ${fund.allocation.map(t => `<span class="allocation-tag">${t}</span>`).join('')}
               </div>
             </div>
 
-            <div class="fund-allocation">
-              ${fund.allocation.map(t => `<span class="allocation-tag">${t}</span>`).join('')}
+            <div class="fund-chart-section">
+              <div class="chart-title">Performance vs Benchmark</div>
+              <div class="chart-meta">${fund.ticker} (solid) vs ${fund.benchmark} (dashed)</div>
+              <div class="chart-container">
+                <canvas class="chart" id="chart-${key}"></canvas>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item">
+                  <div class="legend-dot" style="background: ${fund.color};"></div>
+                  <span>${fund.ticker}</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-dot" style="background: rgba(148, 163, 184, .6); border: 1px dashed rgba(148, 163, 184, .8);"></div>
+                  <span>${fund.benchmark} Benchmark</span>
+                </div>
+              </div>
             </div>
           </div>
         `;
         grid.appendChild(card);
       });
+
+      // Initialize canvases after DOM is ready
+      setTimeout(() => {
+        fundKeys.forEach((key, idx) => {
+          const fund = funds[key];
+          create3DCanvas(fund.canvasId, hexToRgb(fund.color));
+          const chartEl = document.getElementById(`chart-${key}`);
+          if (chartEl) renderChart(chartEl, fund);
+        });
+      }, 100);
     }
 
     function renderTheses() {
       const wrap = document.getElementById("thesisBlocks");
       wrap.innerHTML = "";
 
-      fundKeys.forEach((key, idx) => {
+      fundKeys.forEach((key) => {
         const fund = funds[key];
         const item = document.createElement("div");
         item.className = "thesis-card";
@@ -852,90 +934,8 @@
       });
     }
 
-    function generateMockData() {
-      const startDate = new Date('2025-02-12');
-      const data = [];
-      let nav = 100000;
-
-      for (let i = 0; i < 60; i++) {
-        const date = new Date(startDate);
-        date.setDate(date.getDate() + i);
-        nav += (Math.random() - 0.48) * 500;
-        data.push({
-          date: date.toISOString().split('T')[0],
-          nav: Math.round(nav)
-        });
-      }
-
-      return data;
-    }
-
-    function renderChart() {
-      const data = generateMockData();
-      const labels = data.map(d => d.date);
-      const navs = data.map(d => d.nav);
-
-      const ctx = document.getElementById("perfChart").getContext("2d");
-
-      new Chart(ctx, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "Portfolio NAV",
-            data: navs,
-            borderColor: "#3b82f6",
-            borderWidth: 3,
-            backgroundColor: "rgba(59, 130, 246, .08)",
-            tension: 0.35,
-            pointRadius: 0,
-            pointHoverRadius: 8,
-            pointBackgroundColor: "#3b82f6",
-            pointBorderColor: "#fff",
-            pointBorderWidth: 2,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: "index", intersect: false },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: "rgba(6, 12, 26, .95)",
-              titleColor: "#eef2ff",
-              bodyColor: "#eef2ff",
-              borderColor: "rgba(59, 130, 246, .4)",
-              borderWidth: 1,
-              padding: 14,
-              displayColors: false,
-              callbacks: {
-                label: (item) => "NAV: $" + Number(item.parsed.y).toLocaleString()
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { maxTicksLimit: 8, color: "rgba(238, 242, 255, .4)", font: { size: 11 } },
-              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
-            },
-            y: {
-              ticks: {
-                color: "rgba(238, 242, 255, .4)",
-                font: { size: 11 },
-                callback: (v) => "$" + Number(v).toLocaleString()
-              },
-              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
-            }
-          }
-        }
-      });
-    }
-
     renderFundsGrid();
     renderTheses();
-    renderChart();
   </script>
 </body>
 </html>
