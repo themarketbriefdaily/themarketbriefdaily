@@ -3,10 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Market Brief Daily</title>
-  <meta name="description" content="Independent institutional-grade market analysis." />
-  <meta name="theme-color" content="#ffffff" />
-  
+  <title>The Market Brief Daily — Institutional Market Analysis</title>
+  <meta name="description" content="Independent institutional-grade market analysis. No bias. No fluff." />
   <style>
     * {
       margin: 0;
@@ -20,217 +18,113 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Helvetica, Arial, sans-serif;
-      background: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fff;
       color: #000;
-      line-height: 1.65;
+      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .container {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
     /* Header */
     header {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
+      width: 100%;
+      height: 60px;
       background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    }
-
-    .header-inner {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      z-index: 1000;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      height: 70px;
-      padding: 0 32px;
+      padding: 0 48px;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-      transition: transform 0.2s ease;
-    }
-
-    .brand:hover {
-      transform: translateY(-2px);
-    }
-
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      object-fit: contain;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .nav a {
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.7);
-      transition: color 0.2s ease;
-    }
-
-    .nav a:hover,
-    .nav a.active {
       color: #000;
     }
 
-    /* Hero - Fund Carousel */
+    nav {
+      margin-left: auto;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #000;
+    }
+
+    /* Hero */
     .hero {
-      position: relative;
       height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f5f5f5;
-      overflow: hidden;
-      padding-top: 70px;
-      margin-top: -70px;
-    }
-
-    .carousel-wrapper {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .carousel-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-      width: 100%;
-      max-width: 1400px;
-      padding: 0 32px;
-      z-index: 10;
-      position: relative;
-    }
-
-    .carousel-text {
-      display: flex;
       flex-direction: column;
-      gap: 24px;
+      align-items: center;
+      justify-content: center;
+      padding-top: 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .carousel-label {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(0, 0, 0, 0.5);
+    .hero-content {
+      max-width: 900px;
+      padding: 0 40px;
+      z-index: 10;
     }
 
-    .carousel-text h1 {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.02em;
+      margin-bottom: 24px;
       color: #000;
     }
 
-    .carousel-text p {
-      font-size: 1.1rem;
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.3rem);
       color: rgba(0, 0, 0, 0.6);
-      line-height: 1.8;
-      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .carousel-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 8px;
-    }
-
-    .stat {
+    .hero-cta {
       display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 800;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-    }
-
-    .stat-value.positive {
-      color: #34d399;
-    }
-
-    .stat-value.neutral {
-      color: #3b82f6;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.5);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .carousel-allocation {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .allocation-tag {
-      display: inline-flex;
-      padding: 6px 12px;
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      color: rgba(0, 0, 0, 0.7);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .carousel-cta {
-      display: flex;
-      gap: 12px;
-      margin-top: 24px;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 64px;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px 28px;
+      padding: 12px 28px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
       text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .btn-primary {
@@ -240,7 +134,7 @@
 
     .btn-primary:hover {
       background: #1a1a1a;
-      transform: translateY(-2px);
+      transform: scale(1.02);
     }
 
     .btn-secondary {
@@ -254,237 +148,279 @@
       border-color: rgba(0, 0, 0, 0.2);
     }
 
-    .carousel-image {
-      position: relative;
-      height: 600px;
-      border-radius: 20px;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .carousel-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .carousel-item {
+    .scroll-hint {
       position: absolute;
-      inset: 0;
-      opacity: 0;
-      transform: scale(1.05);
-      transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.4);
+      animation: float 2s ease-in-out infinite;
     }
 
-    .carousel-item.active {
-      opacity: 1;
-      transform: scale(1);
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
     }
 
-    .carousel-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Carousel Controls */
-    .carousel-controls {
-      position: absolute;
-      bottom: 32px;
-      left: 32px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      z-index: 20;
-    }
-
-    .carousel-dots {
-      display: flex;
-      gap: 10px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-      padding: 0;
-    }
-
-    .dot.active {
-      width: 32px;
-      border-radius: 5px;
-      background: #000;
-    }
-
-    .dot:hover {
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    .carousel-arrows {
-      display: flex;
-      gap: 8px;
-    }
-
-    .arrow-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      background: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-    }
-
-    .arrow-btn:hover {
+    /* Fund Card Carousel - Clean */
+    .funds-hero {
+      padding: 120px 48px;
       background: #fff;
-      border-color: rgba(0, 0, 0, 0.2);
-      transform: scale(1.08);
+      position: relative;
     }
 
-    .arrow-btn svg {
-      width: 20px;
-      height: 20px;
-      stroke: #000;
-      stroke-width: 2;
+    .funds-hero-content {
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
-    /* Section */
-    .section {
-      padding: 96px 0;
-    }
-
-    .section-header {
+    .funds-header {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 80px;
     }
 
-    .section-label {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(0, 0, 0, 0.5);
-      margin-bottom: 12px;
-    }
-
-    .section-title {
+    .funds-header h2 {
       font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 800;
       letter-spacing: -0.02em;
-      line-height: 1.2;
       margin-bottom: 16px;
     }
 
-    .section-desc {
+    .funds-header p {
       font-size: 1.1rem;
       color: rgba(0, 0, 0, 0.6);
       max-width: 600px;
       margin: 0 auto;
-      line-height: 1.8;
     }
 
-    /* Features Grid */
-    .features-grid {
+    .carousel-main {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 120px;
+    }
+
+    .carousel-info {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .fund-number {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .fund-title {
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .fund-desc {
+      font-size: 1rem;
+      color: rgba(0, 0, 0, 0.6);
+      line-height: 1.8;
+      max-width: 500px;
+    }
+
+    .fund-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 40px;
-      margin-top: 60px;
     }
 
-    .feature-card {
-      padding: 40px;
-      background: #f9f9f9;
-      border-radius: 16px;
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .fund-allocation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .alloc-tag {
+      padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.7);
       border: 1px solid rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
     }
 
-    .feature-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(0, 0, 0, 0.15);
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+    .carousel-image {
+      position: relative;
+      height: 500px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f5f5f5;
     }
 
-    .feature-icon {
-      font-size: 40px;
+    .carousel-img-item {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .carousel-img-item.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .carousel-img-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Carousel Dots */
+    .carousel-dots-container {
+      display: flex;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.15);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: #000;
+    }
+
+    .dot:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Features Section */
+    .features {
+      padding: 120px 48px;
+      background: #fff;
+    }
+
+    .features-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .features-header h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
 
-    .feature-card h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: #000;
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
     }
 
-    .feature-card p {
+    .feature {
+      padding: 0;
+    }
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature p {
       font-size: 0.95rem;
       color: rgba(0, 0, 0, 0.6);
       line-height: 1.7;
     }
 
-    /* Stats */
-    .stats-section {
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 48px;
       background: #000;
       color: #fff;
-      padding: 80px 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 60px;
       text-align: center;
     }
 
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-item-value {
-      font-size: 3.2rem;
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 800;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
     }
 
-    .stat-item-label {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .cta-section p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 600px;
+      margin: 0 auto 40px;
     }
 
     /* Footer */
     footer {
+      padding: 60px 48px;
       background: #f5f5f5;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 60px 0 40px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
 
-    .footer-grid {
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 48px;
       margin-bottom: 48px;
     }
 
     .footer-col h4 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
       color: #000;
     }
 
@@ -493,7 +429,8 @@
       font-size: 13px;
       color: rgba(0, 0, 0, 0.6);
       margin-bottom: 12px;
-      transition: color 0.2s ease;
+      text-decoration: none;
+      transition: color 0.2s;
     }
 
     .footer-col a:hover {
@@ -501,46 +438,107 @@
     }
 
     .footer-bottom {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
       padding-top: 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 24px;
-      font-size: 13px;
-      color: rgba(0, 0, 0, 0.6);
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .carousel-content {
+    /* Mobile */
+    @media (max-width: 1024px) {
+      .carousel-main {
         grid-template-columns: 1fr;
         gap: 40px;
-        padding: 0 20px;
       }
 
       .carousel-image {
         height: 400px;
-        border-radius: 16px;
       }
 
-      .carousel-controls {
-        left: 20px;
-        bottom: 20px;
-        gap: 16px;
+      .fund-stats {
+        grid-template-columns: 1fr;
       }
 
-      .carousel-arrows {
+      header {
+        padding: 0 32px;
+      }
+
+      .funds-hero,
+      .features,
+      .cta-section {
+        padding: 80px 32px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 0 20px;
+        height: 56px;
+      }
+
+      .brand {
+        font-size: 14px;
+      }
+
+      nav {
         display: none;
       }
 
-      .carousel-text h1 {
-        font-size: 2rem;
+      .hero {
+        padding-top: 56px;
       }
 
-      .section {
-        padding: 60px 0;
+      .hero-content {
+        padding: 0 20px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+        margin-bottom: 16px;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 32px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+      }
+
+      .funds-hero,
+      .features,
+      .cta-section {
+        padding: 60px 20px;
+      }
+
+      .carousel-main {
+        gap: 24px;
+      }
+
+      .carousel-image {
+        height: 300px;
+        border-radius: 12px;
+      }
+
+      .fund-title {
+        font-size: 1.8rem;
+      }
+
+      .carousel-info {
+        gap: 20px;
       }
 
       .features-grid {
@@ -548,51 +546,14 @@
         gap: 24px;
       }
 
-      .hero {
-        height: auto;
-        padding-bottom: 40px;
-      }
-
-      .container {
-        padding: 0 20px;
-      }
-
-      .header-inner {
-        padding: 0 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nav {
-        gap: 16px;
-      }
-
-      .carousel-stats {
-        grid-template-columns: 1fr;
-      }
-
-      .carousel-cta {
-        flex-direction: column;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
-      .section-title {
-        font-size: 1.8rem;
-      }
-
-      .feature-card {
-        padding: 24px;
-      }
-
-      .stats-grid {
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
         gap: 32px;
       }
 
-      .stat-item-value {
-        font-size: 2rem;
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
       }
     }
   </style>
@@ -600,282 +561,256 @@
 <body>
   <!-- Header -->
   <header>
-    <div class="header-inner">
-      <a class="brand" href="/">
-        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily" />
-        <span>The Market Brief Daily</span>
-      </a>
-      <nav class="nav">
-        <a href="/" class="active">Home</a>
-        <a href="/posts.html">Posts</a>
-        <a href="/investments.html">Investments</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-    </div>
+    <a class="brand" href="/">The Market Brief Daily</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/posts.html">Research</a>
+      <a href="/investments.html">Funds</a>
+      <a href="/about.html">About</a>
+    </nav>
   </header>
 
-  <!-- Hero - Fund Carousel -->
+  <!-- Hero -->
   <section class="hero">
-    <div class="carousel-wrapper">
-      <div class="carousel-content">
-        <div class="carousel-text">
-          <span class="carousel-label">Investment Funds</span>
-          <h1 id="carouselTitle">Active Rotation</h1>
-          <p id="carouselDesc">Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.</p>
+    <div class="hero-content">
+      <h1>Institutional market analysis made clear</h1>
+      <p>We analyse commodity markets, macro transmission, and quantitative strategies. No bias. No noise.</p>
+      <div class="hero-cta">
+        <a href="/investments.html" class="btn btn-primary">View Funds</a>
+        <a href="/posts.html" class="btn btn-secondary">Read Research</a>
+      </div>
+    </div>
+    <div class="scroll-hint">Scroll to explore</div>
+  </section>
+
+  <!-- Funds Carousel -->
+  <section class="funds-hero">
+    <div class="funds-hero-content">
+      <div class="funds-header">
+        <h2>Four investment strategies</h2>
+        <p>Each built on rigorous quantitative frameworks for different market conditions.</p>
+      </div>
+
+      <!-- Fund 1 -->
+      <div class="carousel-main" id="carousel-1">
+        <div class="carousel-info">
+          <div class="fund-number">Fund I</div>
+          <h3 class="fund-title">Active Rotation</h3>
+          <p class="fund-desc">Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals.</p>
           
-          <div class="carousel-stats">
+          <div class="fund-stats">
             <div class="stat">
-              <div class="stat-value positive" id="carouselReturn">18.32%</div>
+              <div class="stat-value">18.32%</div>
               <div class="stat-label">1Y Return</div>
             </div>
             <div class="stat">
-              <div class="stat-value neutral" id="carouselOutperformance">-6.24%</div>
-              <div class="stat-label">vs Benchmark</div>
+              <div class="stat-value">−6.24%</div>
+              <div class="stat-label">vs SPY</div>
             </div>
           </div>
 
-          <div class="carousel-allocation" id="carouselAllocation">
-            <!-- Populated by JS -->
+          <div class="fund-allocation">
+            <span class="alloc-tag">GLD 20%</span>
+            <span class="alloc-tag">XLE 35%</span>
+            <span class="alloc-tag">XLP 45%</span>
           </div>
 
-          <div class="carousel-cta">
-            <a href="/investments.html" class="btn btn-primary">View All Funds →</a>
-            <a href="/investments.html" class="btn btn-secondary">Learn More</a>
-          </div>
+          <a href="/investments.html" class="btn btn-primary" style="width: fit-content;">Learn More →</a>
         </div>
 
-        <div class="carousel-image" id="carouselImageContainer">
-          <div class="carousel-item active">
+        <div class="carousel-image">
+          <div class="carousel-img-item active">
             <img src="/assets/images/investments/fund1-bg.webp" alt="Fund I">
           </div>
-          <div class="carousel-item">
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height: 120px;"></div>
+
+      <!-- Fund 2 -->
+      <div class="carousel-main" id="carousel-2" style="direction: rtl;">
+        <div class="carousel-info" style="direction: ltr;">
+          <div class="fund-number">Fund II</div>
+          <h3 class="fund-title">Market Tracker</h3>
+          <p class="fund-desc">Market-cap weighted index replication with broad exposure and minimal cost drag.</p>
+          
+          <div class="fund-stats">
+            <div class="stat">
+              <div class="stat-value">24.56%</div>
+              <div class="stat-label">1Y Return</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">+0.00%</div>
+              <div class="stat-label">vs SPY</div>
+            </div>
+          </div>
+
+          <div class="fund-allocation">
+            <span class="alloc-tag">VTI 100%</span>
+          </div>
+
+          <a href="/investments.html" class="btn btn-primary" style="width: fit-content;">Learn More →</a>
+        </div>
+
+        <div class="carousel-image">
+          <div class="carousel-img-item active">
             <img src="/assets/images/investments/fund2-bg.webp" alt="Fund II">
           </div>
-          <div class="carousel-item">
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height: 120px;"></div>
+
+      <!-- Fund 3 -->
+      <div class="carousel-main" id="carousel-3">
+        <div class="carousel-info">
+          <div class="fund-number">Fund III</div>
+          <h3 class="fund-title">Value Factor</h3>
+          <p class="fund-desc">Small-cap value tilt using Fama-French factor premia for long-run outperformance.</p>
+          
+          <div class="fund-stats">
+            <div class="stat">
+              <div class="stat-value">31.45%</div>
+              <div class="stat-label">1Y Return</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">+6.89%</div>
+              <div class="stat-label">vs SPY</div>
+            </div>
+          </div>
+
+          <div class="fund-allocation">
+            <span class="alloc-tag">VBR 60%</span>
+            <span class="alloc-tag">IJS 40%</span>
+          </div>
+
+          <a href="/investments.html" class="btn btn-primary" style="width: fit-content;">Learn More →</a>
+        </div>
+
+        <div class="carousel-image">
+          <div class="carousel-img-item active">
             <img src="/assets/images/investments/fund3-bg.webp" alt="Fund III">
           </div>
-          <div class="carousel-item">
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height: 120px;"></div>
+
+      <!-- Fund 4 -->
+      <div class="carousel-main" id="carousel-4" style="direction: rtl;">
+        <div class="carousel-info" style="direction: ltr;">
+          <div class="fund-number">Fund IV</div>
+          <h3 class="fund-title">ESG Global</h3>
+          <p class="fund-desc">Sustainability-screened portfolio spanning US, developed, and emerging markets.</p>
+          
+          <div class="fund-stats">
+            <div class="stat">
+              <div class="stat-value">20.87%</div>
+              <div class="stat-label">1Y Return</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">+1.42%</div>
+              <div class="stat-label">vs ACWX</div>
+            </div>
+          </div>
+
+          <div class="fund-allocation">
+            <span class="alloc-tag">ESGU 50%</span>
+            <span class="alloc-tag">ESGV 30%</span>
+            <span class="alloc-tag">ESGE 20%</span>
+          </div>
+
+          <a href="/investments.html" class="btn btn-primary" style="width: fit-content;">Learn More →</a>
+        </div>
+
+        <div class="carousel-image">
+          <div class="carousel-img-item active">
             <img src="/assets/images/investments/fund4-bg.webp" alt="Fund IV">
           </div>
         </div>
       </div>
-
-      <!-- Controls -->
-      <div class="carousel-controls">
-        <div class="carousel-dots" id="dots"></div>
-        <div class="carousel-arrows">
-          <button class="arrow-btn" id="prevBtn">
-            <svg viewBox="0 0 24 24" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
-          </button>
-          <button class="arrow-btn" id="nextBtn">
-            <svg viewBox="0 0 24 24" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- Four Strategies Section -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Four Distinct Strategies</span>
-        <h2 class="section-title">Investment Approach</h2>
-        <p class="section-desc">Rigorous quantitative frameworks built for different market conditions — from active macro rotation to factor-driven value tilt.</p>
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-content">
+      <div class="features-header">
+        <h2>Our approach</h2>
+        <p>How we think about markets and strategy.</p>
       </div>
 
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🔄</div>
-          <h3>Active Rotation</h3>
-          <p>Dynamic sector rotation across precious metals, energy, and consumer staples based on macro risk signals.</p>
-        </div>
-
-        <div class="feature-card">
+        <div class="feature">
           <div class="feature-icon">📊</div>
-          <h3>Market Tracking</h3>
-          <p>Market-cap weighted index replication with broad exposure and minimal cost drag.</p>
+          <h3>Market Structure</h3>
+          <p>We analyse positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">📈</div>
-          <h3>Value Factor</h3>
-          <p>Small-cap value tilt using Fama-French factor premia for long-run outperformance.</p>
+        <div class="feature">
+          <div class="feature-icon">⚙️</div>
+          <h3>Physical Supply</h3>
+          <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">🌱</div>
-          <h3>ESG Global</h3>
-          <p>Sustainability-screened portfolio spanning US, developed, and emerging markets.</p>
+        <div class="feature">
+          <div class="feature-icon">🔗</div>
+          <h3>Macro Transmission</h3>
+          <p>How rate cycles, dollar dynamics, and liquidity transmit into commodities and risk assets — traced precisely.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Stats Section -->
-  <section class="stats-section">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-item-value">3</div>
-          <div class="stat-item-label">Years of Research</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-item-value">4</div>
-          <div class="stat-item-label">Active Funds</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-item-value">£2M+</div>
-          <div class="stat-item-label">Analysis Coverage</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-item-value">24/7</div>
-          <div class="stat-item-label">Market Monitoring</div>
-        </div>
-      </div>
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <h2>Start exploring institutional-grade analysis</h2>
+    <p>Read our latest research or browse our four quantitative investment funds.</p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/posts.html" class="btn btn-primary">Read Latest</a>
+      <a href="/investments.html" class="btn btn-secondary" style="background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); color: #fff;">View Funds</a>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Product</h4>
-          <a href="/investments.html">Investment Funds</a>
-          <a href="/posts.html">Research</a>
-          <a href="/about.html">About Us</a>
-        </div>
-        <div class="footer-col">
-          <h4>Resources</h4>
-          <a href="/posts.html">Blog</a>
-          <a href="/disclaimer.html">Disclaimer</a>
-          <a href="/contact.html">Contact</a>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Cookie Policy</a>
-        </div>
-        <div class="footer-col">
-          <h4>Follow</h4>
-          <a href="#">Twitter</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">Substack</a>
-        </div>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="/investments.html">Investment Funds</a>
+        <a href="/posts.html">Research</a>
+        <a href="/about.html">About</a>
       </div>
 
-      <div class="footer-bottom">
-        <span>&copy; 2025 The Market Brief Daily. All rights reserved.</span>
-        <span>Market structure • Physical supply • Macro transmission</span>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="/posts.html">Blog</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/">Home</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Disclaimer</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <a href="#">Twitter</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Substack</a>
       </div>
     </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2025 The Market Brief Daily</span>
+      <span>Market structure • Physical supply • Macro transmission</span>
+    </div>
   </footer>
-
-  <script>
-    const funds = [
-      {
-        title: 'Fund I — Active',
-        desc: 'Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.',
-        r1y: 18.32,
-        bench: 'SPY',
-        benchR: 24.56,
-        allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%']
-      },
-      {
-        title: 'Fund II — Tracker',
-        desc: 'Market-cap weighted index replication with broad exposure, minimal cost drag, and systematic rebalancing discipline.',
-        r1y: 24.56,
-        bench: 'SPY',
-        benchR: 24.56,
-        allocation: ['VTI 100%']
-      },
-      {
-        title: 'Fund III — Value',
-        desc: 'Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.',
-        r1y: 31.45,
-        bench: 'SPY',
-        benchR: 24.56,
-        allocation: ['VBR 60%', 'IJS 40%']
-      },
-      {
-        title: 'Fund IV — ESG',
-        desc: 'Sustainability-screened multi-region portfolio spanning US, developed, and emerging markets with governance bias.',
-        r1y: 20.87,
-        bench: 'ACWX',
-        benchR: 19.45,
-        allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%']
-      }
-    ];
-
-    let currentSlide = 0;
-
-    function initCarousel() {
-      const dotsContainer = document.getElementById('dots');
-      
-      // Create dots
-      funds.forEach((_, idx) => {
-        const dot = document.createElement('button');
-        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(idx);
-        dotsContainer.appendChild(dot);
-      });
-
-      document.getElementById('prevBtn').addEventListener('click', prevSlide);
-      document.getElementById('nextBtn').addEventListener('click', nextSlide);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') prevSlide();
-        if (e.key === 'ArrowRight') nextSlide();
-      });
-
-      updateCarousel();
-    }
-
-    function updateCarousel() {
-      const fund = funds[currentSlide];
-      
-      // Update text
-      document.getElementById('carouselTitle').textContent = fund.title;
-      document.getElementById('carouselDesc').textContent = fund.desc;
-      document.getElementById('carouselReturn').textContent = fund.r1y.toFixed(2) + '%';
-      
-      const outperformance = fund.r1y - fund.benchR;
-      document.getElementById('carouselOutperformance').textContent = (outperformance >= 0 ? '+' : '') + outperformance.toFixed(2) + '%';
-      document.getElementById('carouselOutperformance').className = 'stat-value ' + (outperformance >= 0 ? 'positive' : 'neutral');
-
-      // Update allocation tags
-      const allocContainer = document.getElementById('carouselAllocation');
-      allocContainer.innerHTML = fund.allocation.map(a => `<span class="allocation-tag">${a}</span>`).join('');
-
-      // Update images
-      document.querySelectorAll('.carousel-item').forEach((item, idx) => {
-        item.classList.toggle('active', idx === currentSlide);
-      });
-
-      // Update dots
-      document.querySelectorAll('.dot').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentSlide);
-      });
-    }
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % funds.length;
-      updateCarousel();
-    }
-
-    function prevSlide() {
-      currentSlide = (currentSlide - 1 + funds.length) % funds.length;
-      updateCarousel();
-    }
-
-    function goToSlide(idx) {
-      currentSlide = idx;
-      updateCarousel();
-    }
-
-    document.addEventListener('DOMContentLoaded', initCarousel);
-  </script>
 </body>
 </html>
