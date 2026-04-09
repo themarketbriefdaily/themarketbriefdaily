@@ -3,13 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Market Brief Daily</title>
-  <meta name="description" content="Rigorous quantitative analysis of commodity markets, macro dynamics, and institutional strategies." />
+  <title>The Market Brief Daily — Premium Institutional Analysis</title>
+  <meta name="description" content="Institutional-grade market analysis with real-time data, advanced strategies, and expert insights." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@r128/build/three.min.js"></script>
   
   <style>
     * {
@@ -45,6 +47,7 @@
       --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
       --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+      --glass: rgba(255, 255, 255, 0.7);
     }
 
     h1 {
@@ -138,24 +141,13 @@
       background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
 
-    #canvas-bg {
+    #three-canvas {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      opacity: 0.4;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.06) 0%, transparent 80%);
-      pointer-events: none;
+      opacity: 0.5;
     }
 
     .hero-content {
@@ -283,11 +275,12 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Carousel Section */
-    .carousel-section {
-      padding: 160px 48px;
-      background: #fff;
-      position: relative;
+    /* Ticker Section */
+    .ticker-section {
+      padding: 120px 48px;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .section-wrapper {
@@ -297,7 +290,7 @@
 
     .section-header {
       text-align: center;
-      margin-bottom: 120px;
+      margin-bottom: 80px;
       opacity: 0;
       transform: translateY(40px);
     }
@@ -322,7 +315,99 @@
       margin: 0 auto;
     }
 
-    /* Horizontal Carousel */
+    .ticker-container {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .ticker-chart {
+      width: 100%;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+
+    .ticker-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .ticker-stat {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .ticker-stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'SF Mono', 'Monaco', monospace;
+    }
+
+    .ticker-stat-label {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Blob Section */
+    .blob-section {
+      padding: 160px 48px;
+      background: #fff;
+      position: relative;
+    }
+
+    .blob-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+
+    .blob-visual {
+      width: 100%;
+      height: 500px;
+      position: relative;
+    }
+
+    .blob-visual svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 20px 40px rgba(0, 102, 255, 0.15));
+    }
+
+    .blob-info {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+
+    .blob-info h3 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .blob-info p {
+      font-size: 1.05rem;
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+
+    /* Carousel Section */
+    .carousel-section {
+      padding: 160px 48px;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
+      position: relative;
+    }
+
     .carousel-container {
       position: relative;
       margin-bottom: 80px;
@@ -358,11 +443,6 @@
       cursor: pointer;
     }
 
-    .card-wrapper:nth-child(1) .flip-card { --delay: 0s; }
-    .card-wrapper:nth-child(2) .flip-card { --delay: 0.1s; }
-    .card-wrapper:nth-child(3) .flip-card { --delay: 0.2s; }
-    .card-wrapper:nth-child(4) .flip-card { --delay: 0.3s; }
-
     .flip-card-content {
       position: absolute;
       width: 100%;
@@ -373,6 +453,8 @@
       border: 1px solid var(--border-light);
       display: flex;
       flex-direction: column;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
     }
 
     .flip-card-front {
@@ -457,7 +539,7 @@
       gap: 20px;
       flex: 1;
       opacity: 0;
-      animation: fadeIn 0.6s ease-out var(--delay) forwards;
+      animation: fadeIn 0.6s ease-out forwards;
     }
 
     @keyframes fadeIn {
@@ -595,6 +677,57 @@
       transform: scale(1.05);
     }
 
+    /* Testimonials Section */
+    .testimonials-section {
+      padding: 160px 48px;
+      background: #fff;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .testimonials-carousel {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .testimonial {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      text-align: center;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .testimonial.active {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 1;
+    }
+
+    .testimonial-quote {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+
+    .testimonial-author {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
     /* Stats Section */
     .stats-section {
       padding: 80px 0;
@@ -635,7 +768,7 @@
     /* Features Section */
     .features-section {
       padding: 160px 48px;
-      background: #fff;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
     }
 
     .features-grid {
@@ -649,7 +782,8 @@
       flex-direction: column;
       gap: 20px;
       padding: 32px;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--border-light);
       border-radius: 12px;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -660,7 +794,7 @@
     .feature-card:hover {
       border-color: var(--accent);
       box-shadow: var(--shadow-xl);
-      background: var(--accent-light);
+      background: rgba(255, 255, 255, 0.8);
       transform: translateY(-12px);
     }
 
@@ -728,7 +862,8 @@
     /* Responsive */
     @media (max-width: 1200px) {
       header { padding: 0 32px; }
-      .carousel-section, .features-section { padding: 100px 32px; }
+      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 100px 32px; }
+      .blob-container { grid-template-columns: 1fr; gap: 48px; }
       .flip-card { width: 320px; height: 420px; }
     }
 
@@ -738,7 +873,9 @@
       .hero { padding-top: 56px; }
       .hero-content { padding: 0 20px; }
       .hero h1 { font-size: 2.2rem; }
-      .carousel-section, .features-section { padding: 80px 20px; }
+      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 80px 20px; }
+      .ticker-container { padding: 20px; }
+      .ticker-chart { height: 250px; }
       .flip-card { width: 90vw; height: auto; aspect-ratio: 3/4; }
       .features-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -747,7 +884,7 @@
     @media (max-width: 480px) {
       header { padding: 0 16px; }
       h1 { font-size: 1.8rem; }
-      .carousel-section, .features-section { padding: 60px 16px; }
+      .ticker-section, .blob-section, .carousel-section, .features-section { padding: 60px 16px; }
       .btn { width: 100%; justify-content: center; }
       .flip-card { width: 100%; }
       .footer-grid { grid-template-columns: 1fr; }
@@ -755,8 +892,6 @@
   </style>
 </head>
 <body>
-  <canvas id="canvas-bg"></canvas>
-
   <!-- Header -->
   <header>
     <div class="header-wrapper">
@@ -770,11 +905,12 @@
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero with Three.js Background -->
   <section class="hero">
+    <canvas id="three-canvas"></canvas>
     <div class="hero-content">
       <h1>Institutional Market Analysis</h1>
-      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
+      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. Real-time data. Expert research. No agenda.</p>
       <div class="hero-cta">
         <a href="#carousel" class="btn btn-primary">Explore Funds</a>
         <a href="/posts.html" class="btn btn-secondary">Read Research</a>
@@ -786,13 +922,76 @@
     </div>
   </section>
 
-  <!-- Carousel Section -->
+  <!-- Live Ticker Section -->
+  <section class="ticker-section">
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="label">Real-Time Analytics</span>
+        <h2>Live Market Data</h2>
+        <p>Monitor fund performance and market metrics in real-time with our advanced analytics dashboard.</p>
+      </div>
+
+      <div class="ticker-container">
+        <div class="ticker-chart">
+          <canvas id="liveChart"></canvas>
+        </div>
+        <div class="ticker-stats">
+          <div class="ticker-stat">
+            <div class="ticker-stat-value">+18.32%</div>
+            <div class="ticker-stat-label">Fund I Return</div>
+          </div>
+          <div class="ticker-stat">
+            <div class="ticker-stat-value">$2.4B</div>
+            <div class="ticker-stat-label">Total AUM</div>
+          </div>
+          <div class="ticker-stat">
+            <div class="ticker-stat-value">24/7</div>
+            <div class="ticker-stat-label">Monitoring</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Morphing SVG Blob Section -->
+  <section class="blob-section">
+    <div class="section-wrapper">
+      <div class="section-header" style="margin-bottom: 120px;">
+        <span class="label">Interactive Visualization</span>
+        <h2>Morphing Data Shapes</h2>
+        <p>Watch as our analysis transforms and evolves with market conditions.</p>
+      </div>
+
+      <div class="blob-container">
+        <div class="blob-visual">
+          <svg id="blobSvg" viewBox="0 0 400 400">
+            <defs>
+              <linearGradient id="blobGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#0052cc;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+            <path id="morphBlob" fill="url(#blobGradient)" d="M328,195Q326,240,278,261.5Q230,283,183,270.5Q136,258,110.5,219Q85,180,89.5,120.5Q94,61,150,58.5Q206,56,258,72.5Q310,89,323,139.5Q336,190,328,195Z"/>
+          </svg>
+        </div>
+
+        <div class="blob-info">
+          <h3>Advanced Analytics</h3>
+          <p>Our proprietary algorithms analyze market structure, physical supply dynamics, and macro transmission mechanisms in real-time. Every decision is backed by rigorous quantitative analysis.</p>
+          <p>Watch the shape transform as market conditions evolve. Each morphing represents a shift in our analytical focus.</p>
+          <a href="/investments.html" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fund Carousel Section -->
   <section class="carousel-section" id="carousel">
     <div class="section-wrapper">
       <div class="section-header">
         <span class="label">Investment Funds</span>
         <h2>Explore Our Strategies</h2>
-        <p>Four quantitative frameworks for distinct market conditions. Click or hover to flip cards.</p>
+        <p>Four quantitative frameworks designed for distinct market conditions. Click or hover to flip cards.</p>
       </div>
 
       <div class="carousel-container">
@@ -808,7 +1007,22 @@
     </div>
   </section>
 
-  <!-- Stats -->
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="label">Social Proof</span>
+        <h2>What Our Clients Say</h2>
+        <p>Trusted by institutional investors and portfolio managers worldwide.</p>
+      </div>
+
+      <div class="testimonials-carousel" id="testimonialsCarousel">
+        <!-- Testimonials populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
   <div class="section-wrapper">
     <div class="stats-section">
       <div class="stats-grid">
@@ -832,7 +1046,7 @@
     </div>
   </div>
 
-  <!-- Features -->
+  <!-- Features Section -->
   <section class="features-section">
     <div class="section-wrapper">
       <div class="section-header">
@@ -906,7 +1120,140 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Fund Data
+    // ============================================
+    // THREE.JS WAVY MESH BACKGROUND
+    // ============================================
+    function initThreeJS() {
+      const canvas = document.getElementById('three-canvas');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 1.5, 4);
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+
+      const geometry = new THREE.PlaneGeometry(6, 3, 120, 60);
+
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uColorA: { value: new THREE.Color("#0066ff") },
+          uColorB: { value: new THREE.Color("#71F2F1") },
+        },
+        vertexShader: `
+          uniform float uTime;
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            vec3 pos = position;
+            float freq = 3.0;
+            float wave = sin((pos.x + uTime)*freq) * 0.12 + cos((pos.y + uTime)*freq*1.2) * 0.15;
+            pos.z += wave;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColorA;
+          uniform vec3 uColorB;
+          varying vec2 vUv;
+          void main() {
+            vec3 color = mix(uColorA, uColorB, vUv.y);
+            gl_FragColor = vec4(color, 1.0);
+          }
+        `,
+        side: THREE.DoubleSide,
+      });
+
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      const light = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(light);
+
+      function animate(time) {
+        material.uniforms.uTime.value = time * 0.001;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+
+      animate(0);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // ============================================
+    // CHART.JS LIVE TICKER
+    // ============================================
+    function initLiveChart() {
+      const ctx = document.getElementById('liveChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Fund I Performance',
+              data: [],
+              borderColor: '#0066ff',
+              backgroundColor: 'rgba(0, 102, 255, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0,
+              pointHoverRadius: 6,
+            },
+            {
+              label: 'Benchmark (SPY)',
+              data: [],
+              borderColor: '#999',
+              backgroundColor: 'transparent',
+              borderWidth: 1,
+              borderDash: [5, 5],
+              tension: 0.4,
+              pointRadius: 0,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: true, position: 'top' } },
+          scales: {
+            y: { beginAtZero: true, max: 35 }
+          }
+        }
+      });
+
+      // Simulate real-time data
+      let counter = 0;
+      setInterval(() => {
+        const time = new Date().toLocaleTimeString();
+        const fundValue = 18 + Math.sin(counter * 0.1) * 5 + Math.random() * 2;
+        const spyValue = 24 + Math.sin(counter * 0.08) * 3 + Math.random() * 1.5;
+
+        if (chart.data.labels.length > 30) {
+          chart.data.labels.shift();
+          chart.data.datasets[0].data.shift();
+          chart.data.datasets[1].data.shift();
+        }
+
+        chart.data.labels.push(time);
+        chart.data.datasets[0].data.push(fundValue);
+        chart.data.datasets[1].data.push(spyValue);
+        chart.update('none');
+        counter++;
+      }, 800);
+    }
+
+    // ============================================
+    // FUND DATA
+    // ============================================
     const funds = [
       {
         name: 'Active Rotation',
@@ -962,112 +1309,28 @@
       }
     ];
 
-    // Interactive Canvas Background
-    function initCanvas() {
-      const canvas = document.getElementById('canvas-bg');
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-      let time = 0;
-      let mouse = { x: 0, y: 0 };
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    const testimonials = [
+      {
+        quote: "The Market Brief Daily transformed how we approach quantitative investing. Their research is rigorous and actionable.",
+        author: "- Sarah Chen, CIO at Apex Capital"
+      },
+      {
+        quote: "Institutional-grade analysis that actually makes sense. No fluff, just pure data-driven insights.",
+        author: "- Michael Rodriguez, Portfolio Manager"
+      },
+      {
+        quote: "Their fund performance speaks for itself. Consistent, disciplined, and ahead of the curve.",
+        author: "- Emma Thompson, Chief Investment Officer"
+      },
+      {
+        quote: "Finally, a research firm that understands market structure at the granular level.",
+        author: "- James Liu, Trading Director"
       }
+    ];
 
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.vx = (Math.random() - 0.5) * 0.8;
-          this.vy = (Math.random() - 0.5) * 0.8;
-          this.radius = Math.random() * 2 + 0.5;
-          this.opacity = Math.random() * 0.3 + 0.1;
-        }
-
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-
-          // Wrap around
-          if (this.x < 0) this.x = canvas.width;
-          if (this.x > canvas.width) this.x = 0;
-          if (this.y < 0) this.y = canvas.height;
-          if (this.y > canvas.height) this.y = 0;
-
-          // Mouse repulsion
-          const dx = mouse.x - this.x;
-          const dy = mouse.y - this.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            const angle = Math.atan2(dy, dx);
-            this.x -= Math.cos(angle) * 2;
-            this.y -= Math.sin(angle) * 2;
-          }
-
-          this.draw();
-        }
-
-        draw() {
-          ctx.fillStyle = `rgba(0, 102, 255, ${this.opacity})`;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      function createParticles() {
-        particles = [];
-        for (let i = 0; i < 60; i++) {
-          particles.push(new Particle());
-        }
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        time += 0.01;
-
-        particles.forEach((p, i) => {
-          p.update();
-
-          // Draw connections
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 120) {
-              ctx.strokeStyle = `rgba(0, 102, 255, ${(1 - dist / 120) * 0.15})`;
-              ctx.lineWidth = 0.5;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
-        });
-
-        requestAnimationFrame(animate);
-      }
-
-      document.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      });
-
-      resizeCanvas();
-      createParticles();
-      animate();
-
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        createParticles();
-      });
-    }
-
-    // Create Carousel Cards
+    // ============================================
+    // CREATE CAROUSEL CARDS
+    // ============================================
     function initCarousel() {
       const carousel = document.getElementById('carouselEl');
 
@@ -1076,11 +1339,12 @@
 
         const wrapper = document.createElement('div');
         wrapper.className = 'card-wrapper';
+        wrapper.style.setProperty('--delay', `${idx * 0.1}s`);
         wrapper.innerHTML = `
           <div class="flip-card">
             <div class="flip-card-content flip-card-front">
               <div class="card-image">
-                <img src="${fund.image}" alt="${fund.name}" />
+                <img src="${fund.image}" alt="${fund.name}" loading="lazy" />
                 <div class="card-overlay">
                   <div class="card-label">${fund.code}</div>
                   <div class="card-title">${fund.name}</div>
@@ -1126,37 +1390,57 @@
       });
     }
 
-    // Animate Stats
-    function animateStats() {
-      gsap.to('.stat', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.stats-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
+    // ============================================
+    // TESTIMONIALS CAROUSEL
+    // ============================================
+    function initTestimonials() {
+      const container = document.getElementById('testimonialsCarousel');
+      let currentIndex = 0;
+
+      testimonials.forEach((testi, idx) => {
+        const div = document.createElement('div');
+        div.className = `testimonial ${idx === 0 ? 'active' : ''}`;
+        div.innerHTML = `
+          <p class="testimonial-quote">"${testi.quote}"</p>
+          <p class="testimonial-author">${testi.author}</p>
+        `;
+        container.appendChild(div);
       });
 
-      // Count up animation
-      document.querySelectorAll('.stat-value').forEach(el => {
-        const target = parseInt(el.dataset.value);
-        gsap.to(el, {
-          innerText: target,
-          duration: 2.5,
-          snap: { innerText: 1 },
-          scrollTrigger: {
-            trigger: '.stats-section',
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
-        });
-      });
+      setInterval(() => {
+        const current = container.querySelector('.testimonial.active');
+        const next = current.nextElementSibling || container.firstChild;
+
+        current.classList.remove('active');
+        next.classList.add('active');
+      }, 4000);
     }
 
-    // Scroll Animations
+    // ============================================
+    // MORPHING SVG BLOB
+    // ============================================
+    function initMorphingBlob() {
+      const blob = document.getElementById('morphBlob');
+      const blobPaths = [
+        "M328,195Q326,240,278,261.5Q230,283,183,270.5Q136,258,110.5,219Q85,180,89.5,120.5Q94,61,150,58.5Q206,56,258,72.5Q310,89,323,139.5Q336,190,328,195Z",
+        "M337,177Q311,304,209,294Q107,284,96,218Q85,152,137,97Q189,42,263,90Q337,138,337,177Z",
+        "M352,207Q331,293,240,308Q149,323,96,238.5Q43,154,115.5,107Q188,60,270.5,101Q353,142,352,207Z"
+      ];
+
+      let pathIndex = 0;
+      setInterval(() => {
+        pathIndex = (pathIndex + 1) % blobPaths.length;
+        gsap.to(blob, {
+          attr: { d: blobPaths[pathIndex] },
+          duration: 3,
+          ease: "sine.inOut"
+        });
+      }, 4000);
+    }
+
+    // ============================================
+    // SCROLL ANIMATIONS
+    // ============================================
     function initScrollAnimations() {
       const heroTimeline = gsap.timeline();
       heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
@@ -1169,8 +1453,31 @@
         duration: 0.8,
         stagger: 0.2,
         scrollTrigger: {
-          trigger: '.carousel-section',
+          trigger: '.ticker-section',
           start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      gsap.to('.ticker-stat', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.ticker-stats',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      gsap.to('.blob-info', {
+        opacity: 1,
+        x: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: '.blob-section',
+          start: 'top 70%',
           toggleActions: 'play none none none'
         }
       });
@@ -1186,14 +1493,33 @@
           toggleActions: 'play none none none'
         }
       });
+
+      // Animated counters
+      document.querySelectorAll('.stat-value').forEach(el => {
+        const target = parseInt(el.dataset.value);
+        gsap.to(el, {
+          innerText: target,
+          duration: 2.5,
+          snap: { innerText: 1 },
+          scrollTrigger: {
+            trigger: '.stats-section',
+            start: 'top 70%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
     }
 
-    // Initialize on load
+    // ============================================
+    // INITIALIZE ON LOAD
+    // ============================================
     window.addEventListener('load', () => {
-      initCanvas();
+      initThreeJS();
+      initLiveChart();
       initCarousel();
+      initTestimonials();
+      initMorphingBlob();
       initScrollAnimations();
-      animateStats();
     });
 
     // Scroll indicator
