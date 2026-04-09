@@ -1,759 +1,1298 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Investments | TheMarketBriefDaily</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Investments | The Market Brief Daily</title>
+  
+  <style>
+    :root {
+      --bg: #060c1a;
+      --bg2: #0b1428;
+      --surface: rgba(255, 255, 255, .06);
+      --surface2: rgba(255, 255, 255, .08);
+      --glass: rgba(255, 255, 255, .06);
+      --glass-border: rgba(255, 255, 255, .10);
+      --ink: #eef2ff;
+      --muted: rgba(238, 242, 255, .6);
+      --muted2: rgba(238, 242, 255, .4);
+      --brand: #3b82f6;
+      --line: rgba(255, 255, 255, .08);
+      --shadow: 0 8px 32px rgba(59, 130, 246, .15);
+      --shadow-lg: 0 16px 48px rgba(59, 130, 246, .2);
+      --positive: #10b981;
+      --negative: #ef4444;
+      --warning: #f59e0b;
+      --font: 'Inter', 'Helvetica Neue', sans-serif;
+      --max: 1280px;
+      --r: 12px;
+    }
 
-<style>
-:root{
-  --bg:#ffffff;
-  --ink:#0b1220;
-  --muted: rgba(11,18,32,.68);
-  --muted2: rgba(11,18,32,.46);
-  --line: rgba(11,18,32,.12);
-  --brand:#0b4ea2;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  --max: 1180px;
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
 
-  --r:16px;
-  --shadow: 0 18px 45px rgba(2,6,23,.10);
-}
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
 
-*{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; }
-body{
-  font-family: var(--font);
-  color: var(--ink);
-  background: var(--bg);
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
+    a {
+      color: var(--brand);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
 
-a{ color: var(--brand); text-decoration:none; }
-a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+    a:hover {
+      text-decoration: underline;
+    }
 
-.container{
-  width: min(var(--max), calc(100% - 56px));
-  margin: 0 auto;
-}
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-.site-header{
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-}
-.header-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding: 16px 0;
-  gap: 24px;
-}
-.brand{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  color: var(--ink);
-  min-width: 280px;
-}
-.brand-title{
-  font-weight: 850;
-  letter-spacing: -.2px;
-  line-height: 1.1;
-}
-.brand-sub{
-  font-size: 13px;
-  color: var(--muted2);
-}
-.nav{
-  display:flex;
-  gap: 18px;
-  align-items:center;
-  flex-wrap: wrap;
-}
-.nav a{
-  color: var(--ink);
-  font-weight: 650;
-  font-size: 14px;
-  padding: 10px 2px 8px;
-  border-bottom: 2px solid transparent;
-}
-.nav a:hover{ border-bottom-color: rgba(11,18,32,.18); text-decoration:none; }
-.nav a.is-active{ border-bottom-color: var(--ink); }
+    /* ===== Header ===== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 12, 26, .85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+      transition: all .3s ease;
+    }
 
-.section{
-  padding: 30px 0 44px;
-}
-.kicker{
-  font-size: 12px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  margin-bottom: 10px;
-}
-h1{
-  margin: 0 0 6px;
-  font-size: 34px;
-  letter-spacing: -.3px;
-}
-.lead{
-  margin: 0 0 18px;
-  color: var(--muted);
-  max-width: 95ch;
-}
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: 66px;
+    }
 
-/* ===== Portfolio box ===== */
-.portfolio{
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px;
-  background: #fff;
-  box-shadow: var(--shadow);
-  margin-bottom: 26px;
-}
-.portfolio-top{
-  display:flex;
-  justify-content:space-between;
-  gap: 16px;
-  align-items:flex-start;
-  flex-wrap: wrap;
-}
-.p-title{
-  font-weight: 850;
-  letter-spacing: -.2px;
-}
-.p-sub{
-  color: var(--muted2);
-  font-size: 13px;
-  margin-top: 4px;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: transform .2s ease;
+    }
 
-.statusline{
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.statusline strong{ color: var(--ink); }
-.mono{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-}
+    .brand:hover {
+      transform: translateY(-2px);
+    }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding: 6px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background:#fff;
-  font-size:12px;
-  color: var(--muted);
-  margin-left: 10px;
-}
-.badge.ok{ border-color: rgba(10,122,58,.20); color: rgba(10,122,58,.95); }
-.badge.warn{ border-color: rgba(180,35,24,.20); color: rgba(180,35,24,.92); }
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      object-fit: contain;
+      transition: transform .2s ease;
+    }
 
-.p-actions{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-.p-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--ink);
-  font-weight: 750;
-  cursor: pointer;
-}
-.p-btn:hover{ background: rgba(11,18,32,.03); }
+    .brand:hover .brand-logo {
+      transform: scale(1.05);
+    }
 
-.p-kpis{
-  display:grid;
-  grid-template-columns: repeat(4, minmax(160px, 1fr));
-  gap: 12px;
-  width: 100%;
-  margin-top: 14px;
-}
-.kpi{
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 12px;
-  background: #fff;
-}
-.kpi .label{
-  font-size: 12px;
-  color: var(--muted2);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.kpi .value{
-  font-weight: 850;
-  margin-top: 6px;
-  font-size: 18px;
-}
-.kpi .sub{
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 13px;
-}
+    .brand-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
 
-.panel{
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 14px;
-  background:#fff;
-  margin-top: 14px;
-}
-.panel-head{
-  display:flex;
-  justify-content:space-between;
-  gap: 10px;
-  align-items: baseline;
-  flex-wrap: wrap;
-}
-.panel-title{
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted2);
-}
-.panel-sub{
-  font-size: 12px;
-  color: var(--muted2);
-}
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -.01em;
+      line-height: 1.2;
+    }
 
-.chart-wrap{
-  margin-top: 10px;
-}
-canvas{ width:100% !important; height: 220px !important; }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: .02em;
+      line-height: 1;
+    }
 
-.table-wrap{
-  overflow:auto;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  margin-top: 14px;
-}
-table{
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 1180px;
-  background:#fff;
-}
-th, td{
-  padding: 12px 12px;
-  border-bottom: 1px solid var(--line);
-  text-align: left;
-  vertical-align: top;
-  font-size: 14px;
-}
-th{
-  font-size: 12px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted2);
-  background: #fff;
-  white-space: nowrap;
-}
-td small{ color: var(--muted2); }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-.pos{ color: #0a7a3a; font-weight: 850; }
-.neg{ color: #b42318; font-weight: 850; }
+    .nav a {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all .15s;
+      position: relative;
+    }
 
-.details{ margin-top: 14px; display:grid; gap: 10px; }
-details{
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background:#fff;
-  padding: 12px 14px;
-}
-summary{ cursor:pointer; font-weight: 850; }
-.tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-.tag{
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:6px 10px;
-  font-size:12px;
-  color: var(--muted);
-}
+    .nav a:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .06);
+      box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .2);
+    }
 
-.note{
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  font-size: 13px;
-  color: var(--muted);
-}
+    .nav a.is-active {
+      color: var(--ink);
+      background: rgba(59, 130, 246, .15);
+      box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .3);
+    }
 
-@media (max-width: 900px){
-  .container{ width: min(var(--max), calc(100% - 34px)); }
-  .header-inner{ flex-direction: column; align-items:flex-start; }
-  .p-kpis{ grid-template-columns: 1fr 1fr; }
-  canvas{ height: 220px !important; }
-}
-</style>
+    /* ===== Page Header ===== */
+    .page-header {
+      padding: 80px 0 60px;
+      position: relative;
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 400px;
+      background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, .1), transparent);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 12px;
+      animation: slideInDown .6s ease-out;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      animation: slideInDown .6s ease-out .1s both;
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 700px;
+      animation: slideInDown .6s ease-out .2s both;
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== KPI Section ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 60px 0;
+      animation: fadeInUp .6s ease-out .3s both;
+    }
+
+    .kpi-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r);
+      padding: 20px;
+      transition: all .3s cubic-bezier(.34, .1, .68, .55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(59, 130, 246, .1), transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(59, 130, 246, .2);
+    }
+
+    .kpi-card:hover::before {
+      opacity: 1;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ink);
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      margin-bottom: 4px;
+    }
+
+    .kpi-value.positive {
+      color: var(--positive);
+    }
+
+    .kpi-value.negative {
+      color: var(--negative);
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== Funds Grid ===== */
+    .section {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    .funds-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .fund-card {
+      position: relative;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r);
+      padding: 28px 24px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all .3s cubic-bezier(.34, .1, .68, .55);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: fadeInUp .6s ease-out both;
+    }
+
+    .fund-card:nth-child(1) { animation-delay: .1s; }
+    .fund-card:nth-child(2) { animation-delay: .2s; }
+    .fund-card:nth-child(3) { animation-delay: .3s; }
+    .fund-card:nth-child(4) { animation-delay: .4s; }
+
+    .fund-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, .1), transparent);
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .fund-card:hover {
+      transform: translateY(-12px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(59, 130, 246, .2);
+    }
+
+    .fund-card:hover::after {
+      opacity: 1;
+    }
+
+    .fund-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), transparent);
+    }
+
+    .fund-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 12px;
+      opacity: .7;
+    }
+
+    .fund-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .fund-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .fund-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .fund-perf {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fund-perf-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted2);
+    }
+
+    .fund-perf-value {
+      font-size: 16px;
+      font-weight: 800;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+
+    .fund-perf-value.positive {
+      color: var(--positive);
+    }
+
+    .fund-perf-value.negative {
+      color: var(--negative);
+    }
+
+    .fund-allocation {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .allocation-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(59, 130, 246, .1);
+      color: var(--brand);
+      border: 1px solid rgba(59, 130, 246, .2);
+    }
+
+    /* ===== Chart Section ===== */
+    .chart-section {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r);
+      padding: 32px;
+      margin-bottom: 60px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .chart-title {
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .chart-meta {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    .chart-meta span {
+      color: var(--muted);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-bottom: 16px;
+    }
+
+    .perf-legend {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    .legend-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== Holdings Table ===== */
+    .table-section {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+
+    .table-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .table-title {
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th {
+      padding: 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(59, 130, 246, .02);
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--glass-border);
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: rgba(59, 130, 246, .05);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .ticker {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .numeric {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      text-align: right;
+    }
+
+    .positive {
+      color: var(--positive);
+      font-weight: 700;
+    }
+
+    .negative {
+      color: var(--negative);
+      font-weight: 700;
+    }
+
+    /* ===== Thesis Section ===== */
+    .thesis-grid {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .thesis-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r);
+      padding: 24px;
+      cursor: pointer;
+      transition: all .2s ease;
+      animation: fadeInUp .6s ease-out both;
+    }
+
+    .thesis-item:nth-child(1) { animation-delay: .1s; }
+    .thesis-item:nth-child(2) { animation-delay: .15s; }
+    .thesis-item:nth-child(3) { animation-delay: .2s; }
+    .thesis-item:nth-child(4) { animation-delay: .25s; }
+    .thesis-item:nth-child(5) { animation-delay: .3s; }
+    .thesis-item:nth-child(6) { animation-delay: .35s; }
+    .thesis-item:nth-child(7) { animation-delay: .4s; }
+
+    .thesis-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .thesis-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .thesis-ticker {
+      font-size: 12px;
+      color: var(--muted2);
+      font-family: ui-monospace;
+      font-weight: 700;
+    }
+
+    .thesis-stage {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, .05);
+      border-radius: 4px;
+    }
+
+    .thesis-toggle {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .05);
+      transition: all .2s ease;
+      flex-shrink: 0;
+    }
+
+    .thesis-item:hover .thesis-toggle {
+      background: rgba(59, 130, 246, .2);
+    }
+
+    .thesis-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+      margin-top: 0;
+    }
+
+    .thesis-content.open {
+      max-height: 1000px;
+      margin-top: 16px;
+    }
+
+    .thesis-body {
+      margin-top: 12px;
+    }
+
+    .thesis-body ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px 0;
+    }
+
+    .thesis-body li {
+      padding: 6px 0 6px 20px;
+      position: relative;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .thesis-body li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--brand);
+    }
+
+    .thesis-watch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .thesis-watch-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, .1);
+      color: var(--brand);
+      border: 1px solid rgba(59, 130, 246, .2);
+    }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--line);
+      padding: 40px 0;
+      margin-top: 60px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .footer-sub {
+      font-size: 12px;
+      color: var(--muted2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      transition: all .2s ease;
+      position: relative;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--brand);
+      transition: width .2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      .funds-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .perf-legend {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .funds-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav a {
+        padding: 6px 8px;
+        font-size: 13px;
+      }
+
+      .page-header {
+        padding: 60px 0 40px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .chart-section {
+        padding: 20px;
+      }
+
+      .chart-container {
+        height: 250px;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
-<header class="site-header">
-  <div class="container header-inner">
-    <div class="brand">
-      <div class="brand-title">TheMarketBriefDaily</div>
-      <div class="brand-sub">Market structure · Physical supply · Macro transmission</div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Posts</a>
+        <a class="is-active" href="/investments.html">Investments</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
     </div>
-    <nav class="nav">
-      <a href="./index.html">Home</a>
-      <a href=".Posts.html">Posts</a>
-      <a class="is-active" href="./investments.html">Investments</a>
-      <a href="./about.html">About</a>
-      <a href="./disclaimer.html">Disclaimer</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container section">
-  <div class="kicker">Portfolio</div>
-  <h1>Investments</h1>
-  <p class="lead">
-    Prices are loaded from <span class="mono">./data/quotes.json</span> (shared across devices).
-    Performance history is loaded from <span class="mono">./data/performance.json</span> and updates via a scheduled GitHub Action.
-  </p>
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <div class="kicker">Portfolio</div>
+        <h1>Investment Strategies</h1>
+        <p class="lead">Four distinct quantitative strategies with institutional-grade analysis. Real-time performance tracking and detailed thesis documentation.</p>
+      </div>
+    </section>
 
-  <section class="portfolio">
-    <div class="portfolio-top">
+    <!-- KPIs -->
+    <section class="container">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Capital</div>
+          <div class="kpi-value mono" id="totalCap">—</div>
+          <div class="kpi-sub">Model capital</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Portfolio NAV</div>
+          <div class="kpi-value mono" id="nav">—</div>
+          <div class="kpi-sub">Holdings + cash</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">P/L</div>
+          <div class="kpi-value mono" id="pl">—</div>
+          <div class="kpi-sub">Mark-to-market</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Since Inception</div>
+          <div class="kpi-value mono" id="si">—</div>
+          <div class="kpi-sub">Total return</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Funds Grid -->
+    <section class="section">
+      <div class="container">
+        <div class="kicker">Portfolio</div>
+        <h2 class="section-title">Four distinct strategies</h2>
+        <p class="section-desc">Model portfolios built on rigorous quantitative frameworks — from active macro rotation to factor-driven small-cap value tilt.</p>
+
+        <div class="funds-grid" id="fundsGrid"></div>
+      </div>
+    </section>
+
+    <!-- Performance Chart -->
+    <section class="container">
+      <div class="chart-section">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Performance Since Inception</div>
+            <div class="chart-meta">
+              Inception: <span id="inception">—</span> · Last update: <span id="perfLast">—</span>
+            </div>
+          </div>
+          <div class="chart-meta" style="text-align: right;">
+            Status: <span id="quoteStatus" style="color: var(--brand); font-weight: 700;">loading…</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="perfChart" aria-label="Portfolio NAV chart" role="img"></canvas>
+        </div>
+        <div class="perf-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #3b82f6, #1e40af);"></div>
+            <div class="legend-label">Portfolio NAV</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);"></div>
+            <div class="legend-label">vs Benchmark (SPY)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Holdings Table -->
+    <section class="container">
+      <div class="table-section">
+        <div class="table-header">
+          <div class="table-title">Current Holdings</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Ticker</th>
+                <th class="numeric">Shares</th>
+                <th class="numeric">Entry</th>
+                <th class="numeric">Current</th>
+                <th class="numeric">Cost</th>
+                <th class="numeric">Value</th>
+                <th class="numeric">P/L ($)</th>
+                <th class="numeric">P/L (%)</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theses -->
+    <section class="section">
+      <div class="container">
+        <div class="kicker">Thesis</div>
+        <h2 class="section-title">Investment Thesis Details</h2>
+        <div class="thesis-grid" id="thesisBlocks"></div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="container" style="margin-bottom: 60px;">
+      <div style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 20px; font-size: 12px; color: var(--muted);">
+        <strong>Disclosure:</strong> This is an informational model portfolio. Not investment advice. Performance history is stored in data/performance.json and updates via GitHub Action.
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
       <div>
-        <div class="p-title">Portfolio Overview</div>
-        <div class="p-sub">
-          As of <span id="asof" class="mono">—</span> ·
-          Last trading day: <span id="lastTS" class="mono">—</span> ·
-          Quotes file timestamp: <span id="quotesAsOf" class="mono">—</span>
-        </div>
-        <div class="statusline">
-          <strong>Status:</strong> <span id="quoteStatus" class="mono">loading…</span>
-          <span id="healthBadge" class="badge" style="display:none;"></span>
-          <span id="quoteError" style="display:none; margin-left:10px;" class="mono"></span>
-        </div>
+        <div class="footer-brand">The Market Brief Daily</div>
+        <div class="footer-sub">Market structure & physical supply analysis</div>
       </div>
-
-      <div class="p-actions">
-        <button class="p-btn" id="reloadBtn">Reload quotes</button>
-        <button class="p-btn" id="reloadPerfBtn">Reload performance</button>
-        <button class="p-btn" id="toggleThesisBtn">Expand all theses</button>
+      <div class="footer-links">
+        <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/disclaimer.html">Disclaimer</a>
       </div>
     </div>
+  </footer>
 
-    <div class="p-kpis">
-      <div class="kpi">
-        <div class="label">Total Capital</div>
-        <div class="value mono" id="totalCap">—</div>
-        <div class="sub">Model capital.</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Portfolio Value (NAV)</div>
-        <div class="value mono" id="nav">—</div>
-        <div class="sub">Holdings + constant cash.</div>
-      </div>
-      <div class="kpi">
-        <div class="label">P/L</div>
-        <div class="value mono" id="pl">—</div>
-        <div class="sub">Mark-to-market vs cost basis.</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Since Inception</div>
-        <div class="value mono" id="si">—</div>
-        <div class="sub">Return vs initial capital.</div>
-      </div>
-    </div>
+  <script>
+    /* CONFIG */
+    const TOTAL_CAPITAL = 100000;
+    const targetDollars = { AGI: 2000, FSM: 1500, GAU: 1000, NFGC: 800, VGZ: 700, NEWP: 1000, GOOGL: 4000 };
+    const entry = { AGI: 42.19, FSM: 10.39, GAU: 2.73, NFGC: 2.69, VGZ: 2.63, NEWP: 3.53, GOOGL: 306.55 };
 
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title">Performance since inception (NAV)</div>
-        <div class="panel-sub">
-          Inception: <span id="inception" class="mono">—</span> ·
-          Last snapshot: <span id="perfLast" class="mono">—</span>
-        </div>
-      </div>
-      <div class="chart-wrap">
-        <canvas id="perfChart" aria-label="Portfolio NAV chart" role="img"></canvas>
-      </div>
-      <div class="note" style="border-top:none; padding-top:10px;">
-        History is stored in <span class="mono">data/performance.json</span> and is appended daily by your GitHub Action.
-      </div>
-    </div>
+    const meta = {
+      AGI: { name: "Alamos Gold", stage: "Producer", allocation: [{ ticker: "AGI", pct: "100%" }], thesis: ["Established producer; lower relative risk.", "Watch AISC and guidance execution.", "Sized small; cycle+execution."], watch: ["AISC", "guidance", "capex", "jurisdiction"] },
+      FSM: { name: "Fortuna Mining", stage: "Producer", allocation: [{ ticker: "FSM", pct: "100%" }], thesis: ["Gold/silver hybrid with diversification.", "Satellite position; margin expansion thesis.", "Sized small due to miner beta."], watch: ["costs", "jurisdiction", "balance sheet", "metal sensitivity"] },
+      GAU: { name: "Galiano Gold", stage: "Turnaround", allocation: [{ ticker: "GAU", pct: "100%" }], thesis: ["Turnaround/execution story.", "Single-asset concentration acknowledged.", "Sized small for idiosyncratic risk."], watch: ["resource", "operations", "financing", "country risk"] },
+      NFGC: { name: "New Found Gold", stage: "Developer", allocation: [{ ticker: "NFGC", pct: "100%" }], thesis: ["High-grade optionality; pre-revenue.", "Financing/dilution + timeline risk.", "Very small sizing."], watch: ["drilling", "permits", "financing", "timeline"] },
+      VGZ: { name: "Vista Gold", stage: "Developer", allocation: [{ ticker: "VGZ", pct: "100%" }], thesis: ["Long-dated gold leverage.", "Milestone-driven rerating.", "Small sizing due to timeline."], watch: ["milestones", "partnering", "capex", "jurisdiction"] },
+      NEWP: { name: "New Pacific Metals", stage: "Developer (Silver)", allocation: [{ ticker: "NEWP", pct: "100%" }], thesis: ["Silver optionality.", "High jurisdiction/political risk.", "Cycle+advancement thesis."], watch: ["policy", "community", "resource", "silver cycle"] },
+      GOOGL: { name: "Alphabet (Google)", stage: "Platform / AI", allocation: [{ ticker: "GOOGL", pct: "100%" }], thesis: ["AI infrastructure platform with multiple monetization engines.", "Google controls high-intent distribution (Search, YouTube).", "AI Cloud positioning in enterprise workloads.", "Liquid, quality exposure to AI secular trend."], watch: ["Search monetization + AI UI", "Cloud margin", "Capex intensity", "Regulatory", "Model performance"] }
+    };
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>Ticker</th>
-            <th class="mono">Shares</th>
-            <th class="mono">Entry</th>
-            <th class="mono">Last</th>
-            <th class="mono">Cost</th>
-            <th class="mono">Mkt Value</th>
-            <th class="mono">P/L ($)</th>
-            <th class="mono">P/L (%)</th>
-            <th>Stage</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
+    const tickers = Object.keys(targetDollars);
+    const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
+    const INITIAL_INVESTED = Object.values(targetDollars).reduce((a, b) => a + b, 0);
+    const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
 
-    <div class="details" id="thesisBlocks"></div>
+    const el = id => document.getElementById(id);
+    const fmtUSD0 = n => n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    const fmtUSD2 = n => n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+    const fmtPct = n => (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
 
-    <div class="note">
-      <strong>Disclosure:</strong> informational model portfolio only; not investment advice.
-    </div>
-  </section>
-</main>
-
-<script>
-/* =============================================================================
-   CONFIG (EDIT HERE)
-   - Change entry prices in `entry`
-   - Add/remove stocks in `targetDollars`, `entry`, and `meta`
-   ========================================================================== */
-const TOTAL_CAPITAL = 100000;
-
-// allocations (USD); rest stays constant cash
-const targetDollars = { AGI:2000, FSM:1500, GAU:1000, NFGC:800, VGZ:700, NEWP:1000, GOOGL:4000 };
-
-// entry prices
-const entry = { AGI:42.19, FSM:10.39, GAU:2.73, NFGC:2.69, VGZ:2.63, NEWP:3.53, GOOGL:306.55 };
-
-// meta + thesis
-const meta = {
-  AGI:{ name:"Alamos Gold", stage:"Producer", thesis:["Established producer; lower relative risk.","Watch AISC and guidance execution.","Sized small; cycle+execution."], watch:["AISC","guidance","capex","jurisdiction"] },
-  FSM:{ name:"Fortuna Mining", stage:"Producer", thesis:["Gold/silver hybrid with diversification.","Satellite position; margin expansion thesis.","Sized small due to miner beta."], watch:["costs","jurisdiction","balance sheet","metal sensitivity"] },
-  GAU:{ name:"Galiano Gold", stage:"Turnaround / Small Cap", thesis:["Turnaround/execution story.","Single-asset concentration acknowledged.","Sized small for idiosyncratic risk."], watch:["resource","operations","financing","country risk"] },
-  NFGC:{ name:"New Found Gold", stage:"Developer", thesis:["High-grade optionality; pre-revenue.","Financing/dilution + timeline risk.","Very small sizing."], watch:["drilling","permits","financing","timeline"] },
-  VGZ:{ name:"Vista Gold", stage:"Developer", thesis:["Long-dated gold leverage.", "Milestone-driven rerating.","Small sizing due to timeline."], watch:["milestones","partnering","capex","jurisdiction"] },
-  NEWP:{ name:"New Pacific Metals", stage:"Developer (Silver)", thesis:["Silver optionality.","High jurisdiction/political risk.","Cycle+advancement thesis."], watch:["policy","community","resource","silver cycle"] },
-  GOOGL:{
-    name:"Alphabet (Google)",
-    stage:"Platform / AI Infrastructure",
-    thesis:[
-      "AI is driving dispersion within software: commoditised workflow tools face substitution risk, while infrastructure and deeply integrated platforms compound.",
-      "Google controls high-intent distribution (Search, Android, YouTube) and large-scale data, enabling AI features at the point of intent and monetisation tied to outcomes rather than seats.",
-      "AI adoption increases demand for compute, security, and monitoring; Google Cloud is positioned to capture incremental AI workloads as enterprise complexity rises.",
-      "Portfolio role: liquid, high-quality AI platform exposure with multiple monetisation engines (ads, cloud, subscriptions) and durable moats."
-    ],
-    watch:["Search monetization + AI UI","Cloud margin + AI attach rate","Capex intensity","Regulatory/antitrust","Model performance vs peers"]
-  }
-};
-/* ============================================================================= */
-
-const tickers = Object.keys(targetDollars);
-const shares = Object.fromEntries(tickers.map(t => [t, targetDollars[t] / entry[t]]));
-
-// Constant cash (do NOT recalc as TOTAL - invested each time)
-const INITIAL_INVESTED = Object.values(targetDollars).reduce((a,b)=>a+b,0);
-const INITIAL_CASH = Math.max(0, TOTAL_CAPITAL - INITIAL_INVESTED);
-
-// DOM + format
-const el = id => document.getElementById(id);
-const fmtUSD0 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:0});
-const fmtUSD2 = n => n.toLocaleString(undefined,{style:"currency",currency:"USD",maximumFractionDigits:2});
-const fmtPct = n => (n>=0?"+":"") + n.toFixed(2) + "%";
-
-function setError(msg){
-  const e = el("quoteError");
-  if(!msg){ e.style.display="none"; e.textContent=""; return; }
-  e.style.display="inline";
-  e.style.color="#b42318";
-  e.textContent = "· " + msg;
-}
-function setBadge(kind, text){
-  const b = el("healthBadge");
-  b.style.display = "inline-flex";
-  b.className = "badge " + (kind === "ok" ? "ok" : "warn");
-  b.textContent = text;
-}
-function normalizePrices(prices){
-  const out = {};
-  if(!prices || typeof prices !== "object") return out;
-  for(const [k,v] of Object.entries(prices)){
-    const sym = String(k).trim().toUpperCase();
-    const num = (typeof v === "number") ? v : Number(String(v).replace(/[^0-9.\-]/g,""));
-    if(sym && Number.isFinite(num) && num > 0) out[sym] = num;
-  }
-  return out;
-}
-
-async function loadSharedQuotes(){
-  const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
-  if(!res.ok) throw new Error("Failed to load ./data/quotes.json");
-  return await res.json();
-}
-async function loadPerformance(){
-  const res = await fetch("./data/performance.json?cb=" + Date.now(), { cache: "no-store" });
-  if(!res.ok) throw new Error("Failed to load ./data/performance.json");
-  return await res.json();
-}
-
-/* ===== Table ===== */
-function renderTableSkeleton(){
-  const tbody = el("rows");
-  tbody.innerHTML = "";
-  for(const t of tickers){
-    const sh = shares[t];
-    const cost = sh * entry[t];
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><strong>${meta[t]?.name || t}</strong><br/><small>${meta[t]?.stage || ""}</small></td>
-      <td class="mono"><strong>${t}</strong></td>
-      <td class="mono">${sh.toFixed(4)}</td>
-      <td class="mono">${fmtUSD2(entry[t])}</td>
-      <td class="mono" id="last_${t}">—</td>
-      <td class="mono">${fmtUSD0(cost)}</td>
-      <td class="mono" id="mv_${t}">—</td>
-      <td class="mono" id="pl_${t}">—</td>
-      <td class="mono" id="plp_${t}">—</td>
-      <td>${meta[t]?.stage || ""}</td>
-    `;
-    tbody.appendChild(tr);
-  }
-}
-
-function updateRow(t, price){
-  const sh = shares[t];
-  const mv = sh * price;
-  const cost = sh * entry[t];
-  const pl = mv - cost;
-  const plPct = (pl / cost) * 100;
-  const cls = pl >= 0 ? "pos" : "neg";
-
-  el(`last_${t}`).textContent = fmtUSD2(price);
-  el(`mv_${t}`).textContent = fmtUSD0(mv);
-
-  const plEl = el(`pl_${t}`);
-  plEl.textContent = fmtUSD0(pl);
-  plEl.className = `mono ${cls}`;
-
-  const plpEl = el(`plp_${t}`);
-  plpEl.textContent = fmtPct(plPct);
-  plpEl.className = `mono ${cls}`;
-}
-
-function updateKPIs(prices){
-  let holdingsMV = 0;
-  let plTotal = 0;
-  let pricedCount = 0;
-
-  for(const t of tickers){
-    const px = prices[t];
-    if(!px) continue;
-    pricedCount++;
-    const sh = shares[t];
-    const mv = sh * px;
-    const cost = sh * entry[t];
-    holdingsMV += mv;
-    plTotal += (mv - cost);
-  }
-
-  const nav = holdingsMV + INITIAL_CASH;
-  const si = ((nav / TOTAL_CAPITAL) - 1) * 100;
-
-  el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
-
-  if(pricedCount === 0){
-    el("nav").textContent = "—";
-    el("pl").textContent = "—";
-    el("si").textContent = "—";
-    return;
-  }
-
-  el("nav").textContent = fmtUSD0(nav);
-  el("pl").textContent = (plTotal>=0?"+":"") + fmtUSD0(plTotal);
-  el("si").textContent = fmtPct(si);
-}
-
-/* ===== Theses ===== */
-function renderTheses(){
-  const wrap = el("thesisBlocks");
-  wrap.innerHTML = "";
-  for(const t of tickers){
-    const d = document.createElement("details");
-    const m = meta[t] || { name:t, stage:"", thesis:[], watch:[] };
-    d.innerHTML = `
-      <summary>${m.name} <span class="mono" style="color:rgba(11,18,32,.46); font-weight:650;">(${t})</span></summary>
-      <div class="note" style="border-top:none; padding-top:8px;">
-        <div class="kicker" style="margin:0 0 6px;">Thesis</div>
-        <ul style="margin:0 0 10px 18px; color:rgba(11,18,32,.68);">
-          ${(m.thesis||[]).map(x=>`<li>${x}</li>`).join("")}
-        </ul>
-        <div class="kicker" style="margin:0 0 6px;">What to watch</div>
-        <div class="tags">
-          ${(m.watch||[]).map(w=>`<span class="tag">${w}</span>`).join("")}
-        </div>
-      </div>
-    `;
-    wrap.appendChild(d);
-  }
-}
-
-/* ===== Apply Quotes ===== */
-function applyQuotes(q){
-  const prices = normalizePrices(q.prices);
-  for(const t of tickers){
-    if(prices[t]) updateRow(t, prices[t]);
-  }
-  updateKPIs(prices);
-
-  const have = Object.keys(prices).length;
-  if(have === 0){
-    el("quoteStatus").textContent = "quotes loaded, but prices missing";
-    setBadge("warn", "no prices");
-    setError("Your data/quotes.json has empty or invalid prices. Fix the GitHub Action.");
-  } else if(have < tickers.length){
-    el("quoteStatus").textContent = `partial quotes (${have}/${tickers.length})`;
-    setBadge("warn", `${tickers.length - have} missing`);
-    setError("Some symbols missing in quotes.json (likely symbol mapping).");
-  } else {
-    el("quoteStatus").textContent = "ok (shared quotes)";
-    setBadge("ok", "priced");
-    setError("");
-  }
-}
-
-/* ===== Performance Chart ===== */
-let perfChart = null;
-
-function renderPerfChart(perf){
-  const hist = Array.isArray(perf?.nav_history) ? perf.nav_history : [];
-  el("inception").textContent = perf?.inception || "—";
-  el("perfLast").textContent = hist.length ? hist[hist.length - 1].date : "—";
-
-  const labels = hist.map(x => x.date);
-  const navs = hist.map(x => Number(x.nav));
-
-  const ctx = document.getElementById("perfChart");
-
-  if(perfChart){
-    perfChart.destroy();
-    perfChart = null;
-  }
-
-  // Empty state
-  if(!hist.length){
-    perfChart = new Chart(ctx, {
-      type: "line",
-      data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 2, tension: 0.25 }] },
-      options: {
-        plugins:{ legend:{ display:false }, tooltip:{ enabled:false } },
-        scales:{ x:{ display:false }, y:{ display:false } }
+    function normalizePrices(prices) {
+      const out = {};
+      if (!prices || typeof prices !== "object") return out;
+      for (const [k, v] of Object.entries(prices)) {
+        const sym = String(k).trim().toUpperCase();
+        const num = (typeof v === "number") ? v : Number(String(v).replace(/[^0-9.\-]/g, ""));
+        if (sym && Number.isFinite(num) && num > 0) out[sym] = num;
       }
-    });
-    return;
-  }
+      return out;
+    }
 
-  perfChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [{
-        label: "NAV (USD)",
-        data: navs,
-        borderWidth: 2,
-        tension: 0.25,
-        pointRadius: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins:{
-        legend:{ display:false },
-        tooltip:{
-          callbacks:{
-            label: (item) => "NAV: " + fmtUSD0(item.parsed.y)
-          }
-        }
-      },
-      scales:{
-        x:{
-          ticks:{ maxTicksLimit: 8, color: "rgba(11,18,32,.46)" },
-          grid:{ color: "rgba(11,18,32,.08)" }
-        },
-        y:{
-          ticks:{
-            color: "rgba(11,18,32,.46)",
-            callback: (v) => "$" + Number(v).toLocaleString()
-          },
-          grid:{ color: "rgba(11,18,32,.08)" }
-        }
+    async function loadSharedQuotes() {
+      const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load quotes");
+      return await res.json();
+    }
+
+    async function loadPerformance() {
+      const res = await fetch("./data/performance.json?cb=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load performance");
+      return await res.json();
+    }
+
+    function renderFundsGrid() {
+      const grid = el("fundsGrid");
+      grid.innerHTML = "";
+      tickers.forEach((t, idx) => {
+        const m = meta[t] || {};
+        const alloc = m.allocation || [];
+        const card = document.createElement("a");
+        card.href = "#";
+        card.className = "fund-card";
+        card.innerHTML = `
+          <div class="fund-num">Fund ${idx + 1}</div>
+          <div class="fund-name">${m.name}</div>
+          <div class="fund-desc">${m.thesis?.[0] || 'Investment strategy'}</div>
+          <div class="fund-meta">
+            <div class="fund-perf">
+              <div class="fund-perf-label">1Y Return</div>
+              <div class="fund-perf-value" id="perf_${t}">—</div>
+            </div>
+            <div class="fund-allocation">
+              ${alloc.map(a => `<span class="allocation-tag">${a.ticker} ${a.pct}</span>`).join('')}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTableSkeleton() {
+      const tbody = el("rows");
+      tbody.innerHTML = "";
+      tickers.forEach(t => {
+        const sh = shares[t];
+        const cost = sh * entry[t];
+        const m = meta[t] || {};
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${m.name || t}</strong><br/><span style="font-size:11px; color:var(--muted2);">${m.stage || ''}</span></td>
+          <td class="ticker">${t}</td>
+          <td class="numeric">${sh.toFixed(4)}</td>
+          <td class="numeric">${fmtUSD2(entry[t])}</td>
+          <td class="numeric" id="last_${t}">—</td>
+          <td class="numeric">${fmtUSD0(cost)}</td>
+          <td class="numeric" id="mv_${t}">—</td>
+          <td class="numeric" id="pl_${t}">—</td>
+          <td class="numeric" id="plp_${t}">—</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateRow(t, price) {
+      const sh = shares[t];
+      const mv = sh * price;
+      const cost = sh * entry[t];
+      const pl = mv - cost;
+      const plPct = (pl / cost) * 100;
+      const cls = pl >= 0 ? "positive" : "negative";
+
+      el(`last_${t}`).textContent = fmtUSD2(price);
+      el(`mv_${t}`).textContent = fmtUSD0(mv);
+
+      const plEl = el(`pl_${t}`);
+      plEl.textContent = fmtUSD0(pl);
+      plEl.className = `numeric ${cls}`;
+
+      const plpEl = el(`plp_${t}`);
+      plpEl.textContent = fmtPct(plPct);
+      plpEl.className = `numeric ${cls}`;
+
+      const perfEl = el(`perf_${t}`);
+      if (perfEl) {
+        perfEl.textContent = fmtPct(plPct);
+        perfEl.className = `fund-perf-value ${cls.split(' ')[0]}`;
       }
     }
-  });
-}
 
-/* ===== Boot ===== */
-async function bootQuotes(){
-  el("quoteStatus").textContent = "loading quotes…";
-  setBadge("warn", "loading");
-  setError("");
+    function updateKPIs(prices) {
+      let holdingsMV = 0, plTotal = 0, pricedCount = 0;
+      for (const t of tickers) {
+        const px = prices[t];
+        if (!px) continue;
+        pricedCount++;
+        const sh = shares[t];
+        const mv = sh * px;
+        const cost = sh * entry[t];
+        holdingsMV += mv;
+        plTotal += (mv - cost);
+      }
 
-  try{
-    const q = await loadSharedQuotes();
-    el("quotesAsOf").textContent = q.asof_iso || "—";
-    el("lastTS").textContent = q.last_trading_day || "—";
-    applyQuotes(q);
-  }catch(e){
-    el("quoteStatus").textContent = "failed to load quotes.json";
-    setBadge("warn", "no quotes.json");
-    setError(String(e.message || e));
-  }
-}
+      const nav = holdingsMV + INITIAL_CASH;
+      const si = ((nav / TOTAL_CAPITAL) - 1) * 100;
 
-async function bootPerformance(){
-  try{
-    const p = await loadPerformance();
-    renderPerfChart(p);
-  }catch(e){
-    el("inception").textContent = "—";
-    el("perfLast").textContent = "—";
-    // Render empty chart state + show a light status message in console
-    renderPerfChart({ inception:"—", nav_history: [] });
-  }
-}
+      el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+      el("nav").textContent = pricedCount ? fmtUSD0(nav) : "—";
+      el("pl").textContent = pricedCount ? (plTotal >= 0 ? "+" : "") + fmtUSD0(plTotal) : "—";
+      el("si").textContent = pricedCount ? fmtPct(si) : "—";
 
-async function boot(){
-  el("asof").textContent = new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"});
-  el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+      const siEl = el("si");
+      if (siEl) {
+        siEl.className = "kpi-value mono " + (si >= 0 ? "positive" : "negative");
+      }
+    }
 
-  renderTableSkeleton();
-  renderTheses();
+    function renderTheses() {
+      const wrap = el("thesisBlocks");
+      wrap.innerHTML = "";
+      tickers.forEach(t => {
+        const m = meta[t] || {};
+        const item = document.createElement("div");
+        item.className = "thesis-item";
+        item.innerHTML = `
+          <div class="thesis-header">
+            <div style="flex: 1;">
+              <div class="thesis-name">${m.name}</div>
+              <div style="display:flex; gap:8px; margin-top:6px;">
+                <span class="thesis-ticker">${t}</span>
+                <span class="thesis-stage">${m.stage}</span>
+              </div>
+            </div>
+            <div class="thesis-toggle">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="transition: transform .2s;">
+                <path d="M8 11L3 6h10z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="thesis-content">
+            <div class="thesis-body">
+              <ul>
+                ${(m.thesis || []).map(x => `<li>${x}</li>`).join('')}
+              </ul>
+              <div class="thesis-watch">
+                ${(m.watch || []).map(w => `<span class="thesis-watch-tag">${w}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        item.addEventListener("click", () => {
+          const content = item.querySelector(".thesis-content");
+          content.classList.toggle("open");
+        });
+        wrap.appendChild(item);
+      });
+    }
 
-  await Promise.all([bootQuotes(), bootPerformance()]);
-}
+    function applyQuotes(q) {
+      const prices = normalizePrices(q.prices);
+      tickers.forEach(t => {
+        if (prices[t]) updateRow(t, prices[t]);
+      });
+      updateKPIs(prices);
+      el("quoteStatus").textContent = Object.keys(prices).length === tickers.length ? "✓ priced" : "⚠ partial";
+    }
 
-/* ===== UI ===== */
-el("reloadBtn").addEventListener("click", bootQuotes);
-el("reloadPerfBtn").addEventListener("click", bootPerformance);
+    let perfChart = null;
 
-let expanded = false;
-el("toggleThesisBtn").addEventListener("click", ()=>{
-  const blocks = document.querySelectorAll("#thesisBlocks details");
-  expanded = !expanded;
-  blocks.forEach(d => d.open = expanded);
-  el("toggleThesisBtn").textContent = expanded ? "Collapse all theses" : "Expand all theses";
-});
+    function renderPerfChart(perf) {
+      const hist = Array.isArray(perf?.nav_history) ? perf.nav_history : [];
+      el("inception").textContent = perf?.inception || "—";
+      el("perfLast").textContent = hist.length ? hist[hist.length - 1].date : "—";
 
-boot();
-</script>
+      const labels = hist.map(x => x.date);
+      const navs = hist.map(x => Number(x.nav));
+
+      const ctx = document.getElementById("perfChart");
+      if (perfChart) {
+        perfChart.destroy();
+        perfChart = null;
+      }
+
+      if (!hist.length) {
+        perfChart = new Chart(ctx, {
+          type: "line",
+          data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 0 }] },
+          options: { plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+        return;
+      }
+
+      perfChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Portfolio NAV",
+            data: navs,
+            borderColor: "#3b82f6",
+            borderWidth: 3,
+            backgroundColor: "rgba(59, 130, 246, .05)",
+            tension: 0.3,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointBackgroundColor: "#3b82f6",
+            pointBorderColor: "#fff",
+            pointBorderWidth: 2,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "rgba(6, 12, 26, .9)",
+              titleColor: "#eef2ff",
+              bodyColor: "#eef2ff",
+              borderColor: "rgba(59, 130, 246, .3)",
+              borderWidth: 1,
+              padding: 12,
+              displayColors: false,
+              callbacks: {
+                label: (item) => "NAV: " + fmtUSD0(item.parsed.y)
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { maxTicksLimit: 8, color: "rgba(238, 242, 255, .4)" },
+              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+            },
+            y: {
+              ticks: {
+                color: "rgba(238, 242, 255, .4)",
+                callback: (v) => "$" + Number(v).toLocaleString()
+              },
+              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+            }
+          }
+        }
+      });
+    }
+
+    async function bootQuotes() {
+      el("quoteStatus").textContent = "loading…";
+      try {
+        const q = await loadSharedQuotes();
+        applyQuotes(q);
+      } catch (e) {
+        el("quoteStatus").textContent = "⚠ load failed";
+      }
+    }
+
+    async function bootPerformance() {
+      try {
+        const p = await loadPerformance();
+        renderPerfChart(p);
+      } catch (e) {
+        renderPerfChart({ inception: "—", nav_history: [] });
+      }
+    }
+
+    async function boot() {
+      el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+      renderFundsGrid();
+      renderTableSkeleton();
+      renderTheses();
+      await Promise.all([bootQuotes(), bootPerformance()]);
+    }
+
+    boot();
+  </script>
 </body>
 </html>
