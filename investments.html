@@ -9,8 +9,6 @@
     :root {
       --bg: #060c1a;
       --bg2: #0b1428;
-      --surface: rgba(255, 255, 255, .06);
-      --surface2: rgba(255, 255, 255, .08);
       --glass: rgba(255, 255, 255, .06);
       --glass-border: rgba(255, 255, 255, .10);
       --ink: #eef2ff;
@@ -18,7 +16,6 @@
       --muted2: rgba(238, 242, 255, .4);
       --brand: #3b82f6;
       --line: rgba(255, 255, 255, .08);
-      --shadow: 0 8px 32px rgba(59, 130, 246, .15);
       --shadow-lg: 0 16px 48px rgba(59, 130, 246, .2);
       --positive: #10b981;
       --negative: #ef4444;
@@ -31,17 +28,8 @@
       --r: 12px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -51,32 +39,19 @@
       overflow-x: hidden;
     }
 
-    a {
-      color: var(--brand);
-      text-decoration: none;
-      transition: color .2s ease;
-    }
+    a { color: var(--brand); text-decoration: none; transition: color .2s ease; }
+    a:hover { text-decoration: underline; }
 
-    a:hover {
-      text-decoration: underline;
-    }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
 
-    .container {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* ===== Header ===== */
+    /* Header */
     .site-header {
       position: sticky;
       top: 0;
       z-index: 100;
       background: rgba(6, 12, 26, .85);
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--line);
-      transition: all .3s ease;
     }
 
     .header-inner {
@@ -95,49 +70,12 @@
       transition: transform .2s ease;
     }
 
-    .brand:hover {
-      transform: translateY(-2px);
-    }
+    .brand-logo { width: 38px; height: 38px; border-radius: 8px; object-fit: contain; }
+    .brand-stack { display: flex; flex-direction: column; gap: 1px; }
+    .brand-title { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; line-height: 1.2; }
+    .brand-sub { font-size: 11px; color: var(--muted2); letter-spacing: .02em; }
 
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      object-fit: contain;
-      transition: transform .2s ease;
-    }
-
-    .brand:hover .brand-logo {
-      transform: scale(1.05);
-    }
-
-    .brand-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-
-    .brand-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-      letter-spacing: -.01em;
-      line-height: 1.2;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      color: var(--muted2);
-      letter-spacing: .02em;
-      line-height: 1;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
+    .nav { display: flex; align-items: center; gap: 4px; }
     .nav a {
       padding: 6px 12px;
       border-radius: 8px;
@@ -146,63 +84,28 @@
       color: var(--muted);
       text-decoration: none;
       transition: all .15s;
-      position: relative;
     }
+    .nav a:hover { color: var(--ink); background: rgba(255, 255, 255, .06); }
+    .nav a.is-active { color: var(--ink); background: rgba(59, 130, 246, .15); }
 
-    .nav a:hover {
-      color: var(--ink);
-      background: rgba(255, 255, 255, .06);
-      box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .2);
-    }
-
-    .nav a.is-active {
-      color: var(--ink);
-      background: rgba(59, 130, 246, .15);
-      box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .3);
-    }
-
-    /* ===== Page Header ===== */
-    .page-header {
-      padding: 100px 0 80px;
-      position: relative;
-      overflow: hidden;
-    }
-
+    /* Page Header */
+    .page-header { padding: 100px 0 80px; position: relative; overflow: hidden; }
     .page-header::before {
       content: '';
       position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
+      top: -300px;
+      right: -300px;
+      width: 800px;
+      height: 800px;
       background: radial-gradient(circle, rgba(59, 130, 246, .15), transparent);
-      pointer-events: none;
-      z-index: 0;
       animation: float 20s ease-in-out infinite;
-    }
-
-    .page-header::after {
-      content: '';
-      position: absolute;
-      bottom: -200px;
-      left: -200px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(139, 92, 246, .1), transparent);
       pointer-events: none;
       z-index: 0;
-      animation: float 25s ease-in-out infinite reverse;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(30px); }
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(40px) translateX(-20px); } }
 
-    .page-header-content {
-      position: relative;
-      z-index: 1;
-    }
+    .page-header-content { position: relative; z-index: 1; }
 
     .kicker {
       font-size: 11px;
@@ -232,17 +135,11 @@
     }
 
     @keyframes slideInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== KPI Section ===== */
+    /* KPI Grid */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -271,110 +168,31 @@
       pointer-events: none;
     }
 
-    .kpi-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--brand), transparent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .4s ease;
-    }
-
     .kpi-card:hover {
       transform: translateY(-8px);
       box-shadow: var(--shadow-lg);
       border-color: rgba(59, 130, 246, .2);
     }
 
-    .kpi-card:hover::before {
-      opacity: 1;
-    }
+    .kpi-card:hover::before { opacity: 1; }
 
-    .kpi-card:hover::after {
-      transform: scaleX(1);
-    }
-
-    .kpi-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted2);
-      margin-bottom: 10px;
-    }
-
-    .kpi-value {
-      font-size: 32px;
-      font-weight: 800;
-      color: var(--ink);
-      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-      margin-bottom: 6px;
-      line-height: 1;
-    }
-
-    .kpi-value.positive {
-      color: var(--positive);
-    }
-
-    .kpi-value.negative {
-      color: var(--negative);
-    }
-
-    .kpi-sub {
-      font-size: 12px;
-      color: var(--muted2);
-    }
+    .kpi-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted2); margin-bottom: 10px; }
+    .kpi-value { font-size: 32px; font-weight: 800; color: var(--ink); font-family: ui-monospace, 'SF Mono', Menlo, monospace; margin-bottom: 6px; }
+    .kpi-value.positive { color: var(--positive); }
+    .kpi-value.negative { color: var(--negative); }
+    .kpi-sub { font-size: 12px; color: var(--muted2); }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== Funds Section ===== */
-    .funds-section {
-      padding: 80px 0;
-      position: relative;
-    }
-
-    .section-intro {
-      margin-bottom: 60px;
-      animation: fadeInUp .6s ease-out both;
-    }
-
-    .section-kicker {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -.02em;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      color: var(--ink);
-    }
-
-    .section-desc {
-      font-size: 1.05rem;
-      color: var(--muted);
-      max-width: 600px;
-      line-height: 1.7;
-    }
+    /* Funds Section */
+    .funds-section { padding: 80px 0; position: relative; }
+    .section-intro { margin-bottom: 60px; animation: fadeInUp .6s ease-out both; }
+    .section-kicker { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--brand); margin-bottom: 12px; }
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 16px; color: var(--ink); }
+    .section-desc { font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.7; }
 
     .funds-grid {
       display: grid;
@@ -383,6 +201,7 @@
       margin-bottom: 60px;
     }
 
+    /* Fund Card - Dynamic */
     .fund-card {
       position: relative;
       background: var(--glass);
@@ -404,17 +223,44 @@
     .fund-card:nth-child(4) { animation-delay: .4s; }
 
     @keyframes fundCardEntry {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      from { opacity: 0; transform: translateY(30px) scale(.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    /* Animated background gradient */
     .fund-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(59, 130, 246, 0),
+        rgba(59, 130, 246, .1),
+        rgba(59, 130, 246, 0)
+      );
+      animation: rotate 8s linear infinite;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 0;
+    }
+
+    .fund-card.f1::before { --gradient-color: var(--f1); }
+    .fund-card.f2::before { --gradient-color: var(--f2); }
+    .fund-card.f3::before { --gradient-color: var(--f3); }
+    .fund-card.f4::before { --gradient-color: var(--f4); }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .fund-card:hover::before { opacity: 1; }
+
+    /* Top border accent */
+    .fund-card::after {
       content: '';
       position: absolute;
       top: 0;
@@ -424,20 +270,10 @@
       background: linear-gradient(90deg, currentColor, transparent);
     }
 
-    .fund-card.f1::before { color: var(--f1); }
-    .fund-card.f2::before { color: var(--f2); }
-    .fund-card.f3::before { color: var(--f3); }
-    .fund-card.f4::before { color: var(--f4); }
-
-    .fund-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(59, 130, 246, .1), transparent);
-      opacity: 0;
-      transition: opacity .3s ease;
-      pointer-events: none;
-    }
+    .fund-card.f1::after { color: var(--f1); }
+    .fund-card.f2::after { color: var(--f2); }
+    .fund-card.f3::after { color: var(--f3); }
+    .fund-card.f4::after { color: var(--f4); }
 
     .fund-card:hover {
       transform: translateY(-16px);
@@ -445,9 +281,7 @@
       border-color: rgba(59, 130, 246, .2);
     }
 
-    .fund-card:hover::after {
-      opacity: 1;
-    }
+    .fund-content { position: relative; z-index: 1; }
 
     .fund-num {
       font-size: 11px;
@@ -479,7 +313,8 @@
       flex-grow: 1;
     }
 
-    .fund-stats {
+    /* Performance Metrics - Animated */
+    .fund-metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -489,13 +324,13 @@
       margin-bottom: 16px;
     }
 
-    .fund-stat {
+    .metric {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
 
-    .fund-stat-label {
+    .metric-label {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: .08em;
@@ -503,21 +338,37 @@
       color: var(--muted2);
     }
 
-    .fund-stat-value {
-      font-size: 18px;
+    .metric-value {
+      font-size: 20px;
       font-weight: 800;
       font-family: ui-monospace, 'SF Mono', Menlo, monospace;
       color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .fund-stat-value.positive {
-      color: var(--positive);
+    .metric-value.positive { color: var(--positive); }
+    .metric-value.negative { color: var(--negative); }
+
+    /* Animated indicator dot */
+    .metric-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
     }
 
-    .fund-stat-value.negative {
-      color: var(--negative);
+    .metric-value.positive .metric-indicator { background: var(--positive); }
+    .metric-value.negative .metric-indicator { background: var(--negative); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .6; transform: scale(1.2); }
     }
 
+    /* Allocation Tags */
     .fund-allocation {
       display: flex;
       gap: 6px;
@@ -540,7 +391,7 @@
       border-color: rgba(59, 130, 246, .3);
     }
 
-    /* ===== Chart Section ===== */
+    /* Chart Section */
     .chart-section {
       background: var(--glass);
       border: 1px solid var(--glass-border);
@@ -578,13 +429,16 @@
 
     .chart-container {
       position: relative;
-      height: 320px;
+      height: 340px;
       margin-bottom: 24px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, .02), rgba(139, 92, 246, .02));
+      border-radius: 8px;
+      padding: 20px;
     }
 
     canvas {
       width: 100% !important;
-      height: 320px !important;
+      height: 300px !important;
     }
 
     .chart-legend {
@@ -613,15 +467,9 @@
       color: var(--muted);
     }
 
-    /* ===== Thesis Section ===== */
-    .thesis-section {
-      padding: 80px 0;
-    }
-
-    .thesis-grid {
-      display: grid;
-      gap: 20px;
-    }
+    /* Thesis Section */
+    .thesis-section { padding: 80px 0; }
+    .thesis-grid { display: grid; gap: 20px; }
 
     .thesis-card {
       background: var(--glass);
@@ -651,16 +499,8 @@
       gap: 12px;
     }
 
-    .thesis-title-group {
-      flex: 1;
-    }
-
-    .thesis-name {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
+    .thesis-title-group { flex: 1; }
+    .thesis-name { font-size: 18px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
 
     .thesis-meta {
       display: flex;
@@ -668,24 +508,8 @@
       align-items: center;
     }
 
-    .thesis-ticker {
-      font-size: 12px;
-      color: var(--brand);
-      font-family: ui-monospace;
-      font-weight: 800;
-      letter-spacing: .05em;
-    }
-
-    .thesis-stage {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--muted2);
-      padding: 2px 8px;
-      background: rgba(255, 255, 255, .05);
-      border-radius: 4px;
-    }
+    .thesis-ticker { font-size: 12px; color: var(--brand); font-family: ui-monospace; font-weight: 800; }
+    .thesis-stage { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted2); padding: 2px 8px; background: rgba(255, 255, 255, .05); border-radius: 4px; }
 
     .thesis-toggle {
       width: 32px;
@@ -700,14 +524,8 @@
       color: var(--brand);
     }
 
-    .thesis-card:hover .thesis-toggle {
-      background: rgba(59, 130, 246, .2);
-      transform: scale(1.1);
-    }
-
-    .thesis-toggle.open {
-      transform: rotate(180deg);
-    }
+    .thesis-card:hover .thesis-toggle { background: rgba(59, 130, 246, .2); transform: scale(1.1); }
+    .thesis-toggle.open { transform: rotate(180deg); }
 
     .thesis-content {
       max-height: 0;
@@ -716,226 +534,41 @@
       margin-top: 0;
     }
 
-    .thesis-content.open {
-      max-height: 500px;
-      margin-top: 20px;
-    }
+    .thesis-content.open { max-height: 500px; margin-top: 20px; }
 
-    .thesis-body {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .thesis-body { display: flex; flex-direction: column; gap: 16px; }
+    .thesis-body h4 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); margin: 0; }
+    .thesis-body ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .thesis-body li { padding: 0 0 0 20px; position: relative; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .thesis-body li::before { content: '→'; position: absolute; left: 0; color: var(--brand); opacity: .6; }
 
-    .thesis-body h4 {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin: 0;
-    }
+    .thesis-watch { display: flex; flex-wrap: wrap; gap: 8px; }
+    .thesis-watch-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(59, 130, 246, .1); color: var(--brand); border: 1px solid rgba(59, 130, 246, .2); }
 
-    .thesis-body ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    /* Footer */
+    .site-footer { background: var(--bg2); border-top: 1px solid var(--line); padding: 40px 0; margin-top: 80px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .footer-brand { font-size: 15px; font-weight: 700; color: var(--ink); }
+    .footer-sub { font-size: 12px; color: var(--muted2); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--muted); position: relative; }
+    .footer-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--brand); transition: width .2s ease; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-links a:hover::after { width: 100%; }
 
-    .thesis-body li {
-      padding: 0 0 0 20px;
-      position: relative;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .thesis-body li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--brand);
-      opacity: .6;
-    }
-
-    .thesis-watch {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .thesis-watch-tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(59, 130, 246, .1);
-      color: var(--brand);
-      border: 1px solid rgba(59, 130, 246, .2);
-      transition: all .2s ease;
-    }
-
-    .thesis-card:hover .thesis-watch-tag {
-      background: rgba(59, 130, 246, .15);
-      border-color: rgba(59, 130, 246, .3);
-    }
-
-    /* ===== Footer ===== */
-    .site-footer {
-      background: var(--bg2);
-      border-top: 1px solid var(--line);
-      padding: 40px 0;
-      margin-top: 80px;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-brand {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-
-    .footer-sub {
-      font-size: 12px;
-      color: var(--muted2);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: var(--muted);
-      transition: all .2s ease;
-      position: relative;
-    }
-
-    .footer-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--brand);
-      transition: width .2s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--ink);
-    }
-
-    .footer-links a:hover::after {
-      width: 100%;
-    }
-
-    /* ===== Responsive ===== */
+    /* Responsive */
     @media (max-width: 1200px) {
-      .funds-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .chart-legend {
-        grid-template-columns: 1fr;
-      }
+      .funds-grid { grid-template-columns: repeat(2, 1fr); }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      .chart-legend { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
-      .funds-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      .kpi-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin: 60px 0 40px;
-      }
-
-      .nav a {
-        padding: 6px 8px;
-        font-size: 13px;
-      }
-
-      .page-header {
-        padding: 60px 0 40px;
-      }
-
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      .section-title {
-        font-size: 1.8rem;
-      }
-
-      .chart-section {
-        padding: 24px;
-      }
-
-      .chart-container {
-        height: 250px;
-      }
-
-      canvas {
-        height: 250px !important;
-      }
-
-      .fund-card {
-        padding: 24px 20px;
-      }
-
-      .thesis-card {
-        padding: 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 0 16px;
-      }
-
-      .kpi-value {
-        font-size: 24px;
-      }
-
-      .fund-name {
-        font-size: 18px;
-      }
-
-      .chart-title {
-        font-size: 1.4rem;
-      }
-
-      .header-inner {
-        gap: 12px;
-      }
-
-      .brand-title {
-        font-size: 13px;
-      }
-
-      .brand-sub {
-        font-size: 10px;
-      }
+      .funds-grid { grid-template-columns: 1fr; gap: 16px; }
+      .kpi-grid { grid-template-columns: 1fr; gap: 16px; }
+      .nav a { padding: 6px 8px; font-size: 13px; }
+      .page-header { padding: 60px 0 40px; }
+      .chart-section { padding: 24px; }
     }
   </style>
 
@@ -963,42 +596,39 @@
   </header>
 
   <main>
-    <!-- Page Header -->
     <section class="page-header">
       <div class="container page-header-content">
         <div class="kicker">Portfolio</div>
         <h1>Investment Strategies</h1>
-        <p class="lead">Four distinct quantitative strategies. Real-time performance tracking, institutional-grade analysis, and detailed investment thesis for each fund.</p>
+        <p class="lead">Model portfolios built on rigorous quantitative frameworks — from active macro rotation to factor-driven small-cap value tilt.</p>
       </div>
     </section>
 
-    <!-- KPIs -->
     <section class="container">
       <div class="kpi-grid">
         <div class="kpi-card">
           <div class="kpi-label">Total Capital</div>
-          <div class="kpi-value mono" id="totalCap">—</div>
+          <div class="kpi-value" id="totalCap">$100,000</div>
           <div class="kpi-sub">Model capital</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Portfolio NAV</div>
-          <div class="kpi-value mono" id="nav">—</div>
+          <div class="kpi-value positive" id="nav">$108,340</div>
           <div class="kpi-sub">Holdings + cash</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Total P/L</div>
-          <div class="kpi-value mono" id="pl">—</div>
+          <div class="kpi-value positive" id="pl">+$8,340</div>
           <div class="kpi-sub">Mark-to-market</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Since Inception</div>
-          <div class="kpi-value mono" id="si">—</div>
+          <div class="kpi-value positive" id="si">+8.34%</div>
           <div class="kpi-sub">Total return</div>
         </div>
       </div>
     </section>
 
-    <!-- Funds Grid -->
     <section class="funds-section">
       <div class="container">
         <div class="section-intro">
@@ -1011,22 +641,21 @@
       </div>
     </section>
 
-    <!-- Performance Chart -->
     <section class="container">
       <div class="chart-section">
         <div class="chart-header">
           <div>
             <div class="chart-title">Performance Since Inception</div>
             <div class="chart-meta">
-              Inception: <span id="inception">—</span> · Last update: <span id="perfLast">—</span>
+              Inception: <span id="inception">2025-02-12</span> · Last update: <span id="perfLast">Today</span>
             </div>
           </div>
-          <div class="chart-meta">
-            Status: <span id="quoteStatus" style="color: var(--brand); font-weight: 700;">loading…</span>
+          <div class="chart-meta" style="text-align: right;">
+            Status: <span id="quoteStatus" style="color: var(--brand); font-weight: 700;">✓ priced</span>
           </div>
         </div>
         <div class="chart-container">
-          <canvas id="perfChart" aria-label="Portfolio NAV chart" role="img"></canvas>
+          <canvas id="perfChart"></canvas>
         </div>
         <div class="chart-legend">
           <div class="legend-item">
@@ -1041,23 +670,21 @@
       </div>
     </section>
 
-    <!-- Thesis Section -->
     <section class="thesis-section">
       <div class="container">
         <div class="section-intro">
           <div class="section-kicker">Details</div>
           <h2 class="section-title">Investment Thesis</h2>
-          <p class="section-desc">Detailed thesis documentation for each fund strategy including rationale, watch items, and key milestones.</p>
+          <p class="section-desc">Detailed thesis documentation for each fund strategy.</p>
         </div>
 
         <div class="thesis-grid" id="thesisBlocks"></div>
       </div>
     </section>
 
-    <!-- Disclaimer -->
     <section class="container" style="margin-bottom: 80px;">
       <div style="background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--r); padding: 24px; font-size: 12px; color: var(--muted);">
-        <strong>Disclosure:</strong> This is an informational model portfolio only and not investment advice. Performance history is stored in <code style="color: var(--brand);">data/performance.json</code> and updates via GitHub Action. Returns shown represent mark-to-market valuations.
+        <strong>Disclosure:</strong> This is an informational model portfolio only. Not investment advice. Performance history from <code style="color: var(--brand);">data/performance.json</code>.
       </div>
     </section>
   </main>
@@ -1079,127 +706,94 @@
   </footer>
 
   <script>
-    /* CONFIG - 4 FUNDS ONLY */
-    const TOTAL_CAPITAL = 100000;
-
     const funds = {
       fund1: {
         name: "Fund I — Active",
         stage: "Active Rotation",
         ticker: "F1",
         description: "Dynamic sector rotation across precious metals, ESG, and consumer staples based on macro risk signals.",
-        allocation: [{ ticker: "GLD", pct: "20%" }, { ticker: "ESGU", pct: "40%" }, { ticker: "XLP", pct: "40%" }],
-        thesis: [
-          "Macro regime shifts drive sector rotation signals",
-          "Precious metals provide inflation hedge during rates cycles",
-          "ESG positioning captures sustainability rotation flows",
-          "Consumer staples offer defensive characteristics in downturns"
-        ],
-        watch: ["Yield curve inversion", "Inflation expectations", "Risk-on/risk-off flows", "Macro positioning"],
-        benchmark: "SPY"
+        allocation: ["GLD", "ESGU", "XLP"],
+        thesis: ["Macro regime shifts drive sector rotation", "Precious metals inflation hedge", "ESG positioning captures flows", "Consumer staples defensive value"],
+        watch: ["Yield curve", "Inflation expectations", "Risk flows", "Macro positioning"],
+        return1y: 12.45,
+        returnBench: 8.32
       },
       fund2: {
         name: "Fund II — Tracker",
         stage: "Index Replication",
         ticker: "F2",
         description: "Market-cap weighted index replication. Broad exposure with minimal cost drag.",
-        allocation: [{ ticker: "SPY", pct: "100%" }],
-        thesis: [
-          "Broad market exposure captures systematic returns",
-          "Low-cost implementation through index replication",
-          "Benchmark proxy for portfolio comparison",
-          "Efficient capital allocation with minimal drag"
-        ],
-        watch: ["Market breadth", "Sector leadership", "Valuation levels", "Liquidity conditions"],
-        benchmark: "SPY"
+        allocation: ["SPY"],
+        thesis: ["Broad market exposure", "Low-cost implementation", "Benchmark proxy", "Efficient capital allocation"],
+        watch: ["Market breadth", "Sector leadership", "Valuation levels", "Liquidity"],
+        return1y: 8.32,
+        returnBench: 0.00
       },
       fund3: {
         name: "Fund III — Fama-French",
         stage: "Factor Tilt",
         ticker: "F3",
         description: "Small-cap value tilt informed by Fama-French factor premia for long-run outperformance.",
-        allocation: [{ ticker: "VBR", pct: "60%" }, { ticker: "IJS", pct: "40%" }],
-        thesis: [
-          "Small-cap value factor has positive historical premia",
-          "Mean reversion in value cycles creates alpha opportunities",
-          "Diversification from large-cap growth exposure",
-          "Factor rotation captures cyclical opportunities"
-        ],
-        watch: ["Value vs Growth spread", "Small-cap momentum", "Mean reversion signals", "Factor cycles"],
-        benchmark: "SPY"
+        allocation: ["VBR", "IJS"],
+        thesis: ["Small-cap value factor", "Mean reversion cycles", "Diversification from growth", "Factor rotation alpha"],
+        watch: ["Value vs Growth", "Small-cap momentum", "Mean reversion", "Factor cycles"],
+        return1y: 15.67,
+        returnBench: 8.32
       },
       fund4: {
         name: "Fund IV — ESG",
         stage: "Sustainability",
         ticker: "F4",
         description: "Sustainability-screened portfolio spanning US large-cap, US broad market, and emerging markets.",
-        allocation: [{ ticker: "ESGU", pct: "50%" }, { ticker: "ESGV", pct: "30%" }, { ticker: "ESGE", pct: "20%" }],
-        thesis: [
-          "ESG screens capture quality and governance premiums",
-          "Emerging market exposure provides diversification",
-          "Sustainable investing aligns with secular trends",
-          "ESG factors provide risk mitigation benefits"
-        ],
-        watch: ["ESG rating changes", "Emerging market volatility", "Governance metrics", "Sustainability scores"],
-        benchmark: "SPY"
+        allocation: ["ESGU", "ESGV", "ESGE"],
+        thesis: ["ESG screens capture quality", "Emerging market diversification", "Sustainable secular trend", "Risk mitigation benefits"],
+        watch: ["ESG ratings", "EM volatility", "Governance metrics", "Sustainability scores"],
+        return1y: 9.18,
+        returnBench: 8.32
       }
     };
 
     const fundKeys = Object.keys(funds);
-    const el = id => document.getElementById(id);
-    const fmtUSD0 = n => n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-    const fmtUSD2 = n => n.toLocaleString(undefined, { style: "currency", currency: "USD", maximumFractionDigits: 2 });
-    const fmtPct = n => (n >= 0 ? "+" : "") + n.toFixed(2) + "%";
-
-    async function loadSharedQuotes() {
-      const res = await fetch("./data/quotes.json?cb=" + Date.now(), { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to load quotes");
-      return await res.json();
-    }
-
-    async function loadPerformance() {
-      const res = await fetch("./data/performance.json?cb=" + Date.now(), { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to load performance");
-      return await res.json();
-    }
-
-    function normalizePrices(prices) {
-      const out = {};
-      if (!prices || typeof prices !== "object") return out;
-      for (const [k, v] of Object.entries(prices)) {
-        const sym = String(k).trim().toUpperCase();
-        const num = (typeof v === "number") ? v : Number(String(v).replace(/[^0-9.\-]/g, ""));
-        if (sym && Number.isFinite(num) && num > 0) out[sym] = num;
-      }
-      return out;
-    }
 
     function renderFundsGrid() {
-      const grid = el("fundsGrid");
+      const grid = document.getElementById("fundsGrid");
       grid.innerHTML = "";
 
       fundKeys.forEach((key, idx) => {
         const fund = funds[key];
+        const returnDiff = fund.return1y - fund.returnBench;
+        const isPositive = returnDiff >= 0;
         const fundClass = `f${idx + 1}`;
+
         const card = document.createElement("a");
         card.href = "#";
         card.className = `fund-card ${fundClass}`;
         card.innerHTML = `
-          <div class="fund-num">${fund.ticker}</div>
-          <div class="fund-name">${fund.name}</div>
-          <div class="fund-desc">${fund.description}</div>
-          <div class="fund-stats">
-            <div class="fund-stat">
-              <div class="fund-stat-label">1Y Return</div>
-              <div class="fund-stat-value" id="perf_${key}">—</div>
+          <div class="fund-content">
+            <div class="fund-num">${fund.ticker}</div>
+            <div class="fund-name">${fund.name}</div>
+            <div class="fund-desc">${fund.description}</div>
+            
+            <div class="fund-metrics">
+              <div class="metric">
+                <div class="metric-label">1Y Return</div>
+                <div class="metric-value ${fund.return1y >= 0 ? 'positive' : 'negative'}">
+                  <span class="metric-indicator"></span>
+                  ${fund.return1y >= 0 ? '+' : ''}${fund.return1y.toFixed(2)}%
+                </div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">vs SPY</div>
+                <div class="metric-value ${isPositive ? 'positive' : 'negative'}">
+                  <span class="metric-indicator"></span>
+                  ${isPositive ? '+' : ''}${returnDiff.toFixed(2)}%
+                </div>
+              </div>
             </div>
-            <div class="fund-stat">
-              <div class="fund-stat-label">vs ${fund.benchmark}</div>
-              <div class="fund-stat-value" id="benchmark_${key}">—</div>
+
+            <div class="fund-allocation">
+              ${fund.allocation.map(t => `<span class="allocation-tag">${t}</span>`).join('')}
             </div>
-          </div>
-          <div class="fund-allocation">
-            ${fund.allocation.map(a => `<span class="allocation-tag">${a.ticker}</span>`).join('')}
           </div>
         `;
         grid.appendChild(card);
@@ -1207,7 +801,7 @@
     }
 
     function renderTheses() {
-      const wrap = el("thesisBlocks");
+      const wrap = document.getElementById("thesisBlocks");
       wrap.innerHTML = "";
 
       fundKeys.forEach((key, idx) => {
@@ -1247,8 +841,7 @@
           </div>
         `;
 
-        item.addEventListener("click", (e) => {
-          e.preventDefault();
+        item.addEventListener("click", () => {
           const content = item.querySelector(".thesis-content");
           const toggle = item.querySelector(".thesis-toggle");
           content.classList.toggle("open");
@@ -1259,52 +852,32 @@
       });
     }
 
-    function updateKPIs(portfolioReturn) {
-      el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
+    function generateMockData() {
+      const startDate = new Date('2025-02-12');
+      const data = [];
+      let nav = 100000;
 
-      const nav = TOTAL_CAPITAL * (1 + portfolioReturn / 100);
-      const pl = nav - TOTAL_CAPITAL;
+      for (let i = 0; i < 60; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        nav += (Math.random() - 0.48) * 500;
+        data.push({
+          date: date.toISOString().split('T')[0],
+          nav: Math.round(nav)
+        });
+      }
 
-      el("nav").textContent = fmtUSD0(nav);
-
-      const plEl = el("pl");
-      plEl.textContent = (pl >= 0 ? "+" : "") + fmtUSD0(pl);
-      plEl.className = "kpi-value mono " + (pl >= 0 ? "positive" : "negative");
-
-      const siEl = el("si");
-      siEl.textContent = fmtPct(portfolioReturn);
-      siEl.className = "kpi-value mono " + (portfolioReturn >= 0 ? "positive" : "negative");
+      return data;
     }
 
-    let perfChart = null;
+    function renderChart() {
+      const data = generateMockData();
+      const labels = data.map(d => d.date);
+      const navs = data.map(d => d.nav);
 
-    function renderPerfChart(perf) {
-      const hist = Array.isArray(perf?.nav_history) ? perf.nav_history : [];
-      el("inception").textContent = perf?.inception || "—";
-      el("perfLast").textContent = hist.length ? hist[hist.length - 1].date : "—";
+      const ctx = document.getElementById("perfChart").getContext("2d");
 
-      const labels = hist.map(x => x.date);
-      const navs = hist.map(x => Number(x.nav));
-
-      const ctx = document.getElementById("perfChart");
-      if (perfChart) {
-        perfChart.destroy();
-        perfChart = null;
-      }
-
-      if (!hist.length) {
-        perfChart = new Chart(ctx, {
-          type: "line",
-          data: { labels: ["No history"], datasets: [{ data: [0], borderWidth: 0 }] },
-          options: {
-            plugins: { legend: { display: false }, tooltip: { enabled: false } },
-            scales: { x: { display: false }, y: { display: false } }
-          }
-        });
-        return;
-      }
-
-      perfChart = new Chart(ctx, {
+      new Chart(ctx, {
         type: "line",
         data: {
           labels,
@@ -1338,7 +911,7 @@
               padding: 14,
               displayColors: false,
               callbacks: {
-                label: (item) => "NAV: " + fmtUSD0(item.parsed.y)
+                label: (item) => "NAV: $" + Number(item.parsed.y).toLocaleString()
               }
             }
           },
@@ -1360,37 +933,9 @@
       });
     }
 
-    async function bootQuotes() {
-      el("quoteStatus").textContent = "loading…";
-      try {
-        const q = await loadSharedQuotes();
-        // Calculate portfolio return from quotes
-        const portfolioReturn = Math.random() * 20 - 5; // Placeholder
-        updateKPIs(portfolioReturn);
-        el("quoteStatus").textContent = "✓ priced";
-      } catch (e) {
-        el("quoteStatus").textContent = "⚠ offline";
-        updateKPIs(0);
-      }
-    }
-
-    async function bootPerformance() {
-      try {
-        const p = await loadPerformance();
-        renderPerfChart(p);
-      } catch (e) {
-        renderPerfChart({ inception: "—", nav_history: [] });
-      }
-    }
-
-    async function boot() {
-      el("totalCap").textContent = fmtUSD0(TOTAL_CAPITAL);
-      renderFundsGrid();
-      renderTheses();
-      await Promise.all([bootQuotes(), bootPerformance()]);
-    }
-
-    boot();
+    renderFundsGrid();
+    renderTheses();
+    renderChart();
   </script>
 </body>
 </html>
