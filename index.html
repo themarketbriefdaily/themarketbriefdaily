@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   
   <style>
@@ -49,6 +48,58 @@
       --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
     }
 
+    /* ========== PARALLAX BACKGROUND ========== */
+    .parallax-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .parallax-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      will-change: transform;
+    }
+
+    /* Sky layer - light blue */
+    #sky-layer {
+      background: linear-gradient(to bottom, #87ceeb 0%, #e0f6ff 100%);
+      z-index: 1;
+    }
+
+    /* Clouds layer */
+    #clouds-layer {
+      z-index: 2;
+      opacity: 0.8;
+    }
+
+    /* Shallow water layer */
+    #water-shallow {
+      background: linear-gradient(to bottom, #87ceeb 0%, #4db8e8 50%, #1e90ff 100%);
+      z-index: 3;
+    }
+
+    /* Deep water layer */
+    #water-deep {
+      background: linear-gradient(to bottom, #1e90ff 0%, #0047ab 50%, #001f3f 100%);
+      z-index: 4;
+      opacity: 0;
+    }
+
+    /* Underwater elements */
+    #underwater-layer {
+      z-index: 5;
+      opacity: 0;
+    }
+
     h1 {
       font-size: clamp(3rem, 8vw, 5rem);
       font-weight: 800;
@@ -72,23 +123,6 @@
       font-size: 1rem;
       line-height: 1.7;
       color: var(--text-secondary);
-    }
-
-    /* Background Container */
-    .background-scene {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    #canvas-background {
-      width: 100%;
-      height: 100%;
-      display: block;
     }
 
     /* Header */
@@ -159,7 +193,7 @@
     .hero-content {
       max-width: 960px;
       padding: 0 40px;
-      z-index: 10;
+      z-index: 100;
       position: relative;
     }
 
@@ -204,7 +238,6 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      will-change: transform, box-shadow;
     }
 
     .btn-primary {
@@ -240,6 +273,7 @@
       gap: 12px;
       animation: float 3s ease-in-out infinite;
       cursor: pointer;
+      z-index: 100;
     }
 
     .scroll-label {
@@ -280,20 +314,19 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Spacing for content */
+    /* Content spacing */
     .spacer {
-      height: 200vh;
-      background: transparent;
+      height: 300vh;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
-    /* Carousel Section */
-    .carousel-section {
+    /* Sections */
+    .section {
       padding: 160px 48px;
       background: #ffffff;
       position: relative;
-      z-index: 5;
+      z-index: 10;
       border-top: 1px solid var(--border-light);
     }
 
@@ -337,7 +370,7 @@
       border-bottom: 1px solid var(--border-light);
       margin: 80px 0;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     .chart-wrapper {
@@ -415,7 +448,6 @@
       transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       transform-style: preserve-3d;
       cursor: pointer;
-      will-change: transform;
     }
 
     .card-wrapper:nth-child(1) .flip-card { --delay: 0s; }
@@ -646,7 +678,6 @@
       transition: all 0.3s;
       font-size: 18px;
       font-weight: 600;
-      will-change: transform;
     }
 
     .carousel-btn:hover {
@@ -654,57 +685,6 @@
       color: var(--accent);
       background: var(--accent-light);
       transform: scale(1.05);
-    }
-
-    /* Testimonials */
-    .testimonials-section {
-      padding: 160px 48px;
-      background: #fff;
-      border-top: 1px solid var(--border-light);
-      position: relative;
-      z-index: 5;
-    }
-
-    .testimonial-carousel {
-      position: relative;
-      max-width: 700px;
-      margin: 0 auto;
-      height: 200px;
-    }
-
-    .testimonial {
-      position: absolute;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-      text-align: center;
-      padding: 40px;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.02) 100%);
-      border: 1px solid var(--border-light);
-      border-radius: 16px;
-    }
-
-    .testimonial.active {
-      opacity: 1;
-      transform: translateY(0);
-      z-index: 1;
-    }
-
-    .testimonial-text {
-      font-size: 18px;
-      font-weight: 500;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-
-    .testimonial-author {
-      font-size: 13px;
-      color: var(--accent);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
     /* Stats */
@@ -715,7 +695,7 @@
       border-bottom: 1px solid var(--border-light);
       margin: 80px 0;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     .stats-grid {
@@ -751,7 +731,7 @@
       padding: 160px 48px;
       background: #fff;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     .features-grid {
@@ -771,7 +751,6 @@
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity: 0;
       transform: translateY(40px);
-      will-change: transform, box-shadow;
     }
 
     .feature-card:hover {
@@ -796,7 +775,7 @@
       border-top: 1px solid var(--border-light);
       padding: 80px 48px 48px;
       position: relative;
-      z-index: 5;
+      z-index: 10;
     }
 
     .footer-wrapper {
@@ -844,10 +823,9 @@
       color: var(--text-tertiary);
     }
 
-    /* Responsive */
     @media (max-width: 1200px) {
       header { padding: 0 32px; }
-      .carousel-section, .features-section, .testimonials-section { padding: 100px 32px; }
+      .section, .features-section { padding: 100px 32px; }
       .flip-card { width: 320px; height: 420px; }
     }
 
@@ -857,7 +835,7 @@
       .hero { padding-top: 56px; }
       .hero-content { padding: 0 20px; }
       .hero h1 { font-size: 2.2rem; }
-      .carousel-section, .features-section, .testimonials-section { padding: 80px 20px; }
+      .section, .features-section { padding: 80px 20px; }
       .flip-card { width: 90vw; max-width: 380px; height: auto; aspect-ratio: 3/4; }
       .features-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -866,18 +844,61 @@
     @media (max-width: 480px) {
       header { padding: 0 16px; }
       h1 { font-size: 1.8rem; }
-      .carousel-section, .features-section, .testimonials-section { padding: 60px 16px; }
+      .section, .features-section { padding: 60px 16px; }
       .btn { width: 100%; justify-content: center; }
       .flip-card { width: 100%; }
       .footer-grid { grid-template-columns: 1fr; }
-      .chart-info { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
-  <!-- Dynamic Background Canvas -->
-  <div class="background-scene">
-    <canvas id="canvas-background"></canvas>
+  <!-- PARALLAX BACKGROUND CONTAINER -->
+  <div class="parallax-container">
+    <div class="parallax-layer" id="sky-layer"></div>
+    <svg class="parallax-layer" id="clouds-layer" viewBox="0 0 1440 900" preserveAspectRatio="none">
+      <defs>
+        <filter id="cloudBlur">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+        </filter>
+      </defs>
+      <!-- Cloud group 1 -->
+      <g filter="url(#cloudBlur)" fill="rgba(255,255,255,0.6)">
+        <ellipse cx="150" cy="100" rx="80" ry="40"/>
+        <ellipse cx="200" cy="110" rx="120" ry="50"/>
+        <ellipse cx="100" cy="120" rx="90" ry="35"/>
+      </g>
+      <!-- Cloud group 2 -->
+      <g filter="url(#cloudBlur)" fill="rgba(255,255,255,0.5)">
+        <ellipse cx="900" cy="150" rx="100" ry="45"/>
+        <ellipse cx="970" cy="160" rx="130" ry="55"/>
+        <ellipse cx="840" cy="175" rx="110" ry="40"/>
+      </g>
+      <!-- Cloud group 3 -->
+      <g filter="url(#cloudBlur)" fill="rgba(255,255,255,0.55)">
+        <ellipse cx="400" cy="200" rx="95" ry="42"/>
+        <ellipse cx="480" cy="210" rx="125" ry="52"/>
+        <ellipse cx="340" cy="225" rx="105" ry="38"/>
+      </g>
+      <!-- Cloud group 4 -->
+      <g filter="url(#cloudBlur)" fill="rgba(255,255,255,0.45)">
+        <ellipse cx="1200" cy="80" rx="85" ry="38"/>
+        <ellipse cx="1260" cy="90" rx="115" ry="48"/>
+        <ellipse cx="1150" cy="105" rx="95" ry="35"/>
+      </g>
+    </svg>
+    <div class="parallax-layer" id="water-shallow"></div>
+    <div class="parallax-layer" id="water-deep"></div>
+    <svg class="parallax-layer" id="underwater-layer" viewBox="0 0 1440 900" preserveAspectRatio="none">
+      <!-- Underwater bubbles and particles -->
+      <circle cx="200" cy="300" r="20" fill="rgba(100,200,255,0.3)"/>
+      <circle cx="500" cy="400" r="15" fill="rgba(100,200,255,0.25)"/>
+      <circle cx="900" cy="350" r="25" fill="rgba(100,200,255,0.2)"/>
+      <circle cx="1200" cy="450" r="18" fill="rgba(100,200,255,0.28)"/>
+      <!-- Seaweed-like elements -->
+      <path d="M 300 900 Q 310 800 300 700 Q 295 600 305 500" stroke="rgba(100,180,100,0.4)" stroke-width="8" fill="none"/>
+      <path d="M 800 900 Q 795 750 810 600 Q 815 450 800 300" stroke="rgba(80,160,80,0.35)" stroke-width="6" fill="none"/>
+      <path d="M 1100 900 Q 1110 800 1100 700 Q 1095 550 1115 400" stroke="rgba(100,180,100,0.3)" stroke-width="7" fill="none"/>
+    </svg>
   </div>
 
   <!-- Header -->
@@ -909,11 +930,11 @@
     </div>
   </section>
 
-  <!-- Spacer for scrolling effect -->
+  <!-- Spacer for parallax effect -->
   <div class="spacer"></div>
 
   <!-- Carousel Section -->
-  <section class="carousel-section" id="carousel">
+  <section class="section" id="carousel">
     <div class="section-wrapper">
       <div class="section-header">
         <span class="label">Investment Funds</span>
@@ -960,20 +981,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Testimonials Section -->
-  <section class="testimonials-section">
-    <div class="section-wrapper">
-      <div class="section-header" style="margin-bottom: 80px;">
-        <span class="label">Social Proof</span>
-        <h2>Client Testimonials</h2>
-      </div>
-
-      <div class="testimonial-carousel" id="testimonialCarousel">
-        <!-- Testimonials populated by JavaScript -->
-      </div>
-    </div>
-  </section>
 
   <!-- Stats Section -->
   <div class="section-wrapper">
@@ -1073,9 +1080,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ========================================
-    // FUND DATA
-    // ========================================
+    // Fund Data
     const funds = [
       {
         name: 'Active Rotation',
@@ -1131,272 +1136,26 @@
       }
     ];
 
-    const testimonials = [
-      {
-        text: "The market analysis provided has transformed our investment approach. Incredibly insightful.",
-        author: "Sarah Chen, Portfolio Manager"
-      },
-      {
-        text: "Professional, data-driven, and transparent. Exactly what institutional investors need.",
-        author: "James Morrison, Chief Investment Officer"
-      },
-      {
-        text: "Their quantitative frameworks are among the best I've seen in 15 years of investing.",
-        author: "Elena Rodriguez, Senior Analyst"
-      }
-    ];
-
     // ========================================
-    // THREE.JS DYNAMIC OCEAN/SKY BACKGROUND
+    // PARALLAX SCROLL BACKGROUND
     // ========================================
-    class OceanSkyBackground {
-      constructor() {
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        
-        const canvas = document.getElementById('canvas-background');
-        canvas.parentNode.replaceChild(this.renderer.domElement, canvas);
-        
-        this.camera.position.z = 100;
-        this.scrollProgress = 0;
-        this.time = 0;
-        
-        this.initScene();
-        this.animate();
-        this.setupScrollListener();
-        window.addEventListener('resize', () => this.onWindowResize());
-      }
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const scrollProgress = scrolled / maxScroll;
 
-      initScene() {
-        // Remove default background
-        this.renderer.setClearColor(0xffffff, 1);
+      // Parallax layer speeds
+      document.getElementById('sky-layer').style.transform = `translateY(${scrolled * 0.1}px)`;
+      document.getElementById('clouds-layer').style.transform = `translateY(${scrolled * 0.3}px)`;
+      document.getElementById('water-shallow').style.transform = `translateY(${scrolled * 0.5}px)`;
+      document.getElementById('water-deep').style.transform = `translateY(${scrolled * 0.7}px)`;
+      document.getElementById('underwater-layer').style.transform = `translateY(${scrolled * 0.6}px)`;
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-        this.scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(100, 100, 100);
-        this.scene.add(directionalLight);
-
-        // Create sky dome
-        this.createSkyDome();
-        
-        // Create water
-        this.createWater();
-        
-        // Create particles (fish)
-        this.createFish();
-      }
-
-      createSkyDome() {
-        // Sky with gradient - light blue to white
-        const skyGeometry = new THREE.SphereGeometry(300, 32, 32);
-        const skyMaterial = new THREE.MeshBasicMaterial({
-          color: 0x87ceeb,
-          side: THREE.BackSide
-        });
-        const sky = new THREE.Mesh(skyGeometry, skyMaterial);
-        this.scene.add(sky);
-        this.sky = sky;
-
-        // Clouds (using particles with transparency)
-        this.createClouds();
-      }
-
-      createClouds() {
-        const cloudCount = 40;
-        const cloudGeometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(cloudCount * 3);
-        const sizes = new Float32Array(cloudCount);
-
-        for (let i = 0; i < cloudCount; i++) {
-          positions[i * 3] = (Math.random() - 0.5) * 800;
-          positions[i * 3 + 1] = Math.random() * 300 + 100;
-          positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
-          sizes[i] = Math.random() * 40 + 20;
-        }
-
-        cloudGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        cloudGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-        const cloudMaterial = new THREE.PointsMaterial({
-          color: 0xffffff,
-          size: 30,
-          sizeAttenuation: true,
-          transparent: true,
-          opacity: 0.7,
-          map: this.createCloudTexture()
-        });
-
-        this.clouds = new THREE.Points(cloudGeometry, cloudMaterial);
-        this.scene.add(this.clouds);
-        this.cloudPositions = positions;
-      }
-
-      createCloudTexture() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext('2d');
-
-        // Draw cloud-like shape
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.beginPath();
-        ctx.arc(32, 32, 32, 0, Math.PI * 2);
-        ctx.fill();
-
-        const texture = new THREE.CanvasTexture(canvas);
-        return texture;
-      }
-
-      createWater() {
-        const waterGeometry = new THREE.PlaneGeometry(1000, 1000, 128, 128);
-        const waterMaterial = new THREE.MeshStandardMaterial({
-          color: 0x1e90ff,
-          metalness: 0.3,
-          roughness: 0.4
-        });
-        
-        this.water = new THREE.Mesh(waterGeometry, waterMaterial);
-        this.water.rotation.x = -Math.PI / 2;
-        this.water.position.z = -200;
-        this.scene.add(this.water);
-
-        // Store original positions for wave animation
-        const positions = waterGeometry.attributes.position.array;
-        this.waterOriginalPositions = new Float32Array(positions);
-      }
-
-      createFish() {
-        this.fish = [];
-        const fishCount = 15;
-
-        for (let i = 0; i < fishCount; i++) {
-          const fishGeometry = new THREE.ConeGeometry(2, 5, 8);
-          const fishMaterial = new THREE.MeshStandardMaterial({
-            color: Math.random() * 0xffffff,
-            metalness: 0.5,
-            roughness: 0.5
-          });
-          
-          const fish = new THREE.Mesh(fishGeometry, fishMaterial);
-          fish.position.set(
-            (Math.random() - 0.5) * 400,
-            (Math.random() - 0.5) * 200 - 100,
-            (Math.random() - 0.5) * 200 - 200
-          );
-          
-          fish.velocity = new THREE.Vector3(
-            (Math.random() - 0.5) * 2,
-            (Math.random() - 0.5) * 1,
-            (Math.random() - 0.5) * 2
-          );
-          
-          fish.rotation.x = Math.PI / 2;
-          this.scene.add(fish);
-          this.fish.push(fish);
-        }
-      }
-
-      updateBackground() {
-        const maxScroll = document.body.scrollHeight - window.innerHeight;
-        this.scrollProgress = window.scrollY / maxScroll;
-
-        // Sky color transition
-        const skyColor = new THREE.Color();
-        skyColor.lerpColors(
-          new THREE.Color(0x87ceeb), // Light blue
-          new THREE.Color(0x001f3f), // Deep ocean
-          this.scrollProgress
-        );
-        this.sky.material.color = skyColor;
-
-        // Cloud opacity based on scroll
-        this.clouds.material.opacity = 0.7 * (1 - this.scrollProgress * 0.8);
-
-        // Water depth color transition
-        const waterColor = new THREE.Color();
-        waterColor.lerpColors(
-          new THREE.Color(0x1e90ff), // Shallow water
-          new THREE.Color(0x000033), // Deep ocean
-          this.scrollProgress
-        );
-        this.water.material.color = waterColor;
-
-        // Animate water waves
-        this.animateWater();
-
-        // Update fish movement
-        this.updateFish();
-
-        // Move clouds horizontally with time
-        const positions = this.cloudPositions;
-        for (let i = 0; i < positions.length; i += 3) {
-          positions[i] += Math.sin(this.time * 0.001 + i) * 0.1;
-        }
-        this.clouds.geometry.attributes.position.needsUpdate = true;
-
-        this.time++;
-      }
-
-      animateWater() {
-        const positionAttribute = this.water.geometry.attributes.position;
-        const positions = positionAttribute.array;
-        const originalPositions = this.waterOriginalPositions;
-
-        for (let i = 0; i < positions.length; i += 3) {
-          const x = originalPositions[i];
-          const y = originalPositions[i + 1];
-
-          positions[i + 2] = Math.sin(x * 0.01 + this.time * 0.01) * 5 +
-                             Math.cos(y * 0.01 + this.time * 0.015) * 3;
-        }
-
-        positionAttribute.needsUpdate = true;
-        this.water.geometry.computeVertexNormals();
-      }
-
-      updateFish() {
-        this.fish.forEach(fish => {
-          // Simple flocking behavior
-          fish.position.add(fish.velocity);
-
-          // Bounce off boundaries
-          if (fish.position.x > 200 || fish.position.x < -200) fish.velocity.x *= -1;
-          if (fish.position.y > 50 || fish.position.y < -250) fish.velocity.y *= -1;
-          if (fish.position.z > 0 || fish.position.z < -250) fish.velocity.z *= -1;
-
-          // Face direction of movement
-          const direction = fish.velocity.clone().normalize();
-          fish.lookAt(fish.position.clone().add(direction));
-        });
-      }
-
-      animate = () => {
-        requestAnimationFrame(this.animate);
-        this.updateBackground();
-        this.renderer.render(this.scene, this.camera);
-      }
-
-      setupScrollListener() {
-        window.addEventListener('scroll', () => {
-          this.updateBackground();
-        }, { passive: true });
-      }
-
-      onWindowResize() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(width, height);
-      }
-    }
+      // Opacity transitions for depth effect
+      document.getElementById('water-shallow').style.opacity = Math.max(0, 1 - scrollProgress * 1.5);
+      document.getElementById('water-deep').style.opacity = Math.min(1, scrollProgress * 2);
+      document.getElementById('underwater-layer').style.opacity = Math.max(0, scrollProgress * 1.5);
+    }, { passive: true });
 
     // ========================================
     // CREATE CAROUSEL CARDS
@@ -1572,34 +1331,38 @@
     }
 
     // ========================================
-    // TESTIMONIALS
+    // SCROLL ANIMATIONS
     // ========================================
-    function initTestimonials() {
-      const carousel = document.getElementById('testimonialCarousel');
-      let currentIndex = 0;
+    function initScrollAnimations() {
+      const heroTimeline = gsap.timeline();
+      heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
+      heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
+      heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
 
-      testimonials.forEach((testimonial, index) => {
-        const div = document.createElement('div');
-        div.className = `testimonial ${index === 0 ? 'active' : ''}`;
-        div.innerHTML = `
-          <p class="testimonial-text">"${testimonial.text}"</p>
-          <p class="testimonial-author">${testimonial.author}</p>
-        `;
-        carousel.appendChild(div);
+      gsap.to('.section-header', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: '.section',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
       });
 
-      setInterval(() => {
-        const testimonialEls = document.querySelectorAll('.testimonial');
-        testimonialEls[currentIndex].classList.remove('active');
-        currentIndex = (currentIndex + 1) % testimonialEls.length;
-        testimonialEls[currentIndex].classList.add('active');
-      }, 4000);
-    }
+      gsap.to('.feature-card', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.features-grid',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
 
-    // ========================================
-    // ANIMATE STATS
-    // ========================================
-    function animateStats() {
       gsap.to('.stat', {
         opacity: 1,
         y: 0,
@@ -1611,7 +1374,12 @@
           toggleActions: 'play none none none'
         }
       });
+    }
 
+    // ========================================
+    // ANIMATE STATS
+    // ========================================
+    function animateStats() {
       document.querySelectorAll('.stat-value').forEach(el => {
         const target = parseInt(el.dataset.value);
         let current = 0;
@@ -1638,47 +1406,11 @@
     }
 
     // ========================================
-    // SCROLL ANIMATIONS
-    // ========================================
-    function initScrollAnimations() {
-      const heroTimeline = gsap.timeline();
-      heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
-      heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
-      heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
-
-      gsap.to('.section-header', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: '.carousel-section',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.feature-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.features-grid',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
-
-    // ========================================
-    // INITIALIZE ALL
+    // INITIALIZE
     // ========================================
     window.addEventListener('load', () => {
-      new OceanSkyBackground();
       initCarousel();
       initChart();
-      initTestimonials();
       initScrollAnimations();
       animateStats();
     });
