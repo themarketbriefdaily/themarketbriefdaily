@@ -128,7 +128,7 @@
       margin-bottom: 60px;
     }
 
-    /* Fund Card - Full Width */
+    /* Fund Card */
     .fund-card {
       position: relative;
       background: var(--glass);
@@ -139,6 +139,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0;
+      min-height: 450px;
     }
 
     .fund-card:nth-child(1) { animation-delay: .1s; }
@@ -157,7 +158,7 @@
       transition: all .3s cubic-bezier(.34, .1, .68, .55);
     }
 
-    /* 3D Canvas Section */
+    /* SVG Visual Section */
     .fund-visual {
       position: relative;
       overflow: hidden;
@@ -165,8 +166,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 400px;
+      min-height: 450px;
       border-right: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: background .3s ease;
     }
 
     .fund-card.f1 .fund-visual { background: linear-gradient(135deg, rgba(59, 130, 246, .1), rgba(59, 130, 246, .05)); }
@@ -174,7 +177,7 @@
     .fund-card.f3 .fund-visual { background: linear-gradient(135deg, rgba(236, 72, 153, .1), rgba(236, 72, 153, .05)); }
     .fund-card.f4 .fund-visual { background: linear-gradient(135deg, rgba(20, 184, 166, .1), rgba(20, 184, 166, .05)); }
 
-    canvas { display: block; }
+    svg { width: 300px; height: 300px; filter: drop-shadow(0 10px 30px rgba(59, 130, 246, .2)); }
 
     /* Fund Content */
     .fund-content {
@@ -183,7 +186,7 @@
       flex-direction: column;
       gap: 24px;
       overflow-y: auto;
-      max-height: 400px;
+      max-height: 450px;
     }
 
     .fund-header {
@@ -195,9 +198,7 @@
       border-bottom: 1px solid var(--glass-border);
     }
 
-    .fund-title-group {
-      flex: 1;
-    }
+    .fund-title-group { flex: 1; }
 
     .fund-num {
       font-size: 11px;
@@ -308,48 +309,52 @@
 
     /* Chart Container */
     .fund-chart-section {
-      padding: 40px;
+      padding: 24px;
       border-top: 1px solid var(--glass-border);
       background: linear-gradient(135deg, rgba(59, 130, 246, .02), transparent);
+      margin-top: auto;
     }
 
     .chart-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       margin-bottom: 4px;
       color: var(--ink);
     }
 
     .chart-meta {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--muted2);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .chart-container {
       position: relative;
-      height: 200px;
-      margin-bottom: 16px;
+      height: 150px;
+      margin-bottom: 12px;
+      background: rgba(59, 130, 246, .02);
+      border-radius: 6px;
+      padding: 8px;
     }
 
-    canvas.chart { width: 100% !important; height: 200px !important; }
+    canvas.chart { width: 100% !important; height: 150px !important; display: block; }
 
     .chart-legend {
       display: flex;
-      gap: 24px;
-      font-size: 12px;
-      color: var(--muted);
+      gap: 12px;
+      font-size: 11px;
+      color: var(--muted2);
     }
 
     .legend-item {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .legend-dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 2px;
       flex-shrink: 0;
     }
@@ -437,15 +442,14 @@
     .footer-links a:hover::after { width: 100%; }
 
     @media (max-width: 1024px) {
-      .fund-card { grid-template-columns: 1fr; }
+      .fund-card { grid-template-columns: 1fr; min-height: auto; }
       .fund-visual { border-right: none; border-bottom: 1px solid var(--glass-border); min-height: 300px; }
+      svg { width: 250px; height: 250px; }
     }
 
     @media (max-width: 768px) {
       .fund-content { padding: 24px; max-height: none; }
-      .fund-chart-section { padding: 24px; }
-      .chart-container { height: 180px; }
-      .canvas.chart { height: 180px !important; }
+      svg { width: 200px; height: 200px; }
     }
   </style>
 
@@ -544,10 +548,10 @@
         ],
         watch: ["Yield curve inversion", "Inflation expectations", "Risk-on/risk-off flows", "Macro positioning"],
         return1y: 12.45,
-        benchmark: "XLY", // Consumer Discretionary vs Consumer Staples blend
+        benchmark: "XLY",
         benchmarkReturn: 9.15,
         color: "#3b82f6",
-        canvasId: "canvas1"
+        visualType: "gold"
       },
       fund2: {
         name: "Fund II — Tracker",
@@ -563,10 +567,10 @@
         ],
         watch: ["Market breadth", "Sector leadership", "Valuation levels", "Liquidity conditions"],
         return1y: 8.32,
-        benchmark: "VTI", // Total Stock Market Index
+        benchmark: "VTI",
         benchmarkReturn: 8.32,
         color: "#8b5cf6",
-        canvasId: "canvas2"
+        visualType: "chart"
       },
       fund3: {
         name: "Fund III — Fama-French",
@@ -582,10 +586,10 @@
         ],
         watch: ["Value vs Growth spread", "Small-cap momentum", "Mean reversion signals", "Factor cycles"],
         return1y: 15.67,
-        benchmark: "SPY", // Large-cap benchmark
+        benchmark: "SPY",
         benchmarkReturn: 8.32,
         color: "#ec4899",
-        canvasId: "canvas3"
+        visualType: "rocket"
       },
       fund4: {
         name: "Fund IV — ESG",
@@ -601,87 +605,168 @@
         ],
         watch: ["ESG rating changes", "EM volatility", "Governance metrics", "Sustainability scores"],
         return1y: 9.18,
-        benchmark: "IUSB", // Broad US + Emerging Market ESG proxy
+        benchmark: "IUSB",
         benchmarkReturn: 7.85,
         color: "#14b8a6",
-        canvasId: "canvas4"
+        visualType: "tree"
       }
     };
 
     const fundKeys = Object.keys(funds);
     const charts = {};
 
-    // 3D Canvas Animation
-    function create3DCanvas(canvasId, color) {
-      const canvas = document.getElementById(canvasId);
-      if (!canvas) return;
-
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width = canvas.offsetWidth;
-      const h = canvas.height = canvas.offsetHeight;
-
-      let particles = [];
-      for (let i = 0; i < 50; i++) {
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          z: Math.random() * 100,
-          vx: (Math.random() - 0.5) * 2,
-          vy: (Math.random() - 0.5) * 2,
-          vz: (Math.random() - 0.5) * 1,
-          r: Math.random() * 3 + 1
-        });
-      }
-
-      function animate() {
-        ctx.fillStyle = 'rgba(6, 12, 26, 1)';
-        ctx.fillRect(0, 0, w, h);
-
-        particles.forEach(p => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.z += p.vz;
-
-          if (p.x < 0) p.x = w;
-          if (p.x > w) p.x = 0;
-          if (p.y < 0) p.y = h;
-          if (p.y > h) p.y = 0;
-          if (p.z < 0 || p.z > 100) p.vz *= -1;
-
-          const scale = p.z / 100;
-          const opacity = scale * 0.7 + 0.3;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r * scale, 0, Math.PI * 2);
-          ctx.fillStyle = color.replace(')', `, ${opacity})`);
-          ctx.fill();
-
-          // Connect particles
-          particles.forEach(p2 => {
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 100) {
-              ctx.strokeStyle = color.replace(')', `, ${opacity * (1 - dist / 100) * 0.3})`);
-              ctx.lineWidth = 0.5;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          });
-        });
-
-        requestAnimationFrame(animate);
-      }
-
-      animate();
+    // SVG Visuals
+    function createGoldVisualization() {
+      return `
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- Gold coins -->
+          <circle cx="150" cy="100" r="35" fill="url(#goldGrad)" filter="url(#glow)" class="coin coin1"/>
+          <circle cx="100" cy="160" r="30" fill="url(#goldGrad)" opacity="0.8" class="coin coin2"/>
+          <circle cx="200" cy="170" r="32" fill="url(#goldGrad)" opacity="0.85" class="coin coin3"/>
+          <!-- Shine effect -->
+          <ellipse cx="140" cy="85" rx="12" ry="8" fill="white" opacity="0.6"/>
+          <ellipse cx="95" cy="150" rx="10" ry="6" fill="white" opacity="0.5"/>
+          <ellipse cx="195" cy="155" rx="11" ry="7" fill="white" opacity="0.55"/>
+          <style>
+            @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+            @keyframes spin { 0% { transform: rotateZ(0deg); } 100% { transform: rotateZ(360deg); } }
+            .coin1 { animation: float 4s ease-in-out infinite; }
+            .coin2 { animation: float 5s ease-in-out infinite 0.5s; }
+            .coin3 { animation: float 6s ease-in-out infinite 1s; }
+          </style>
+        </svg>
+      `;
     }
 
-    // Convert hex to rgb for canvas
-    function hexToRgb(hex) {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 'rgb(59, 130, 246';
+    function createChartVisualization() {
+      return `
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="chartGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.2" />
+              <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <!-- Chart bars -->
+          <rect x="50" y="180" width="25" height="80" fill="#8b5cf6" class="bar bar1" opacity="0.8"/>
+          <rect x="95" y="150" width="25" height="110" fill="#8b5cf6" class="bar bar2" opacity="0.85"/>
+          <rect x="140" y="120" width="25" height="140" fill="#8b5cf6" class="bar bar3" opacity="0.9"/>
+          <rect x="185" y="100" width="25" height="160" fill="#8b5cf6" class="bar bar4" opacity="0.85"/>
+          <!-- Trend line -->
+          <polyline points="62.5,180 107.5,150 152.5,120 197.5,100" stroke="#a78bfa" stroke-width="2" fill="none" stroke-linecap="round" class="trend"/>
+          <!-- Grid -->
+          <line x1="40" y1="260" x2="230" y2="260" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+          <line x1="40" y1="200" x2="230" y2="200" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
+          <line x1="40" y1="140" x2="230" y2="140" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
+          <style>
+            @keyframes growBar { 0% { height: 0; } 100% { height: 100%; } }
+            .bar1 { animation: growBar 1s ease-out; }
+            .bar2 { animation: growBar 1s ease-out 0.2s both; }
+            .bar3 { animation: growBar 1s ease-out 0.4s both; }
+            .bar4 { animation: growBar 1s ease-out 0.6s both; }
+            .trend { animation: dashMove 2s ease-in-out infinite; }
+            @keyframes dashMove { 0% { stroke-dashoffset: 300; } 100% { stroke-dashoffset: 0; } }
+          </style>
+        </svg>
+      `;
+    }
+
+    function createRocketVisualization() {
+      return `
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="rocketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#be123c;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <!-- Rocket body -->
+          <ellipse cx="150" cy="120" rx="25" ry="40" fill="url(#rocketGrad)" class="rocket-body"/>
+          <!-- Window -->
+          <circle cx="150" cy="100" r="8" fill="#60a5fa" opacity="0.8"/>
+          <!-- Left fin -->
+          <polygon points="125,160 110,180 120,165" fill="#ec4899"/>
+          <!-- Right fin -->
+          <polygon points="175,160 190,180 180,165" fill="#ec4899"/>
+          <!-- Flame 1 -->
+          <polygon points="140,165 145,200 150,170" fill="#fbbf24" class="flame flame1" opacity="0.9"/>
+          <!-- Flame 2 -->
+          <polygon points="150,170 160,205 155,175" fill="#f59e0b" class="flame flame2" opacity="0.8"/>
+          <!-- Flame 3 -->
+          <polygon points="160,165 155,200 150,170" fill="#fbbf24" class="flame flame3" opacity="0.7"/>
+          <!-- Stars -->
+          <circle cx="80" cy="60" r="2" fill="#60a5fa" class="star star1" opacity="0"/>
+          <circle cx="220" cy="80" r="2" fill="#60a5fa" class="star star2" opacity="0"/>
+          <circle cx="100" cy="200" r="2" fill="#60a5fa" class="star star3" opacity="0"/>
+          <style>
+            @keyframes rocketFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+            @keyframes flameFlicker { 0%, 100% { transform: scaleY(1); } 25% { transform: scaleY(1.1); } 50% { transform: scaleY(0.9); } 75% { transform: scaleY(1.15); } }
+            @keyframes starTwinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+            .rocket-body { animation: rocketFloat 3s ease-in-out infinite; }
+            .flame1 { animation: flameFlicker 0.3s ease-in-out infinite; }
+            .flame2 { animation: flameFlicker 0.3s ease-in-out infinite 0.1s; }
+            .flame3 { animation: flameFlicker 0.3s ease-in-out infinite 0.2s; }
+            .star1 { animation: starTwinkle 2s ease-in-out infinite; }
+            .star2 { animation: starTwinkle 2.5s ease-in-out infinite 0.5s; }
+            .star3 { animation: starTwinkle 2s ease-in-out infinite 1s; }
+          </style>
+        </svg>
+      `;
+    }
+
+    function createTreeVisualization() {
+      return `
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="treeGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" style="stop-color:#78350f;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#92400e;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <!-- Trunk -->
+          <rect x="135" y="180" width="30" height="80" fill="url(#treeGrad)"/>
+          <!-- Foliage layers -->
+          <circle cx="150" cy="100" r="50" fill="#10b981" class="foliage foliage1"/>
+          <circle cx="120" cy="130" r="35" fill="#059669" class="foliage foliage2"/>
+          <circle cx="180" cy="130" r="35" fill="#059669" class="foliage foliage3"/>
+          <!-- Sun (hidden, shows on hover) -->
+          <circle cx="220" cy="60" r="20" fill="#fbbf24" class="sun" opacity="0"/>
+          <circle cx="220" cy="60" r="25" fill="#fbbf24" opacity="0.3" class="sun-glow" r="25"/>
+          <!-- Leaves falling -->
+          <circle cx="100" cy="120" r="3" fill="#10b981" class="leaf leaf1" opacity="0"/>
+          <circle cx="130" cy="110" r="2.5" fill="#10b981" class="leaf leaf2" opacity="0"/>
+          <circle cx="170" cy="115" r="3" fill="#10b981" class="leaf leaf3" opacity="0"/>
+          <circle cx="200" cy="125" r="2.5" fill="#10b981" class="leaf leaf4" opacity="0"/>
+          <style>
+            @keyframes sway { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(2deg); } 75% { transform: rotate(-2deg); } }
+            @keyframes sunRise { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+            @keyframes leafFall { 0% { transform: translateY(-100px) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(200px) translateX(30px); opacity: 0; } }
+            .foliage { animation: sway 4s ease-in-out infinite; transform-origin: 150px 180px; }
+            .foliage1 { animation-duration: 4s; }
+            .foliage2 { animation-duration: 5s; animation-delay: 0.5s; }
+            .foliage3 { animation-duration: 5.5s; animation-delay: 1s; }
+            .sun { animation: sunRise 0.6s ease-out forwards; }
+            .sun-glow { animation: sunRise 0.6s ease-out forwards; }
+            .leaf1 { animation: leafFall 3s ease-in infinite; }
+            .leaf2 { animation: leafFall 3.5s ease-in infinite 0.3s; }
+            .leaf3 { animation: leafFall 3s ease-in infinite 0.6s; }
+            .leaf4 { animation: leafFall 3.5s ease-in infinite 0.9s; }
+          </style>
+        </svg>
+      `;
     }
 
     // Generate mock performance data
@@ -741,19 +826,19 @@
               label: fundData.ticker,
               data: fundNavs,
               borderColor: fundData.color,
-              borderWidth: 2.5,
+              borderWidth: 2,
               backgroundColor: fundData.color.replace(')', ', 0.05)'),
               tension: 0.35,
               pointRadius: 0,
-              pointHoverRadius: 6,
+              pointHoverRadius: 5,
               fill: true
             },
             {
               label: fundData.benchmark,
               data: benchNavs,
-              borderColor: 'rgba(148, 163, 184, .6)',
-              borderWidth: 1.5,
-              borderDash: [5, 5],
+              borderColor: 'rgba(148, 163, 184, .5)',
+              borderWidth: 1,
+              borderDash: [4, 4],
               backgroundColor: 'transparent',
               tension: 0.35,
               pointRadius: 0,
@@ -773,8 +858,10 @@
               bodyColor: "#eef2ff",
               borderColor: "rgba(59, 130, 246, .4)",
               borderWidth: 1,
-              padding: 12,
+              padding: 10,
               displayColors: true,
+              titleFont: { size: 11 },
+              bodyFont: { size: 10 },
               callbacks: {
                 label: (item) => item.dataset.label + ": $" + Number(item.parsed.y).toLocaleString()
               }
@@ -782,16 +869,16 @@
           },
           scales: {
             x: {
-              ticks: { maxTicksLimit: 5, color: "rgba(238, 242, 255, .4)", font: { size: 10 } },
-              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+              ticks: { maxTicksLimit: 4, color: "rgba(238, 242, 255, .3)", font: { size: 9 } },
+              grid: { color: "rgba(255, 255, 255, .03)", drawBorder: false }
             },
             y: {
               ticks: {
-                color: "rgba(238, 242, 255, .4)",
-                font: { size: 10 },
+                color: "rgba(238, 242, 255, .3)",
+                font: { size: 9 },
                 callback: (v) => "$" + (v / 1000).toFixed(0) + "k"
               },
-              grid: { color: "rgba(255, 255, 255, .05)", drawBorder: false }
+              grid: { color: "rgba(255, 255, 255, .03)", drawBorder: false }
             }
           }
         }
@@ -808,11 +895,17 @@
         const returnDiff = fund.return1y - fund.benchmarkReturn;
         const isPositive = returnDiff >= 0;
 
+        let visualSVG = '';
+        if (fund.visualType === 'gold') visualSVG = createGoldVisualization();
+        else if (fund.visualType === 'chart') visualSVG = createChartVisualization();
+        else if (fund.visualType === 'rocket') visualSVG = createRocketVisualization();
+        else if (fund.visualType === 'tree') visualSVG = createTreeVisualization();
+
         const card = document.createElement("div");
         card.className = `fund-card ${fundClass}`;
         card.innerHTML = `
-          <div class="fund-visual">
-            <canvas id="${fund.canvasId}"></canvas>
+          <div class="fund-visual" data-fund="${key}">
+            ${visualSVG}
           </div>
 
           <div>
@@ -851,7 +944,7 @@
 
             <div class="fund-chart-section">
               <div class="chart-title">Performance vs Benchmark</div>
-              <div class="chart-meta">${fund.ticker} (solid) vs ${fund.benchmark} (dashed)</div>
+              <div class="chart-meta">${fund.ticker} vs ${fund.benchmark}</div>
               <div class="chart-container">
                 <canvas class="chart" id="chart-${key}"></canvas>
               </div>
@@ -861,8 +954,8 @@
                   <span>${fund.ticker}</span>
                 </div>
                 <div class="legend-item">
-                  <div class="legend-dot" style="background: rgba(148, 163, 184, .6); border: 1px dashed rgba(148, 163, 184, .8);"></div>
-                  <span>${fund.benchmark} Benchmark</span>
+                  <div class="legend-dot" style="background: rgba(148, 163, 184, .5);"></div>
+                  <span>${fund.benchmark}</span>
                 </div>
               </div>
             </div>
@@ -871,13 +964,33 @@
         grid.appendChild(card);
       });
 
-      // Initialize canvases after DOM is ready
+      // Add hover interactions
       setTimeout(() => {
-        fundKeys.forEach((key, idx) => {
-          const fund = funds[key];
-          create3DCanvas(fund.canvasId, hexToRgb(fund.color));
+        fundKeys.forEach((key) => {
+          const visual = document.querySelector(`[data-fund="${key}"]`);
+          if (!visual) return;
+
+          visual.addEventListener('mouseenter', () => {
+            const fund = funds[key];
+            if (fund.visualType === 'tree') {
+              const sun = visual.querySelector('.sun');
+              const leaves = visual.querySelectorAll('.leaf');
+              if (sun) sun.style.animation = 'none'; // Reset
+              if (sun) sun.offsetHeight; // Trigger reflow
+              if (sun) sun.style.animation = '';
+              leaves.forEach(leaf => {
+                leaf.style.animation = 'none';
+                leaf.offsetHeight;
+                leaf.style.animation = '';
+              });
+            }
+          });
+        });
+
+        // Render all charts
+        fundKeys.forEach((key) => {
           const chartEl = document.getElementById(`chart-${key}`);
-          if (chartEl) renderChart(chartEl, fund);
+          if (chartEl) renderChart(chartEl, funds[key]);
         });
       }, 100);
     }
