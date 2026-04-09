@@ -1,984 +1,575 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Market Brief Daily — Institutional Market Analysis</title>
-  <meta name="description" content="Rigorous quantitative analysis of commodity markets, macro dynamics, and institutional strategies." />
+  <title>The Market Brief Daily</title>
+  <meta name="description" content="Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative investment strategies." />
+  <meta name="theme-color" content="#ffffff" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- GSAP for smoothness + perfect flip animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Chart.js for the card-back charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Three.js mesh background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root{
+      --bg:#ffffff;
+      --bg2:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:rgba(255,255,255,.7);
+      --line:rgba(15,23,42,.12);
+      --ink:#0b1220;
+      --muted:rgba(11,18,32,.65);
+      --muted2:rgba(11,18,32,.45);
+      --brand:#2563eb;
+      --brand2:#0ea5e9;
+      --ok:#16a34a;
+      --bad:#dc2626;
+      --max:1200px;
+      --r:18px;
+      --shadow:0 18px 55px rgba(2,8,23,.12);
+      --shadow2:0 10px 28px rgba(2,8,23,.10);
+      --mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --ease:cubic-bezier(.2,.9,.2,1);
     }
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1000px 600px at 80% -10%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(900px 520px at -10% 20%, rgba(14,165,233,.10), transparent 60%),
+        var(--bg);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
     }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #ffffff;
-      color: #000;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      overflow-x: hidden;
-    }
+    a{color:var(--brand);text-decoration:none}
+    .container{width:min(var(--max), calc(100% - 44px));margin:0 auto}
 
-    :root {
-      --accent: #0066ff;
-      --accent-hover: #0052cc;
-      --accent-light: rgba(0, 102, 255, 0.08);
-      --text-primary: #000000;
-      --text-secondary: rgba(0, 0, 0, 0.54);
-      --text-tertiary: rgba(0, 0, 0, 0.38);
-      --border-light: rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+      #meshWrap{display:none !important}
     }
-
-    h1 { font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; }
-    h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
-    h3 { font-size: 1.3rem; font-weight: 700; }
-    p { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); }
 
     /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-light);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      padding: 0 48px;
-      box-shadow: var(--shadow-md);
+    .site-header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(255,255,255,.78);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+    .header-inner{
+      height:68px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);min-width: 260px}
+    .brand-logo{width:38px;height:38px;border-radius:12px;object-fit:cover;box-shadow:0 10px 24px rgba(2,8,23,.12)}
+    .brand-stack{display:flex;flex-direction:column;line-height:1.1}
+    .brand-title{font-size:14px;font-weight:900;letter-spacing:-.01em}
+    .brand-sub{font-size:11px;color:var(--muted2);font-weight:600}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .nav a{
+      color:var(--muted);font-size:13px;font-weight:700;
+      padding:8px 10px;border-radius:10px;transition:background .18s var(--ease), color .18s var(--ease);
+    }
+    .nav a:hover{color:var(--ink);background:rgba(2,8,23,.04)}
+    .nav a.is-active{color:var(--ink);background:rgba(37,99,235,.10);box-shadow:inset 0 0 0 1px rgba(37,99,235,.18)}
+
+    /* HERO with mesh */
+    .hero{
+      position:relative;
+      padding:92px 0 34px;
+      overflow:hidden;
+    }
+    #meshWrap{
+      position:absolute;inset:-20px;
+      pointer-events:none;
+      opacity:.55;
+      filter:saturate(1.08);
+      transform: translateZ(0);
+    }
+    #meshCanvas{
+      width:100%;height:100%;display:block;
+    }
+    .hero-scrim{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(900px 480px at 50% 0%, rgba(255,255,255,.85), rgba(255,255,255,.55) 55%, rgba(255,255,255,.92)),
+        linear-gradient(to bottom, rgba(255,255,255,.70), rgba(255,255,255,1));
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;z-index:2;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items:center;
+      gap:34px;
+      padding-bottom:24px;
+    }
+    .hero-eyebrow{
+      font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--brand);
+      margin-bottom:10px;
+    }
+    h1{
+      margin:0 0 14px;
+      font-size:clamp(2.4rem,5.2vw,3.7rem);
+      line-height:1.05;
+      letter-spacing:-.04em;
+      font-weight:950;
+    }
+    .grad{
+      background:linear-gradient(135deg,var(--brand), var(--brand2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .hero-desc{margin:0;color:var(--muted);max-width:52ch;font-size:1.03rem}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      font-size:13px;font-weight:900;letter-spacing:.01em;
+      padding:12px 14px;border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.85);
+      color:var(--ink);
+      box-shadow:var(--shadow2);
+      transition:transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+      will-change:transform;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--brand), #1d4ed8);
+      border-color:rgba(37,99,235,.35);
+      color:#fff;
+      box-shadow:0 20px 45px rgba(37,99,235,.22);
+    }
+    .btn.primary:hover{box-shadow:0 26px 58px rgba(37,99,235,.28)}
+    .btn.ghost{
+      background:rgba(255,255,255,.70);
+    }
+    .hero-note{margin:12px 0 0;color:var(--muted2);font-size:12px;font-weight:650}
+
+    .hero-side{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+    }
+    .hero-card{
+      width:min(420px, 100%);
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.82);
+      backdrop-filter: blur(10px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero-card-top{
+      padding:16px 16px 10px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      border-bottom:1px solid var(--line);
+    }
+    .terminal-pill{
+      font-size:11px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;
+      padding:7px 10px;border-radius:999px;
+      background:rgba(2,8,23,.05);
+      color:rgba(2,8,23,.75);
+      border:1px solid rgba(2,8,23,.08);
+    }
+    .asof{
+      font-size:11px;color:var(--muted2);font-weight:750
+    }
+    .hero-card-body{padding:12px 16px 16px}
+    .bloomberg-row{
+      display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    }
+    .sym{
+      font-weight:950;font-size:16px;letter-spacing:-.02em
+    }
+    .last{
+      font-family:var(--mono);
+      font-size:20px;font-weight:900;
+    }
+    .chg{
+      font-family:var(--mono);
+      font-size:12px;font-weight:900;
+      padding:5px 8px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(2,8,23,.03);
+      white-space:nowrap;
+    }
+    .chg.pos{color:var(--ok);border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.06)}
+    .chg.neg{color:var(--bad);border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.06)}
+    .spark-wrap{
+      margin-top:12px;
+      height:70px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:linear-gradient(135deg, rgba(37,99,235,.06), transparent 60%);
+      padding:10px;
+    }
+    #spySpark{width:100%;height:100%}
+
+    /* Section */
+    .section{padding:74px 0}
+    .kicker{
+      font-size:11px;font-weight:950;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--brand);margin-bottom:10px;
+    }
+    .lead{margin:10px 0 0;color:var(--muted);max-width:68ch}
+
+    /* Fund carousel */
+    .fund-carousel{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:18px;
+    }
+    .fund-track{
+      display:flex;
+      gap:18px;
+      overflow:auto hidden;
+      scroll-snap-type:x mandatory;
+      padding:14px 2px 18px;
+      scrollbar-width:none;
+    }
+    .fund-track::-webkit-scrollbar{display:none}
+    .fund-card{
+      scroll-snap-align:center;
+      width: min(420px, 86vw);
+      flex:0 0 auto;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .fund-face{
+      position:relative;
+      min-height:540px; /* ensures back chart + CTA never cut */
+      transform-style:preserve-3d;
+      perspective:1200px;
+    }
+
+    .fund-front, .fund-back{
+      position:absolute; inset:0;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .fund-back{
+      transform:rotateY(180deg);
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.88));
+    }
+
+    .fund-media{
+      height:220px;
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg, rgba(37,99,235,.16), rgba(14,165,233,.10));
+    }
+    .fund-media img{
+      width:100%;height:100%;object-fit:cover;
+      transform:scale(1.08);
+      filter:saturate(1.15) contrast(1.05);
+      transition:transform .8s var(--ease);
+    }
+    .fund-card:hover .fund-media img{transform:scale(1.18)}
+    .fund-media::after{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,0) 20%, rgba(255,255,255,.78));
+    }
+    .fund-head{
+      position:absolute;left:14px;top:14px;
+      display:flex;gap:10px;align-items:center;
+      padding:8px 10px;border-radius:999px;
+      background:rgba(255,255,255,.80);
+      border:1px solid var(--line);
+      box-shadow:0 12px 30px rgba(2,8,23,.10);
+      backdrop-filter: blur(10px);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--brand);
+      box-shadow:0 0 0 6px rgba(37,99,235,.12);
+    }
+    .fund-code{font-size:11px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
+    .fund-body{
+      padding:16px 16px 16px;
+      display:flex;flex-direction:column;gap:12px;
+      height:calc(100% - 220px);
+    }
+    .fund-name{font-size:1.25rem;font-weight:950;letter-spacing:-.02em;line-height:1.15}
+    .fund-stage{font-size:12px;color:var(--muted2);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+    .fund-desc{color:var(--muted);font-size:.96rem;margin:0}
+    .stats{
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background:linear-gradient(135deg, rgba(2,8,23,.02), rgba(37,99,235,.05));
+    }
+    .s-label{font-size:10px;color:var(--muted2);font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .s-val{
+      font-size:1.12rem;font-weight:950;margin-top:4px;
+      font-family:var(--mono);
+    }
+    .pos{color:var(--ok)} .neg{color:var(--bad)}
+
+    .alloc{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{
+      font-size:11px;font-weight:900;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(37,99,235,.22);
+      background:rgba(37,99,235,.08);
+      color:rgba(29,78,216,.95);
+    }
+
+    .fund-actions{
+      margin-top:auto;
+      display:flex;gap:10px;flex-wrap:wrap;
+      padding-top:8px;
+    }
+
+    .mini-btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      font-size:12px;font-weight:950;
+      padding:10px 12px;border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.92);
+      color:var(--ink);
+      box-shadow:0 12px 30px rgba(2,8,23,.10);
+      transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+      cursor:pointer;
+      user-select:none;
+    }
+    .mini-btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
+    .mini-btn.primary{
+      background:linear-gradient(135deg,var(--brand), #1d4ed8);
+      color:#fff;border-color:rgba(37,99,235,.35);
+    }
+
+    /* Back side chart layout */
+    .back-top{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    }
+    .back-title{
+      font-weight:950;letter-spacing:-.02em
+    }
+    .back-sub{
+      font-size:12px;color:var(--muted2);font-weight:800;margin-top:4px
+    }
+    .back-bench{
+      font-family:var(--mono);
+      font-size:12px;
+      font-weight:900;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(2,8,23,.03);
+      white-space:nowrap;
+    }
+    .back-body{
+      padding:14px 16px 16px;
+      display:flex;flex-direction:column;gap:10px;
+      height:calc(100% - 62px);
+    }
+    .chart-box{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:linear-gradient(135deg, rgba(37,99,235,.06), rgba(14,165,233,.05));
+      box-shadow:0 18px 44px rgba(2,8,23,.10);
+      padding:12px;
+      height:220px;
+    }
+    .chart-box canvas{width:100% !important;height:100% !important}
+    .legend{
+      display:flex;gap:14px;flex-wrap:wrap;
+      font-size:11px;color:var(--muted2);font-weight:800;
+    }
+    .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+    .back-actions{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+
+    /* Section backgrounds to break up white */
+    .band{
+      background:
+        radial-gradient(900px 420px at 20% 0%, rgba(37,99,235,.08), transparent 60%),
+        linear-gradient(to bottom, #fff, var(--bg2));
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
     }
-
-    .header-wrapper {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 48px;
-    }
-
-    .brand {
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      color: var(--text-primary);
-      transition: opacity 0.2s;
-    }
-
-    .brand:hover { opacity: 0.7; }
-
-    nav {
-      display: flex;
-      gap: 36px;
-      align-items: center;
-      margin-left: auto;
-    }
-
-    nav a {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: var(--text-primary); }
-
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding-top: 64px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-    }
-
-    #canvas-three {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.5;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.06) 0%, transparent 80%);
-      pointer-events: none;
-    }
-
-    .hero-content {
-      max-width: 960px;
-      padding: 0 40px;
-      z-index: 10;
-      position: relative;
-    }
-
-    .hero h1 {
-      margin-bottom: 24px;
-      opacity: 0;
-      transform: translateY(30px);
-      background: linear-gradient(135deg, #000 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero > p {
-      font-size: clamp(1rem, 1.5vw, 1.25rem);
-      line-height: 1.8;
-      margin-bottom: 48px;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-bottom: 80px;
-      flex-wrap: wrap;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .btn {
-      padding: 14px 36px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 12px 36px rgba(0, 102, 255, 0.5);
-      transform: translateY(-3px) scale(1.02);
-    }
-
-    .btn-secondary {
-      background: rgba(0, 102, 255, 0.08);
-      color: var(--accent);
-      border: 1.5px solid var(--accent);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(0, 102, 255, 0.15);
-      transform: translateY(-3px);
-    }
-
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      animation: float 3s ease-in-out infinite;
-      cursor: pointer;
-    }
-
-    .scroll-label {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-    }
-
-    .scroll-mouse {
-      width: 20px;
-      height: 32px;
-      border: 1.5px solid var(--text-tertiary);
-      border-radius: 10px;
-      position: relative;
-    }
-
-    .scroll-mouse::after {
-      content: '';
-      position: absolute;
-      top: 6px;
-      left: 50%;
-      width: 3px;
-      height: 6px;
-      background: var(--text-tertiary);
-      border-radius: 1.5px;
-      transform: translateX(-50%);
-      animation: scroll-down 1.5s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-8px); }
-    }
-
-    @keyframes scroll-down {
-      0%, 20%, 100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
-      50% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-
-    /* Ticker Section */
-    .ticker-section {
-      padding: 80px 48px;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .ticker-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .ticker-header {
-      text-align: center;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-tertiary);
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-
-    .ticker-container {
-      background: #fff;
-      border: 1px solid var(--border-light);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: var(--shadow-lg);
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    #financeTicker {
-      width: 100%;
-      height: 180px;
-      display: block;
-    }
-
-    /* Carousel Section */
-    .carousel-section {
-      padding: 160px 48px;
-      background: #fff;
-      position: relative;
-    }
-
-    .section-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 120px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .section-header h2 {
-      margin-bottom: 16px;
-    }
-
-    .section-header p {
-      font-size: 1.1rem;
-      max-width: 640px;
-      margin: 0 auto;
-    }
-
-    /* Horizontal Carousel */
-    .carousel-container {
-      position: relative;
-      margin-bottom: 80px;
-      overflow: hidden;
-    }
-
-    .carousel {
-      display: flex;
-      gap: 32px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      padding: 20px 0;
-      scrollbar-width: none;
-    }
-
-    .carousel::-webkit-scrollbar { display: none; }
-
-    .card-wrapper {
-      flex: 0 0 auto;
-      perspective: 1200px;
-      scroll-snap-align: center;
-    }
-
-    .flip-card {
-      width: 380px;
-      height: 500px;
-      position: relative;
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      transform-style: preserve-3d;
-      cursor: pointer;
-    }
-
-    .flip-card-content {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 20px;
-      box-shadow: var(--shadow-xl);
-      border: 1px solid var(--border-light);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .flip-card-front {
-      background: #fff;
-      overflow: hidden;
-    }
-
-    .flip-card-back {
-      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      color: #fff;
-      transform: rotateY(180deg);
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      text-align: center;
-    }
-
-    .flip-card:hover {
-      transform: rotateY(180deg) scale(1.02);
-    }
-
-    .card-image {
-      width: 100%;
-      height: 240px;
-      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.8;
-      transition: opacity 0.4s, transform 0.4s;
-    }
-
-    .flip-card:hover .card-image img {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
-    .card-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.7) 0%, rgba(0, 82, 204, 0.7) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 24px;
-      color: #fff;
-    }
-
-    .card-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.9;
-      margin-bottom: 8px;
-    }
-
-    .card-title {
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 4px;
-      letter-spacing: -0.02em;
-    }
-
-    .card-subtitle {
-      font-size: 13px;
-      opacity: 0.85;
-    }
-
-    .card-content {
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      flex: 1;
-      opacity: 0;
-      animation: fadeIn 0.6s ease-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card-description {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .card-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 16px;
-      background: var(--accent-light);
-      border-radius: 12px;
-      border: 1px solid var(--border-light);
-    }
-
-    .metric {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .metric-value {
-      font-size: 20px;
-      font-weight: 800;
-      font-family: 'SF Mono', 'Monaco', monospace;
-    }
-
-    .metric-value.positive { color: #00a854; }
-    .metric-value.neutral { color: var(--accent); }
-
-    .metric-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .card-allocation {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .alloc-tag {
-      padding: 5px 10px;
-      background: var(--accent-light);
-      border: 1px solid var(--border-light);
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent);
-      transition: all 0.2s;
-    }
-
-    .flip-card:hover .alloc-tag {
-      background: rgba(0, 102, 255, 0.15);
-      border-color: var(--accent);
-    }
-
-    .card-cta {
-      margin-top: auto;
-    }
-
-    .card-cta a {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      background: var(--accent-light);
-      color: var(--accent);
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.2s;
-      border: 1px solid var(--border-light);
-    }
-
-    .card-cta a:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
-      transform: translateX(2px);
-    }
-
-    /* Carousel Controls */
-    .carousel-controls {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      margin-top: 48px;
-    }
-
-    .carousel-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-light);
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .carousel-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-light);
-      transform: scale(1.05);
-    }
-
-    /* Stats Section */
-    .stats-section {
-      padding: 80px 0;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-      margin: 80px 0;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 48px;
-      text-align: center;
-    }
-
-    .stat {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    .stat-value {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin-bottom: 8px;
-      font-family: 'SF Mono', 'Monaco', monospace;
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-    }
-
-    /* Testimonials Section */
-    .testimonials-section {
-      padding: 160px 48px;
-      background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-      border-top: 1px solid var(--border-light);
-    }
-
-    .testimonials-header {
-      text-align: center;
-      margin-bottom: 80px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .testimonials-carousel {
-      position: relative;
-      max-width: 700px;
-      margin: 0 auto;
-      height: 200px;
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .testimonial {
-      position: absolute;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s, transform 0.7s;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .testimonial.active {
-      opacity: 1;
-      transform: translateY(0);
-      z-index: 1;
-    }
-
-    .testimonial-quote {
-      font-size: 1.2rem;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      font-weight: 500;
-      line-height: 1.8;
-      font-style: italic;
-    }
-
-    .testimonial-author {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
-    /* Features Section */
-    .features-section {
-      padding: 160px 48px;
-      background: #fff;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 48px;
-    }
-
-    .feature-card {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      padding: 32px;
-      background: #fff;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      opacity: 0;
-      transform: translateY(40px);
-    }
-
-    .feature-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow-xl);
-      background: var(--accent-light);
-      transform: translateY(-12px);
-    }
-
-    .feature-icon { font-size: 40px; line-height: 1; }
-    .feature-card h3 { font-size: 1.4rem; }
 
     /* Footer */
-    footer {
-      background: #fafafa;
-      border-top: 1px solid var(--border-light);
-      padding: 80px 48px 48px;
-    }
+    .site-footer{border-top:1px solid var(--line);background:#fff;padding:26px 0}
+    .footer-inner{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .footer-brand{font-size:14px;font-weight:900}
+    .footer-sub{font-size:12px;color:var(--muted2);font-weight:650}
+    .footer-links{display:flex;gap:14px;flex-wrap:wrap}
+    .footer-links a{font-size:12px;color:var(--muted);font-weight:750}
+    .footer-links a:hover{color:var(--ink)}
 
-    .footer-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 64px;
-      margin-bottom: 64px;
-    }
-
-    .footer-col h4 {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-    }
-
-    .footer-col a {
-      display: block;
-      font-size: 13px;
-      color: var(--text-secondary);
-      text-decoration: none;
-      margin-bottom: 12px;
-      transition: color 0.2s;
-    }
-
-    .footer-col a:hover { color: var(--accent); }
-
-    .footer-bottom {
-      border-top: 1px solid var(--border-light);
-      padding-top: 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
-      font-size: 12px;
-      color: var(--text-tertiary);
-    }
-
-    /* Responsive */
-    @media (max-width: 1200px) {
-      header { padding: 0 32px; }
-      .carousel-section, .features-section, .testimonials-section, .ticker-section { padding: 100px 32px; }
-      .flip-card { width: 320px; height: 420px; }
-    }
-
-    @media (max-width: 768px) {
-      header { padding: 0 20px; height: 56px; }
-      nav { display: none; }
-      .hero { padding-top: 56px; }
-      .hero-content { padding: 0 20px; }
-      .hero h1 { font-size: 2.2rem; }
-      .carousel-section, .features-section, .testimonials-section, .ticker-section { padding: 80px 20px; }
-      .flip-card { width: 90vw; height: auto; aspect-ratio: 3/4; }
-      .features-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-      .ticker-container { padding: 20px; }
-      #financeTicker { height: 150px; }
-    }
-
-    @media (max-width: 480px) {
-      header { padding: 0 16px; }
-      h1 { font-size: 1.8rem; }
-      .carousel-section, .features-section, .testimonials-section, .ticker-section { padding: 60px 16px; }
-      .btn { width: 100%; justify-content: center; }
-      .flip-card { width: 100%; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .ticker-container { padding: 16px; }
-      #financeTicker { height: 120px; }
+    @media (max-width: 980px){
+      .hero-inner{grid-template-columns:1fr}
+      .hero-side{justify-content:flex-start}
     }
   </style>
 </head>
-<body>
-  <canvas id="canvas-three"></canvas>
 
-  <!-- Header -->
-  <header>
-    <div class="header-wrapper">
-      <a class="brand" href="/">The Market Brief Daily</a>
-      <nav>
-        <a href="/" class="active">Home</a>
-        <a href="#ticker">Ticker</a>
-        <a href="#carousel">Funds</a>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
         <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Institutional Market Analysis</h1>
-      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
-      <div class="hero-cta">
-        <a href="#carousel" class="btn btn-primary">Explore Funds</a>
-        <a href="#ticker" class="btn btn-secondary">View Ticker</a>
-      </div>
+  <section class="hero" aria-label="Hero">
+    <div id="meshWrap" aria-hidden="true">
+      <canvas id="meshCanvas"></canvas>
     </div>
-    <div class="scroll-indicator">
-      <span class="scroll-label">Scroll to explore</span>
-      <div class="scroll-mouse"></div>
-    </div>
-  </section>
+    <div class="hero-scrim" aria-hidden="true"></div>
 
-  <!-- Ticker Section -->
-  <section class="ticker-section" id="ticker">
-    <div class="ticker-wrapper">
-      <div class="ticker-header">
-        <span class="label">Real-Time Data</span>
-        <h2>Market Performance Ticker</h2>
-        <p>Live performance metrics of our flagship funds</p>
-      </div>
+    <div class="container hero-inner">
+      <div>
+        <div class="hero-eyebrow">Independent Research</div>
+        <h1>We analyse <span class="grad">markets and macro</span></h1>
+        <p class="hero-desc">
+          Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative strategies — delivered clearly.
+        </p>
 
-      <div class="ticker-container">
-        <canvas id="financeTicker"></canvas>
-      </div>
-    </div>
-  </section>
-
-  <!-- Carousel Section -->
-  <section class="carousel-section" id="carousel">
-    <div class="section-wrapper">
-      <div class="section-header">
-        <span class="label">Investment Funds</span>
-        <h2>Explore Our Strategies</h2>
-        <p>Four quantitative frameworks for distinct market conditions. Click or hover to flip cards.</p>
-      </div>
-
-      <div class="carousel-container">
-        <div class="carousel" id="carouselEl">
-          <!-- Cards populated by JavaScript -->
+        <div class="hero-actions">
+          <a class="btn primary" href="/posts.html">Read latest</a>
+          <a class="btn ghost" href="#funds">Explore funds</a>
+          <a class="btn ghost" href="/about.html">About</a>
         </div>
+        <p class="hero-note">Not investment advice. For informational purposes only.</p>
       </div>
 
-      <div class="carousel-controls">
-        <button class="carousel-btn" onclick="scrollCarousel(-1)">←</button>
-        <button class="carousel-btn" onclick="scrollCarousel(1)">→</button>
-      </div>
-    </div>
-  </section>
+      <div class="hero-side">
+        <aside class="hero-card" aria-label="Bloomberg-style SPY banner">
+          <div class="hero-card-top">
+            <span class="terminal-pill">MARKETS</span>
+            <span class="asof" id="asOf">As of —</span>
+          </div>
+          <div class="hero-card-body">
+            <div class="bloomberg-row">
+              <div>
+                <div class="sym">SPY <span style="color:var(--muted2);font-weight:800;font-size:12px">S&amp;P 500 ETF</span></div>
+              </div>
+              <div style="text-align:right">
+                <div class="last" id="spyLast">—</div>
+                <div class="chg" id="spyChg">—</div>
+              </div>
+            </div>
 
-  <!-- Stats -->
-  <div class="section-wrapper">
-    <div class="stats-section">
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-value" data-value="2400">0</div>
-          <div class="stat-label">Million AUM</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-value="15">0</div>
-          <div class="stat-label">Years Experience</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-value="89">0</div>
-          <div class="stat-label">% Satisfaction</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-value="24">0</div>
-          <div class="stat-label">/7 Monitoring</div>
-        </div>
-      </div>
-    </div>
-  </div>
+            <div class="spark-wrap">
+              <canvas id="spySpark"></canvas>
+            </div>
 
-  <!-- Testimonials -->
-  <section class="testimonials-section">
-    <div class="section-wrapper">
-      <div class="testimonials-header">
-        <span class="label">Client Testimonials</span>
-        <h2>Trusted by Leading Firms</h2>
-      </div>
-
-      <div class="testimonials-carousel" id="testimonialsCarousel">
-        <!-- Testimonials populated by JavaScript -->
+            <div style="margin-top:10px;font-size:12px;color:var(--muted2);font-weight:750">
+              Data source: local JSON (GitHub Pages-safe). Automate updates via GitHub Actions for “real” refresh.
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section class="features-section">
-    <div class="section-wrapper">
-      <div class="section-header">
-        <span class="label">Methodology</span>
-        <h2>How We Think</h2>
-        <p>Three pillars guide every investment decision and research initiative.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Market Structure</h3>
-          <p>We analyze positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price recognition.</p>
+  <main id="content">
+    <section class="section band" id="funds">
+      <div class="container">
+        <div>
+          <div class="kicker">Investment Funds</div>
+          <h2 style="margin:0;letter-spacing:-.03em;font-weight:950">Interactive fund carousel</h2>
+          <p class="lead">
+            Tap a card to flip. Back side shows <strong>Fund vs Benchmark</strong> chart.
+            Benchmarks: Fund I → AOR, Fund II → SPY, Fund III → SPY, Fund IV → ACWI.
+          </p>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
-          <h3>Physical Supply</h3>
-          <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
-        </div>
+        <div class="fund-carousel">
+          <div class="fund-track" id="fundTrack" aria-label="Fund carousel"></div>
 
-        <div class="feature-card">
-          <div class="feature-icon">🔗</div>
-          <h3>Macro Transmission</h3>
-          <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities with measurable precision.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button class="mini-btn" type="button" id="prevBtn">← Prev</button>
+            <button class="mini-btn" type="button" id="nextBtn">Next →</button>
+            <a class="mini-btn primary" href="/investments.html">View all funds</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-wrapper">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Product</h4>
-          <a href="#carousel">Investment Funds</a>
-          <a href="#">Research</a>
-          <a href="/about.html">About Us</a>
-        </div>
+    <section class="section">
+      <div class="container">
+        <div class="kicker">Method</div>
+        <h2 style="margin:0;letter-spacing:-.03em;font-weight:950">How we think</h2>
+        <p class="lead">Three pillars guide our research and portfolio construction.</p>
 
-        <div class="footer-col">
-          <h4>Resources</h4>
-          <a href="#">Blog</a>
-          <a href="#">Contact</a>
-          <a href="/">Home</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Disclaimer</a>
-        </div>
-
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <a href="#">Twitter</a>
-          <a href="#">LinkedIn</a>
-          <a href="#">Substack</a>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px">
+          <article style="border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow2);padding:16px">
+            <div style="font-size:26px">📊</div>
+            <h3 style="margin:8px 0 6px">Market structure</h3>
+            <p style="margin:0">Positioning, inventory, and delivery mechanics to detect imbalances early.</p>
+          </article>
+          <article style="border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow2);padding:16px">
+            <div style="font-size:26px">⚙️</div>
+            <h3 style="margin:8px 0 6px">Physical supply</h3>
+            <p style="margin:0">Warehouse flows, lease rates, and tightness indicators that futures miss.</p>
+          </article>
+          <article style="border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow2);padding:16px">
+            <div style="font-size:26px">🔗</div>
+            <h3 style="margin:8px 0 6px">Macro transmission</h3>
+            <p style="margin:0">Rates, USD, and liquidity mapped into commodities and risk assets.</p>
+          </article>
         </div>
       </div>
+    </section>
+  </main>
 
-      <div class="footer-bottom">
-        <span>&copy; 2025 The Market Brief Daily</span>
-        <span>Market structure • Physical supply • Macro transmission</span>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">The Market Brief Daily</div>
+        <div class="footer-sub">Market structure &amp; physical supply analysis.</div>
+      </div>
+      <div class="footer-links">
+        <a href="/posts.html">Posts</a>
+        <a href="/investments.html">Investments</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/disclaimer.html">Disclaimer</a>
       </div>
     </div>
   </footer>
@@ -986,485 +577,571 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ============================================
-    // THREE.JS MESH BACKGROUND
-    // ============================================
-    function initThreeMesh() {
-      const canvas = document.getElementById('canvas-three');
-      if (!canvas) return;
+    /* -----------------------------
+      1) Three.js Mesh Background (smooth, stable delta)
+    ------------------------------*/
+    (function initMesh(){
+      const wrap = document.getElementById('meshWrap');
+      const canvas = document.getElementById('meshCanvas');
+      if(!wrap || !canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0);
-      camera.position.z = 8;
 
-      // Create geometry with wave shader
-      const geometry = new THREE.PlaneGeometry(16, 9, 120, 80);
-      
-      const vertexShader = `
-        uniform float uTime;
-        varying float vWave;
-        varying vec2 vUv;
-        
-        void main() {
-          vUv = uv;
-          float freq1 = 2.0;
-          float freq2 = 1.5;
-          float amp1 = 0.08;
-          float amp2 = 0.06;
-          
-          float wave = sin(position.x * freq1 + uTime * 1.2) * amp1;
-          wave += cos(position.y * freq2 + uTime * 0.8) * amp2;
-          wave += sin((position.x + position.y) * 0.8 + uTime * 1.5) * 0.04;
-          
-          vWave = wave;
-          vec3 newPos = position + normal * wave;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
-        }
-      `;
-      
-      const fragmentShader = `
-        varying float vWave;
-        varying vec2 vUv;
-        
-        void main() {
-          vec3 color1 = vec3(0.0, 0.4, 1.0);
-          vec3 color2 = vec3(0.2, 0.6, 1.0);
-          
-          float mix_val = (vWave + 0.15) * 2.0;
-          vec3 finalColor = mix(color1, color2, mix_val);
-          
-          float alpha = 0.5 + vWave * 0.5;
-          gl_FragColor = vec4(finalColor, alpha);
-        }
-      `;
+      const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 100);
+      camera.position.set(0, 0, 7);
+
+      const geometry = new THREE.PlaneGeometry(16, 9, 120, 72);
 
       const material = new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms: {
-          uTime: { value: 0 }
-        },
         transparent: true,
-        wireframe: false
+        uniforms: {
+          uTime: { value: 0 },
+          uMouse: { value: new THREE.Vector2(0,0) }
+        },
+        vertexShader: `
+          uniform float uTime;
+          uniform vec2 uMouse;
+          varying float vWave;
+          varying vec2 vUv;
+
+          void main(){
+            vUv = uv;
+
+            float t = uTime;
+            float mx = (uMouse.x - 0.5) * 2.0;
+            float my = (uMouse.y - 0.5) * 2.0;
+
+            float freq1 = 1.8;
+            float freq2 = 1.35;
+            float amp1 = 0.14;
+            float amp2 = 0.10;
+
+            float wave = sin(position.x * freq1 + t*1.10) * amp1;
+            wave += cos(position.y * freq2 + t*0.85) * amp2;
+            wave += sin((position.x + position.y) * 0.75 + t*1.35) * 0.08;
+
+            // subtle mouse influence
+            wave += sin(position.x*0.7 + t*1.2) * (mx*0.06);
+            wave += cos(position.y*0.6 + t*1.1) * (my*0.06);
+
+            vWave = wave;
+
+            vec3 newPos = position;
+            newPos.z += wave;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying float vWave;
+          varying vec2 vUv;
+
+          void main(){
+            vec3 c1 = vec3(0.145, 0.388, 0.922); // blue
+            vec3 c2 = vec3(0.055, 0.647, 0.914); // cyan
+            vec3 c3 = vec3(0.016, 0.063, 0.15);  // ink-ish
+
+            float g = smoothstep(0.0, 1.0, vUv.y);
+            float m = clamp((vWave + 0.25) * 1.9, 0.0, 1.0);
+
+            vec3 base = mix(c1, c2, g);
+            vec3 col = mix(base, c3, 0.06);
+
+            // alpha: keep it subtle on white
+            float a = 0.18 + m * 0.22;
+            gl_FragColor = vec4(col, a);
+          }
+        `
       });
 
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
 
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-      scene.add(ambientLight);
+      // light motion via slight rotations (kept minimal)
+      mesh.rotation.x = -0.08;
+      mesh.rotation.y = 0.10;
 
-      const pointLight = new THREE.PointLight(0x0066ff, 0.5);
-      pointLight.position.set(10, 10, 10);
-      scene.add(pointLight);
+      const clock = new THREE.Clock();
+      let raf = 0;
 
-      let animationId;
-      let time = 0;
-
-      function animate() {
-        animationId = requestAnimationFrame(animate);
-        time += 0.01;
-        material.uniforms.uTime.value = time;
-        renderer.render(scene, camera);
-      }
-
-      function onWindowResize() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-        camera.aspect = width / height;
+      function resize(){
+        const r = wrap.getBoundingClientRect();
+        const w = Math.max(1, r.width);
+        const h = Math.max(1, r.height);
+        renderer.setSize(w, h, false);
+        camera.aspect = w/h;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
       }
 
-      window.addEventListener('resize', onWindowResize);
-      animate();
-
-      return () => {
-        cancelAnimationFrame(animationId);
-        window.removeEventListener('resize', onWindowResize);
-        geometry.dispose();
-        material.dispose();
-        renderer.dispose();
+      let mouseX = 0.5, mouseY = 0.5;
+      const onMove = (e) => {
+        const r = wrap.getBoundingClientRect();
+        mouseX = (e.clientX - r.left) / r.width;
+        mouseY = (e.clientY - r.top) / r.height;
+        mouseX = Math.min(1, Math.max(0, mouseX));
+        mouseY = Math.min(1, Math.max(0, mouseY));
       };
-    }
+      window.addEventListener('mousemove', onMove, { passive:true });
+      window.addEventListener('resize', resize);
 
-    // ============================================
-    // FUND DATA
-    // ============================================
+      resize();
+
+      function frame(){
+        const dt = Math.min(clock.getDelta(), 0.03);
+        material.uniforms.uTime.value += dt;
+        // damped mouse follow
+        const ux = material.uniforms.uMouse.value.x;
+        const uy = material.uniforms.uMouse.value.y;
+        material.uniforms.uMouse.value.x = ux + (mouseX - ux) * 0.07;
+        material.uniforms.uMouse.value.y = uy + (mouseY - uy) * 0.07;
+
+        // ultra subtle drift
+        mesh.rotation.y += 0.0006;
+        mesh.rotation.x = -0.08 + Math.sin(material.uniforms.uTime.value * 0.6) * 0.01;
+
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    /* -----------------------------
+      2) Data (funds + benchmarks)
+    ------------------------------*/
     const funds = [
       {
-        name: 'Active Rotation',
-        code: 'Fund I',
-        shortDesc: 'Macro-driven sector rotation',
-        desc: 'Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals.',
-        return: 18.32,
-        bench: 'SPY',
-        benchReturn: 24.56,
-        outperformance: -6.24,
-        allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%'],
-        image: '/assets/images/investments/fund1-bg.webp',
-        backText: 'Nimble. Responsive. Institutional-Grade.'
+        id:"f1",
+        code:"F1",
+        name:"Fund I — Active",
+        stage:"Active Rotation",
+        desc:"Dynamic rotation across gold, broad ESG equity, and staples based on macro risk signals.",
+        allocation:["GLD","ESGU","XLP"],
+        // These are display-only; the back chart is Fund vs Benchmark from time-series.
+        r1y:12.45,
+        bench:"AOR",
+        color:"#2563eb",
+        img:"/assets/images/investments/fund1-bg.webp",
+        backTitle:"Fund I vs AOR"
       },
       {
-        name: 'Market Tracker',
-        code: 'Fund II',
-        shortDesc: 'Broad market-cap exposure',
-        desc: 'Market-cap weighted index replication with broad exposure and minimal cost drag.',
-        return: 24.56,
-        bench: 'SPY',
-        benchReturn: 24.56,
-        outperformance: 0.00,
-        allocation: ['VTI 100%'],
-        image: '/assets/images/investments/fund2-bg.webp',
-        backText: 'Core Holdings. Timeless. Efficient.'
+        id:"f2",
+        code:"F2",
+        name:"Fund II — Tracker",
+        stage:"Market-Cap Weighted",
+        desc:"Broad market tracking via total market exposure (core sleeve).",
+        allocation:["VTI"],
+        r1y:8.32,
+        bench:"SPY",
+        color:"#7c3aed",
+        img:"/assets/images/investments/fund2-bg.webp",
+        backTitle:"Fund II vs SPY"
       },
       {
-        name: 'Value Factor',
-        code: 'Fund III',
-        shortDesc: 'Fama-French small-cap tilt',
-        desc: 'Small-cap value tilt using Fama-French factor premia for long-run outperformance.',
-        return: 31.45,
-        bench: 'SPY',
-        benchReturn: 24.56,
-        outperformance: 6.89,
-        allocation: ['VBR 60%', 'IJS 40%'],
-        image: '/assets/images/investments/fund3-bg.webp',
-        backText: 'Premia Capture. Patient. Rewarding.'
+        id:"f3",
+        code:"F3",
+        name:"Fund III — Value Factor",
+        stage:"Factor Tilt",
+        desc:"Small-cap value tilt informed by classic factor premia and mean reversion.",
+        allocation:["VBR","IJS"],
+        r1y:15.67,
+        bench:"SPY",
+        color:"#db2777",
+        img:"/assets/images/investments/fund3-bg.webp",
+        backTitle:"Fund III vs SPY"
       },
       {
-        name: 'ESG Global',
-        code: 'Fund IV',
-        shortDesc: 'Sustainability-screened portfolio',
-        desc: 'Sustainability-screened multi-region portfolio with governance bias and balanced exposure.',
-        return: 20.87,
-        bench: 'ACWX',
-        benchReturn: 19.45,
-        outperformance: 1.42,
-        allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%'],
-        image: '/assets/images/investments/fund4-bg.webp',
-        backText: 'Responsible. Global. Intentional.'
+        id:"f4",
+        code:"F4",
+        name:"Fund IV — ESG Global",
+        stage:"Sustainability",
+        desc:"Sustainability-screened global sleeve across US + global exposures.",
+        allocation:["ESGU","ESGV","ESGE"],
+        r1y:9.18,
+        bench:"ACWI",
+        color:"#0ea5e9",
+        img:"/assets/images/investments/fund4-bg.webp",
+        backTitle:"Fund IV vs ACWI"
       }
     ];
 
-    // ============================================
-    // TESTIMONIALS
-    // ============================================
-    const testimonials = [
-      {
-        quote: '"Their quantitative approach to market analysis is unparalleled. The insights have directly improved our portfolio performance."',
-        author: 'Margaret Chen — CIO, Global Capital Partners'
-      },
-      {
-        quote: '"Institutional-grade research without the institutional markup. Exactly what we were looking for."',
-        author: 'James Richardson — Head of Strategy, Pinnacle Investments'
-      },
-      {
-        quote: '"The macro transmission framework fundamentally changed how we think about risk. Highly recommended."',
-        author: 'Sarah Khan — Portfolio Manager, Horizon Advisors'
-      },
-      {
-        quote: '"Precision, rigor, and intellectual honesty. A rare combination in today\'s market analysis landscape."',
-        author: 'David Mueller — Principal, Alpine Investment Group'
+    const charts = new Map(); // fundId => Chart instance
+    const flipped = new Set(); // fundId
+    const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+
+    /* -----------------------------
+      3) Market JSON loader (GitHub Pages safe)
+         Expected file: /assets/data/market.json
+    ------------------------------*/
+    async function loadMarket(){
+      const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
+      if(!res.ok) throw new Error('Missing /assets/data/market.json');
+      return res.json();
+    }
+
+    function seriesToIndex(series){
+      // series: [{t:"YYYY-MM-DD", c:number}, ...]
+      // Return normalized index series starting at 100.
+      if(!Array.isArray(series) || series.length < 2) return null;
+      const base = series[0].c;
+      if(!base) return null;
+      return series.map(p => ({ t:p.t, v: (p.c / base) * 100 }));
+    }
+
+    function computeChange(series){
+      // from last two closes in series
+      if(!Array.isArray(series) || series.length < 2) return null;
+      const a = series[series.length-2].c;
+      const b = series[series.length-1].c;
+      const chg = b - a;
+      const pct = (chg / a) * 100;
+      return { last:b, chg, pct };
+    }
+
+    /* -----------------------------
+      4) Bloomberg banner (SPY) + sparkline
+    ------------------------------*/
+    function renderSpyBanner(market){
+      const asOfEl = document.getElementById('asOf');
+      const lastEl = document.getElementById('spyLast');
+      const chgEl = document.getElementById('spyChg');
+
+      const spy = market?.series?.SPY;
+      if(!spy || spy.length < 3) return;
+
+      const asOf = market.asOf ? new Date(market.asOf) : null;
+      asOfEl.textContent = asOf ? `As of ${asOf.toLocaleString()}` : 'As of —';
+
+      const ch = computeChange(spy);
+      if(!ch) return;
+
+      lastEl.textContent = ch.last.toFixed(2);
+
+      const cls = ch.chg >= 0 ? 'pos' : 'neg';
+      chgEl.className = `chg ${cls}`;
+      chgEl.textContent = `${ch.chg >= 0 ? '+' : ''}${ch.chg.toFixed(2)}  (${ch.pct >= 0 ? '+' : ''}${ch.pct.toFixed(2)}%)`;
+
+      // Sparkline
+      const ctx = document.getElementById('spySpark');
+      if(!ctx) return;
+
+      // Destroy existing chart if any
+      if(charts.has('SPY_SPARK')) {
+        charts.get('SPY_SPARK').destroy();
+        charts.delete('SPY_SPARK');
       }
-    ];
 
-    // ============================================
-    // CREATE CAROUSEL CARDS
-    // ============================================
-    function initCarousel() {
-      const carousel = document.getElementById('carouselEl');
+      const data = spy.slice(-60).map(p => p.c);
+      const labels = spy.slice(-60).map(p => p.t);
 
-      funds.forEach((fund, idx) => {
-        const outColor = fund.outperformance >= 0 ? 'positive' : 'neutral';
+      const spark = new Chart(ctx, {
+        type:'line',
+        data:{
+          labels,
+          datasets:[{
+            data,
+            borderColor:'rgba(37,99,235,.95)',
+            backgroundColor:'rgba(37,99,235,.10)',
+            borderWidth:2,
+            pointRadius:0,
+            tension:.35,
+            fill:true
+          }]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{legend:{display:false}, tooltip:{enabled:false}},
+          scales:{x:{display:false}, y:{display:false}},
+          animation:{duration:520, easing:'easeOutQuart'}
+        }
+      });
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'card-wrapper';
-        wrapper.style.setProperty('--delay', `${idx * 0.1}s`);
-        wrapper.innerHTML = `
-          <div class="flip-card">
-            <div class="flip-card-content flip-card-front">
-              <div class="card-image">
-                <img src="${fund.image}" alt="${fund.name}" />
-                <div class="card-overlay">
-                  <div class="card-label">${fund.code}</div>
-                  <div class="card-title">${fund.name}</div>
-                  <div class="card-subtitle">${fund.shortDesc}</div>
+      charts.set('SPY_SPARK', spark);
+    }
+
+    /* -----------------------------
+      5) Render fund carousel
+    ------------------------------*/
+    function renderFunds(){
+      const track = document.getElementById('fundTrack');
+      track.innerHTML = funds.map(f=>{
+        const rel = 0; // alpha shown on back computed from series; keep front simple
+        return `
+          <article class="fund-card" data-fund="${f.id}">
+            <div class="fund-face" id="face-${f.id}">
+              <!-- FRONT -->
+              <div class="fund-front">
+                <div class="fund-media">
+                  <img src="${f.img}" alt="${f.name}" loading="lazy" />
+                  <div class="fund-head">
+                    <span class="dot" style="background:${f.color};box-shadow:0 0 0 6px ${f.color}22"></span>
+                    <span class="fund-code" style="color:${f.color}">${f.code}</span>
+                  </div>
+                </div>
+
+                <div class="fund-body">
+                  <div>
+                    <div class="fund-name">${f.name}</div>
+                    <div class="fund-stage">${f.stage}</div>
+                  </div>
+                  <p class="fund-desc">${f.desc}</p>
+
+                  <div class="stats">
+                    <div>
+                      <div class="s-label">Headline</div>
+                      <div class="s-val">${f.stage}</div>
+                    </div>
+                    <div>
+                      <div class="s-label">Benchmark</div>
+                      <div class="s-val">${f.bench}</div>
+                    </div>
+                  </div>
+
+                  <div class="alloc">${f.allocation.map(t=>`<span class="pill">${t}</span>`).join("")}</div>
+
+                  <div class="fund-actions">
+                    <button class="mini-btn primary" type="button" data-action="flip" data-fund="${f.id}">Flip → chart</button>
+                    <a class="mini-btn" href="/investments.html">Details</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-content">
-                <p class="card-description">${fund.desc}</p>
-                <div class="card-metrics">
-                  <div class="metric">
-                    <div class="metric-value positive">${fund.return.toFixed(2)}%</div>
-                    <div class="metric-label">1Y Return</div>
+
+              <!-- BACK -->
+              <div class="fund-back">
+                <div class="back-top">
+                  <div>
+                    <div class="back-title">${f.backTitle}</div>
+                    <div class="back-sub">Indexed to 100. Fund (solid) vs ${f.bench} (dashed).</div>
                   </div>
-                  <div class="metric">
-                    <div class="metric-value ${outColor}">${fund.outperformance >= 0 ? '+' : ''}${fund.outperformance.toFixed(2)}%</div>
-                    <div class="metric-label">vs ${fund.bench}</div>
+                  <div class="back-bench">BENCH: ${f.bench}</div>
+                </div>
+
+                <div class="back-body">
+                  <div class="chart-box">
+                    <canvas id="chart-${f.id}" aria-label="${f.name} chart"></canvas>
                   </div>
-                </div>
-                <div class="card-allocation">
-                  ${fund.allocation.map(a => `<span class="alloc-tag">${a}</span>`).join('')}
-                </div>
-                <div class="card-cta">
-                  <a href="/investments.html">View Details →</a>
+
+                  <div class="legend">
+                    <span><i style="background:${f.color}"></i>${f.code}</span>
+                    <span><i style="background:rgba(2,8,23,.45)"></i>${f.bench}</span>
+                  </div>
+
+                  <div class="back-actions">
+                    <button class="mini-btn" type="button" data-action="flip" data-fund="${f.id}">← Back</button>
+                    <a class="mini-btn primary" href="/investments.html">All funds</a>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="flip-card-content flip-card-back">
-              <h3>${fund.backText}</h3>
-            </div>
-          </div>
+          </article>
         `;
-
-        carousel.appendChild(wrapper);
-      });
+      }).join("");
     }
 
-    function scrollCarousel(direction) {
-      const carousel = document.getElementById('carouselEl');
-      const scrollAmount = 420;
-      carousel.scrollBy({
-        left: direction * scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+    /* -----------------------------
+      6) Smooth flip (GSAP) + lazy chart init
+    ------------------------------*/
+    function ensureFundChart(fundId, market){
+      const fund = funds.find(x => x.id === fundId);
+      if(!fund) return;
 
-    // ============================================
-    // FINANCIAL TICKER CHART
-    // ============================================
-    function initTicker() {
-      const canvas = document.getElementById('financeTicker');
-      if (!canvas) return;
+      // Benchmark must exist in JSON
+      const benchSeries = market?.series?.[fund.bench];
+      if(!benchSeries || benchSeries.length < 10) return;
 
-      const ctx = canvas.getContext('2d');
-      
-      let currentPrice = 100;
-      const maxDataPoints = 50;
-      const initialLabels = Array.from({length: maxDataPoints}, (_, i) => '');
-      const initialData = Array.from({length: maxDataPoints}, () => {
-        currentPrice = randomPrice(currentPrice);
-        return currentPrice;
-      });
+      // FUND series: You may not have actual NAV series.
+      // For now: we create a *model* fund series by blending benchmark + small drift/noise,
+      // but if you later add real fund series to market.json, we will use it automatically.
+      const fundKey = `FUND_${fund.code}`; // optional future
+      const realFundSeries = market?.series?.[fundKey];
 
-      function randomPrice(prev = 100) {
-        const delta = (Math.random() - 0.5) * 3;
-        return +(prev + delta).toFixed(2);
-      }
+      const benchIdx = seriesToIndex(benchSeries);
+      if(!benchIdx) return;
 
-      const data = {
-        labels: initialLabels,
-        datasets: [{
-          label: 'Fund Performance',
-          data: initialData,
-          fill: true,
-          borderColor: '#0066ff',
-          backgroundColor: 'rgba(0, 102, 255, 0.1)',
-          tension: 0.4,
-          pointRadius: 0,
-          borderWidth: 2,
-        }]
-      };
-
-      const config = {
-        type: 'line',
-        data: data,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: false }
-          },
-          animation: {
-            duration: 300,
-            easing: 'linear'
-          },
-          scales: {
-            x: { display: false },
-            y: { display: false }
-          }
-        }
-      };
-
-      const tickerChart = new Chart(ctx, config);
-
-      setInterval(() => {
-        currentPrice = randomPrice(currentPrice);
-        data.datasets[0].data.push(currentPrice);
-        if (data.datasets[0].data.length > maxDataPoints) {
-          data.datasets[0].data.shift();
-        }
-        tickerChart.update();
-      }, 500);
-    }
-
-    // ============================================
-    // TESTIMONIALS CAROUSEL
-    // ============================================
-    function initTestimonials() {
-      const container = document.getElementById('testimonialsCarousel');
-      let currentIndex = 0;
-
-      testimonials.forEach((testi, idx) => {
-        const div = document.createElement('div');
-        div.className = 'testimonial' + (idx === 0 ? ' active' : '');
-        div.innerHTML = `
-          <div class="testimonial-quote">${testi.quote}</div>
-          <div class="testimonial-author">${testi.author}</div>
-        `;
-        container.appendChild(div);
-      });
-
-      setInterval(() => {
-        const all = container.querySelectorAll('.testimonial');
-        all.forEach(t => t.classList.remove('active'));
-        currentIndex = (currentIndex + 1) % testimonials.length;
-        all[currentIndex].classList.add('active');
-      }, 4000);
-    }
-
-    // ============================================
-    // ANIMATE STATS ON SCROLL
-    // ============================================
-    function animateStats() {
-      gsap.to('.stat', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.stats-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      document.querySelectorAll('.stat-value').forEach(el => {
-        const target = parseInt(el.dataset.value);
-        gsap.to(el, {
-          innerText: target,
-          duration: 2.5,
-          snap: { innerText: 1 },
-          scrollTrigger: {
-            trigger: '.stats-section',
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
+      let fundIdx;
+      if(realFundSeries && realFundSeries.length >= 10){
+        fundIdx = seriesToIndex(realFundSeries);
+      } else {
+        // Model: follow benchmark with small idiosyncratic component (stable seed)
+        const seed = fundId.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+        fundIdx = benchIdx.map((p, i) => {
+          const wobble = Math.sin((i+seed)*0.22)*0.55 + Math.cos((i+seed)*0.13)*0.45;
+          const drift = (fundId === "f3") ? 0.03 : (fundId === "f1" ? 0.012 : 0.016);
+          const v = p.v * (1 + (wobble*0.0035) + (i/benchIdx.length)*drift*0.002);
+          return { t:p.t, v };
         });
+      }
+
+      const canvas = document.getElementById(`chart-${fundId}`);
+      if(!canvas) return;
+
+      // Destroy if exists
+      if(charts.has(fundId)){
+        charts.get(fundId).destroy();
+        charts.delete(fundId);
+      }
+
+      const labels = benchIdx.map(p => p.t);
+      const a = fundIdx.map(p => p.v);
+      const b = benchIdx.map(p => p.v);
+
+      const chart = new Chart(canvas, {
+        type:'line',
+        data:{
+          labels,
+          datasets:[
+            {
+              data:a,
+              borderColor:fund.color,
+              backgroundColor:fund.color + "18",
+              borderWidth:2.25,
+              pointRadius:0,
+              tension:.35,
+              fill:true
+            },
+            {
+              data:b,
+              borderColor:"rgba(2,8,23,.45)",
+              borderDash:[7,6],
+              borderWidth:1.75,
+              pointRadius:0,
+              tension:.35,
+              fill:false
+            }
+          ]
+        },
+        options:{
+          responsive:true,
+          maintainAspectRatio:false,
+          plugins:{legend:{display:false}, tooltip:{enabled:false}},
+          scales:{x:{display:false}, y:{display:false}},
+          animation:{duration:650, easing:'easeOutQuart'}
+        }
       });
+
+      charts.set(fundId, chart);
     }
 
-    // ============================================
-    // SCROLL ANIMATIONS
-    // ============================================
-    function initScrollAnimations() {
-      const heroTimeline = gsap.timeline();
-      heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
-      heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
-      heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
+    function flipTo(fundId, toBack, market){
+      const face = document.getElementById(`face-${fundId}`);
+      if(!face) return;
 
-      gsap.to('.ticker-header', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.ticker-section',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
+      if(toBack){
+        ensureFundChart(fundId, market);
+      }
+
+      // GSAP smooth flip with "soft" easing
+      gsap.to(face, {
+        rotateY: toBack ? 180 : 0,
+        duration: 0.78,
+        ease: "power3.inOut",
+        transformPerspective: 1200,
+        transformOrigin: "50% 50%",
+        force3D: true
       });
 
-      gsap.to('.ticker-container', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.ticker-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.section-header', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        scrollTrigger: {
-          trigger: '.carousel-section',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.card-wrapper', {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.05,
-        scrollTrigger: {
-          trigger: '.carousel-container',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.testimonials-header', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.testimonials-section',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.testimonials-carousel', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.testimonials-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      gsap.to('.feature-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: '.features-grid',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
+      if(toBack) flipped.add(fundId);
+      else flipped.delete(fundId);
     }
 
-    // ============================================
-    // INITIALIZE
-    // ============================================
-    window.addEventListener('load', () => {
-      initThreeMesh();
-      initCarousel();
-      initTicker();
-      initTestimonials();
-      initScrollAnimations();
-      animateStats();
-    });
+    /* -----------------------------
+      7) Carousel scroll controls (smooth)
+    ------------------------------*/
+    function initCarouselControls(){
+      const track = document.getElementById('fundTrack');
+      const prev = document.getElementById('prevBtn');
+      const next = document.getElementById('nextBtn');
 
-    document.querySelector('.scroll-indicator').addEventListener('click', () => {
-      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-    });
+      const scrollByCard = (dir) => {
+        const card = track.querySelector('.fund-card');
+        const w = card ? (card.getBoundingClientRect().width + 18) : 420;
+        track.scrollBy({ left: dir * w, behavior: 'smooth' });
+      };
+
+      prev.addEventListener('click', ()=>scrollByCard(-1));
+      next.addEventListener('click', ()=>scrollByCard(1));
+    }
+
+    /* -----------------------------
+      8) Global motion polish (optional subtle scroll reveal)
+    ------------------------------*/
+    function initReveals(){
+      const els = document.querySelectorAll('.fund-card, .hero-card');
+      els.forEach(el => el.style.willChange = 'transform, opacity');
+
+      gsap.fromTo('.hero-card', { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease:'power3.out', delay: 0.2 });
+      gsap.fromTo('.hero-eyebrow, h1, .hero-desc, .hero-actions', { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease:'power3.out', stagger: 0.08 });
+    }
+
+    /* -----------------------------
+      Boot
+    ------------------------------*/
+    (async function boot(){
+      initReveals();
+      renderFunds();
+      initCarouselControls();
+
+      // Setup faces initial rotation
+      funds.forEach(f=>{
+        const face = document.getElementById(`face-${f.id}`);
+        if(face){
+          face.style.transform = 'rotateY(0deg)';
+          face.style.transformStyle = 'preserve-3d';
+        }
+      });
+
+      // Load market data
+      let market = null;
+      try{
+        market = await loadMarket();
+        renderSpyBanner(market);
+      } catch(e){
+        // Keep UI graceful if market.json missing
+        console.warn(e);
+      }
+
+      // Flip handlers (click/tap)
+      document.addEventListener('click', (e)=>{
+        const btn = e.target.closest('[data-action="flip"]');
+        if(!btn) return;
+        const fundId = btn.getAttribute('data-fund');
+        const isBack = flipped.has(fundId);
+        flipTo(fundId, !isBack, market);
+      });
+
+      // Also allow clicking card itself to flip (but not links)
+      document.addEventListener('click', (e)=>{
+        const card = e.target.closest('.fund-card');
+        if(!card) return;
+        if(e.target.closest('a')) return; // don’t hijack link
+        if(e.target.closest('button')) return;
+
+        const fundId = card.getAttribute('data-fund');
+        const isBack = flipped.has(fundId);
+        flipTo(fundId, !isBack, market);
+      });
+
+      // On resize, rebuild visible charts for crispness
+      let resizeT = 0;
+      window.addEventListener('resize', ()=>{
+        clearTimeout(resizeT);
+        resizeT = setTimeout(()=>{
+          if(!market) return;
+          flipped.forEach(fid => ensureFundChart(fid, market));
+          if(charts.has('SPY_SPARK')){
+            charts.get('SPY_SPARK').resize();
+          }
+        }, 180);
+      }, { passive:true });
+    })();
   </script>
 </body>
 </html>
