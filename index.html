@@ -11,6 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
   
   <style>
     * {
@@ -73,13 +74,30 @@
       color: var(--text-secondary);
     }
 
+    /* Background Container */
+    .background-scene {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    #canvas-background {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
     /* Header */
     header {
       position: fixed;
       top: 0;
       width: 100%;
       height: 64px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-light);
@@ -138,15 +156,6 @@
       overflow: hidden;
     }
 
-    #ocean-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: -1;
-    }
-
     .hero-content {
       max-width: 960px;
       padding: 0 40px;
@@ -158,10 +167,7 @@
       margin-bottom: 24px;
       opacity: 0;
       transform: translateY(30px);
-      background: linear-gradient(135deg, #000 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--text-primary);
     }
 
     .hero > p {
@@ -173,7 +179,7 @@
       margin-right: auto;
       opacity: 0;
       transform: translateY(30px);
-      color: rgba(0, 0, 0, 0.7);
+      color: var(--text-secondary);
     }
 
     .hero-cta {
@@ -274,20 +280,21 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Spacer for scrolling */
-    .content-spacer {
+    /* Spacing for content */
+    .spacer {
+      height: 200vh;
+      background: transparent;
       position: relative;
-      z-index: 100;
-      background: white;
-      min-height: 300vh;
+      z-index: 5;
     }
 
-    /* Content Sections */
-    .section {
+    /* Carousel Section */
+    .carousel-section {
       padding: 160px 48px;
-      background: #fff;
+      background: #ffffff;
       position: relative;
-      z-index: 100;
+      z-index: 5;
+      border-top: 1px solid var(--border-light);
     }
 
     .section-wrapper {
@@ -322,14 +329,59 @@
       margin: 0 auto;
     }
 
-    /* Carousel */
-    .carousel-section {
-      padding: 160px 48px;
-      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.04) 100%);
-      position: relative;
+    /* Chart Section */
+    .chart-section {
+      padding: 80px 48px;
+      background: #ffffff;
       border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      margin: 80px 0;
+      position: relative;
+      z-index: 5;
     }
 
+    .chart-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.02) 100%);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 32px;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    #performance-chart {
+      width: 100%;
+      max-height: 400px;
+    }
+
+    .chart-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .chart-stat {
+      text-align: center;
+    }
+
+    .chart-stat-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .chart-stat-label {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Carousel */
     .carousel-container {
       position: relative;
       margin-bottom: 80px;
@@ -365,6 +417,11 @@
       cursor: pointer;
       will-change: transform;
     }
+
+    .card-wrapper:nth-child(1) .flip-card { --delay: 0s; }
+    .card-wrapper:nth-child(2) .flip-card { --delay: 0.1s; }
+    .card-wrapper:nth-child(3) .flip-card { --delay: 0.2s; }
+    .card-wrapper:nth-child(4) .flip-card { --delay: 0.3s; }
 
     .flip-card-content {
       position: absolute;
@@ -460,7 +517,7 @@
       gap: 20px;
       flex: 1;
       opacity: 0;
-      animation: fadeIn 0.6s ease-out forwards;
+      animation: fadeIn 0.6s ease-out var(--delay) forwards;
     }
 
     @keyframes fadeIn {
@@ -599,6 +656,57 @@
       transform: scale(1.05);
     }
 
+    /* Testimonials */
+    .testimonials-section {
+      padding: 160px 48px;
+      background: #fff;
+      border-top: 1px solid var(--border-light);
+      position: relative;
+      z-index: 5;
+    }
+
+    .testimonial-carousel {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      height: 200px;
+    }
+
+    .testimonial {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(135deg, var(--accent-light) 0%, rgba(0, 102, 255, 0.02) 100%);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+    }
+
+    .testimonial.active {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 1;
+    }
+
+    .testimonial-text {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .testimonial-author {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
     /* Stats */
     .stats-section {
       padding: 80px 0;
@@ -606,6 +714,8 @@
       border-top: 1px solid var(--border-light);
       border-bottom: 1px solid var(--border-light);
       margin: 80px 0;
+      position: relative;
+      z-index: 5;
     }
 
     .stats-grid {
@@ -640,6 +750,8 @@
     .features-section {
       padding: 160px 48px;
       background: #fff;
+      position: relative;
+      z-index: 5;
     }
 
     .features-grid {
@@ -684,7 +796,7 @@
       border-top: 1px solid var(--border-light);
       padding: 80px 48px 48px;
       position: relative;
-      z-index: 100;
+      z-index: 5;
     }
 
     .footer-wrapper {
@@ -735,7 +847,7 @@
     /* Responsive */
     @media (max-width: 1200px) {
       header { padding: 0 32px; }
-      .section, .carousel-section, .features-section { padding: 100px 32px; }
+      .carousel-section, .features-section, .testimonials-section { padding: 100px 32px; }
       .flip-card { width: 320px; height: 420px; }
     }
 
@@ -745,7 +857,7 @@
       .hero { padding-top: 56px; }
       .hero-content { padding: 0 20px; }
       .hero h1 { font-size: 2.2rem; }
-      .section, .carousel-section, .features-section { padding: 80px 20px; }
+      .carousel-section, .features-section, .testimonials-section { padding: 80px 20px; }
       .flip-card { width: 90vw; max-width: 380px; height: auto; aspect-ratio: 3/4; }
       .features-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -754,16 +866,19 @@
     @media (max-width: 480px) {
       header { padding: 0 16px; }
       h1 { font-size: 1.8rem; }
-      .section, .carousel-section, .features-section { padding: 60px 16px; }
+      .carousel-section, .features-section, .testimonials-section { padding: 60px 16px; }
       .btn { width: 100%; justify-content: center; }
       .flip-card { width: 100%; }
       .footer-grid { grid-template-columns: 1fr; }
+      .chart-info { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
 <body>
-  <!-- Ocean Canvas Background -->
-  <canvas id="ocean-canvas"></canvas>
+  <!-- Dynamic Background Canvas -->
+  <div class="background-scene">
+    <canvas id="canvas-background"></canvas>
+  </div>
 
   <!-- Header -->
   <header>
@@ -794,85 +909,126 @@
     </div>
   </section>
 
-  <!-- Content Spacer -->
-  <div class="content-spacer">
-    <!-- Carousel Section -->
-    <section class="carousel-section section" id="carousel">
-      <div class="section-wrapper">
-        <div class="section-header">
-          <span class="label">Investment Funds</span>
-          <h2>Explore Our Strategies</h2>
-          <p>Four quantitative frameworks for distinct market conditions. Click or hover to flip cards.</p>
-        </div>
+  <!-- Spacer for scrolling effect -->
+  <div class="spacer"></div>
 
-        <div class="carousel-container">
-          <div class="carousel" id="carouselEl">
-            <!-- Cards populated by JavaScript -->
-          </div>
-        </div>
+  <!-- Carousel Section -->
+  <section class="carousel-section" id="carousel">
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="label">Investment Funds</span>
+        <h2>Explore Our Strategies</h2>
+        <p>Four quantitative frameworks for distinct market conditions. Click or hover to flip cards.</p>
+      </div>
 
-        <div class="carousel-controls">
-          <button class="carousel-btn" onclick="scrollCarousel(-1)">←</button>
-          <button class="carousel-btn" onclick="scrollCarousel(1)">→</button>
+      <div class="carousel-container">
+        <div class="carousel" id="carouselEl">
+          <!-- Cards populated by JavaScript -->
         </div>
       </div>
-    </section>
 
-    <!-- Stats Section -->
-    <div class="section-wrapper">
-      <div class="stats-section">
-        <div class="stats-grid">
-          <div class="stat">
-            <div class="stat-value" data-value="2400">0</div>
-            <div class="stat-label">Million AUM</div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="scrollCarousel(-1)">←</button>
+        <button class="carousel-btn" onclick="scrollCarousel(1)">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chart Section -->
+  <div class="section-wrapper">
+    <div class="chart-section">
+      <div class="section-header" style="margin-bottom: 48px;">
+        <span class="label">Performance Analytics</span>
+        <h2>Real-Time Market Data</h2>
+      </div>
+      <div class="chart-wrapper">
+        <canvas id="performance-chart"></canvas>
+        <div class="chart-info">
+          <div class="chart-stat">
+            <div class="chart-stat-value">+18.32%</div>
+            <div class="chart-stat-label">1Y Return (Fund I)</div>
           </div>
-          <div class="stat">
-            <div class="stat-value" data-value="15">0</div>
-            <div class="stat-label">Years Experience</div>
+          <div class="chart-stat">
+            <div class="chart-stat-value">+31.45%</div>
+            <div class="chart-stat-label">1Y Return (Fund III)</div>
           </div>
-          <div class="stat">
-            <div class="stat-value" data-value="89">0</div>
-            <div class="stat-label">% Satisfaction</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value" data-value="24">0</div>
-            <div class="stat-label">/7 Monitoring</div>
+          <div class="chart-stat">
+            <div class="chart-stat-value">24.56%</div>
+            <div class="chart-stat-label">Benchmark (SPY)</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Features Section -->
-    <section class="features-section section">
-      <div class="section-wrapper">
-        <div class="section-header">
-          <span class="label">Methodology</span>
-          <h2>How We Think</h2>
-          <p>Three pillars guide every investment decision and research initiative.</p>
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="section-wrapper">
+      <div class="section-header" style="margin-bottom: 80px;">
+        <span class="label">Social Proof</span>
+        <h2>Client Testimonials</h2>
+      </div>
+
+      <div class="testimonial-carousel" id="testimonialCarousel">
+        <!-- Testimonials populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <div class="section-wrapper">
+    <div class="stats-section">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-value" data-value="2400">0</div>
+          <div class="stat-label">Million AUM</div>
         </div>
-
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <h3>Market Structure</h3>
-            <p>We analyze positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price recognition.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">⚙️</div>
-            <h3>Physical Supply</h3>
-            <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">🔗</div>
-            <h3>Macro Transmission</h3>
-            <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities with measurable precision.</p>
-          </div>
+        <div class="stat">
+          <div class="stat-value" data-value="15">0</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-value="89">0</div>
+          <div class="stat-label">% Satisfaction</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" data-value="24">0</div>
+          <div class="stat-label">/7 Monitoring</div>
         </div>
       </div>
-    </section>
+    </div>
   </div>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-wrapper">
+      <div class="section-header">
+        <span class="label">Methodology</span>
+        <h2>How We Think</h2>
+        <p>Three pillars guide every investment decision and research initiative.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Market Structure</h3>
+          <p>We analyze positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price recognition.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Physical Supply</h3>
+          <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔗</div>
+          <h3>Macro Transmission</h3>
+          <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities with measurable precision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer>
@@ -975,303 +1131,271 @@
       }
     ];
 
+    const testimonials = [
+      {
+        text: "The market analysis provided has transformed our investment approach. Incredibly insightful.",
+        author: "Sarah Chen, Portfolio Manager"
+      },
+      {
+        text: "Professional, data-driven, and transparent. Exactly what institutional investors need.",
+        author: "James Morrison, Chief Investment Officer"
+      },
+      {
+        text: "Their quantitative frameworks are among the best I've seen in 15 years of investing.",
+        author: "Elena Rodriguez, Senior Analyst"
+      }
+    ];
+
     // ========================================
-    // ADVANCED OCEAN & SKY THREE.JS BACKGROUND
+    // THREE.JS DYNAMIC OCEAN/SKY BACKGROUND
     // ========================================
-    function initOceanBackground() {
-      const canvas = document.getElementById('ocean-canvas');
-      if (!canvas) return;
-
-      let scene, camera, renderer;
-      let oceanMesh, skyMesh;
-      let fishSchool = [];
-      let time = 0;
-
-      function init() {
-        // Scene and Camera
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
-
-        // Renderer
-        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.setClearColor(0xffffff, 1);
-
-        // ========== SKY SHADER ==========
-        const skyVertexShader = `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `;
-
-        const skyFragmentShader = `
-          uniform float uTime;
-          uniform float uScrollProgress;
-          varying vec2 vUv;
-
-          float hash(vec2 p) {
-            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-          }
-
-          float noise(vec2 p) {
-            vec2 i = floor(p);
-            vec2 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
-            
-            float n00 = hash(i);
-            float n10 = hash(i + vec2(1.0, 0.0));
-            float n01 = hash(i + vec2(0.0, 1.0));
-            float n11 = hash(i + vec2(1.0, 1.0));
-            
-            float nx0 = mix(n00, n10, f.x);
-            float nx1 = mix(n01, n11, f.x);
-            return mix(nx0, nx1, f.y);
-          }
-
-          float fbm(vec2 p) {
-            float value = 0.0;
-            float amplitude = 1.0;
-            float frequency = 1.0;
-            for(int i = 0; i < 5; i++) {
-              value += amplitude * noise(p * frequency);
-              amplitude *= 0.5;
-              frequency *= 2.0;
-            }
-            return value;
-          }
-
-          void main() {
-            vec2 uv = vUv;
-            
-            // Scroll progress: 0 = sky, 1 = ocean
-            float scrollProgress = clamp(uScrollProgress, 0.0, 1.0);
-            
-            // Cloud animation - moves left to right
-            float cloudNoise = fbm(uv * 4.0 + vec2(uTime * 0.05, 0.0));
-            
-            // Sky gradient (light blue at top, white/horizon at bottom)
-            vec3 skyTop = vec3(0.5, 0.8, 1.0); // Light blue
-            vec3 skyHorizon = vec3(0.85, 0.9, 1.0); // Very light blue
-            vec3 skyColor = mix(skyTop, skyHorizon, uv.y);
-            
-            // Clouds (white, fluffy effect)
-            float cloudAlpha = smoothstep(0.4, 0.7, cloudNoise);
-            vec3 cloudColor = vec3(1.0);
-            vec3 finalSkyColor = mix(skyColor, cloudColor, cloudAlpha * 0.6 * (1.0 - scrollProgress));
-            
-            // Ocean gradient (shallow to deep)
-            vec3 oceanShallow = vec3(0.4, 0.8, 1.0); // Light blue-green
-            vec3 oceanDeep = vec3(0.0, 0.2, 0.5); // Deep blue
-            vec3 oceanColor = mix(oceanShallow, oceanDeep, uv.y);
-            
-            // Add wave patterns to ocean
-            float wavePattern = sin(uv.x * 10.0 + uTime) * 0.5 + 0.5;
-            oceanColor = mix(oceanColor, oceanColor * 0.9, wavePattern * 0.2 * scrollProgress);
-            
-            // Final color blend
-            vec3 finalColor = mix(finalSkyColor, oceanColor, scrollProgress);
-            
-            gl_FragColor = vec4(finalColor, 1.0);
-          }
-        `;
-
-        const skyUniforms = {
-          uTime: { value: 0 },
-          uScrollProgress: { value: 0 }
-        };
-
-        const skyMaterial = new THREE.ShaderMaterial({
-          uniforms: skyUniforms,
-          vertexShader: skyVertexShader,
-          fragmentShader: skyFragmentShader
-        });
-
-        const skyGeometry = new THREE.PlaneGeometry(10, 10);
-        skyMesh = new THREE.Mesh(skyGeometry, skyMaterial);
-        skyMesh.position.z = -1;
-        scene.add(skyMesh);
-
-        // ========== OCEAN/WATER SHADER ==========
-        const oceanVertexShader = `
-          uniform float uTime;
-          uniform float uScrollProgress;
-          varying vec2 vUv;
-          varying float vWave;
-
-          float hash(vec2 p) {
-            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-          }
-
-          float noise(vec2 p) {
-            vec2 i = floor(p);
-            vec2 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
-            
-            float n00 = hash(i);
-            float n10 = hash(i + vec2(1.0, 0.0));
-            float n01 = hash(i + vec2(0.0, 1.0));
-            float n11 = hash(i + vec2(1.0, 1.0));
-            
-            float nx0 = mix(n00, n10, f.x);
-            float nx1 = mix(n01, n11, f.x);
-            return mix(nx0, nx1, f.y);
-          }
-
-          void main() {
-            vUv = uv;
-            
-            // Wave displacement
-            float waveHeight = sin(position.x * 3.0 + uTime * 0.5) * 0.1;
-            waveHeight += sin(position.y * 2.0 + uTime * 0.3) * 0.08;
-            waveHeight *= uScrollProgress; // Waves only appear in ocean
-            
-            vWave = waveHeight;
-            
-            vec3 pos = position;
-            pos.z += waveHeight;
-            
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-          }
-        `;
-
-        const oceanFragmentShader = `
-          uniform float uScrollProgress;
-          varying vec2 vUv;
-          varying float vWave;
-
-          void main() {
-            float scrollProgress = clamp(uScrollProgress, 0.0, 1.0);
-            
-            // Only render when scrolled to ocean
-            if(scrollProgress < 0.3) {
-              discard;
-            }
-            
-            // Ocean color based on depth
-            vec3 oceanShallow = vec3(0.4, 0.8, 1.0);
-            vec3 oceanDeep = vec3(0.0, 0.2, 0.5);
-            vec3 oceanColor = mix(oceanShallow, oceanDeep, vUv.y);
-            
-            // Add foam at wave crests
-            float foam = smoothstep(0.08, 0.12, vWave);
-            oceanColor = mix(oceanColor, vec3(1.0), foam * 0.3 * scrollProgress);
-            
-            gl_FragColor = vec4(oceanColor, 0.8);
-          }
-        `;
-
-        const oceanUniforms = {
-          uTime: { value: 0 },
-          uScrollProgress: { value: 0 }
-        };
-
-        const oceanMaterial = new THREE.ShaderMaterial({
-          uniforms: oceanUniforms,
-          vertexShader: oceanVertexShader,
-          fragmentShader: oceanFragmentShader,
-          transparent: true
-        });
-
-        const oceanGeometry = new THREE.PlaneGeometry(10, 10, 128, 128);
-        oceanMesh = new THREE.Mesh(oceanGeometry, oceanMaterial);
-        oceanMesh.position.z = 0;
-        scene.add(oceanMesh);
-
-        // ========== ANIMATED FISH SCHOOL ==========
-        function createFishSchool() {
-          const fishCount = 50;
-          
-          // Create particles representing fish
-          const fishGeometry = new THREE.BufferGeometry();
-          const positions = new Float32Array(fishCount * 3);
-          
-          for (let i = 0; i < fishCount; i++) {
-            positions[i * 3] = Math.random() * 10 - 5;
-            positions[i * 3 + 1] = Math.random() * 10 - 5;
-            positions[i * 3 + 2] = Math.random() * 0.5;
-          }
-          
-          fishGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-          
-          // Fish shader material (simple colored spheres)
-          const fishMaterial = new THREE.PointsMaterial({
-            color: 0xff9900,
-            size: 0.15,
-            sizeAttenuation: true
-          });
-          
-          const fishPoints = new THREE.Points(fishGeometry, fishMaterial);
-          scene.add(fishPoints);
-          
-          return { geometry: fishGeometry, points: fishPoints };
-        }
-
-        const fish = createFishSchool();
-
-        // ========== LIGHTING ==========
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
-        directionalLight.position.set(5, 5, 5);
-        scene.add(directionalLight);
-
-        // ========== ANIMATION LOOP ==========
-        function animate(t) {
-          time += 0.016;
-
-          // Update scroll progress from scroll position
-          const scrollY = window.scrollY;
-          const maxScroll = document.body.scrollHeight - window.innerHeight;
-          const scrollProgress = Math.min(scrollY / (maxScroll * 0.5), 1.0);
-
-          // Update sky shader
-          skyMesh.material.uniforms.uTime.value = time;
-          skyMesh.material.uniforms.uScrollProgress.value = scrollProgress;
-
-          // Update ocean shader
-          oceanMesh.material.uniforms.uTime.value = time;
-          oceanMesh.material.uniforms.uScrollProgress.value = scrollProgress;
-
-          // Animate fish - school swimming pattern
-          const fishPositions = fish.geometry.attributes.position.array;
-          const fishCount = fishPositions.length / 3;
-
-          for (let i = 0; i < fishCount; i++) {
-            const baseX = i / fishCount * 10 - 5;
-            const baseY = Math.sin(i) * 3;
-
-            fishPositions[i * 3] = baseX + Math.sin(time * 0.5 + i) * 2;
-            fishPositions[i * 3 + 1] = baseY + Math.cos(time * 0.3 + i * 0.5) * 1.5;
-            fishPositions[i * 3 + 2] = Math.sin(time * 0.2 + i) * 0.3 + scrollProgress * 2;
-          }
-
-          fish.geometry.attributes.position.needsUpdate = true;
-
-          // Update fish visibility based on scroll
-          fish.points.material.opacity = scrollProgress * 0.8;
-
-          renderer.render(scene, camera);
-          requestAnimationFrame(animate);
-        }
-
-        animate(0);
-
-        // ========== HANDLE RESIZE ==========
-        function onWindowResize() {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        window.addEventListener('resize', onWindowResize);
+    class OceanSkyBackground {
+      constructor() {
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        const canvas = document.getElementById('canvas-background');
+        canvas.parentNode.replaceChild(this.renderer.domElement, canvas);
+        
+        this.camera.position.z = 100;
+        this.scrollProgress = 0;
+        this.time = 0;
+        
+        this.initScene();
+        this.animate();
+        this.setupScrollListener();
+        window.addEventListener('resize', () => this.onWindowResize());
       }
 
-      init();
+      initScene() {
+        // Remove default background
+        this.renderer.setClearColor(0xffffff, 1);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        this.scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(100, 100, 100);
+        this.scene.add(directionalLight);
+
+        // Create sky dome
+        this.createSkyDome();
+        
+        // Create water
+        this.createWater();
+        
+        // Create particles (fish)
+        this.createFish();
+      }
+
+      createSkyDome() {
+        // Sky with gradient - light blue to white
+        const skyGeometry = new THREE.SphereGeometry(300, 32, 32);
+        const skyMaterial = new THREE.MeshBasicMaterial({
+          color: 0x87ceeb,
+          side: THREE.BackSide
+        });
+        const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+        this.scene.add(sky);
+        this.sky = sky;
+
+        // Clouds (using particles with transparency)
+        this.createClouds();
+      }
+
+      createClouds() {
+        const cloudCount = 40;
+        const cloudGeometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(cloudCount * 3);
+        const sizes = new Float32Array(cloudCount);
+
+        for (let i = 0; i < cloudCount; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 800;
+          positions[i * 3 + 1] = Math.random() * 300 + 100;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
+          sizes[i] = Math.random() * 40 + 20;
+        }
+
+        cloudGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        cloudGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const cloudMaterial = new THREE.PointsMaterial({
+          color: 0xffffff,
+          size: 30,
+          sizeAttenuation: true,
+          transparent: true,
+          opacity: 0.7,
+          map: this.createCloudTexture()
+        });
+
+        this.clouds = new THREE.Points(cloudGeometry, cloudMaterial);
+        this.scene.add(this.clouds);
+        this.cloudPositions = positions;
+      }
+
+      createCloudTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const ctx = canvas.getContext('2d');
+
+        // Draw cloud-like shape
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(32, 32, 32, 0, Math.PI * 2);
+        ctx.fill();
+
+        const texture = new THREE.CanvasTexture(canvas);
+        return texture;
+      }
+
+      createWater() {
+        const waterGeometry = new THREE.PlaneGeometry(1000, 1000, 128, 128);
+        const waterMaterial = new THREE.MeshStandardMaterial({
+          color: 0x1e90ff,
+          metalness: 0.3,
+          roughness: 0.4
+        });
+        
+        this.water = new THREE.Mesh(waterGeometry, waterMaterial);
+        this.water.rotation.x = -Math.PI / 2;
+        this.water.position.z = -200;
+        this.scene.add(this.water);
+
+        // Store original positions for wave animation
+        const positions = waterGeometry.attributes.position.array;
+        this.waterOriginalPositions = new Float32Array(positions);
+      }
+
+      createFish() {
+        this.fish = [];
+        const fishCount = 15;
+
+        for (let i = 0; i < fishCount; i++) {
+          const fishGeometry = new THREE.ConeGeometry(2, 5, 8);
+          const fishMaterial = new THREE.MeshStandardMaterial({
+            color: Math.random() * 0xffffff,
+            metalness: 0.5,
+            roughness: 0.5
+          });
+          
+          const fish = new THREE.Mesh(fishGeometry, fishMaterial);
+          fish.position.set(
+            (Math.random() - 0.5) * 400,
+            (Math.random() - 0.5) * 200 - 100,
+            (Math.random() - 0.5) * 200 - 200
+          );
+          
+          fish.velocity = new THREE.Vector3(
+            (Math.random() - 0.5) * 2,
+            (Math.random() - 0.5) * 1,
+            (Math.random() - 0.5) * 2
+          );
+          
+          fish.rotation.x = Math.PI / 2;
+          this.scene.add(fish);
+          this.fish.push(fish);
+        }
+      }
+
+      updateBackground() {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        this.scrollProgress = window.scrollY / maxScroll;
+
+        // Sky color transition
+        const skyColor = new THREE.Color();
+        skyColor.lerpColors(
+          new THREE.Color(0x87ceeb), // Light blue
+          new THREE.Color(0x001f3f), // Deep ocean
+          this.scrollProgress
+        );
+        this.sky.material.color = skyColor;
+
+        // Cloud opacity based on scroll
+        this.clouds.material.opacity = 0.7 * (1 - this.scrollProgress * 0.8);
+
+        // Water depth color transition
+        const waterColor = new THREE.Color();
+        waterColor.lerpColors(
+          new THREE.Color(0x1e90ff), // Shallow water
+          new THREE.Color(0x000033), // Deep ocean
+          this.scrollProgress
+        );
+        this.water.material.color = waterColor;
+
+        // Animate water waves
+        this.animateWater();
+
+        // Update fish movement
+        this.updateFish();
+
+        // Move clouds horizontally with time
+        const positions = this.cloudPositions;
+        for (let i = 0; i < positions.length; i += 3) {
+          positions[i] += Math.sin(this.time * 0.001 + i) * 0.1;
+        }
+        this.clouds.geometry.attributes.position.needsUpdate = true;
+
+        this.time++;
+      }
+
+      animateWater() {
+        const positionAttribute = this.water.geometry.attributes.position;
+        const positions = positionAttribute.array;
+        const originalPositions = this.waterOriginalPositions;
+
+        for (let i = 0; i < positions.length; i += 3) {
+          const x = originalPositions[i];
+          const y = originalPositions[i + 1];
+
+          positions[i + 2] = Math.sin(x * 0.01 + this.time * 0.01) * 5 +
+                             Math.cos(y * 0.01 + this.time * 0.015) * 3;
+        }
+
+        positionAttribute.needsUpdate = true;
+        this.water.geometry.computeVertexNormals();
+      }
+
+      updateFish() {
+        this.fish.forEach(fish => {
+          // Simple flocking behavior
+          fish.position.add(fish.velocity);
+
+          // Bounce off boundaries
+          if (fish.position.x > 200 || fish.position.x < -200) fish.velocity.x *= -1;
+          if (fish.position.y > 50 || fish.position.y < -250) fish.velocity.y *= -1;
+          if (fish.position.z > 0 || fish.position.z < -250) fish.velocity.z *= -1;
+
+          // Face direction of movement
+          const direction = fish.velocity.clone().normalize();
+          fish.lookAt(fish.position.clone().add(direction));
+        });
+      }
+
+      animate = () => {
+        requestAnimationFrame(this.animate);
+        this.updateBackground();
+        this.renderer.render(this.scene, this.camera);
+      }
+
+      setupScrollListener() {
+        window.addEventListener('scroll', () => {
+          this.updateBackground();
+        }, { passive: true });
+      }
+
+      onWindowResize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height);
+      }
     }
 
     // ========================================
@@ -1336,7 +1460,144 @@
     }
 
     // ========================================
-    // ANIMATE STATS WITH COUNTER
+    // CHART.JS
+    // ========================================
+    function initChart() {
+      const ctx = document.getElementById('performance-chart');
+      if (!ctx) return;
+
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const fundIData = [100, 102, 101, 105, 108, 110, 109, 112, 115, 118, 116, 118.32];
+      const fundIIIData = [100, 103, 102, 108, 112, 115, 118, 122, 128, 132, 130, 131.45];
+      const spyData = [100, 101, 100, 104, 107, 109, 108, 111, 114, 117, 115, 124.56];
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: 'Fund I (Active)',
+              data: fundIData,
+              borderColor: '#0066ff',
+              backgroundColor: 'rgba(0, 102, 255, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#0066ff',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Fund III (Value)',
+              data: fundIIIData,
+              borderColor: '#00a854',
+              backgroundColor: 'rgba(0, 168, 84, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#00a854',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'SPY (Benchmark)',
+              data: spyData,
+              borderColor: '#999',
+              backgroundColor: 'rgba(153, 153, 153, 0.05)',
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointRadius: 3,
+              pointBackgroundColor: '#999',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 1,
+              tension: 0.4,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              labels: {
+                font: { size: 12, weight: 600 },
+                color: '#000',
+                padding: 20,
+                usePointStyle: true
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              padding: 12,
+              titleFont: { size: 13, weight: 600 },
+              bodyFont: { size: 12 },
+              borderColor: '#0066ff',
+              borderWidth: 1
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              grid: { color: 'rgba(0, 0, 0, 0.05)' },
+              ticks: { font: { size: 11 }, color: '#666' }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 11 }, color: '#666' }
+            }
+          }
+        }
+      });
+
+      gsap.to(ctx.parentElement, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: ctx.parentElement,
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
+
+    // ========================================
+    // TESTIMONIALS
+    // ========================================
+    function initTestimonials() {
+      const carousel = document.getElementById('testimonialCarousel');
+      let currentIndex = 0;
+
+      testimonials.forEach((testimonial, index) => {
+        const div = document.createElement('div');
+        div.className = `testimonial ${index === 0 ? 'active' : ''}`;
+        div.innerHTML = `
+          <p class="testimonial-text">"${testimonial.text}"</p>
+          <p class="testimonial-author">${testimonial.author}</p>
+        `;
+        carousel.appendChild(div);
+      });
+
+      setInterval(() => {
+        const testimonialEls = document.querySelectorAll('.testimonial');
+        testimonialEls[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % testimonialEls.length;
+        testimonialEls[currentIndex].classList.add('active');
+      }, 4000);
+    }
+
+    // ========================================
+    // ANIMATE STATS
     // ========================================
     function animateStats() {
       gsap.to('.stat', {
@@ -1411,21 +1672,21 @@
     }
 
     // ========================================
-    // INITIALIZE ALL ON LOAD
+    // INITIALIZE ALL
     // ========================================
     window.addEventListener('load', () => {
-      initOceanBackground();
+      new OceanSkyBackground();
       initCarousel();
+      initChart();
+      initTestimonials();
       initScrollAnimations();
       animateStats();
     });
 
-    // Scroll indicator
     document.querySelector('.scroll-indicator').addEventListener('click', () => {
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
     });
 
-    // Keyboard navigation for carousel
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') scrollCarousel(-1);
       if (e.key === 'ArrowRight') scrollCarousel(1);
