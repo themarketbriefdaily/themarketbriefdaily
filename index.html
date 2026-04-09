@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>The Market Brief Daily — Institutional Market Analysis</title>
   <meta name="description" content="Rigorous quantitative analysis of commodity markets, macro dynamics, and institutional strategies." />
 
@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- GSAP for smoother controlled motion -->
+  <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
@@ -21,73 +21,97 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { font-size:16px; scroll-behavior:smooth; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{font-size:16px;scroll-behavior:smooth}
     body{
-      font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       background:#fff;
       color:#000;
       line-height:1.5;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      text-rendering:optimizeLegibility;
       overflow-x:hidden;
     }
-
     :root{
       --accent:#0066ff;
       --accent2:#0ea5e9;
-      --accent-light: rgba(0,102,255,0.08);
-      --text-primary:#000;
-      --text-secondary: rgba(0,0,0,.54);
-      --text-tertiary: rgba(0,0,0,.38);
-      --border: rgba(0,0,0,.08);
-      --shadow-md: 0 4px 10px rgba(0,0,0,.08);
-      --shadow-lg: 0 14px 40px rgba(0,0,0,.10);
-      --shadow-xl: 0 24px 60px rgba(0,0,0,.12);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --ease: cubic-bezier(.2,.9,.2,1);
+      --text:#000;
+      --muted:rgba(0,0,0,.54);
+      --muted2:rgba(0,0,0,.38);
+      --border:rgba(0,0,0,.08);
+      --shadow-md:0 4px 10px rgba(0,0,0,.08);
+      --shadow-lg:0 14px 40px rgba(0,0,0,.10);
+      --shadow-xl:0 24px 60px rgba(0,0,0,.12);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --ease:cubic-bezier(.2,.9,.2,1);
+      --max:1400px;
     }
 
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
-      *{animation:none !important; transition:none !important;}
-      #canvas-three{display:none !important}
-      .tape-track{animation:none !important; transform:none !important}
+      *{animation:none!important;transition:none!important}
+      #bg3d{display:none!important}
+      #bgParticles{display:none!important}
     }
 
     /* Header */
     header{
-      position:fixed; top:0; left:0; right:0;
+      position:fixed;top:0;left:0;right:0;
       height:64px;
-      display:flex; align-items:center;
+      display:flex;align-items:center;
       padding:0 48px;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      background:rgba(255,255,255,.82);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
       z-index:1000;
-      box-shadow: var(--shadow-md);
+      box-shadow:var(--shadow-md);
     }
     .header-wrapper{
       width:100%;
-      display:flex; align-items:center; justify-content:space-between;
+      display:flex;align-items:center;justify-content:space-between;
       gap:48px;
+      max-width:var(--max);
+      margin:0 auto;
     }
     .brand{
-      font-size:15px; font-weight:700; color:var(--text-primary);
-      text-decoration:none;
-      white-space:nowrap;
+      font-size:15px;font-weight:700;color:var(--text);
+      text-decoration:none;white-space:nowrap;
       transition:opacity .2s;
     }
     .brand:hover{opacity:.72}
-    nav{display:flex; gap:36px; align-items:center; margin-left:auto}
-    nav a{
-      font-size:13px; font-weight:600; color:var(--text-secondary);
-      text-decoration:none;
-      transition:color .2s;
+    nav{display:flex;gap:36px;align-items:center;margin-left:auto}
+    nav a{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s}
+    nav a:hover{color:var(--text)}
+
+    /* Background layers */
+    .bg-wrap{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+      overflow:hidden;
     }
-    nav a:hover{color:var(--text-primary)}
+    #bg3d{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      opacity:.55;
+    }
+    #bgParticles{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      opacity:.42;
+      mix-blend-mode:multiply;
+    }
+    .bg-vignette{
+      position:absolute;inset:-30%;
+      background:
+        radial-gradient(1200px 800px at 50% 35%, rgba(0,102,255,.10), transparent 65%),
+        radial-gradient(900px 700px at 10% 30%, rgba(14,165,233,.10), transparent 60%),
+        radial-gradient(900px 700px at 90% 60%, rgba(0,0,0,.06), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,1));
+      filter:saturate(1.05);
+    }
 
     /* Hero */
     .hero{
@@ -100,59 +124,39 @@
       text-align:center;
       position:relative;
       overflow:hidden;
-      background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-    }
-    #canvas-three{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      opacity:.52;
-      pointer-events:none;
-    }
-    .hero::after{
-      content:'';
-      position:absolute; inset:0;
-      background: radial-gradient(circle 900px at 50% 45%, rgba(0,102,255,0.07) 0%, transparent 78%);
-      pointer-events:none;
+      background:linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(250,250,250,.65) 100%);
     }
     .hero-content{
-      max-width:960px;
+      max-width:980px;
       padding:0 40px;
-      z-index:10;
+      z-index:2;
       position:relative;
     }
     .hero h1{
       margin-bottom:24px;
       opacity:0;
-      transform: translateY(26px);
-      background: linear-gradient(135deg, #000 0%, var(--accent) 100%);
+      transform:translateY(26px);
+      background:linear-gradient(135deg,#000 0%, var(--accent) 100%);
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       background-clip:text;
       letter-spacing:-0.025em;
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size:clamp(3rem,8vw,5rem);
       font-weight:800;
       line-height:1.1;
     }
-    .hero > p{
-      font-size: clamp(1rem, 1.5vw, 1.25rem);
+    .hero p{
+      font-size:clamp(1rem,1.5vw,1.25rem);
       line-height:1.8;
-      margin-bottom:48px;
-      max-width:720px;
-      margin-left:auto;
-      margin-right:auto;
+      margin:0 auto 48px;
+      max-width:760px;
       opacity:0;
-      transform: translateY(26px);
-      color:var(--text-secondary);
+      transform:translateY(26px);
+      color:var(--muted);
     }
     .hero-cta{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      flex-wrap:wrap;
-      opacity:0;
-      transform: translateY(26px);
+      display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+      opacity:0;transform:translateY(26px);
       margin-bottom:70px;
     }
     .btn{
@@ -163,414 +167,258 @@
       border:none;
       cursor:pointer;
       text-decoration:none;
-      transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .25s var(--ease);
       display:inline-flex;
       align-items:center;
       gap:8px;
-      will-change: transform;
+      transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .25s var(--ease);
+      will-change:transform;
     }
     .btn-primary{
-      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
+      background:linear-gradient(135deg,var(--accent) 0%, #0052cc 100%);
       color:#fff;
-      box-shadow: 0 10px 30px rgba(0,102,255,0.30);
+      box-shadow:0 10px 30px rgba(0,102,255,0.30);
     }
-    .btn-primary:hover{transform: translateY(-3px) scale(1.02); box-shadow:0 16px 44px rgba(0,102,255,0.40)}
+    .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 44px rgba(0,102,255,0.40)}
     .btn-secondary{
-      background: rgba(0,102,255,0.10);
-      color: var(--accent);
-      border: 1.5px solid rgba(0,102,255,0.75);
+      background:rgba(0,102,255,0.10);
+      color:var(--accent);
+      border:1.5px solid rgba(0,102,255,0.75);
     }
-    .btn-secondary:hover{transform: translateY(-3px); background: rgba(0,102,255,0.15)}
+    .btn-secondary:hover{transform:translateY(-3px);background:rgba(0,102,255,0.15)}
+
     .scroll-indicator{
       position:absolute;
       bottom:34px;
       left:50%;
-      transform: translateX(-50%);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+      transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;
       gap:12px;
-      animation: float 3s ease-in-out infinite;
+      animation:float 3s ease-in-out infinite;
       cursor:pointer;
-      z-index:20;
+      z-index:5;
     }
-    .scroll-label{font-size:12px; color:var(--text-tertiary); font-weight:600; letter-spacing:0.05em}
-    .scroll-mouse{
-      width:20px;height:32px;
-      border:1.5px solid var(--text-tertiary);
-      border-radius:10px;
-      position:relative;
-    }
-    .scroll-mouse::after{
-      content:'';
-      position:absolute;
-      top:6px;
-      left:50%;
-      width:3px;height:6px;
-      background:var(--text-tertiary);
-      border-radius:2px;
-      transform: translateX(-50%);
-      animation: scroll-down 1.5s ease-in-out infinite;
-    }
+    .scroll-label{font-size:12px;color:var(--muted2);font-weight:600;letter-spacing:.05em}
+    .scroll-mouse{width:20px;height:32px;border:1.5px solid var(--muted2);border-radius:10px;position:relative}
+    .scroll-mouse::after{content:'';position:absolute;top:6px;left:50%;width:3px;height:6px;background:var(--muted2);border-radius:2px;transform:translateX(-50%);animation:scroll-down 1.5s ease-in-out infinite}
     @keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
     @keyframes scroll-down{0%,20%,100%{opacity:0;transform:translateX(-50%) translateY(-6px)}50%{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-    /* ===== Electronic Billboard Tape ===== */
-    .billboard{
+    /* TradingView tape container (billboard styling) */
+    .tape-section{
       border-top:1px solid var(--border);
       border-bottom:1px solid var(--border);
-      background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.015));
-      padding: 18px 0;
-      overflow:hidden;
+      background:linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.015));
+      padding:18px 0;
     }
-    .billboard-inner{
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 48px;
+    .tape-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 48px;
       display:grid;
-      grid-template-columns: 240px 1fr;
+      grid-template-columns:260px 1fr;
       gap:18px;
       align-items:center;
     }
-    .bb-label{
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:var(--text-tertiary);
+    .tape-left .label{
+      font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);
     }
-    .bb-title{
-      font-size:20px;
-      font-weight:800;
-      letter-spacing:-.02em;
-      color:var(--text-primary);
-      line-height:1.1;
-      margin-top:6px;
+    .tape-left .title{
+      font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--text);
+      margin-top:6px;line-height:1.1;
     }
-    .bb-sub{
-      font-size:12px;
-      color:var(--text-secondary);
-      margin-top:6px;
+    .tape-left .sub{
+      font-size:12px;color:var(--muted);margin-top:6px;
     }
-    .bb-asof{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-tertiary);
-      margin-top: 8px;
-    }
-
-    .tape-viewport{
+    .tape-box{
       border:1px solid var(--border);
       border-radius:16px;
-      background: #fff;
-      box-shadow: var(--shadow-lg);
+      background:#fff;
+      box-shadow:var(--shadow-lg);
       overflow:hidden;
       position:relative;
     }
-    .tape-viewport::before,
-    .tape-viewport::after{
+    .tape-box::before,.tape-box::after{
       content:"";
-      position:absolute;
-      top:0; bottom:0;
-      width:48px;
-      z-index:2;
-      pointer-events:none;
+      position:absolute;top:0;bottom:0;width:48px;z-index:2;pointer-events:none;
     }
-    .tape-viewport::before{
-      left:0;
-      background: linear-gradient(to right, #fff, rgba(255,255,255,0));
-    }
-    .tape-viewport::after{
-      right:0;
-      background: linear-gradient(to left, #fff, rgba(255,255,255,0));
-    }
-
-    .tape-track{
-      display:inline-flex;
-      align-items:center;
-      gap: 14px;
-      padding: 12px 18px;
-      white-space: nowrap;
-      will-change: transform;
-      transform: translate3d(0,0,0);
-      animation: marquee 22s linear infinite;
-    }
-    .tape-row{display:flex; align-items:center; gap:14px; width:max-content}
-    .tape-viewport:hover .tape-track,
-    .tape-viewport:focus-within .tape-track{
-      animation-play-state: paused;
-    }
-    @keyframes marquee{
-      from{ transform: translate3d(0,0,0); }
-      to{ transform: translate3d(-50%,0,0); }
-    }
-
-    .tick{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(0,0,0,0.07);
-      background: rgba(0,0,0,0.02);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
-    }
-    .tick .sym{font-weight:800; font-size:13px; letter-spacing:-.02em; color:var(--text-primary)}
-    .tick .px{font-family:var(--mono); font-weight:800; font-size:13px; color:var(--text-primary)}
-    .tick .chg{
-      font-family:var(--mono);
-      font-weight:800;
-      font-size:12px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.10);
-      background: rgba(0,0,0,0.02);
-    }
-    .tick .chg.pos{color:#16a34a; border-color: rgba(22,163,74,0.25); background: rgba(22,163,74,0.06)}
-    .tick .chg.neg{color:#dc2626; border-color: rgba(220,38,38,0.25); background: rgba(220,38,38,0.06)}
+    .tape-box::before{left:0;background:linear-gradient(to right,#fff,rgba(255,255,255,0))}
+    .tape-box::after{right:0;background:linear-gradient(to left,#fff,rgba(255,255,255,0))}
+    .tape-box .tradingview-widget-container{position:relative;z-index:1}
 
     /* Carousel */
-    .carousel-section{ padding: 160px 48px; background:#fff; }
-    .section-wrapper{ max-width: 1400px; margin: 0 auto; }
-    .section-header{ text-align:center; margin-bottom: 120px; opacity:0; transform: translateY(40px); }
-    .section-header p{ font-size:1.1rem; max-width: 720px; margin: 0 auto; color: var(--text-secondary); }
+    .carousel-section{padding:140px 48px;background:#fff}
+    .section-wrapper{max-width:var(--max);margin:0 auto}
+    .section-header{text-align:center;margin-bottom:90px;opacity:0;transform:translateY(40px)}
+    .section-header p{font-size:1.1rem;max-width:760px;margin:0 auto;color:var(--muted)}
 
-    .carousel-container{ margin-bottom: 80px; overflow:hidden; }
+    .carousel-container{margin-bottom:60px;overflow:hidden}
     .carousel{
-      display:flex;
-      gap: 32px;
+      display:flex;gap:32px;
       overflow-x:auto;
       scroll-snap-type:x mandatory;
       scroll-behavior:smooth;
-      padding: 20px 0;
+      padding:20px 0;
       scrollbar-width:none;
     }
     .carousel::-webkit-scrollbar{display:none}
-    .card-wrapper{ flex:0 0 auto; perspective: 1200px; scroll-snap-align:center; }
+    .card-wrapper{flex:0 0 auto;perspective:1200px;scroll-snap-align:center}
 
-    /* Flip card: hover flips on desktop, tap flips on mobile */
+    /* Flip cards: perfect hover flip + mobile tap */
     .flip-card{
-      width: 380px;
-      height: 540px;
+      width:380px;height:560px;
       position:relative;
-      transform-style: preserve-3d;
-      will-change: transform;
+      transform-style:preserve-3d;
       cursor:pointer;
     }
-    .flip-card-inner{
-      position:absolute; inset:0;
-      transform-style: preserve-3d;
+    .flip-inner{
+      position:absolute;inset:0;
+      transform-style:preserve-3d;
+      transition:transform .95s cubic-bezier(.2,.9,.2,1);
+      will-change:transform;
     }
-    .flip-face{
-      position:absolute; inset:0;
+    .face{
+      position:absolute;inset:0;
       backface-visibility:hidden;
-      border-radius: 20px;
-      box-shadow: var(--shadow-xl);
-      border: 1px solid var(--border);
+      border-radius:20px;
+      box-shadow:var(--shadow-xl);
+      border:1px solid var(--border);
       overflow:hidden;
       background:#fff;
-      display:flex;
-      flex-direction:column;
+      display:flex;flex-direction:column;
     }
-    .flip-back{
-      transform: rotateY(180deg);
-      padding: 18px;
-      gap: 10px;
-    }
+    .back{transform:rotateY(180deg);padding:18px;gap:10px}
 
     /* Hover flip (desktop) */
     @media (hover:hover) and (pointer:fine){
-      .flip-card:hover .flip-card-inner{ transform: rotateY(180deg); }
-      .flip-card-inner{
-        transition: transform .85s cubic-bezier(.2,.9,.2,1);
-      }
+      .flip-card:hover .flip-inner{transform:rotateY(180deg)}
     }
+    /* Tap flip (mobile) */
+    .is-flipped .flip-inner{transform:rotateY(180deg)}
 
-    /* JS flip (mobile + keyboard) */
-    .is-flipped .flip-card-inner{
-      transform: rotateY(180deg);
-      transition: transform .85s cubic-bezier(.2,.9,.2,1);
-    }
-
-    .card-image{
-      height: 240px;
-      position:relative;
-      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
-      overflow:hidden;
-    }
+    .card-image{height:240px;position:relative;background:linear-gradient(135deg,var(--accent) 0%, #0052cc 100%);overflow:hidden}
     .card-image img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
+      width:100%;height:100%;object-fit:cover;
       opacity:.9;
-      transform: scale(1.06);
-      transition: transform .9s cubic-bezier(.2,.9,.2,1), opacity .4s;
+      transform:scale(1.06);
+      transition:transform .9s cubic-bezier(.2,.9,.2,1), opacity .4s;
     }
-    .flip-card:hover .card-image img{ transform: scale(1.14); opacity:1; }
-
+    .flip-card:hover .card-image img{transform:scale(1.14);opacity:1}
     .card-overlay{
-      position:absolute; inset:0;
-      background: linear-gradient(135deg, rgba(0,102,255,0.70) 0%, rgba(0,82,204,0.70) 100%);
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-      padding: 24px;
-      color:#fff;
+      position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(0,102,255,0.70) 0%, rgba(0,82,204,0.70) 100%);
+      display:flex;flex-direction:column;justify-content:flex-end;
+      padding:24px;color:#fff;
     }
-    .card-label{ font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; opacity:.92; margin-bottom:8px; }
-    .card-title{ font-size:24px; font-weight:800; letter-spacing:-.02em; margin-bottom:4px; }
-    .card-subtitle{ font-size:13px; opacity:.88; }
+    .card-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.92;margin-bottom:8px}
+    .card-title{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+    .card-subtitle{font-size:13px;opacity:.88}
 
-    .card-content{
-      padding: 28px;
-      display:flex;
-      flex-direction:column;
-      gap: 16px;
-      flex:1;
-    }
-    .card-description{ font-size:14px; color: var(--text-secondary); line-height:1.6; flex:1; }
-
+    .card-content{padding:28px;display:flex;flex-direction:column;gap:16px;flex:1}
+    .card-description{font-size:14px;color:var(--muted);line-height:1.6;flex:1}
     .card-metrics{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 16px;
-      background: var(--accent-light);
-      border-radius: 12px;
-      border: 1px solid var(--border);
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      padding:16px;
+      background:rgba(0,102,255,0.08);
+      border-radius:12px;
+      border:1px solid var(--border);
     }
-    .metric{ display:flex; flex-direction:column; gap:4px; }
-    .metric-value{ font-family: var(--mono); font-weight:800; font-size: 18px; }
-    .metric-label{ font-size:11px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color: var(--text-tertiary); }
-
-    .card-allocation{ display:flex; gap:6px; flex-wrap:wrap; }
+    .metric{display:flex;flex-direction:column;gap:4px}
+    .metric-value{font-family:var(--mono);font-weight:800;font-size:18px}
+    .metric-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2)}
+    .card-allocation{display:flex;gap:6px;flex-wrap:wrap}
     .alloc-tag{
-      padding: 5px 10px;
-      background: var(--accent-light);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
+      padding:5px 10px;
+      background:rgba(0,102,255,0.08);
+      border:1px solid var(--border);
+      border-radius:8px;
+      font-size:11px;font-weight:700;color:var(--accent);
     }
-
-    .card-cta{ margin-top:auto; display:flex; gap:10px; }
-    .card-cta a, .card-cta button{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--accent-light);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 12px;
+    .card-cta{margin-top:auto;display:flex;gap:10px}
+    .card-cta a,.card-cta button{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:rgba(0,102,255,0.08);
+      color:var(--accent);
+      font-weight:700;font-size:12px;
       text-decoration:none;
       cursor:pointer;
-      transition: transform .25s var(--ease), background .25s var(--ease);
+      transition:transform .25s var(--ease), background .25s var(--ease);
     }
-    .card-cta a:hover, .card-cta button:hover{
-      transform: translateX(2px);
-      background: rgba(0,102,255,0.15);
-    }
+    .card-cta a:hover,.card-cta button:hover{transform:translateX(2px);background:rgba(0,102,255,0.15)}
 
-    .back-head{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
-    }
-    .back-title{ font-weight:800; letter-spacing:-.02em; font-size: 14px; }
-    .back-sub{ font-size:12px; color: var(--text-secondary); margin-top: 4px; }
+    .back-head{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);padding-bottom:10px}
+    .back-title{font-weight:800;letter-spacing:-.02em;font-size:14px}
+    .back-sub{font-size:12px;color:var(--muted);margin-top:4px}
     .bench-pill{
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 800;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.12);
-      background: rgba(0,0,0,0.03);
+      font-family:var(--mono);font-size:12px;font-weight:800;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(0,0,0,0.12);
+      background:rgba(0,0,0,0.03);
       white-space:nowrap;
-      height: fit-content;
+      height:fit-content;
     }
     .back-chart{
-      border: 1px solid rgba(0,0,0,0.10);
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.02));
-      padding: 10px;
-      height: 210px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+      border:1px solid rgba(0,0,0,0.10);
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(0,102,255,0.06), rgba(0,0,0,0.02));
+      padding:10px;
+      height:220px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.08);
     }
-    .back-chart canvas{ width:100% !important; height:100% !important; }
-    .back-legend{
-      display:flex;
-      gap: 14px;
-      flex-wrap:wrap;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-tertiary);
-    }
-    .back-legend i{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:middle; }
+    .back-chart canvas{width:100%!important;height:100%!important}
+    .back-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;font-weight:700;color:var(--muted2)}
+    .back-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
 
-    .carousel-controls{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      align-items:center;
-      margin-top: 48px;
-    }
+    .carousel-controls{display:flex;gap:16px;justify-content:center;align-items:center;margin-top:32px}
     .carousel-btn{
-      width:44px; height:44px;
-      border-radius:50%;
-      border: 1.5px solid var(--border);
-      background:#fff;
-      cursor:pointer;
-      font-size:18px;
-      font-weight:700;
-      transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+      width:44px;height:44px;border-radius:50%;
+      border:1.5px solid var(--border);
+      background:#fff;cursor:pointer;
+      font-size:18px;font-weight:700;
+      transition:transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
     }
-    .carousel-btn:hover{
-      transform: scale(1.05);
-      border-color: rgba(0,102,255,0.35);
-      background: rgba(0,102,255,0.06);
-    }
+    .carousel-btn:hover{transform:scale(1.05);border-color:rgba(0,102,255,0.35);background:rgba(0,102,255,0.06)}
 
-    /* Responsive */
-    @media (max-width: 1200px){
+    @media (max-width:1200px){
       header{padding:0 32px}
-      .billboard-inner{padding:0 32px; grid-template-columns:1fr}
+      .tape-inner{padding:0 32px;grid-template-columns:1fr}
       .carousel-section{padding:100px 32px}
     }
-    @media (max-width: 768px){
-      header{padding:0 20px; height:56px}
+    @media (max-width:768px){
+      header{padding:0 20px;height:56px}
       nav{display:none}
       .hero{padding-top:56px}
       .hero-content{padding:0 20px}
       .carousel-section{padding:80px 20px}
       .flip-card{width:90vw}
-      .billboard-inner{padding:0 20px}
+      .tape-inner{padding:0 20px}
     }
-    @media (max-width: 480px){
+    @media (max-width:480px){
       header{padding:0 16px}
       .carousel-section{padding:60px 16px}
-      .btn{width:100%; justify-content:center}
+      .btn{width:100%;justify-content:center}
       .flip-card{width:100%}
     }
   </style>
 </head>
 
 <body>
-  <canvas id="canvas-three"></canvas>
+  <!-- Dynamic background layers -->
+  <div class="bg-wrap" aria-hidden="true">
+    <canvas id="bg3d"></canvas>
+    <canvas id="bgParticles"></canvas>
+    <div class="bg-vignette"></div>
+  </div>
 
   <header>
     <div class="header-wrapper">
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
-        <a href="/" class="active">Home</a>
-        <a href="#ticker">Ticker</a>
-        <a href="#carousel">Funds</a>
+        <a href="/">Home</a>
+        <a href="#market">Market</a>
+        <a href="#funds">Funds</a>
         <a href="/about.html">About</a>
       </nav>
     </div>
@@ -581,8 +429,8 @@
       <h1>Institutional Market Analysis</h1>
       <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
       <div class="hero-cta">
-        <a href="#carousel" class="btn btn-primary">Explore Funds</a>
-        <a href="#ticker" class="btn btn-secondary">Market data</a>
+        <a href="#funds" class="btn btn-primary">Explore Funds</a>
+        <a href="#market" class="btn btn-secondary">Market data</a>
       </div>
     </div>
     <div class="scroll-indicator" role="button" tabindex="0" aria-label="Scroll down">
@@ -591,32 +439,44 @@
     </div>
   </section>
 
-  <!-- MARKET DATA BILLBOARD -->
-  <section id="ticker">
-    <div class="billboard">
-      <div class="billboard-inner">
-        <div>
-          <div class="bb-label">Market data</div>
-          <div class="bb-title">Benchmarks</div>
-          <div class="bb-sub">SPY (S&amp;P proxy), AOR (allocation), ACWI (global). Hover to pause. Focus to pause.</div>
-          <div class="bb-asof" id="bbAsOf">As of —</div>
-        </div>
+  <!-- Real-time TradingView tape -->
+  <section class="tape-section" id="market">
+    <div class="tape-inner">
+      <div class="tape-left">
+        <div class="label">Market data</div>
+        <div class="title">Benchmarks</div>
+        <div class="sub">Live tape updates via TradingView. Showing: SPY, AOR, ACWI.</div>
+      </div>
 
-        <div class="tape-viewport" aria-label="Scrolling market tape">
-          <div class="tape-track" id="tapeTrack" tabindex="0">
-            <div class="tape-row" id="tapeRowA"></div>
-            <div class="tape-row" id="tapeRowB" aria-hidden="true"></div>
-          </div>
+      <div class="tape-box">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+          {
+            "symbols": [
+              { "proName": "AMEX:SPY", "title": "SPY" },
+              { "proName": "AMEX:AOR", "title": "AOR" },
+              { "proName": "AMEX:ACWI", "title": "ACWI" }
+            ],
+            "showSymbolLogo": true,
+            "colorTheme": "light",
+            "isTransparent": true,
+            "displayMode": "regular",
+            "locale": "en"
+          }
+          </script>
         </div>
+        <!-- TradingView Widget END -->
       </div>
     </div>
   </section>
 
-  <!-- FUNDS -->
-  <section class="carousel-section" id="carousel">
+  <!-- Funds -->
+  <section class="carousel-section" id="funds">
     <div class="section-wrapper">
       <div class="section-header">
-        <span class="bb-label">Investment Funds</span>
+        <span style="display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px">Investment Funds</span>
         <h2>Explore Our Strategies</h2>
         <p>Hover to flip (desktop). Tap to flip (mobile). Back side shows Fund vs benchmark chart (indexed to 100).</p>
       </div>
@@ -635,26 +495,27 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ----------------------------
-    // 1) Dynamic Three.js mesh (more dynamic than before)
-    // mouse-reactive + stable delta time
-    // ----------------------------
-    function initThreeMesh(){
-      const canvas = document.getElementById('canvas-three');
-      if(!canvas) return;
-      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // ====== Dynamic background (Three.js + particle canvas) ======
+    function initBackground() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+      // --- Three.js mesh layer (mouse reactive + delta-time stable)
+      const canvas3d = document.getElementById('bg3d');
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 8;
 
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true, powerPreference:'high-performance' });
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas3d,
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance'
+      });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setClearColor(0x000000, 0);
 
-      const geometry = new THREE.PlaneGeometry(16, 9, 140, 90);
-
+      const geometry = new THREE.PlaneGeometry(16, 9, 160, 100);
       const material = new THREE.ShaderMaterial({
         transparent: true,
         uniforms: {
@@ -666,23 +527,25 @@
           uniform vec2 uMouse;
           varying float vWave;
           varying vec2 vUv;
+
           void main(){
             vUv = uv;
-
             float t = uTime;
+
             float mx = (uMouse.x - 0.5) * 2.0;
             float my = (uMouse.y - 0.5) * 2.0;
 
             float wave = 0.0;
-            wave += sin(position.x * 1.9 + t * 1.15) * 0.11;
-            wave += cos(position.y * 1.45 + t * 0.9) * 0.09;
-            wave += sin((position.x + position.y) * 0.85 + t * 1.35) * 0.06;
+            wave += sin(position.x * 1.85 + t * 1.10) * 0.11;
+            wave += cos(position.y * 1.40 + t * 0.92) * 0.09;
+            wave += sin((position.x + position.y) * 0.90 + t * 1.35) * 0.06;
 
-            // Mouse influence (subtle)
+            // subtle mouse influence
             wave += sin(position.x * 0.65 + t * 1.25) * (mx * 0.06);
             wave += cos(position.y * 0.55 + t * 1.10) * (my * 0.06);
 
             vWave = wave;
+
             vec3 newPos = position + normal * wave;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
           }
@@ -690,179 +553,127 @@
         fragmentShader: `
           varying float vWave;
           varying vec2 vUv;
+
           void main(){
             vec3 c1 = vec3(0.0, 0.4, 1.0);
             vec3 c2 = vec3(0.2, 0.65, 1.0);
 
             float g = smoothstep(0.0, 1.0, vUv.y);
             float m = clamp((vWave + 0.20) * 2.0, 0.0, 1.0);
-            vec3 col = mix(c1, c2, g) * (0.72 + m * 0.42);
 
-            float a = 0.10 + m * 0.20;
-            gl_FragColor = vec4(col, a);
+            vec3 col = mix(c1, c2, g) * (0.70 + m * 0.45);
+
+            float alpha = 0.08 + m * 0.22;
+            gl_FragColor = vec4(col, alpha);
           }
         `
       });
 
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.rotation.x = -0.09;
+      mesh.rotation.x = -0.10;
       mesh.rotation.y = 0.12;
       scene.add(mesh);
 
       const clock = new THREE.Clock();
-      let raf = 0;
-      let targetMouse = { x:0.5, y:0.5 };
+      const mouseTarget = { x: 0.5, y: 0.5 };
 
-      function onMove(e){
-        targetMouse.x = e.clientX / window.innerWidth;
-        targetMouse.y = e.clientY / window.innerHeight;
-      }
-      window.addEventListener('mousemove', onMove, { passive:true });
+      window.addEventListener('mousemove', (e) => {
+        mouseTarget.x = e.clientX / window.innerWidth;
+        mouseTarget.y = e.clientY / window.innerHeight;
+      }, { passive: true });
 
-      function animate(){
-        const dt = Math.min(clock.getDelta(), 0.03);
-        material.uniforms.uTime.value += dt;
-
-        // damp mouse (smooth follow)
-        const ux = material.uniforms.uMouse.value.x;
-        const uy = material.uniforms.uMouse.value.y;
-        material.uniforms.uMouse.value.x = ux + (targetMouse.x - ux) * 0.06;
-        material.uniforms.uMouse.value.y = uy + (targetMouse.y - uy) * 0.06;
-
-        // slow drift
-        mesh.rotation.y += 0.0007;
-
-        renderer.render(scene, camera);
-        raf = requestAnimationFrame(animate);
-      }
-
-      function resize(){
+      function resize3d(){
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-      window.addEventListener('resize', resize);
-      animate();
-    }
+      window.addEventListener('resize', resize3d);
 
-    // ----------------------------
-    // 2) Market data billboard tape
-    // - Benchmarks only: SPY, AOR, ACWI
-    // - Re-fetch JSON periodically (GH Pages-safe)
-    // - Also apply a *small live drift* between fetches so numbers "move"
-    //   (true real-time would require backend / keys)
-    // ----------------------------
-    const BENCHMARKS = ['SPY','AOR','ACWI'];
-    let marketCache = null;
-    let liveState = {}; // sym -> { last, chg, pct }
+      // --- Particle layer (2D) to add “life” (soft parallax)
+      const pCanvas = document.getElementById('bgParticles');
+      const pCtx = pCanvas.getContext('2d');
+      const particles = [];
+      const P = 80;
 
-    async function loadMarket(){
-      const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
-      if(!res.ok) throw new Error('Missing /assets/data/market.json');
-      return res.json();
-    }
+      function resizeParticles(){
+        pCanvas.width = Math.floor(window.innerWidth * Math.min(devicePixelRatio || 1, 2));
+        pCanvas.height = Math.floor(window.innerHeight * Math.min(devicePixelRatio || 1, 2));
+      }
+      window.addEventListener('resize', resizeParticles);
+      resizeParticles();
 
-    function computeChange(series){
-      if(!Array.isArray(series) || series.length < 2) return null;
-      const prev = series[series.length-2].c;
-      const last = series[series.length-1].c;
-      const chg = last - prev;
-      const pct = (chg/prev)*100;
-      return { last, chg, pct };
-    }
-    const fmt = (n, dp=2) => Number(n).toFixed(dp);
-    const fmtSigned = (n, dp=2) => `${n>=0?'+':''}${fmt(n,dp)}`;
-
-    function buildTick(sym, ch){
-      const cls = ch.chg >= 0 ? 'pos' : 'neg';
-      return `
-        <div class="tick" role="listitem" aria-label="${sym} ${fmt(ch.last,2)}">
-          <span class="sym">${sym}</span>
-          <span class="px">${fmt(ch.last,2)}</span>
-          <span class="chg ${cls}">${fmtSigned(ch.chg,2)} (${fmtSigned(ch.pct,2)}%)</span>
-        </div>
-      `;
-    }
-
-    function renderTapeFromLiveState(){
-      const rowA = document.getElementById('tapeRowA');
-      const rowB = document.getElementById('tapeRowB');
-      const asOfEl = document.getElementById('bbAsOf');
-      const track = document.getElementById('tapeTrack');
-
-      const asOf = marketCache?.asOf ? new Date(marketCache.asOf) : null;
-      asOfEl.textContent = asOf ? `As of ${asOf.toLocaleString()}` : 'As of —';
-
-      const items = BENCHMARKS
-        .filter(sym => liveState[sym])
-        .map(sym => buildTick(sym, liveState[sym]));
-
-      if(!items.length){
-        rowA.innerHTML = `<div class="tick"><span class="sym">DATA</span><span class="px">—</span><span class="chg">Add /assets/data/market.json</span></div>`;
-        rowB.innerHTML = rowA.innerHTML;
-        return;
+      function rnd(a,b){ return Math.random()*(b-a)+a; }
+      for(let i=0;i<P;i++){
+        particles.push({
+          x: Math.random(),
+          y: Math.random(),
+          vx: rnd(-1,1) * 0.00010,
+          vy: rnd(-1,1) * 0.00010,
+          r: rnd(1.2, 2.8),
+          p: Math.random()*Math.PI*2
+        });
       }
 
-      rowA.innerHTML = items.join('');
-      rowB.innerHTML = items.join('');
+      function drawParticles(dt){
+        const W = pCanvas.width, H = pCanvas.height;
+        pCtx.clearRect(0,0,W,H);
+        // subtle
+        for(let i=0;i<particles.length;i++){
+          const p = particles[i];
+          p.x += p.vx * (dt*60);
+          p.y += p.vy * (dt*60);
+          if(p.x<0)p.x+=1; if(p.x>1)p.x-=1;
+          if(p.y<0)p.y+=1; if(p.y>1)p.y-=1;
+          p.p += dt*1.2;
+          const rr = p.r + Math.sin(p.p)*0.6;
 
-      requestAnimationFrame(()=>{
-        const width = rowA.scrollWidth || 1200;
-        const pxPerSec = 140;
-        const duration = Math.max(14, Math.min(40, width/pxPerSec));
-        track.style.animationDuration = `${duration}s`;
-      });
-    }
+          const px = p.x*W;
+          const py = p.y*H;
 
-    function seedLiveStateFromMarket(market){
-      marketCache = market;
-      for(const sym of BENCHMARKS){
-        const s = market?.series?.[sym];
-        const ch = computeChange(s);
-        if(ch) liveState[sym] = ch;
-      }
-      renderTapeFromLiveState();
-    }
+          pCtx.beginPath();
+          pCtx.arc(px, py, rr, 0, Math.PI*2);
+          pCtx.fillStyle = `rgba(0,102,255,${0.10 + (Math.sin(p.p)*0.04)})`;
+          pCtx.fill();
 
-    // “Live drift” between JSON refreshes (purely for movement/terminal feel)
-    function startLiveDrift(){
-      const step = () => {
-        for(const sym of BENCHMARKS){
-          const st = liveState[sym];
-          if(!st) continue;
-
-          // small deterministic-ish movement; keeps sign stable most of the time
-          const jitter = (Math.random() - 0.5) * 0.06; // +/- 0.03
-          const newLast = Math.max(0.01, st.last + jitter);
-          const newChg = st.chg + jitter;
-          const base = newLast - newChg;
-          const newPct = base !== 0 ? (newChg/base)*100 : st.pct;
-
-          st.last = newLast;
-          st.chg = newChg;
-          st.pct = newPct;
+          // light connecting lines
+          for(let j=i+1;j<particles.length;j++){
+            const q=particles[j];
+            const qx=q.x*W, qy=q.y*H;
+            const dx=px-qx, dy=py-qy;
+            const d=Math.sqrt(dx*dx+dy*dy);
+            if(d<170){
+              pCtx.beginPath();
+              pCtx.moveTo(px,py);
+              pCtx.lineTo(qx,qy);
+              pCtx.strokeStyle = `rgba(0,102,255,${(1-d/170)*0.07})`;
+              pCtx.lineWidth = 1;
+              pCtx.stroke();
+            }
+          }
         }
-        renderTapeFromLiveState();
-        setTimeout(step, 1100); // ~1s updates
-      };
-      step();
-    }
-
-    async function refreshMarketLoop(){
-      try{
-        const market = await loadMarket();
-        seedLiveStateFromMarket(market);
-      } catch(e){
-        console.warn(e);
       }
-      // re-fetch JSON periodically (you control how often you update the JSON in the repo)
-      setTimeout(refreshMarketLoop, 60_000);
+
+      function frame(){
+        const dt = Math.min(clock.getDelta(), 0.03);
+        material.uniforms.uTime.value += dt;
+
+        // damp mouse
+        const ux = material.uniforms.uMouse.value.x;
+        const uy = material.uniforms.uMouse.value.y;
+        material.uniforms.uMouse.value.x = ux + (mouseTarget.x - ux) * 0.06;
+        material.uniforms.uMouse.value.y = uy + (mouseTarget.y - uy) * 0.06;
+
+        mesh.rotation.y += 0.0007;
+        renderer.render(scene, camera);
+
+        drawParticles(dt);
+
+        requestAnimationFrame(frame);
+      }
+      frame();
     }
 
-    // ----------------------------
-    // 3) Fund cards (hover flip + chart on back)
-    // Benchmarks: F1->AOR, F2->SPY, F3->SPY, F4->ACWI
-    // ----------------------------
+    // ====== Cards + charts ======
     const funds = [
       { id:'f1', name:'Active Rotation', code:'Fund I', shortDesc:'Macro-driven sector rotation', desc:'Dynamic sector rotation across precious metals, ESG, and staples driven by macro risk signals.', bench:'AOR', allocation:['GLD 20%','ESGU 40%','XLP 40%'], image:'/assets/images/investments/fund1-bg.webp', color:'#0066ff' },
       { id:'f2', name:'Market Tracker', code:'Fund II', shortDesc:'Broad market-cap exposure', desc:'Market-cap weighted replication with broad exposure and minimal cost drag.', bench:'SPY', allocation:['VTI 100%'], image:'/assets/images/investments/fund2-bg.webp', color:'#7c3aed' },
@@ -871,13 +682,20 @@
     ];
 
     const charts = new Map();
+    let marketCache = null;
     const isTouch = matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    async function loadMarket(){
+      const res = await fetch('/assets/data/market.json', { cache: 'no-store' });
+      if(!res.ok) throw new Error('Missing /assets/data/market.json');
+      return res.json();
+    }
 
     function seriesToIndex(series){
       if(!Array.isArray(series) || series.length < 3) return null;
       const base = series[0].c;
       if(!base) return null;
-      return series.map(p => ({ t:p.t, v: (p.c/base)*100 }));
+      return series.map(p => ({ t:p.t, v:(p.c/base)*100 }));
     }
 
     function ensureBackChart(fund){
@@ -886,15 +704,14 @@
       const benchIdx = seriesToIndex(benchSeries);
       if(!benchIdx) return;
 
-      // Optional: support real fund series if you later add it:
-      // market.json: "FUND_F1", "FUND_F2", ...
+      // If you later add true fund NAV series, support: FUND_F1, FUND_F2, ...
       const fundKey = `FUND_${fund.id.toUpperCase()}`;
-      const realFundSeries = marketCache?.series?.[fundKey];
-      let fundIdx = realFundSeries ? seriesToIndex(realFundSeries) : null;
+      const realFund = marketCache?.series?.[fundKey];
+      let fundIdx = realFund ? seriesToIndex(realFund) : null;
 
-      // Model series if no real fund series exists
+      // Model line if you haven't added real NAV series yet
       if(!fundIdx){
-        const seed = fund.id.charCodeAt(1)*19;
+        const seed = fund.id.charCodeAt(1) * 19;
         fundIdx = benchIdx.map((p,i)=>{
           const wobble = (Math.sin((i+seed)*0.24) + Math.cos((i+seed)*0.13))*0.5;
           const drift = fund.id === 'f3' ? 0.020 : (fund.id === 'f1' ? 0.010 : 0.012);
@@ -915,7 +732,7 @@
       const a = fundIdx.map(p=>p.v);
       const b = benchIdx.map(p=>p.v);
 
-      const chart = new Chart(canvas, {
+      charts.set(fund.id, new Chart(canvas, {
         type:'line',
         data:{
           labels,
@@ -931,21 +748,20 @@
           scales:{ x:{display:false}, y:{display:false} },
           animation:{ duration:650, easing:'easeOutQuart' }
         }
-      });
-
-      charts.set(fund.id, chart);
+      }));
     }
 
     function initCarousel(){
       const carousel = document.getElementById('carouselEl');
       carousel.innerHTML = '';
+
       for(const fund of funds){
         const wrap = document.createElement('div');
         wrap.className = 'card-wrapper';
         wrap.innerHTML = `
           <div class="flip-card" data-fund="${fund.id}">
-            <div class="flip-card-inner">
-              <div class="flip-face flip-front">
+            <div class="flip-inner">
+              <div class="face front">
                 <div class="card-image">
                   <img src="${fund.image}" alt="${fund.name}" loading="lazy"/>
                   <div class="card-overlay">
@@ -980,7 +796,7 @@
                 </div>
               </div>
 
-              <div class="flip-face flip-back">
+              <div class="face back">
                 <div class="back-head">
                   <div>
                     <div class="back-title">${fund.code} vs ${fund.bench}</div>
@@ -1009,14 +825,13 @@
         carousel.appendChild(wrap);
       }
 
-      // Mobile/touch: tap flips (hover doesn't exist)
+      // Mobile: tap-to-flip + lazy chart init
       document.addEventListener('click', (e)=>{
         const btn = e.target.closest('[data-action="flip"]');
         if(!btn) return;
         const fundId = btn.getAttribute('data-fund');
         const card = document.querySelector(`.flip-card[data-fund="${fundId}"]`);
         if(!card) return;
-
         card.classList.toggle('is-flipped');
         if(card.classList.contains('is-flipped')){
           const fund = funds.find(f=>f.id===fundId);
@@ -1024,21 +839,8 @@
         }
       });
 
-      // Touch-friendly: tap the card body to flip (but don't hijack links/buttons)
-      if(isTouch){
-        document.addEventListener('click', (e)=>{
-          const card = e.target.closest('.flip-card');
-          if(!card) return;
-          if(e.target.closest('a') || e.target.closest('button')) return;
-          card.classList.toggle('is-flipped');
-          if(card.classList.contains('is-flipped')){
-            const fundId = card.getAttribute('data-fund');
-            const fund = funds.find(f=>f.id===fundId);
-            if(fund) ensureBackChart(fund);
-          }
-        });
-      } else {
-        // Desktop hover: build chart lazily when pointer enters (so it's ready when hover flips)
+      // Desktop: warm chart on hover so it’s ready when flipped
+      if(!isTouch){
         document.addEventListener('pointerenter', (e)=>{
           const card = e.target.closest('.flip-card');
           if(!card) return;
@@ -1047,6 +849,28 @@
           if(fund) ensureBackChart(fund);
         }, true);
       }
+    }
+
+    function initScrollIndicator(){
+      const el = document.querySelector('.scroll-indicator');
+      if(!el) return;
+      const go = () => window.scrollBy({ top: window.innerHeight, behavior:'smooth' });
+      el.addEventListener('click', go);
+      el.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); }
+      });
+    }
+
+    function initScrollAnimations(){
+      const tl = gsap.timeline();
+      tl.to('.hero h1', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.2);
+      tl.to('.hero p', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.28);
+      tl.to('.hero-cta', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.36);
+
+      gsap.to('.section-header', {
+        opacity:1, y:0, duration:0.9, ease:'power3.out',
+        scrollTrigger:{ trigger:'#funds', start:'top 80%' }
+      });
     }
 
     function initControls(){
@@ -1062,40 +886,13 @@
       carousel.scrollBy({ left: dir * w, behavior:'smooth' });
     }
 
-    // Hero + sections reveals
-    function initScrollAnimations(){
-      const tl = gsap.timeline();
-      tl.to('.hero h1', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.2);
-      tl.to('.hero p', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.28);
-      tl.to('.hero-cta', { opacity:1, y:0, duration:0.85, ease:'power3.out' }, 0.36);
-
-      gsap.to('.section-header', {
-        opacity:1, y:0, duration:0.9, ease:'power3.out',
-        scrollTrigger:{ trigger:'.carousel-section', start:'top 80%' }
-      });
-    }
-
-    function initScrollIndicator(){
-      const el = document.querySelector('.scroll-indicator');
-      if(!el) return;
-      const go = () => window.scrollBy({ top: window.innerHeight, behavior:'smooth' });
-      el.addEventListener('click', go);
-      el.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
-      });
-    }
-
-    // Boot
     window.addEventListener('load', async ()=>{
-      initThreeMesh();
+      initBackground();
       initCarousel();
-      initControls();
-      initScrollAnimations();
       initScrollIndicator();
-
-      // Market data
-      refreshMarketLoop();
-      startLiveDrift();
+      initScrollAnimations();
+      initControls();
+      try{ marketCache = await loadMarket(); } catch(e){ console.warn(e); }
     });
   </script>
 </body>
