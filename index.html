@@ -454,6 +454,16 @@
       .about{padding:0 20px 80px}
       footer{padding:24px 20px}
     }
+
+    /* Fallback: if GSAP is unavailable show hidden elements immediately */
+    html.no-gsap h1,
+    html.no-gsap .hero p,
+    html.no-gsap .hero-actions,
+    html.no-gsap .section-head,
+    html.no-gsap .about-inner{
+      opacity:1;
+      transform:none;
+    }
   </style>
 </head>
 
@@ -576,7 +586,17 @@
   </footer>
 
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    // GSAP setup with graceful fallback (CDN may be blocked or slow)
+    let gsapReady = false;
+    try {
+      if(typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined'){
+        gsap.registerPlugin(ScrollTrigger);
+        gsapReady = true;
+      }
+    } catch(e){ console.warn('GSAP unavailable:', e); }
+
+    // If GSAP isn't available, reveal elements immediately via CSS class
+    if(!gsapReady) document.documentElement.classList.add('no-gsap');
 
     // --------------------------
     // 1) Shifting network background (FIXED)
@@ -982,6 +1002,7 @@
     // 4) Reveal polish
     // --------------------------
     function initReveals(){
+      if(!gsapReady) return; // gracefully skip if GSAP unavailable
       const tl = gsap.timeline();
       tl.to('h1', {opacity:1, y:0, duration:0.9, ease:'power3.out'}, 0.20);
       tl.to('.hero p', {opacity:1, y:0, duration:0.9, ease:'power3.out'}, 0.30);
@@ -997,9 +1018,12 @@
     }
 
     // --------------------------
-    // Boot (FIXED - use DOMContentLoaded)
+    // Boot — guaranteed init with multiple triggers
     // --------------------------
+    let _initDone = false;
     function initAll(){
+      if(_initDone) return;
+      _initDone = true;
       console.log('Initializing...');
       initNetworkBackground();
       initReveals();
@@ -1013,12 +1037,16 @@
       });
     }
 
-    // Use DOMContentLoaded for earlier init
+    // Primary: DOMContentLoaded (or immediate if already ready)
     if(document.readyState === 'loading'){
       document.addEventListener('DOMContentLoaded', initAll);
     } else {
       initAll();
     }
+
+    // Secondary safety net: ensures init runs after the full page (including
+    // async resources) has settled — guards against rare DOMContentLoaded races
+    window.addEventListener('load', initAll);
 
     console.log('Script loaded');
   </script>
