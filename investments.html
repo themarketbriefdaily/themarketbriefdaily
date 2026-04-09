@@ -70,7 +70,7 @@
     .pill{font-size:11px;font-weight:750;padding:8px 14px;border-radius:999px;border:1px solid rgba(0,102,255,.3);background:rgba(0,102,255,.08);color:#0066ff;transition:all .2s ease}
     .pill:hover{background:rgba(0,102,255,.15);border-color:rgba(0,102,255,.5)}
 
-    .fund-chart{border:1px solid rgba(0,102,255,.1);border-radius:14px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:16px;height:240px;margin:16px 0}
+    .fund-chart{border:1px solid rgba(0,102,255,.1);border-radius:14px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:16px;height:280px;margin:16px 0}
     .fund-chart canvas{width:100%!important;height:100%!important}
 
     .fund-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900;margin-top:12px}
@@ -171,6 +171,37 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
+    // Generate daily YTD data (Jan 1 - Apr 10, 2026)
+    function generateDailyYTD(startReturn, volatility) {
+      const days = [];
+      const today = new Date(2026, 3, 10); // April 10, 2026
+      const ytdStart = new Date(2026, 0, 1); // January 1, 2026
+      const dayCount = Math.floor((today - ytdStart) / (1000 * 60 * 60 * 24)) + 1;
+
+      let value = 100;
+      const dailyReturn = startReturn / 100 / dayCount;
+      const dailyVol = volatility / 100 / Math.sqrt(252); // 252 trading days
+
+      for (let i = 0; i < dayCount; i++) {
+        const randomShock = (Math.random() - 0.5) * 2;
+        value *= (1 + dailyReturn + randomShock * dailyVol);
+        
+        const date = new Date(ytdStart);
+        date.setDate(date.getDate() + i);
+        days.push({
+          date: date,
+          value: Math.round(value * 100) / 100
+        });
+      }
+      return days;
+    }
+
+    // Format date for chart label
+    function formatDateShort(date) {
+      const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+      return months[date.getMonth()] + ' ' + date.getDate();
+    }
+
     const funds = [
       {
         id:"f1",
@@ -180,8 +211,8 @@
         desc:"Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.",
         allocation:["GLD","XLE","XLP"],
         r1y:18.32,
-        bench:"SPY",
-        benchR:24.56,
+        bench:"AOR",
+        benchR:16.45,
         color:"#60a5fa",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund1-bg.webp",
         thesis:[
@@ -195,19 +226,19 @@
         id:"f2",
         code:"F2",
         name:"Market Tracker",
-        stage:"Market-cap weighted exposure",
-        desc:"Broad market-cap weighted tracking with total market exposure and systematic rebalancing discipline.",
-        allocation:["VTI"],
-        r1y:24.56,
+        stage:"Diversified core allocation",
+        desc:"40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.",
+        allocation:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
+        r1y:12.87,
         bench:"SPY",
-        benchR:24.56,
+        benchR:11.56,
         color:"#a78bfa",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp",
         thesis:[
-          "Systematic broad-beta exposure maximizes diversification.",
-          "Low-friction, passive implementation with minimal drift.",
-          "Acts as core portfolio comparator and performance anchor.",
-          "Captures full market participation across all cap sizes."
+          "Balanced exposure across growth, broad market, and international.",
+          "Nasdaq tilt captures mega-cap technology leadership.",
+          "International diversification reduces US concentration risk.",
+          "Systematic rebalancing captures momentum and mean reversion."
         ]
       },
       {
@@ -219,7 +250,7 @@
         allocation:["VBR","IJS"],
         r1y:31.45,
         bench:"SPY",
-        benchR:24.56,
+        benchR:11.56,
         color:"#f472b6",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp",
         thesis:[
@@ -238,7 +269,7 @@
         allocation:["ESGU","ESGV","ESGE"],
         r1y:20.87,
         bench:"ACWX",
-        benchR:19.45,
+        benchR:18.64,
         color:"#34d399",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp",
         thesis:[
@@ -252,20 +283,6 @@
 
     const charts = {};
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
-
-    function makeSeries(annualReturn, volatility, months = 12) {
-      const data = [];
-      let value = 100;
-      const monthlyReturn = annualReturn / 100 / 12;
-      const monthlyVol = volatility / 100 / Math.sqrt(12);
-
-      for (let i = 0; i < months; i++) {
-        const randomShock = (Math.random() - 0.5) * 2;
-        value *= (1 + monthlyReturn + randomShock * monthlyVol);
-        data.push(Math.round(value * 100) / 100);
-      }
-      return data;
-    }
 
     function renderFunds() {
       const grid = document.getElementById("fundsGrid");
@@ -287,7 +304,7 @@
 
               <div class="fund-stats">
                 <div class="stat">
-                  <div class="stat-label">1Y Return</div>
+                  <div class="stat-label">YTD Return</div>
                   <div class="stat-value ${f.r1y >= 0 ? 'pos' : 'neg'}">${fmtPct(f.r1y)}</div>
                 </div>
                 <div class="stat">
@@ -334,40 +351,51 @@
         if (!canvas) return;
 
         const ctx = canvas.getContext("2d");
-        const fundData = makeSeries(f.r1y, 12, 12);
-        const benchData = makeSeries(f.benchR, 10, 12);
+        const fundData = generateDailyYTD(f.r1y, 15); // 15% annual volatility
+        const benchData = generateDailyYTD(f.benchR, 12); // 12% annual volatility
 
         if (charts[f.id]) charts[f.id].destroy();
 
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        // Create labels every 10th day for readability
+        const labels = fundData.map((d, i) => i % 10 === 0 ? formatDateShort(d.date) : '').filter(l => l);
+        const labelIndices = fundData.map((d, i) => i % 10 === 0 ? i : null).filter(i => i !== null);
+
+        // Create full dataset but only label some points
+        const fullLabels = fundData.map((_, i) => '');
+        labelIndices.forEach((idx, order) => {
+          fullLabels[idx] = labels[order];
+        });
+
+        const fundValues = fundData.map(d => d.value);
+        const benchValues = benchData.map(d => d.value);
 
         charts[f.id] = new Chart(ctx, {
           type: "line",
           data: {
-            labels: months,
+            labels: fullLabels,
             datasets: [
               {
                 label: f.code,
-                data: fundData,
+                data: fundValues,
                 borderColor: f.color,
-                backgroundColor: f.color + '15',
+                backgroundColor: f.color + '12',
                 borderWidth: 2.5,
-                pointRadius: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
                 pointBackgroundColor: f.color,
                 pointBorderColor: '#fff',
-                pointBorderWidth: 1,
-                pointHoverRadius: 6,
+                pointBorderWidth: 2,
                 tension: 0.3,
                 fill: true
               },
               {
                 label: f.bench,
-                data: benchData,
+                data: benchValues,
                 borderColor: "rgba(2,8,23,.45)",
                 borderDash: [5, 5],
-                borderWidth: 1.5,
+                borderWidth: 2,
                 pointRadius: 0,
-                pointHoverRadius: 4,
+                pointHoverRadius: 6,
                 tension: 0.3,
                 fill: false
               }
@@ -391,8 +419,15 @@
                 titleFont: { weight: 'bold', size: 12 },
                 bodyFont: { size: 11 },
                 callbacks: {
+                  title: function(context) {
+                    if (context.length > 0) {
+                      const dataIndex = context[0].dataIndex;
+                      return fundData[dataIndex].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    }
+                    return '';
+                  },
                   label: function(context) {
-                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1);
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
                   }
                 }
               }
@@ -407,8 +442,8 @@
                 display: true,
                 grid: { color: 'rgba(2,8,23,.05)' },
                 ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' },
-                min: Math.min(...fundData, ...benchData) * 0.95,
-                max: Math.max(...fundData, ...benchData) * 1.05
+                min: Math.min(...fundValues, ...benchValues) * 0.98,
+                max: Math.max(...fundValues, ...benchValues) * 1.02
               }
             }
           }
