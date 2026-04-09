@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   
@@ -142,16 +143,6 @@
     nav a:hover,
     nav a.active {
       color: var(--text-primary);
-    }
-
-    nav a.active::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      right: 0;
-      height: 1.5px;
-      background: var(--accent);
     }
 
     /* Hero */
@@ -310,35 +301,37 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* Section */
-    .section {
+    /* 3D Cube Section */
+    .cube-section {
       padding: 140px 48px;
+      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+      border-top: 1px solid var(--border-light);
     }
 
-    .section-wrapper {
+    .cube-wrapper {
       max-width: 1400px;
       margin: 0 auto;
     }
 
-    .section-header {
+    .cube-header {
       text-align: center;
       margin-bottom: 96px;
     }
 
-    .section-header .label {
+    .cube-header .label {
       display: inline-block;
       margin-bottom: 16px;
       opacity: 0;
       transform: translateY(20px);
     }
 
-    .section-header h2 {
+    .cube-header h2 {
       margin-bottom: 16px;
       opacity: 0;
       transform: translateY(20px);
     }
 
-    .section-header > p {
+    .cube-header > p {
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto;
@@ -346,52 +339,39 @@
       transform: translateY(20px);
     }
 
-    /* Funds Section */
-    .funds-section {
-      background: var(--bg-white);
-      border-top: 1px solid var(--border-light);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .fund-container {
+    .cube-container {
       display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 96px;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
       align-items: center;
-      margin-bottom: 160px;
-      scroll-margin-top: 80px;
+      margin-bottom: 60px;
     }
 
-    .fund-container:last-child {
-      margin-bottom: 0;
+    #canvas-container {
+      width: 100%;
+      height: 600px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-light);
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(0, 0, 0, 0.02) 100%);
     }
 
-    .fund-container.reversed {
-      direction: rtl;
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
     }
 
-    .fund-container.reversed > * {
-      direction: ltr;
-    }
-
-    .fund-info {
+    .cube-info {
       display: flex;
       flex-direction: column;
       gap: 32px;
       opacity: 0;
-      transform: translateX(-40px);
-    }
-
-    .fund-container.reversed .fund-info {
-      opacity: 0;
       transform: translateX(40px);
     }
 
-    .fund-tag {
-      align-self: flex-start;
-    }
-
-    .fund-title {
+    .cube-fund-title {
       font-size: 2.5rem;
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -399,14 +379,14 @@
       color: var(--text-primary);
     }
 
-    .fund-description {
+    .cube-fund-desc {
       font-size: 1.05rem;
       color: var(--text-secondary);
       line-height: 1.8;
       max-width: 500px;
     }
 
-    .fund-metrics {
+    .cube-metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 48px;
@@ -442,7 +422,7 @@
       text-transform: uppercase;
     }
 
-    .fund-allocation {
+    .cube-allocation {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -464,33 +444,84 @@
       border-color: var(--border-light);
     }
 
-    .fund-cta {
+    .cube-controls {
       display: flex;
       gap: 12px;
-      margin-top: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
     }
 
-    .fund-visual {
-      position: relative;
-      height: 520px;
-      border-radius: 16px;
-      overflow: hidden;
+    .fund-selector {
+      display: flex;
+      gap: 8px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .selector-btn {
+      padding: 10px 18px;
       background: var(--bg-light);
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border-light);
+      border: 2px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .selector-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .selector-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .cube-hint {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    /* Section */
+    .section {
+      padding: 140px 48px;
+    }
+
+    .section-wrapper {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 96px;
+    }
+
+    .section-header .label {
+      display: inline-block;
+      margin-bottom: 16px;
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(20px);
     }
 
-    .fund-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    .section-header h2 {
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
-    .fund-visual:hover img {
-      transform: scale(1.05);
+    .section-header > p {
+      font-size: 1.1rem;
+      max-width: 640px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     /* Approach Section */
@@ -663,17 +694,21 @@
         padding: 100px 32px;
       }
 
-      .section-header {
-        margin-bottom: 80px;
+      .cube-section {
+        padding: 100px 32px;
       }
 
-      .fund-container {
+      .cube-container {
         grid-template-columns: 1fr;
         gap: 64px;
       }
 
-      .fund-visual {
-        height: 400px;
+      #canvas-container {
+        height: 500px;
+      }
+
+      .cube-info {
+        transform: translateX(0);
       }
 
       nav {
@@ -723,18 +758,16 @@
         padding: 80px 20px;
       }
 
-      .fund-container {
-        gap: 40px;
-        margin-bottom: 100px;
+      .cube-section {
+        padding: 80px 20px;
       }
 
-      .fund-metrics {
+      #canvas-container {
+        height: 350px;
+      }
+
+      .cube-metrics {
         gap: 32px;
-      }
-
-      .fund-visual {
-        height: 300px;
-        border-radius: 12px;
       }
 
       .features-grid {
@@ -773,6 +806,10 @@
         padding: 60px 16px;
       }
 
+      .cube-section {
+        padding: 60px 16px;
+      }
+
       .btn {
         padding: 10px 20px;
         font-size: 13px;
@@ -782,11 +819,20 @@
         font-size: 1.6rem;
       }
 
-      .fund-allocation {
+      .cube-allocation {
         gap: 8px;
       }
 
       .allocation-item {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .fund-selector {
+        gap: 6px;
+      }
+
+      .selector-btn {
         padding: 8px 12px;
         font-size: 12px;
       }
@@ -824,7 +870,7 @@
       <h1>Institutional market analysis made simple</h1>
       <p>We dissect commodity markets, macro transmission, and quantitative strategies. Research without agenda.</p>
       <div class="hero-cta">
-        <a href="/investments.html" class="btn btn-primary">Explore Funds</a>
+        <a href="#3d-funds" class="btn btn-primary">Explore Funds</a>
         <a href="/posts.html" class="btn btn-secondary">Read Research</a>
       </div>
     </div>
@@ -834,151 +880,54 @@
     </div>
   </section>
 
-  <!-- Funds Section -->
-  <section class="section funds-section">
-    <div class="section-wrapper">
-      <div class="section-header">
+  <!-- 3D Cube Funds Section -->
+  <section class="cube-section" id="3d-funds">
+    <div class="cube-wrapper">
+      <div class="cube-header">
         <span class="label">Investment Funds</span>
-        <h2>Four strategies built on data</h2>
-        <p>Each framework is rigorously designed for different market conditions and risk profiles.</p>
+        <h2>Experience our four strategies</h2>
+        <p>Interact with the 3D cube to explore each fund. Rotate, click, or select below.</p>
       </div>
 
-      <!-- Fund 1 -->
-      <div class="fund-container" id="fund-1">
-        <div class="fund-info">
-          <span class="label fund-tag">Fund I</span>
-          <h3 class="fund-title">Active Rotation</h3>
-          <p class="fund-description">Dynamic sector rotation across precious metals, energy, and consumer staples. Driven by macro risk signals and regime identification.</p>
+      <div class="cube-container">
+        <div id="canvas-container"></div>
+
+        <div class="cube-info">
+          <div>
+            <span class="label" id="fund-label">Fund I</span>
+            <h3 class="cube-fund-title" id="fund-name">Active Rotation</h3>
+            <p class="cube-fund-desc" id="fund-desc">Dynamic sector rotation across precious metals, energy, and consumer staples. Driven by macro risk signals and regime identification.</p>
+          </div>
           
-          <div class="fund-metrics">
+          <div class="cube-metrics">
             <div class="metric">
-              <div class="metric-value positive">18.32%</div>
+              <div class="metric-value positive" id="fund-return">18.32%</div>
               <div class="metric-label">1Y Return</div>
             </div>
             <div class="metric">
-              <div class="metric-value neutral">−6.24%</div>
-              <div class="metric-label">vs SPY</div>
+              <div class="metric-value neutral" id="fund-outperformance">−6.24%</div>
+              <div class="metric-label" id="fund-bench-label">vs SPY</div>
             </div>
           </div>
 
-          <div class="fund-allocation">
+          <div class="cube-allocation" id="fund-allocation">
             <span class="allocation-item">GLD 20%</span>
             <span class="allocation-item">XLE 35%</span>
             <span class="allocation-item">XLP 45%</span>
           </div>
 
-          <div class="fund-cta">
-            <a href="/investments.html" class="btn btn-primary">Learn More</a>
-          </div>
-        </div>
+          <div class="cube-hint">💡 Hint: Drag the 3D cube to rotate or use the buttons below to jump to a fund.</div>
 
-        <div class="fund-visual">
-          <img src="/assets/images/investments/fund1-bg.webp" alt="Fund I Active Rotation">
-        </div>
-      </div>
-
-      <div style="height: 80px;"></div>
-
-      <!-- Fund 2 -->
-      <div class="fund-container reversed" id="fund-2">
-        <div class="fund-info">
-          <span class="label fund-tag">Fund II</span>
-          <h3 class="fund-title">Market Tracker</h3>
-          <p class="fund-description">Market-cap weighted index replication with broad exposure across all equities. Minimal cost drag and systematic rebalancing.</p>
-          
-          <div class="fund-metrics">
-            <div class="metric">
-              <div class="metric-value positive">24.56%</div>
-              <div class="metric-label">1Y Return</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value neutral">+0.00%</div>
-              <div class="metric-label">vs SPY</div>
-            </div>
+          <div class="fund-selector">
+            <button class="selector-btn active" onclick="rotateCube(0)">Fund I</button>
+            <button class="selector-btn" onclick="rotateCube(1)">Fund II</button>
+            <button class="selector-btn" onclick="rotateCube(2)">Fund III</button>
+            <button class="selector-btn" onclick="rotateCube(3)">Fund IV</button>
           </div>
 
-          <div class="fund-allocation">
-            <span class="allocation-item">VTI 100%</span>
+          <div class="cube-controls">
+            <a href="/investments.html" class="btn btn-primary">View Full Details</a>
           </div>
-
-          <div class="fund-cta">
-            <a href="/investments.html" class="btn btn-primary">Learn More</a>
-          </div>
-        </div>
-
-        <div class="fund-visual">
-          <img src="/assets/images/investments/fund2-bg.webp" alt="Fund II Market Tracker">
-        </div>
-      </div>
-
-      <div style="height: 80px;"></div>
-
-      <!-- Fund 3 -->
-      <div class="fund-container" id="fund-3">
-        <div class="fund-info">
-          <span class="label fund-tag">Fund III</span>
-          <h3 class="fund-title">Value Factor</h3>
-          <p class="fund-description">Small-cap and mid-cap value tilt. Fama-French factor premia implementation with cyclical mean reversion.</p>
-          
-          <div class="fund-metrics">
-            <div class="metric">
-              <div class="metric-value positive">31.45%</div>
-              <div class="metric-label">1Y Return</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value positive">+6.89%</div>
-              <div class="metric-label">vs SPY</div>
-            </div>
-          </div>
-
-          <div class="fund-allocation">
-            <span class="allocation-item">VBR 60%</span>
-            <span class="allocation-item">IJS 40%</span>
-          </div>
-
-          <div class="fund-cta">
-            <a href="/investments.html" class="btn btn-primary">Learn More</a>
-          </div>
-        </div>
-
-        <div class="fund-visual">
-          <img src="/assets/images/investments/fund3-bg.webp" alt="Fund III Value Factor">
-        </div>
-      </div>
-
-      <div style="height: 80px;"></div>
-
-      <!-- Fund 4 -->
-      <div class="fund-container reversed" id="fund-4">
-        <div class="fund-info">
-          <span class="label fund-tag">Fund IV</span>
-          <h3 class="fund-title">ESG Global</h3>
-          <p class="fund-description">Sustainability-screened multi-region portfolio. US developed and emerging market exposure with governance bias.</p>
-          
-          <div class="fund-metrics">
-            <div class="metric">
-              <div class="metric-value positive">20.87%</div>
-              <div class="metric-label">1Y Return</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value positive">+1.42%</div>
-              <div class="metric-label">vs ACWX</div>
-            </div>
-          </div>
-
-          <div class="fund-allocation">
-            <span class="allocation-item">ESGU 50%</span>
-            <span class="allocation-item">ESGV 30%</span>
-            <span class="allocation-item">ESGE 20%</span>
-          </div>
-
-          <div class="fund-cta">
-            <a href="/investments.html" class="btn btn-primary">Learn More</a>
-          </div>
-        </div>
-
-        <div class="fund-visual">
-          <img src="/assets/images/investments/fund4-bg.webp" alt="Fund IV ESG Global">
         </div>
       </div>
     </div>
@@ -1071,8 +1020,257 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
+    // Fund Data
+    const fundsData = [
+      {
+        name: 'Fund I — Active Rotation',
+        label: 'Fund I',
+        desc: 'Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and regime identification.',
+        return: 18.32,
+        bench: 'SPY',
+        benchReturn: 24.56,
+        allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%']
+      },
+      {
+        name: 'Fund II — Market Tracker',
+        label: 'Fund II',
+        desc: 'Market-cap weighted index replication with broad exposure across all equities. Minimal cost drag and systematic rebalancing.',
+        return: 24.56,
+        bench: 'SPY',
+        benchReturn: 24.56,
+        allocation: ['VTI 100%']
+      },
+      {
+        name: 'Fund III — Value Factor',
+        label: 'Fund III',
+        desc: 'Small-cap and mid-cap value tilt. Fama-French factor premia implementation with cyclical mean reversion.',
+        return: 31.45,
+        bench: 'SPY',
+        benchReturn: 24.56,
+        allocation: ['VBR 60%', 'IJS 40%']
+      },
+      {
+        name: 'Fund IV — ESG Global',
+        label: 'Fund IV',
+        desc: 'Sustainability-screened multi-region portfolio. US developed and emerging market exposure with governance bias.',
+        return: 20.87,
+        bench: 'ACWX',
+        benchReturn: 19.45,
+        allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%']
+      }
+    ];
+
+    let currentFund = 0;
+    let scene, camera, renderer, cube;
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
     // ============================================
-    // ANIMATED HERO CANVAS BACKGROUND
+    // THREE.JS 3D CUBE SETUP
+    // ============================================
+    function initThreeCube() {
+      const container = document.getElementById('canvas-container');
+      
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xfafafa);
+
+      // Camera
+      camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.z = 2.5;
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFShadowShadowMap;
+      container.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      directionalLight.position.set(5, 5, 5);
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 2048;
+      directionalLight.shadow.mapSize.height = 2048;
+      scene.add(directionalLight);
+
+      const pointLight = new THREE.PointLight(0x0066ff, 0.3);
+      pointLight.position.set(-5, 3, 5);
+      scene.add(pointLight);
+
+      // Cube
+      const geometry = new THREE.BoxGeometry(1.8, 1.8, 1.8);
+      const materials = [
+        createFaceMaterial(0), // Right - Fund 1
+        createFaceMaterial(1), // Left - Fund 2
+        createFaceMaterial(2), // Top - Fund 3
+        createFaceMaterial(3), // Bottom - Fund 4
+        createFaceMaterial(0), // Front - Fund 1
+        createFaceMaterial(1)  // Back - Fund 2
+      ];
+
+      cube = new THREE.Mesh(geometry, materials);
+      cube.castShadow = true;
+      cube.receiveShadow = true;
+      scene.add(cube);
+
+      // Handle resizing
+      window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      });
+
+      // Mouse events for dragging
+      container.addEventListener('mousedown', onMouseDown);
+      container.addEventListener('mousemove', onMouseMove);
+      container.addEventListener('mouseup', onMouseUp);
+      container.addEventListener('touchstart', onTouchStart);
+      container.addEventListener('touchmove', onTouchMove);
+      container.addEventListener('touchend', onTouchEnd);
+
+      // Animation loop
+      animate();
+    }
+
+    function createFaceMaterial(fundIndex) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, 512, 512);
+      const fundColors = [
+        { from: '#0066ff', to: '#0052cc' },
+        { from: '#a78bfa', to: '#8b5cf6' },
+        { from: '#ec4899', to: '#db2777' },
+        { from: '#14b8a6', to: '#0d9488' }
+      ];
+      gradient.addColorStop(0, fundColors[fundIndex].from);
+      gradient.addColorStop(1, fundColors[fundIndex].to);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 512, 512);
+
+      // Text
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 72px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(fundsData[fundIndex].label, 256, 180);
+
+      ctx.font = '48px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      const lines = fundsData[fundIndex].name.split(' — ');
+      ctx.fillText(lines[1], 256, 280);
+
+      ctx.font = '32px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.fillText(`${fundsData[fundIndex].return.toFixed(2)}%`, 256, 400);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.magFilter = THREE.LinearFilter;
+      texture.minFilter = THREE.LinearFilter;
+
+      return new THREE.MeshStandardMaterial({
+        map: texture,
+        roughness: 0.3,
+        metalness: 0.1,
+        emissiveMap: texture,
+        emissive: new THREE.Color(0xffffff),
+        emissiveIntensity: 0.2
+      });
+    }
+
+    function onMouseDown(e) {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onMouseMove(e) {
+      if (!isDragging) return;
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+      cube.rotation.y += deltaX * 0.01;
+      cube.rotation.x += deltaY * 0.01;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onMouseUp() {
+      isDragging = false;
+    }
+
+    function onTouchStart(e) {
+      isDragging = true;
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+
+    function onTouchMove(e) {
+      if (!isDragging) return;
+      const deltaX = e.touches[0].clientX - previousMousePosition.x;
+      const deltaY = e.touches[0].clientY - previousMousePosition.y;
+      cube.rotation.y += deltaX * 0.01;
+      cube.rotation.x += deltaY * 0.01;
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+
+    function onTouchEnd() {
+      isDragging = false;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      // Gentle auto-rotation when not dragging
+      if (!isDragging) {
+        cube.rotation.y += 0.002;
+        cube.rotation.x += 0.0005;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function rotateCube(fundIndex) {
+      currentFund = fundIndex;
+      updateFundInfo();
+
+      // Animate cube rotation
+      const targetRotationY = fundIndex * (Math.PI / 2);
+      gsap.to(cube.rotation, {
+        y: targetRotationY,
+        duration: 0.8,
+        ease: 'power2.inOut'
+      });
+
+      // Update selector buttons
+      document.querySelectorAll('.selector-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === fundIndex);
+      });
+    }
+
+    function updateFundInfo() {
+      const fund = fundsData[currentFund];
+      const outperformance = fund.return - fund.benchReturn;
+
+      document.getElementById('fund-label').textContent = fund.label;
+      document.getElementById('fund-name').textContent = fund.name;
+      document.getElementById('fund-desc').textContent = fund.desc;
+      document.getElementById('fund-return').textContent = `${fund.return.toFixed(2)}%`;
+      document.getElementById('fund-outperformance').textContent = `${outperformance >= 0 ? '+' : ''}${outperformance.toFixed(2)}%`;
+      document.getElementById('fund-outperformance').className = `metric-value ${outperformance >= 0 ? 'positive' : 'neutral'}`;
+      document.getElementById('fund-bench-label').textContent = `vs ${fund.bench}`;
+
+      const allocContainer = document.getElementById('fund-allocation');
+      allocContainer.innerHTML = fund.allocation.map(a => `<span class="allocation-item">${a}</span>`).join('');
+    }
+
+    // ============================================
+    // GSAP HERO CANVAS
     // ============================================
     function initHeroCanvas() {
       const canvas = document.getElementById('hero-canvas');
@@ -1104,26 +1302,21 @@
         time += 0.002;
 
         particles.forEach((p, i) => {
-          // Update position
           p.x += p.vx;
           p.y += p.vy;
 
-          // Wrap around edges
           if (p.x < 0) p.x = canvas.width;
           if (p.x > canvas.width) p.x = 0;
           if (p.y < 0) p.y = canvas.height;
           if (p.y > canvas.height) p.y = 0;
 
-          // Pulse opacity
           p.opacity = 0.2 + Math.sin(time + i) * 0.3;
 
-          // Draw particle
           ctx.fillStyle = `rgba(0, 102, 255, ${p.opacity})`;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fill();
 
-          // Draw connections
           for (let j = i + 1; j < particles.length; j++) {
             const p2 = particles[j];
             const dx = p.x - p2.x;
@@ -1164,46 +1357,31 @@
       heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
       heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
 
-      // Section Headers
-      gsap.utils.toArray('.section-header .label, .section-header h2, .section-header > p').forEach((el, i) => {
+      // Cube section header
+      gsap.utils.toArray('.cube-header .label, .cube-header h2, .cube-header > p').forEach((el, i) => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
           duration: 0.8,
           delay: 0.1,
           scrollTrigger: {
-            trigger: el.closest('.section-header'),
+            trigger: el.closest('.cube-header'),
             start: 'top 80%',
             toggleActions: 'play none none none'
           }
         });
       });
 
-      // Fund Cards Slide In
-      gsap.utils.toArray('.fund-info').forEach((el) => {
-        gsap.to(el, {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: el.closest('.fund-container'),
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
-        });
-      });
-
-      gsap.utils.toArray('.fund-visual').forEach((el) => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
-        });
+      // Cube info slide in
+      gsap.to('.cube-info', {
+        opacity: 1,
+        x: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: '.cube-section',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
       });
 
       // Feature Cards Staggered
@@ -1233,20 +1411,6 @@
           }
         });
       });
-
-      // Parallax effect on fund images
-      gsap.utils.toArray('.fund-visual').forEach((el) => {
-        gsap.to(el, {
-          yPercent: 5,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top center',
-            end: 'bottom center',
-            scrub: 1
-          }
-        });
-      });
     }
 
     // ============================================
@@ -1254,10 +1418,10 @@
     // ============================================
     window.addEventListener('load', () => {
       initHeroCanvas();
+      initThreeCube();
       initScrollAnimations();
     });
 
-    // Smooth scroll for scroll indicator
     document.querySelector('.scroll-indicator').addEventListener('click', () => {
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
     });
