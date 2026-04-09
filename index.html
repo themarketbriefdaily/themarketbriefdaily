@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -7,6 +7,428 @@
   <meta name="description" content="Independent institutional-grade market analysis." />
   <meta name="theme-color" content="#060c1a" />
   <link rel="stylesheet" href="/assets/style.css" />
+  <style>
+    /* New carousel styles */
+    .carousel-section {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(6, 12, 26, 0.95), rgba(15, 23, 42, 0.9));
+      overflow: hidden;
+    }
+
+    .carousel-background {
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+    }
+
+    .carousel-background canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .carousel-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      height: 600px;
+      perspective: 1200px;
+      padding: 0 40px;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-viewport {
+        height: 500px;
+        padding: 0 20px;
+      }
+    }
+
+    .carousel-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-item {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(100px) scale(0.8) rotateY(30deg);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .carousel-item.active {
+      opacity: 1;
+      transform: translateX(0) scale(1) rotateY(0);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    .carousel-item.prev {
+      opacity: 0.3;
+      transform: translateX(-100px) scale(0.8) rotateY(-30deg);
+      z-index: 5;
+    }
+
+    .fund-card-carousel {
+      width: 100%;
+      max-width: 500px;
+      height: 100%;
+      border-radius: 24px;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fund-card-carousel::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .fund-card-carousel.f1::before { background: #60a5fa; }
+    .fund-card-carousel.f2::before { background: #a78bfa; }
+    .fund-card-carousel.f3::before { background: #f472b6; }
+    .fund-card-carousel.f4::before { background: #34d399; }
+
+    .carousel-fund-header {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 24px;
+    }
+
+    .carousel-fund-code {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    .carousel-fund-title {
+      font-size: clamp(1.8rem, 4vw, 2.2rem);
+      font-weight: 850;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .carousel-fund-subtitle {
+      font-size: 14px;
+      color: rgba(238, 242, 255, 0.6);
+      line-height: 1.6;
+    }
+
+    .carousel-fund-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: rgba(238, 242, 255, 0.45);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 900;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .stat-value.pos {
+      color: #10b981;
+      text-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+    }
+
+    .stat-value.neg {
+      color: #60a5fa;
+    }
+
+    .carousel-fund-allocation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .allocation-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.15);
+      color: #bfdbfe;
+    }
+
+    .carousel-fund-cta {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .carousel-cta-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(238, 242, 255, 0.9);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .carousel-cta-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .carousel-cta-btn.primary {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      border-color: transparent;
+      color: white;
+    }
+
+    .carousel-cta-btn.primary:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    .carousel-controls {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      z-index: 20;
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      width: 32px;
+      border-radius: 5px;
+      background: #3b82f6;
+      border-color: #3b82f6;
+    }
+
+    .carousel-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .carousel-nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(238, 242, 255, 0.9);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .carousel-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Refined hero section */
+    .hero-refined {
+      position: relative;
+      padding: 80px 0;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(6, 12, 26, 0.5), rgba(6, 12, 26, 0.8));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-refined h2 {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 850;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-refined p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(238, 242, 255, 0.65);
+      max-width: 700px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .fund-highlights-section {
+      padding: 80px 0;
+      background: rgba(6, 12, 26, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .fund-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .highlight-card {
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .highlight-card:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03));
+      transform: translateY(-4px);
+    }
+
+    .highlight-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .highlight-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .highlight-card p {
+      font-size: 0.95rem;
+      color: rgba(238, 242, 255, 0.6);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-viewport {
+        height: auto;
+        min-height: 600px;
+      }
+
+      .fund-card-carousel {
+        padding: 32px;
+      }
+
+      .carousel-controls {
+        bottom: 20px;
+        gap: 16px;
+      }
+
+      .carousel-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel-section {
+        height: auto;
+        min-height: 700px;
+        padding: 40px 0;
+      }
+
+      .fund-card-carousel {
+        max-width: 100%;
+        padding: 24px;
+      }
+
+      .carousel-fund-title {
+        font-size: 1.6rem;
+      }
+
+      .carousel-cta-btn {
+        font-size: 13px;
+        padding: 10px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -28,19 +450,80 @@
       </nav>
     </div>
   </header>
-  <section class="hero" aria-label="Hero">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-glow"></div>
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Independent Research</div>
-      <h1>We analyse <span class="grad">markets and macro</span></h1>
-      <p class="hero-desc">Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative investment strategies — delivered clearly and without bias.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="/posts.html">Read latest</a>
-        <a class="btn ghost" href="/investments.html">Our Funds</a>
-        <a class="btn ghost" href="/about.html">About</a>
+
+  <!-- Interactive Fund Carousel -->
+  <section class="carousel-section" aria-label="Fund Carousel">
+    <div class="carousel-background">
+      <canvas id="carouselCanvas"></canvas>
+    </div>
+    
+    <div class="carousel-container">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Carousel items will be inserted here -->
+        </div>
+
+        <!-- Controls -->
+        <div class="carousel-controls">
+          <div class="carousel-dots" id="carouselDots"></div>
+          <div class="carousel-nav">
+            <button class="carousel-nav-btn" id="prevBtn" aria-label="Previous fund">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-nav-btn" id="nextBtn" aria-label="Next fund">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
       </div>
-      <p class="hero-note">Not investment advice. For informational purposes only.</p>
+    </div>
+  </section>
+
+  <!-- Hero Info Section -->
+  <section class="hero-refined">
+    <div class="container">
+      <h2>We analyse <span class="grad">markets and macro</span></h2>
+      <p>Institutional-grade analysis of commodity markets, macro transmission mechanisms, and quantitative investment strategies — delivered clearly and without bias.</p>
+    </div>
+  </section>
+
+  <!-- Fund Highlights -->
+  <section class="fund-highlights-section">
+    <div class="container">
+      <div class="reveal">
+        <div class="kicker">Investment Approach</div>
+        <h2>Four distinct strategies</h2>
+      </div>
+      
+      <div class="fund-highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-card-icon" style="background: rgba(96, 165, 250, 0.15); color: #60a5fa;">🔄</div>
+          <h3>Active Rotation</h3>
+          <p>Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.</p>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-card-icon" style="background: rgba(167, 139, 250, 0.15); color: #a78bfa;">📊</div>
+          <h3>Market Tracking</h3>
+          <p>Market-cap weighted index replication with broad exposure, minimal cost drag, and systematic rebalancing discipline.</p>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-card-icon" style="background: rgba(244, 114, 182, 0.15); color: #f472b6;">📈</div>
+          <h3>Value Factor</h3>
+          <p>Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia for long-run outperformance.</p>
+        </div>
+
+        <div class="highlight-card">
+          <div class="highlight-card-icon" style="background: rgba(52, 211, 153, 0.15); color: #34d399;">🌱</div>
+          <h3>ESG Global</h3>
+          <p>Sustainability-screened multi-region portfolio spanning US, developed, and emerging markets with governance bias.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -53,42 +536,6 @@
   </div>
 
   <main id="content">
-    <section class="section">
-      <div class="container">
-        <div class="reveal">
-          <div class="kicker">Investment Funds</div>
-          <h2>Four distinct strategies</h2>
-          <p class="lead">Model portfolios built on rigorous quantitative frameworks — from active macro rotation to factor-driven small-cap value tilt.</p>
-        </div>
-        <div class="funds-grid">
-          <a class="fund-card f1 reveal reveal-delay-1" href="/investments.html">
-            <div class="fund-card-num">Fund I · Active</div>
-            <div class="fund-card-title">Fund I — Active</div>
-            <p class="fund-card-desc">Dynamic sector rotation across precious metals, ESG, and consumer staples based on macro risk signals.</p>
-            <div class="fund-card-tags"><span class="tag-pill">GLD 20%</span><span class="tag-pill">ESGU 40%</span><span class="tag-pill">XLP 40%</span></div>
-          </a>
-          <a class="fund-card f2 reveal reveal-delay-2" href="/investments.html">
-            <div class="fund-card-num">Fund II · Tracker</div>
-            <div class="fund-card-title">Fund II — Tracker</div>
-            <p class="fund-card-desc">Market-cap weighted index replication. Broad exposure with minimal cost drag.</p>
-            <div class="fund-card-tags"><span class="tag-pill">SPY 100%</span></div>
-          </a>
-          <a class="fund-card f3 reveal reveal-delay-3" href="/investments.html">
-            <div class="fund-card-num">Fund III · Fama-French</div>
-            <div class="fund-card-title">Fund III — Fama-French</div>
-            <p class="fund-card-desc">Small-cap value tilt informed by Fama-French factor premia for long-run outperformance.</p>
-            <div class="fund-card-tags"><span class="tag-pill">VBR 60%</span><span class="tag-pill">IJS 40%</span></div>
-          </a>
-          <a class="fund-card f4 reveal reveal-delay-4" href="/investments.html">
-            <div class="fund-card-num">Fund IV · ESG</div>
-            <div class="fund-card-title">Fund IV — ESG</div>
-            <p class="fund-card-desc">Sustainability-screened portfolio spanning US large-cap, US broad market, and emerging markets.</p>
-            <div class="fund-card-tags"><span class="tag-pill">ESGU 50%</span><span class="tag-pill">ESGV 30%</span><span class="tag-pill">ESGE 20%</span></div>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <section class="section" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
       <div class="container">
         <div class="posts-grid-section">
@@ -126,6 +573,7 @@
       </div>
     </section>
   </main>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
@@ -141,63 +589,266 @@
       </div>
     </div>
   </footer>
+
   <script>
-  // Canvas particles with enhanced animation
-  (function(){
-    var canvas=document.getElementById('heroCanvas');
-    if(!canvas)return;
-    var ctx=canvas.getContext('2d'),W=0,H=0,N=85,mouse={x:-9999,y:-9999},time=0;
-    var pts=[];
-    function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
-    function rnd(a,b){return Math.random()*(b-a)+a;}
-    for(var i=0;i<N;i++)pts.push({x:Math.random(),y:Math.random(),vx:rnd(-1,1)*0.00015,vy:rnd(-1,1)*0.00015,r:rnd(1.2,3.5),base_r:rnd(1.2,3.5),pulse:Math.random()*Math.PI*2});
-    window.addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();mouse.x=(e.clientX-r.left)/W;mouse.y=(e.clientY-r.top)/H;});
-    window.addEventListener('resize',resize);
-    resize();
-    function frame(){
-      ctx.clearRect(0,0,W,H);
-      time+=0.005;
-      for(var i=0;i<N;i++){
-        var p=pts[i];
-        var dx=p.x-mouse.x,dy=p.y-mouse.y,d2=dx*dx+dy*dy;
-        if(d2<0.015){var f=(0.015-d2)/0.015*0.00015;p.vx+=dx*f;p.vy+=dy*f;}
-        var spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
-        if(spd>0.0004){p.vx*=0.0004/spd;p.vy*=0.0004/spd;}
-        p.x+=p.vx;p.y+=p.vy;
-        if(p.x<0)p.x+=1;if(p.x>1)p.x-=1;if(p.y<0)p.y+=1;if(p.y>1)p.y-=1;
-        p.pulse+=0.02;
-        p.r=p.base_r+Math.sin(p.pulse)*0.8;
-        var px=p.x*W,py=p.y*H;
-        ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,'+(0.4+Math.sin(time+i)*0.3)+')';ctx.fill();
-        for(var j=i+1;j<N;j++){
-          var q=pts[j],qx=q.x*W,qy=q.y*H,ex=px-qx,ey=py-qy,dist=Math.sqrt(ex*ex+ey*ey);
-          if(dist<150){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle='rgba(59,130,246,'+((1-dist/150)*0.3)+')';ctx.lineWidth=0.6;ctx.stroke();}
-        }
+    // Fund data
+    const funds = [
+      {
+        id: 'f1',
+        code: 'F1',
+        name: 'Fund I — Active',
+        title: 'Active Rotation',
+        desc: 'Dynamic sector rotation across precious metals, energy, and consumer staples based on macro risk signals.',
+        r1y: 18.32,
+        bench: 'SPY',
+        benchR: 24.56,
+        color: '#60a5fa',
+        allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%']
+      },
+      {
+        id: 'f2',
+        code: 'F2',
+        name: 'Fund II — Tracker',
+        title: 'Market Tracker',
+        desc: 'Market-cap weighted index replication with broad exposure and minimal cost drag.',
+        r1y: 24.56,
+        bench: 'SPY',
+        benchR: 24.56,
+        color: '#a78bfa',
+        allocation: ['VTI 100%']
+      },
+      {
+        id: 'f3',
+        code: 'F3',
+        name: 'Fund III — Value',
+        title: 'Value Factor',
+        desc: 'Small-cap value tilt using Fama-French factor premia for long-run outperformance.',
+        r1y: 31.45,
+        bench: 'SPY',
+        benchR: 24.56,
+        color: '#f472b6',
+        allocation: ['VBR 60%', 'IJS 40%']
+      },
+      {
+        id: 'f4',
+        code: 'F4',
+        name: 'Fund IV — ESG',
+        title: 'ESG Global',
+        desc: 'Sustainability-screened portfolio spanning US, developed, and emerging markets.',
+        r1y: 20.87,
+        bench: 'ACWX',
+        benchR: 19.45,
+        color: '#34d399',
+        allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%']
       }
-      requestAnimationFrame(frame);
+    ];
+
+    let currentIndex = 0;
+
+    function initCarousel() {
+      const track = document.getElementById('carouselTrack');
+      const dotsContainer = document.getElementById('carouselDots');
+
+      // Create carousel items
+      funds.forEach((fund, idx) => {
+        const item = document.createElement('div');
+        item.className = `carousel-item ${idx === 0 ? 'active' : ''} ${idx === funds.length - 1 ? 'prev' : ''}`;
+        item.innerHTML = `
+          <div class="fund-card-carousel ${fund.id}">
+            <div class="carousel-fund-header">
+              <div class="carousel-fund-code" style="color: ${fund.color}">${fund.code}</div>
+              <h2 class="carousel-fund-title">${fund.name}</h2>
+              <p class="carousel-fund-subtitle">${fund.desc}</p>
+            </div>
+
+            <div class="carousel-fund-stats">
+              <div class="stat-item">
+                <div class="stat-label">1Y Return</div>
+                <div class="stat-value pos">${fund.r1y.toFixed(2)}%</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">vs ${fund.bench}</div>
+                <div class="stat-value ${fund.r1y - fund.benchR >= 0 ? 'pos' : 'neg'}">${(fund.r1y - fund.benchR).toFixed(2)}%</div>
+              </div>
+            </div>
+
+            <div class="carousel-fund-allocation">
+              ${fund.allocation.map(a => `<span class="allocation-pill">${a}</span>`).join('')}
+            </div>
+
+            <div class="carousel-fund-cta">
+              <a href="/investments.html#${fund.id}" class="carousel-cta-btn primary">View Fund</a>
+              <a href="/investments.html" class="carousel-cta-btn">Learn More</a>
+            </div>
+          </div>
+        `;
+        track.appendChild(item);
+      });
+
+      // Create dots
+      funds.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to fund ${idx + 1}`);
+        dot.onclick = () => goToSlide(idx);
+        dotsContainer.appendChild(dot);
+      });
+
+      // Event listeners
+      document.getElementById('prevBtn').addEventListener('click', prevSlide);
+      document.getElementById('nextBtn').addEventListener('click', nextSlide);
+      document.addEventListener('keydown', handleKeyboard);
     }
-    frame();
-  })();
-  // Scroll reveal with stagger
-  (function(){
-    var els=document.querySelectorAll('.reveal');
-    if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('visible');});return;}
-    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:0.1});
-    els.forEach(function(el){io.observe(el);});
-  })();
-  // Ticker RSS
-  (function(){
-    var link=document.getElementById('featuredLink');
-    if(!link)return;
-    var FEED='https://marketbriefdaily.substack.com/feed';
-    var API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(FEED);
-    fetch(API).then(function(r){return r.json();}).then(function(d){
-      var item=d.items&&d.items[0];
-      if(!item)return;
-      link.textContent=item.title;
-      link.href=item.link;
-    }).catch(function(){});
-  })();
+
+    function updateCarousel() {
+      const items = document.querySelectorAll('.carousel-item');
+      const dots = document.querySelectorAll('.carousel-dot');
+
+      items.forEach((item, idx) => {
+        item.classList.remove('active', 'prev');
+        if (idx === currentIndex) {
+          item.classList.add('active');
+        } else if (idx === (currentIndex - 1 + funds.length) % funds.length) {
+          item.classList.add('prev');
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
+      });
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % funds.length;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + funds.length) % funds.length;
+      updateCarousel();
+    }
+
+    function goToSlide(idx) {
+      currentIndex = idx;
+      updateCarousel();
+    }
+
+    function handleKeyboard(e) {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    }
+
+    // Canvas background animation
+    function initCanvasAnimation() {
+      const canvas = document.getElementById('carouselCanvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, N = 60, pts = [];
+      let time = 0;
+
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+
+      function rnd(a, b) {
+        return Math.random() * (b - a) + a;
+      }
+
+      for (let i = 0; i < N; i++) {
+        pts.push({
+          x: Math.random(),
+          y: Math.random(),
+          vx: rnd(-1, 1) * 0.0001,
+          vy: rnd(-1, 1) * 0.0001,
+          r: rnd(1, 2.5),
+          base_r: rnd(1, 2.5)
+        });
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+        time += 0.005;
+
+        for (let i = 0; i < N; i++) {
+          const p = pts[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x += 1;
+          if (p.x > 1) p.x -= 1;
+          if (p.y < 0) p.y += 1;
+          if (p.y > 1) p.y -= 1;
+
+          const px = p.x * W;
+          const py = p.y * H;
+          ctx.beginPath();
+          ctx.arc(px, py, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(59, 130, 246, ${0.3 + Math.sin(time + i) * 0.2})`;
+          ctx.fill();
+
+          for (let j = i + 1; j < N; j++) {
+            const q = pts[j];
+            const qx = q.x * W;
+            const qy = q.y * H;
+            const dx = px - qx;
+            const dy = py - qy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              ctx.beginPath();
+              ctx.moveTo(px, py);
+              ctx.lineTo(qx, qy);
+              ctx.strokeStyle = `rgba(59, 130, 246, ${(1 - dist / 200) * 0.2})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(frame);
+      }
+
+      frame();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      initCarousel();
+      initCanvasAnimation();
+      
+      // Existing ticker RSS code
+      const link = document.getElementById('featuredLink');
+      if (link) {
+        const FEED = 'https://marketbriefdaily.substack.com/feed';
+        const API = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(FEED);
+        fetch(API).then(r => r.json()).then(d => {
+          const item = d.items && d.items[0];
+          if (item) {
+            link.textContent = item.title;
+            link.href = item.link;
+          }
+        }).catch(() => {});
+      }
+
+      // Scroll reveal
+      const els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        els.forEach(el => io.observe(el));
+      } else {
+        els.forEach(el => el.classList.add('visible'));
+      }
+    });
   </script>
 </body>
 </html>
