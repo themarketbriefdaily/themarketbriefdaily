@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   
@@ -44,6 +43,7 @@
       --border-light: rgba(0, 0, 0, 0.08);
       --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
       --accent: #0066ff;
       --accent-hover: #0052cc;
     }
@@ -159,19 +159,13 @@
       background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
     }
 
-    #hero-canvas {
+    .hero-bg {
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.6;
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.05) 0%, transparent 80%);
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.08) 0%, transparent 80%);
       pointer-events: none;
     }
 
@@ -301,37 +295,37 @@
       50% { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
 
-    /* 3D Cube Section */
-    .cube-section {
+    /* Showcase Section */
+    .showcase-section {
       padding: 140px 48px;
-      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-      border-top: 1px solid var(--border-light);
+      background: #ffffff;
+      position: relative;
     }
 
-    .cube-wrapper {
+    .showcase-wrapper {
       max-width: 1400px;
       margin: 0 auto;
     }
 
-    .cube-header {
+    .showcase-header {
       text-align: center;
       margin-bottom: 96px;
     }
 
-    .cube-header .label {
+    .showcase-header .label {
       display: inline-block;
       margin-bottom: 16px;
       opacity: 0;
       transform: translateY(20px);
     }
 
-    .cube-header h2 {
+    .showcase-header h2 {
       margin-bottom: 16px;
       opacity: 0;
       transform: translateY(20px);
     }
 
-    .cube-header > p {
+    .showcase-header > p {
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto;
@@ -339,105 +333,263 @@
       transform: translateY(20px);
     }
 
-    .cube-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
+    /* Carousel Container */
+    .carousel-container {
+      position: relative;
+      height: 600px;
+      margin-bottom: 80px;
+      perspective: 1200px;
     }
 
-    #canvas-container {
+    .cards-wrapper {
+      position: absolute;
       width: 100%;
-      height: 700px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fund-card {
+      position: absolute;
+      width: 100%;
+      max-width: 500px;
+      height: 550px;
+      background: #fff;
       border-radius: 20px;
-      overflow: hidden;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-xl);
       border: 1px solid var(--border-light);
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(0, 0, 0, 0.02) 100%);
+      overflow: hidden;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center;
+      cursor: pointer;
     }
 
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-      display: block;
+    .fund-card.prev-2 {
+      transform: translateX(-320px) scale(0.85) rotateY(15deg);
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .cube-controls {
+    .fund-card.prev-1 {
+      transform: translateX(-160px) scale(0.92) rotateY(8deg);
+      opacity: 0.6;
+    }
+
+    .fund-card.active {
+      transform: translateX(0) scale(1) rotateY(0deg);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    .fund-card.next-1 {
+      transform: translateX(160px) scale(0.92) rotateY(-8deg);
+      opacity: 0.6;
+    }
+
+    .fund-card.next-2 {
+      transform: translateX(320px) scale(0.85) rotateY(-15deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card-image {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.9;
+    }
+
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.7) 0%, rgba(0, 82, 204, 0.7) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px;
+      color: #fff;
+    }
+
+    .card-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .card-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .card-content {
+      padding: 32px;
       display: flex;
       flex-direction: column;
       gap: 24px;
-      opacity: 0;
-      transform: translateX(40px);
     }
 
-    .fund-selector {
+    .card-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .card-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .metric {
       display: flex;
-      gap: 12px;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 800;
+      font-family: 'SF Mono', 'Monaco', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    .metric-value.positive {
+      color: #00a854;
+    }
+
+    .metric-value.neutral {
+      color: var(--accent);
+    }
+
+    .metric-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card-allocation {
+      display: flex;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
-    .selector-btn {
-      padding: 12px 20px;
+    .alloc-tag {
+      padding: 6px 12px;
       background: var(--bg-light);
-      border: 2px solid var(--border-light);
-      border-radius: 8px;
-      font-size: 13px;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
+    }
+
+    .card-cta {
+      margin-top: 8px;
+    }
+
+    .card-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--bg-light);
+      color: var(--accent);
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      border: 1px solid var(--border-light);
+    }
+
+    .card-cta a:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Carousel Controls */
+    .carousel-controls {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    .carousel-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-size: 18px;
+    }
+
+    .carousel-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: 12px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-light);
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .selector-btn:hover {
-      border-color: var(--accent);
-      color: var(--text-primary);
-    }
-
-    .selector-btn.active {
+    .dot.active {
+      width: 24px;
+      border-radius: 4px;
       background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
     }
 
-    .cube-hint {
-      font-size: 12px;
-      color: var(--text-tertiary);
-      font-style: italic;
-      padding: 16px;
-      background: var(--bg-light);
-      border-radius: 8px;
-      border-left: 3px solid var(--accent);
-    }
-
-    .cta-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
-    }
-
-    .cta-link:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 102, 255, 0.35);
+    .dot:hover {
+      background: var(--text-tertiary);
     }
 
     /* Approach Section */
     .approach-section {
       background: #fafafa;
       padding: 140px 48px;
-    }
-
-    .section-wrapper {
-      max-width: 1400px;
-      margin: 0 auto;
+      border-top: 1px solid var(--border-light);
     }
 
     .section-header {
@@ -627,29 +779,16 @@
         padding: 0 32px;
       }
 
-      .cube-section {
+      .showcase-section {
         padding: 100px 32px;
       }
 
-      .cube-container {
-        grid-template-columns: 1fr;
-        gap: 64px;
-      }
-
-      #canvas-container {
-        height: 600px;
-      }
-
-      .cube-controls {
-        transform: translateX(0);
+      .carousel-container {
+        height: 500px;
       }
 
       nav {
         gap: 24px;
-      }
-
-      .approach-section {
-        padding: 100px 32px;
       }
     }
 
@@ -691,21 +830,29 @@
         justify-content: center;
       }
 
-      .cube-section {
+      .showcase-section {
         padding: 80px 20px;
       }
 
-      #canvas-container {
+      .carousel-container {
         height: 400px;
       }
 
-      .fund-selector {
-        gap: 8px;
+      .fund-card {
+        max-width: 90%;
+        height: 450px;
       }
 
-      .selector-btn {
-        padding: 10px 16px;
-        font-size: 12px;
+      .fund-card.prev-1 {
+        transform: translateX(-120px) scale(0.88);
+      }
+
+      .fund-card.active {
+        transform: translateX(0) scale(1);
+      }
+
+      .fund-card.next-1 {
+        transform: translateX(120px) scale(0.88);
       }
 
       .features-grid {
@@ -724,6 +871,10 @@
 
       .cta-buttons {
         flex-direction: column;
+      }
+
+      .cta-section {
+        padding: 100px 20px;
       }
     }
 
@@ -744,7 +895,7 @@
         font-size: 1.5rem;
       }
 
-      .cube-section {
+      .showcase-section {
         padding: 60px 16px;
       }
 
@@ -753,17 +904,38 @@
         font-size: 13px;
       }
 
-      #canvas-container {
+      .carousel-container {
         height: 300px;
       }
 
-      .fund-selector {
-        gap: 6px;
+      .fund-card {
+        max-width: 95%;
+        height: 380px;
       }
 
-      .selector-btn {
-        padding: 8px 12px;
-        font-size: 11px;
+      .card-overlay {
+        padding: 20px;
+      }
+
+      .card-content {
+        padding: 20px;
+        gap: 16px;
+      }
+
+      .card-title {
+        font-size: 20px;
+      }
+
+      .card-metrics {
+        gap: 16px;
+      }
+
+      .metric-value {
+        font-size: 18px;
+      }
+
+      .carousel-controls {
+        margin-top: 32px;
       }
 
       .footer-grid {
@@ -797,13 +969,12 @@
 
   <!-- Hero -->
   <section class="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-overlay"></div>
+    <div class="hero-bg"></div>
     <div class="hero-content">
       <h1>Institutional market analysis made simple</h1>
       <p>We dissect commodity markets, macro transmission, and quantitative strategies. Research without agenda.</p>
       <div class="hero-cta">
-        <a href="#3d-funds" class="btn btn-primary">Explore Funds</a>
+        <a href="#showcase" class="btn btn-primary">Explore Funds</a>
         <a href="/posts.html" class="btn btn-secondary">Read Research</a>
       </div>
     </div>
@@ -813,48 +984,34 @@
     </div>
   </section>
 
-  <!-- 3D Cube Funds Section -->
-  <section class="cube-section" id="3d-funds">
-    <div class="cube-wrapper">
-      <div class="cube-header">
+  <!-- Showcase Section -->
+  <section class="showcase-section" id="showcase">
+    <div class="showcase-wrapper">
+      <div class="showcase-header">
         <span class="label">Investment Funds</span>
-        <h2>Experience our four strategies</h2>
-        <p>Rotate the cube to explore each fund in stunning 3D. Drag to rotate, or click a fund below.</p>
+        <h2>Discover our four strategies</h2>
+        <p>Explore each fund with unique market insights, performance metrics, and strategic positioning.</p>
       </div>
 
-      <div class="cube-container">
-        <div id="canvas-container"></div>
-
-        <div class="cube-controls">
-          <div class="cube-hint">
-            💡 <strong>Interactive 3D:</strong> Drag the cube to rotate or select a fund below to jump to that face.
-          </div>
-
-          <div>
-            <p style="margin-bottom: 12px; color: var(--text-secondary);">
-              <strong>Select Fund:</strong>
-            </p>
-            <div class="fund-selector">
-              <button class="selector-btn active" onclick="rotateCube(0)">Fund I</button>
-              <button class="selector-btn" onclick="rotateCube(1)">Fund II</button>
-              <button class="selector-btn" onclick="rotateCube(2)">Fund III</button>
-              <button class="selector-btn" onclick="rotateCube(3)">Fund IV</button>
-            </div>
-          </div>
-
-          <div>
-            <a href="/investments.html" class="cta-link">
-              View Full Details →
-            </a>
-          </div>
+      <!-- Carousel -->
+      <div class="carousel-container">
+        <div class="cards-wrapper" id="cardsWrapper">
+          <!-- Cards will be populated by JavaScript -->
         </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="carousel-controls">
+        <button class="carousel-btn" onclick="prevCard()">←</button>
+        <div class="carousel-dots" id="dots"></div>
+        <button class="carousel-btn" onclick="nextCard()">→</button>
       </div>
     </div>
   </section>
 
   <!-- Approach Section -->
   <section class="approach-section">
-    <div class="section-wrapper">
+    <div class="showcase-wrapper">
       <div class="section-header">
         <span class="label">Methodology</span>
         <h2>How we think about markets</h2>
@@ -886,7 +1043,7 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="cta-bg-accent"></div>
-    <div class="section-wrapper">
+    <div class="showcase-wrapper">
       <h2>Start with institutional-grade analysis</h2>
       <p>Explore rigorous market research or browse quantitative investment funds built on genuine data frameworks.</p>
       <div class="cta-buttons">
@@ -939,441 +1096,171 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // ============================================
-    // FUND DATA
-    // ============================================
-    const fundsData = [
+    // Fund Data
+    const funds = [
       {
         name: 'Active Rotation',
         code: 'Fund I',
-        desc: 'Dynamic sector rotation driven by macro risk signals',
+        desc: 'Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals.',
         return: 18.32,
         bench: 'SPY',
         benchReturn: 24.56,
         outperformance: -6.24,
         allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%'],
         image: '/assets/images/investments/fund1-bg.webp',
-        color1: '#0066ff',
-        color2: '#0052cc'
+        gradient: 'linear-gradient(135deg, #0066ff 0%, #0052cc 100%)'
       },
       {
         name: 'Market Tracker',
         code: 'Fund II',
-        desc: 'Market-cap weighted index replication',
+        desc: 'Market-cap weighted index replication with broad exposure and minimal cost drag.',
         return: 24.56,
         bench: 'SPY',
         benchReturn: 24.56,
         outperformance: 0.00,
         allocation: ['VTI 100%'],
         image: '/assets/images/investments/fund2-bg.webp',
-        color1: '#a78bfa',
-        color2: '#8b5cf6'
+        gradient: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)'
       },
       {
         name: 'Value Factor',
         code: 'Fund III',
-        desc: 'Small-cap value tilt with Fama-French premia',
+        desc: 'Small-cap value tilt using Fama-French factor premia for long-run outperformance.',
         return: 31.45,
         bench: 'SPY',
         benchReturn: 24.56,
         outperformance: 6.89,
         allocation: ['VBR 60%', 'IJS 40%'],
         image: '/assets/images/investments/fund3-bg.webp',
-        color1: '#ec4899',
-        color2: '#db2777'
+        gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
       },
       {
         name: 'ESG Global',
         code: 'Fund IV',
-        desc: 'Sustainability-screened multi-region portfolio',
+        desc: 'Sustainability-screened multi-region portfolio with governance bias and balanced exposure.',
         return: 20.87,
         bench: 'ACWX',
         benchReturn: 19.45,
         outperformance: 1.42,
         allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%'],
         image: '/assets/images/investments/fund4-bg.webp',
-        color1: '#14b8a6',
-        color2: '#0d9488'
+        gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
       }
     ];
 
-    let currentFund = 0;
-    let scene, camera, renderer, cube;
-    let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
-    let cubeCanvases = [];
-    let cubeTextures = [];
+    let currentIndex = 0;
 
-    // ============================================
-    // CREATE DETAILED FUND CARD TEXTURE
-    // ============================================
-    function createFundCardTexture(fundIndex) {
-      const fund = fundsData[fundIndex];
-      const canvas = document.createElement('canvas');
-      canvas.width = 1024;
-      canvas.height = 1024;
-      const ctx = canvas.getContext('2d');
+    function initCarousel() {
+      const wrapper = document.getElementById('cardsWrapper');
+      const dots = document.getElementById('dots');
 
-      // Background gradient
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, fund.color1);
-      gradient.addColorStop(1, fund.color2);
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Create cards
+      funds.forEach((fund, idx) => {
+        const card = document.createElement('div');
+        card.className = `fund-card ${idx === 0 ? 'active' : ''}`;
+        card.setAttribute('data-index', idx);
 
-      // Overlay pattern
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      for (let i = 0; i < canvas.width; i += 50) {
-        for (let j = 0; j < canvas.height; j += 50) {
-          if ((i + j) % 100 === 0) {
-            ctx.fillRect(i, j, 40, 40);
-          }
-        }
-      }
+        const outColor = fund.outperformance >= 0 ? 'positive' : 'neutral';
 
-      // Content area with white background (for text)
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(60, 60, canvas.width - 120, canvas.height - 120);
+        card.innerHTML = `
+          <div class="card-image" style="background: ${fund.gradient};">
+            <img src="${fund.image}" alt="${fund.name}" />
+            <div class="card-overlay">
+              <div class="card-label">${fund.code}</div>
+              <div class="card-title">${fund.name}</div>
+              <div class="card-subtitle">${fund.desc.substring(0, 50)}...</div>
+            </div>
+          </div>
+          <div class="card-content">
+            <p class="card-description">${fund.desc}</p>
+            <div class="card-metrics">
+              <div class="metric">
+                <div class="metric-value positive">${fund.return.toFixed(2)}%</div>
+                <div class="metric-label">1Y Return</div>
+              </div>
+              <div class="metric">
+                <div class="metric-value ${outColor}">${fund.outperformance >= 0 ? '+' : ''}${fund.outperformance.toFixed(2)}%</div>
+                <div class="metric-label">vs ${fund.bench}</div>
+              </div>
+            </div>
+            <div class="card-allocation">
+              ${fund.allocation.map(a => `<span class="alloc-tag">${a}</span>`).join('')}
+            </div>
+            <div class="card-cta">
+              <a href="/investments.html">View Details →</a>
+            </div>
+          </div>
+        `;
 
-      // Fund code label
-      ctx.font = 'bold 32px Inter, sans-serif';
-      ctx.fillStyle = fund.color1;
-      ctx.fillText(fund.code, 100, 120);
-
-      // Fund name
-      ctx.font = 'bold 56px Inter, sans-serif';
-      ctx.fillStyle = '#000000';
-      ctx.fillText(fund.name, 100, 200);
-
-      // Description
-      ctx.font = '28px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-      ctx.fillText(fund.desc, 100, 260);
-
-      // Line separator
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(100, 300);
-      ctx.lineTo(canvas.width - 100, 300);
-      ctx.stroke();
-
-      // Metrics section
-      ctx.font = '24px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillText('1Y Return', 100, 370);
-
-      ctx.font = 'bold 48px Inter, monospace';
-      ctx.fillStyle = '#00a854';
-      ctx.fillText(`${fund.return.toFixed(2)}%`, 100, 450);
-
-      ctx.font = '24px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      ctx.fillText(`vs ${fund.bench}`, 600, 370);
-
-      ctx.font = 'bold 48px Inter, monospace';
-      const outColor = fund.outperformance >= 0 ? '#00a854' : '#0066ff';
-      ctx.fillStyle = outColor;
-      ctx.fillText(`${fund.outperformance >= 0 ? '+' : ''}${fund.outperformance.toFixed(2)}%`, 600, 450);
-
-      // Allocation section
-      ctx.font = 'bold 24px Inter, sans-serif';
-      ctx.fillStyle = '#000000';
-      ctx.fillText('Allocation', 100, 540);
-
-      ctx.font = '20px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      let allocY = 600;
-      fund.allocation.forEach(alloc => {
-        ctx.fillText('• ' + alloc, 100, allocY);
-        allocY += 50;
+        wrapper.appendChild(card);
       });
 
-      // Footer badge
-      ctx.fillStyle = fund.color1;
-      ctx.fillRect(100, canvas.height - 120, canvas.width - 200, 60);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 24px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('Explore Full Details →', canvas.width / 2, canvas.height - 75);
-      ctx.textAlign = 'left';
-
-      cubeCanvases[fundIndex] = canvas;
-      return new THREE.CanvasTexture(canvas);
-    }
-
-    // ============================================
-    // THREE.JS 3D CUBE SETUP
-    // ============================================
-    function initThreeCube() {
-      const container = document.getElementById('canvas-container');
-      
-      // Scene
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xfafafa);
-
-      // Camera
-      camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.z = 2.8;
-
-      // Renderer
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFShadowShadowMap;
-      renderer.setPixelRatio(window.devicePixelRatio);
-      container.appendChild(renderer.domElement);
-
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-      scene.add(ambientLight);
-
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight.position.set(5, 5, 5);
-      directionalLight.castShadow = true;
-      directionalLight.shadow.mapSize.width = 2048;
-      directionalLight.shadow.mapSize.height = 2048;
-      scene.add(directionalLight);
-
-      const pointLight = new THREE.PointLight(0x0066ff, 0.4);
-      pointLight.position.set(-5, 3, 5);
-      scene.add(pointLight);
-
-      // Create cube materials from fund data
-      const materials = [];
-      for (let i = 0; i < 4; i++) {
-        const texture = createFundCardTexture(i);
-        cubeTextures[i] = texture;
-        materials.push(new THREE.MeshStandardMaterial({
-          map: texture,
-          roughness: 0.2,
-          metalness: 0.05,
-          side: THREE.FrontSide
-        }));
-      }
-      // Add two more materials for remaining cube faces (use first two funds)
-      materials.push(new THREE.MeshStandardMaterial({
-        map: cubeTextures[0],
-        roughness: 0.2,
-        metalness: 0.05
-      }));
-      materials.push(new THREE.MeshStandardMaterial({
-        map: cubeTextures[1],
-        roughness: 0.2,
-        metalness: 0.05
-      }));
-
-      // Cube
-      const geometry = new THREE.BoxGeometry(2.2, 2.2, 2.2);
-      cube = new THREE.Mesh(geometry, materials);
-      cube.castShadow = true;
-      cube.receiveShadow = true;
-      scene.add(cube);
-
-      // Handle resizing
-      window.addEventListener('resize', () => {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-      });
-
-      // Mouse events for dragging
-      container.addEventListener('mousedown', onMouseDown);
-      container.addEventListener('mousemove', onMouseMove);
-      container.addEventListener('mouseup', onMouseUp);
-      container.addEventListener('touchstart', onTouchStart);
-      container.addEventListener('touchmove', onTouchMove);
-      container.addEventListener('touchend', onTouchEnd);
-
-      // Animation loop
-      animate();
-    }
-
-    function onMouseDown(e) {
-      isDragging = true;
-      previousMousePosition = { x: e.clientX, y: e.clientY };
-    }
-
-    function onMouseMove(e) {
-      if (!isDragging) return;
-      const deltaX = e.clientX - previousMousePosition.x;
-      const deltaY = e.clientY - previousMousePosition.y;
-      cube.rotation.y += deltaX * 0.01;
-      cube.rotation.x += deltaY * 0.01;
-      previousMousePosition = { x: e.clientX, y: e.clientY };
-    }
-
-    function onMouseUp() {
-      isDragging = false;
-    }
-
-    function onTouchStart(e) {
-      isDragging = true;
-      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }
-
-    function onTouchMove(e) {
-      if (!isDragging) return;
-      const deltaX = e.touches[0].clientX - previousMousePosition.x;
-      const deltaY = e.touches[0].clientY - previousMousePosition.y;
-      cube.rotation.y += deltaX * 0.01;
-      cube.rotation.x += deltaY * 0.01;
-      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }
-
-    function onTouchEnd() {
-      isDragging = false;
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      
-      // Gentle auto-rotation when not dragging
-      if (!isDragging) {
-        cube.rotation.y += 0.002;
-        cube.rotation.x += 0.0003;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    function rotateCube(fundIndex) {
-      currentFund = fundIndex;
-
-      // Animate cube rotation to face
-      const targetRotationY = fundIndex * (Math.PI / 2);
-      gsap.to(cube.rotation, {
-        y: targetRotationY,
-        duration: 0.8,
-        ease: 'power2.inOut'
-      });
-
-      // Update selector buttons
-      document.querySelectorAll('.selector-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === fundIndex);
+      // Create dots
+      funds.forEach((_, idx) => {
+        const dot = document.createElement('button');
+        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToCard(idx);
+        dots.appendChild(dot);
       });
     }
 
-    // ============================================
-    // GSAP HERO CANVAS
-    // ============================================
-    function initHeroCanvas() {
-      const canvas = document.getElementById('hero-canvas');
-      if (!canvas) return;
-      
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-      let time = 0;
+    function updateCarousel() {
+      const cards = document.querySelectorAll('.fund-card');
+      const dots = document.querySelectorAll('.dot');
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
+      cards.forEach((card, idx) => {
+        card.classList.remove('prev-2', 'prev-1', 'active', 'next-1', 'next-2');
 
-      function createParticles() {
-        particles = [];
-        for (let i = 0; i < 80; i++) {
-          particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.5,
-            vy: (Math.random() - 0.5) * 0.5,
-            radius: Math.random() * 2 + 1,
-            opacity: Math.random() * 0.5 + 0.2
-          });
-        }
-      }
+        const diff = (idx - currentIndex + funds.length) % funds.length;
 
-      function drawParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        time += 0.002;
+        if (diff === 0) card.classList.add('active');
+        else if (diff === 1 || diff === -(funds.length - 1)) card.classList.add('next-1');
+        else if (diff === 2 || diff === -(funds.length - 2)) card.classList.add('next-2');
+        else if (diff === funds.length - 1) card.classList.add('prev-1');
+        else if (diff === funds.length - 2) card.classList.add('prev-2');
+      });
 
-        particles.forEach((p, i) => {
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0) p.x = canvas.width;
-          if (p.x > canvas.width) p.x = 0;
-          if (p.y < 0) p.y = canvas.height;
-          if (p.y > canvas.height) p.y = 0;
-
-          p.opacity = 0.2 + Math.sin(time + i) * 0.3;
-
-          ctx.fillStyle = `rgba(0, 102, 255, ${p.opacity})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < 150) {
-              ctx.strokeStyle = `rgba(0, 102, 255, ${(1 - dist / 150) * 0.2})`;
-              ctx.lineWidth = 0.5;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
-        });
-
-        requestAnimationFrame(drawParticles);
-      }
-
-      resizeCanvas();
-      createParticles();
-      drawParticles();
-
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        createParticles();
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentIndex);
       });
     }
 
-    // ============================================
-    // GSAP SCROLL ANIMATIONS
-    // ============================================
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % funds.length;
+      updateCarousel();
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + funds.length) % funds.length;
+      updateCarousel();
+    }
+
+    function goToCard(idx) {
+      currentIndex = idx;
+      updateCarousel();
+    }
+
+    // Scroll Animations
     function initScrollAnimations() {
-      // Hero Content Fade In
       const heroTimeline = gsap.timeline();
       heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
       heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
       heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
 
-      // Cube section header
-      gsap.utils.toArray('.cube-header .label, .cube-header h2, .cube-header > p').forEach((el, i) => {
+      gsap.utils.toArray('.showcase-header .label, .showcase-header h2, .showcase-header > p').forEach((el, i) => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
           duration: 0.8,
           delay: 0.1,
           scrollTrigger: {
-            trigger: el.closest('.cube-header'),
+            trigger: el.closest('.showcase-header'),
             start: 'top 80%',
             toggleActions: 'play none none none'
           }
         });
       });
 
-      // Cube controls slide in
-      gsap.to('.cube-controls', {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: '.cube-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        }
-      });
-
-      // Feature Cards Staggered
       gsap.to('.feature-card', {
         opacity: 1,
         y: 0,
@@ -1386,7 +1273,6 @@
         }
       });
 
-      // CTA Section
       gsap.utils.toArray('.cta-section h2, .cta-section p').forEach((el, i) => {
         gsap.to(el, {
           opacity: 1,
@@ -1402,17 +1288,19 @@
       });
     }
 
-    // ============================================
-    // INITIALIZE
-    // ============================================
     window.addEventListener('load', () => {
-      initHeroCanvas();
-      initThreeCube();
+      initCarousel();
       initScrollAnimations();
     });
 
     document.querySelector('.scroll-indicator').addEventListener('click', () => {
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevCard();
+      if (e.key === 'ArrowRight') nextCard();
     });
   </script>
 </body>
