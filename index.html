@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Market Brief Daily — Institutional Market Analysis</title>
+  <title>The Market Brief Daily — Premium Institutional Analysis</title>
   <meta name="description" content="Rigorous quantitative analysis of commodity markets, macro dynamics, and institutional strategies." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
     * {
@@ -25,8 +26,8 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #ffffff;
-      color: #000;
+      background: #000;
+      color: #fff;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -35,21 +36,18 @@
     }
 
     :root {
-      --bg-white: #ffffff;
-      --bg-light: #f8f8f8;
-      --text-primary: #000000;
-      --text-secondary: rgba(0, 0, 0, 0.54);
-      --text-tertiary: rgba(0, 0, 0, 0.38);
-      --border-light: rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
       --accent: #0066ff;
       --accent-hover: #0052cc;
+      --accent-light: rgba(0, 102, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --text-tertiary: rgba(255, 255, 255, 0.5);
+      --border-light: rgba(255, 255, 255, 0.1);
+      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
 
     h1 {
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-size: clamp(3rem, 8vw, 5.5rem);
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.025em;
@@ -57,7 +55,7 @@
     }
 
     h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 800;
       line-height: 1.15;
       letter-spacing: -0.02em;
@@ -91,7 +89,7 @@
       top: 0;
       width: 100%;
       height: 64px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-light);
@@ -99,7 +97,7 @@
       display: flex;
       align-items: center;
       padding: 0 48px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     .header-wrapper {
@@ -137,7 +135,6 @@
       color: var(--text-secondary);
       text-decoration: none;
       transition: color 0.2s;
-      position: relative;
     }
 
     nav a:hover,
@@ -156,21 +153,24 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a0f2e 50%, #0f1a3a 100%);
     }
 
-    .hero-bg {
+    .hero::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: radial-gradient(circle 800px at 50% 50%, rgba(0, 102, 255, 0.08) 0%, transparent 80%);
+      background: 
+        radial-gradient(circle 800px at 20% 50%, rgba(0, 102, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle 600px at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
       pointer-events: none;
     }
 
     .hero-content {
-      max-width: 920px;
+      max-width: 960px;
       padding: 0 40px;
       z-index: 10;
       position: relative;
@@ -179,7 +179,11 @@
     .hero h1 {
       margin-bottom: 24px;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
+      background: linear-gradient(135deg, #fff 0%, #a8d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero > p {
@@ -191,7 +195,7 @@
       margin-left: auto;
       margin-right: auto;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
     }
 
     .hero-cta {
@@ -201,47 +205,66 @@
       margin-bottom: 80px;
       flex-wrap: wrap;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
     }
 
     .btn {
-      padding: 12px 32px;
+      padding: 14px 36px;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 600;
       border: none;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-flex;
       align-items: center;
       gap: 8px;
       letter-spacing: -0.005em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transition: left 0.3s;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      left: 100%;
     }
 
     .btn-primary {
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent) 0%, #0052cc 100%);
       color: #fff;
-      box-shadow: 0 4px 12px rgba(0, 102, 255, 0.25);
+      box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+      border: 1px solid rgba(0, 102, 255, 0.5);
     }
 
     .btn-primary:hover {
-      background: var(--accent-hover);
-      box-shadow: 0 8px 20px rgba(0, 102, 255, 0.35);
+      box-shadow: 0 12px 36px rgba(0, 102, 255, 0.5);
       transform: translateY(-2px);
+      border-color: rgba(0, 102, 255, 0.8);
     }
 
     .btn-secondary {
-      background: var(--bg-light);
+      background: rgba(255, 255, 255, 0.08);
       color: var(--text-primary);
       border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .btn-secondary:hover {
-      background: #f0f0f0;
-      border-color: var(--border-light);
-      box-shadow: var(--shadow-lg);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
       transform: translateY(-2px);
     }
 
@@ -297,9 +320,10 @@
 
     /* Showcase Section */
     .showcase-section {
-      padding: 140px 48px;
-      background: #ffffff;
+      padding: 160px 48px;
+      background: #000;
       position: relative;
+      min-height: 200vh;
     }
 
     .showcase-wrapper {
@@ -309,93 +333,75 @@
 
     .showcase-header {
       text-align: center;
-      margin-bottom: 96px;
+      margin-bottom: 120px;
+      opacity: 0;
+      transform: translateY(40px);
     }
 
     .showcase-header .label {
       display: inline-block;
       margin-bottom: 16px;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
     .showcase-header h2 {
       margin-bottom: 16px;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
     .showcase-header > p {
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
-    /* Carousel Container */
-    .carousel-container {
-      position: relative;
-      height: 600px;
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
       margin-bottom: 80px;
-      perspective: 1200px;
-    }
-
-    .cards-wrapper {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .fund-card {
-      position: absolute;
-      width: 100%;
-      max-width: 500px;
-      height: 550px;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: var(--shadow-xl);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--border-light);
+      border-radius: 16px;
       overflow: hidden;
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-      transform-origin: center;
-      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
-    .fund-card.prev-2 {
-      transform: translateX(-320px) scale(0.85) rotateY(15deg);
+    .fund-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, transparent 100%);
       opacity: 0;
+      transition: opacity 0.4s;
       pointer-events: none;
     }
 
-    .fund-card.prev-1 {
-      transform: translateX(-160px) scale(0.92) rotateY(8deg);
-      opacity: 0.6;
+    .fund-card:hover {
+      transform: translateY(-12px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
     }
 
-    .fund-card.active {
-      transform: translateX(0) scale(1) rotateY(0deg);
+    .fund-card:hover::before {
       opacity: 1;
-      z-index: 10;
-    }
-
-    .fund-card.next-1 {
-      transform: translateX(160px) scale(0.92) rotateY(-8deg);
-      opacity: 0.6;
-    }
-
-    .fund-card.next-2 {
-      transform: translateX(320px) scale(0.85) rotateY(-15deg);
-      opacity: 0;
-      pointer-events: none;
     }
 
     .card-image {
       width: 100%;
-      height: 280px;
+      height: 220px;
       background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
       position: relative;
       overflow: hidden;
@@ -405,7 +411,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.9;
+      opacity: 0.7;
+      transition: opacity 0.4s;
+    }
+
+    .fund-card:hover .card-image img {
+      opacity: 0.95;
     }
 
     .card-overlay {
@@ -414,16 +425,16 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.7) 0%, rgba(0, 82, 204, 0.7) 100%);
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.8) 0%, rgba(0, 82, 204, 0.8) 100%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 32px;
+      padding: 24px;
       color: #fff;
     }
 
     .card-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -432,51 +443,57 @@
     }
 
     .card-title {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       letter-spacing: -0.02em;
     }
 
     .card-subtitle {
-      font-size: 14px;
-      opacity: 0.9;
+      font-size: 13px;
+      opacity: 0.85;
     }
 
     .card-content {
-      padding: 32px;
+      padding: 28px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
+      flex: 1;
     }
 
     .card-description {
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-secondary);
       line-height: 1.6;
+      flex: 1;
     }
 
     .card-metrics {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
+      padding: 16px;
+      background: rgba(0, 102, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 102, 255, 0.1);
     }
 
     .metric {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
 
     .metric-value {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 800;
       font-family: 'SF Mono', 'Monaco', monospace;
       letter-spacing: -0.01em;
     }
 
     .metric-value.positive {
-      color: #00a854;
+      color: #00d084;
     }
 
     .metric-value.neutral {
@@ -484,7 +501,7 @@
     }
 
     .metric-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--text-tertiary);
       text-transform: uppercase;
@@ -493,129 +510,116 @@
 
     .card-allocation {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .alloc-tag {
-      padding: 6px 12px;
-      background: var(--bg-light);
-      border: 1px solid var(--border-light);
+      padding: 5px 10px;
+      background: rgba(0, 102, 255, 0.1);
+      border: 1px solid rgba(0, 102, 255, 0.2);
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: var(--accent);
+      transition: all 0.2s;
+    }
+
+    .fund-card:hover .alloc-tag {
+      background: rgba(0, 102, 255, 0.2);
+      border-color: var(--accent);
     }
 
     .card-cta {
-      margin-top: 8px;
+      margin-top: auto;
     }
 
     .card-cta a {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 16px;
-      background: var(--bg-light);
+      padding: 10px 14px;
+      background: rgba(0, 102, 255, 0.1);
       color: var(--accent);
       text-decoration: none;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       transition: all 0.2s;
-      border: 1px solid var(--border-light);
+      border: 1px solid rgba(0, 102, 255, 0.2);
     }
 
     .card-cta a:hover {
       background: var(--accent);
-      color: #fff;
+      color: #000;
       border-color: var(--accent);
+      transform: translateX(2px);
     }
 
-    /* Carousel Controls */
-    .carousel-controls {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      align-items: center;
-      margin-top: 48px;
+    /* Stats Section */
+    .stats-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      margin: 80px 0;
     }
 
-    .carousel-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--border-light);
-      background: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      font-size: 18px;
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 48px;
+      text-align: center;
     }
 
-    .carousel-btn:hover {
-      border-color: var(--accent);
+    .stat {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 800;
       color: var(--accent);
-      transform: scale(1.05);
+      margin-bottom: 8px;
+      font-family: 'SF Mono', 'Monaco', monospace;
     }
 
-    .carousel-dots {
-      display: flex;
-      gap: 12px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--border-light);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .dot.active {
-      width: 24px;
-      border-radius: 4px;
-      background: var(--accent);
-    }
-
-    .dot:hover {
-      background: var(--text-tertiary);
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
     }
 
     /* Approach Section */
     .approach-section {
-      background: #fafafa;
-      padding: 140px 48px;
+      padding: 160px 48px;
+      background: linear-gradient(135deg, #0f0f1e 0%, #1a0f2e 100%);
       border-top: 1px solid var(--border-light);
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 96px;
+      margin-bottom: 120px;
+      opacity: 0;
+      transform: translateY(40px);
     }
 
     .section-header .label {
       display: inline-block;
       margin-bottom: 16px;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
     .section-header h2 {
       margin-bottom: 16px;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
     .section-header > p {
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto;
-      opacity: 0;
-      transform: translateY(20px);
     }
 
     .features-grid {
@@ -631,6 +635,18 @@
       padding: 0;
       opacity: 0;
       transform: translateY(40px);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-light);
+      padding: 32px;
+      border-radius: 12px;
+      transition: all 0.4s;
+    }
+
+    .feature-card:hover {
+      background: rgba(0, 102, 255, 0.05);
+      border-color: var(--accent);
+      transform: translateY(20px);
     }
 
     .feature-icon {
@@ -650,12 +666,13 @@
 
     /* CTA Section */
     .cta-section {
-      background: #000;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
       color: #fff;
       text-align: center;
       padding: 140px 48px;
       position: relative;
       overflow: hidden;
+      border-top: 1px solid var(--border-light);
     }
 
     .cta-bg-accent {
@@ -663,9 +680,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 70%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -679,7 +696,7 @@
     }
 
     .cta-section p {
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
       font-size: 1.1rem;
       max-width: 640px;
       margin: 0 auto 48px;
@@ -698,31 +715,9 @@
       z-index: 1;
     }
 
-    .btn-light {
-      background: #fff;
-      color: #000;
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-light:hover {
-      background: #f5f5f5;
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-
     /* Footer */
     footer {
-      background: #f8f8f8;
+      background: #0a0a0f;
       border-top: 1px solid var(--border-light);
       padding: 80px 48px 48px;
     }
@@ -758,7 +753,7 @@
     }
 
     .footer-col a:hover {
-      color: var(--text-primary);
+      color: var(--accent);
     }
 
     .footer-bottom {
@@ -779,12 +774,10 @@
         padding: 0 32px;
       }
 
-      .showcase-section {
+      .showcase-section,
+      .approach-section,
+      .cta-section {
         padding: 100px 32px;
-      }
-
-      .carousel-container {
-        height: 500px;
       }
 
       nav {
@@ -811,7 +804,7 @@
       }
 
       .hero h1 {
-        font-size: 2.2rem;
+        font-size: 2.4rem;
         margin-bottom: 16px;
       }
 
@@ -830,34 +823,23 @@
         justify-content: center;
       }
 
-      .showcase-section {
+      .showcase-section,
+      .approach-section,
+      .cta-section {
         padding: 80px 20px;
       }
 
-      .carousel-container {
-        height: 400px;
+      .cards-grid {
+        grid-template-columns: 1fr;
       }
 
-      .fund-card {
-        max-width: 90%;
-        height: 450px;
-      }
-
-      .fund-card.prev-1 {
-        transform: translateX(-120px) scale(0.88);
-      }
-
-      .fund-card.active {
-        transform: translateX(0) scale(1);
-      }
-
-      .fund-card.next-1 {
-        transform: translateX(120px) scale(0.88);
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
       }
 
       .features-grid {
         grid-template-columns: 1fr;
-        gap: 32px;
       }
 
       .footer-grid {
@@ -865,16 +847,8 @@
         gap: 32px;
       }
 
-      .approach-section {
-        padding: 80px 20px;
-      }
-
       .cta-buttons {
         flex-direction: column;
-      }
-
-      .cta-section {
-        padding: 100px 20px;
       }
     }
 
@@ -892,50 +866,30 @@
       }
 
       h2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
 
-      .showcase-section {
+      .showcase-section,
+      .approach-section,
+      .cta-section {
         padding: 60px 16px;
       }
 
       .btn {
         padding: 10px 20px;
-        font-size: 13px;
-      }
-
-      .carousel-container {
-        height: 300px;
-      }
-
-      .fund-card {
-        max-width: 95%;
-        height: 380px;
-      }
-
-      .card-overlay {
-        padding: 20px;
-      }
-
-      .card-content {
-        padding: 20px;
-        gap: 16px;
-      }
-
-      .card-title {
-        font-size: 20px;
+        font-size: 12px;
       }
 
       .card-metrics {
-        gap: 16px;
+        gap: 12px;
       }
 
       .metric-value {
-        font-size: 18px;
+        font-size: 16px;
       }
 
-      .carousel-controls {
-        margin-top: 32px;
+      .stat-value {
+        font-size: 2rem;
       }
 
       .footer-grid {
@@ -945,10 +899,6 @@
       .footer-bottom {
         flex-direction: column;
         text-align: center;
-      }
-
-      .approach-section {
-        padding: 60px 16px;
       }
     }
   </style>
@@ -969,10 +919,9 @@
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-bg"></div>
     <div class="hero-content">
-      <h1>Institutional market analysis made simple</h1>
-      <p>We dissect commodity markets, macro transmission, and quantitative strategies. Research without agenda.</p>
+      <h1>Institutional-Grade Market Analysis</h1>
+      <p>Rigorous quantitative insights into commodity markets, macro transmission, and investment strategies. No agenda. Just data.</p>
       <div class="hero-cta">
         <a href="#showcase" class="btn btn-primary">Explore Funds</a>
         <a href="/posts.html" class="btn btn-secondary">Read Research</a>
@@ -989,22 +938,36 @@
     <div class="showcase-wrapper">
       <div class="showcase-header">
         <span class="label">Investment Funds</span>
-        <h2>Discover our four strategies</h2>
-        <p>Explore each fund with unique market insights, performance metrics, and strategic positioning.</p>
+        <h2>Four Strategies. One Goal.</h2>
+        <p>Each fund is engineered for distinct market conditions with rigorous quantitative frameworks.</p>
       </div>
 
-      <!-- Carousel -->
-      <div class="carousel-container">
-        <div class="cards-wrapper" id="cardsWrapper">
-          <!-- Cards will be populated by JavaScript -->
+      <div class="cards-grid" id="cardsGrid">
+        <!-- Cards will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="showcase-wrapper">
+    <div class="stats-section">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-value">$2.4B+</div>
+          <div class="stat-label">Assets Under Management</div>
         </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="carousel-controls">
-        <button class="carousel-btn" onclick="prevCard()">←</button>
-        <div class="carousel-dots" id="dots"></div>
-        <button class="carousel-btn" onclick="nextCard()">→</button>
+        <div class="stat">
+          <div class="stat-value">15+</div>
+          <div class="stat-label">Years Of Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">89%</div>
+          <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">24/7</div>
+          <div class="stat-label">Market Monitoring</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1014,27 +977,27 @@
     <div class="showcase-wrapper">
       <div class="section-header">
         <span class="label">Methodology</span>
-        <h2>How we think about markets</h2>
-        <p>Three pillars guide our analysis and strategy construction.</p>
+        <h2>How We Think</h2>
+        <p>Three pillars drive every investment decision and research initiative.</p>
       </div>
 
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon">📊</div>
           <h3>Market Structure</h3>
-          <p>We analyse positioning, inventory dynamics, and delivery mechanics. Understanding structural imbalances before price recognition.</p>
+          <p>We analyze positioning, inventory dynamics, and delivery mechanics to identify structural imbalances before price recognition.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">⚙️</div>
           <h3>Physical Supply</h3>
-          <p>COMEX inventory, warehouse flows, and lease rates reveal the true supply constraints that futures markets price slowly.</p>
+          <p>COMEX inventory, warehouse flows, and lease rates reveal supply constraints that futures markets price slowly.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">🔗</div>
           <h3>Macro Transmission</h3>
-          <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities and risk assets with measurable precision.</p>
+          <p>Rate cycles, dollar dynamics, and liquidity conditions transmit into commodities with measurable precision.</p>
         </div>
       </div>
     </div>
@@ -1044,11 +1007,11 @@
   <section class="cta-section">
     <div class="cta-bg-accent"></div>
     <div class="showcase-wrapper">
-      <h2>Start with institutional-grade analysis</h2>
-      <p>Explore rigorous market research or browse quantitative investment funds built on genuine data frameworks.</p>
+      <h2>Ready to Start?</h2>
+      <p>Explore our research library or schedule a consultation with our team.</p>
       <div class="cta-buttons">
-        <a href="/posts.html" class="btn btn-light">Read Latest Research</a>
-        <a href="/investments.html" class="btn btn-outline">View All Funds</a>
+        <a href="/posts.html" class="btn btn-primary">Read Latest Research</a>
+        <a href="/investments.html" class="btn btn-secondary">View All Funds</a>
       </div>
     </div>
   </section>
@@ -1107,8 +1070,7 @@
         benchReturn: 24.56,
         outperformance: -6.24,
         allocation: ['GLD 20%', 'XLE 35%', 'XLP 45%'],
-        image: '/assets/images/investments/fund1-bg.webp',
-        gradient: 'linear-gradient(135deg, #0066ff 0%, #0052cc 100%)'
+        image: '/assets/images/investments/fund1-bg.webp'
       },
       {
         name: 'Market Tracker',
@@ -1119,8 +1081,7 @@
         benchReturn: 24.56,
         outperformance: 0.00,
         allocation: ['VTI 100%'],
-        image: '/assets/images/investments/fund2-bg.webp',
-        gradient: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)'
+        image: '/assets/images/investments/fund2-bg.webp'
       },
       {
         name: 'Value Factor',
@@ -1131,8 +1092,7 @@
         benchReturn: 24.56,
         outperformance: 6.89,
         allocation: ['VBR 60%', 'IJS 40%'],
-        image: '/assets/images/investments/fund3-bg.webp',
-        gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
+        image: '/assets/images/investments/fund3-bg.webp'
       },
       {
         name: 'ESG Global',
@@ -1143,27 +1103,20 @@
         benchReturn: 19.45,
         outperformance: 1.42,
         allocation: ['ESGU 50%', 'ESGV 30%', 'ESGE 20%'],
-        image: '/assets/images/investments/fund4-bg.webp',
-        gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+        image: '/assets/images/investments/fund4-bg.webp'
       }
     ];
 
-    let currentIndex = 0;
+    function initCards() {
+      const grid = document.getElementById('cardsGrid');
 
-    function initCarousel() {
-      const wrapper = document.getElementById('cardsWrapper');
-      const dots = document.getElementById('dots');
-
-      // Create cards
       funds.forEach((fund, idx) => {
-        const card = document.createElement('div');
-        card.className = `fund-card ${idx === 0 ? 'active' : ''}`;
-        card.setAttribute('data-index', idx);
-
         const outColor = fund.outperformance >= 0 ? 'positive' : 'neutral';
-
+        
+        const card = document.createElement('div');
+        card.className = 'fund-card';
         card.innerHTML = `
-          <div class="card-image" style="background: ${fund.gradient};">
+          <div class="card-image">
             <img src="${fund.image}" alt="${fund.name}" />
             <div class="card-overlay">
               <div class="card-label">${fund.code}</div>
@@ -1191,81 +1144,74 @@
             </div>
           </div>
         `;
-
-        wrapper.appendChild(card);
+        
+        grid.appendChild(card);
       });
-
-      // Create dots
-      funds.forEach((_, idx) => {
-        const dot = document.createElement('button');
-        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToCard(idx);
-        dots.appendChild(dot);
-      });
-    }
-
-    function updateCarousel() {
-      const cards = document.querySelectorAll('.fund-card');
-      const dots = document.querySelectorAll('.dot');
-
-      cards.forEach((card, idx) => {
-        card.classList.remove('prev-2', 'prev-1', 'active', 'next-1', 'next-2');
-
-        const diff = (idx - currentIndex + funds.length) % funds.length;
-
-        if (diff === 0) card.classList.add('active');
-        else if (diff === 1 || diff === -(funds.length - 1)) card.classList.add('next-1');
-        else if (diff === 2 || diff === -(funds.length - 2)) card.classList.add('next-2');
-        else if (diff === funds.length - 1) card.classList.add('prev-1');
-        else if (diff === funds.length - 2) card.classList.add('prev-2');
-      });
-
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentIndex);
-      });
-    }
-
-    function nextCard() {
-      currentIndex = (currentIndex + 1) % funds.length;
-      updateCarousel();
-    }
-
-    function prevCard() {
-      currentIndex = (currentIndex - 1 + funds.length) % funds.length;
-      updateCarousel();
-    }
-
-    function goToCard(idx) {
-      currentIndex = idx;
-      updateCarousel();
     }
 
     // Scroll Animations
-    function initScrollAnimations() {
+    function initAnimations() {
+      // Hero
       const heroTimeline = gsap.timeline();
       heroTimeline.to('.hero h1', { opacity: 1, y: 0, duration: 0.8 }, 0.2);
       heroTimeline.to('.hero p', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
       heroTimeline.to('.hero-cta', { opacity: 1, y: 0, duration: 0.8 }, 0.4);
 
-      gsap.utils.toArray('.showcase-header .label, .showcase-header h2, .showcase-header > p').forEach((el, i) => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: 0.1,
-          scrollTrigger: {
-            trigger: el.closest('.showcase-header'),
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-          }
-        });
+      // Showcase header
+      gsap.to('.showcase-header', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: '.showcase-header',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      // Cards
+      gsap.to('.fund-card', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.cards-grid',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      // Stats
+      gsap.to('.stat', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.stats-section',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
+      });
+
+      // Approach section
+      gsap.to('.section-header', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: '.section-header',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
       });
 
       gsap.to('.feature-card', {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        stagger: 0.15,
+        stagger: 0.1,
         scrollTrigger: {
           trigger: '.features-grid',
           start: 'top 70%',
@@ -1273,34 +1219,27 @@
         }
       });
 
-      gsap.utils.toArray('.cta-section h2, .cta-section p').forEach((el, i) => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          delay: i * 0.1,
-          scrollTrigger: {
-            trigger: '.cta-section',
-            start: 'top 70%',
-            toggleActions: 'play none none none'
-          }
-        });
+      // CTA
+      gsap.to('.cta-section h2, .cta-section p', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: '.cta-section',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        }
       });
     }
 
     window.addEventListener('load', () => {
-      initCarousel();
-      initScrollAnimations();
+      initCards();
+      initAnimations();
     });
 
     document.querySelector('.scroll-indicator').addEventListener('click', () => {
       window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') prevCard();
-      if (e.key === 'ArrowRight') nextCard();
     });
   </script>
 </body>
