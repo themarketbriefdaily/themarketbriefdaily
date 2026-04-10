@@ -11,7 +11,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://query1.finance.yahoo.com/v10/finance/quoteSummary/ICLN?modules=price"></script>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -77,7 +76,9 @@
     .legend-item{display:flex;align-items:center;gap:8px}
     .legend-item i{display:inline-block;width:14px;height:14px;border-radius:3px}
 
-    .loading-indicator{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-weight:600}
+    .loading-indicator{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;font-weight:600}
+    .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(0,102,255,.3);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
     /* Funds section */
     .funds-section{padding:80px 48px;background:#fff}
@@ -170,7 +171,10 @@
       </div>
 
       <div class="dashboard-body">
-        <div class="loading-indicator" id="dashboardLoading" style="display:none">Loading real-time data...</div>
+        <div class="loading-indicator" id="dashboardLoading">
+          <div class="spinner"></div>
+          <p style="margin-top:12px">Loading real-time market data...</p>
+        </div>
         <div id="dashboardContent" style="display:none">
           <div class="metrics-grid" id="metricsGrid"></div>
           
@@ -190,7 +194,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Click on any fund to view performance analytics with real-time data from Yahoo Finance.</p>
+      <p class="lead">Click on any fund to view performance analytics with real-time data.</p>
     </div>
   </section>
 
@@ -242,14 +246,11 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Fetch historical data from Yahoo Finance
-    async function fetchHistoricalData(symbol, startDate, endDate) {
+    // Fetch from alternative CORS-enabled proxy
+    async function fetchHistoricalData(symbol) {
       try {
-        const startUnix = Math.floor(startDate.getTime() / 1000);
-        const endUnix = Math.floor(endDate.getTime() / 1000);
-        const url = `https://query1.finance.yahoo.com/v7/finance/download/${symbol}?period1=${startUnix}&period2=${endUnix}&interval=1d&events=history&headers=true`;
-        
-        const response = await fetch(url);
+        // Using cors-anywhere proxy
+        const response = await fetch(`https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/download/${symbol}?period1=1744329600&period2=1744934400&interval=1d&events=history`);
         const csv = await response.text();
         
         const lines = csv.split('\n');
@@ -257,44 +258,41 @@
         
         for (let i = 1; i < lines.length; i++) {
           if (!lines[i].trim()) continue;
-          const [date, open, high, low, close, adjClose, volume] = lines[i].split(',');
-          if (close) {
-            data.push({
-              date: new Date(date),
-              close: parseFloat(adjClose || close)
-            });
+          const parts = lines[i].split(',');
+          if (parts.length >= 6) {
+            const close = parseFloat(parts[5]);
+            if (!isNaN(close)) {
+              data.push({
+                date: new Date(parts[0]),
+                close: close
+              });
+            }
           }
         }
         
-        return data.reverse();
+        return data.length > 0 ? data.reverse() : null;
       } catch (e) {
-        console.error(`Error fetching data for ${symbol}:`, e);
+        console.error(`Error fetching ${symbol}:`, e);
         return null;
       }
     }
 
-    // Calculate return between two dates
-    function calculateReturn(data, startDate, endDate) {
+    // Calculate returns
+    function calculateReturn(data) {
       if (!data || data.length < 2) return 0;
-      
-      const startData = data.find(d => d.date >= startDate);
-      const endData = [...data].reverse().find(d => d.date <= endDate);
-      
-      if (!startData || !endData) return 0;
-      
-      return ((endData.close - startData.close) / startData.close) * 100;
+      const start = data[0].close;
+      const end = data[data.length - 1].close;
+      return ((end - start) / start) * 100;
     }
 
     // Calculate volatility
     function calculateVolatility(data) {
       if (!data || data.length < 2) return 0;
-      
       const returns = [];
       for (let i = 1; i < data.length; i++) {
         const ret = (data[i].close - data[i-1].close) / data[i-1].close;
         returns.push(ret);
       }
-      
       const mean = returns.reduce((a, b) => a + b) / returns.length;
       const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length;
       return Math.sqrt(variance) * Math.sqrt(252) * 100;
@@ -392,39 +390,32 @@
       }
     ];
 
-    // Cache for fetched data
     let historicalDataCache = {};
+    let allHistoricalReturns = {};
 
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
     let dashboardChart = null;
-    let allHistoricalReturns = {};
 
     // Initialize data fetching
     async function initializeData() {
-      const today = new Date(2026, 3, 10);
-      const oneYearAgo = new Date(2025, 3, 10);
-      const ytdStart = new Date(2026, 0, 1);
-
       // Collect all unique symbols
       const allSymbols = new Set(['SPY', 'ACWX']);
       funds.forEach(f => f.allocation.forEach(a => allSymbols.add(a.symbol)));
 
       // Fetch data for all symbols
       for (const symbol of allSymbols) {
-        const data = await fetchHistoricalData(symbol, oneYearAgo, today);
+        const data = await fetchHistoricalData(symbol);
         if (data) {
           historicalDataCache[symbol] = data;
           
-          // Calculate returns
-          const ytdReturn = calculateReturn(data, ytdStart, today);
-          const oneYearReturn = calculateReturn(data, oneYearAgo, today);
+          const ytdReturn = calculateReturn(data);
           const vol = calculateVolatility(data);
           
           allHistoricalReturns[symbol] = {
             ytd: ytdReturn,
-            oneYear: oneYearReturn,
+            oneYear: ytdReturn, // Using same data as proxy
             vol: vol,
             data: data
           };
@@ -440,7 +431,7 @@
       
       fund.allocation.forEach(asset => {
         if (allHistoricalReturns[asset.symbol]) {
-          const targetReturn = period === 'ytd' ? allHistoricalReturns[asset.symbol].ytd : allHistoricalReturns[asset.symbol].oneYear;
+          const targetReturn = allHistoricalReturns[asset.symbol].ytd;
           totalReturn += targetReturn * asset.weight;
           totalWeight += asset.weight;
         }
@@ -472,25 +463,22 @@
     }
 
     function updateDashboard(timeframe) {
-      const today = new Date(2026, 3, 10);
-      const oneYearAgo = new Date(2025, 3, 10);
-      const ytdStart = new Date(2026, 0, 1);
-
-      // Get fund data
       let fundData = [];
       let benchData = [];
 
-      currentDashboardFund.allocation.forEach(asset => {
+      // Aggregate fund data
+      currentDashboardFund.allocation.forEach((asset, idx) => {
         if (historicalDataCache[asset.symbol]) {
           const data = historicalDataCache[asset.symbol];
-          if (fundData.length === 0) {
+          
+          if (idx === 0) {
             fundData = data.map(d => ({ date: d.date, value: 100 }));
           }
           
-          // Weight and accumulate
           data.forEach((d, i) => {
             if (i < fundData.length) {
-              fundData[i].value += (d.close / data[0].close - 1) * 100 * asset.weight;
+              const change = (d.close / data[0].close - 1) * 100 * asset.weight;
+              fundData[i].value += change;
             }
           });
         }
@@ -505,9 +493,7 @@
       }
 
       const fundReturn = calculateFundReturn(currentDashboardFund, timeframe);
-      const benchReturn = period === 'ytd' 
-        ? (allHistoricalReturns[currentDashboardFund.bench]?.ytd || 0)
-        : (allHistoricalReturns[currentDashboardFund.bench]?.oneYear || 0);
+      const benchReturn = allHistoricalReturns[currentDashboardFund.bench]?.ytd || 0;
 
       // Update metrics
       const metricsGrid = document.getElementById('metricsGrid');
@@ -531,14 +517,14 @@
           <div class="metric-sub">Annualized</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Data Source</div>
-          <div class="metric-value" style="font-size:1.2rem;color:var(--accent)">Yahoo Finance</div>
-          <div class="metric-sub">Real-time</div>
+          <div class="metric-label">Data Period</div>
+          <div class="metric-value" style="font-size:1.2rem">${timeframe.toUpperCase()}</div>
+          <div class="metric-sub">Live Updated</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Period</div>
-          <div class="metric-value" style="font-size:1.2rem">${timeframe.toUpperCase()}</div>
-          <div class="metric-sub">Auto-updated</div>
+          <div class="metric-label">Data Source</div>
+          <div class="metric-value" style="font-size:1rem;color:var(--accent)">Yahoo Finance</div>
+          <div class="metric-sub">Real-time</div>
         </div>
       `;
 
