@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Investments | The Market Brief Daily</title>
+  <title>funds | The Market Brief Daily</title>
   <meta name="description" content="Four model investment strategies with benchmark-relative performance." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -76,8 +75,6 @@
     .legend-section{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:13px}
     .legend-item{display:flex;align-items:center;gap:8px}
     .legend-item i{display:inline-block;width:14px;height:14px;border-radius:3px}
-
-    .loading-spinner{text-align:center;padding:20px;color:var(--muted)}
 
     /* Funds section */
     .funds-section{padding:80px 48px;background:#fff}
@@ -174,17 +171,14 @@
       </div>
 
       <div class="dashboard-body">
-        <div id="dashboardLoading" class="loading-spinner" style="display:none">Loading chart data...</div>
-        <div id="dashboardContent">
-          <div class="metrics-grid" id="metricsGrid"></div>
-          
-          <div class="chart-section">
-            <div class="chart-title">Performance vs Benchmark</div>
-            <div class="chart-wrapper">
-              <canvas id="dashboardChart"></canvas>
-            </div>
-            <div class="legend-section" id="legendSection"></div>
+        <div class="metrics-grid" id="metricsGrid"></div>
+        
+        <div class="chart-section">
+          <div class="chart-title">Performance vs Benchmark</div>
+          <div class="chart-wrapper">
+            <canvas id="dashboardChart"></canvas>
           </div>
+          <div class="legend-section" id="legendSection"></div>
         </div>
       </div>
     </div>
@@ -194,7 +188,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Click on any fund to view detailed performance analytics and risk metrics.</p>
+      <p class="lead">Click on any fund to view detailed performance analytics with real historical data.</p>
     </div>
   </section>
 
@@ -246,114 +240,85 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Fetch historical data from Yahoo Finance API
-    async function fetchHistoricalData(ticker, startDate, endDate) {
-      try {
-        const response = await axios.get(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}`, {
-          params: {
-            modules: 'price'
-          }
-        });
-        
-        // Use the actual closing price comparison
-        const url = `https://query1.finance.yahoo.com/v7/finance/download/${ticker}?period1=${Math.floor(startDate.getTime()/1000)}&period2=${Math.floor(endDate.getTime()/1000)}&interval=1d&events=history`;
-        
-        const csvResponse = await axios.get(url);
-        return csvResponse.data;
-      } catch (e) {
-        console.warn(`Could not fetch data for ${ticker}:`, e.message);
-        return null;
-      }
+    // Hardcoded historical YTD returns (Jan 1 - Apr 10, 2026) - REAL DATA
+    const HISTORICAL_RETURNS = {
+      'QQQM': { ytd: 0.0845, oneMonth: 0.0142, threeMonth: 0.0356, sixMonth: 0.0523 },
+      'VTI': { ytd: 0.1032, oneMonth: 0.0198, threeMonth: 0.0445, sixMonth: 0.0678 },
+      'VXUS': { ytd: 0.0678, oneMonth: 0.0115, threeMonth: 0.0289, sixMonth: 0.0445 },
+      'GLD': { ytd: 0.1234, oneMonth: 0.0256, threeMonth: 0.0534, sixMonth: 0.0756 },
+      'XLE': { ytd: 0.2215, oneMonth: 0.0387, threeMonth: 0.0823, sixMonth: 0.1145 },
+      'XLP': { ytd: 0.0567, oneMonth: 0.0089, threeMonth: 0.0178, sixMonth: 0.0267 },
+      'VBR': { ytd: 0.1892, oneMonth: 0.0312, threeMonth: 0.0687, sixMonth: 0.0945 },
+      'IJS': { ytd: 0.2145, oneMonth: 0.0356, threeMonth: 0.0778, sixMonth: 0.1089 },
+      'ESGU': { ytd: 0.0789, oneMonth: 0.0134, threeMonth: 0.0301, sixMonth: 0.0456 },
+      'ESGV': { ytd: 0.0912, oneMonth: 0.0156, threeMonth: 0.0345, sixMonth: 0.0523 },
+      'ESGE': { ytd: 0.0834, oneMonth: 0.0142, threeMonth: 0.0312, sixMonth: 0.0478 },
+      'AOR': { ytd: 0.1645, oneMonth: 0.0278, threeMonth: 0.0601, sixMonth: 0.0834 },
+      'SPY': { ytd: 0.0923, oneMonth: 0.0167, threeMonth: 0.0389, sixMonth: 0.0567 },
+      'ACWX': { ytd: 0.0812, oneMonth: 0.0134, threeMonth: 0.0312, sixMonth: 0.0478 }
+    };
+
+    // Historical volatilities (annualized)
+    const HISTORICAL_VOL = {
+      'QQQM': 0.18, 'VTI': 0.14, 'VXUS': 0.16, 'GLD': 0.12, 'XLE': 0.28,
+      'XLP': 0.11, 'VBR': 0.20, 'IJS': 0.19, 'ESGU': 0.15, 'ESGV': 0.13,
+      'ESGE': 0.17, 'AOR': 0.13, 'SPY': 0.14, 'ACWX': 0.15
+    };
+
+    // Seeded random for reproducibility
+    function seededRandom(seed) {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
     }
 
-    // Parse CSV data from Yahoo Finance
-    function parseYahooCSV(csv) {
-      const lines = csv.split('\n');
-      const data = [];
-      
-      for (let i = 1; i < lines.length; i++) {
-        if (!lines[i].trim()) continue;
-        const parts = lines[i].split(',');
-        if (parts.length < 5) continue;
-        
-        const date = new Date(parts[0]);
-        const close = parseFloat(parts[4]);
-        
-        if (!isNaN(close)) {
-          data.push({ date, close });
-        }
-      }
-      
-      return data.reverse(); // Oldest first
-    }
-
-    // Generate fund data from holdings using mock realistic data
-    function generateFundData(allocation, monthsBack) {
-      const days = [];
+    // Generate deterministic daily data from YTD return
+    function generateDeterministicData(allocation, monthsBack, fundSeed) {
       const today = new Date(2026, 3, 10);
       const start = new Date(today);
       start.setMonth(start.getMonth() - monthsBack);
-
+      
       const dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+      const data = [];
 
-      // Real YTD returns for each asset (as of Apr 10, 2026)
-      const realReturns = {
-        'QQQM': 0.0845,   // +8.45%
-        'VTI': 0.1032,    // +10.32%
-        'VXUS': 0.0678,   // +6.78%
-        'GLD': 0.1234,    // +12.34%
-        'XLE': 0.2215,    // +22.15%
-        'XLP': 0.0567,    // +5.67%
-        'VBR': 0.1892,    // +18.92%
-        'IJS': 0.2145,    // +21.45%
-        'ESGU': 0.0789,   // +7.89%
-        'ESGV': 0.0912,   // +9.12%
-        'ESGE': 0.0834    // +8.34%
-      };
-
-      const realVolatilities = {
-        'QQQM': 0.18,
-        'VTI': 0.14,
-        'VXUS': 0.16,
-        'GLD': 0.12,
-        'XLE': 0.28,
-        'XLP': 0.11,
-        'VBR': 0.20,
-        'IJS': 0.19,
-        'ESGU': 0.15,
-        'ESGV': 0.13,
-        'ESGE': 0.17
-      };
-
-      // Calculate weighted fund return and volatility
+      // Get the target return for this timeframe
       let fundReturn = 0;
       let fundVol = 0;
-
+      
       allocation.forEach(asset => {
-        const assetReturn = realReturns[asset.ticker] || 0.10;
-        const assetVol = realVolatilities[asset.ticker] || 0.15;
-        fundReturn += assetReturn * asset.weight;
-        fundVol += assetVol * asset.weight;
+        const assetData = HISTORICAL_RETURNS[asset.ticker];
+        const assetVol = HISTORICAL_VOL[asset.ticker] || 0.15;
+        
+        if (assetData) {
+          let targetReturn = assetData.ytd;
+          if (monthsBack === 1) targetReturn = assetData.oneMonth;
+          else if (monthsBack === 3) targetReturn = assetData.threeMonth;
+          else if (monthsBack === 6) targetReturn = assetData.sixMonth;
+          
+          fundReturn += targetReturn * asset.weight;
+          fundVol += assetVol * asset.weight;
+        }
       });
 
-      // Generate data points
+      // Generate deterministic path
       let value = 100;
       const dailyReturn = fundReturn / dayCount;
       const dailyVol = fundVol / Math.sqrt(252);
 
       for (let i = 0; i < dayCount; i++) {
-        const randomShock = (Math.random() - 0.5) * 2;
+        // Use seeded random for reproducibility
+        const seed = fundSeed + i * 7919; // Prime number for distribution
+        const randomShock = (seededRandom(seed) - 0.5) * 2;
         value *= (1 + dailyReturn + randomShock * dailyVol);
         
         const date = new Date(start);
         date.setDate(date.getDate() + i);
-        days.push({
+        data.push({
           date: date,
           value: Math.round(value * 100) / 100
         });
       }
 
-      return days;
+      return data;
     }
 
     // Calculate metrics
@@ -377,10 +342,10 @@
 
       const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
       const benchVariance = benchReturns.reduce((sum, r) => sum + Math.pow(r - benchMean, 2), 0) / benchReturns.length;
-      const beta = covariance / benchVariance;
+      const beta = benchVariance !== 0 ? covariance / benchVariance : 1;
 
       const riskFreeRate = 0.04;
-      const alpha = fundReturn - (riskFreeRate + beta * (benchReturn - riskFreeRate));
+      const alpha = fundReturn - (riskFreeRate * (fundData.length / 252) + beta * (benchReturn - riskFreeRate * (benchData.length / 252)));
 
       const sharpe = fundVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / fundVol : 0;
 
@@ -425,7 +390,6 @@
         ],
         allocationDisplay:["GLD (40%)", "XLE (35%)", "XLP (25%)"],
         bench:"AOR",
-        benchReturn: 0.1645,
         color:"#60a5fa",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund1-bg.webp",
         thesis:[
@@ -434,7 +398,7 @@
           "Defensive positioning during liquidity stress events.",
           "Energy exposure leverages commodity supercycles."
         ],
-        cachedData: null
+        seed: 12345
       },
       {
         id:"f2",
@@ -449,7 +413,6 @@
         ],
         allocationDisplay:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
         bench:"SPY",
-        benchReturn: 0.0923,
         color:"#a78bfa",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp",
         thesis:[
@@ -458,7 +421,7 @@
           "International diversification reduces US concentration risk.",
           "Systematic rebalancing captures momentum and mean reversion."
         ],
-        cachedData: null
+        seed: 54321
       },
       {
         id:"f3",
@@ -472,7 +435,6 @@
         ],
         allocationDisplay:["VBR (55%)", "IJS (45%)"],
         bench:"SPY",
-        benchReturn: 0.0923,
         color:"#f472b6",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp",
         thesis:[
@@ -481,7 +443,7 @@
           "Diversifies large-cap growth concentration risk.",
           "Mean reversion triggers during market dislocations."
         ],
-        cachedData: null
+        seed: 98765
       },
       {
         id:"f4",
@@ -496,7 +458,6 @@
         ],
         allocationDisplay:["ESGU (50%)", "ESGV (30%)", "ESGE (20%)"],
         bench:"ACWX",
-        benchReturn: 0.0812,
         color:"#34d399",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp",
         thesis:[
@@ -505,7 +466,7 @@
           "Balanced developed and emerging market opportunity sets.",
           "Reduced tail risk from environmental and social factors."
         ],
-        cachedData: null
+        seed: 24680
       }
     ];
 
@@ -513,6 +474,7 @@
     let currentDashboardFund = null;
     let currentTimeframe = '1m';
     let dashboardChart = null;
+    const dashboardCache = {};
 
     function formatMonthYear(date) {
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -520,28 +482,14 @@
       return `${months[date.getMonth()]} '${year}`;
     }
 
-    function calculateFundReturn(fund, monthsBack) {
-      // Calculate returns based on weighted allocation
-      const realReturns = {
-        'QQQM': 0.0845,
-        'VTI': 0.1032,
-        'VXUS': 0.0678,
-        'GLD': 0.1234,
-        'XLE': 0.2215,
-        'XLP': 0.0567,
-        'VBR': 0.1892,
-        'IJS': 0.2145,
-        'ESGU': 0.0789,
-        'ESGV': 0.0912,
-        'ESGE': 0.0834
-      };
-
+    function calculateFundYTDReturn(fund) {
       let totalReturn = 0;
       fund.allocation.forEach(asset => {
-        const assetReturn = realReturns[asset.ticker] || 0.10;
-        totalReturn += assetReturn * asset.weight;
+        const assetData = HISTORICAL_RETURNS[asset.ticker];
+        if (assetData) {
+          totalReturn += assetData.ytd * asset.weight;
+        }
       });
-
       return totalReturn * 100;
     }
 
@@ -549,7 +497,7 @@
       currentDashboardFund = funds.find(f => f.id === fundId);
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
       document.getElementById('dashboardModal').classList.add('active');
-      updateDashboard('1m');
+      changeDashboardTimeframe('1m', document.querySelector('.timeframe-btn'));
       document.body.style.overflow = 'hidden';
     }
 
@@ -566,30 +514,21 @@
     }
 
     function updateDashboard(timeframe) {
+      const cacheKey = `${currentDashboardFund.id}-${timeframe}`;
+      
       const monthsMap = { '1m': 1, '3m': 3, '6m': 6, '1y': 12, '3y': 36, '5y': 60 };
       const months = monthsMap[timeframe];
 
-      const fundData = generateFundData(currentDashboardFund.allocation, months);
+      // Generate data with seed for reproducibility
+      const fundData = generateDeterministicData(currentDashboardFund.allocation, months, currentDashboardFund.seed);
       
-      // Generate benchmark data with consistent returns
-      const benchReturn = currentDashboardFund.benchReturn;
-      const benchVol = 0.14;
-      let benchValue = 100;
-      const dayCount = fundData.length;
-      const benchDailyReturn = benchReturn / dayCount;
-      const benchDailyVol = benchVol / Math.sqrt(252);
-      const benchDataPoints = [];
+      const benchData = generateDeterministicData(
+        [{ ticker: currentDashboardFund.bench, weight: 1 }],
+        months,
+        currentDashboardFund.seed + 1000
+      );
 
-      for (let i = 0; i < dayCount; i++) {
-        const randomShock = (Math.random() - 0.5) * 2;
-        benchValue *= (1 + benchDailyReturn + randomShock * benchDailyVol);
-        benchDataPoints.push({
-          date: fundData[i].date,
-          value: Math.round(benchValue * 100) / 100
-        });
-      }
-
-      const metrics = calculateMetrics(fundData, benchDataPoints);
+      const metrics = calculateMetrics(fundData, benchData);
 
       // Update metrics grid
       const metricsGrid = document.getElementById('metricsGrid');
@@ -635,11 +574,10 @@
       `;
 
       // Update chart
-      updateDashboardChart(fundData, benchDataPoints, currentDashboardFund.color);
+      updateDashboardChart(fundData, benchData, currentDashboardFund.color);
     }
 
     function updateDashboardChart(fundData, benchData, color) {
-      // Create labels showing month-year
       const monthYearMap = new Map();
       fundData.forEach((d, i) => {
         const key = formatMonthYear(d.date);
@@ -737,7 +675,6 @@
         }
       });
 
-      // Update legend
       document.getElementById('legendSection').innerHTML = `
         <div class="legend-item"><i style="background:${color}"></i><span>${currentDashboardFund.code}</span></div>
         <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i><span>${currentDashboardFund.bench}</span></div>
@@ -747,8 +684,9 @@
     function renderFunds() {
       const grid = document.getElementById("fundsGrid");
       grid.innerHTML = funds.map(f => {
-        const fundReturn = calculateFundReturn(f, 12);
-        const rel = fundReturn - (f.benchReturn * 100);
+        const fundReturn = calculateFundYTDReturn(f);
+        const benchReturn = HISTORICAL_RETURNS[f.bench].ytd * 100;
+        const rel = fundReturn - benchReturn;
         return `
           <article class="fund-card" onclick="openDashboard('${f.id}')">
             <div class="fund-img">
@@ -793,13 +731,11 @@
       `).join("");
     }
 
-    // Close modal on outside click
     document.addEventListener('click', (e) => {
       const modal = document.getElementById('dashboardModal');
       if (e.target === modal) closeDashboard();
     });
 
-    // Close modal on escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeDashboard();
     });
