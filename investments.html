@@ -170,7 +170,7 @@
         <div class="metrics-grid" id="metricsGrid"></div>
         
         <div class="chart-section">
-          <div class="chart-title" id="chartTitle">Performance vs Benchmark</div>
+          <div class="chart-title" id="chartTitle">Performance vs Benchmark (YTD)</div>
           <div class="chart-wrapper">
             <canvas id="dashboardChart"></canvas>
           </div>
@@ -270,13 +270,20 @@
       return x - Math.floor(x);
     }
 
-    // Generate deterministic data for YTD and 1-year
-    function generateHistoricalData(allocation, monthsBack, fundSeed) {
-      const today = new Date(2026, 3, 10);
-      const start = new Date(today);
-      start.setMonth(start.getMonth() - monthsBack);
-      
-      const dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+    // Generate deterministic daily data with proper monthly breakdown
+    function generateHistoricalData(allocation, timeframe, fundSeed) {
+      const today = new Date(2026, 3, 10); // Apr 10, 2026
+      let start;
+      let dayCount;
+
+      if (timeframe === 'ytd') {
+        start = new Date(2026, 0, 1); // Jan 1, 2026
+        dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+      } else {
+        start = new Date(2025, 3, 10); // Apr 10, 2025
+        dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+      }
+
       const data = [];
 
       // Get the target return for this period
@@ -286,9 +293,7 @@
       allocation.forEach(asset => {
         const assetData = HISTORICAL_RETURNS[asset.ticker];
         if (assetData) {
-          let targetReturn = assetData.ytd;
-          if (monthsBack === 12) targetReturn = assetData.oneYear;
-          
+          const targetReturn = timeframe === 'ytd' ? assetData.ytd : assetData.oneYear;
           fundReturn += targetReturn * asset.weight;
           fundVol += assetData.vol * asset.weight;
         }
@@ -504,19 +509,18 @@
     }
 
     function updateDashboard(timeframe) {
-      const monthsBack = timeframe === 'ytd' ? 3.33 : 12; // Approximate for YTD
-      const fundData = generateHistoricalData(currentDashboardFund.allocation, timeframe === 'ytd' ? 3.33 : 12, currentDashboardFund.seed);
+      const fundData = generateHistoricalData(currentDashboardFund.allocation, timeframe, currentDashboardFund.seed);
       
       const benchData = generateHistoricalData(
         [{ ticker: currentDashboardFund.bench, weight: 1 }],
-        timeframe === 'ytd' ? 3.33 : 12,
+        timeframe,
         currentDashboardFund.seed + 1000
       );
 
       const metrics = calculateMetrics(fundData, benchData);
 
       // Update chart title
-      const period = timeframe === 'ytd' ? 'YTD' : '1-Year';
+      const period = timeframe === 'ytd' ? 'YTD (Jan - Apr 10, 2026)' : '1-Year (Apr 10, 2025 - Apr 10, 2026)';
       document.getElementById('chartTitle').textContent = `Performance vs Benchmark (${period})`;
 
       // Update metrics grid
@@ -567,23 +571,24 @@
     }
 
     function updateDashboardChart(fundData, benchData, color, timeframe) {
-      // Create monthly labels for the entire year (Jan-Dec)
+      // Generate proper month labels based on data
       const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       
-      // Calculate approximate data points per month
-      const dataPointsPerMonth = Math.floor(fundData.length / (timeframe === 'ytd' ? 4 : 12));
+      // Create labels array with all dates
+      let monthStartIndices = [];
+      let currentMonth = -1;
       
+      fundData.forEach((d, i) => {
+        if (d.date.getMonth() !== currentMonth) {
+          currentMonth = d.date.getMonth();
+          monthStartIndices.push(i);
+        }
+      });
+
       const labels = fundData.map((d, i) => {
-        // Show label every dataPointsPerMonth for clean monthly spacing
-        if (i % dataPointsPerMonth === 0) {
-          const monthIndex = Math.floor(i / dataPointsPerMonth);
-          if (timeframe === 'ytd') {
-            // For YTD, show Jan, Feb, Mar, Apr
-            return monthIndex < allMonths.length ? allMonths[monthIndex] : '';
-          } else {
-            // For 1-year, cycle through all 12 months
-            return monthIndex < 12 ? allMonths[monthIndex] : '';
-          }
+        // Check if this index is a month start
+        if (monthStartIndices.includes(i)) {
+          return allMonths[d.getMonth()];
         }
         return '';
       });
