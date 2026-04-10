@@ -69,7 +69,7 @@
 
     .chart-section{margin-top:32px}
     .chart-title{font-size:16px;font-weight:950;margin-bottom:16px;letter-spacing:-.01em}
-    .chart-wrapper{border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:20px;height:400px}
+    .chart-wrapper{border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:20px;height:400px;position:relative}
     .chart-wrapper canvas{width:100%!important;height:100%!important}
 
     .legend-section{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:13px}
@@ -320,7 +320,7 @@
       return data;
     }
 
-    // Calculate metrics
+    // Calculate metrics with corrected Sortino ratio formula
     function calculateMetrics(fundData, benchData) {
       const fundReturns = [];
       const benchReturns = [];
@@ -344,10 +344,15 @@
       const beta = benchVariance !== 0 ? covariance / benchVariance : 1;
 
       const riskFreeRate = 0.04;
-      const alpha = fundReturn - (riskFreeRate * (fundData.length / 252) + beta * (benchReturn - riskFreeRate * (benchData.length / 252)));
+      const annualizedRiskFreeRate = riskFreeRate * (fundData.length / 252);
+      
+      // Alpha = Fund Return - (Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate))
+      const alpha = fundReturn - (annualizedRiskFreeRate + beta * (benchReturn - annualizedRiskFreeRate));
 
-      const sharpe = fundVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / fundVol : 0;
+      // Sharpe Ratio = (Fund Return - Risk Free Rate) / Fund Volatility
+      const sharpe = fundVol > 0 ? (fundReturn - annualizedRiskFreeRate) / fundVol : 0;
 
+      // Max Drawdown
       let maxDD = 0;
       let peak = fundData[0].value;
       for (let i = 1; i < fundData.length; i++) {
@@ -356,11 +361,13 @@
         if (dd > maxDD) maxDD = dd;
       }
 
-      const downReturns = fundReturns.filter(r => r < fundMean);
+      // Sortino Ratio = (Fund Return - Risk Free Rate) / Downside Deviation
+      // Downside Deviation = sqrt of average squared downside returns
+      const downReturns = fundReturns.filter(r => r < 0);
       const downVol = downReturns.length > 0 
-        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r - fundMean, 2), 0) / downReturns.length) * 100
-        : fundVol;
-      const sortino = downVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / downVol : 0;
+        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r, 2), 0) / fundReturns.length) * 100
+        : 0;
+      const sortino = downVol > 0 ? (fundReturn - annualizedRiskFreeRate) / downVol : 0;
 
       return {
         fundReturn: fundReturn,
@@ -552,7 +559,7 @@
         <div class="metric-card">
           <div class="metric-label">Sortino Ratio</div>
           <div class="metric-value ${metrics.sortino >= 0 ? 'pos' : 'neg'}">${metrics.sortino.toFixed(2)}</div>
-          <div class="metric-sub">Downside adjusted</div>
+          <div class="metric-sub">(Return - RFR) / Downside Dev</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Max Drawdown</div>
@@ -588,7 +595,7 @@
       const labels = fundData.map((d, i) => {
         // Check if this index is a month start
         if (monthStartIndices.includes(i)) {
-          return allMonths[d.getMonth()];
+          return allMonths[d.date.getMonth()];
         }
         return '';
       });
@@ -605,15 +612,18 @@
               label: currentDashboardFund.code,
               data: fundData.map(d => d.value),
               borderColor: color,
-              backgroundColor: color + '12',
+              backgroundColor: color + '20',
               borderWidth: 2.5,
               pointRadius: 0,
-              pointHoverRadius: 6,
+              pointHoverRadius: 8,
               pointBackgroundColor: color,
               pointBorderColor: '#fff',
               pointBorderWidth: 2,
-              tension: 0.3,
-              fill: true
+              tension: 0.4,
+              fill: true,
+              segment: {
+                borderDash: (ctx) => undefined
+              }
             },
             {
               label: currentDashboardFund.bench,
@@ -622,8 +632,11 @@
               borderDash: [5, 5],
               borderWidth: 2,
               pointRadius: 0,
-              pointHoverRadius: 6,
-              tension: 0.3,
+              pointHoverRadius: 8,
+              pointBackgroundColor: 'rgba(2,8,23,.45)',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              tension: 0.4,
               fill: false
             }
           ]
@@ -636,15 +649,15 @@
             legend: { display: false },
             tooltip: {
               enabled: true,
-              backgroundColor: 'rgba(0,0,0,.9)',
+              backgroundColor: 'rgba(0,0,0,.95)',
               titleColor: '#fff',
               bodyColor: '#eef2ff',
               borderColor: color,
-              borderWidth: 1,
-              padding: 12,
-              cornerRadius: 6,
-              titleFont: { weight: 'bold', size: 12 },
-              bodyFont: { size: 11 },
+              borderWidth: 1.5,
+              padding: 14,
+              cornerRadius: 8,
+              titleFont: { weight: 'bold', size: 13 },
+              bodyFont: { size: 12, weight: '600' },
               callbacks: {
                 title: function(context) {
                   if (context.length > 0) {
@@ -654,7 +667,8 @@
                   return '';
                 },
                 label: function(context) {
-                  return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
+                  const value = context.parsed.y.toFixed(2);
+                  return context.dataset.label + ': ' + value;
                 }
               }
             }
@@ -662,13 +676,21 @@
           scales: {
             x: { 
               display: true,
-              grid: { display: false },
-              ticks: { font: { size: 12, weight: '900' }, color: 'rgba(2,8,23,.6)' }
+              grid: { display: false, drawBorder: true },
+              ticks: { 
+                font: { size: 12, weight: '700' }, 
+                color: 'rgba(2,8,23,.7)',
+                padding: 8
+              }
             },
             y: { 
               display: true,
-              grid: { color: 'rgba(2,8,23,.05)' },
-              ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+              grid: { color: 'rgba(2,8,23,.08)', drawBorder: false },
+              ticks: { 
+                font: { size: 11, weight: '700' }, 
+                color: 'rgba(2,8,23,.6)',
+                padding: 10
+              }
             }
           }
         }
@@ -676,7 +698,7 @@
 
       document.getElementById('legendSection').innerHTML = `
         <div class="legend-item"><i style="background:${color}"></i><span>${currentDashboardFund.code}</span></div>
-        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i><span>${currentDashboardFund.bench}</span></div>
+        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:2px dashed rgba(2,8,23,.45)"></i><span>${currentDashboardFund.bench}</span></div>
       `;
     }
 
