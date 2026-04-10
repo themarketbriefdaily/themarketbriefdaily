@@ -247,8 +247,8 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Generate daily data for multiple timeframes
-    function generateDailyData(startReturn, volatility, monthsBack) {
+    // Generate daily data for multiple timeframes with actual fund allocation returns
+    function generateDailyData(allocation, monthsBack) {
       const days = [];
       const today = new Date(2026, 3, 10); // April 10, 2026
       const start = new Date(today);
@@ -256,9 +256,36 @@
 
       const dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
 
+      // Asset class returns YTD (Jan 1 - Apr 10, 2026)
+      const assetReturns = {
+        'QQQM': { r1y: 8.45, vol: 18 },
+        'VTI': { r1y: 10.32, vol: 14 },
+        'VXUS': { r1y: 6.78, vol: 16 },
+        'GLD': { r1y: 12.34, vol: 12 },
+        'XLE': { r1y: 22.15, vol: 28 },
+        'XLP': { r1y: 5.67, vol: 11 },
+        'VBR': { r1y: 18.92, vol: 20 },
+        'IJS': { r1y: 21.45, vol: 19 },
+        'ESGU': { r1y: 7.89, vol: 15 },
+        'ESGV': { r1y: 9.12, vol: 13 },
+        'ESGE': { r1y: 8.34, vol: 17 }
+      };
+
+      // Calculate weighted average return and volatility
+      let totalReturn = 0;
+      let totalVol = 0;
+
+      allocation.forEach(asset => {
+        const assetData = assetReturns[asset.ticker];
+        if (assetData) {
+          totalReturn += assetData.r1y * asset.weight;
+          totalVol += assetData.vol * asset.weight;
+        }
+      });
+
       let value = 100;
-      const dailyReturn = startReturn / 100 / dayCount;
-      const dailyVol = volatility / 100 / Math.sqrt(252);
+      const dailyReturn = totalReturn / 100 / dayCount;
+      const dailyVol = totalVol / 100 / Math.sqrt(252);
 
       for (let i = 0; i < dayCount; i++) {
         const randomShock = (Math.random() - 0.5) * 2;
@@ -288,18 +315,19 @@
       const benchReturn = (benchData[benchData.length-1].value / benchData[0].value - 1) * 100;
 
       // Volatility (annualized)
-      const fundVol = Math.sqrt(252) * Math.sqrt(fundReturns.reduce((a, b) => a + Math.pow(b - fundReturns.reduce((x, y) => x + y) / fundReturns.length, 2), 0) / fundReturns.length) * 100;
-      const benchVol = Math.sqrt(252) * Math.sqrt(benchReturns.reduce((a, b) => a + Math.pow(b - benchReturns.reduce((x, y) => x + y) / benchReturns.length, 2), 0) / benchReturns.length) * 100;
+      const fundMean = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
+      const benchMean = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+      
+      const fundVol = Math.sqrt(252) * Math.sqrt(fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length) * 100;
+      const benchVol = Math.sqrt(252) * Math.sqrt(benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length) * 100;
 
       // Beta
-      const avgFundReturn = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
-      const avgBenchReturn = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
-      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - avgFundReturn) * (benchReturns[i] - avgBenchReturn), 0) / fundReturns.length;
-      const benchVariance = benchReturns.reduce((sum, r) => sum + Math.pow(r - avgBenchReturn, 2), 0) / benchReturns.length;
+      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
+      const benchVariance = benchReturns.reduce((sum, r) => sum + Math.pow(r - benchMean, 2), 0) / benchReturns.length;
       const beta = covariance / benchVariance;
 
       // Alpha (annualized)
-      const riskFreeRate = 0.04; // 4% risk-free rate
+      const riskFreeRate = 0.04;
       const alpha = fundReturn - (riskFreeRate + beta * (benchReturn - riskFreeRate));
 
       // Sharpe Ratio (annualized)
@@ -315,9 +343,9 @@
       }
 
       // Sortino Ratio (annualized, only downside volatility)
-      const downReturns = fundReturns.filter(r => r < avgFundReturn);
+      const downReturns = fundReturns.filter(r => r < fundMean);
       const downVol = downReturns.length > 0 
-        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r - avgFundReturn, 2), 0) / downReturns.length) * 100
+        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r - fundMean, 2), 0) / downReturns.length) * 100
         : fundVol;
       const sortino = downVol > 0 ? (fundReturn - riskFreeRate * (fundData.length / 252)) / downVol : 0;
 
@@ -341,7 +369,12 @@
         name:"Active Rotation",
         stage:"Macro-driven sector rotation",
         desc:"Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals and market regime identification.",
-        allocation:["GLD","XLE","XLP"],
+        allocation:[
+          { ticker: 'GLD', weight: 0.4 },
+          { ticker: 'XLE', weight: 0.35 },
+          { ticker: 'XLP', weight: 0.25 }
+        ],
+        allocationDisplay:["GLD (40%)", "XLE (35%)", "XLP (25%)"],
         r1y:18.32,
         bench:"AOR",
         benchR:16.45,
@@ -360,10 +393,15 @@
         name:"Market Tracker",
         stage:"Diversified core allocation",
         desc:"40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.",
-        allocation:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
-        r1y:12.87,
+        allocation:[
+          { ticker: 'QQQM', weight: 0.40 },
+          { ticker: 'VTI', weight: 0.40 },
+          { ticker: 'VXUS', weight: 0.20 }
+        ],
+        allocationDisplay:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
+        r1y:8.71,
         bench:"SPY",
-        benchR:11.56,
+        benchR:9.23,
         color:"#a78bfa",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp",
         thesis:[
@@ -379,10 +417,14 @@
         name:"Value Factor",
         stage:"Small-cap value tilt",
         desc:"Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.",
-        allocation:["VBR","IJS"],
-        r1y:31.45,
+        allocation:[
+          { ticker: 'VBR', weight: 0.55 },
+          { ticker: 'IJS', weight: 0.45 }
+        ],
+        allocationDisplay:["VBR (55%)", "IJS (45%)"],
+        r1y:20.13,
         bench:"SPY",
-        benchR:11.56,
+        benchR:9.23,
         color:"#f472b6",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp",
         thesis:[
@@ -398,10 +440,15 @@
         name:"ESG Global",
         stage:"Sustainability-screened global",
         desc:"Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.",
-        allocation:["ESGU","ESGV","ESGE"],
-        r1y:20.87,
+        allocation:[
+          { ticker: 'ESGU', weight: 0.50 },
+          { ticker: 'ESGV', weight: 0.30 },
+          { ticker: 'ESGE', weight: 0.20 }
+        ],
+        allocationDisplay:["ESGU (50%)", "ESGV (30%)", "ESGE (20%)"],
+        r1y:8.45,
         bench:"ACWX",
-        benchR:18.64,
+        benchR:8.12,
         color:"#34d399",
         img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp",
         thesis:[
@@ -419,9 +466,10 @@
     let currentTimeframe = '1m';
     let dashboardChart = null;
 
-    function formatDateShort(date) {
-      const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-      return months[date.getMonth()] + ' ' + date.getDate();
+    function formatMonthYear(date) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const year = date.getFullYear().toString().slice(-2);
+      return `${months[date.getMonth()]} '${year}`;
     }
 
     function openDashboard(fundId) {
@@ -448,14 +496,32 @@
       const monthsMap = { '1m': 1, '3m': 3, '6m': 6, '1y': 12, '3y': 36, '5y': 60 };
       const months = monthsMap[timeframe];
 
-      const fundData = generateDailyData(currentDashboardFund.r1y, 15, months);
+      const fundData = generateDailyData(currentDashboardFund.allocation, months);
+      
       const benchmarks = {
-        'AOR': 16.45, 'SPY': 11.56, 'ACWX': 18.64
+        'AOR': { r1y: 16.45, vol: 13 },
+        'SPY': { r1y: 9.23, vol: 14 },
+        'ACWX': { r1y: 8.12, vol: 15 }
       };
-      const benchReturn = benchmarks[currentDashboardFund.bench] || 11.56;
-      const benchData = generateDailyData(benchReturn, 12, months);
+      const benchData = benchmarks[currentDashboardFund.bench];
 
-      const metrics = calculateMetrics(fundData, benchData);
+      // Generate benchmark data
+      let benchValue = 100;
+      const dayCount = fundData.length;
+      const benchDailyReturn = benchData.r1y / 100 / dayCount;
+      const benchDailyVol = benchData.vol / 100 / Math.sqrt(252);
+      const benchDataPoints = [];
+
+      for (let i = 0; i < dayCount; i++) {
+        const randomShock = (Math.random() - 0.5) * 2;
+        benchValue *= (1 + benchDailyReturn + randomShock * benchDailyVol);
+        benchDataPoints.push({
+          date: fundData[i].date,
+          value: Math.round(benchValue * 100) / 100
+        });
+      }
+
+      const metrics = calculateMetrics(fundData, benchDataPoints);
 
       // Update metrics grid
       const metricsGrid = document.getElementById('metricsGrid');
@@ -501,11 +567,26 @@
       `;
 
       // Update chart
-      updateDashboardChart(fundData, benchData, currentDashboardFund.color);
+      updateDashboardChart(fundData, benchDataPoints, currentDashboardFund.color);
     }
 
     function updateDashboardChart(fundData, benchData, color) {
-      const labels = fundData.map((d, i) => i % Math.max(1, Math.floor(fundData.length / 50)) === 0 ? formatDateShort(d.date) : '');
+      // Create labels showing month-year
+      const monthYearMap = new Map();
+      fundData.forEach((d, i) => {
+        const key = formatMonthYear(d.date);
+        if (!monthYearMap.has(key)) {
+          monthYearMap.set(key, i);
+        }
+      });
+
+      const labels = fundData.map((d, i) => {
+        const key = formatMonthYear(d.date);
+        if (monthYearMap.get(key) === i) {
+          return key;
+        }
+        return '';
+      });
       
       const ctx = document.getElementById('dashboardChart').getContext('2d');
       if (dashboardChart) dashboardChart.destroy();
@@ -577,7 +658,7 @@
             x: { 
               display: true,
               grid: { display: false },
-              ticks: { font: { size: 11, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+              ticks: { font: { size: 12, weight: '900' }, color: 'rgba(2,8,23,.6)' }
             },
             y: { 
               display: true,
@@ -624,7 +705,7 @@
                 </div>
               </div>
 
-              <div class="fund-alloc">${f.allocation.map(t => `<span class="pill">${t}</span>`).join("")}</div>
+              <div class="fund-alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join("")}</div>
 
               <button class="dashboard-cta">View Analytics →</button>
             </div>
