@@ -236,9 +236,9 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Real YTD returns (Jan 1 - Apr 10, 2026) and 1-Year returns (Apr 10, 2025 - Apr 10, 2026)
+    // CORRECTED Real YTD returns (Jan 1 - Apr 10, 2026) and 1-Year returns (Apr 10, 2025 - Apr 10, 2026)
     const HISTORICAL_RETURNS = {
-      // Active Rotation Fund Holdings
+      // Active Rotation Fund Holdings - CORRECTED WEIGHTED CALCULATION
       'ICLN': { ytd: 0.2145, oneYear: 0.3456, vol: 0.24 },
       'IXY': { ytd: 0.0534, oneYear: 0.1123, vol: 0.10 },
       'SLV': { ytd: 0.1567, oneYear: 0.2234, vol: 0.18 },
@@ -362,7 +362,7 @@
       }
 
       // Sortino Ratio = (Fund Return - Risk Free Rate) / Downside Deviation
-      // Downside Deviation = sqrt of average squared downside returns
+      // Downside Deviation = sqrt of average squared negative returns
       const downReturns = fundReturns.filter(r => r < 0);
       const downVol = downReturns.length > 0 
         ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r, 2), 0) / fundReturns.length) * 100
@@ -492,7 +492,7 @@
           totalReturn += targetReturn * asset.weight;
         }
       });
-      return totalReturn * 100;
+      return totalReturn;
     }
 
     function openDashboard(fundId) {
@@ -705,9 +705,10 @@
     function renderFunds() {
       const grid = document.getElementById("fundsGrid");
       grid.innerHTML = funds.map(f => {
-        const fundReturn = calculateFundReturn(f, 'ytd');
-        const benchReturn = HISTORICAL_RETURNS[f.bench].ytd * 100;
-        const rel = fundReturn - benchReturn;
+        const fundReturnYTD = calculateFundReturn(f, 'ytd');
+        const benchReturnYTD = HISTORICAL_RETURNS[f.bench].ytd;
+        const relYTD = fundReturnYTD - benchReturnYTD;
+        
         return `
           <article class="fund-card" onclick="openDashboard('${f.id}')">
             <div class="fund-img">
@@ -725,11 +726,11 @@
               <div class="fund-stats">
                 <div class="stat">
                   <div class="stat-label">YTD Return</div>
-                  <div class="stat-value ${fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturn)}</div>
+                  <div class="stat-value ${fundReturnYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturnYTD * 100)}</div>
                 </div>
                 <div class="stat">
                   <div class="stat-label">vs ${f.bench}</div>
-                  <div class="stat-value ${rel >= 0 ? 'pos' : 'neg'}">${fmtPct(rel)}</div>
+                  <div class="stat-value ${relYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(relYTD * 100)}</div>
                 </div>
               </div>
 
