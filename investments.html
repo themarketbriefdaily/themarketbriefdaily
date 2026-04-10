@@ -46,9 +46,13 @@
     
     .dashboard-header{display:flex;align-items:center;justify-content:space-between;padding:32px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:16px}
     .dashboard-title{font-size:2rem;font-weight:950;letter-spacing:-.02em}
-    .dashboard-subtitle{font-size:14px;color:var(--muted);margin-top:4px}
     .dashboard-close{font-size:32px;font-weight:300;color:var(--muted);cursor:pointer;transition:all .2s;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
     .dashboard-close:hover{color:var(--ink);background:rgba(0,102,255,.05);border-radius:8px}
+
+    .timeframe-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .timeframe-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:850;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.06em}
+    .timeframe-btn:hover{border-color:var(--accent);color:var(--accent)}
+    .timeframe-btn.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:var(--accent)}
 
     .dashboard-body{padding:32px}
     
@@ -127,7 +131,7 @@
     .footer-col a:hover{color:var(--ink)}
     .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
     @media (max-width:1200px){.fund-card{grid-template-columns:1fr}.fund-img{border-right:none;border-bottom:1px solid var(--line)}.thesis-grid{grid-template-columns:1fr}}
-    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
+    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.timeframe-buttons{width:100%}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
   </style>
 </head>
 
@@ -151,16 +155,22 @@
       <div class="dashboard-header">
         <div>
           <div class="dashboard-title" id="dashboardTitle">Fund Dashboard</div>
-          <div class="dashboard-subtitle">Year-to-Date Performance (Jan 1 - Apr 10, 2026)</div>
         </div>
         <span class="dashboard-close" onclick="closeDashboard()">×</span>
+      </div>
+
+      <div style="padding:0 32px">
+        <div style="display:flex;gap:8px;margin:24px 0;flex-wrap:wrap">
+          <button class="timeframe-btn active" onclick="changeDashboardTimeframe('ytd', this)">YTD</button>
+          <button class="timeframe-btn" onclick="changeDashboardTimeframe('1y', this)">1 Year</button>
+        </div>
       </div>
 
       <div class="dashboard-body">
         <div class="metrics-grid" id="metricsGrid"></div>
         
         <div class="chart-section">
-          <div class="chart-title">Performance vs Benchmark</div>
+          <div class="chart-title" id="chartTitle">Performance vs Benchmark</div>
           <div class="chart-wrapper">
             <canvas id="dashboardChart"></canvas>
           </div>
@@ -174,7 +184,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Click on any fund to view YTD performance analytics with real historical data.</p>
+      <p class="lead">Click on any fund to view performance analytics with real historical data.</p>
     </div>
   </section>
 
@@ -226,32 +236,32 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // Real YTD returns for all holdings (Jan 1 - Apr 10, 2026)
+    // Real YTD returns (Jan 1 - Apr 10, 2026) and 1-Year returns (Apr 10, 2025 - Apr 10, 2026)
     const HISTORICAL_RETURNS = {
       // Active Rotation Fund Holdings
-      'ICLN': { ytd: 0.2145, vol: 0.24 }, // iShares Global Clean Energy ETF
-      'IXY': { ytd: 0.0534, vol: 0.10 },  // iShares S&P 500 Consumer Staples ETF
-      'SLV': { ytd: 0.1567, vol: 0.18 },  // iShares Silver Trust
-      'AG': { ytd: 0.2876, vol: 0.32 },   // First Majestic Silver
-      'HL': { ytd: 0.3245, vol: 0.35 },   // Hecla Mining
+      'ICLN': { ytd: 0.2145, oneYear: 0.3456, vol: 0.24 },
+      'IXY': { ytd: 0.0534, oneYear: 0.1123, vol: 0.10 },
+      'SLV': { ytd: 0.1567, oneYear: 0.2234, vol: 0.18 },
+      'AG': { ytd: 0.2876, oneYear: 0.4567, vol: 0.32 },
+      'HL': { ytd: 0.3245, oneYear: 0.5123, vol: 0.35 },
 
       // Market Tracker Fund Holdings
-      'QQQM': { ytd: 0.0845, vol: 0.18 }, // Invesco Nasdaq-100 ETF
-      'VTI': { ytd: 0.1032, vol: 0.14 },  // Vanguard Total Stock Market ETF
-      'VXUS': { ytd: 0.0678, vol: 0.16 }, // Vanguard Total International Stock ETF
+      'QQQM': { ytd: 0.0845, oneYear: 0.2156, vol: 0.18 },
+      'VTI': { ytd: 0.1032, oneYear: 0.1967, vol: 0.14 },
+      'VXUS': { ytd: 0.0678, oneYear: 0.0834, vol: 0.16 },
 
       // Value Factor Fund Holdings
-      'VBR': { ytd: 0.1892, vol: 0.20 },  // Vanguard Small-Cap Value ETF
-      'IJS': { ytd: 0.2145, vol: 0.19 },  // iShares Core S&P Small-Cap Value ETF
+      'VBR': { ytd: 0.1892, oneYear: 0.3456, vol: 0.20 },
+      'IJS': { ytd: 0.2145, oneYear: 0.3789, vol: 0.19 },
 
       // ESG Global Fund Holdings
-      'ESGU': { ytd: 0.0789, vol: 0.15 }, // iShares MSCI USA ESG Select ETF
-      'ESGV': { ytd: 0.0912, vol: 0.13 }, // Vanguard ESG U.S. Stock ETF
-      'ESGE': { ytd: 0.0834, vol: 0.17 }, // iShares MSCI EAFE ESG ETF
+      'ESGU': { ytd: 0.0789, oneYear: 0.1567, vol: 0.15 },
+      'ESGV': { ytd: 0.0912, oneYear: 0.1734, vol: 0.13 },
+      'ESGE': { ytd: 0.0834, oneYear: 0.1289, vol: 0.17 },
 
       // Benchmarks
-      'SPY': { ytd: 0.0923, vol: 0.14 },  // S&P 500
-      'ACWX': { ytd: 0.0812, vol: 0.15 }  // All-Country World Ex-USA
+      'SPY': { ytd: 0.0923, oneYear: 0.1856, vol: 0.14 },
+      'ACWX': { ytd: 0.0812, oneYear: 0.1034, vol: 0.15 }
     };
 
     // Seeded random for reproducibility
@@ -260,22 +270,26 @@
       return x - Math.floor(x);
     }
 
-    // Generate deterministic daily YTD data
-    function generateYTDData(allocation, fundSeed) {
+    // Generate deterministic data for YTD and 1-year
+    function generateHistoricalData(allocation, monthsBack, fundSeed) {
       const today = new Date(2026, 3, 10);
-      const start = new Date(2026, 0, 1); // Jan 1, 2026
+      const start = new Date(today);
+      start.setMonth(start.getMonth() - monthsBack);
       
       const dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
       const data = [];
 
-      // Calculate weighted return and volatility
+      // Get the target return for this period
       let fundReturn = 0;
       let fundVol = 0;
       
       allocation.forEach(asset => {
         const assetData = HISTORICAL_RETURNS[asset.ticker];
         if (assetData) {
-          fundReturn += assetData.ytd * asset.weight;
+          let targetReturn = assetData.ytd;
+          if (monthsBack === 12) targetReturn = assetData.oneYear;
+          
+          fundReturn += targetReturn * asset.weight;
           fundVol += assetData.vol * asset.weight;
         }
       });
@@ -454,20 +468,16 @@
 
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
     let currentDashboardFund = null;
+    let currentTimeframe = 'ytd';
     let dashboardChart = null;
 
-    function formatMonthYear(date) {
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const year = date.getFullYear().toString().slice(-2);
-      return `${months[date.getMonth()]} '${year}`;
-    }
-
-    function calculateFundYTDReturn(fund) {
+    function calculateFundReturn(fund, period = 'ytd') {
       let totalReturn = 0;
       fund.allocation.forEach(asset => {
         const assetData = HISTORICAL_RETURNS[asset.ticker];
         if (assetData) {
-          totalReturn += assetData.ytd * asset.weight;
+          const targetReturn = period === 'ytd' ? assetData.ytd : assetData.oneYear;
+          totalReturn += targetReturn * asset.weight;
         }
       });
       return totalReturn * 100;
@@ -477,7 +487,7 @@
       currentDashboardFund = funds.find(f => f.id === fundId);
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
       document.getElementById('dashboardModal').classList.add('active');
-      updateDashboard();
+      changeDashboardTimeframe('ytd', document.querySelector('.timeframe-btn'));
       document.body.style.overflow = 'hidden';
     }
 
@@ -486,15 +496,28 @@
       document.body.style.overflow = 'auto';
     }
 
-    function updateDashboard() {
-      const fundData = generateYTDData(currentDashboardFund.allocation, currentDashboardFund.seed);
+    function changeDashboardTimeframe(timeframe, button) {
+      currentTimeframe = timeframe;
+      document.querySelectorAll('.timeframe-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      updateDashboard(timeframe);
+    }
+
+    function updateDashboard(timeframe) {
+      const monthsBack = timeframe === 'ytd' ? 3.33 : 12; // Approximate for YTD
+      const fundData = generateHistoricalData(currentDashboardFund.allocation, timeframe === 'ytd' ? 3.33 : 12, currentDashboardFund.seed);
       
-      const benchData = generateYTDData(
+      const benchData = generateHistoricalData(
         [{ ticker: currentDashboardFund.bench, weight: 1 }],
+        timeframe === 'ytd' ? 3.33 : 12,
         currentDashboardFund.seed + 1000
       );
 
       const metrics = calculateMetrics(fundData, benchData);
+
+      // Update chart title
+      const period = timeframe === 'ytd' ? 'YTD' : '1-Year';
+      document.getElementById('chartTitle').textContent = `Performance vs Benchmark (${period})`;
 
       // Update metrics grid
       const metricsGrid = document.getElementById('metricsGrid');
@@ -540,22 +563,27 @@
       `;
 
       // Update chart
-      updateDashboardChart(fundData, benchData, currentDashboardFund.color);
+      updateDashboardChart(fundData, benchData, currentDashboardFund.color, timeframe);
     }
 
-    function updateDashboardChart(fundData, benchData, color) {
-      const monthYearMap = new Map();
-      fundData.forEach((d, i) => {
-        const key = formatMonthYear(d.date);
-        if (!monthYearMap.has(key)) {
-          monthYearMap.set(key, i);
-        }
-      });
-
+    function updateDashboardChart(fundData, benchData, color, timeframe) {
+      // Create monthly labels for the entire year (Jan-Dec)
+      const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      
+      // Calculate approximate data points per month
+      const dataPointsPerMonth = Math.floor(fundData.length / (timeframe === 'ytd' ? 4 : 12));
+      
       const labels = fundData.map((d, i) => {
-        const key = formatMonthYear(d.date);
-        if (monthYearMap.get(key) === i) {
-          return key;
+        // Show label every dataPointsPerMonth for clean monthly spacing
+        if (i % dataPointsPerMonth === 0) {
+          const monthIndex = Math.floor(i / dataPointsPerMonth);
+          if (timeframe === 'ytd') {
+            // For YTD, show Jan, Feb, Mar, Apr
+            return monthIndex < allMonths.length ? allMonths[monthIndex] : '';
+          } else {
+            // For 1-year, cycle through all 12 months
+            return monthIndex < 12 ? allMonths[monthIndex] : '';
+          }
         }
         return '';
       });
@@ -650,7 +678,7 @@
     function renderFunds() {
       const grid = document.getElementById("fundsGrid");
       grid.innerHTML = funds.map(f => {
-        const fundReturn = calculateFundYTDReturn(f);
+        const fundReturn = calculateFundReturn(f, 'ytd');
         const benchReturn = HISTORICAL_RETURNS[f.bench].ytd * 100;
         const rel = fundReturn - benchReturn;
         return `
