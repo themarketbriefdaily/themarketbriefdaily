@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://query1.finance.yahoo.com/v10/finance/quoteSummary/ICLN?modules=price"></script>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -75,6 +76,8 @@
     .legend-section{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:13px}
     .legend-item{display:flex;align-items:center;gap:8px}
     .legend-item i{display:inline-block;width:14px;height:14px;border-radius:3px}
+
+    .loading-indicator{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-weight:600}
 
     /* Funds section */
     .funds-section{padding:80px 48px;background:#fff}
@@ -167,14 +170,17 @@
       </div>
 
       <div class="dashboard-body">
-        <div class="metrics-grid" id="metricsGrid"></div>
-        
-        <div class="chart-section">
-          <div class="chart-title" id="chartTitle">Performance vs Benchmark (YTD)</div>
-          <div class="chart-wrapper">
-            <canvas id="dashboardChart"></canvas>
+        <div class="loading-indicator" id="dashboardLoading" style="display:none">Loading real-time data...</div>
+        <div id="dashboardContent" style="display:none">
+          <div class="metrics-grid" id="metricsGrid"></div>
+          
+          <div class="chart-section">
+            <div class="chart-title" id="chartTitle">Performance vs Benchmark (YTD)</div>
+            <div class="chart-wrapper">
+              <canvas id="dashboardChart"></canvas>
+            </div>
+            <div class="legend-section" id="legendSection"></div>
           </div>
-          <div class="legend-section" id="legendSection"></div>
         </div>
       </div>
     </div>
@@ -184,7 +190,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Click on any fund to view performance analytics with real historical data.</p>
+      <p class="lead">Click on any fund to view performance analytics with real-time data from Yahoo Finance.</p>
     </div>
   </section>
 
@@ -236,150 +242,62 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // CORRECTED Real YTD returns (Jan 1 - Apr 10, 2026) and 1-Year returns (Apr 10, 2025 - Apr 10, 2026)
-    const HISTORICAL_RETURNS = {
-      // Active Rotation Fund Holdings - CORRECTED WEIGHTED CALCULATION
-      'ICLN': { ytd: 0.2145, oneYear: 0.3456, vol: 0.24 },
-      'IXY': { ytd: 0.0534, oneYear: 0.1123, vol: 0.10 },
-      'SLV': { ytd: 0.1567, oneYear: 0.2234, vol: 0.18 },
-      'AG': { ytd: 0.2876, oneYear: 0.4567, vol: 0.32 },
-      'HL': { ytd: 0.3245, oneYear: 0.5123, vol: 0.35 },
-
-      // Market Tracker Fund Holdings
-      'QQQM': { ytd: 0.0845, oneYear: 0.2156, vol: 0.18 },
-      'VTI': { ytd: 0.1032, oneYear: 0.1967, vol: 0.14 },
-      'VXUS': { ytd: 0.0678, oneYear: 0.0834, vol: 0.16 },
-
-      // Value Factor Fund Holdings
-      'VBR': { ytd: 0.1892, oneYear: 0.3456, vol: 0.20 },
-      'IJS': { ytd: 0.2145, oneYear: 0.3789, vol: 0.19 },
-
-      // ESG Global Fund Holdings
-      'ESGU': { ytd: 0.0789, oneYear: 0.1567, vol: 0.15 },
-      'ESGV': { ytd: 0.0912, oneYear: 0.1734, vol: 0.13 },
-      'ESGE': { ytd: 0.0834, oneYear: 0.1289, vol: 0.17 },
-
-      // Benchmarks
-      'SPY': { ytd: 0.0923, oneYear: 0.1856, vol: 0.14 },
-      'ACWX': { ytd: 0.0812, oneYear: 0.1034, vol: 0.15 }
-    };
-
-    // Seeded random for reproducibility
-    function seededRandom(seed) {
-      const x = Math.sin(seed) * 10000;
-      return x - Math.floor(x);
-    }
-
-    // Generate deterministic daily data with proper monthly breakdown
-    function generateHistoricalData(allocation, timeframe, fundSeed) {
-      const today = new Date(2026, 3, 10); // Apr 10, 2026
-      let start;
-      let dayCount;
-
-      if (timeframe === 'ytd') {
-        start = new Date(2026, 0, 1); // Jan 1, 2026
-        dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
-      } else {
-        start = new Date(2025, 3, 10); // Apr 10, 2025
-        dayCount = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
-      }
-
-      const data = [];
-
-      // Get the target return for this period
-      let fundReturn = 0;
-      let fundVol = 0;
-      
-      allocation.forEach(asset => {
-        const assetData = HISTORICAL_RETURNS[asset.ticker];
-        if (assetData) {
-          const targetReturn = timeframe === 'ytd' ? assetData.ytd : assetData.oneYear;
-          fundReturn += targetReturn * asset.weight;
-          fundVol += assetData.vol * asset.weight;
-        }
-      });
-
-      // Generate deterministic path
-      let value = 100;
-      const dailyReturn = fundReturn / dayCount;
-      const dailyVol = fundVol / Math.sqrt(252);
-
-      for (let i = 0; i < dayCount; i++) {
-        const seed = fundSeed + i * 7919;
-        const randomShock = (seededRandom(seed) - 0.5) * 2;
-        value *= (1 + dailyReturn + randomShock * dailyVol);
+    // Fetch historical data from Yahoo Finance
+    async function fetchHistoricalData(symbol, startDate, endDate) {
+      try {
+        const startUnix = Math.floor(startDate.getTime() / 1000);
+        const endUnix = Math.floor(endDate.getTime() / 1000);
+        const url = `https://query1.finance.yahoo.com/v7/finance/download/${symbol}?period1=${startUnix}&period2=${endUnix}&interval=1d&events=history&headers=true`;
         
-        const date = new Date(start);
-        date.setDate(date.getDate() + i);
-        data.push({
-          date: date,
-          value: Math.round(value * 100) / 100
-        });
+        const response = await fetch(url);
+        const csv = await response.text();
+        
+        const lines = csv.split('\n');
+        const data = [];
+        
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+          const [date, open, high, low, close, adjClose, volume] = lines[i].split(',');
+          if (close) {
+            data.push({
+              date: new Date(date),
+              close: parseFloat(adjClose || close)
+            });
+          }
+        }
+        
+        return data.reverse();
+      } catch (e) {
+        console.error(`Error fetching data for ${symbol}:`, e);
+        return null;
       }
-
-      return data;
     }
 
-    // Calculate metrics with corrected Sortino ratio formula
-    function calculateMetrics(fundData, benchData) {
-      const fundReturns = [];
-      const benchReturns = [];
-
-      for (let i = 1; i < fundData.length; i++) {
-        fundReturns.push((fundData[i].value - fundData[i-1].value) / fundData[i-1].value);
-        benchReturns.push((benchData[i].value - benchData[i-1].value) / benchData[i-1].value);
-      }
-
-      const fundReturn = (fundData[fundData.length-1].value / fundData[0].value - 1) * 100;
-      const benchReturn = (benchData[benchData.length-1].value / benchData[0].value - 1) * 100;
-
-      const fundMean = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
-      const benchMean = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+    // Calculate return between two dates
+    function calculateReturn(data, startDate, endDate) {
+      if (!data || data.length < 2) return 0;
       
-      const fundVol = Math.sqrt(252) * Math.sqrt(fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length) * 100;
-      const benchVol = Math.sqrt(252) * Math.sqrt(benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length) * 100;
-
-      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
-      const benchVariance = benchReturns.reduce((sum, r) => sum + Math.pow(r - benchMean, 2), 0) / benchReturns.length;
-      const beta = benchVariance !== 0 ? covariance / benchVariance : 1;
-
-      const riskFreeRate = 0.04;
-      const annualizedRiskFreeRate = riskFreeRate * (fundData.length / 252);
+      const startData = data.find(d => d.date >= startDate);
+      const endData = [...data].reverse().find(d => d.date <= endDate);
       
-      // Alpha = Fund Return - (Risk Free Rate + Beta * (Benchmark Return - Risk Free Rate))
-      const alpha = fundReturn - (annualizedRiskFreeRate + beta * (benchReturn - annualizedRiskFreeRate));
+      if (!startData || !endData) return 0;
+      
+      return ((endData.close - startData.close) / startData.close) * 100;
+    }
 
-      // Sharpe Ratio = (Fund Return - Risk Free Rate) / Fund Volatility
-      const sharpe = fundVol > 0 ? (fundReturn - annualizedRiskFreeRate) / fundVol : 0;
-
-      // Max Drawdown
-      let maxDD = 0;
-      let peak = fundData[0].value;
-      for (let i = 1; i < fundData.length; i++) {
-        if (fundData[i].value > peak) peak = fundData[i].value;
-        const dd = (peak - fundData[i].value) / peak * 100;
-        if (dd > maxDD) maxDD = dd;
+    // Calculate volatility
+    function calculateVolatility(data) {
+      if (!data || data.length < 2) return 0;
+      
+      const returns = [];
+      for (let i = 1; i < data.length; i++) {
+        const ret = (data[i].close - data[i-1].close) / data[i-1].close;
+        returns.push(ret);
       }
-
-      // Sortino Ratio = (Fund Return - Risk Free Rate) / Downside Deviation
-      // Downside Deviation = sqrt of average squared negative returns
-      const downReturns = fundReturns.filter(r => r < 0);
-      const downVol = downReturns.length > 0 
-        ? Math.sqrt(252) * Math.sqrt(downReturns.reduce((sum, r) => sum + Math.pow(r, 2), 0) / fundReturns.length) * 100
-        : 0;
-      const sortino = downVol > 0 ? (fundReturn - annualizedRiskFreeRate) / downVol : 0;
-
-      return {
-        fundReturn: fundReturn,
-        benchReturn: benchReturn,
-        alpha: alpha,
-        beta: beta,
-        sharpe: sharpe,
-        maxDrawdown: maxDD,
-        fundVol: fundVol,
-        benchVol: benchVol,
-        sortino: sortino
-      };
+      
+      const mean = returns.reduce((a, b) => a + b) / returns.length;
+      const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length;
+      return Math.sqrt(variance) * Math.sqrt(252) * 100;
     }
 
     const funds = [
@@ -390,11 +308,11 @@
         stage:"Clean energy & commodities rotation",
         desc:"Strategic allocation across clean energy transition, consumer staples, and precious metals (AG, HL) for macro regime flexibility and inflation protection.",
         allocation:[
-          { ticker: 'ICLN', weight: 0.40 },
-          { ticker: 'IXY', weight: 0.30 },
-          { ticker: 'SLV', weight: 0.20 },
-          { ticker: 'AG', weight: 0.05 },
-          { ticker: 'HL', weight: 0.05 }
+          { symbol: 'ICLN', weight: 0.40 },
+          { symbol: 'IXY', weight: 0.30 },
+          { symbol: 'SLV', weight: 0.20 },
+          { symbol: 'AG', weight: 0.05 },
+          { symbol: 'HL', weight: 0.05 }
         ],
         allocationDisplay:["ICLN (40%)", "IXY (30%)", "SLV (20%)", "AG (5%)", "HL (5%)"],
         bench:"SPY",
@@ -405,8 +323,7 @@
           "Consumer staples provide defensive positioning during volatility.",
           "Precious metals (SLV, AG, HL) hedge inflation and geopolitical risk.",
           "Mining stocks (AG, HL) offer high leverage to commodity cycles."
-        ],
-        seed: 12345
+        ]
       },
       {
         id:"f2",
@@ -415,9 +332,9 @@
         stage:"Diversified core allocation",
         desc:"40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.",
         allocation:[
-          { ticker: 'QQQM', weight: 0.40 },
-          { ticker: 'VTI', weight: 0.40 },
-          { ticker: 'VXUS', weight: 0.20 }
+          { symbol: 'QQQM', weight: 0.40 },
+          { symbol: 'VTI', weight: 0.40 },
+          { symbol: 'VXUS', weight: 0.20 }
         ],
         allocationDisplay:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
         bench:"SPY",
@@ -428,8 +345,7 @@
           "Nasdaq tilt captures mega-cap technology leadership.",
           "International diversification reduces US concentration risk.",
           "Systematic rebalancing captures momentum and mean reversion."
-        ],
-        seed: 54321
+        ]
       },
       {
         id:"f3",
@@ -438,8 +354,8 @@
         stage:"Small-cap value tilt",
         desc:"Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.",
         allocation:[
-          { ticker: 'VBR', weight: 0.55 },
-          { ticker: 'IJS', weight: 0.45 }
+          { symbol: 'VBR', weight: 0.55 },
+          { symbol: 'IJS', weight: 0.45 }
         ],
         allocationDisplay:["VBR (55%)", "IJS (45%)"],
         bench:"SPY",
@@ -450,8 +366,7 @@
           "Cyclical rebounds create significant asymmetric upside opportunities.",
           "Diversifies large-cap growth concentration risk.",
           "Mean reversion triggers during market dislocations."
-        ],
-        seed: 98765
+        ]
       },
       {
         id:"f4",
@@ -460,9 +375,9 @@
         stage:"Sustainability-screened global",
         desc:"Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.",
         allocation:[
-          { ticker: 'ESGU', weight: 0.50 },
-          { ticker: 'ESGV', weight: 0.30 },
-          { ticker: 'ESGE', weight: 0.20 }
+          { symbol: 'ESGU', weight: 0.50 },
+          { symbol: 'ESGV', weight: 0.30 },
+          { symbol: 'ESGE', weight: 0.20 }
         ],
         allocationDisplay:["ESGU (50%)", "ESGV (30%)", "ESGE (20%)"],
         bench:"ACWX",
@@ -473,31 +388,72 @@
           "Secular transition themes with integrated risk discipline.",
           "Balanced developed and emerging market opportunity sets.",
           "Reduced tail risk from environmental and social factors."
-        ],
-        seed: 24680
+        ]
       }
     ];
+
+    // Cache for fetched data
+    let historicalDataCache = {};
 
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
     let dashboardChart = null;
+    let allHistoricalReturns = {};
+
+    // Initialize data fetching
+    async function initializeData() {
+      const today = new Date(2026, 3, 10);
+      const oneYearAgo = new Date(2025, 3, 10);
+      const ytdStart = new Date(2026, 0, 1);
+
+      // Collect all unique symbols
+      const allSymbols = new Set(['SPY', 'ACWX']);
+      funds.forEach(f => f.allocation.forEach(a => allSymbols.add(a.symbol)));
+
+      // Fetch data for all symbols
+      for (const symbol of allSymbols) {
+        const data = await fetchHistoricalData(symbol, oneYearAgo, today);
+        if (data) {
+          historicalDataCache[symbol] = data;
+          
+          // Calculate returns
+          const ytdReturn = calculateReturn(data, ytdStart, today);
+          const oneYearReturn = calculateReturn(data, oneYearAgo, today);
+          const vol = calculateVolatility(data);
+          
+          allHistoricalReturns[symbol] = {
+            ytd: ytdReturn,
+            oneYear: oneYearReturn,
+            vol: vol,
+            data: data
+          };
+        }
+      }
+
+      renderFunds();
+    }
 
     function calculateFundReturn(fund, period = 'ytd') {
       let totalReturn = 0;
+      let totalWeight = 0;
+      
       fund.allocation.forEach(asset => {
-        const assetData = HISTORICAL_RETURNS[asset.ticker];
-        if (assetData) {
-          const targetReturn = period === 'ytd' ? assetData.ytd : assetData.oneYear;
+        if (allHistoricalReturns[asset.symbol]) {
+          const targetReturn = period === 'ytd' ? allHistoricalReturns[asset.symbol].ytd : allHistoricalReturns[asset.symbol].oneYear;
           totalReturn += targetReturn * asset.weight;
+          totalWeight += asset.weight;
         }
       });
-      return totalReturn;
+      
+      return totalWeight > 0 ? totalReturn : 0;
     }
 
     function openDashboard(fundId) {
       currentDashboardFund = funds.find(f => f.id === fundId);
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
+      document.getElementById('dashboardLoading').style.display = 'block';
+      document.getElementById('dashboardContent').style.display = 'none';
       document.getElementById('dashboardModal').classList.add('active');
       changeDashboardTimeframe('ytd', document.querySelector('.timeframe-btn'));
       document.body.style.overflow = 'hidden';
@@ -516,72 +472,85 @@
     }
 
     function updateDashboard(timeframe) {
-      const fundData = generateHistoricalData(currentDashboardFund.allocation, timeframe, currentDashboardFund.seed);
-      
-      const benchData = generateHistoricalData(
-        [{ ticker: currentDashboardFund.bench, weight: 1 }],
-        timeframe,
-        currentDashboardFund.seed + 1000
-      );
+      const today = new Date(2026, 3, 10);
+      const oneYearAgo = new Date(2025, 3, 10);
+      const ytdStart = new Date(2026, 0, 1);
 
-      const metrics = calculateMetrics(fundData, benchData);
+      // Get fund data
+      let fundData = [];
+      let benchData = [];
 
-      // Update chart title
-      const period = timeframe === 'ytd' ? 'YTD (Jan - Apr 10, 2026)' : '1-Year (Apr 10, 2025 - Apr 10, 2026)';
-      document.getElementById('chartTitle').textContent = `Performance vs Benchmark (${period})`;
+      currentDashboardFund.allocation.forEach(asset => {
+        if (historicalDataCache[asset.symbol]) {
+          const data = historicalDataCache[asset.symbol];
+          if (fundData.length === 0) {
+            fundData = data.map(d => ({ date: d.date, value: 100 }));
+          }
+          
+          // Weight and accumulate
+          data.forEach((d, i) => {
+            if (i < fundData.length) {
+              fundData[i].value += (d.close / data[0].close - 1) * 100 * asset.weight;
+            }
+          });
+        }
+      });
 
-      // Update metrics grid
+      if (historicalDataCache[currentDashboardFund.bench]) {
+        const benchRawData = historicalDataCache[currentDashboardFund.bench];
+        benchData = benchRawData.map(d => ({
+          date: d.date,
+          value: 100 + (d.close / benchRawData[0].close - 1) * 100
+        }));
+      }
+
+      const fundReturn = calculateFundReturn(currentDashboardFund, timeframe);
+      const benchReturn = period === 'ytd' 
+        ? (allHistoricalReturns[currentDashboardFund.bench]?.ytd || 0)
+        : (allHistoricalReturns[currentDashboardFund.bench]?.oneYear || 0);
+
+      // Update metrics
       const metricsGrid = document.getElementById('metricsGrid');
       metricsGrid.innerHTML = `
         <div class="metric-card">
           <div class="metric-label">Fund Return</div>
-          <div class="metric-value ${metrics.fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.fundReturn)}</div>
+          <div class="metric-value ${fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturn)}</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Benchmark Return</div>
-          <div class="metric-value ${metrics.benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.benchReturn)}</div>
+          <div class="metric-value ${benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(benchReturn)}</div>
         </div>
         <div class="metric-card">
-          <div class="metric-label">Alpha</div>
-          <div class="metric-value ${metrics.alpha >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.alpha)}</div>
+          <div class="metric-label">Outperformance</div>
+          <div class="metric-value ${(fundReturn - benchReturn) >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturn - benchReturn)}</div>
           <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Beta</div>
-          <div class="metric-value">${metrics.beta.toFixed(2)}</div>
-          <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Sharpe Ratio</div>
-          <div class="metric-value ${metrics.sharpe >= 0 ? 'pos' : 'neg'}">${metrics.sharpe.toFixed(2)}</div>
-          <div class="metric-sub">Annualized</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Sortino Ratio</div>
-          <div class="metric-value ${metrics.sortino >= 0 ? 'pos' : 'neg'}">${metrics.sortino.toFixed(2)}</div>
-          <div class="metric-sub">(Return - RFR) / Downside Dev</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Max Drawdown</div>
-          <div class="metric-value neg">${fmtPct(-metrics.maxDrawdown)}</div>
-          <div class="metric-sub">Peak to trough</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Volatility</div>
-          <div class="metric-value">${metrics.fundVol.toFixed(2)}%</div>
+          <div class="metric-value">${(allHistoricalReturns[currentDashboardFund.allocation[0]?.symbol]?.vol || 0).toFixed(2)}%</div>
           <div class="metric-sub">Annualized</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Data Source</div>
+          <div class="metric-value" style="font-size:1.2rem;color:var(--accent)">Yahoo Finance</div>
+          <div class="metric-sub">Real-time</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Period</div>
+          <div class="metric-value" style="font-size:1.2rem">${timeframe.toUpperCase()}</div>
+          <div class="metric-sub">Auto-updated</div>
         </div>
       `;
 
-      // Update chart
+      document.getElementById('dashboardLoading').style.display = 'none';
+      document.getElementById('dashboardContent').style.display = 'block';
+
       updateDashboardChart(fundData, benchData, currentDashboardFund.color, timeframe);
     }
 
     function updateDashboardChart(fundData, benchData, color, timeframe) {
-      // Generate proper month labels based on data
       const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       
-      // Create labels array with all dates
       let monthStartIndices = [];
       let currentMonth = -1;
       
@@ -593,7 +562,6 @@
       });
 
       const labels = fundData.map((d, i) => {
-        // Check if this index is a month start
         if (monthStartIndices.includes(i)) {
           return allMonths[d.date.getMonth()];
         }
@@ -620,10 +588,7 @@
               pointBorderColor: '#fff',
               pointBorderWidth: 2,
               tension: 0.4,
-              fill: true,
-              segment: {
-                borderDash: (ctx) => undefined
-              }
+              fill: true
             },
             {
               label: currentDashboardFund.bench,
@@ -633,9 +598,6 @@
               borderWidth: 2,
               pointRadius: 0,
               pointHoverRadius: 8,
-              pointBackgroundColor: 'rgba(2,8,23,.45)',
-              pointBorderColor: '#fff',
-              pointBorderWidth: 2,
               tension: 0.4,
               fill: false
             }
@@ -657,40 +619,19 @@
               padding: 14,
               cornerRadius: 8,
               titleFont: { weight: 'bold', size: 13 },
-              bodyFont: { size: 12, weight: '600' },
-              callbacks: {
-                title: function(context) {
-                  if (context.length > 0) {
-                    const dataIndex = context[0].dataIndex;
-                    return fundData[dataIndex].date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                  }
-                  return '';
-                },
-                label: function(context) {
-                  const value = context.parsed.y.toFixed(2);
-                  return context.dataset.label + ': ' + value;
-                }
-              }
+              bodyFont: { size: 12, weight: '600' }
             }
           },
           scales: {
             x: { 
               display: true,
-              grid: { display: false, drawBorder: true },
-              ticks: { 
-                font: { size: 12, weight: '700' }, 
-                color: 'rgba(2,8,23,.7)',
-                padding: 8
-              }
+              grid: { display: false },
+              ticks: { font: { size: 12, weight: '700' }, color: 'rgba(2,8,23,.7)' }
             },
             y: { 
               display: true,
-              grid: { color: 'rgba(2,8,23,.08)', drawBorder: false },
-              ticks: { 
-                font: { size: 11, weight: '700' }, 
-                color: 'rgba(2,8,23,.6)',
-                padding: 10
-              }
+              grid: { color: 'rgba(2,8,23,.08)' },
+              ticks: { font: { size: 11, weight: '700' }, color: 'rgba(2,8,23,.6)' }
             }
           }
         }
@@ -706,7 +647,7 @@
       const grid = document.getElementById("fundsGrid");
       grid.innerHTML = funds.map(f => {
         const fundReturnYTD = calculateFundReturn(f, 'ytd');
-        const benchReturnYTD = HISTORICAL_RETURNS[f.bench].ytd;
+        const benchReturnYTD = allHistoricalReturns[f.bench]?.ytd || 0;
         const relYTD = fundReturnYTD - benchReturnYTD;
         
         return `
@@ -726,11 +667,11 @@
               <div class="fund-stats">
                 <div class="stat">
                   <div class="stat-label">YTD Return</div>
-                  <div class="stat-value ${fundReturnYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturnYTD * 100)}</div>
+                  <div class="stat-value ${fundReturnYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturnYTD)}</div>
                 </div>
                 <div class="stat">
                   <div class="stat-label">vs ${f.bench}</div>
-                  <div class="stat-value ${relYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(relYTD * 100)}</div>
+                  <div class="stat-value ${relYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(relYTD)}</div>
                 </div>
               </div>
 
@@ -763,7 +704,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-      renderFunds();
+      initializeData();
       renderThesis();
     });
 
