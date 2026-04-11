@@ -240,7 +240,7 @@
     // Backend API base – production Vercel deployment or local dev server
     const BACKEND_URL = window.location.hostname === 'localhost'
       ? 'http://localhost:3001'
-      : 'https://market-brief-backend.vercel.app';
+      : '';
     const IS_DEV = window.location.hostname === 'localhost';
     if (IS_DEV) console.log('[investments] BACKEND_URL:', BACKEND_URL);
 
