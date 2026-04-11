@@ -234,9 +234,10 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    const API_KEY = 'KJNMSAGf82MDB5JhpZ1aEK0LMdAgAqTX';
-    // Backend API base (same-domain on Vercel; falls back to direct Polygon calls in the browser)
-    const BACKEND = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+    // Backend API base – production Vercel deployment or local dev server
+    const BACKEND_URL = window.location.hostname === 'localhost'
+      ? 'http://localhost:3001'
+      : 'https://market-brief-backend.vercel.app';
 
     const funds = [
       {
@@ -330,34 +331,40 @@
       }
     ];
 
-    let historicalData = {};
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
 
     const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
-    // Fetch OHLC bars from Polygon v2 aggregates endpoint
-    async function fetchStockData(symbol, from, to) {
-      try {
-        const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?adjusted=true&sort=asc&limit=500&apiKey=${API_KEY}`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          console.error(`API Error for ${symbol}:`, response.status);
-          return null;
-        }
-        const data = await response.json();
-        if (data.results && Array.isArray(data.results)) {
-          return data.results.map(d => ({ date: new Date(d.t), close: d.c }));
-        }
-        return null;
-      } catch (e) {
-        console.error(`Error fetching ${symbol}:`, e);
-        return null;
-      }
+    // Fetch multiple symbols at once from the backend batch endpoint
+    async function fetchBatchStockData(symbols, from, to) {
+      const res = await fetch(`${BACKEND_URL}/api/batch-stock-data`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbols, from, to })
+      });
+      if (!res.ok) throw new Error(`Backend batch fetch failed (${res.status})`);
+      return res.json();
     }
 
-    // Calculate all required metrics
-    function calculateMetrics(fundPrices, benchPrices) {
+    // Calculate metrics via backend endpoint, with local fallback
+    async function calculateMetrics(fundPrices, benchPrices) {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/calculate-metrics`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fundPrices, benchPrices })
+        });
+        if (res.ok) return res.json();
+        console.warn('Backend metrics returned non-OK status, using local fallback');
+      } catch (e) {
+        console.warn('Backend metrics unavailable, using local fallback:', e.message);
+      }
+      return calculateMetricsLocal(fundPrices, benchPrices);
+    }
+
+    // Local metrics calculation (fallback when backend is unreachable)
+    function calculateMetricsLocal(fundPrices, benchPrices) {
       if (!fundPrices || fundPrices.length < 2 || !benchPrices || benchPrices.length < 2) {
         return null;
       }
@@ -365,40 +372,34 @@
       const fundReturn = ((fundPrices[fundPrices.length - 1] - fundPrices[0]) / fundPrices[0]) * 100;
       const benchReturn = ((benchPrices[benchPrices.length - 1] - benchPrices[0]) / benchPrices[0]) * 100;
 
-      // Daily returns
       const fundReturns = [];
       for (let i = 1; i < fundPrices.length; i++) {
         fundReturns.push((fundPrices[i] - fundPrices[i - 1]) / fundPrices[i - 1]);
       }
-
       const benchReturns = [];
       for (let i = 1; i < benchPrices.length; i++) {
         benchReturns.push((benchPrices[i] - benchPrices[i - 1]) / benchPrices[i - 1]);
       }
 
-      // Volatility
-      const fundMean = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
+      const fundMean = fundReturns.reduce((a, b) => a + b, 0) / fundReturns.length;
       const fundVariance = fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length;
       const fundVol = Math.sqrt(fundVariance) * Math.sqrt(252) * 100;
 
-      const benchMean = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+      const benchMean = benchReturns.reduce((a, b) => a + b, 0) / benchReturns.length;
       const benchVariance = benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length;
       const benchVol = Math.sqrt(benchVariance) * Math.sqrt(252) * 100;
 
-      // Sharpe Ratio
       const riskFreeRate = 0.04;
-      const annualizedRiskFree = riskFreeRate * (fundPrices.length / 252);
-      const sharpe = (fundReturn - annualizedRiskFree) / fundVol;
+      const annualizedRf = riskFreeRate * (fundPrices.length / 252);
+      const sharpe = fundVol > 0 ? (fundReturn / 100 - annualizedRf) / (fundVol / 100) : 0;
 
-      // Sortino Ratio (only downside deviation)
       const downReturns = fundReturns.filter(r => r < 0);
       const downVariance = downReturns.length > 0
         ? downReturns.reduce((a, b) => a + Math.pow(b, 2), 0) / fundReturns.length
         : 0;
       const downVol = Math.sqrt(downVariance) * Math.sqrt(252) * 100;
-      const sortino = downVol > 0 ? (fundReturn - annualizedRiskFree) / downVol : 0;
+      const sortino = downVol > 0 ? (fundReturn / 100 - annualizedRf) / (downVol / 100) : 0;
 
-      // Max Drawdown
       let maxDD = 0;
       let peak = fundPrices[0];
       for (let i = 1; i < fundPrices.length; i++) {
@@ -407,24 +408,15 @@
         if (dd > maxDD) maxDD = dd;
       }
 
-      // Beta
       const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
-      const beta = covariance / benchVariance;
-
-      // Jensen's Alpha
-      const alpha = fundReturn - (annualizedRiskFree + beta * (benchReturn - annualizedRiskFree));
+      const beta = benchVariance > 0 ? covariance / benchVariance : 0;
+      const alpha = fundReturn - (annualizedRf * 100 + beta * (benchReturn - annualizedRf * 100));
 
       return {
-        fundReturn,
-        benchReturn,
+        fundReturn, benchReturn,
         outperformance: fundReturn - benchReturn,
-        fundVol,
-        benchVol,
-        sharpe,
-        sortino,
-        maxDD,
-        beta,
-        alpha
+        fundVol, benchVol,
+        sharpe, sortino, maxDD, beta, alpha
       };
     }
 
@@ -531,7 +523,7 @@
       container.appendChild(widgetContainer);
     }
 
-    // Load computed performance metrics from Polygon for the selected timeframe
+    // Load computed performance metrics from the backend for the selected timeframe
     async function loadMetrics(fund) {
       try {
         const today = new Date();
@@ -548,13 +540,17 @@
         document.getElementById('dashLoading').style.display = 'block';
         document.getElementById('dashContent').style.display = 'none';
 
-        // Fetch all fund symbols + benchmark in parallel
+        // Fetch all fund symbols + benchmark in a single backend call
         const allSymbols = [...fund.allocation.map(a => a.symbol), fund.bench];
+        const batchData = await fetchBatchStockData(allSymbols, fromDate, toDate);
+
         const priceData = {};
-        await Promise.all(allSymbols.map(async symbol => {
-          const data = await fetchStockData(symbol, fromDate, toDate);
-          if (data && data.length > 0) priceData[symbol] = data.map(d => d.close);
-        }));
+        for (const symbol of allSymbols) {
+          const entry = batchData[symbol.toUpperCase()];
+          if (entry && entry.data && entry.data.length > 0) {
+            priceData[symbol] = entry.data.map(d => d.close);
+          }
+        }
 
         const firstSymbol = fund.allocation[0].symbol;
         if (!priceData[firstSymbol] || !priceData[fund.bench]) {
@@ -581,10 +577,10 @@
         fundPrices = fundPrices.map(p => 100 + p);
 
         // Normalise benchmark to base 100 so metrics are comparable
-        const rawBench  = priceData[fund.bench].slice(0, minLength);
+        const rawBench = priceData[fund.bench].slice(0, minLength);
         const benchPrices = rawBench.map(p => (p / rawBench[0]) * 100);
 
-        const metrics = calculateMetrics(fundPrices, benchPrices);
+        const metrics = await calculateMetrics(fundPrices, benchPrices);
         document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(metrics);
 
         document.getElementById('dashLoading').style.display = 'none';
@@ -665,7 +661,7 @@
       `).join('');
     }
 
-    // Populate fund card stats with live YTD data from Polygon
+    // Populate fund card stats with live YTD data from the backend
     async function loadAllFundCardStats() {
       const today   = new Date();
       const toDate  = today.toISOString().split('T')[0];
@@ -677,19 +673,25 @@
         ...funds.map(f => f.bench)
       ])];
 
-      const priceData = {};
-      await Promise.all(symbolsToFetch.map(async symbol => {
-        const data = await fetchStockData(symbol, fromDate, toDate);
-        if (data && data.length > 0) priceData[symbol] = data;
-      }));
+      let batchData;
+      try {
+        batchData = await fetchBatchStockData(symbolsToFetch, fromDate, toDate);
+      } catch (e) {
+        console.warn('Card stats unavailable:', e.message);
+        return;
+      }
 
       const cards = document.querySelectorAll('.fund-card');
       funds.forEach((fund, i) => {
         if (!cards[i]) return;
-        const primary  = priceData[fund.allocation[0].symbol];
-        const bench    = priceData[fund.bench];
-        if (!primary || !bench) return;
+        const primaryKey = fund.allocation[0].symbol.toUpperCase();
+        const benchKey   = fund.bench.toUpperCase();
+        const primaryEntry = batchData[primaryKey];
+        const benchEntry   = batchData[benchKey];
+        if (!primaryEntry?.data?.length || !benchEntry?.data?.length) return;
 
+        const primary = primaryEntry.data;
+        const bench   = benchEntry.data;
         const primaryRet = ((primary[primary.length - 1].close - primary[0].close) / primary[0].close) * 100;
         const benchRet   = ((bench[bench.length - 1].close   - bench[0].close)   / bench[0].close)   * 100;
         const outperf    = primaryRet - benchRet;
