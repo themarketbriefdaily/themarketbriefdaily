@@ -1,5 +1,46 @@
 {
-  "generated_at": null,
-  "date_range": {},
-  "funds": {}
+  "generated_at": "2026-04-11T20:32:15.719Z",
+  "date_range": {
+    "ytd_from": "2026-01-01",
+    "one_year_from": "2025-04-11",
+    "to": "2026-04-11"
+  },
+  "funds": {
+    "f1": {
+      "id": "f1",
+      "code": "F1",
+      "name": "Active Rotation",
+      "ytd": null,
+      "1y": null,
+      "ytdReturn": null,
+      "outperformance": null
+    },
+    "f2": {
+      "id": "f2",
+      "code": "F2",
+      "name": "Market Tracker",
+      "ytd": null,
+      "1y": null,
+      "ytdReturn": null,
+      "outperformance": null
+    },
+    "f3": {
+      "id": "f3",
+      "code": "F3",
+      "name": "Value Factor",
+      "ytd": null,
+      "1y": null,
+      "ytdReturn": null,
+      "outperformance": null
+    },
+    "f4": {
+      "id": "f4",
+      "code": "F4",
+      "name": "ESG Global",
+      "ytd": null,
+      "1y": null,
+      "ytdReturn": null,
+      "outperformance": null
+    }
+  }
 }
