@@ -172,7 +172,7 @@
           <div class="legend-section" id="legendSection"></div>
         </div>
 
-        <!-- Computed metrics from Polygon.io -->
+        <!-- Performance metrics from backend snapshot -->
         <div class="loading-text" id="dashLoading">Calculating performance metrics…</div>
         <div id="dashContent" style="display:none">
           <div class="metrics-grid" id="metricsGrid"></div>
@@ -185,7 +185,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Real-time fund analytics with actual historical market data from Polygon.io</p>
+      <p class="lead">Fund analytics powered by daily backend market data snapshots</p>
     </div>
   </section>
 
@@ -230,7 +230,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved. Data powered by Polygon.io. Updated daily.</p>
+      <p>© 2025 The Market Brief Daily. All rights reserved. Data updated daily after market close.</p>
     </div>
   </footer>
 
@@ -339,152 +339,76 @@
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
     let dashboardChart = null;
+    let cachedSnapshot = null;
 
     const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
-    // Fetch multiple symbols at once from the backend batch endpoint
-    async function fetchBatchStockData(symbols, from, to) {
-      if (IS_DEV) console.log(`[fetchBatchStockData] Backend: ${BACKEND_URL}, symbols: ${symbols.join(',')}, from: ${from}, to: ${to}`);
-      let res;
-      try {
-        res = await fetch(`${BACKEND_URL}/api/batch-stock-data`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ symbols, from, to })
-        });
-      } catch (networkErr) {
-        console.error(`[fetchBatchStockData] Network error reaching ${BACKEND_URL}:`, networkErr);
-        throw new Error(`Cannot reach backend at ${BACKEND_URL}. Is the server running? (${networkErr.message})`);
-      }
-      if (!res.ok) {
-        const body = await res.text().catch(() => '');
-        console.error(`[fetchBatchStockData] HTTP ${res.status} from ${BACKEND_URL}/api/batch-stock-data:`, body);
-        throw new Error(`Backend returned ${res.status}: ${body || res.statusText}`);
-      }
+    // ── Snapshot API helpers ──────────────────────────────────────────────────
+
+    async function fetchSnapshot() {
+      if (cachedSnapshot) return cachedSnapshot;
+      const res = await fetch(`${BACKEND_URL}/api/funds/snapshot`);
+      if (!res.ok) throw new Error(`Snapshot unavailable (HTTP ${res.status})`);
+      cachedSnapshot = await res.json();
+      return cachedSnapshot;
+    }
+
+    async function fetchFundTimeframe(fundId, timeframe) {
+      const url = `${BACKEND_URL}/api/funds/${fundId}?timeframe=${timeframe}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Fund data unavailable (HTTP ${res.status})`);
       return res.json();
     }
 
-    // Calculate metrics via backend endpoint, with local fallback
-    async function calculateMetrics(fundPrices, benchPrices) {
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/calculate-metrics`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fundPrices, benchPrices })
-        });
-        if (res.ok) return res.json();
-        console.warn('Backend metrics returned non-OK status, using local fallback');
-      } catch (e) {
-        console.warn('Backend metrics unavailable, using local fallback:', e.message);
-      }
-      return calculateMetricsLocal(fundPrices, benchPrices);
-    }
+    // ── Metrics rendering ─────────────────────────────────────────────────────
 
-    // Local metrics calculation (fallback when backend is unreachable)
-    function calculateMetricsLocal(fundPrices, benchPrices) {
-      if (!fundPrices || fundPrices.length < 2 || !benchPrices || benchPrices.length < 2) {
-        return null;
-      }
-
-      const fundReturn = ((fundPrices[fundPrices.length - 1] - fundPrices[0]) / fundPrices[0]) * 100;
-      const benchReturn = ((benchPrices[benchPrices.length - 1] - benchPrices[0]) / benchPrices[0]) * 100;
-
-      const fundReturns = [];
-      for (let i = 1; i < fundPrices.length; i++) {
-        fundReturns.push((fundPrices[i] - fundPrices[i - 1]) / fundPrices[i - 1]);
-      }
-      const benchReturns = [];
-      for (let i = 1; i < benchPrices.length; i++) {
-        benchReturns.push((benchPrices[i] - benchPrices[i - 1]) / benchPrices[i - 1]);
-      }
-
-      const fundMean = fundReturns.reduce((a, b) => a + b, 0) / fundReturns.length;
-      const fundVariance = fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length;
-      const fundVol = Math.sqrt(fundVariance) * Math.sqrt(252) * 100;
-
-      const benchMean = benchReturns.reduce((a, b) => a + b, 0) / benchReturns.length;
-      const benchVariance = benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length;
-      const benchVol = Math.sqrt(benchVariance) * Math.sqrt(252) * 100;
-
-      const riskFreeRate = 0.04;
-      const annualizedRf = riskFreeRate * (fundPrices.length / 252);
-      const sharpe = fundVol > 0 ? (fundReturn / 100 - annualizedRf) / (fundVol / 100) : 0;
-
-      const downReturns = fundReturns.filter(r => r < 0);
-      const downVariance = downReturns.length > 0
-        ? downReturns.reduce((a, b) => a + Math.pow(b, 2), 0) / fundReturns.length
-        : 0;
-      const downVol = Math.sqrt(downVariance) * Math.sqrt(252) * 100;
-      const sortino = downVol > 0 ? (fundReturn / 100 - annualizedRf) / (downVol / 100) : 0;
-
-      let maxDD = 0;
-      let peak = fundPrices[0];
-      for (let i = 1; i < fundPrices.length; i++) {
-        if (fundPrices[i] > peak) peak = fundPrices[i];
-        const dd = (peak - fundPrices[i]) / peak * 100;
-        if (dd > maxDD) maxDD = dd;
-      }
-
-      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
-      const beta = benchVariance > 0 ? covariance / benchVariance : 0;
-      const alpha = fundReturn - (annualizedRf * 100 + beta * (benchReturn - annualizedRf * 100));
-
-      return {
-        fundReturn, benchReturn,
-        outperformance: fundReturn - benchReturn,
-        fundVol, benchVol,
-        sharpe, sortino, maxDD, beta, alpha
-      };
-    }
-
-    // Format and render metrics
-    function renderMetricsHTML(metrics) {
-      if (!metrics) return '<div class="loading-text">Unable to load metrics</div>';
-      
+    function renderMetricsHTML(kpi, bench) {
+      if (!kpi) return '<div class="loading-text">Metrics not available in snapshot.</div>';
       return `
         <div class="metric-card">
           <div class="metric-label">Fund Return</div>
-          <div class="metric-value ${metrics.fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.fundReturn)}</div>
+          <div class="metric-value ${kpi.fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(kpi.fundReturn)}</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Benchmark Return</div>
-          <div class="metric-value ${metrics.benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.benchReturn)}</div>
+          <div class="metric-value ${kpi.benchmarkReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(kpi.benchmarkReturn)}</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Outperformance</div>
-          <div class="metric-value ${metrics.outperformance >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.outperformance)}</div>
-          <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
+          <div class="metric-value ${kpi.outperformance >= 0 ? 'pos' : 'neg'}">${fmtPct(kpi.outperformance)}</div>
+          <div class="metric-sub">vs ${bench}</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Volatility</div>
-          <div class="metric-value">${metrics.fundVol.toFixed(2)}%</div>
+          <div class="metric-value">${kpi.volatility.toFixed(2)}%</div>
           <div class="metric-sub">Annualized</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Sharpe Ratio</div>
-          <div class="metric-value ${metrics.sharpe >= 0 ? 'pos' : 'neg'}">${metrics.sharpe.toFixed(2)}</div>
+          <div class="metric-value ${kpi.sharpe >= 0 ? 'pos' : 'neg'}">${kpi.sharpe.toFixed(2)}</div>
           <div class="metric-sub">Risk-adjusted return</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Sortino Ratio</div>
-          <div class="metric-value ${metrics.sortino >= 0 ? 'pos' : 'neg'}">${metrics.sortino.toFixed(2)}</div>
+          <div class="metric-value ${kpi.sortino >= 0 ? 'pos' : 'neg'}">${kpi.sortino.toFixed(2)}</div>
           <div class="metric-sub">Downside risk-adjusted</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Max Drawdown</div>
-          <div class="metric-value neg">-${metrics.maxDD.toFixed(2)}%</div>
+          <div class="metric-value neg">-${kpi.maxDrawdown.toFixed(2)}%</div>
           <div class="metric-sub">Peak to trough</div>
         </div>
         <div class="metric-card">
           <div class="metric-label">Jensen's Alpha</div>
-          <div class="metric-value ${metrics.alpha >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.alpha)}</div>
+          <div class="metric-value ${kpi.jensensAlpha >= 0 ? 'pos' : 'neg'}">${fmtPct(kpi.jensensAlpha)}</div>
           <div class="metric-sub">Excess return</div>
         </div>
       `;
     }
 
-    // Render Chart.js weighted fund vs benchmark performance chart (both base 100)
-    function updateChart(fundPrices, benchPrices, labels, fund) {
+    // ── Chart.js renderer ─────────────────────────────────────────────────────
+
+    function updateChart(fundSeries, benchSeries, labels, fund) {
       const canvas = document.getElementById('dashboardChart');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -500,7 +424,7 @@
           datasets: [
             {
               label: `${fund.code} (Weighted)`,
-              data: fundPrices,
+              data: fundSeries,
               borderColor: fund.color,
               backgroundColor: fund.color + '20',
               borderWidth: 2.5,
@@ -511,7 +435,7 @@
             },
             {
               label: fund.bench,
-              data: benchPrices,
+              data: benchSeries,
               borderColor: 'rgba(11,18,32,0.45)',
               borderDash: [5, 5],
               borderWidth: 2,
@@ -566,80 +490,39 @@
       `;
     }
 
-    // Load performance chart and metrics from the backend for the selected timeframe
+    // ── Load dashboard metrics from snapshot endpoint ──────────────────────────
+
     async function loadMetrics(fund) {
+      const loadingEl = document.getElementById('dashLoading');
+      const contentEl = document.getElementById('dashContent');
+
+      loadingEl.innerHTML = 'Loading performance data…';
+      loadingEl.style.display = 'block';
+      contentEl.style.display = 'none';
+
       try {
-        const today = new Date();
-        const toDate = today.toISOString().split('T')[0];
-        let fromDate;
-        if (currentTimeframe === 'ytd') {
-          fromDate = `${today.getFullYear()}-01-01`;
-        } else {
-          const oneYearAgo = new Date(today);
-          oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-          fromDate = oneYearAgo.toISOString().split('T')[0];
+        const data = await fetchFundTimeframe(fund.id, currentTimeframe);
+
+        if (!data.chart || !data.kpi) {
+          throw new Error('Snapshot data incomplete for this fund/timeframe. Try again after the next daily refresh.');
         }
 
-        document.getElementById('dashLoading').style.display = 'block';
-        document.getElementById('dashContent').style.display = 'none';
+        const { labels, fund: fundSeries, benchmark: benchSeries } = data.chart;
 
-        // Fetch all fund symbols + benchmark in a single backend call
-        const allSymbols = [...fund.allocation.map(a => a.symbol), fund.bench];
-        const batchData = await fetchBatchStockData(allSymbols, fromDate, toDate);
+        updateChart(fundSeries, benchSeries, labels, fund);
+        document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(data.kpi, fund.bench);
 
-        const priceData = {};
-        const dateData = {};
-        for (const symbol of allSymbols) {
-          const entry = batchData[symbol.toUpperCase()];
-          if (entry && entry.data && entry.data.length > 0) {
-            priceData[symbol] = entry.data.map(d => d.close);
-            dateData[symbol]  = entry.data.map(d => d.date);
-          }
-        }
-
-        const firstSymbol = fund.allocation[0].symbol;
-        if (!priceData[firstSymbol] || !priceData[fund.bench]) {
-          throw new Error('Insufficient price data returned. The market may be closed or data is unavailable for this date range.');
-        }
-
-        // Align all series to the minimum available length
-        const minLength = Math.min(
-          ...fund.allocation.filter(a => priceData[a.symbol]).map(a => priceData[a.symbol].length),
-          priceData[fund.bench].length
-        );
-
-        // Build weighted composite fund price series (base = 100)
-        let fundPrices = Array(minLength).fill(0);
-        fund.allocation.forEach(asset => {
-          if (priceData[asset.symbol]) {
-            const start = priceData[asset.symbol][0];
-            for (let i = 0; i < minLength; i++) {
-              const pct = (priceData[asset.symbol][i] - start) / start;
-              fundPrices[i] += pct * asset.weight * 100;
-            }
-          }
-        });
-        fundPrices = fundPrices.map(p => 100 + p);
-
-        // Normalise benchmark to base 100 so metrics are comparable
-        const rawBench = priceData[fund.bench].slice(0, minLength);
-        const benchPrices = rawBench.map(p => (p / rawBench[0]) * 100);
-
-        // Date labels from benchmark series
-        const labels = (dateData[fund.bench] || []).slice(0, minLength);
-
-        // Render Chart.js chart
-        updateChart(fundPrices, benchPrices, labels, fund);
-
-        const metrics = await calculateMetrics(fundPrices, benchPrices);
-        document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(metrics);
-
-        document.getElementById('dashLoading').style.display = 'none';
-        document.getElementById('dashContent').style.display = 'block';
+        loadingEl.style.display = 'none';
+        contentEl.style.display = 'block';
       } catch (e) {
         console.error('Error loading metrics:', e);
-        document.getElementById('dashLoading').innerHTML =
-          `<div class="loading-text">⚠️ ${e.message}</div>`;
+        loadingEl.innerHTML = `
+          <div style="text-align:center;padding:40px 20px">
+            <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
+            <div style="font-weight:700;margin-bottom:8px;color:var(--ink)">Data temporarily unavailable</div>
+            <div style="color:var(--muted);font-size:14px;max-width:400px;margin:0 auto">${e.message}</div>
+            <div style="margin-top:16px;font-size:12px;color:var(--muted2)">Data is refreshed daily after US market close.</div>
+          </div>`;
       }
     }
 
@@ -648,7 +531,6 @@
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
       document.getElementById('dashboardModal').classList.add('active');
       document.body.style.overflow = 'hidden';
-      // Load chart + analytics from backend
       loadMetrics(currentDashboardFund);
     }
 
@@ -684,11 +566,11 @@
               <div class="fund-stats">
                 <div class="stat">
                   <div class="stat-label">YTD Return</div>
-                  <div class="stat-value">Loading...</div>
+                  <div class="stat-value" data-stat-ytd="${f.id}">—</div>
                 </div>
                 <div class="stat">
                   <div class="stat-label">vs ${f.bench}</div>
-                  <div class="stat-value">Loading...</div>
+                  <div class="stat-value" data-stat-outperf="${f.id}">—</div>
                 </div>
               </div>
               <div class="fund-alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join('')}</div>
@@ -709,61 +591,31 @@
       `).join('');
     }
 
-    // Populate fund card stats with live YTD weighted return data from the backend
+    // Populate fund card stats from the snapshot endpoint (best-effort)
     async function loadAllFundCardStats() {
-      const today   = new Date();
-      const toDate  = today.toISOString().split('T')[0];
-      const fromDate = `${today.getFullYear()}-01-01`;
-
-      // Unique symbols across all funds (all holdings + benchmarks)
-      const symbolsToFetch = [...new Set([
-        ...funds.flatMap(f => f.allocation.map(a => a.symbol)),
-        ...funds.map(f => f.bench)
-      ])];
-
-      let batchData;
       try {
-        batchData = await fetchBatchStockData(symbolsToFetch, fromDate, toDate);
-      } catch (e) {
-        console.warn('Card stats unavailable:', e.message);
-        return;
-      }
+        const snapshot = await fetchSnapshot();
+        if (!snapshot || !snapshot.funds) return;
 
-      const cards = document.querySelectorAll('.fund-card');
-      funds.forEach((fund, i) => {
-        if (!cards[i]) return;
-        const benchKey = fund.bench.toUpperCase();
-        const benchEntry = batchData[benchKey];
-        if (!benchEntry?.data?.length) return;
+        for (const fund of funds) {
+          const fd = snapshot.funds[fund.id];
+          if (!fd) continue;
 
-        // Calculate weighted YTD return across all fund holdings
-        let weightedReturn = 0;
-        let totalWeight = 0;
-        fund.allocation.forEach(asset => {
-          const entry = batchData[asset.symbol.toUpperCase()];
-          if (entry?.data?.length) {
-            const prices = entry.data;
-            const ret = (prices[prices.length - 1].close - prices[0].close) / prices[0].close * 100;
-            weightedReturn += ret * asset.weight;
-            totalWeight += asset.weight;
+          const ytdEl    = document.querySelector(`[data-stat-ytd="${fund.id}"]`);
+          const outpEl   = document.querySelector(`[data-stat-outperf="${fund.id}"]`);
+
+          if (fd.ytdReturn != null && ytdEl) {
+            ytdEl.textContent  = fmtPct(fd.ytdReturn);
+            ytdEl.className    = `stat-value ${fd.ytdReturn >= 0 ? 'pos' : 'neg'}`;
           }
-        });
-        if (totalWeight > 0) weightedReturn = weightedReturn / totalWeight;
-
-        const bench = benchEntry.data;
-        const benchRet = (bench[bench.length - 1].close - bench[0].close) / bench[0].close * 100;
-        const outperf  = weightedReturn - benchRet;
-
-        const stats = cards[i].querySelectorAll('.stat-value');
-        if (stats[0]) {
-          stats[0].textContent = fmtPct(weightedReturn);
-          stats[0].className   = `stat-value ${weightedReturn >= 0 ? 'pos' : 'neg'}`;
+          if (fd.outperformance != null && outpEl) {
+            outpEl.textContent = fmtPct(fd.outperformance);
+            outpEl.className   = `stat-value ${fd.outperformance >= 0 ? 'pos' : 'neg'}`;
+          }
         }
-        if (stats[1]) {
-          stats[1].textContent = fmtPct(outperf);
-          stats[1].className   = `stat-value ${outperf >= 0 ? 'pos' : 'neg'}`;
-        }
-      });
+      } catch (e) {
+        console.warn('Fund card stats unavailable:', e.message);
+      }
     }
 
     document.addEventListener('click', (e) => {
@@ -778,8 +630,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderFunds();
       renderThesis();
-      // Load live YTD stats on the fund cards (best-effort – won't break page if API is slow)
-      loadAllFundCardStats().catch(e => console.warn('Card stats skipped:', e.message));
+      loadAllFundCardStats();
     });
 
     window.addEventListener('resize', () => {
