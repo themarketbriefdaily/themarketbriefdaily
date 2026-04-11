@@ -163,10 +163,13 @@
       </div>
 
       <div class="dashboard-body">
-        <!-- Live TradingView chart – auto-updates with real market data -->
+        <!-- Custom Chart.js weighted fund vs benchmark performance chart -->
         <div class="chart-section" style="margin-bottom:32px">
-          <div class="chart-title">Live Performance Chart <span style="font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0">(Powered by TradingView · use chart controls to change range)</span></div>
-          <div id="tvChartContainer" style="height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line)"></div>
+          <div class="chart-title">Performance Chart <span style="font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0">(Weighted composite vs benchmark · base 100)</span></div>
+          <div class="chart-wrapper">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+          <div class="legend-section" id="legendSection"></div>
         </div>
 
         <!-- Computed metrics from Polygon.io -->
@@ -238,6 +241,8 @@
     const BACKEND_URL = window.location.hostname === 'localhost'
       ? 'http://localhost:3001'
       : 'https://market-brief-backend.vercel.app';
+    const IS_DEV = window.location.hostname === 'localhost';
+    if (IS_DEV) console.log('[investments] BACKEND_URL:', BACKEND_URL);
 
     const funds = [
       {
@@ -333,17 +338,29 @@
 
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
+    let dashboardChart = null;
 
     const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
     // Fetch multiple symbols at once from the backend batch endpoint
     async function fetchBatchStockData(symbols, from, to) {
-      const res = await fetch(`${BACKEND_URL}/api/batch-stock-data`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbols, from, to })
-      });
-      if (!res.ok) throw new Error(`Backend batch fetch failed (${res.status})`);
+      if (IS_DEV) console.log(`[fetchBatchStockData] Backend: ${BACKEND_URL}, symbols: ${symbols.join(',')}, from: ${from}, to: ${to}`);
+      let res;
+      try {
+        res = await fetch(`${BACKEND_URL}/api/batch-stock-data`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbols, from, to })
+        });
+      } catch (networkErr) {
+        console.error(`[fetchBatchStockData] Network error reaching ${BACKEND_URL}:`, networkErr);
+        throw new Error(`Cannot reach backend at ${BACKEND_URL}. Is the server running? (${networkErr.message})`);
+      }
+      if (!res.ok) {
+        const body = await res.text().catch(() => '');
+        console.error(`[fetchBatchStockData] HTTP ${res.status} from ${BACKEND_URL}/api/batch-stock-data:`, body);
+        throw new Error(`Backend returned ${res.status}: ${body || res.statusText}`);
+      }
       return res.json();
     }
 
@@ -466,64 +483,90 @@
       `;
     }
 
-    // Load a TradingView live chart for the fund's primary holding vs its benchmark
-    function loadTradingViewChart(fund) {
-      const container = document.getElementById('tvChartContainer');
-      container.innerHTML = '';
+    // Render Chart.js weighted fund vs benchmark performance chart (both base 100)
+    function updateChart(fundPrices, benchPrices, labels, fund) {
+      const canvas = document.getElementById('dashboardChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (dashboardChart) {
+        dashboardChart.destroy();
+        dashboardChart = null;
+      }
 
-      const primarySymbol = fund.allocation[0].symbol;
-      const benchSymbol   = fund.bench;
-
-      const widgetContainer = document.createElement('div');
-      widgetContainer.className = 'tradingview-widget-container';
-      widgetContainer.style.cssText = 'height:420px;width:100%';
-
-      const widgetInner = document.createElement('div');
-      widgetInner.className = 'tradingview-widget-container__widget';
-      widgetInner.style.cssText = 'height:calc(100% - 32px);width:100%';
-      widgetContainer.appendChild(widgetInner);
-
-      const copyright = document.createElement('div');
-      copyright.className = 'tradingview-widget-copyright';
-      copyright.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-size:11px;color:var(--muted)">Charts by TradingView</a>';
-      widgetContainer.appendChild(copyright);
-
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
-      script.async = true;
-      script.textContent = JSON.stringify({
-        symbols: [
-          [primarySymbol, primarySymbol + '|1D'],
-          [benchSymbol,   benchSymbol   + '|1D']
-        ],
-        chartOnly: false,
-        width: '100%',
-        height: '420',
-        locale: 'en',
-        colorTheme: 'light',
-        autosize: true,
-        showVolume: false,
-        hideDateRanges: false,
-        hideMarketStatus: false,
-        hideSymbolLogo: true,
-        scalePosition: 'right',
-        scaleMode: 'Normal',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif',
-        fontSize: '10',
-        noTimeScale: false,
-        valuesTracking: '1',
-        changeMode: 'price-and-percent',
-        chartType: 'area',
-        lineWidth: 2,
-        lineType: 0,
-        dateRanges: ['ytd|YTD', '1y|1Y', 'all|All']
+      dashboardChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: `${fund.code} (Weighted)`,
+              data: fundPrices,
+              borderColor: fund.color,
+              backgroundColor: fund.color + '20',
+              borderWidth: 2.5,
+              pointRadius: 0,
+              pointHoverRadius: 5,
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: fund.bench,
+              data: benchPrices,
+              borderColor: 'rgba(11,18,32,0.45)',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 5,
+              tension: 0.3,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 600, easing: 'easeInOutQuart' },
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              enabled: true,
+              backgroundColor: 'rgba(0,0,0,0.9)',
+              titleColor: '#fff',
+              bodyColor: '#eef2ff',
+              borderColor: fund.color,
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 6,
+              titleFont: { weight: 'bold', size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                label: item => `${item.dataset.label}: ${item.parsed.y.toFixed(2)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              ticks: { maxTicksLimit: 8, font: { size: 10 }, color: 'rgba(11,18,32,0.5)', maxRotation: 0 },
+              grid: { display: false }
+            },
+            y: {
+              display: true,
+              grid: { color: 'rgba(11,18,32,0.05)' },
+              ticks: { font: { size: 10, weight: '700' }, color: 'rgba(11,18,32,0.5)' }
+            }
+          }
+        }
       });
-      widgetContainer.appendChild(script);
-      container.appendChild(widgetContainer);
+
+      document.getElementById('legendSection').innerHTML = `
+        <div class="legend-item"><i style="background:${fund.color}"></i><span>${fund.code} (Weighted)</span></div>
+        <div class="legend-item"><i style="background:rgba(11,18,32,.45);border:1px dashed rgba(11,18,32,.45)"></i><span>${fund.bench}</span></div>
+      `;
     }
 
-    // Load computed performance metrics from the backend for the selected timeframe
+    // Load performance chart and metrics from the backend for the selected timeframe
     async function loadMetrics(fund) {
       try {
         const today = new Date();
@@ -545,10 +588,12 @@
         const batchData = await fetchBatchStockData(allSymbols, fromDate, toDate);
 
         const priceData = {};
+        const dateData = {};
         for (const symbol of allSymbols) {
           const entry = batchData[symbol.toUpperCase()];
           if (entry && entry.data && entry.data.length > 0) {
             priceData[symbol] = entry.data.map(d => d.close);
+            dateData[symbol]  = entry.data.map(d => d.date);
           }
         }
 
@@ -580,6 +625,12 @@
         const rawBench = priceData[fund.bench].slice(0, minLength);
         const benchPrices = rawBench.map(p => (p / rawBench[0]) * 100);
 
+        // Date labels from benchmark series
+        const labels = (dateData[fund.bench] || []).slice(0, minLength);
+
+        // Render Chart.js chart
+        updateChart(fundPrices, benchPrices, labels, fund);
+
         const metrics = await calculateMetrics(fundPrices, benchPrices);
         document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(metrics);
 
@@ -597,9 +648,7 @@
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
       document.getElementById('dashboardModal').classList.add('active');
       document.body.style.overflow = 'hidden';
-      // Show live TradingView chart immediately
-      loadTradingViewChart(currentDashboardFund);
-      // Then compute analytics from Polygon
+      // Load chart + analytics from backend
       loadMetrics(currentDashboardFund);
     }
 
@@ -613,7 +662,6 @@
       document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
       button.classList.add('active');
       if (currentDashboardFund) {
-        // Only reload metrics for the new timeframe; the TradingView chart has its own controls
         loadMetrics(currentDashboardFund);
       }
     }
@@ -661,15 +709,15 @@
       `).join('');
     }
 
-    // Populate fund card stats with live YTD data from the backend
+    // Populate fund card stats with live YTD weighted return data from the backend
     async function loadAllFundCardStats() {
       const today   = new Date();
       const toDate  = today.toISOString().split('T')[0];
       const fromDate = `${today.getFullYear()}-01-01`;
 
-      // Unique symbols across all funds (primary holding per fund + benchmarks only)
+      // Unique symbols across all funds (all holdings + benchmarks)
       const symbolsToFetch = [...new Set([
-        ...funds.map(f => f.allocation[0].symbol),
+        ...funds.flatMap(f => f.allocation.map(a => a.symbol)),
         ...funds.map(f => f.bench)
       ])];
 
@@ -684,22 +732,32 @@
       const cards = document.querySelectorAll('.fund-card');
       funds.forEach((fund, i) => {
         if (!cards[i]) return;
-        const primaryKey = fund.allocation[0].symbol.toUpperCase();
-        const benchKey   = fund.bench.toUpperCase();
-        const primaryEntry = batchData[primaryKey];
-        const benchEntry   = batchData[benchKey];
-        if (!primaryEntry?.data?.length || !benchEntry?.data?.length) return;
+        const benchKey = fund.bench.toUpperCase();
+        const benchEntry = batchData[benchKey];
+        if (!benchEntry?.data?.length) return;
 
-        const primary = primaryEntry.data;
-        const bench   = benchEntry.data;
-        const primaryRet = ((primary[primary.length - 1].close - primary[0].close) / primary[0].close) * 100;
-        const benchRet   = ((bench[bench.length - 1].close   - bench[0].close)   / bench[0].close)   * 100;
-        const outperf    = primaryRet - benchRet;
+        // Calculate weighted YTD return across all fund holdings
+        let weightedReturn = 0;
+        let totalWeight = 0;
+        fund.allocation.forEach(asset => {
+          const entry = batchData[asset.symbol.toUpperCase()];
+          if (entry?.data?.length) {
+            const prices = entry.data;
+            const ret = (prices[prices.length - 1].close - prices[0].close) / prices[0].close * 100;
+            weightedReturn += ret * asset.weight;
+            totalWeight += asset.weight;
+          }
+        });
+        if (totalWeight > 0) weightedReturn = weightedReturn / totalWeight;
+
+        const bench = benchEntry.data;
+        const benchRet = (bench[bench.length - 1].close - bench[0].close) / bench[0].close * 100;
+        const outperf  = weightedReturn - benchRet;
 
         const stats = cards[i].querySelectorAll('.stat-value');
         if (stats[0]) {
-          stats[0].textContent = fmtPct(primaryRet);
-          stats[0].className   = `stat-value ${primaryRet >= 0 ? 'pos' : 'neg'}`;
+          stats[0].textContent = fmtPct(weightedReturn);
+          stats[0].className   = `stat-value ${weightedReturn >= 0 ? 'pos' : 'neg'}`;
         }
         if (stats[1]) {
           stats[1].textContent = fmtPct(outperf);
@@ -722,6 +780,10 @@
       renderThesis();
       // Load live YTD stats on the fund cards (best-effort – won't break page if API is slow)
       loadAllFundCardStats().catch(e => console.warn('Card stats skipped:', e.message));
+    });
+
+    window.addEventListener('resize', () => {
+      if (dashboardChart) dashboardChart.resize();
     });
   </script>
 </body>
