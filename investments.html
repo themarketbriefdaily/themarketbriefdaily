@@ -343,21 +343,33 @@
 
     const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
-    // ── Snapshot API helpers ──────────────────────────────────────────────────
+    // ── Snapshot helpers (reads static JSON file served by GitHub Pages) ────────
 
     async function fetchSnapshot() {
       if (cachedSnapshot) return cachedSnapshot;
-      const res = await fetch(`${BACKEND_URL}/api/funds/snapshot`);
+      const res = await fetch(`${BACKEND_URL}/data/funds-snapshot.json`);
       if (!res.ok) throw new Error(`Snapshot unavailable (HTTP ${res.status})`);
       cachedSnapshot = await res.json();
       return cachedSnapshot;
     }
 
     async function fetchFundTimeframe(fundId, timeframe) {
-      const url = `${BACKEND_URL}/api/funds/${fundId}?timeframe=${timeframe}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Fund data unavailable (HTTP ${res.status})`);
-      return res.json();
+      const snapshot = await fetchSnapshot();
+      const fund = snapshot && snapshot.funds && snapshot.funds[fundId];
+      if (!fund) throw new Error(`Fund '${fundId}' not found in snapshot`);
+      const tfData = fund[timeframe];
+      if (!tfData) throw new Error(`No data for timeframe '${timeframe}' in snapshot`);
+      return {
+        id:             fund.id,
+        code:           fund.code,
+        name:           fund.name,
+        timeframe,
+        generated_at:   snapshot.generated_at,
+        chart:          tfData.chart,
+        kpi:            tfData.kpi,
+        ytdReturn:      fund.ytdReturn,
+        outperformance: fund.outperformance
+      };
     }
 
     // ── Metrics rendering ─────────────────────────────────────────────────────
