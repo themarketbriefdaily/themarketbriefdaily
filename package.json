@@ -5,7 +5,8 @@
   "main": "api/market-data.js",
   "scripts": {
     "dev": "node api/market-data.js",
-    "vercel-dev": "vercel dev"
+    "vercel-dev": "vercel dev",
+    "update-market-data": "node scripts/update-market-data.js"
   },
   "dependencies": {
     "axios": "^1.6.0",
