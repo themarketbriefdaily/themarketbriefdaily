@@ -3,12 +3,13 @@
  * scripts/update-market-data.js
  *
  * Daily snapshot generator for fund performance data.
- * Fetches historical daily OHLC from Polygon.io for all fund holdings and
- * benchmarks, computes weighted fund series + KPIs for YTD and 1Y timeframes,
- * then writes the result to data/funds-snapshot.json.
+ * Fetches historical daily adjusted-close prices from Yahoo Finance (free,
+ * no API key required) for all fund holdings and benchmarks, computes
+ * weighted fund series + KPIs for YTD and 1Y timeframes, then writes the
+ * result to data/funds-snapshot.json.
  *
  * Usage:
- *   POLYGON_API_KEY=<key> node scripts/update-market-data.js
+ *   node scripts/update-market-data.js
  *
  * Requires Node 18+ (uses global fetch).
  */
@@ -88,19 +89,28 @@ function getDateRanges() {
   return { toDate, ytdFrom, oneYearFrom };
 }
 
-// ── Polygon fetch ─────────────────────────────────────────────────────────────
-const POLYGON_BASE = 'https://api.polygon.io/v2';
+// ── Yahoo Finance fetch ────────────────────────────────────────────────────────
+// Free, no API key required. Uses the unofficial v8 chart endpoint.
 
-async function fetchPolygon(url) {
+function httpsGet(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, (res) => {
+    const req = https.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; mbd-bot/1.0)',
+        'Accept': 'application/json'
+      }
+    }, (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return httpsGet(res.headers.location).then(resolve).catch(reject);
+      }
       let data = '';
       res.on('data', chunk => { data += chunk; });
       res.on('end', () => {
         try {
           resolve(JSON.parse(data));
         } catch (e) {
-          reject(new Error(`JSON parse error: ${e.message}`));
+          reject(new Error(`JSON parse error for ${url}: ${e.message}`));
         }
       });
     });
@@ -112,27 +122,50 @@ async function fetchPolygon(url) {
   });
 }
 
-async function fetchSymbolHistory(symbol, from, to, apiKey) {
-  const url = `${POLYGON_BASE}/aggs/ticker/${symbol}/range/1/day/${from}/${to}?adjusted=true&sort=asc&limit=500&apiKey=${apiKey}`;
-  const data = await fetchPolygon(url);
-  if (data.results && Array.isArray(data.results)) {
-    return data.results.map(d => ({
-      date:  new Date(d.t).toISOString().split('T')[0],
-      close: d.c
-    }));
+/**
+ * Fetch adjusted daily closes from Yahoo Finance for a given symbol and date range.
+ * Returns [{date: 'YYYY-MM-DD', close: number}, ...] sorted ascending.
+ */
+async function fetchSymbolHistory(symbol, from, to) {
+  const period1 = Math.floor(new Date(from).getTime() / 1000);
+  const period2 = Math.floor(new Date(to + 'T23:59:59Z').getTime() / 1000);
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${period1}&period2=${period2}&interval=1d&includeAdjustedClose=true`;
+
+  const data = await httpsGet(url);
+
+  const result = data && data.chart && data.chart.result && data.chart.result[0];
+  if (!result) return [];
+
+  const timestamps = result.timestamp || [];
+  // Prefer adjclose for total-return accuracy; fall back to close
+  const adjClose = result.indicators && result.indicators.adjclose &&
+                   result.indicators.adjclose[0] && result.indicators.adjclose[0].adjclose;
+  const regularClose = result.indicators && result.indicators.quote &&
+                       result.indicators.quote[0] && result.indicators.quote[0].close;
+  const prices = adjClose || regularClose || [];
+
+  const out = [];
+  for (let i = 0; i < timestamps.length; i++) {
+    const price = prices[i];
+    if (typeof price !== 'number' || !isFinite(price) || price <= 0) continue;
+    const date = new Date(timestamps[i] * 1000).toISOString().split('T')[0];
+    out.push({ date, close: price });
   }
-  return [];
+  return out.sort((a, b) => a.date.localeCompare(b.date));
 }
 
-// Rate-limited batch fetch (Polygon free tier: 5 req/min, paid: higher)
-async function fetchAllSymbols(symbols, from, to, apiKey) {
+// Small delay between requests to be polite to Yahoo Finance
+async function fetchAllSymbols(symbols, from, to) {
   const results = {};
-  const DELAY_MS = 250; // ~4 req/s to stay within rate limits
+  const DELAY_MS = 300;
 
   for (const symbol of symbols) {
     try {
       console.log(`  Fetching ${symbol} (${from} → ${to})…`);
-      results[symbol] = await fetchSymbolHistory(symbol, from, to, apiKey);
+      results[symbol] = await fetchSymbolHistory(symbol, from, to);
+      if (results[symbol].length === 0) {
+        console.warn(`  ⚠ No data returned for ${symbol}`);
+      }
     } catch (err) {
       console.warn(`  ⚠ Failed to fetch ${symbol}: ${err.message}`);
       results[symbol] = [];
@@ -278,14 +311,8 @@ function getSharedDates(fund, priceMap) {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  const apiKey = process.env.POLYGON_API_KEY;
-  if (!apiKey) {
-    console.error('POLYGON_API_KEY environment variable is not set');
-    process.exit(1);
-  }
-
   const { toDate, ytdFrom, oneYearFrom } = getDateRanges();
-  console.log(`\n📊 Market data snapshot generator`);
+  console.log(`\n📊 Market data snapshot generator (Yahoo Finance)`);
   console.log(`   YTD range  : ${ytdFrom} → ${toDate}`);
   console.log(`   1Y range   : ${oneYearFrom} → ${toDate}\n`);
 
@@ -299,7 +326,7 @@ async function main() {
 
   // Fetch data for the wider 1Y window (YTD is a subset)
   console.log('— Fetching 1Y data —');
-  const priceMap1Y = await fetchAllSymbols(allSymbols, oneYearFrom, toDate, apiKey);
+  const priceMap1Y = await fetchAllSymbols(allSymbols, oneYearFrom, toDate);
 
   // Derive YTD subset from the 1Y data (avoids duplicate API calls)
   const priceMapYTD = {};
