@@ -241,7 +241,8 @@
     const BACKEND_URL = window.location.hostname === 'localhost'
       ? 'http://localhost:3001'
       : 'https://market-brief-backend.vercel.app';
-    console.log('[investments] BACKEND_URL:', BACKEND_URL);
+    const IS_DEV = window.location.hostname === 'localhost';
+    if (IS_DEV) console.log('[investments] BACKEND_URL:', BACKEND_URL);
 
     const funds = [
       {
@@ -343,7 +344,7 @@
 
     // Fetch multiple symbols at once from the backend batch endpoint
     async function fetchBatchStockData(symbols, from, to) {
-      console.log(`[fetchBatchStockData] Backend: ${BACKEND_URL}, symbols: ${symbols.join(',')}, from: ${from}, to: ${to}`);
+      if (IS_DEV) console.log(`[fetchBatchStockData] Backend: ${BACKEND_URL}, symbols: ${symbols.join(',')}, from: ${from}, to: ${to}`);
       let res;
       try {
         res = await fetch(`${BACKEND_URL}/api/batch-stock-data`, {
