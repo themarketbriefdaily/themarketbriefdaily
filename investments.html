@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Fund | The Market Brief Daily</title>
+  <title>Investments | The Market Brief Daily</title>
   <meta name="description" content="Four model investment strategies with benchmark-relative performance." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,7 +47,7 @@
     .dashboard-close{font-size:32px;font-weight:300;color:var(--muted);cursor:pointer;transition:all .2s;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
     .dashboard-close:hover{color:var(--ink);background:rgba(0,102,255,.05);border-radius:8px}
 
-    .timeframe-buttons{display:flex;gap:8px;flex-wrap:wrap}
+    .timeframe-buttons{display:flex;gap:8px;flex-wrap:wrap;padding:0 32px}
     .timeframe-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12px;font-weight:850;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.06em}
     .timeframe-btn:hover{border-color:var(--accent);color:var(--accent)}
     .timeframe-btn.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:var(--accent)}
@@ -80,7 +80,7 @@
     .funds-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:60px}
 
     .fund-card{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.95);box-shadow:var(--shadow-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;transition:all .4s var(--ease);cursor:pointer}
-    .fund-card:hover{transform:translateY(-8px);border-color:rgba(0,102,255,.2);box-shadow:var(--shadow-xl)}
+    .fund-card:hover{transform:translateY(-8px);border-color:rgba(0,102,255,.2);box-shadow:var(--shadow-xl);box-shadow:0 20px 60px rgba(0,102,255,.15)}
 
     .fund-img{height:100%;min-height:360px;background:linear-gradient(135deg,rgba(0,102,255,.2),rgba(14,165,233,.12));background-size:cover;background-position:center;position:relative;overflow:hidden;border-right:1px solid var(--line)}
     .fund-img img{width:100%;height:100%;object-fit:cover;transition:all .6s var(--ease)}
@@ -129,7 +129,7 @@
     .footer-col a:hover{color:var(--ink)}
     .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
     @media (max-width:1200px){.fund-card{grid-template-columns:1fr}.fund-img{border-right:none;border-bottom:1px solid var(--line)}.thesis-grid{grid-template-columns:1fr}}
-    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.timeframe-buttons{width:100%}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
+    @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.timeframe-buttons{width:100%;margin:24px 0}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
   </style>
 </head>
 
@@ -140,7 +140,7 @@
       <nav>
         <a href="/">Home</a>
         <a href="/posts.html">Posts</a>
-        <a class="active" href="/investments.html">Funds</a>
+        <a class="active" href="/investments.html">Investments</a>
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
       </nav>
@@ -157,16 +157,14 @@
         <span class="dashboard-close" onclick="closeDashboard()">×</span>
       </div>
 
-      <div style="padding:0 32px">
-        <div style="display:flex;gap:8px;margin:24px 0;flex-wrap:wrap">
-          <button class="timeframe-btn active" onclick="changeDashboardTimeframe('ytd', this)">YTD</button>
-          <button class="timeframe-btn" onclick="changeDashboardTimeframe('1y', this)">1 Year</button>
-        </div>
+      <div class="timeframe-buttons">
+        <button class="timeframe-btn active" onclick="switchTimeframe('ytd', this)">YTD</button>
+        <button class="timeframe-btn" onclick="switchTimeframe('1y', this)">Previous Year</button>
       </div>
 
       <div class="dashboard-body">
-        <div class="loading-text" id="dashboardLoading">Loading data...</div>
-        <div id="dashboardContent" style="display:none">
+        <div class="loading-text" id="dashLoading">Loading real market data from Polygon.io...</div>
+        <div id="dashContent" style="display:none">
           <div class="metrics-grid" id="metricsGrid"></div>
           
           <div class="chart-section">
@@ -185,7 +183,7 @@
     <div class="container hero-inner">
       <div class="kicker">Portfolio</div>
       <h1>Investment Strategies</h1>
-      <p class="lead">Click on any fund to view performance analytics with real-time data.</p>
+      <p class="lead">Real-time fund analytics with actual historical market data from Polygon.io</p>
     </div>
   </section>
 
@@ -230,261 +228,350 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved.</p>
+      <p>© 2025 The Market Brief Daily. All rights reserved. Data powered by Polygon.io. Updated daily.</p>
     </div>
   </footer>
 
   <script>
-    // Real hardcoded data based on actual market returns as of April 2026
-    const MARKET_DATA = {
-      'ICLN': { ytd: 21.45, oneYear: 34.56, vol: 24 },
-      'IXY': { ytd: 5.34, oneYear: 11.23, vol: 10 },
-      'SLV': { ytd: 15.67, oneYear: 220.34, vol: 18 }, // Silver massive gain
-      'AG': { ytd: 28.76, oneYear: 245.67, vol: 32 }, // First Majestic explosive growth
-      'HL': { ytd: 32.45, oneYear: 312.23, vol: 35 }, // Hecla strong performer
-      'QQQM': { ytd: 8.45, oneYear: 21.56, vol: 18 },
-      'VTI': { ytd: 10.32, oneYear: 19.67, vol: 14 },
-      'VXUS': { ytd: 6.78, oneYear: 8.34, vol: 16 },
-      'VBR': { ytd: 18.92, oneYear: 34.56, vol: 20 },
-      'IJS': { ytd: 21.45, oneYear: 37.89, vol: 19 },
-      'ESGU': { ytd: 7.89, oneYear: 15.67, vol: 15 },
-      'ESGV': { ytd: 9.12, oneYear: 17.34, vol: 13 },
-      'ESGE': { ytd: 8.34, oneYear: 12.89, vol: 17 },
-      'SPY': { ytd: 9.23, oneYear: 18.56, vol: 14 },
-      'ACWX': { ytd: 8.12, oneYear: 10.34, vol: 15 }
-    };
+    gsap.registerPlugin(ScrollTrigger);
+
+    const API_KEY = 'KJNMSAGf82MDB5JhpZ1aEK0LMdAgAqTX';
+    const POLYGON_API = 'https://api.polygon.io/v1';
 
     const funds = [
       {
-        id:"f1",
-        code:"F1",
-        name:"Active Rotation",
-        stage:"Clean energy & commodities rotation",
-        desc:"Strategic allocation across clean energy transition, consumer staples, and precious metals (AG, HL) for macro regime flexibility and inflation protection.",
-        allocation:[
+        id: 'f1',
+        code: 'F1',
+        name: 'Active Rotation',
+        stage: 'Clean energy & commodities rotation',
+        desc: 'Strategic allocation across clean energy transition, consumer staples, and precious metals (AG, HL) for macro regime flexibility and inflation protection.',
+        allocation: [
           { symbol: 'ICLN', weight: 0.40 },
           { symbol: 'IXY', weight: 0.30 },
           { symbol: 'SLV', weight: 0.20 },
           { symbol: 'AG', weight: 0.05 },
           { symbol: 'HL', weight: 0.05 }
         ],
-        allocationDisplay:["ICLN (40%)", "IXY (30%)", "SLV (20%)", "AG (5%)", "HL (5%)"],
-        bench:"SPY",
-        color:"#60a5fa",
-        img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund1-bg.webp",
-        thesis:[
-          "Clean energy ETF captures ESG and inflation-responsive sectors.",
-          "Consumer staples provide defensive positioning during volatility.",
-          "Precious metals (SLV, AG, HL) hedge inflation and geopolitical risk.",
-          "Mining stocks (AG, HL) offer high leverage to commodity cycles."
+        allocationDisplay: ['ICLN (40%)', 'IXY (30%)', 'SLV (20%)', 'AG (5%)', 'HL (5%)'],
+        bench: 'SPY',
+        color: '#60a5fa',
+        img: 'https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund1-bg.webp',
+        thesis: [
+          'Clean energy ETF captures ESG and inflation-responsive sectors.',
+          'Consumer staples provide defensive positioning during volatility.',
+          'Precious metals (SLV, AG, HL) hedge inflation and geopolitical risk.',
+          'Mining stocks (AG, HL) offer high leverage to commodity cycles.'
         ]
       },
       {
-        id:"f2",
-        code:"F2",
-        name:"Market Tracker",
-        stage:"Diversified core allocation",
-        desc:"40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.",
-        allocation:[
+        id: 'f2',
+        code: 'F2',
+        name: 'Market Tracker',
+        stage: 'Diversified core allocation',
+        desc: '40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.',
+        allocation: [
           { symbol: 'QQQM', weight: 0.40 },
           { symbol: 'VTI', weight: 0.40 },
           { symbol: 'VXUS', weight: 0.20 }
         ],
-        allocationDisplay:["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
-        bench:"SPY",
-        color:"#a78bfa",
-        img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp",
-        thesis:[
-          "Balanced exposure across growth, broad market, and international.",
-          "Nasdaq tilt captures mega-cap technology leadership.",
-          "International diversification reduces US concentration risk.",
-          "Systematic rebalancing captures momentum and mean reversion."
+        allocationDisplay: ['QQQM (40%)', 'VTI (40%)', 'VXUS (20%)'],
+        bench: 'SPY',
+        color: '#a78bfa',
+        img: 'https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund2-bg.webp',
+        thesis: [
+          'Balanced exposure across growth, broad market, and international.',
+          'Nasdaq tilt captures mega-cap technology leadership.',
+          'International diversification reduces US concentration risk.',
+          'Systematic rebalancing captures momentum and mean reversion.'
         ]
       },
       {
-        id:"f3",
-        code:"F3",
-        name:"Value Factor",
-        stage:"Small-cap value tilt",
-        desc:"Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.",
-        allocation:[
+        id: 'f3',
+        code: 'F3',
+        name: 'Value Factor',
+        stage: 'Small-cap value tilt',
+        desc: 'Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.',
+        allocation: [
           { symbol: 'VBR', weight: 0.55 },
           { symbol: 'IJS', weight: 0.45 }
         ],
-        allocationDisplay:["VBR (55%)", "IJS (45%)"],
-        bench:"SPY",
-        color:"#f472b6",
-        img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp",
-        thesis:[
-          "Small/value premium exhibits persistent return generation.",
-          "Cyclical rebounds create significant asymmetric upside opportunities.",
-          "Diversifies large-cap growth concentration risk.",
-          "Mean reversion triggers during market dislocations."
+        allocationDisplay: ['VBR (55%)', 'IJS (45%)'],
+        bench: 'SPY',
+        color: '#f472b6',
+        img: 'https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund3-bg.webp',
+        thesis: [
+          'Small/value premium exhibits persistent return generation.',
+          'Cyclical rebounds create significant asymmetric upside opportunities.',
+          'Diversifies large-cap growth concentration risk.',
+          'Mean reversion triggers during market dislocations.'
         ]
       },
       {
-        id:"f4",
-        code:"F4",
-        name:"ESG Global",
-        stage:"Sustainability-screened global",
-        desc:"Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.",
-        allocation:[
+        id: 'f4',
+        code: 'F4',
+        name: 'ESG Global',
+        stage: 'Sustainability-screened global',
+        desc: 'Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.',
+        allocation: [
           { symbol: 'ESGU', weight: 0.50 },
           { symbol: 'ESGV', weight: 0.30 },
           { symbol: 'ESGE', weight: 0.20 }
         ],
-        allocationDisplay:["ESGU (50%)", "ESGV (30%)", "ESGE (20%)"],
-        bench:"ACWX",
-        color:"#34d399",
-        img:"https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp",
-        thesis:[
-          "Quality and governance bias through ESG filters.",
-          "Secular transition themes with integrated risk discipline.",
-          "Balanced developed and emerging market opportunity sets.",
-          "Reduced tail risk from environmental and social factors."
+        allocationDisplay: ['ESGU (50%)', 'ESGV (30%)', 'ESGE (20%)'],
+        bench: 'ACWX',
+        color: '#34d399',
+        img: 'https://raw.githubusercontent.com/themarketbriefdaily/themarketbriefdaily/main/assets/images/investments/fund4-bg.webp',
+        thesis: [
+          'Quality and governance bias through ESG filters.',
+          'Secular transition themes with integrated risk discipline.',
+          'Balanced developed and emerging market opportunity sets.',
+          'Reduced tail risk from environmental and social factors.'
         ]
       }
     ];
 
-    const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+    let historicalData = {};
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
     let dashboardChart = null;
 
-    function calculateFundReturn(fund, period = 'ytd') {
-      let totalReturn = 0;
-      fund.allocation.forEach(asset => {
-        const assetReturn = period === 'ytd' ? MARKET_DATA[asset.symbol].ytd : MARKET_DATA[asset.symbol].oneYear;
-        totalReturn += assetReturn * asset.weight;
-      });
-      return totalReturn;
+    const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
+
+    // Fetch aggregated bar data from Polygon
+    async function fetchStockData(symbol, from, to) {
+      try {
+        const url = `${POLYGON_API}/open-close/${symbol}/${from}/${to}?adjusted=true&apiKey=${API_KEY}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          console.error(`API Error for ${symbol}:`, response.status);
+          return null;
+        }
+        
+        const data = await response.json();
+        
+        if (data.results && Array.isArray(data.results)) {
+          return data.results.map(d => ({
+            date: new Date(d.t),
+            close: d.c
+          }));
+        }
+        return null;
+      } catch (e) {
+        console.error(`Error fetching ${symbol}:`, e);
+        return null;
+      }
     }
 
-    function calculateFundVol(fund) {
-      let totalVol = 0;
-      fund.allocation.forEach(asset => {
-        totalVol += MARKET_DATA[asset.symbol].vol * asset.weight;
-      });
-      return totalVol;
+    // Calculate all required metrics
+    function calculateMetrics(fundPrices, benchPrices) {
+      if (!fundPrices || fundPrices.length < 2 || !benchPrices || benchPrices.length < 2) {
+        return null;
+      }
+
+      const fundReturn = ((fundPrices[fundPrices.length - 1] - fundPrices[0]) / fundPrices[0]) * 100;
+      const benchReturn = ((benchPrices[benchPrices.length - 1] - benchPrices[0]) / benchPrices[0]) * 100;
+
+      // Daily returns
+      const fundReturns = [];
+      for (let i = 1; i < fundPrices.length; i++) {
+        fundReturns.push((fundPrices[i] - fundPrices[i - 1]) / fundPrices[i - 1]);
+      }
+
+      const benchReturns = [];
+      for (let i = 1; i < benchPrices.length; i++) {
+        benchReturns.push((benchPrices[i] - benchPrices[i - 1]) / benchPrices[i - 1]);
+      }
+
+      // Volatility
+      const fundMean = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
+      const fundVariance = fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length;
+      const fundVol = Math.sqrt(fundVariance) * Math.sqrt(252) * 100;
+
+      const benchMean = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+      const benchVariance = benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length;
+      const benchVol = Math.sqrt(benchVariance) * Math.sqrt(252) * 100;
+
+      // Sharpe Ratio
+      const riskFreeRate = 0.04;
+      const annualizedRiskFree = riskFreeRate * (fundPrices.length / 252);
+      const sharpe = (fundReturn - annualizedRiskFree) / fundVol;
+
+      // Sortino Ratio (only downside deviation)
+      const downReturns = fundReturns.filter(r => r < 0);
+      const downVariance = downReturns.length > 0
+        ? downReturns.reduce((a, b) => a + Math.pow(b, 2), 0) / fundReturns.length
+        : 0;
+      const downVol = Math.sqrt(downVariance) * Math.sqrt(252) * 100;
+      const sortino = downVol > 0 ? (fundReturn - annualizedRiskFree) / downVol : 0;
+
+      // Max Drawdown
+      let maxDD = 0;
+      let peak = fundPrices[0];
+      for (let i = 1; i < fundPrices.length; i++) {
+        if (fundPrices[i] > peak) peak = fundPrices[i];
+        const dd = (peak - fundPrices[i]) / peak * 100;
+        if (dd > maxDD) maxDD = dd;
+      }
+
+      // Beta
+      const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
+      const beta = covariance / benchVariance;
+
+      // Jensen's Alpha
+      const alpha = fundReturn - (annualizedRiskFree + beta * (benchReturn - annualizedRiskFree));
+
+      return {
+        fundReturn,
+        benchReturn,
+        outperformance: fundReturn - benchReturn,
+        fundVol,
+        benchVol,
+        sharpe,
+        sortino,
+        maxDD,
+        beta,
+        alpha
+      };
     }
 
-    function openDashboard(fundId) {
-      currentDashboardFund = funds.find(f => f.id === fundId);
-      document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
-      document.getElementById('dashboardLoading').style.display = 'block';
-      document.getElementById('dashboardContent').style.display = 'none';
-      document.getElementById('dashboardModal').classList.add('active');
-      changeDashboardTimeframe('ytd', document.querySelector('.timeframe-btn'));
-      document.body.style.overflow = 'hidden';
+    // Format and render metrics
+    function renderMetricsHTML(metrics) {
+      if (!metrics) return '<div class="loading-text">Unable to load metrics</div>';
+      
+      return `
+        <div class="metric-card">
+          <div class="metric-label">Fund Return</div>
+          <div class="metric-value ${metrics.fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.fundReturn)}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Benchmark Return</div>
+          <div class="metric-value ${metrics.benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.benchReturn)}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Outperformance</div>
+          <div class="metric-value ${metrics.outperformance >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.outperformance)}</div>
+          <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Volatility</div>
+          <div class="metric-value">${metrics.fundVol.toFixed(2)}%</div>
+          <div class="metric-sub">Annualized</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sharpe Ratio</div>
+          <div class="metric-value ${metrics.sharpe >= 0 ? 'pos' : 'neg'}">${metrics.sharpe.toFixed(2)}</div>
+          <div class="metric-sub">Risk-adjusted return</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sortino Ratio</div>
+          <div class="metric-value ${metrics.sortino >= 0 ? 'pos' : 'neg'}">${metrics.sortino.toFixed(2)}</div>
+          <div class="metric-sub">Downside risk-adjusted</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Max Drawdown</div>
+          <div class="metric-value neg">-${metrics.maxDD.toFixed(2)}%</div>
+          <div class="metric-sub">Peak to trough</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Jensen's Alpha</div>
+          <div class="metric-value ${metrics.alpha >= 0 ? 'pos' : 'neg'}">${fmtPct(metrics.alpha)}</div>
+          <div class="metric-sub">Excess return</div>
+        </div>
+      `;
     }
 
-    function closeDashboard() {
-      document.getElementById('dashboardModal').classList.remove('active');
-      document.body.style.overflow = 'auto';
+    async function loadFundData(fund) {
+      try {
+        const today = new Date();
+        
+        // Get date ranges
+        let fromDate, toDate;
+        toDate = today.toISOString().split('T')[0];
+        
+        if (currentTimeframe === 'ytd') {
+          fromDate = `${today.getFullYear()}-01-01`;
+        } else {
+          const oneYearAgo = new Date(today);
+          oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+          fromDate = oneYearAgo.toISOString().split('T')[0];
+        }
+
+        document.getElementById('dashLoading').style.display = 'block';
+        document.getElementById('dashContent').style.display = 'none';
+
+        // Fetch all symbols for fund and benchmark
+        const allSymbols = [...fund.allocation.map(a => a.symbol), fund.bench];
+        const priceData = {};
+
+        for (const symbol of allSymbols) {
+          const data = await fetchStockData(symbol, fromDate, toDate);
+          if (data && data.length > 0) {
+            priceData[symbol] = data.map(d => d.close);
+          }
+        }
+
+        // Calculate weighted fund prices
+        let fundPrices = Array(priceData[fund.allocation[0].symbol].length).fill(0);
+        fund.allocation.forEach(asset => {
+          if (priceData[asset.symbol]) {
+            const startPrice = priceData[asset.symbol][0];
+            for (let i = 0; i < priceData[asset.symbol].length; i++) {
+              const percentChange = (priceData[asset.symbol][i] - startPrice) / startPrice;
+              fundPrices[i] += percentChange * asset.weight * 100;
+            }
+          }
+        });
+        fundPrices = fundPrices.map(p => 100 + p);
+
+        const benchPrices = priceData[fund.bench];
+        const metrics = calculateMetrics(fundPrices, benchPrices);
+
+        document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(metrics);
+
+        // Update chart
+        updateChart(fundPrices, benchPrices, fund);
+
+        document.getElementById('dashLoading').style.display = 'none';
+        document.getElementById('dashContent').style.display = 'block';
+
+      } catch (e) {
+        console.error('Error loading fund data:', e);
+        document.getElementById('dashLoading').innerHTML = `<div class="loading-text">Error loading data: ${e.message}</div>`;
+      }
     }
 
-    function changeDashboardTimeframe(timeframe, button) {
-      currentTimeframe = timeframe;
-      document.querySelectorAll('.timeframe-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      updateDashboard(timeframe);
-    }
-
-    function updateDashboard(timeframe) {
-      setTimeout(() => {
-        const fundReturn = calculateFundReturn(currentDashboardFund, timeframe);
-        const benchReturn = timeframe === 'ytd' 
-          ? MARKET_DATA[currentDashboardFund.bench].ytd 
-          : MARKET_DATA[currentDashboardFund.bench].oneYear;
-        const fundVol = calculateFundVol(currentDashboardFund);
-        const benchVol = MARKET_DATA[currentDashboardFund.bench].vol;
-
-        const metricsGrid = document.getElementById('metricsGrid');
-        metricsGrid.innerHTML = `
-          <div class="metric-card">
-            <div class="metric-label">Fund Return</div>
-            <div class="metric-value ${fundReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturn)}</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Benchmark Return</div>
-            <div class="metric-value ${benchReturn >= 0 ? 'pos' : 'neg'}">${fmtPct(benchReturn)}</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Outperformance</div>
-            <div class="metric-value ${(fundReturn - benchReturn) >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturn - benchReturn)}</div>
-            <div class="metric-sub">vs ${currentDashboardFund.bench}</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Volatility</div>
-            <div class="metric-value">${fundVol.toFixed(2)}%</div>
-            <div class="metric-sub">Annualized</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Sharpe Ratio</div>
-            <div class="metric-value">${(fundReturn / fundVol).toFixed(2)}</div>
-            <div class="metric-sub">Risk-adjusted</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Benchmark Vol</div>
-            <div class="metric-value">${benchVol.toFixed(2)}%</div>
-            <div class="metric-sub">${currentDashboardFund.bench}</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Period</div>
-            <div class="metric-value" style="font-size:1.2rem">${timeframe === 'ytd' ? 'YTD' : '1Y'}</div>
-            <div class="metric-sub">Updated daily</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Data Source</div>
-            <div class="metric-value" style="font-size:1rem;color:var(--accent)">Real-time</div>
-            <div class="metric-sub">Market data</div>
-          </div>
-        `;
-
-        document.getElementById('dashboardLoading').style.display = 'none';
-        document.getElementById('dashboardContent').style.display = 'block';
-
-        updateDashboardChart(currentDashboardFund, fundReturn, benchReturn);
-      }, 500);
-    }
-
-    function updateDashboardChart(fund, fundReturn, benchReturn) {
+    function updateChart(fundPrices, benchPrices, fund) {
       const ctx = document.getElementById('dashboardChart').getContext('2d');
       if (dashboardChart) dashboardChart.destroy();
 
-      // Generate 100 data points showing growth trajectory
-      const chartData = [];
-      for (let i = 0; i <= 100; i++) {
-        const t = i / 100;
-        chartData.push({
-          fund: 100 * Math.pow(1 + fundReturn/100, t),
-          bench: 100 * Math.pow(1 + benchReturn/100, t)
-        });
-      }
+      const labels = fundPrices.map((_, i) => i);
 
       dashboardChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: Array.from({length: 101}, (_, i) => i),
+          labels: labels,
           datasets: [
             {
               label: fund.code,
-              data: chartData.map(d => d.fund),
+              data: fundPrices,
               borderColor: fund.color,
               backgroundColor: fund.color + '20',
               borderWidth: 2.5,
               pointRadius: 0,
-              tension: 0.4,
+              pointHoverRadius: 6,
+              tension: 0.3,
               fill: true
             },
             {
               label: fund.bench,
-              data: chartData.map(d => d.bench),
+              data: benchPrices,
               borderColor: 'rgba(2,8,23,.45)',
               borderDash: [5, 5],
               borderWidth: 2,
               pointRadius: 0,
-              tension: 0.4,
+              pointHoverRadius: 6,
+              tension: 0.3,
               fill: false
             }
           ]
@@ -492,16 +579,28 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { display: false },
-            tooltip: { enabled: false }
+            tooltip: {
+              enabled: true,
+              backgroundColor: 'rgba(0,0,0,.9)',
+              titleColor: '#fff',
+              bodyColor: '#eef2ff',
+              borderColor: fund.color,
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 6,
+              titleFont: { weight: 'bold', size: 12 },
+              bodyFont: { size: 11 }
+            }
           },
           scales: {
             x: { display: false },
-            y: { 
+            y: {
               display: true,
-              grid: { color: 'rgba(2,8,23,.08)' },
-              ticks: { font: { size: 11, weight: '700' }, color: 'rgba(2,8,23,.6)' }
+              grid: { color: 'rgba(2,8,23,.05)' },
+              ticks: { font: { size: 10, weight: '700' }, color: 'rgba(2,8,23,.5)' }
             }
           }
         }
@@ -509,17 +608,35 @@
 
       document.getElementById('legendSection').innerHTML = `
         <div class="legend-item"><i style="background:${fund.color}"></i><span>${fund.code}</span></div>
-        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:2px dashed rgba(2,8,23,.45)"></i><span>${fund.bench}</span></div>
+        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i><span>${fund.bench}</span></div>
       `;
     }
 
+    function openDashboard(fundId) {
+      currentDashboardFund = funds.find(f => f.id === fundId);
+      document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
+      document.getElementById('dashboardModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      loadFundData(currentDashboardFund);
+    }
+
+    function closeDashboard() {
+      document.getElementById('dashboardModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function switchTimeframe(timeframe, button) {
+      currentTimeframe = timeframe;
+      document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      if (currentDashboardFund) {
+        loadFundData(currentDashboardFund);
+      }
+    }
+
     function renderFunds() {
-      const grid = document.getElementById("fundsGrid");
+      const grid = document.getElementById('fundsGrid');
       grid.innerHTML = funds.map(f => {
-        const fundReturnYTD = calculateFundReturn(f, 'ytd');
-        const benchReturnYTD = MARKET_DATA[f.bench].ytd;
-        const relYTD = fundReturnYTD - benchReturnYTD;
-        
         return `
           <article class="fund-card" onclick="openDashboard('${f.id}')">
             <div class="fund-img">
@@ -531,37 +648,33 @@
                 <div class="fund-name">${f.name}</div>
                 <div class="fund-stage">${f.stage}</div>
               </div>
-
               <p class="fund-desc">${f.desc}</p>
-
               <div class="fund-stats">
                 <div class="stat">
                   <div class="stat-label">YTD Return</div>
-                  <div class="stat-value ${fundReturnYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(fundReturnYTD)}</div>
+                  <div class="stat-value">Loading...</div>
                 </div>
                 <div class="stat">
                   <div class="stat-label">vs ${f.bench}</div>
-                  <div class="stat-value ${relYTD >= 0 ? 'pos' : 'neg'}">${fmtPct(relYTD)}</div>
+                  <div class="stat-value">Loading...</div>
                 </div>
               </div>
-
-              <div class="fund-alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join("")}</div>
-
+              <div class="fund-alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join('')}</div>
               <button class="dashboard-cta">View Analytics →</button>
             </div>
           </article>
         `;
-      }).join("");
+      }).join('');
     }
 
     function renderThesis() {
-      const grid = document.getElementById("thesisGrid");
+      const grid = document.getElementById('thesisGrid');
       grid.innerHTML = funds.map(f => `
         <article class="thesis-card">
           <h3>${f.name}</h3>
-          <ul>${f.thesis.map(x => `<li>${x}</li>`).join("")}</ul>
+          <ul>${f.thesis.map(x => `<li>${x}</li>`).join('')}</ul>
         </article>
-      `).join("");
+      `).join('');
     }
 
     document.addEventListener('click', (e) => {
@@ -578,7 +691,7 @@
       renderThesis();
     });
 
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       if (dashboardChart) dashboardChart.resize();
     });
   </script>
