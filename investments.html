@@ -356,9 +356,9 @@
     async function fetchFundTimeframe(fundId, timeframe) {
       const snapshot = await fetchSnapshot();
       const fund = snapshot && snapshot.funds && snapshot.funds[fundId];
-      if (!fund) throw new Error(`Fund data unavailable (HTTP 404)`);
+      if (!fund) throw new Error(`Fund '${fundId}' not found in snapshot`);
       const tfData = fund[timeframe];
-      if (!tfData) throw new Error(`Fund data unavailable (HTTP 404)`);
+      if (!tfData) throw new Error(`No data for timeframe '${timeframe}' in snapshot`);
       return {
         id:             fund.id,
         code:           fund.code,
