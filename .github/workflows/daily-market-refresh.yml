@@ -29,8 +29,6 @@ jobs:
         run: npm ci
 
       - name: Generate market data snapshot
-        env:
-          POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
         run: |
           echo "Running market data snapshot at $(date -u)"
           node scripts/update-market-data.js
@@ -41,7 +39,7 @@ jobs:
         run: |
           git config user.name "mbd-bot"
           git config user.email "mbd-bot@users.noreply.github.com"
-          git add data/funds-snapshot.json
+          git add data/funds-snapshot.json market-brief-backend/data/funds-snapshot.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Update funds-snapshot.json [$(date -u +%Y-%m-%d)]"
           git push
