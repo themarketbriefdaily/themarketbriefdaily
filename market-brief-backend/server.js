@@ -236,7 +236,72 @@ app.post('/api/clear-cache', (req, res) => {
   res.json({ message: 'Cache cleared' });
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// ── Funds snapshot ────────────────────────────────────────────────────────────
+const path = require('path');
+const fs   = require('fs');
+const SNAPSHOT_PATH = path.join(__dirname, 'data', 'funds-snapshot.json');
+
+function readSnapshot() {
+  try {
+    const raw = fs.readFileSync(SNAPSHOT_PATH, 'utf8');
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+// GET /api/funds/snapshot – full snapshot payload
+app.get('/api/funds/snapshot', (req, res) => {
+  const snapshot = readSnapshot();
+  if (!snapshot || !snapshot.generated_at) {
+    return res.status(503).json({ error: 'Snapshot not yet available. Run the daily refresh to generate it.' });
+  }
+  res.json(snapshot);
 });
+
+// GET /api/funds/:id?timeframe=ytd|1y – single fund for a given timeframe
+app.get('/api/funds/:id', (req, res) => {
+  const { id } = req.params;
+  const timeframe = (req.query.timeframe || 'ytd').toLowerCase();
+
+  if (!['ytd', '1y'].includes(timeframe)) {
+    return res.status(400).json({ error: 'timeframe must be ytd or 1y' });
+  }
+
+  const snapshot = readSnapshot();
+  if (!snapshot || !snapshot.generated_at) {
+    return res.status(503).json({ error: 'Snapshot not yet available.' });
+  }
+
+  const fund = snapshot.funds[id];
+  if (!fund) {
+    return res.status(404).json({ error: `Fund '${id}' not found in snapshot` });
+  }
+
+  const tfData = fund[timeframe];
+  if (!tfData) {
+    return res.status(404).json({ error: `No data for timeframe '${timeframe}' for fund '${id}'` });
+  }
+
+  res.json({
+    id:             fund.id,
+    code:           fund.code,
+    name:           fund.name,
+    timeframe,
+    generated_at:   snapshot.generated_at,
+    chart:          tfData.chart,
+    kpi:            tfData.kpi,
+    ytdReturn:      fund.ytdReturn,
+    outperformance: fund.outperformance
+  });
+});
+
+const PORT = process.env.PORT || 3001;
+// Export for Vercel serverless; also listen when run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "mbd-bot"
           git config user.email "mbd-bot@users.noreply.github.com"
-          git add data/funds-snapshot.json
+          git add data/funds-snapshot.json market-brief-backend/data/funds-snapshot.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Update funds-snapshot.json [$(date -u +%Y-%m-%d)]"
           git push

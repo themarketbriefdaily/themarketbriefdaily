@@ -391,13 +391,19 @@ async function main() {
     snapshot.funds[fund.id] = fundSnapshot;
   }
 
-  // Write output
+  // Write output – primary location (read by api/market-data.js Vercel function)
   const outDir  = path.join(__dirname, '..', 'data');
   const outFile = path.join(outDir, 'funds-snapshot.json');
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(outFile, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
 
-  console.log(`\n✅ Snapshot written to data/funds-snapshot.json`);
+  // Mirror to market-brief-backend/data/ (read by market-brief-backend/server.js)
+  const backendDataDir  = path.join(__dirname, '..', 'market-brief-backend', 'data');
+  const backendOutFile  = path.join(backendDataDir, 'funds-snapshot.json');
+  fs.mkdirSync(backendDataDir, { recursive: true });
+  fs.writeFileSync(backendOutFile, JSON.stringify(snapshot, null, 2) + '\n', 'utf8');
+
+  console.log(`\n✅ Snapshot written to data/funds-snapshot.json and market-brief-backend/data/funds-snapshot.json`);
   console.log(`   generated_at: ${snapshot.generated_at}`);
 }
 
