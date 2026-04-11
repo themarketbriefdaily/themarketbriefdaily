@@ -12,7 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 const POLYGON_API_KEY = process.env.POLYGON_API_KEY;
-const POLYGON_API = 'https://api.polygon.io/v1';
+const POLYGON_BASE = 'https://api.polygon.io/v2';
+
+// Input validation helpers
+const SYMBOL_RE = /^[A-Z0-9.\-]{1,12}$/i;
+const DATE_RE   = /^\d{4}-\d{2}-\d{2}$/;
+const validateSymbol = s => typeof s === 'string' && SYMBOL_RE.test(s);
+const validateDate   = d => typeof d === 'string' && DATE_RE.test(d);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -25,21 +31,31 @@ app.get('/api/stock-data/:symbol', async (req, res) => {
     const { symbol } = req.params;
     const { from, to } = req.query;
 
+    if (!validateSymbol(symbol)) {
+      return res.status(400).json({ error: 'Invalid symbol' });
+    }
+    if (!validateDate(from) || !validateDate(to)) {
+      return res.status(400).json({ error: 'Invalid or missing from/to date parameters (YYYY-MM-DD)' });
+    }
+
+    const safeSymbol = symbol.toUpperCase();
     // Check cache first
-    const cacheKey = `${symbol}-${from}-${to}`;
+    const cacheKey = `${safeSymbol}-${from}-${to}`;
     const cachedData = cache.get(cacheKey);
     
     if (cachedData) {
       return res.json({ data: cachedData, cached: true });
     }
 
-    // Fetch from Polygon.io
-    const url = `${POLYGON_API}/open-close/${symbol}/${from}/${to}?adjusted=true&apiKey=${POLYGON_API_KEY}`;
-    const response = await axios.get(url);
+    // Fetch from Polygon.io v2 aggregates endpoint
+    const url = `${POLYGON_BASE}/aggs/ticker/${safeSymbol}/range/1/day/${from}/${to}`;
+    const response = await axios.get(url, {
+      params: { adjusted: true, sort: 'asc', limit: 500, apiKey: POLYGON_API_KEY }
+    });
 
     if (response.data.results && Array.isArray(response.data.results)) {
       const prices = response.data.results.map(d => ({
-        date: d.t,
+        date: new Date(d.t).toISOString().split('T')[0],
         open: d.o,
         high: d.h,
         low: d.l,
@@ -52,11 +68,11 @@ app.get('/api/stock-data/:symbol', async (req, res) => {
 
       res.json({ data: prices, cached: false });
     } else {
-      res.status(404).json({ error: `No data for ${symbol}` });
+      res.status(404).json({ error: `No data for ${safeSymbol}` });
     }
   } catch (error) {
     console.error('Error fetching stock data:', error.message);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -65,14 +81,21 @@ app.post('/api/batch-stock-data', async (req, res) => {
   try {
     const { symbols, from, to } = req.body;
 
-    if (!symbols || !Array.isArray(symbols) || !from || !to) {
-      return res.status(400).json({ error: 'Missing symbols, from, or to parameters' });
+    if (!symbols || !Array.isArray(symbols) || symbols.length === 0 || symbols.length > 20) {
+      return res.status(400).json({ error: 'symbols must be a non-empty array with at most 20 items' });
+    }
+    if (!validateDate(from) || !validateDate(to)) {
+      return res.status(400).json({ error: 'Invalid or missing from/to date parameters (YYYY-MM-DD)' });
+    }
+    if (symbols.some(s => !validateSymbol(s))) {
+      return res.status(400).json({ error: 'One or more symbols are invalid' });
     }
 
     const results = {};
     const promises = [];
 
-    for (const symbol of symbols) {
+    for (const rawSymbol of symbols) {
+      const symbol = rawSymbol.toUpperCase();
       const cacheKey = `${symbol}-${from}-${to}`;
       const cachedData = cache.get(cacheKey);
 
@@ -80,11 +103,13 @@ app.post('/api/batch-stock-data', async (req, res) => {
         results[symbol] = { data: cachedData, cached: true };
       } else {
         promises.push(
-          axios.get(`${POLYGON_API}/open-close/${symbol}/${from}/${to}?adjusted=true&apiKey=${POLYGON_API_KEY}`)
+          axios.get(`${POLYGON_BASE}/aggs/ticker/${symbol}/range/1/day/${from}/${to}`, {
+            params: { adjusted: true, sort: 'asc', limit: 500, apiKey: POLYGON_API_KEY }
+          })
             .then(response => {
-              if (response.data.results) {
+              if (response.data.results && Array.isArray(response.data.results)) {
                 const prices = response.data.results.map(d => ({
-                  date: d.t,
+                  date: new Date(d.t).toISOString().split('T')[0],
                   open: d.o,
                   high: d.h,
                   low: d.l,
@@ -93,11 +118,13 @@ app.post('/api/batch-stock-data', async (req, res) => {
                 }));
                 cache.set(cacheKey, prices);
                 results[symbol] = { data: prices, cached: false };
+              } else {
+                results[symbol] = { error: 'No data' };
               }
             })
             .catch(error => {
-              console.error(`Error fetching ${symbol}:`, error.message);
-              results[symbol] = { error: error.message };
+              console.error('Error fetching symbol:', error.message);
+              results[symbol] = { error: 'Failed to fetch data' };
             })
         );
       }
@@ -107,7 +134,7 @@ app.post('/api/batch-stock-data', async (req, res) => {
     res.json(results);
   } catch (error) {
     console.error('Error in batch request:', error.message);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
@@ -116,37 +143,42 @@ app.post('/api/calculate-metrics', (req, res) => {
   try {
     const { fundPrices, benchPrices } = req.body;
 
-    if (!fundPrices || !benchPrices || fundPrices.length < 2 || benchPrices.length < 2) {
-      return res.status(400).json({ error: 'Invalid price data' });
+    if (!Array.isArray(fundPrices) || !Array.isArray(benchPrices) ||
+        fundPrices.length < 2 || benchPrices.length < 2) {
+      return res.status(400).json({ error: 'Invalid price data: need at least 2 data points' });
     }
 
-    const fundReturn = ((fundPrices[fundPrices.length - 1] - fundPrices[0]) / fundPrices[0]) * 100;
-    const benchReturn = ((benchPrices[benchPrices.length - 1] - benchPrices[0]) / benchPrices[0]) * 100;
+    const MAX_POINTS = 1000;
+    const minLen = Math.min(fundPrices.length, benchPrices.length, MAX_POINTS);
+
+    const isValidPrices = arr => arr.slice(0, minLen).every(v => typeof v === 'number' && isFinite(v) && v > 0);
+    if (!isValidPrices(fundPrices) || !isValidPrices(benchPrices)) {
+      return res.status(400).json({ error: 'Price arrays must contain positive finite numbers' });
+    }
+
+    const fp = fundPrices.slice(0, minLen);
+    const bp = benchPrices.slice(0, minLen);
+
+    const fundReturn = ((fp[fp.length - 1] - fp[0]) / fp[0]) * 100;
+    const benchReturn = ((bp[bp.length - 1] - bp[0]) / bp[0]) * 100;
 
     // Daily returns
-    const fundReturns = [];
-    for (let i = 1; i < fundPrices.length; i++) {
-      fundReturns.push((fundPrices[i] - fundPrices[i - 1]) / fundPrices[i - 1]);
-    }
-
-    const benchReturns = [];
-    for (let i = 1; i < benchPrices.length; i++) {
-      benchReturns.push((benchPrices[i] - benchPrices[i - 1]) / benchPrices[i - 1]);
-    }
+    const fundReturns = fp.slice(1).map((p, i) => (p - fp[i]) / fp[i]);
+    const benchReturns = bp.slice(1).map((p, i) => (p - bp[i]) / bp[i]);
 
     // Volatility
-    const fundMean = fundReturns.reduce((a, b) => a + b) / fundReturns.length;
+    const fundMean = fundReturns.reduce((a, b) => a + b, 0) / fundReturns.length;
     const fundVariance = fundReturns.reduce((a, b) => a + Math.pow(b - fundMean, 2), 0) / fundReturns.length;
     const fundVol = Math.sqrt(fundVariance) * Math.sqrt(252) * 100;
 
-    const benchMean = benchReturns.reduce((a, b) => a + b) / benchReturns.length;
+    const benchMean = benchReturns.reduce((a, b) => a + b, 0) / benchReturns.length;
     const benchVariance = benchReturns.reduce((a, b) => a + Math.pow(b - benchMean, 2), 0) / benchReturns.length;
     const benchVol = Math.sqrt(benchVariance) * Math.sqrt(252) * 100;
 
-    // Sharpe Ratio
+    // Sharpe Ratio (annualised excess return / annualised vol)
     const riskFreeRate = 0.04;
-    const annualizedRiskFree = riskFreeRate * (fundPrices.length / 252);
-    const sharpe = (fundReturn - annualizedRiskFree) / fundVol;
+    const annualizedRf = riskFreeRate * (fp.length / 252);
+    const sharpe = fundVol > 0 ? (fundReturn / 100 - annualizedRf) / (fundVol / 100) : 0;
 
     // Sortino Ratio
     const downReturns = fundReturns.filter(r => r < 0);
@@ -154,23 +186,23 @@ app.post('/api/calculate-metrics', (req, res) => {
       ? downReturns.reduce((a, b) => a + Math.pow(b, 2), 0) / fundReturns.length
       : 0;
     const downVol = Math.sqrt(downVariance) * Math.sqrt(252) * 100;
-    const sortino = downVol > 0 ? (fundReturn - annualizedRiskFree) / downVol : 0;
+    const sortino = downVol > 0 ? (fundReturn / 100 - annualizedRf) / (downVol / 100) : 0;
 
     // Max Drawdown
     let maxDD = 0;
-    let peak = fundPrices[0];
-    for (let i = 1; i < fundPrices.length; i++) {
-      if (fundPrices[i] > peak) peak = fundPrices[i];
-      const dd = (peak - fundPrices[i]) / peak * 100;
+    let peak = fp[0];
+    for (let i = 1; i < fp.length; i++) {
+      if (fp[i] > peak) peak = fp[i];
+      const dd = (peak - fp[i]) / peak * 100;
       if (dd > maxDD) maxDD = dd;
     }
 
-    // Beta
-    const covariance = fundReturns.reduce((sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0) / fundReturns.length;
-    const beta = covariance / benchVariance;
-
-    // Jensen's Alpha
-    const alpha = fundReturn - (annualizedRiskFree + beta * (benchReturn - annualizedRiskFree));
+    // Beta & Jensen's Alpha
+    const covariance = fundReturns.reduce(
+      (sum, r, i) => sum + (r - fundMean) * (benchReturns[i] - benchMean), 0
+    ) / fundReturns.length;
+    const beta = benchVariance > 0 ? covariance / benchVariance : 0;
+    const alpha = fundReturn - (annualizedRf * 100 + beta * (benchReturn - annualizedRf * 100));
 
     res.json({
       fundReturn,
@@ -186,16 +218,14 @@ app.post('/api/calculate-metrics', (req, res) => {
     });
   } catch (error) {
     console.error('Error calculating metrics:', error.message);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // Cache status
 app.get('/api/cache-status', (req, res) => {
-  const keys = cache.keys();
   res.json({
-    cachedItems: keys.length,
-    keys: keys,
+    cachedItems: cache.keys().length,
     timestamp: new Date().toISOString()
   });
 });

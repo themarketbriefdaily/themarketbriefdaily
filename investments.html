@@ -163,17 +163,16 @@
       </div>
 
       <div class="dashboard-body">
-        <div class="loading-text" id="dashLoading">Loading real market data from Polygon.io...</div>
+        <!-- Live TradingView chart – auto-updates with real market data -->
+        <div class="chart-section" style="margin-bottom:32px">
+          <div class="chart-title">Live Performance Chart <span style="font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0">(Powered by TradingView · use chart controls to change range)</span></div>
+          <div id="tvChartContainer" style="height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--line)"></div>
+        </div>
+
+        <!-- Computed metrics from Polygon.io -->
+        <div class="loading-text" id="dashLoading">Calculating performance metrics…</div>
         <div id="dashContent" style="display:none">
           <div class="metrics-grid" id="metricsGrid"></div>
-          
-          <div class="chart-section">
-            <div class="chart-title" id="chartTitle">Performance vs Benchmark</div>
-            <div class="chart-wrapper">
-              <canvas id="dashboardChart"></canvas>
-            </div>
-            <div class="legend-section" id="legendSection"></div>
-          </div>
         </div>
       </div>
     </div>
@@ -236,7 +235,8 @@
     gsap.registerPlugin(ScrollTrigger);
 
     const API_KEY = 'KJNMSAGf82MDB5JhpZ1aEK0LMdAgAqTX';
-    const POLYGON_API = 'https://api.polygon.io/v1';
+    // Backend API base (same-domain on Vercel; falls back to direct Polygon calls in the browser)
+    const BACKEND = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
 
     const funds = [
       {
@@ -333,28 +333,21 @@
     let historicalData = {};
     let currentDashboardFund = null;
     let currentTimeframe = 'ytd';
-    let dashboardChart = null;
 
     const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 
-    // Fetch aggregated bar data from Polygon
+    // Fetch OHLC bars from Polygon v2 aggregates endpoint
     async function fetchStockData(symbol, from, to) {
       try {
-        const url = `${POLYGON_API}/open-close/${symbol}/${from}/${to}?adjusted=true&apiKey=${API_KEY}`;
+        const url = `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?adjusted=true&sort=asc&limit=500&apiKey=${API_KEY}`;
         const response = await fetch(url);
-        
         if (!response.ok) {
           console.error(`API Error for ${symbol}:`, response.status);
           return null;
         }
-        
         const data = await response.json();
-        
         if (data.results && Array.isArray(data.results)) {
-          return data.results.map(d => ({
-            date: new Date(d.t),
-            close: d.c
-          }));
+          return data.results.map(d => ({ date: new Date(d.t), close: d.c }));
         }
         return null;
       } catch (e) {
@@ -481,14 +474,69 @@
       `;
     }
 
-    async function loadFundData(fund) {
+    // Load a TradingView live chart for the fund's primary holding vs its benchmark
+    function loadTradingViewChart(fund) {
+      const container = document.getElementById('tvChartContainer');
+      container.innerHTML = '';
+
+      const primarySymbol = fund.allocation[0].symbol;
+      const benchSymbol   = fund.bench;
+
+      const widgetContainer = document.createElement('div');
+      widgetContainer.className = 'tradingview-widget-container';
+      widgetContainer.style.cssText = 'height:420px;width:100%';
+
+      const widgetInner = document.createElement('div');
+      widgetInner.className = 'tradingview-widget-container__widget';
+      widgetInner.style.cssText = 'height:calc(100% - 32px);width:100%';
+      widgetContainer.appendChild(widgetInner);
+
+      const copyright = document.createElement('div');
+      copyright.className = 'tradingview-widget-copyright';
+      copyright.innerHTML = '<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank" style="font-size:11px;color:var(--muted)">Charts by TradingView</a>';
+      widgetContainer.appendChild(copyright);
+
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
+      script.async = true;
+      script.textContent = JSON.stringify({
+        symbols: [
+          [primarySymbol, primarySymbol + '|1D'],
+          [benchSymbol,   benchSymbol   + '|1D']
+        ],
+        chartOnly: false,
+        width: '100%',
+        height: '420',
+        locale: 'en',
+        colorTheme: 'light',
+        autosize: true,
+        showVolume: false,
+        hideDateRanges: false,
+        hideMarketStatus: false,
+        hideSymbolLogo: true,
+        scalePosition: 'right',
+        scaleMode: 'Normal',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif',
+        fontSize: '10',
+        noTimeScale: false,
+        valuesTracking: '1',
+        changeMode: 'price-and-percent',
+        chartType: 'area',
+        lineWidth: 2,
+        lineType: 0,
+        dateRanges: ['ytd|YTD', '1y|1Y', 'all|All']
+      });
+      widgetContainer.appendChild(script);
+      container.appendChild(widgetContainer);
+    }
+
+    // Load computed performance metrics from Polygon for the selected timeframe
+    async function loadMetrics(fund) {
       try {
         const today = new Date();
-        
-        // Get date ranges
-        let fromDate, toDate;
-        toDate = today.toISOString().split('T')[0];
-        
+        const toDate = today.toISOString().split('T')[0];
+        let fromDate;
         if (currentTimeframe === 'ytd') {
           fromDate = `${today.getFullYear()}-01-01`;
         } else {
@@ -500,116 +548,52 @@
         document.getElementById('dashLoading').style.display = 'block';
         document.getElementById('dashContent').style.display = 'none';
 
-        // Fetch all symbols for fund and benchmark
+        // Fetch all fund symbols + benchmark in parallel
         const allSymbols = [...fund.allocation.map(a => a.symbol), fund.bench];
         const priceData = {};
-
-        for (const symbol of allSymbols) {
+        await Promise.all(allSymbols.map(async symbol => {
           const data = await fetchStockData(symbol, fromDate, toDate);
-          if (data && data.length > 0) {
-            priceData[symbol] = data.map(d => d.close);
-          }
+          if (data && data.length > 0) priceData[symbol] = data.map(d => d.close);
+        }));
+
+        const firstSymbol = fund.allocation[0].symbol;
+        if (!priceData[firstSymbol] || !priceData[fund.bench]) {
+          throw new Error('Insufficient price data returned. The market may be closed or data is unavailable for this date range.');
         }
 
-        // Calculate weighted fund prices
-        let fundPrices = Array(priceData[fund.allocation[0].symbol].length).fill(0);
+        // Align all series to the minimum available length
+        const minLength = Math.min(
+          ...fund.allocation.filter(a => priceData[a.symbol]).map(a => priceData[a.symbol].length),
+          priceData[fund.bench].length
+        );
+
+        // Build weighted composite fund price series (base = 100)
+        let fundPrices = Array(minLength).fill(0);
         fund.allocation.forEach(asset => {
           if (priceData[asset.symbol]) {
-            const startPrice = priceData[asset.symbol][0];
-            for (let i = 0; i < priceData[asset.symbol].length; i++) {
-              const percentChange = (priceData[asset.symbol][i] - startPrice) / startPrice;
-              fundPrices[i] += percentChange * asset.weight * 100;
+            const start = priceData[asset.symbol][0];
+            for (let i = 0; i < minLength; i++) {
+              const pct = (priceData[asset.symbol][i] - start) / start;
+              fundPrices[i] += pct * asset.weight * 100;
             }
           }
         });
         fundPrices = fundPrices.map(p => 100 + p);
 
-        const benchPrices = priceData[fund.bench];
+        // Normalise benchmark to base 100 so metrics are comparable
+        const rawBench  = priceData[fund.bench].slice(0, minLength);
+        const benchPrices = rawBench.map(p => (p / rawBench[0]) * 100);
+
         const metrics = calculateMetrics(fundPrices, benchPrices);
-
         document.getElementById('metricsGrid').innerHTML = renderMetricsHTML(metrics);
-
-        // Update chart
-        updateChart(fundPrices, benchPrices, fund);
 
         document.getElementById('dashLoading').style.display = 'none';
         document.getElementById('dashContent').style.display = 'block';
-
       } catch (e) {
-        console.error('Error loading fund data:', e);
-        document.getElementById('dashLoading').innerHTML = `<div class="loading-text">Error loading data: ${e.message}</div>`;
+        console.error('Error loading metrics:', e);
+        document.getElementById('dashLoading').innerHTML =
+          `<div class="loading-text">⚠️ ${e.message}</div>`;
       }
-    }
-
-    function updateChart(fundPrices, benchPrices, fund) {
-      const ctx = document.getElementById('dashboardChart').getContext('2d');
-      if (dashboardChart) dashboardChart.destroy();
-
-      const labels = fundPrices.map((_, i) => i);
-
-      dashboardChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: fund.code,
-              data: fundPrices,
-              borderColor: fund.color,
-              backgroundColor: fund.color + '20',
-              borderWidth: 2.5,
-              pointRadius: 0,
-              pointHoverRadius: 6,
-              tension: 0.3,
-              fill: true
-            },
-            {
-              label: fund.bench,
-              data: benchPrices,
-              borderColor: 'rgba(2,8,23,.45)',
-              borderDash: [5, 5],
-              borderWidth: 2,
-              pointRadius: 0,
-              pointHoverRadius: 6,
-              tension: 0.3,
-              fill: false
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              enabled: true,
-              backgroundColor: 'rgba(0,0,0,.9)',
-              titleColor: '#fff',
-              bodyColor: '#eef2ff',
-              borderColor: fund.color,
-              borderWidth: 1,
-              padding: 12,
-              cornerRadius: 6,
-              titleFont: { weight: 'bold', size: 12 },
-              bodyFont: { size: 11 }
-            }
-          },
-          scales: {
-            x: { display: false },
-            y: {
-              display: true,
-              grid: { color: 'rgba(2,8,23,.05)' },
-              ticks: { font: { size: 10, weight: '700' }, color: 'rgba(2,8,23,.5)' }
-            }
-          }
-        }
-      });
-
-      document.getElementById('legendSection').innerHTML = `
-        <div class="legend-item"><i style="background:${fund.color}"></i><span>${fund.code}</span></div>
-        <div class="legend-item"><i style="background:rgba(2,8,23,.45);border:1px dashed rgba(2,8,23,.45)"></i><span>${fund.bench}</span></div>
-      `;
     }
 
     function openDashboard(fundId) {
@@ -617,7 +601,10 @@
       document.getElementById('dashboardTitle').textContent = currentDashboardFund.name;
       document.getElementById('dashboardModal').classList.add('active');
       document.body.style.overflow = 'hidden';
-      loadFundData(currentDashboardFund);
+      // Show live TradingView chart immediately
+      loadTradingViewChart(currentDashboardFund);
+      // Then compute analytics from Polygon
+      loadMetrics(currentDashboardFund);
     }
 
     function closeDashboard() {
@@ -630,7 +617,8 @@
       document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
       button.classList.add('active');
       if (currentDashboardFund) {
-        loadFundData(currentDashboardFund);
+        // Only reload metrics for the new timeframe; the TradingView chart has its own controls
+        loadMetrics(currentDashboardFund);
       }
     }
 
@@ -677,6 +665,47 @@
       `).join('');
     }
 
+    // Populate fund card stats with live YTD data from Polygon
+    async function loadAllFundCardStats() {
+      const today   = new Date();
+      const toDate  = today.toISOString().split('T')[0];
+      const fromDate = `${today.getFullYear()}-01-01`;
+
+      // Unique symbols across all funds (primary holding per fund + benchmarks only)
+      const symbolsToFetch = [...new Set([
+        ...funds.map(f => f.allocation[0].symbol),
+        ...funds.map(f => f.bench)
+      ])];
+
+      const priceData = {};
+      await Promise.all(symbolsToFetch.map(async symbol => {
+        const data = await fetchStockData(symbol, fromDate, toDate);
+        if (data && data.length > 0) priceData[symbol] = data;
+      }));
+
+      const cards = document.querySelectorAll('.fund-card');
+      funds.forEach((fund, i) => {
+        if (!cards[i]) return;
+        const primary  = priceData[fund.allocation[0].symbol];
+        const bench    = priceData[fund.bench];
+        if (!primary || !bench) return;
+
+        const primaryRet = ((primary[primary.length - 1].close - primary[0].close) / primary[0].close) * 100;
+        const benchRet   = ((bench[bench.length - 1].close   - bench[0].close)   / bench[0].close)   * 100;
+        const outperf    = primaryRet - benchRet;
+
+        const stats = cards[i].querySelectorAll('.stat-value');
+        if (stats[0]) {
+          stats[0].textContent = fmtPct(primaryRet);
+          stats[0].className   = `stat-value ${primaryRet >= 0 ? 'pos' : 'neg'}`;
+        }
+        if (stats[1]) {
+          stats[1].textContent = fmtPct(outperf);
+          stats[1].className   = `stat-value ${outperf >= 0 ? 'pos' : 'neg'}`;
+        }
+      });
+    }
+
     document.addEventListener('click', (e) => {
       const modal = document.getElementById('dashboardModal');
       if (e.target === modal) closeDashboard();
@@ -689,10 +718,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderFunds();
       renderThesis();
-    });
-
-    window.addEventListener('resize', () => {
-      if (dashboardChart) dashboardChart.resize();
+      // Load live YTD stats on the fund cards (best-effort – won't break page if API is slow)
+      loadAllFundCardStats().catch(e => console.warn('Card stats skipped:', e.message));
     });
   </script>
 </body>
