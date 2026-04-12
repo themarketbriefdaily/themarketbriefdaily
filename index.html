@@ -147,7 +147,7 @@
     <div class="header-inner">
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
-        <a href="/investments.html">Funds</a>
+        <a href="/funds.html">Funds</a>
         <a href="#insights">Insights</a>
         <a href="/about.html">About</a>
         <a href="/posts.html">Posts</a>
@@ -162,7 +162,7 @@
       <p>Institutional-grade analysis of market structure, physical supply constraints, and macro transmission — delivered clearly and without bias.</p>
       <div class="hero-actions">
         <a class="btn primary" href="#insights">Read insights</a>
-        <a class="btn ghost" href="/investments.html">Explore funds</a>
+        <a class="btn ghost" href="/funds.html">Explore funds</a>
         <a class="btn ghost" href="/about.html">About us</a>
       </div>
     </div>
@@ -257,13 +257,13 @@
         <h4>Research</h4>
         <a href="#insights">Latest insights</a>
         <a href="/posts.html">All posts</a>
-        <a href="/investments.html">Funds</a>
+        <a href="/funds.html">Funds</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
         <a href="/about.html">About us</a>
         <a href="/contact.html">Contact</a>
-        <a href="/investments.html">Investments</a>
+        <a href="/funds.html">Funds</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
@@ -372,9 +372,9 @@
         id: "f1",
         code: "F1",
         name: "Active Rotation",
-        stage: "Macro-driven sector rotation",
-        desc: "Dynamic sector rotation across precious metals, energy, and consumer staples driven by macro risk signals.",
-        allocation: ["GLD", "XLE", "XLP"],
+        stage: "Clean energy & commodities rotation",
+        desc: "Strategic allocation across clean energy transition, consumer staples, and precious metals (AG, HL) for macro regime flexibility and inflation protection.",
+        allocation: ["ICLN (40%)", "IXY (30%)", "SLV (20%)", "AG (5%)", "HL (5%)"],
         r1y: 18.32,
         bench: "SPY",
         benchR: 24.56,
@@ -385,9 +385,9 @@
         id: "f2",
         code: "F2",
         name: "Market Tracker",
-        stage: "Total market exposure",
-        desc: "Broad market-cap weighted tracking with total market exposure and systematic rebalancing discipline.",
-        allocation: ["VTI"],
+        stage: "Diversified core allocation",
+        desc: "40% QQQM (Nasdaq-100), 40% VTI (Total Market), 20% VXUS (International) with systematic rebalancing discipline.",
+        allocation: ["QQQM (40%)", "VTI (40%)", "VXUS (20%)"],
         r1y: 24.56,
         bench: "SPY",
         benchR: 24.56,
@@ -399,8 +399,8 @@
         code: "F3",
         name: "Value Factor",
         stage: "Small-cap value tilt",
-        desc: "Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia.",
-        allocation: ["VBR", "IJS"],
+        desc: "Small-cap and mid-cap value exposure with cyclical mean reversion and Fama-French factor premia implementation.",
+        allocation: ["VBR (55%)", "IJS (45%)"],
         r1y: 31.45,
         bench: "SPY",
         benchR: 24.56,
@@ -411,9 +411,9 @@
         id: "f4",
         code: "F4",
         name: "ESG Global",
-        stage: "Sustainability-screened",
-        desc: "Sustainability-screened multi-region sleeve with US, developed, and emerging market exposures.",
-        allocation: ["ESGU", "ESGV", "ESGE"],
+        stage: "Sustainability-screened global",
+        desc: "Sustainability-screened multi-region sleeve across US, developed, and emerging market exposures with governance bias.",
+        allocation: ["ESGU (50%)", "ESGV (30%)", "ESGE (20%)"],
         r1y: 20.87,
         bench: "ACWX",
         benchR: 19.45,
@@ -455,7 +455,7 @@
                   </div>
                   <div class="alloc">${f.allocation.map(t => `<span class="pill">${t}</span>`).join('')}</div>
                   <div class="card-actions">
-                    <a class="mini primary" href="/investments.html">Details</a>
+                    <a class="mini primary" href="/funds.html">Details</a>
                     <button class="mini" type="button" onclick="event.stopPropagation()">Flip →</button>
                   </div>
                 </div>
@@ -477,7 +477,7 @@
                 </div>
                 <div class="card-actions">
                   <button class="mini" type="button" onclick="event.stopPropagation()">← Back</button>
-                  <a class="mini primary" href="/investments.html">All funds</a>
+                  <a class="mini primary" href="/funds.html">All funds</a>
                 </div>
               </div>
             </div>
