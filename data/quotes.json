@@ -1,15 +1,15 @@
 {
-  "asof_iso": "2026-04-14T16:09:37.068411+00:00",
-  "last_trading_day": "\u2014",
+  "asof_iso": "2026-04-14T17:40:23.429816+00:00",
+  "last_trading_day": "2026-04-13",
   "source": "alphavantage_free",
-  "prices": {},
-  "errors": {
-    "AGI": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "FSM": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "GAU": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "NFGC": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "VGZ": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "NEWP": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints",
-    "GOOGL": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints"
-  }
+  "prices": {
+    "AGI": 48.19,
+    "FSM": 10.44,
+    "GAU": 2.66,
+    "NFGC": 2.08,
+    "VGZ": 2.03,
+    "NEWP": 5.04,
+    "GOOGL": 321.31
+  },
+  "errors": {}
 }
