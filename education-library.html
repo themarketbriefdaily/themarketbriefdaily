@@ -251,7 +251,7 @@
       <h2>Pillar 5 — Personal Finance and Lifecycle Design</h2>
       <article class="card personal" data-category="personal" data-level="intermediate">
         <div class="card-head"><div><h3 class="card-title">5.1 UK tax optimization and wrapper sequencing</h3><p class="summary">ISA, SIPP, GIA, dividend and CGT allowance interactions.</p></div><div class="meta"><span class="read">12 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>ISA allowance remains £20,000 (2025/26) with tax-free growth/withdrawal.</li><li>SIPP annual allowance is typically £60,000 baseline, tapered for adjusted income above £240,000.</li><li>Dividend allowance (£1,000 policy-scenario assumption used in this module) and CGT annual exempt amount (£3,000) shape GIA optimisation.</li></ul></div>
+        <div class="card-body"><div class="takeaways"><ul><li>ISA allowance remains £20,000 (2025/26) with tax-free growth/withdrawal.</li><li>SIPP annual allowance is typically £60,000 baseline, tapered for adjusted income above £240,000.</li><li>Dividend allowance (£1,000 teaching scenario assumption, not current HMRC baseline) and CGT annual exempt amount (£3,000) shape GIA optimisation.</li></ul></div>
           <p>Core sequence (most UK households): (1) capture employer pension match, (2) maintain emergency reserve to avoid forced sales, (3) allocate flexible medium-term assets to ISA, (4) direct long-horizon retirement assets into SIPP with tax relief, (5) use GIA for overflow and harvest gains/losses annually. Deviations depend on access constraints, tax band, and objectives.</p>
           <p>Limitations: tax policy can change; pension access age (currently 55 rising to 57 in 2028) and inheritance treatment are policy-sensitive. Reconfirm assumptions yearly against HMRC/FCA updates and estate-planning objectives for higher earners.</p>
           <div class="method-standard"><strong>Methodological Standard:</strong> optimize wrappers on post-tax lifetime utility (accumulation + decumulation), not current-year relief alone.</div>
@@ -421,7 +421,7 @@
           </div>
         </div>
       </div>
-      <div class="caveat">Regulatory note: UK tax values used here include ISA annual allowance (£20,000), SIPP annual allowance baseline (£60,000 subject to earnings/tapering above £240k adjusted income), dividend planning allowance (£1,000 policy-scenario assumption for this curriculum module), and CGT annual exempt amount (£3,000). Verify with HMRC for current year rules and personal circumstances.</div>
+      <div class="caveat">Regulatory note: UK tax values used here include ISA annual allowance (£20,000), SIPP annual allowance baseline (£60,000 subject to earnings/tapering above £240k adjusted income), dividend planning allowance (£1,000 teaching scenario assumption for this curriculum module, not current HMRC baseline), and CGT annual exempt amount (£3,000). Verify with HMRC for current year rules and personal circumstances.</div>
     </section>
 
     <section class="tool-section" id="calculatorSection" data-filterable="true" data-category="calculator">
@@ -768,7 +768,7 @@
       const isaCap = Number(v.pIsa) > 20000 ? 'ISA planned contribution exceeds £20,000 annual allowance.' : 'ISA contribution within annual allowance.';
       const sippCap = Number(v.pSipp) > 60000 ? 'SIPP input exceeds baseline £60,000 annual allowance.' : 'SIPP contribution within baseline annual allowance.';
       const sequence = v.pGoal === 'flexibility' ? 'Priority: employer match → ISA (flexibility) → SIPP → GIA.' : (v.pGoal === 'retirement' ? 'Priority: employer match → SIPP tax relief → ISA buffer → GIA.' : 'Priority: emergency reserve + short-duration assets, then ISA/SIPP gradually.');
-      document.getElementById('planWrapper').textContent = `${sequence} ${isaCap} ${sippCap} Track dividend (£1,000 policy-scenario assumption) and CGT (£3,000) allowances for GIA harvesting. Decumulation note: bridge ISA/GIA before pension access-age constraints and align with IHT objectives for higher earners.`;
+      document.getElementById('planWrapper').textContent = `${sequence} ${isaCap} ${sippCap} Track dividend (£1,000 teaching-scenario assumption, not current HMRC baseline) and CGT (£3,000) allowances for GIA harvesting. Decumulation note: bridge ISA/GIA before pension access-age constraints and align with IHT objectives for higher earners.`;
 
       document.getElementById('plannerTable').innerHTML = plannerRows.map(r => `<tr><td>${r.scenario}</td><td>${gbp(r.nominal)}</td><td>${gbp(r.real)}</td><td>${r.comment}</td></tr>`).join('');
 
@@ -796,6 +796,7 @@
     let growthChart;
     let sequenceChart;
     let growthRows = [];
+    const MONTE_CARLO_PATHS = 220; // balances percentile stability with responsive UI on slider input
     const calcIds = ['initial', 'monthly', 'ret', 'retRange', 'inf', 'infRange', 'years', 'yearsRange', 'fee', 'growth', 'realToggle', 'mcVol', 'retireStress'];
     const c = Object.fromEntries(calcIds.map(id => [id, document.getElementById(id)]));
     let calcTimer;
@@ -840,7 +841,7 @@
       const scenarioReturns = { conservative: Math.max(0, netReturn - 0.02), base: netReturn, optimistic: netReturn + 0.015 };
       const sim = (annRet) => {
         const vals = [];
-        for (let p = 0; p < 220; p++) {
+        for (let p = 0; p < MONTE_CARLO_PATHS; p++) {
           let pot = initial;
           for (let y = 1; y <= years; y++) {
             const contributionYear = monthly * 12 * Math.pow(1 + contributionGrowth, y - 1);
