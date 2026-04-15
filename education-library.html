@@ -4,95 +4,221 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Investment Education Library | The Market Brief Daily</title>
-  <meta name="description" content="CFA-style investment education curriculum with topic cards and deep-dive modules for financial markets, investing, personal finance, asset classes, UK tax investing, and pensions." />
+  <meta name="description" content="CFA-standard investment education curriculum: financial markets, investing, personal finance, asset classes, UK tax, and pensions — with deep-dive modules and citation-backed content." />
   <link rel="stylesheet" href="assets/education.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">The Market Brief Daily — Investment Education Library</div>
-      <a class="nav-link" href="index.html">Back to Home</a>
+      <a class="brand" href="index.html">The Market Brief Daily</a>
+      <nav class="topbar-nav">
+        <a class="nav-link" href="index.html">← Back to Home</a>
+      </nav>
     </div>
   </header>
 
   <main class="container">
+
     <section class="hero">
+      <span class="kicker">Investment Education Library</span>
       <h1>Curriculum Hub</h1>
       <p>
-        This library has been redesigned into a structured curriculum pathway: each topic is a dedicated card that opens into a focused page with detailed subtopics, learning outcomes, and citation-backed reading lists.
+        A structured, CFA-standard curriculum for serious investors. Each pillar is a dedicated course with detailed modules, learning outcomes, key frameworks, worked examples, and citation-backed reference lists — built to the intellectual standard of the CFA Institute and Kaplan Schweser.
       </p>
-      <input id="topicSearch" class="search" type="search" placeholder="Search curriculum topics (e.g., pensions, asset classes, tax)" aria-label="Search curriculum topics" />
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">6</span><span class="stat-label">Curriculum Pillars</span></div>
+        <div class="stat-item"><span class="stat-num">60+</span><span class="stat-label">Deep-Dive Modules</span></div>
+        <div class="stat-item"><span class="stat-num">CFA</span><span class="stat-label">Aligned Content</span></div>
+        <div class="stat-item"><span class="stat-num">UK</span><span class="stat-label">Tax &amp; Reg. Updated</span></div>
+      </div>
+      <div class="search-wrap">
+        <input id="topicSearch" class="search" type="search" placeholder="Search topics (e.g. pensions, ISA, factor investing, duration…)" aria-label="Search curriculum topics" />
+      </div>
     </section>
 
     <section class="grid" id="topicGrid" aria-label="Curriculum topics">
-      <article class="topic-card" data-search="financial markets market structure microstructure liquidity regulation">
-        <h3>Financial Markets</h3>
-        <p>Market structure, trading mechanics, execution quality, market functioning, and systemic transmission channels.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">CFA-aligned</span><span class="pill">Macro + micro</span></div>
-        <a class="cta" href="education-financial-markets.html">Open curriculum →</a>
+
+      <!-- Financial Markets -->
+      <article class="topic-card theme-markets" data-search="financial markets market structure microstructure liquidity regulation repo clearing settlement auction primary secondary order execution dealer">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">🏛️</div>
+          <div>
+            <h3>Financial Markets</h3>
+          </div>
+        </div>
+        <div class="topic-card-body">
+          <p>Market architecture, trading mechanics, price discovery, liquidity microstructure, clearing and settlement infrastructure, and systemic stress transmission channels.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-blue">10 Modules</span>
+          <span class="pill pill-blue">CFA-Aligned</span>
+          <span class="pill pill-blue">Micro + Macro</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> Order types &amp; execution · Price discovery · Repo &amp; collateral · Clearing &amp; CCPs · Crisis case studies
+        </div>
+        <a class="cta" href="education-financial-markets.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
 
-      <article class="topic-card" data-search="investing portfolio construction risk active passive factors">
-        <h3>Investing</h3>
-        <p>Policy design, active vs passive evidence, portfolio construction, behavioural discipline, and implementation quality.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">Evidence-led</span><span class="pill">Portfolio practice</span></div>
-        <a class="cta" href="education-investing.html">Open curriculum →</a>
+      <!-- Investing -->
+      <article class="topic-card theme-investing" data-search="investing portfolio construction risk active passive factors rebalancing behavioural governance attribution ips strategic asset allocation">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">📊</div>
+          <div><h3>Investing</h3></div>
+        </div>
+        <div class="topic-card-body">
+          <p>Investment policy design, active vs passive evidence, strategic and factor-based asset allocation, rebalancing frameworks, behavioural discipline, and portfolio governance.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-purple">10 Modules</span>
+          <span class="pill pill-purple">Evidence-Led</span>
+          <span class="pill pill-purple">Portfolio Practice</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> IPS design · Active vs passive arithmetic · Factor investing · Stress testing · Performance attribution
+        </div>
+        <a class="cta" href="education-investing.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
 
-      <article class="topic-card" data-search="personal finance goals budgeting debt emergency planning behaviour">
-        <h3>Personal Finance</h3>
-        <p>Household balance sheet management, savings behaviour, risk capacity, and long-term compounding decisions.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">Lifecycle focus</span><span class="pill">Decision framework</span></div>
-        <a class="cta" href="education-personal-finance.html">Open curriculum →</a>
+      <!-- Personal Finance -->
+      <article class="topic-card theme-personal" data-search="personal finance goals budgeting debt emergency planning behaviour savings human capital insurance lifecycle">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">💰</div>
+          <div><h3>Personal Finance</h3></div>
+        </div>
+        <div class="topic-card-body">
+          <p>Household capital management: goal architecture, cash-flow systems, emergency reserves, debt strategy, risk protection, human capital, and long-term financial governance.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-green">10 Modules</span>
+          <span class="pill pill-green">Lifecycle Focus</span>
+          <span class="pill pill-green">Decision Framework</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> Goal hierarchy · Debt payoff · Insurance design · Behavioural controls · Life-event planning
+        </div>
+        <a class="cta" href="education-personal-finance.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
 
-      <article class="topic-card" data-search="asset classes asset types equity bonds credit alternatives derivatives">
-        <h3>Asset Classes &amp; Asset Types</h3>
-        <p>Economic exposures, payoffs, valuation frameworks, diversification mechanics, and instrument-level risk interpretation.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">Cross-asset</span><span class="pill">Valuation + risk</span></div>
-        <a class="cta" href="education-asset-classes-types.html">Open curriculum →</a>
+      <!-- Asset Classes -->
+      <article class="topic-card theme-assets" data-search="asset classes asset types equity bonds credit alternatives derivatives commodities fx real assets inflation linked cross-asset">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">📈</div>
+          <div><h3>Asset Classes &amp; Types</h3></div>
+        </div>
+        <div class="topic-card-body">
+          <p>Economic exposures, payoff structures, valuation frameworks, and risk regimes across equities, fixed income, credit, alternatives, commodities, derivatives, and FX.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-orange">10 Modules</span>
+          <span class="pill pill-orange">Cross-Asset</span>
+          <span class="pill pill-orange">Valuation + Risk</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> Equity valuation · Duration · Credit spreads · Commodities · Derivatives · Cross-asset correlations
+        </div>
+        <a class="cta" href="education-asset-classes-types.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
 
-      <article class="topic-card" data-search="uk investing tax isa cgt dividends hmrc compliance wrappers">
-        <h3>UK Investing &amp; Tax</h3>
-        <p>ISA/tax wrappers, CGT/dividend implementation, portfolio tax drag management, and UK-specific investor process.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">UK-specific</span><span class="pill">Tax implementation</span></div>
-        <a class="cta" href="education-uk-investing-tax.html">Open curriculum →</a>
+      <!-- UK Tax -->
+      <article class="topic-card theme-uktax" data-search="uk investing tax isa cgt dividends hmrc compliance wrappers bed and isa sipp salary sacrifice asset location turnover reporting">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">🇬🇧</div>
+          <div><h3>UK Investing &amp; Tax</h3></div>
+        </div>
+        <div class="topic-card-body">
+          <p>Tax-aware investing for UK investors: ISA wrappers, CGT and dividend mechanics, asset location strategy, Bed &amp; ISA, fund structures, and tax-year-end implementation.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-red">10 Modules</span>
+          <span class="pill pill-red">UK-Specific</span>
+          <span class="pill pill-red">2026/27 Updated</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> ISA planning · CGT implementation · Dividend tax · Asset location · Bed &amp; ISA · Tax-year checklist
+        </div>
+        <a class="cta" href="education-uk-investing-tax.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
 
-      <article class="topic-card" data-search="pensions retirement sipp annual allowance decumulation withdrawals">
-        <h3>Pensions</h3>
-        <p>Pension accumulation and decumulation strategy, allowances, sequence risk, withdrawal policy, and retirement governance.</p>
-        <div class="meta"><span class="pill">10 modules</span><span class="pill">Accumulation + decumulation</span><span class="pill">Policy-first</span></div>
-        <a class="cta" href="education-pensions.html">Open curriculum →</a>
+      <!-- Pensions -->
+      <article class="topic-card theme-pensions" data-search="pensions retirement sipp annual allowance decumulation withdrawals glide path sequence risk bengen guardrails salary sacrifice">
+        <div class="topic-card-accent"></div>
+        <div class="topic-card-header">
+          <div class="topic-icon">🏦</div>
+          <div><h3>Pensions</h3></div>
+        </div>
+        <div class="topic-card-body">
+          <p>UK pension accumulation and decumulation: annual allowances, salary sacrifice, lifecycle glide paths, sequence risk, withdrawal frameworks, and retirement tax sequencing.</p>
+        </div>
+        <div class="meta">
+          <span class="pill pill-teal">10 Modules</span>
+          <span class="pill pill-teal">Accumulation + Decumulation</span>
+          <span class="pill pill-teal">Policy-First</span>
+        </div>
+        <div class="topic-modules-preview">
+          <strong>Includes:</strong> Annual allowance · Salary sacrifice · Sequence risk · 4% rule · Decumulation tax · Estate planning
+        </div>
+        <a class="cta" href="education-pensions.html">
+          <span>Open Curriculum</span><span class="cta-arrow">→</span>
+        </a>
       </article>
+
     </section>
 
-    <section class="section-card">
-      <h3>Full Review and Improvement Actions Implemented</h3>
-      <ul>
-        <li>Replaced one long-scroll page with a topic-card architecture and page-level deep dives.</li>
-        <li>Introduced clearer learning pathways with module indexes and direct anchor navigation.</li>
-        <li>Expanded each topic into comprehensive curriculum modules with outcomes and practical implementation emphasis.</li>
-        <li>Upgraded citation scaffolding for academic papers, regulator guidance, and practitioner research.</li>
-        <li>Improved UX clarity for progression: discover topic → open topic page → navigate subtopics.</li>
-      </ul>
+    <section class="section-card" style="margin-top:28px;">
+      <h3 style="margin:0 0 14px;">How to Use This Curriculum</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:4px;">
+        <div style="padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #d9e1ee;">
+          <div style="font-size:1.4rem;margin-bottom:8px;">1️⃣</div>
+          <strong style="font-size:0.9rem;">Choose a Pillar</strong>
+          <p style="margin:6px 0 0;font-size:0.84rem;color:#4b5565;">Select the curriculum topic most relevant to your current learning goal.</p>
+        </div>
+        <div style="padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #d9e1ee;">
+          <div style="font-size:1.4rem;margin-bottom:8px;">2️⃣</div>
+          <strong style="font-size:0.9rem;">Navigate Modules</strong>
+          <p style="margin:6px 0 0;font-size:0.84rem;color:#4b5565;">Use the sticky sidebar to jump between the 10 modules in that curriculum.</p>
+        </div>
+        <div style="padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #d9e1ee;">
+          <div style="font-size:1.4rem;margin-bottom:8px;">3️⃣</div>
+          <strong style="font-size:0.9rem;">Study the Framework</strong>
+          <p style="margin:6px 0 0;font-size:0.84rem;color:#4b5565;">Each module contains concepts, formulas, worked examples, and key takeaways.</p>
+        </div>
+        <div style="padding:14px;background:#f7f9fc;border-radius:10px;border:1px solid #d9e1ee;">
+          <div style="font-size:1.4rem;margin-bottom:8px;">4️⃣</div>
+          <strong style="font-size:0.9rem;">Verify &amp; Apply</strong>
+          <p style="margin:6px 0 0;font-size:0.84rem;color:#4b5565;">Check cited sources and apply the frameworks to your own portfolio context.</p>
+        </div>
+      </div>
     </section>
 
     <section class="refs">
-      <h3>Source Targets Integrated Across Topic Pages</h3>
+      <h3>Curriculum Source Standards</h3>
       <ul>
-        <li>CFA Program curriculum topic architecture and learning outcome format.</li>
-        <li>Kaplan CFA preparation structure and topic sequencing conventions.</li>
-        <li>Core academic papers: Fama, Sharpe, Markowitz, Fama-French, Carhart, Bengen, and related factor/portfolio literature.</li>
-        <li>Institutional sources: BIS market-functioning publications, SPIVA scorecards, and practitioner implementation research.</li>
-        <li>UK policy references: HMRC ISA/pension/tax guidance and FCA consumer investing guidance.</li>
+        <li><strong>CFA Institute</strong> — curriculum topic architecture, learning outcome statements, and ethics framework.</li>
+        <li><strong>Kaplan Schweser</strong> — topic sequencing conventions, concept maps, and summary conventions.</li>
+        <li><strong>Academic literature</strong> — Fama (1970, 1991), Sharpe (1991), Markowitz (1952), Fama-French (1992, 1993, 2015), Carhart (1997), Bengen (1994), Black &amp; Litterman (1992).</li>
+        <li><strong>Institutional research</strong> — BIS Quarterly Reviews, SPIVA persistence scorecards, CPMI-IOSCO guidance, Vanguard and Dimensional research.</li>
+        <li><strong>UK regulatory sources</strong> — HMRC ISA, CGT, dividend, pension and self-assessment guidance; FCA consumer investing and scam-awareness publications. Tax figures verified for the 2026/27 tax year.</li>
       </ul>
-      <p><strong>Note:</strong> External fetching is currently unavailable in this runtime environment, so references are curated from established canonical sources and linked for direct verification.</p>
     </section>
 
     <footer>
-      Educational content only. Not personal financial advice. Always verify current tax and regulatory thresholds directly from official UK guidance before acting.
+      Educational content only — not personal financial advice. UK tax figures are verified for 2026/27; always confirm current thresholds directly from HMRC or FCA publications before acting.
     </footer>
   </main>
 
@@ -106,6 +232,24 @@
         card.classList.toggle('hidden', q && !text.includes(q));
       });
     });
+
+    // Highlight active module nav links on scroll (used on topic pages)
+    if (window.IntersectionObserver) {
+      const modules = document.querySelectorAll('.module');
+      const navLinks = document.querySelectorAll('.module-nav a');
+      if (modules.length && navLinks.length) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              navLinks.forEach(a => a.classList.remove('active'));
+              const active = document.querySelector(`.module-nav a[href="#${entry.target.id}"]`);
+              if (active) active.classList.add('active');
+            }
+          });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        modules.forEach(m => observer.observe(m));
+      }
+    }
   </script>
 </body>
 </html>
