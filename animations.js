@@ -175,6 +175,7 @@
 
   function initAccordionRows() {
     $$('.js-expand-row').forEach((button) => {
+      if (button.closest('.js-fund-table')) return;
       button.addEventListener('click', () => {
         const detailId = button.dataset.target;
         const detailRow = document.getElementById(detailId);
@@ -216,6 +217,10 @@
         const show = !query || text.includes(query);
         item.dataset.visible = String(show);
         item.hidden = !show;
+      });
+      $$('.letter-section').forEach((section) => {
+        const hasVisibleItems = !!section.querySelector('.js-search-item:not([hidden])');
+        section.hidden = !hasVisibleItems;
       });
     });
   }
