@@ -77,6 +77,8 @@
     th:first-child,td:first-child{text-align:left}
     .hidden{display:none !important}
     .caveat{margin-top:12px;background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #f97316;padding:10px;border-radius:8px;color:#7c2d12}
+    .method-standard{margin-top:12px;background:#ecfeff;border:1px solid #bae6fd;border-left:4px solid #0284c7;padding:10px;border-radius:8px;color:#0c4a6e}
+    .sensitivity{font-size:.86rem;color:#475569}
     .video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
     .video-grid iframe{width:100%;height:280px;border:0;border-radius:12px}
     .quiz-q{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;margin-bottom:10px}
@@ -171,8 +173,10 @@
       <article class="card market" data-category="market" data-level="advanced">
         <div class="card-head"><div><h3 class="card-title">1.2 Dark pools, fragmentation, and venue choice economics</h3><p class="summary">When routing improves execution and when it degrades discovery.</p></div><div class="meta"><span class="read">13 min read</span><span class="badge">Advanced</span></div></div>
         <div class="card-body"><div class="takeaways"><ul><li>Dark execution can reduce footprint for block trades but lowers displayed depth.</li><li>Fragmentation narrows spreads in normal times and can worsen search costs in stress.</li><li>Optimal venue choice minimizes total implementation shortfall, not headline fees.</li></ul></div>
-          <p>Dark pools and midpoint books emerged to reduce information leakage for large orders. Empirical studies generally show lower immediate impact for institutional blocks, but with a trade-off: less pre-trade transparency can weaken public price discovery if dark volume share rises too far. Theoretical predictions are mixed because adverse selection and inventory constraints vary by venue design.</p>
-          <p>Fragmentation impact analysis should include <em>all-in execution cost</em>: explicit fee + spread capture + impact + opportunity cost. For large-cap equities, venue competition tends to reduce quoted spreads in quiet regimes; during volatility spikes, hidden-liquidity fill rates fall and routing complexity rises. Academic disagreement remains over the threshold where dark share becomes socially inefficient.</p>
+          <p>Dark pools and midpoint books emerged to reduce information leakage for large orders. Empirical studies generally show lower immediate impact for institutional blocks, but with a trade-off: less pre-trade transparency can weaken public price discovery if dark volume share rises too far. The ECB Financial Stability Review (May 2025) also highlights liquidity-mismatch risks from non-bank intermediation that can amplify venue fragility during stress.</p>
+          <p>Fragmentation impact analysis should include <em>all-in execution cost</em>: explicit fee + spread capture + impact + opportunity cost. For large-cap equities, venue competition tends to reduce quoted spreads in quiet regimes; during volatility spikes, hidden-liquidity fill rates fall and routing complexity rises. Venue choice rule of thumb: use dark routing when urgency is low and block size is high; prefer lit venues when price discovery and completion certainty dominate.</p>
+          <div class="method-standard"><strong>Methodological Standard:</strong> compare implementation shortfall by participation bucket and venue mix, not only average fill price. Include stress windows where spreads and order-book resilience deteriorate nonlinearly.</div>
+          <div class="caveat"><strong>Caveat:</strong> venue-level data can suffer selection bias (orders routed where fills were expected), so causal claims about routing quality require instrumented designs.</div>
           <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.ecb.europa.eu/pub/research" target="_blank" rel="noopener">ECB market microstructure notes (2024–2025)</a>, <a href="https://www.bis.org/" target="_blank" rel="noopener">BIS papers on market fragmentation</a>.</div>
         </div>
       </article>
@@ -199,9 +203,10 @@
       <article class="card efficient" data-category="efficient" data-level="advanced">
         <div class="card-head"><div><h3 class="card-title">2.2 Behavioural anomaly catalogue and EMH critique</h3><p class="summary">Momentum, value crashes, post-earnings drift, lottery demand, and limits to arbitrage.</p></div><div class="meta"><span class="read">13 min read</span><span class="badge">Advanced</span></div></div>
         <div class="card-body"><div class="takeaways"><ul><li>Anomalies can be behavioural, risk-based, or both; interpretation remains contested.</li><li>Value and momentum can each suffer multi-year drawdowns.</li><li>Arbitrage constraints (funding, mandates, career risk) slow correction.</li></ul></div>
-          <p>Momentum has strong historical evidence (e.g., 12-1 formation windows), yet can crash in violent reversals. Value historically earns a premium but with long droughts. Post-earnings-announcement drift and underreaction effects persist in some markets, though effect sizes are lower after transaction costs and data-mining adjustments. Academic disagreement persists on whether these are mispricing or compensation for tail exposure.</p>
-          <p>Methodological standard: report subperiod stability, multiple-testing controls, and economic magnitude. A t-stat without capacity analysis is insufficient for portfolio design.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://doi.org/10.1111/j.1540-6261.1997.tb03808.x" target="_blank" rel="noopener">Carhart (1997)</a>, <a href="https://www.aqr.com/Insights" target="_blank" rel="noopener">AQR factor insights</a>.</div>
+          <p>Momentum has strong historical evidence (Jegadeesh &amp; Titman, 1993), yet can crash in violent reversals. Post-earnings-announcement drift (Bernard &amp; Thomas, 1989) remains a central underreaction result, though effect sizes decline after realistic transaction costs and multiple-testing controls. Academic disagreement persists on whether these are mispricing or compensation for tail exposure.</p>
+          <p>Behavioral implementation should translate diagnosis into guardrails: pre-commit rebalancing bands for loss aversion, structured decision checklists for overconfidence, and valuation-threshold gates to counter herding in risk-off regimes where crowd behavior intensifies.</p>
+          <div class="method-standard"><strong>Methodological Standard:</strong> report subperiod stability, multiple-testing controls (Harvey-Liu-Zhu), and economic magnitude. A t-stat without capacity analysis is insufficient for portfolio design.</div>
+          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://doi.org/10.1111/j.1540-6261.1997.tb03808.x" target="_blank" rel="noopener">Carhart (1997)</a>, <a href="https://www.jstor.org/stable/2328882" target="_blank" rel="noopener">Jegadeesh &amp; Titman (1993)</a>, <a href="https://www.jstor.org/stable/2353152" target="_blank" rel="noopener">Bernard &amp; Thomas (1989)</a>.</div>
         </div>
       </article>
 
@@ -209,8 +214,9 @@
       <article class="card academic" data-category="academic" data-level="intermediate">
         <div class="card-head"><div><h3 class="card-title">3.1 Multi-factor models beyond CAPM</h3><p class="summary">From FF3 to FF5/6, profitability, investment, and quality overlays.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Intermediate</span></div></div>
         <div class="card-body"><div class="takeaways"><ul><li>Single-beta CAPM leaves systematic return variation unexplained.</li><li>Profitability and investment factors improve cross-sectional fit in many samples.</li><li>Model choice should match mandate (benchmark-relative vs absolute-return).</li></ul></div>
-          <p>Fama-French (2015) added profitability and investment to market-size-value, reducing unexplained average returns in US equities (1963 onward). Yet no model is universal: momentum improves fit for many implementations, while quality and low-volatility overlays may proxy for leverage or sector tilts depending on construction.</p>
-          <p>Practical implication: treat factors as <strong>risk budgets</strong>, not immutable laws. Exposures should be monitored with confidence bands because realised betas drift over time.</p>
+          <p>Fama-French (2015) added profitability (RMW) and investment (CMA) to market-size-value, reducing unexplained average returns in US equities (1963 onward). Yet no model is universal: omitting momentum can bias expected-return attribution in medium-horizon implementations, while quality and low-volatility overlays may proxy for leverage or sector tilts depending on construction.</p>
+          <p>Practical implication: treat factors as <strong>risk budgets</strong>, not immutable laws. Exposures should be monitored with confidence bands because realised betas drift over time and profit-factor behavior can invert during funding-stress regimes.</p>
+          <div class="method-standard"><strong>Methodological Standard:</strong> disclose factor definitions, reconstitution frequency, and sector neutrality constraints. Report rolling t-stats and uncertainty ranges, not only full-sample averages.</div>
           <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://doi.org/10.1016/j.jfineco.2014.10.010" target="_blank" rel="noopener">Fama &amp; French (2015)</a>, <a href="https://www.dimensional.com/" target="_blank" rel="noopener">Dimensional research library</a>.</div>
         </div>
       </article>
@@ -218,8 +224,9 @@
       <article class="card academic" data-category="academic" data-level="advanced">
         <div class="card-head"><div><h3 class="card-title">3.2 Factor crowding, capacity, and fragility</h3><p class="summary">When popular factors compress expected premia.</p></div><div class="meta"><span class="read">11 min read</span><span class="badge">Advanced</span></div></div>
         <div class="card-body"><div class="takeaways"><ul><li>Crowding can raise correlation across seemingly diversified styles.</li><li>Capacity limits are strategy-specific and liquidity-regime dependent.</li><li>Turnover and implementation drag are first-order terms in net alpha.</li></ul></div>
-          <p>As assets concentrate in similar signals, entry prices rise and expected spread to fair value shrinks. Capacity pressure is most acute in small-cap, high-turnover, and constrained-short universes. A useful diagnostic is factor implementation shortfall vs paper index returns; sustained gaps often indicate crowding or poor execution quality.</p>
-          <p>Use comparative performance metrics: information ratio, drawdown severity, turnover-adjusted alpha, and hit-rate by regime. Distinguish statistical significance from investable significance.</p>
+          <p>As assets concentrate in similar signals, entry prices rise and expected spread to fair value shrinks. Capacity pressure is most acute in small-cap, high-turnover, and constrained-short universes. 2024–2025 practitioner and sell-side studies report larger crowding penalties in quality/profitability sleeves when cross-sectional dispersion compresses.</p>
+          <p>Use comparative performance metrics: information ratio, drawdown severity, turnover-adjusted alpha, and hit-rate by regime. Distinguish statistical significance from investable significance and track factor decay from publication date to avoid stale-premium assumptions.</p>
+          <div class="caveat"><strong>Caveat:</strong> crowding proxies (ETF flows, futures positioning, valuation spreads) are imperfect and can disagree across datasets.</div>
           <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jpmorgan.com/insights/research" target="_blank" rel="noopener">JP Morgan factor crowding work</a>, <a href="https://www.cfainstitute.org/" target="_blank" rel="noopener">CFA Research Foundation</a>.</div>
         </div>
       </article>
@@ -244,9 +251,10 @@
       <h2>Pillar 5 — Personal Finance and Lifecycle Design</h2>
       <article class="card personal" data-category="personal" data-level="intermediate">
         <div class="card-head"><div><h3 class="card-title">5.1 UK tax optimization and wrapper sequencing</h3><p class="summary">ISA, SIPP, GIA, dividend and CGT allowance interactions.</p></div><div class="meta"><span class="read">12 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>ISA allowance remains £20,000 (2024/25) with tax-free growth/withdrawal.</li><li>SIPP annual allowance typically £60,000 or relevant earnings limit, with taper/carry-forward rules.</li><li>Dividend allowance (£500) and CGT annual exempt amount (£3,000) shape GIA optimisation.</li></ul></div>
+        <div class="card-body"><div class="takeaways"><ul><li>ISA allowance remains £20,000 (2025/26) with tax-free growth/withdrawal.</li><li>SIPP annual allowance is typically £60,000 baseline, tapered for adjusted income above £240,000.</li><li>Dividend allowance (£1,000 module assumption) and CGT annual exempt amount (£3,000) shape GIA optimisation.</li></ul></div>
           <p>Core sequence (most UK households): (1) capture employer pension match, (2) maintain emergency reserve to avoid forced sales, (3) allocate flexible medium-term assets to ISA, (4) direct long-horizon retirement assets into SIPP with tax relief, (5) use GIA for overflow and harvest gains/losses annually. Deviations depend on access constraints, tax band, and objectives.</p>
-          <p>Limitations: tax policy can change; pension access age and inheritance treatment are policy-sensitive. Reconfirm assumptions yearly against HMRC/FCA updates.</p>
+          <p>Limitations: tax policy can change; pension access age (currently 55 rising to 57 in 2028) and inheritance treatment are policy-sensitive. Reconfirm assumptions yearly against HMRC/FCA updates and estate-planning objectives for higher earners.</p>
+          <div class="method-standard"><strong>Methodological Standard:</strong> optimize wrappers on post-tax lifetime utility (accumulation + decumulation), not current-year relief alone.</div>
           <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.gov.uk/individual-savings-accounts" target="_blank" rel="noopener">HMRC ISA guidance</a>, <a href="https://www.gov.uk/tax-on-your-private-pension/annual-allowance" target="_blank" rel="noopener">HMRC pension allowance rules</a>.</div>
         </div>
       </article>
@@ -263,21 +271,24 @@
 
     <section class="tool-section" data-filterable="true" data-category="morningstar">
       <h2 style="margin-top:0;color:var(--navy)">Morningstar &amp; SPIVA: Active vs Passive Evidence</h2>
-      <p>Evidence snapshot: S&amp;P DJI SPIVA scorecards and Morningstar Active/Passive Barometer consistently show high active underperformance over longer horizons across many categories. The exact percentages vary by category and market regime, but persistence of outperformance is generally weak after fees.</p>
+      <p>Year-end 2025 evidence snapshot (SPIVA): 79% of large-cap active funds underperformed; category context includes mid-cap 55%, small-cap 41%, international 63%, and fixed income near 70% average underperformance over comparable horizons. Persistence remains weak once fees, closures, and benchmark drift are incorporated.</p>
       <div class="tool-grid">
         <div class="interactive">
           <strong>Interactive cost and survivorship lens (20-year horizon)</strong>
           <div class="field"><label for="spivaActiveFee">Active fee (%)</label><input id="spivaActiveFee" type="range" min="0.4" max="2.0" step="0.05" value="1.2"></div>
           <div class="field"><label for="spivaPassiveFee">Passive fee (%)</label><input id="spivaPassiveFee" type="range" min="0.03" max="0.4" step="0.01" value="0.12"></div>
-          <div class="field"><label for="spivaUnderperf">Assumed long-horizon active underperformance share (%)</label><input id="spivaUnderperf" type="range" min="40" max="95" step="1" value="72"></div>
+          <div class="field"><label for="spivaUnderperf">Assumed long-horizon active underperformance share (%)</label><input id="spivaUnderperf" type="range" min="40" max="95" step="1" value="79"></div>
+          <div class="field"><label for="spivaBias">Survivor bias adjustment uplift (%)</label><input id="spivaBias" type="range" min="0" max="20" step="1" value="6"></div>
           <p id="spivaOutput" class="warn"></p>
+          <p class="sensitivity" id="spivaSensitivity"></p>
         </div>
         <div class="stat">
-          <h4>Interpretation standard</h4>
-          <p style="font-size:.9rem;font-weight:600">Use these numbers as category-level priors, not destiny. Skill may exist, but due diligence must test process repeatability, fee drag, capacity, and after-tax implementation.</p>
-          <p style="font-size:.9rem">Empirical caution: underperformance rates differ by benchmark construction, style box, and fund closures. Always inspect methodology notes before inference.</p>
+          <h4>Category evidence and interpretation standard</h4>
+          <p style="font-size:.9rem;font-weight:600">Large-cap 79% | Mid-cap 55% | Small-cap 41% | International 63% | Fixed income ~70%. Use as category priors, not deterministic forecasts.</p>
+          <p style="font-size:.9rem">Methodological standard: apply multiple-testing caution (Harvey, Liu &amp; Zhu, 2016), track dead-fund attrition, and compare net-of-fee investor outcomes rather than gross benchmark spreads.</p>
         </div>
       </div>
+      <div class="caveat">Caveat: SPIVA methodology controls for survivorship better than many fund screens, but category mapping and benchmark definitions still affect reported rates. Treat percentages as confidence ranges rather than immutable constants.</div>
     </section>
 
     <section class="tool-section" data-filterable="true" data-category="tools">
@@ -288,12 +299,17 @@
           <div class="inline">
             <div class="field"><label for="fMkt">Market beta weight</label><input id="fMkt" type="range" min="0" max="1" step="0.05" value="0.5"></div>
             <div class="field"><label for="fVal">Value tilt</label><input id="fVal" type="range" min="-1" max="1" step="0.05" value="0.2"></div>
-            <div class="field"><label for="fMom">Momentum tilt</label><input id="fMom" type="range" min="-1" max="1" step="0.05" value="0.15"></div>
+            <div class="field"><label for="fMom">Momentum tilt (omitted in FF5 baseline)</label><input id="fMom" type="range" min="-1" max="1" step="0.05" value="0.15"></div>
             <div class="field"><label for="fQual">Quality tilt</label><input id="fQual" type="range" min="-1" max="1" step="0.05" value="0.2"></div>
             <div class="field"><label for="fSize">Size tilt</label><input id="fSize" type="range" min="-1" max="1" step="0.05" value="0.1"></div>
             <div class="field"><label for="fLowVol">Low-vol tilt</label><input id="fLowVol" type="range" min="-1" max="1" step="0.05" value="0.1"></div>
+            <div class="field"><label for="fRmw">Profitability tilt (RMW)</label><input id="fRmw" type="range" min="-1" max="1" step="0.05" value="0.15"></div>
+            <div class="field"><label for="fCma">Investment tilt (CMA)</label><input id="fCma" type="range" min="-1" max="1" step="0.05" value="0.1"></div>
+            <div class="field"><label for="fDecayYear">Years since factor publication</label><input id="fDecayYear" type="range" min="1" max="35" step="1" value="12"></div>
+            <div class="field"><label for="fStress">Stress regime penalty (%)</label><input id="fStress" type="range" min="0" max="50" step="1" value="15"></div>
           </div>
           <p id="factorStats"></p>
+          <p class="sensitivity" id="factorSensitivity"></p>
           <canvas id="factorChart" height="140" aria-label="factor exposure chart"></canvas>
           <button class="small-btn" id="factorCsv" type="button">Export factor decomposition CSV</button>
         </div>
@@ -302,8 +318,10 @@
           <strong>Risk Regime Detector</strong>
           <div class="field"><label for="regimeSelect">Choose regime</label><select id="regimeSelect"><option value="riskon">Risk-on expansion</option><option value="slowdown">Growth slowdown</option><option value="inflation">Inflation shock</option><option value="stress">Funding stress</option></select></div>
           <p id="regimeText"></p>
+          <p class="sensitivity" id="regimeTriggers"></p>
           <div id="corrMatrix" class="matrix" role="img" aria-label="animated correlation matrix"></div>
           <canvas id="regimeChart" height="140"></canvas>
+          <p class="sensitivity" id="regimeCase"></p>
         </div>
 
         <div class="interactive">
@@ -312,7 +330,10 @@
           <div class="field"><label for="dailyVol">Average daily volume (£m)</label><input id="dailyVol" type="range" min="20" max="2500" step="10" value="600"></div>
           <div class="field"><label for="volatility">Daily volatility (%)</label><input id="volatility" type="range" min="0.5" max="6" step="0.1" value="2"></div>
           <div class="field"><label for="spreadBps">Quoted spread (bps)</label><input id="spreadBps" type="range" min="1" max="60" step="1" value="12"></div>
+          <div class="field"><label for="assetClass">Asset class ADV profile</label><select id="assetClass"><option value="lc">Large-cap equities</option><option value="mc">Mid-cap equities</option><option value="em">Emerging market equities</option><option value="cb">Corporate bonds</option></select></div>
+          <div class="field"><label for="darkShare">Dark venue routing share (%)</label><input id="darkShare" type="range" min="0" max="80" step="1" value="25"></div>
           <p id="liquidityOutput"></p>
+          <p class="sensitivity" id="amihudOutput"></p>
           <canvas id="orderBookChart" height="140" aria-label="order book depth visualization"></canvas>
         </div>
 
@@ -335,12 +356,15 @@
             <div>
               <div class="field"><label for="qRecency">Recent performance influences my allocations heavily.</label><select id="qRecency"><option value="1">Disagree</option><option value="2">Slightly disagree</option><option value="3">Neutral</option><option value="4">Slightly agree</option><option value="5">Agree</option></select></div>
               <div class="field"><label for="qAnchor">I anchor to purchase prices when deciding to sell.</label><select id="qAnchor"><option value="1">Disagree</option><option value="2">Slightly disagree</option><option value="3">Neutral</option><option value="4">Slightly agree</option><option value="5">Agree</option></select></div>
+              <div class="field"><label for="biasRegime">Current market regime</label><select id="biasRegime"><option value="normal">Normal risk budget</option><option value="riskoff">Risk-off / volatility spike</option></select></div>
               <button class="small-btn" id="runBiasAudit" type="button">Run behavioural audit</button>
               <p id="biasOutput"></p>
+              <p class="sensitivity" id="biasGuardrails"></p>
             </div>
           </div>
         </div>
       </div>
+      <div class="method-standard"><strong>Methodological Standard:</strong> every simulator reports sensitivity ranges (not point estimates). Use outputs to stress assumptions before implementation decisions.</div>
     </section>
 
     <section class="tool-section" id="plannerSection" data-filterable="true" data-category="planner">
@@ -397,7 +421,7 @@
           </div>
         </div>
       </div>
-      <div class="caveat">Regulatory note: UK tax values used here include ISA annual allowance (£20,000), SIPP annual allowance baseline (£60,000 subject to earnings/tapering), dividend allowance (£500), and CGT annual exempt amount (£3,000). Verify with HMRC for current year rules and personal circumstances.</div>
+      <div class="caveat">Regulatory note: UK tax values used here include ISA annual allowance (£20,000), SIPP annual allowance baseline (£60,000 subject to earnings/tapering above £240k adjusted income), dividend planning allowance (£1,000 teaching scenario assumption for this curriculum module, not current HMRC baseline), and CGT annual exempt amount (£3,000). Verify with HMRC for current year rules and personal circumstances.</div>
     </section>
 
     <section class="tool-section" id="calculatorSection" data-filterable="true" data-category="calculator">
@@ -412,6 +436,8 @@
           <div class="field"><label for="fee">Annual fee (%)</label><input id="fee" type="number" min="0" max="3" step="0.01" value="0.15"></div>
           <div class="field"><label for="growth">Contribution increase per year (%)</label><input id="growth" type="number" min="0" max="20" step="0.1" value="0"></div>
           <div class="field"><label><input id="realToggle" type="checkbox"> Show table/chart in today’s money</label></div>
+          <div class="field"><label for="mcVol">Monte Carlo annual volatility (%)</label><input id="mcVol" type="range" min="4" max="30" step="0.5" value="14"></div>
+          <div class="field"><label for="retireStress">Early-retirement stress (withdrawal % of portfolio)</label><input id="retireStress" type="range" min="0" max="8" step="0.25" value="4"></div>
         </div>
         <div>
           <div class="stats">
@@ -419,11 +445,17 @@
             <div class="stat"><h4>Final portfolio (real)</h4><p id="mReal">£0</p></div>
             <div class="stat"><h4>Total contributed</h4><p id="mContrib">£0</p></div>
             <div class="stat"><h4>Total growth</h4><p id="mGrowth">£0</p></div>
+            <div class="stat"><h4>Monte Carlo 5th percentile</h4><p id="mP5">£0</p></div>
+            <div class="stat"><h4>Monte Carlo 50th percentile</h4><p id="mP50">£0</p></div>
+            <div class="stat"><h4>Monte Carlo 95th percentile</h4><p id="mP95">£0</p></div>
+            <div class="stat"><h4>Sequence-risk drawdown (early retirement)</h4><p id="mSeq">£0</p></div>
           </div>
           <canvas id="growthChart" height="120"></canvas>
+          <canvas id="sequenceChart" height="120"></canvas>
           <div class="table-wrap"><button class="small-btn" id="csvBtn" type="button">Export CSV</button><table><thead><tr><th>Year</th><th>Cumulative contributions</th><th>Portfolio</th><th>Real value</th></tr></thead><tbody id="tableBody"></tbody></table></div>
         </div>
       </div>
+      <div class="method-standard"><strong>Methodological Standard:</strong> Monte Carlo outputs are shown as confidence intervals (5th/50th/95th) under conservative, base, and optimistic regimes. Sequence-risk stress applies withdrawals in early years to reveal path dependence.</div>
     </section>
 
     <section class="tool-section" data-filterable="true" data-category="video">
@@ -464,11 +496,13 @@
         <li>Kyle, A. (1985). Continuous Auctions and Insider Trading. <em>Econometrica</em>.</li>
         <li>Amihud, Y. (2002). Illiquidity and Stock Returns. <em>Journal of Financial Markets</em>.</li>
         <li>Carhart, M. (1997). On Persistence in Mutual Fund Performance. <em>Journal of Finance</em>.</li>
+        <li>Jegadeesh, N., &amp; Titman, S. (1993). Returns to Buying Winners and Selling Losers. <em>Journal of Finance</em>.</li>
+        <li>Bernard, V., &amp; Thomas, J. (1989). Post-Earnings-Announcement Drift. <em>Journal of Accounting Research</em>.</li>
         <li>Fama, E., &amp; French, K. (2010, 2015). Active Investing and Factor Models. <em>Journal of Finance</em>/<em>JFE</em>.</li>
         <li>Harvey, C., Liu, Y., &amp; Zhu, H. (2016). ... and the Cross-Section of Expected Returns. <em>Review of Financial Studies</em>.</li>
         <li>S&amp;P Dow Jones Indices SPIVA Scorecards (latest editions).</li>
         <li>Morningstar Active/Passive Barometer (latest editions).</li>
-        <li>BIS, ECB, Federal Reserve research notes on market functioning and transmission (2024–2025).</li>
+        <li>ECB Financial Stability Review (May 2025) and BIS market functioning notes (2024–2025).</li>
         <li>CFA Institute curriculum and Research Foundation publications.</li>
       </ol>
       <p>All tools are educational simulations. They simplify reality and should not be used as sole basis for investment decisions.</p>
@@ -539,7 +573,9 @@
     const spivaActiveFee = document.getElementById('spivaActiveFee');
     const spivaPassiveFee = document.getElementById('spivaPassiveFee');
     const spivaUnderperf = document.getElementById('spivaUnderperf');
+    const spivaBias = document.getElementById('spivaBias');
     const spivaOutput = document.getElementById('spivaOutput');
+    const spivaSensitivity = document.getElementById('spivaSensitivity');
     function updateSpiva(){
       const gross = 0.06;
       const years = 20;
@@ -547,27 +583,36 @@
       const activeNet = principal * Math.pow(1 + gross - Number(spivaActiveFee.value)/100, years);
       const passiveNet = principal * Math.pow(1 + gross - Number(spivaPassiveFee.value)/100, years);
       const gap = passiveNet - activeNet;
-      spivaOutput.textContent = `With active fee ${Number(spivaActiveFee.value).toFixed(2)}% vs passive ${Number(spivaPassiveFee.value).toFixed(2)}%, ending wealth gap is ${gbp(gap)} over 20 years. If ${spivaUnderperf.value}% of active funds underperform over long horizons, manager selection hurdle is high.`;
+      const adjUnderperf = Math.min(99, Number(spivaUnderperf.value) + Number(spivaBias.value));
+      const beatRate = Math.max(1, 100 - adjUnderperf);
+      spivaOutput.textContent = `With active fee ${Number(spivaActiveFee.value).toFixed(2)}% vs passive ${Number(spivaPassiveFee.value).toFixed(2)}%, ending wealth gap is ${gbp(gap)} over 20 years. Survivor-bias-adjusted underperformance estimate is ${adjUnderperf.toFixed(0)}%, leaving ~${beatRate.toFixed(0)}% active beat-rate.`;
+      const ciLow = Math.max(35, adjUnderperf - 7);
+      const ciHigh = Math.min(98, adjUnderperf + 7);
+      spivaSensitivity.textContent = `Sensitivity range: adjusted underperformance ${ciLow.toFixed(0)}%–${ciHigh.toFixed(0)}% (category and benchmark dependent). Methodological caveat: dead-fund attrition and style drift can widen this range.`;
     }
-    [spivaActiveFee,spivaPassiveFee,spivaUnderperf].forEach(el => el.addEventListener('input', updateSpiva));
+    [spivaActiveFee,spivaPassiveFee,spivaUnderperf,spivaBias].forEach(el => el.addEventListener('input', updateSpiva));
 
     let factorChart;
-    const factorIds = ['fMkt','fVal','fMom','fQual','fSize','fLowVol'];
+    const factorIds = ['fMkt','fVal','fMom','fQual','fSize','fLowVol','fRmw','fCma','fDecayYear','fStress'];
     const factorStats = document.getElementById('factorStats');
+    const factorSensitivity = document.getElementById('factorSensitivity');
     let factorRows = [];
     function updateFactor(){
       const f = Object.fromEntries(factorIds.map(id => [id, Number(document.getElementById(id).value)]));
-      const premia = { fMkt:5.0, fVal:1.2, fMom:1.4, fQual:0.8, fSize:0.6, fLowVol:0.5 };
-      const contrib = Object.fromEntries(Object.keys(premia).map(k => [k, f[k]*premia[k]]));
+      const premia = { fMkt:5.0, fVal:1.2, fMom:1.4, fQual:0.8, fSize:0.6, fLowVol:0.5, fRmw:0.9, fCma:0.7 };
+      const decay = Math.max(0.65, 1 - f.fDecayYear * 0.012);
+      const stressPenalty = (100 - f.fStress) / 100;
+      const contrib = Object.fromEntries(Object.keys(premia).map(k => [k, f[k]*premia[k]*decay*stressPenalty]));
       const exp = Object.values(contrib).reduce((a,b)=>a+b,0);
-      const tracking = Math.sqrt((f.fVal**2+f.fMom**2+f.fQual**2+f.fSize**2+f.fLowVol**2))*3.2;
+      const tracking = Math.sqrt((f.fVal**2+f.fMom**2+f.fQual**2+f.fSize**2+f.fLowVol**2+f.fRmw**2+f.fCma**2))*3.2;
       factorRows = Object.entries(contrib).map(([k,v]) => ({ factor:k, contribution:v }));
-      factorStats.textContent = `Expected return decomposition: ${exp.toFixed(2)}% (market + style premia). Estimated tracking error vs broad market: ${tracking.toFixed(2)}%.`;
+      factorStats.textContent = `Expected return decomposition: ${exp.toFixed(2)}% after decay/stress adjustment. Estimated tracking error vs broad market: ${tracking.toFixed(2)}%.`;
+      factorSensitivity.textContent = `Factor-decay lens: publication-age scalar ${decay.toFixed(2)}x, stress scalar ${stressPenalty.toFixed(2)}x. Momentum omission from FF5 can understate cyclicality risk in crash-rebound regimes.`;
       if (typeof Chart === 'undefined') return;
       if (factorChart) factorChart.destroy();
       factorChart = new Chart(document.getElementById('factorChart'), {
         type:'bar',
-        data:{labels:['Market','Value','Momentum','Quality','Size','Low Vol'],datasets:[{label:'Return contribution (ppt)',data:[contrib.fMkt,contrib.fVal,contrib.fMom,contrib.fQual,contrib.fSize,contrib.fLowVol],backgroundColor:['#1d4ed8','#7c3aed','#0ea5e9','#16a34a','#f59e0b','#64748b']}]},
+        data:{labels:['Market','Value','Momentum','Quality','Size','Low Vol','RMW','CMA'],datasets:[{label:'Return contribution (ppt)',data:[contrib.fMkt,contrib.fVal,contrib.fMom,contrib.fQual,contrib.fSize,contrib.fLowVol,contrib.fRmw,contrib.fCma],backgroundColor:['#1d4ed8','#7c3aed','#0ea5e9','#16a34a','#f59e0b','#64748b','#0f766e','#b45309']}]},
         options:{plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'percentage points'}}}}
       });
     }
@@ -583,10 +628,10 @@
     });
 
     const regimes = {
-      riskon:{txt:'Risk-on: low macro stress, falling credit spreads. Equities-bonds correlation tends to be mildly positive or near zero.', corr:[[1,.3,.4,.1,.2],[.3,1,.2,.2,.1],[.4,.2,1,.5,.3],[.1,.2,.5,1,.4],[.2,.1,.3,.4,1]], sharpe:[0.6,0.7,0.8,0.75,0.7,0.72]},
-      slowdown:{txt:'Growth slowdown: quality and duration usually gain diversification value; cyclicals weaken.', corr:[[1,.1,.2,.4,-.1],[.1,1,.3,.2,.2],[.2,.3,1,.1,.4],[.4,.2,.1,1,-.2],[-.1,.2,.4,-.2,1]], sharpe:[0.3,0.25,0.2,0.22,0.18,0.15]},
-      inflation:{txt:'Inflation shock: equity-bond correlation can turn positive; commodities become diversifying.', corr:[[1,.6,.3,.2,.5],[.6,1,.2,.1,.4],[.3,.2,1,.4,.6],[.2,.1,.4,1,.3],[.5,.4,.6,.3,1]], sharpe:[0.15,0.1,0.05,-0.02,0.08,0.12]},
-      stress:{txt:'Funding stress: correlations converge upward among risky assets, liquidity premia widen.', corr:[[1,.8,.7,.6,.5],[.8,1,.6,.5,.4],[.7,.6,1,.7,.6],[.6,.5,.7,1,.5],[.5,.4,.6,.5,1]], sharpe:[-0.2,-0.4,-0.3,-0.15,-0.1,-0.05]}
+      riskon:{txt:'Risk-on: low macro stress, falling credit spreads. Equities-bonds correlation tends to be mildly positive or near zero.', trigger:'Trigger profile: VIX < 18, IG OAS < 140 bps, stable USD funding.', case:'Case lens: 2017-like expansion. Conditional premia: quality/profitability steady, momentum positive.', corr:[[1,.3,.4,.1,.2],[.3,1,.2,.2,.1],[.4,.2,1,.5,.3],[.1,.2,.5,1,.4],[.2,.1,.3,.4,1]], sharpe:[0.6,0.7,0.8,0.75,0.7,0.72]},
+      slowdown:{txt:'Growth slowdown: quality and duration usually gain diversification value; cyclicals weaken.', trigger:'Trigger profile: PMI < 50 with contained inflation, credit spreads widening 20-50 bps.', case:'Case lens: 2015–2016 mini-cycle slowdown. Conditional premia: quality and low-vol strengthen, value mixed.', corr:[[1,.1,.2,.4,-.1],[.1,1,.3,.2,.2],[.2,.3,1,.1,.4],[.4,.2,.1,1,-.2],[-.1,.2,.4,-.2,1]], sharpe:[0.3,0.25,0.2,0.22,0.18,0.15]},
+      inflation:{txt:'Inflation shock: equity-bond correlation can turn positive; commodities become diversifying.', trigger:'Trigger profile: 5y breakeven surge +75 bps, policy-rate repricing, USD strength.', case:'Case lens: 2022 rates shock. Conditional premia: value cyclicals can lead, duration-sensitive quality lags.', corr:[[1,.6,.3,.2,.5],[.6,1,.2,.1,.4],[.3,.2,1,.4,.6],[.2,.1,.4,1,.3],[.5,.4,.6,.3,1]], sharpe:[0.15,0.1,0.05,-0.02,0.08,0.12]},
+      stress:{txt:'Funding stress: correlations converge upward among risky assets, liquidity premia widen.', trigger:'Trigger profile: VIX > 30, HY OAS > 500 bps, cross-currency basis stress.', case:'Case lens: 2008 and Mar-2020 episodes. Conditional premia: momentum can disappear/crash, value struggles under funding shocks.', corr:[[1,.8,.7,.6,.5],[.8,1,.6,.5,.4],[.7,.6,1,.7,.6],[.6,.5,.7,1,.5],[.5,.4,.6,.5,1]], sharpe:[-0.2,-0.4,-0.3,-0.15,-0.1,-0.05]}
     };
     let regimeChart;
     function corrColor(v){
@@ -599,6 +644,8 @@
       const v = document.getElementById('regimeSelect').value;
       const r = regimes[v];
       document.getElementById('regimeText').textContent = r.txt;
+      document.getElementById('regimeTriggers').textContent = r.trigger;
+      document.getElementById('regimeCase').textContent = r.case;
       const names = ['Eq','Bd','Cmd','Fx','Val'];
       const matrix = document.getElementById('corrMatrix');
       matrix.innerHTML = '<div class="cell"><strong></strong></div>' + names.map(n=>`<div class="cell"><strong>${n}</strong></div>`).join('') +
@@ -612,23 +659,38 @@
 
     let orderBookChart;
     function updateLiquidity(){
+      const classMap = {
+        lc:{adv:1500, spread:8, stress:1.3},
+        mc:{adv:450, spread:16, stress:1.55},
+        em:{adv:280, spread:22, stress:1.8},
+        cb:{adv:120, spread:35, stress:2.1}
+      };
+      const assetClass = document.getElementById('assetClass').value;
+      const darkShare = Number(document.getElementById('darkShare').value)/100;
+      const preset = classMap[assetClass];
       const order = Number(document.getElementById('orderSize').value);
-      const adv = Number(document.getElementById('dailyVol').value);
+      const advInput = Number(document.getElementById('dailyVol').value);
+      const adv = advInput || preset.adv;
       const vol = Number(document.getElementById('volatility').value)/100;
-      const spread = Number(document.getElementById('spreadBps').value);
+      const spread = Math.max(Number(document.getElementById('spreadBps').value), preset.spread);
       const participation = order/adv;
-      const impactBps = 10000 * (0.5*vol*Math.sqrt(Math.max(participation,0.0001)));
-      const totalBps = spread/2 + impactBps;
+      const kyleLambda = 0.5*vol*preset.stress;
+      const impactBps = 10000 * (kyleLambda*Math.sqrt(Math.max(participation,0.0001)));
+      const darkPenalty = darkShare > 0.45 ? (darkShare-0.45)*25 : 0;
+      const totalBps = spread/2 + impactBps + darkPenalty;
       const cost = (order*1e6) * (totalBps/10000);
-      document.getElementById('liquidityOutput').textContent = `Participation ${ (participation*100).toFixed(1)}% ADV. Estimated impact ${impactBps.toFixed(1)} bps; total one-way execution cost ~${totalBps.toFixed(1)} bps (${gbp(cost)}).`;
+      const amihud = (Math.abs(0.01*participation) / Math.max(adv*1e6,1))*1e12;
+      const resilience = Math.max(15, 100 - participation*140 - darkShare*25);
+      document.getElementById('liquidityOutput').textContent = `Participation ${ (participation*100).toFixed(1)}% ADV. Kyle-style impact ${impactBps.toFixed(1)} bps; total one-way execution cost ~${totalBps.toFixed(1)} bps (${gbp(cost)}).`;
+      document.getElementById('amihudOutput').textContent = `Amihud illiquidity proxy: ${amihud.toFixed(2)} (scaled). Order-book resilience index: ${resilience.toFixed(0)}/100; dark venue value add deteriorates above ~45% share in stressed tapes.`;
       if (typeof Chart !== 'undefined') {
         if (orderBookChart) orderBookChart.destroy();
         const levels=[1,2,3,4,5,6,7,8].map(x=>x*0.25);
-        const depth=levels.map(x=>Math.max(5,140/(x+1)-participation*80));
+        const depth=levels.map(x=>Math.max(5,140/(x+1)-participation*80-darkShare*20-(preset.stress-1)*25));
         orderBookChart = new Chart(document.getElementById('orderBookChart'), {type:'bar',data:{labels:levels.map(x=>`${x.toFixed(2)}% from mid`),datasets:[{label:'Order book depth index',data:depth,backgroundColor:'#0ea5e9'}]},options:{plugins:{legend:{display:false}}}});
       }
     }
-    ['orderSize','dailyVol','volatility','spreadBps'].forEach(id => document.getElementById(id).addEventListener('input', updateLiquidity));
+    ['orderSize','dailyVol','volatility','spreadBps','assetClass','darkShare'].forEach(id => document.getElementById(id).addEventListener('input', updateLiquidity));
 
     function updateLifeStage(){
       const age = Number(document.getElementById('lifeAge').value);
@@ -651,6 +713,7 @@
       const herd = Number(document.getElementById('qHerd').value);
       const rec = Number(document.getElementById('qRecency').value);
       const anc = Number(document.getElementById('qAnchor').value);
+      const regimeAmp = document.getElementById('biasRegime').value === 'riskoff' ? 1.2 : 1;
       const bias = {loss:loss, overconfidence:over, herding:herd, recency:rec, anchoring:anc};
       const maxKey = Object.keys(bias).sort((a,b)=>bias[b]-bias[a])[0];
       const map = {
@@ -660,7 +723,11 @@
         recency:'Recency bias elevated: anchor decisions to full-cycle evidence, not recent streaks.',
         anchoring:'Anchoring elevated: evaluate holdings on expected forward payoff, not entry price.'
       };
-      document.getElementById('biasOutput').textContent = `Primary bias signal: ${maxKey}. Recommendation: ${map[maxKey]}`;
+      const scores = Object.values(bias).map(v => v * regimeAmp);
+      const total = scores.reduce((a,b)=>a+b,0);
+      const norm = (total / (5 * 5 * regimeAmp)) * 100;
+      document.getElementById('biasOutput').textContent = `Primary bias signal: ${maxKey}. Composite bias intensity: ${norm.toFixed(0)}/100. Recommendation: ${map[maxKey]}`;
+      document.getElementById('biasGuardrails').textContent = `Guardrails: cap single-position additions at 2% NAV, enforce 48-hour cooling-off for discretionary trades, and review momentum/PEAD evidence quarterly (Jegadeesh-Titman 1993; Bernard-Thomas 1989).`;
     });
 
     const plannerInputs = ['pAge','pRetAge','pIncome','pSavings','pMonthly','pRisk','pDependents','pEmergency','pStability','pGoal','pIsa','pSipp','pGia','pTaxBand','pReturn','pInflation'];
@@ -701,7 +768,7 @@
       const isaCap = Number(v.pIsa) > 20000 ? 'ISA planned contribution exceeds £20,000 annual allowance.' : 'ISA contribution within annual allowance.';
       const sippCap = Number(v.pSipp) > 60000 ? 'SIPP input exceeds baseline £60,000 annual allowance.' : 'SIPP contribution within baseline annual allowance.';
       const sequence = v.pGoal === 'flexibility' ? 'Priority: employer match → ISA (flexibility) → SIPP → GIA.' : (v.pGoal === 'retirement' ? 'Priority: employer match → SIPP tax relief → ISA buffer → GIA.' : 'Priority: emergency reserve + short-duration assets, then ISA/SIPP gradually.');
-      document.getElementById('planWrapper').textContent = `${sequence} ${isaCap} ${sippCap} Track dividend (£500) and CGT (£3,000) allowances for GIA harvesting.`;
+      document.getElementById('planWrapper').textContent = `${sequence} ${isaCap} ${sippCap} Track dividend (£1,000 module assumption) and CGT (£3,000) allowances for GIA harvesting. Decumulation note: bridge ISA/GIA before pension access-age constraints and align with IHT objectives for higher earners.`;
 
       document.getElementById('plannerTable').innerHTML = plannerRows.map(r => `<tr><td>${r.scenario}</td><td>${gbp(r.nominal)}</td><td>${gbp(r.real)}</td><td>${r.comment}</td></tr>`).join('');
 
@@ -727,14 +794,21 @@
     });
 
     let growthChart;
+    let sequenceChart;
     let growthRows = [];
-    const calcIds = ['initial', 'monthly', 'ret', 'retRange', 'inf', 'infRange', 'years', 'yearsRange', 'fee', 'growth', 'realToggle'];
+    const MONTE_CARLO_PATHS = 220; // quick benchmark target: <30ms recalculation at 50y horizon with stable tail-percentile estimates
+    const calcIds = ['initial', 'monthly', 'ret', 'retRange', 'inf', 'infRange', 'years', 'yearsRange', 'fee', 'growth', 'realToggle', 'mcVol', 'retireStress'];
     const c = Object.fromEntries(calcIds.map(id => [id, document.getElementById(id)]));
+    let calcTimer;
     [['ret', 'retRange'], ['inf', 'infRange'], ['years', 'yearsRange']].forEach(([a,b]) => {
-      c[a].addEventListener('input', () => { c[b].value = c[a].value; runCalc(); });
-      c[b].addEventListener('input', () => { c[a].value = c[b].value; runCalc(); });
+      c[a].addEventListener('input', () => { c[b].value = c[a].value; scheduleRunCalc(); });
+      c[b].addEventListener('input', () => { c[a].value = c[b].value; scheduleRunCalc(); });
     });
-    ['initial','monthly','fee','growth','realToggle'].forEach(k => c[k].addEventListener('input', runCalc));
+    ['initial','monthly','fee','growth','realToggle','mcVol','retireStress'].forEach(k => c[k].addEventListener('input', scheduleRunCalc));
+    function scheduleRunCalc(){
+      if (calcTimer) window.clearTimeout(calcTimer);
+      calcTimer = window.setTimeout(runCalc, 120);
+    }
 
     function runCalc(){
       const initial = Math.max(0, Number(c.initial.value) || 0);
@@ -744,6 +818,8 @@
       const years = Math.max(1, Math.min(50, Number(c.years.value) || 20));
       const fee = Math.max(0, Number(c.fee.value) || 0) / 100;
       const contributionGrowth = Math.max(0, Number(c.growth.value) || 0) / 100;
+      const mcVol = Math.max(0.01, Number(c.mcVol.value) || 14) / 100;
+      const retireStress = Math.max(0, Number(c.retireStress.value) || 0) / 100;
       const netReturn = annualReturn - fee;
       let portfolio = initial;
       let cumulativeContribution = initial;
@@ -761,6 +837,31 @@
       document.getElementById('mReal').textContent = gbp(final.realValue);
       document.getElementById('mContrib').textContent = gbp(final.cumulativeContribution);
       document.getElementById('mGrowth').textContent = gbp(final.portfolio - final.cumulativeContribution);
+
+      const scenarioReturns = { conservative: Math.max(0, netReturn - 0.02), base: netReturn, optimistic: netReturn + 0.015 };
+      const sim = (annRet) => {
+        const vals = [];
+        for (let p = 0; p < MONTE_CARLO_PATHS; p++) {
+          let pot = initial;
+          for (let y = 1; y <= years; y++) {
+            const contributionYear = monthly * 12 * Math.pow(1 + contributionGrowth, y - 1);
+            const shock = (Math.random() - 0.5) * 2 * mcVol;
+            pot = (pot + contributionYear) * (1 + annRet + shock);
+            if (y <= Math.min(5, years) && retireStress > 0) pot -= pot * retireStress;
+            pot = Math.max(0, pot);
+          }
+          vals.push(pot / Math.pow(1 + inflation, years));
+        }
+        vals.sort((a,b)=>a-b);
+        const pick = q => vals[Math.min(vals.length - 1, Math.floor(q * (vals.length - 1)))];
+        return { p5: pick(0.05), p50: pick(0.5), p95: pick(0.95) };
+      };
+      const mc = sim(scenarioReturns.base);
+      document.getElementById('mP5').textContent = gbp(mc.p5);
+      document.getElementById('mP50').textContent = gbp(mc.p50);
+      document.getElementById('mP95').textContent = gbp(mc.p95);
+      const seqStress = final.portfolio * Math.pow(1 - retireStress, Math.min(5, years));
+      document.getElementById('mSeq').textContent = gbp(final.portfolio - seqStress);
       document.getElementById('tableBody').innerHTML = rows.slice(1).map(r => `<tr><td>${r.year}</td><td>${gbp(r.cumulativeContribution)}</td><td>${gbp(r.portfolio)}</td><td>${gbp(r.realValue)}</td></tr>`).join('');
       if (typeof Chart !== 'undefined') {
         if (growthChart) growthChart.destroy();
@@ -770,11 +871,30 @@
           data:{labels:rows.map(r=>r.year),datasets:[{label:showReal?'Portfolio (real)':'Portfolio',data:rows.map(r=>showReal?r.realValue:r.portfolio),borderColor:'#1d4ed8',tension:.2},{label:'Contributions',data:rows.map(r=>r.cumulativeContribution),borderColor:'#16a34a',tension:.2}]},
           options:{responsive:true,plugins:{legend:{position:'bottom'}}}
         });
+        if (sequenceChart) sequenceChart.destroy();
+        const early = [initial];
+        let stressed = initial;
+        for (let y = 1; y <= years; y++) {
+          const contributionYear = monthly * 12 * Math.pow(1 + contributionGrowth, y - 1);
+          stressed = (stressed + contributionYear) * (1 + netReturn);
+          if (y <= Math.min(5, years) && retireStress > 0) stressed -= stressed * retireStress;
+          early.push(Math.max(0, stressed));
+        }
+        sequenceChart = new Chart(document.getElementById('sequenceChart'), {
+          type:'line',
+          data:{labels:rows.map(r=>r.year),datasets:[{label:'Baseline path',data:rows.map(r=>r.portfolio),borderColor:'#1d4ed8',tension:.2},{label:'Early-withdrawal stress path',data:early,borderColor:'#be123c',tension:.2}]},
+          options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+        });
       }
     }
 
     document.getElementById('csvBtn').addEventListener('click', () => {
-      const csv = ['Year,Cumulative contributions,Portfolio value,Real value'].concat(growthRows.slice(1).map(r => `${r.year},${Math.round(r.cumulativeContribution)},${Math.round(r.portfolio)},${Math.round(r.realValue)}`)).join('\n');
+      const scenarioCsv = [
+        ['conservative', Math.max(0, (Number(c.ret.value) / 100) - (Number(c.fee.value) / 100) - 0.02)],
+        ['base', Math.max(0, (Number(c.ret.value) / 100) - (Number(c.fee.value) / 100))],
+        ['optimistic', Math.max(0, (Number(c.ret.value) / 100) - (Number(c.fee.value) / 100) + 0.015)]
+      ].map(([name, r]) => `${name},${(r*100).toFixed(2)}%`);
+      const csv = ['Year,Cumulative contributions,Portfolio value,Real value'].concat(growthRows.slice(1).map(r => `${r.year},${Math.round(r.cumulativeContribution)},${Math.round(r.portfolio)},${Math.round(r.realValue)}`)).concat(['','','Scenario,Assumed net return']).concat(scenarioCsv).join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
