@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Markets Curriculum | The Market Brief Daily</title>
+  <meta name="description" content="CFA-standard financial markets curriculum: market architecture, execution quality, price discovery, clearing, repo, regulation, and crisis case studies." />
+  <link rel="stylesheet" href="assets/education.css" />
+</head>
+<body class="theme-markets">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">The Market Brief Daily</a>
+      <nav class="topbar-nav">
+        <a class="nav-link" href="education-library.html">← Curriculum Hub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="kicker">Financial Markets — 10 Modules</span>
+      <h1>Financial Markets</h1>
+      <p>A rigorous progression from market microstructure and trading mechanics to clearing infrastructure, collateral channels, regulatory frameworks, and the systemic stress transmission pathways documented in the GFC, European sovereign crisis, and 2022 UK gilt market dislocation.</p>
+    </section>
+
+    <div class="page-layout">
+      <!-- Sidebar nav -->
+      <aside class="sidebar">
+        <span class="sidebar-heading">Modules</span>
+        <nav class="module-nav" aria-label="Module navigation">
+          <a href="#m1"><span class="num">1</span>Market Architecture</a>
+          <a href="#m2"><span class="num">2</span>Primary vs Secondary</a>
+          <a href="#m3"><span class="num">3</span>Order Types &amp; Execution</a>
+          <a href="#m4"><span class="num">4</span>Price Discovery &amp; Liquidity</a>
+          <a href="#m5"><span class="num">5</span>Dealer Balance Sheets</a>
+          <a href="#m6"><span class="num">6</span>Auctions &amp; Benchmark Closes</a>
+          <a href="#m7"><span class="num">7</span>Clearing &amp; Settlement</a>
+          <a href="#m8"><span class="num">8</span>Repo &amp; Collateral</a>
+          <a href="#m9"><span class="num">9</span>Regulation &amp; Integrity</a>
+          <a href="#m10"><span class="num">10</span>Crisis Case Studies</a>
+        </nav>
+        <a class="sidebar-back" href="education-library.html">← Back to Hub</a>
+      </aside>
+
+      <!-- Modules -->
+      <div class="modules-list">
+
+        <!-- M1 -->
+        <article id="m1" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 1</span>
+            <h2>Market Architecture and Participants</h2>
+          </div>
+          <p class="module-overview">Financial markets are the institutional and mechanical framework through which savers and capital-seekers connect. Their design — who trades, on what venue, under what rules — determines how efficiently capital is allocated across the economy. Understanding the architecture is prerequisite to interpreting execution quality, liquidity risk, and regulatory outcomes.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Distinguish agency (broker) from principal (dealer) intermediation and explain their different risk profiles.</li>
+              <li>Classify financial markets by structure: quote-driven, order-driven, and hybrid.</li>
+              <li>Identify the main participant categories and their information, inventory, and counterparty-risk positions.</li>
+              <li>Explain how venue fragmentation (lit exchanges, dark pools, systematic internalisers) affects price discovery.</li>
+              <li>Assess how regulatory design choices shape execution quality and market integrity.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>Market Structure Types</h3>
+              <p>Capital markets can be organised along a spectrum from fully <em>quote-driven</em> to fully <em>order-driven</em>:</p>
+              <ul>
+                <li><strong>Quote-driven (dealer) markets</strong>: Dealers post binding bid and ask quotes. They take inventory risk but provide immediacy. Historically dominant in fixed income, FX, and over-the-counter (OTC) derivatives.</li>
+                <li><strong>Order-driven markets</strong>: Participants submit buy and sell orders to a centralised order book; no designated market-maker is required. Price and time priority matching rules determine execution. Dominant in equity markets (NYSE, LSE, Euronext).</li>
+                <li><strong>Hybrid markets</strong>: Most modern equity exchanges combine a central limit order book (CLOB) with designated market-makers or liquidity providers who receive obligations in exchange for fee concessions or data advantages.</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Agency vs Principal Trading</span>
+              <p class="info-box-content">In <strong>agency trading</strong>, the broker acts as intermediary on behalf of a client, earning a commission but bearing no market risk. In <strong>principal trading</strong>, the dealer uses its own capital, takes the other side of the trade, and earns the bid-ask spread. Dealers must manage inventory risk and funding cost — constraints that become binding during stress, withdrawing liquidity precisely when it is most needed.</p>
+            </div>
+
+            <div class="content-section">
+              <h3>Market Participants</h3>
+              <p>Each participant type operates under different information constraints, time horizons, and capital structures:</p>
+              <ul>
+                <li><strong>Long-only asset managers</strong>: Pension funds, mutual funds, and insurance companies. Patient capital but must transact when flows require. Largest pool of liquidity-demanding flow.</li>
+                <li><strong>Hedge funds</strong>: Exploit mispricings; can be both liquidity demanders and providers depending on strategy. Lever up capital, making them sensitive to funding conditions.</li>
+                <li><strong>High-frequency traders (HFTs)</strong>: Provide bid-ask quotes and capture statistical edges at millisecond horizons. Controversial: improve quoted liquidity in normal conditions but can withdraw rapidly during stress (Budish et al., 2015).</li>
+                <li><strong>Broker-dealers and prime brokers</strong>: Intermediate between buy-side and sell-side; provide financing (prime brokerage) and execution services.</li>
+                <li><strong>Central banks and sovereign wealth funds</strong>: Non-profit-motivated participants with potentially large market power; interventions are policy-driven.</li>
+                <li><strong>Retail investors</strong>: Price-takers. Fragmented orders are valuable to internalising broker-dealers (payment for order flow).</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Lit vs Dark Venues</span>
+              <p class="info-box-content"><strong>Lit venues</strong> (exchanges, MTFs) display pre-trade order book information publicly. <strong>Dark pools</strong> (dark MTFs, internal crossing networks) suppress pre-trade transparency. Large institutional investors use dark venues to minimise market impact when trading large blocks. However, excessive dark trading can impair price discovery — which is why MiFID II introduced a double-volume cap limiting dark trading in any stock to 8% of total European trading volume.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Practical Example: Venue Fragmentation in UK Equities</span>
+              <p class="info-box-content">A large-cap FTSE 100 stock may trade simultaneously on the London Stock Exchange (primary), CBOE Europe (MTF), Turquoise (dark MTF), and via broker internalisation. The best-execution obligation requires brokers to achieve the best outcome for the client across all available venues — considering not just price but also execution costs, speed, and likelihood of execution.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Market structure determines who bears market risk, who provides liquidity, and who sets prices.</li>
+              <li>Fragmentation creates best-execution complexity: lower average spreads but higher search and routing costs.</li>
+              <li>Dealer liquidity is procyclical — it contracts in stress when it is most needed.</li>
+              <li>Regulatory design (MiFID II, Reg NMS) shapes market quality outcomes by mandating transparency and best-execution obligations.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M2 -->
+        <article id="m2" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 2</span>
+            <h2>Primary vs Secondary Markets</h2>
+          </div>
+          <p class="module-overview">Primary markets allow issuers to raise new capital; secondary markets allow investors to trade existing securities. The health of secondary markets directly feeds back into the cost at which issuers can access primary markets — a crucial linkage for understanding capital allocation efficiency and issuers' financing costs.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Describe the IPO process from registration to aftermarket price stabilisation.</li>
+              <li>Explain book-building mechanics and how the underwriter prices and allocates shares.</li>
+              <li>Compare firm-commitment, best-efforts, and direct-listing structures.</li>
+              <li>Link secondary market liquidity premia to required return and primary market issuance costs.</li>
+              <li>Analyse IPO underpricing as an equilibrium phenomenon, not a market failure.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>The IPO Process</h3>
+              <p>An initial public offering (IPO) converts a private company into a listed entity. The process involves:</p>
+              <ul>
+                <li><strong>Appointment of lead underwriter(s)</strong>: The lead manager structures the deal, conducts due diligence, and leads the syndicate.</li>
+                <li><strong>Prospectus registration</strong>: In the UK, a prospectus is filed with the FCA. It discloses financials, risk factors, use of proceeds, and a price range (preliminary prospectus / "red herring").</li>
+                <li><strong>Roadshow and book building</strong>: The issuer and underwriter pitch to institutional investors. Investors submit indications of interest (IOIs) at various prices. The bookrunner builds an order book to determine clearing price and allocations.</li>
+                <li><strong>Pricing and allocation</strong>: Final offer price is set at or near the clearing price. Institutional investors typically receive preference over retail.</li>
+                <li><strong>Aftermarket stabilisation</strong>: The underwriter may use the <em>green shoe (overallotment option)</em> — an option to purchase additional shares — to support the aftermarket price. If the stock trades below the offer price, the stabilising agent buys shares in the secondary market and exercises the green shoe to cover the short position.</li>
+              </ul>
+            </div>
+
+            <div class="insight-box">
+              <span class="info-box-title">Research Finding: IPO Underpricing</span>
+              <p class="info-box-content">Loughran and Ritter (2002) document that US IPOs are systematically underpriced by 18–20% on average on the first trading day. This is not a failure: underpricing compensates institutional investors for the risk of buying into an information-asymmetric deal. <strong>Winner's curse</strong> theory (Rock, 1986) explains that uninformed investors tend to receive more shares in overpriced IPOs (adverse selection), requiring underpricing to ensure their participation on average is non-negative. The issuer effectively pays this through "money left on the table."</p>
+            </div>
+
+            <div class="content-section">
+              <h3>Bond Issuance and Syndication</h3>
+              <p>Corporate and sovereign bond issuance also uses a book-building process. In a <strong>syndicated deal</strong>, a lead manager and co-managers jointly underwrite and distribute the bonds. Key mechanics include:</p>
+              <ul>
+                <li><strong>Price guidance</strong>: The bookrunner announces an initial spread to benchmark (e.g., gilt + 150bps), then tightens as demand becomes visible.</li>
+                <li><strong>Orderbook coverage</strong>: A 3–5× oversubscription is considered healthy and supports tight pricing.</li>
+                <li><strong>Allocation policy</strong>: Issuer and bookrunner allocate based on quality (sticky vs hot money investors) and relationship.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Concept: Liquidity Premium in Secondary Markets</span>
+              <code>Required Return = Risk-Free Rate + Risk Premium + Liquidity Premium</code>
+              <p class="info-box-content">Amihud and Mendelson (1986) show that assets with higher bid-ask spreads carry higher expected returns to compensate for illiquidity. This means poor secondary market liquidity directly raises the primary market issuance cost for issuers. Investors demand a higher yield on illiquid bonds or a lower IPO price to compensate for higher exit costs.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>IPO underpricing is a rational equilibrium feature, not a mispricing — it compensates for information asymmetry.</li>
+              <li>The green shoe option is a built-in stabilisation mechanism that acts as a put option for early investors.</li>
+              <li>Secondary market liquidity directly affects primary market issuance costs via the liquidity premium.</li>
+              <li>Bookbuilding concentrates allocation power with the underwriter; investors with credible demand signals receive better allocations.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M3 -->
+        <article id="m3" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 3</span>
+            <h2>Order Types and Execution Quality</h2>
+          </div>
+          <p class="module-overview">Every investment decision ultimately requires execution in a market. The choice of order type, routing strategy, and timing determines the difference between theoretical return and actual investor experience. Understanding execution mechanics is central to reducing implementation shortfall — the gap between the paper portfolio and the live portfolio.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Define and contrast market orders, limit orders, stop orders, and time-in-force instructions.</li>
+              <li>Calculate implementation shortfall and decompose it into its constituent cost components.</li>
+              <li>Evaluate algorithmic execution strategies (VWAP, TWAP, IS) against their use cases.</li>
+              <li>Explain best-execution obligations and how they are measured under MiFID II.</li>
+              <li>Identify how market conditions (spread, depth, volatility) affect optimal order choice.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>Order Type Taxonomy</h3>
+              <ul>
+                <li><strong>Market order</strong>: Execute immediately at best available price. Guarantees execution but not price. High market impact risk for large orders.</li>
+                <li><strong>Limit order</strong>: Execute only at the specified price or better. Provides price certainty but risks non-execution. Passive — adds liquidity to the order book.</li>
+                <li><strong>Stop (stop-loss) order</strong>: Converts to a market order when the price touches the stop level. Used for loss control, but can be gamed by market-makers and may execute badly in fast markets.</li>
+                <li><strong>Stop-limit order</strong>: Converts to a limit order when triggered — adds price certainty but risks non-execution if price moves through the limit.</li>
+                <li><strong>Iceberg / reserve order</strong>: Shows only a small "tip" on the public order book while concealing the full size. Reduces adverse price impact but may signal informed trading.</li>
+                <li><strong>Pegged order</strong>: Automatically tracks the best bid or offer; useful for passive execution without constant manual repricing.</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>Time-in-Force Instructions</h3>
+              <ul>
+                <li><strong>Day</strong>: Order expires at end of trading session.</li>
+                <li><strong>Good-till-cancelled (GTC)</strong>: Remains active until filled or manually cancelled.</li>
+                <li><strong>Immediate-or-cancel (IOC)</strong>: Execute any quantity available immediately; cancel the rest.</li>
+                <li><strong>Fill-or-kill (FOK)</strong>: Execute the entire order immediately or cancel the whole thing — no partial fills.</li>
+                <li><strong>At-the-open / at-the-close (ATO/ATC)</strong>: Execute only during the opening or closing auction.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Formula: Implementation Shortfall</span>
+              <code>IS = (Decision Price − Average Execution Price) × Shares Traded
+    + (Decision Price − Cancellation Price) × Shares Not Traded (opportunity cost)</code>
+              <p class="info-box-content">Implementation shortfall (Perold, 1988) measures the total cost of trading vs the paper portfolio benchmark (decision price). It decomposes into: <strong>delay cost</strong> (price drift before trading begins), <strong>market impact</strong> (price moves caused by your own trading), <strong>explicit costs</strong> (commission, spread, stamp duty), and <strong>opportunity cost</strong> (cost of unexecuted shares if price moved away).</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Algorithmic Execution Strategies</span>
+              <p class="info-box-content"><strong>VWAP (Volume-Weighted Average Price)</strong>: Slices the order through the day in proportion to historical volume. Minimises market impact relative to the day's VWAP benchmark. Best for large orders in liquid stocks with predictable intraday volume patterns. <strong>TWAP (Time-Weighted Average Price)</strong>: Distributes flow equally over time. Simple but ignores liquidity patterns. <strong>Implementation Shortfall (IS) / Arrival Price algorithms</strong>: Optimise against the arrival (decision) price, trading faster if price is moving favourably and slower if price moves against — minimising total IS cost. These are preferred when alpha decays quickly.</p>
+            </div>
+
+            <div class="data-box">
+              <span class="info-box-title">Data Point: Institutional Trading Costs</span>
+              <p class="info-box-content">ITG (now Virtu) and Elkins/McSherry studies consistently show that institutional equity trading costs in developed markets average 20–50 basis points of market impact + 10–15bps commission. For a large pension fund executing £1bn/year in UK equities, even a 5bps reduction in average implementation shortfall saves £500,000 per year. This makes execution quality a material driver of net return.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Market orders guarantee execution; limit orders guarantee price — choose based on urgency vs price sensitivity.</li>
+              <li>Implementation shortfall measures the full cost of a trade decision, including opportunity cost of unexecuted volume.</li>
+              <li>IS algorithms are preferred when alpha decays fast; VWAP is preferred when blending into market flow matters more.</li>
+              <li>Best-execution is multi-dimensional: price, cost, speed, and likelihood of execution must all be considered.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M4 -->
+        <article id="m4" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 4</span>
+            <h2>Price Discovery and Liquidity</h2>
+          </div>
+          <p class="module-overview">Price discovery — the process by which market prices incorporate dispersed information — and market liquidity are not constant properties of markets. Both are endogenous to participant behaviour, information asymmetry, and market structure. The microstructure theory of price formation has direct implications for portfolio implementation, execution quality, and systemic risk assessment.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Decompose the bid-ask spread into its adverse selection, order-processing, and inventory-holding components.</li>
+              <li>Explain Kyle's lambda as a measure of the market's price impact per unit of order flow.</li>
+              <li>Distinguish the four dimensions of liquidity: tightness, depth, resiliency, and immediacy.</li>
+              <li>Interpret the Amihud illiquidity ratio and explain why illiquidity is priced.</li>
+              <li>Identify why liquidity is a state variable that deteriorates precisely when most needed.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>The Bid-Ask Spread: Three Components</h3>
+              <p>The Glosten-Milgrom (1985) model decomposes the dealer's bid-ask spread into three costs of market-making:</p>
+              <ul>
+                <li><strong>Adverse selection cost</strong>: Dealers trade against informed investors who know the true value. The spread compensates for expected losses to informed traders.</li>
+                <li><strong>Inventory-holding cost</strong>: Dealers face risk by holding inventory. The spread compensates for the risk of carrying a non-zero position.</li>
+                <li><strong>Order-processing cost</strong>: Administrative, technology, and regulatory compliance costs of operating a market-making desk.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Formula: Kyle's Lambda (Price Impact)</span>
+              <code>ΔP = λ × Q</code>
+              <p class="info-box-content">In Kyle (1985), price changes (ΔP) are linear in order flow (Q), with λ (lambda) measuring price impact per unit of signed order flow. A high λ means the market is shallow — each unit of buy flow pushes the price up more. Lambda can be estimated empirically from high-frequency data and is directly related to the adverse selection component of the spread and order-book depth.</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Four Dimensions of Market Liquidity</span>
+              <p class="info-box-content"><strong>Tightness</strong>: The bid-ask spread — cost of a round-trip trade. <strong>Depth</strong>: The volume available at or near the best quotes. <strong>Resiliency</strong>: How quickly the order book replenishes after a large trade. <strong>Immediacy</strong>: How quickly a trade can be executed at the prevailing quote. These dimensions can diverge: a market may show tight spreads (tightness) but shallow depth, making large executions expensive despite low quoted spread.</p>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Formula: Amihud Illiquidity Ratio</span>
+              <code>ILLIQ_i,t = |R_i,t| / Volume_i,t</code>
+              <p class="info-box-content">Amihud (2002) measures illiquidity as the absolute daily return per dollar of trading volume. Higher values mean large price moves per unit of volume — a hallmark of illiquid markets. Amihud shows this ratio is positively cross-sectionally correlated with expected returns: investors demand compensation for bearing illiquidity risk. The average ILLIQ factor return in US equities has been approximately 4% per annum in his original study period.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Risk Warning: Liquidity Illusion</span>
+              <p class="info-box-content">In calm conditions, order books can appear deep and spreads tight. But liquidity is endogenous to market state — it is provided by dealers and HFTs who withdraw when uncertainty spikes. The March 2020 COVID shock demonstrated this: US Treasury bid-ask spreads — normally a few ticks — widened to 10–20× normal as primary dealers exhausted their balance sheet capacity and HFTs reduced quoting activity. Never assume quoted liquidity in normal conditions will be available under stress.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>The bid-ask spread compensates market-makers for adverse selection, inventory risk, and operating costs.</li>
+              <li>Price impact (Kyle's λ) measures how much your own trading moves the price — higher in illiquid markets.</li>
+              <li>Liquidity is multi-dimensional: tightness, depth, resiliency, and immediacy can diverge significantly.</li>
+              <li>Illiquidity is a priced risk factor — investors must demand a premium or hold it knowingly as a portfolio risk.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M5 -->
+        <article id="m5" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 5</span>
+            <h2>Dealer Balance Sheets and Market-Making</h2>
+          </div>
+          <p class="module-overview">Dealers are the shock absorbers of financial markets — they stand ready to buy when others want to sell and sell when others want to buy. But their capacity to do so is constrained by their balance sheets. Post-GFC regulatory changes fundamentally altered the economics of market-making, with structural implications for liquidity in corporate bonds, government securities, and OTC derivatives.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Explain how dealer inventory risk and funding cost are transmitted into bid-ask spreads.</li>
+              <li>Describe the impact of Basel III leverage ratios and liquidity coverage ratios on dealer intermediation.</li>
+              <li>Analyse the evidence on post-GFC corporate bond market liquidity fragility.</li>
+              <li>Distinguish between market resilience under normal conditions and during stress episodes.</li>
+              <li>Integrate dealer-capacity constraints into portfolio liquidity stress scenarios.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>Economics of Market-Making</h3>
+              <p>A dealer's market-making decision balances three costs against spread revenue:</p>
+              <ul>
+                <li><strong>Inventory risk</strong>: Holding positions exposes the dealer to adverse price moves. The spread must compensate for expected losses.</li>
+                <li><strong>Funding cost</strong>: Inventory must be financed, typically via repo. Rising funding costs narrow spreads or reduce depth.</li>
+                <li><strong>Regulatory capital cost</strong>: Under Basel III, inventory consumes regulatory capital (leverage ratio, RWA-based capital charges). This raises the hurdle return needed to justify market-making.</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Grossman-Miller Model</span>
+              <p class="info-box-content">Grossman and Miller (1988) model market liquidity as an equilibrium between immediacy demanders (investors who need to trade now) and market-makers (who provide immediacy for a price — the spread). The equilibrium spread compensates market-makers for inventory risk. Crucially, when many investors simultaneously demand immediacy (a systemic liquidity event), the equilibrium spread widens dramatically — this is precisely when correlation across asset classes spikes and traditional diversification breaks down.</p>
+            </div>
+
+            <div class="data-box">
+              <span class="info-box-title">Data: Post-GFC Decline in Dealer Intermediation</span>
+              <p class="info-box-content">Primary dealer net positions in US corporate bonds fell from ~$250bn pre-GFC to under $30bn by 2014 (Fed NY data). The turnover ratio in corporate bond markets declined from ~500% annually in the early 2000s to ~300% by the mid-2010s. Academic research (e.g., Bao, O'Hara, and Zhou, 2018) documents that dealer balance-sheet constraints significantly reduced their capacity to absorb selling pressure in periods of stress, amplifying price dislocations.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Risk Warning: Corporate Bond Liquidity in Stress</span>
+              <p class="info-box-content">The proliferation of corporate bond ETFs in the 2010s created a structural mismatch: ETFs offer daily liquidity to retail investors, but the underlying corporate bonds may trade only a few times per week. In March 2020, US investment-grade bond ETFs traded at 5–8% discounts to their stated NAV as the ETF mechanism reflected the true market-clearing price of the underlying bonds — not a malfunction, but evidence of the underlying illiquidity. Portfolio managers holding bond funds for "liquidity" must stress test against this dynamic.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Dealer liquidity provision is capital-intensive and procyclical — spreads widen and depth shrinks in stress.</li>
+              <li>Post-GFC regulation reduced dealer inventory capacity, making corporate bond markets structurally more fragile.</li>
+              <li>ETF-underlying mismatch creates premium/discount dynamics that reflect true liquidity conditions during stress.</li>
+              <li>Portfolio liquidity stress scenarios must account for dealer capacity constraints, not just historical spread data.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M6 -->
+        <article id="m6" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 6</span>
+            <h2>Auction Markets and Benchmark Closes</h2>
+          </div>
+          <p class="module-overview">Modern equity markets use periodic call auctions to concentrate liquidity and improve price formation at key junctures: the open and the close. The closing auction price is the reference price for most index valuations, ETF NAV calculations, and derivatives settlement. Understanding auction mechanics is essential for large institutional investors who need to execute at or near the benchmark close.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Explain the price-formation mechanism in a call auction versus continuous trading.</li>
+              <li>Describe how the LSE and other exchanges determine the closing auction price.</li>
+              <li>Quantify the proportion of daily volume executed at the close and explain why this concentration has grown.</li>
+              <li>Identify order-imbalance and crowding risks in closing auctions.</li>
+              <li>Compare circuit-breaker and volatility-interruption mechanisms.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>How Call Auctions Work</h3>
+              <p>A call auction collects orders over a defined period (the "auction window"), then executes all eligible orders at a single clearing price — the price that maximises total traded volume. Key properties:</p>
+              <ul>
+                <li><strong>Single-price execution</strong>: All matched orders execute at one price, eliminating the bid-ask spread for all participants simultaneously.</li>
+                <li><strong>Indicative price signals</strong>: During the auction window, exchanges typically display an indicative auction price (IAP) and volume to guide participants.</li>
+                <li><strong>Market-order priority</strong>: Market orders (no price limit) are prioritised in matching. Residual unmatched limit orders return to the order book or expire.</li>
+              </ul>
+            </div>
+
+            <div class="data-box">
+              <span class="info-box-title">Data: Growth of Closing Auction Volume</span>
+              <p class="info-box-content">Closing auction volume as a share of total daily equity volume has grown from approximately 10–15% in the early 2000s to 25–35% in major European markets by 2023 (Cboe/LSE data). This growth is driven by index rebalancing, ETF creations/redemptions, and passive strategies that benchmark to the official closing price. The concentration of flow at the close creates crowding risk — order imbalances can be large relative to available liquidity, making the closing auction increasingly sensitive to informed vs uninformed order flow.</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Circuit Breakers and Volatility Interruptions</span>
+              <p class="info-box-content">Most exchanges operate automatic circuit breakers that temporarily halt trading or invoke a mini-auction when the price moves beyond a defined range (e.g., ±5% in five minutes on the LSE's Dynamic Reference Price mechanism). This gives the market time to re-establish a fair price and prevents cascading algorithmic momentum from creating runaway price dislocations. The US introduced market-wide circuit breakers (Levels 1–3) post-1987 and refined them following the May 2010 Flash Crash.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Closing auctions improve price quality for large orders but create crowding risk as passive flows concentrate.</li>
+              <li>The single clearing price in an auction eliminates the spread for all participants — a key cost advantage for institutional size.</li>
+              <li>Circuit breakers reduce momentum-driven dislocations but create timing uncertainty around execution.</li>
+              <li>As passive ownership grows, closing auction order imbalances become larger and more predictable — a structural arbitrage opportunity for stat-arb strategies.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M7 -->
+        <article id="m7" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 7</span>
+            <h2>Clearing, Settlement, and CCP Risk</h2>
+          </div>
+          <p class="module-overview">Post-trade infrastructure — clearing and settlement — is the plumbing of financial markets. Central counterparty clearing houses (CCPs) sit at the centre of this system, interposing themselves between buyer and seller to guarantee performance. While CCPs reduce bilateral counterparty risk, they concentrate systemic risk, and their resilience under stress is a critical component of financial stability analysis.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Explain netting and how it reduces counterparty exposure in multilateral markets.</li>
+              <li>Describe the CCP default waterfall and explain the risk-mutualization mechanics.</li>
+              <li>Distinguish initial margin from variation margin and explain their different roles.</li>
+              <li>Evaluate the procyclicality of margin models during market stress.</li>
+              <li>Identify settlement risk, operational risk, and concentration risk in CCPs.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>The Clearing Process</h3>
+              <p>After two parties agree to trade, clearing novation substitutes the CCP for both counterparties:</p>
+              <ul>
+                <li>The original buyer-seller relationship is replaced by two separate contracts: buyer-CCP and CCP-seller.</li>
+                <li>This eliminates bilateral counterparty credit risk but creates a new, concentrated exposure to the CCP itself.</li>
+                <li><strong>Multilateral netting</strong>: By sitting in the middle of many trades, the CCP can net positions across all participants, reducing gross exposures dramatically. A participant with £1bn gross long and £900m gross short ends up with a £100m net position — greatly reducing collateral requirements and settlement flows.</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: The CCP Default Waterfall</span>
+              <p class="info-box-content">If a CCP member defaults, losses are absorbed in a legally defined sequence: (1) The defaulter's own initial margin; (2) The defaulter's contribution to the default fund (mutualized pre-funded capital); (3) The CCP's own equity capital ("skin in the game"); (4) Surviving members' default fund contributions. This waterfall is designed to make it "extremely rare" that losses exceed the defaulter's own resources. However, the concentration of financial infrastructure in a handful of global CCPs (LCH, Eurex Clearing, ICE) creates systemic importance — the failure of a major CCP would be among the most disruptive financial events imaginable.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Risk Warning: Procyclical Margin Calls</span>
+              <p class="info-box-content">Initial margin models (typically Value-at-Risk or SPAN-based) use recent volatility to calibrate margin requirements. When markets spike, models increase margin requirements precisely when liquidity is already stressed — forcing participants to post additional collateral or liquidate positions. This procyclicality was documented during the March 2020 equity volatility episode, when CME margin requirements for S&P 500 futures increased 40–60% in days, creating forced selling that amplified the drawdown. CPMI-IOSCO has guidance on reducing margin procyclicality, but balancing this against adequate risk coverage remains an unresolved tension.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>CCPs reduce bilateral counterparty risk but concentrate systemic risk — making CCP resilience a core financial stability concern.</li>
+              <li>The default waterfall is designed to ensure losses fall first on the defaulter, not surviving members or taxpayers.</li>
+              <li>Variation margin is a daily settlement of mark-to-market P&L; initial margin is a buffer for future potential exposure.</li>
+              <li>Procyclical margin models amplify stress — a key structural vulnerability of the post-2008 mandatory clearing regime.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M8 -->
+        <article id="m8" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 8</span>
+            <h2>Repo, Collateral, and Funding Stress</h2>
+          </div>
+          <p class="module-overview">The repo market is the engine room of short-term funding for financial institutions, providing the lubricant that enables leveraged positions in fixed income and the financing of dealer inventories. Repo dynamics link funding liquidity to market liquidity — when repo markets seize, as they did in September 2019 and March 2020, the implications cascade across asset classes and amplify cross-market volatility.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Explain the mechanics of a repurchase agreement (repo) and reverse repo.</li>
+              <li>Distinguish general collateral (GC) repo from special repo and explain the pricing difference.</li>
+              <li>Describe how haircuts connect collateral quality to borrowing capacity.</li>
+              <li>Explain rehypothecation and the role of collateral velocity in funding markets.</li>
+              <li>Analyse the September 2019 US repo market stress and the March 2020 US Treasury market dysfunction as case studies.</li>
+            </ul>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Repo Mechanics</span>
+              <p class="info-box-content">In a <strong>repurchase agreement (repo)</strong>, the cash borrower sells securities to the cash lender with an agreement to repurchase them at a slightly higher price on a future date. The price difference represents the repo interest rate. From the cash lender's perspective, this is a <strong>reverse repo</strong> (secured lending). The collateral haircut — the percentage below market value at which securities are accepted — determines the leverage ratio available to the borrower. A £100m portfolio of gilts with a 2% haircut allows £98m of repo financing, a 50:1 leverage ratio on the haircut.</p>
+            </div>
+
+            <div class="content-section">
+              <h3>GC vs Special Repo</h3>
+              <ul>
+                <li><strong>General collateral (GC)</strong>: Borrowing against any accepted high-quality asset (gilts, Treasuries). Rates track the policy rate closely.</li>
+                <li><strong>Specials</strong>: When a specific security is in high demand to borrow (e.g., because it is heavily shorted), its repo rate falls well below GC — the borrower receives a premium because demand for that specific collateral is intense.</li>
+              </ul>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Case Study: September 2019 US Repo Spike</span>
+              <p class="info-box-content">On 16–17 September 2019, overnight repo rates spiked from ~2.2% to 10% intraday — an unprecedented dislocation. The immediate triggers were a confluence of corporate tax payments, Treasury settlement, and a reduction in bank reserves following earlier Fed balance-sheet normalisation. The episode revealed that the post-2008 reserve management framework had left the system with inadequate buffer reserves. The Fed responded by resuming repo operations and eventually expanding the balance sheet via T-bill purchases. Lesson: Structural imbalances in funding markets can produce sudden, sharp dislocations even without a visible credit event.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Case Study: March 2020 US Treasury Market Dysfunction</span>
+              <p class="info-box-content">In mid-March 2020, the world's deepest and most liquid market — US Treasuries — experienced extraordinary dysfunction. Bid-ask spreads on 10-year Treasuries widened from under 1bp to 10–20bp. Foreign central banks sold Treasuries for dollar liquidity; hedge funds unwound basis trades (long cash Treasury vs short futures) due to margin calls, creating forced selling. The Fed intervened with unlimited repo operations, Treasury purchases, and foreign central bank dollar swap lines. The episode demonstrated that even the global reserve asset can become illiquid when multiple systemic actors simultaneously demand cash.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Repo connects funding liquidity to market liquidity — a seizure in repo markets transmits immediately to asset market liquidity.</li>
+              <li>Haircuts amplify the cycle: tighter haircuts in stress reduce borrowing capacity, forcing deleveraging.</li>
+              <li>Even the US Treasury market can become illiquid when multiple systemic actors simultaneously seek cash.</li>
+              <li>Collateral rehypothecation multiplies financial system leverage; unwind of rehypothecation chains is a stress amplifier.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M9 -->
+        <article id="m9" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 9</span>
+            <h2>Regulation, Transparency, and Market Integrity</h2>
+          </div>
+          <p class="module-overview">Financial market regulation has evolved dramatically since 2008, driven by the G20 reform agenda that emerged from the GFC. The key pillars — capital requirements, mandatory clearing, trade reporting, and conduct regulation — have reshaped market structure in ways that investors must understand to assess execution quality, available instruments, and regulatory risk in their portfolios.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Describe the key provisions of MiFID II as they affect equity and bond market structure.</li>
+              <li>Explain the UK Market Abuse Regulation (MAR) and its investor obligations.</li>
+              <li>Identify prohibited trading conduct: insider trading, market manipulation, layering, and spoofing.</li>
+              <li>Explain how mandatory OTC derivatives clearing under EMIR reduces but concentrates counterparty risk.</li>
+              <li>Assess how governance quality affects the risk premium demanded by investors in a given market.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>MiFID II: Key Structural Provisions</h3>
+              <ul>
+                <li><strong>Best-execution obligation</strong>: Investment firms must demonstrate they consistently achieve the best possible result for clients across price, cost, speed, and likelihood of execution.</li>
+                <li><strong>Systematic internaliser (SI) regime</strong>: Brokers that internally match orders against their own books at a material scale must register as SIs and face transparency obligations.</li>
+                <li><strong>Double-volume cap</strong>: Dark trading in any equity is capped at 4% of volume on any single dark venue and 8% across all European dark venues. Breaches trigger a six-month suspension of dark trading in that stock.</li>
+                <li><strong>Tick size regime</strong>: Minimum price increments for equities are standardised, reducing the race to the bottom in spread width.</li>
+                <li><strong>Research unbundling</strong>: Asset managers must pay for research separately from execution commissions, making the cost of investment research transparent.</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Market Abuse Regulation (MAR)</span>
+              <p class="info-box-content">The UK Market Abuse Regulation (retained post-Brexit) prohibits three core categories of market abuse: (1) <strong>Insider dealing</strong> — trading on material non-public information (MNPI) in financial instruments; (2) <strong>Market manipulation</strong> — artificial orders, wash trades, or false/misleading signals that distort prices; (3) <strong>Unlawful disclosure of inside information</strong> — tipping off others about MNPI. Conduct offences include <strong>layering</strong> (placing then cancelling large orders to mislead) and <strong>spoofing</strong> (submitting orders with no intent to execute). Surveillance systems at major exchanges and the FCA flag these patterns in near-real-time.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>MiFID II transformed European market structure: best-execution documentation, dark pool caps, and research unbundling are now mandated.</li>
+              <li>MAR applies to all persons trading in financial instruments — buy-side analysts, portfolio managers, and corporate insiders alike.</li>
+              <li>Market quality (governance, transparency, enforcement) is a priced factor: weaker-governance markets carry a structural risk premium.</li>
+              <li>Mandatory OTC clearing reduces bilateral credit risk but creates CCP concentration risk — the regulatory trade-off is real.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M10 -->
+        <article id="m10" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 10</span>
+            <h2>Crisis Case Studies and Policy Lessons</h2>
+          </div>
+          <p class="module-overview">Financial crises are not simply tail events — they reveal structural vulnerabilities that exist in plain sight during calm conditions. Studying the GFC (2008), European sovereign debt crisis (2010–12), March 2020 COVID shock, and 2022 UK gilt/LDI crisis provides a template for identifying leverage, liquidity mismatch, and collateral fragilities in any contemporary market context.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Trace the transmission mechanism of the 2008 GFC from US subprime to global interbank freeze.</li>
+              <li>Explain the sovereign-bank doom loop that drove the 2010–12 European debt crisis.</li>
+              <li>Analyse why the March 2020 shock simultaneously hit equity, credit, and government bond markets.</li>
+              <li>Describe the LDI mechanism and why leveraged liability-driven strategies created gilt market fragility in 2022.</li>
+              <li>Extract implementation rules from crisis evidence to improve portfolio resilience.</li>
+            </ul>
+
+            <div class="example-box">
+              <span class="info-box-title">Crisis Study: Global Financial Crisis 2008</span>
+              <p class="info-box-content"><strong>Trigger</strong>: US subprime mortgage delinquencies (2006–07). <strong>Amplification</strong>: Subprime mortgages had been securitised into MBS and CDOs, distributed globally. As default rates rose, the AAA ratings of super-senior tranches were questioned. The repo market froze as counterparties refused to accept MBS as collateral. <strong>Peak</strong>: Lehman Brothers filed for bankruptcy on 15 September 2008. Money market funds "broke the buck" (fell below $1 NAV). Interbank lending rates (LIBOR-OIS spread) spiked from 10bps to 364bps, paralysing short-term funding. <strong>Policy response</strong>: TARP, Fed emergency liquidity facilities, coordinated central bank swap lines, and eventual bank recapitalisation. <strong>Key lesson</strong>: Complexity and opacity in securitisation chains created invisible correlation. The system was far more leveraged and interconnected than observed balance sheets showed.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Crisis Study: UK Gilt/LDI Crisis, September 2022</span>
+              <p class="info-box-content"><strong>Background</strong>: Defined benefit (DB) pension funds used liability-driven investment (LDI) strategies — leveraged long-duration gilt positions designed to match liability duration. Leverage was embedded via gilt repo and derivatives, with limited margin buffers. <strong>Trigger</strong>: The Truss government's 23 September 2022 "mini-budget" announced unfunded tax cuts, shattering fiscal credibility. 30-year gilt yields rose ~130bps in days — an unprecedented move. <strong>Amplification</strong>: Margin calls on leveraged LDI positions forced gilts to be sold into an already-falling market, pushing yields higher and triggering more margin calls — a classic fire-sale spiral. <strong>Intervention</strong>: The Bank of England announced emergency gilt purchases on 28 September 2022, buying up to £65bn of long-dated gilts to restore market function. Purchases ceased 14 October. <strong>Key lessons</strong>: (1) Leverage embedded in liability-management strategies creates hidden tail risks that are invisible under normal conditions. (2) Fiscal credibility is the anchor of sovereign bond market function; its sudden loss can precipitate a liquidity crisis even in high-quality sovereign debt markets.</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Common Crisis Transmission Template</span>
+              <p class="info-box-content">Across GFC, European sovereign crisis, March 2020, and UK LDI, a common template emerges: (1) <strong>Hidden leverage</strong> builds during calm conditions. (2) A <strong>trigger event</strong> causes collateral values to fall. (3) <strong>Margin calls / haircut increases</strong> force leveraged sellers to liquidate. (4) <strong>Fire-sale dynamics</strong> drive prices below fundamental value, triggering more margin calls. (5) <strong>Liquidity hoarding</strong> spreads across institutions. (6) Central bank or government intervention is required to break the cycle. Portfolio managers who identify step (1) — hidden leverage and liquidity mismatch — before the crisis have the most scope to reduce exposure before step (3) arrives.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Crises follow a common template: hidden leverage → trigger → margin calls → fire sales → systemic freeze → policy intervention.</li>
+              <li>Complexity and opacity in structured products create invisible correlation that only appears in stress.</li>
+              <li>Even high-quality sovereign bond markets (Treasuries, gilts) can become dysfunctional when multiple leveraged actors simultaneously seek cash.</li>
+              <li>The most valuable risk management is prospective: identifying hidden leverage before the crisis is far more effective than responding after it unfolds.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div><!-- end modules-list -->
+    </div><!-- end page-layout -->
+
+    <section class="refs">
+      <h3>Core References and Further Reading</h3>
+      <ul>
+        <li><strong>Harris, L. (2003)</strong> — <em>Trading and Exchanges: Market Microstructure for Practitioners</em>. Oxford University Press. The definitive practitioner microstructure reference.</li>
+        <li><strong>Kyle, A. (1985)</strong> — "Continuous Auctions and Insider Trading." <em>Econometrica</em> 53(6). The foundational model of price impact and informed trading.</li>
+        <li><strong>Glosten, L. &amp; Milgrom, P. (1985)</strong> — "Bid, Ask, and Transaction Prices in a Specialist Market with Heterogeneously Informed Traders." <em>Journal of Financial Economics</em> 14.</li>
+        <li><strong>Amihud, Y. (2002)</strong> — "Illiquidity and Stock Returns." <em>Journal of Financial Markets</em> 5. The illiquidity ratio and its cross-sectional return implications.</li>
+        <li><strong>BIS Quarterly Reviews</strong> — Comprehensive analyses of global market functioning, collateral markets, and CCP risk. Available at bis.org.</li>
+        <li><strong>CPMI-IOSCO (2012, updated)</strong> — <em>Principles for Financial Market Infrastructures</em>. The international standard for CCP resilience and margining.</li>
+        <li><strong>Perold, A. (1988)</strong> — "The Implementation Shortfall: Paper vs Reality." <em>Journal of Portfolio Management</em>. The foundational execution cost framework.</li>
+        <li><strong>Bank of England (2022)</strong> — Market Notice: <em>Gilt Market Operations</em>, September–October 2022. The BoE's account of the LDI intervention.</li>
+      </ul>
+    </section>
+
+    <footer>
+      Educational content only. Market rules and regulations change — verify current MiFID II, MAR, and EMIR provisions with FCA and primary venue documentation before acting.
+    </footer>
+  </main>
+
+  <script>
+    if (window.IntersectionObserver) {
+      const modules = document.querySelectorAll('.module');
+      const navLinks = document.querySelectorAll('.module-nav a');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            navLinks.forEach(a => a.classList.remove('active'));
+            const active = document.querySelector(`.module-nav a[href="#${entry.target.id}"]`);
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -75% 0px' });
+      modules.forEach(m => observer.observe(m));
+    }
+  </script>
+</body>
+</html>
