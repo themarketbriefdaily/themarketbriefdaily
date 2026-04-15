@@ -51,36 +51,49 @@ a { color: var(--accent); }
 
 /* ── Topbar ─────────────────────────────── */
 .topbar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.97);
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 64px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.95);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 22px rgba(2,8,23,.10);
+  display: flex; align-items: center;
+  padding: 0 48px;
 }
 .topbar-inner {
-  max-width: 1240px; margin: 0 auto;
-  padding: 13px 24px;
-  display: flex; gap: 16px;
+  width: 100%; max-width: 1240px; margin: 0 auto;
+  display: flex; gap: 32px;
   justify-content: space-between; align-items: center;
 }
 .brand {
-  font-weight: 900; letter-spacing: -0.02em;
-  font-size: 0.92rem; color: var(--ink);
-  text-decoration: none;
+  font-size: 15px; font-weight: 900; letter-spacing: -0.01em;
+  color: var(--ink); text-decoration: none;
+  white-space: nowrap; transition: opacity .2s; cursor: pointer;
 }
-.topbar-nav { display: flex; gap: 10px; align-items: center; }
+.brand:hover { opacity: .75; }
+.topbar-nav {
+  display: flex; gap: 22px;
+  align-items: center; margin-left: auto;
+  flex-wrap: wrap; justify-content: flex-end;
+}
 .nav-link {
-  text-decoration: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 7px 14px;
-  color: var(--ink); font-size: 0.84rem; font-weight: 700;
-  background: #fff; transition: var(--transition);
+  font-size: 13px; font-weight: 800;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s; cursor: pointer;
+  border: none; background: none; padding: 0; border-radius: 0;
 }
-.nav-link:hover { border-color: var(--accent); color: var(--accent); }
+.nav-link:hover,
+.nav-link.active { color: var(--ink); }
+.nav-link.active  { font-weight: 900; }
+@media (max-width: 768px) {
+  .topbar { padding: 0 20px; }
+  .topbar-nav { display: none; }
+}
 
 /* ── Container ──────────────────────────── */
-.container { max-width: 1240px; margin: 0 auto; padding: 28px 24px 64px; }
+.container { max-width: 1240px; margin: 0 auto; padding: calc(64px + 28px) 24px 64px; }
 
 /* ── Hero ───────────────────────────────── */
 .hero {
