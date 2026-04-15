@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/non-home-theme.css">
+  <link rel="stylesheet" href="/assets/design-system.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
@@ -56,6 +57,7 @@
     @media (max-width:768px){.cta-bar{padding:60px 20px}}
 
   </style>
+  <script src="/assets/animations.js" defer></script>
 </head>
 
 <body>
@@ -88,7 +90,7 @@
   </header>
 
   <!-- Hero -->
-  <section class="hero">
+  <section class="hero" data-constellation>
     <div class="hero-canvas-wrap"><canvas id="heroCanvas"></canvas></div>
     <div class="hero-inner">
       <div class="kicker">Contact</div>

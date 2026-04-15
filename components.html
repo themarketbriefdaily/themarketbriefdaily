@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Components | The Market Brief Daily</title>
+  <meta name="description" content="Living component library for The Market Brief Daily." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/non-home-theme.css">
+  <link rel="stylesheet" href="/assets/design-system.css">
+  <script src="/assets/animations.js" defer></script>
+  <style>
+    .lib-hero{padding:130px 48px 48px;background:#fff}
+    .lib-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:0 48px 80px}
+    .lib-card{padding:20px}
+    .lib-title{font-size:1.15rem;font-weight:900;letter-spacing:-.01em;margin-bottom:14px}
+    .lib-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .lib-stack{display:grid;gap:10px}
+    .sparkline-wrap{height:42px}
+    .demo-table-wrap{overflow:auto}
+    @media (max-width:1100px){.lib-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="/">The Market Brief Daily</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/funds.html">Funds</a>
+        <a href="/posts.html">Research</a>
+        <a href="/research-roadmap.html">Roadmap</a>
+        <a class="active" href="/components.html">Components</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="lib-hero" data-constellation>
+    <div class="container" data-reveal>
+      <div class="kicker">Design system</div>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);font-weight:950;letter-spacing:-.03em;">Component Library</h1>
+      <p style="max-width:760px;color:var(--muted);line-height:1.8;">Reusable components, interaction hooks, and premium UI patterns used across The Market Brief Daily.</p>
+    </div>
+  </section>
+
+  <main class="lib-grid">
+    <section class="ds-card ds-card-hover lib-card" data-reveal>
+      <h2 class="lib-title">Buttons & badges</h2>
+      <div class="lib-row">
+        <button class="ds-btn primary" data-toast="Primary action complete" data-toast-type="success">Primary</button>
+        <button class="ds-btn ghost">Ghost</button>
+        <button class="ds-btn subtle">Subtle</button>
+      </div>
+      <div class="lib-row" style="margin-top:12px">
+        <span class="ds-badge">Research</span>
+        <span class="ds-badge success">Positive</span>
+        <span class="ds-badge warning">Watchlist</span>
+      </div>
+    </section>
+
+    <section class="ds-card ds-card-hover lib-card" data-reveal="left">
+      <h2 class="lib-title">Inputs</h2>
+      <div class="lib-stack">
+        <input class="ds-input" type="text" placeholder="Search markets" />
+        <select class="ds-select"><option>YTD</option><option>1Y</option></select>
+        <textarea class="ds-textarea" rows="3" placeholder="Notes"></textarea>
+      </div>
+    </section>
+
+    <section class="ds-card ds-card-hover lib-card" data-reveal="right">
+      <h2 class="lib-title">KPIs & counters</h2>
+      <div class="lib-row">
+        <div class="ds-kpi">
+          <span class="ds-kpi-label">Annualized return</span>
+          <span class="ds-kpi-value positive" data-counter="14.82" data-suffix="%">14.82%</span>
+        </div>
+        <div class="ds-kpi">
+          <span class="ds-kpi-label">Max drawdown</span>
+          <span class="ds-kpi-value negative" data-counter="-8.21" data-suffix="%">-8.21%</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-card ds-card-hover lib-card" data-reveal="zoom">
+      <h2 class="lib-title">Tooltips, modal, toast</h2>
+      <div class="lib-row">
+        <span class="ds-badge" data-tooltip="Tooltip support via data-tooltip attributes.">Hover me</span>
+        <button class="ds-btn ghost" data-modal-open="demoModal">Open modal</button>
+        <button class="ds-btn subtle" data-toast="Saved to watchlist" data-toast-type="success">Show toast</button>
+      </div>
+    </section>
+
+    <section class="ds-card ds-card-hover lib-card" data-reveal>
+      <h2 class="lib-title">Data table</h2>
+      <div class="demo-table-wrap">
+        <table class="ds-table">
+          <thead><tr><th>Fund</th><th>Return</th><th>Vol</th><th>Sharpe</th></tr></thead>
+          <tbody>
+            <tr><td>F1 Active</td><td class="positive">+12.4%</td><td>11.2%</td><td>1.09</td></tr>
+            <tr><td>F2 Tracker</td><td class="positive">+8.3%</td><td>9.4%</td><td>0.88</td></tr>
+            <tr><td>F3 FF Tilt</td><td class="positive">+15.7%</td><td>14.1%</td><td>1.03</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="ds-card ds-card-hover lib-card" data-reveal>
+      <h2 class="lib-title">Sparkline</h2>
+      <div class="sparkline-wrap">
+        <svg class="ds-sparkline" viewBox="0 0 300 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 31C20 28 34 24 52 19C71 14 85 20 103 16C122 12 138 8 155 10C173 13 190 20 206 16C223 12 240 8 257 10C274 12 289 18 298 14" stroke="#0066ff" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M2 39V31C20 28 34 24 52 19C71 14 85 20 103 16C122 12 138 8 155 10C173 13 190 20 206 16C223 12 240 8 257 10C274 12 289 18 298 14V39H2Z" fill="url(#grad)"/>
+          <defs><linearGradient id="grad" x1="150" y1="10" x2="150" y2="39" gradientUnits="userSpaceOnUse"><stop stop-color="#0066ff" stop-opacity="0.2"/><stop offset="1" stop-color="#0066ff" stop-opacity="0"/></linearGradient></defs>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <div class="ds-modal" id="demoModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="ds-modal-dialog">
+      <div style="padding:20px 20px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ds-line)">
+        <strong>Modal Component</strong>
+        <button class="ds-btn subtle" data-modal-close>Close</button>
+      </div>
+      <div style="padding:20px;color:var(--muted)">Use <code>data-modal-open</code> and <code>data-modal-close</code> hooks for reusable modal interactions.</div>
+    </div>
+  </div>
+</body>
+</html>

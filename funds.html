@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/non-home-theme.css">
+  <link rel="stylesheet" href="/assets/design-system.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -113,6 +114,7 @@
     @media (max-width:1200px){.fund-card{grid-template-columns:1fr}.fund-img{border-right:none;border-bottom:1px solid var(--line)}.thesis-grid{grid-template-columns:1fr}}
     @media (max-width:768px){.hero{padding:100px 20px}.funds-section{padding:80px 20px}.fund-body{padding:20px}.thesis-section{padding:100px 20px}.footer-inner{grid-template-columns:1fr}.dashboard-header{flex-direction:column;align-items:flex-start}.timeframe-buttons{width:100%;margin:24px 0}.dashboard-body{padding:20px}.metrics-grid{grid-template-columns:1fr}}
   </style>
+  <script src="/assets/animations.js" defer></script>
 </head>
 
 <body>
@@ -178,7 +180,7 @@
     </div>
   </div>
 
-  <section class="hero">
+  <section class="hero" data-constellation>
     <div class="container hero-inner">
       <div class="kicker">Our Funds</div>
       <h1>Fund Strategies</h1>
