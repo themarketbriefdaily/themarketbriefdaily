@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Education — The Market Brief Daily</title>
+  <title>Education Library — The Market Brief Daily</title>
+  <meta name="description" content="CFA-standard investment education library covering markets, investing, personal finance, asset classes, UK tax, and pensions." />
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/design-system.css" />
@@ -12,12 +13,28 @@
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('position-calc');
       const output = document.getElementById('calc-output');
+      const search = document.getElementById('curriculum-search');
+      const cards = [...document.querySelectorAll('[data-curriculum-card]')];
+
+      const runFilter = () => {
+        const q = (search.value || '').trim().toLowerCase();
+        cards.forEach((card) => {
+          const text = `${card.dataset.search || ''} ${card.textContent}`.toLowerCase();
+          card.classList.toggle('hidden', q && !text.includes(q));
+        });
+      };
+
+      search.addEventListener('input', runFilter);
+
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         const capital = Number(document.getElementById('capital').value || 0);
         const riskPct = Number(document.getElementById('risk').value || 0);
         const stopPct = Number(document.getElementById('stop').value || 0);
-        if (!capital || !riskPct || !stopPct) { output.textContent = 'Enter valid values to calculate position size.'; return; }
+        if (!capital || !riskPct || !stopPct) {
+          output.textContent = 'Enter valid values to calculate position size.';
+          return;
+        }
         const riskBudget = capital * (riskPct / 100);
         const positionSize = riskBudget / (stopPct / 100);
         output.textContent = `Risk budget: $${riskBudget.toLocaleString()} | Suggested gross position: $${Math.round(positionSize).toLocaleString()}`;
@@ -27,15 +44,145 @@
 </head>
 <body>
   <div class="page-transition-overlay" aria-hidden="true"></div>
-  <header class="site-header"><div class="container nav-inner"><a class="brand" href="/index.html"><span class="brand-dot"></span>The Market Brief Daily</a><nav class="nav-links"><a class="nav-link" href="/index.html">Home</a><a class="nav-link" href="/insights.html">Insights</a><a class="nav-link" href="/education.html">Education</a><a class="nav-link" href="/funds.html">Funds</a><a class="nav-link" href="/glossary.html">Glossary</a></nav><a class="nav-cta" href="/insights.html">Get briefed</a><button class="hamburger" type="button" data-menu-toggle aria-expanded="false" aria-label="Open menu"><span class="hamburger-lines"></span></button></div></header>
-  <aside class="mobile-menu" data-mobile-menu><nav><a class="mobile-link" href="/index.html">Home</a><a class="mobile-link" href="/insights.html">Insights</a><a class="mobile-link" href="/education.html">Education</a><a class="mobile-link" href="/funds.html">Funds</a><a class="mobile-link" href="/glossary.html">Glossary</a></nav></aside>
+
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="/index.html"><span class="brand-dot"></span>The Market Brief Daily</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="/index.html">Home</a>
+        <a class="nav-link" href="/insights.html">Insights</a>
+        <a class="nav-link" href="/education.html">Education</a>
+        <a class="nav-link" href="/funds.html">Funds</a>
+        <a class="nav-link" href="/glossary.html">Glossary</a>
+      </nav>
+      <a class="nav-cta" href="/insights.html">Get briefed</a>
+      <button class="hamburger" type="button" data-menu-toggle aria-expanded="false" aria-label="Open menu"><span class="hamburger-lines"></span></button>
+    </div>
+  </header>
+
+  <aside class="mobile-menu" data-mobile-menu>
+    <nav aria-label="Mobile">
+      <a class="mobile-link" href="/index.html">Home</a>
+      <a class="mobile-link" href="/insights.html">Insights</a>
+      <a class="mobile-link" href="/education.html">Education</a>
+      <a class="mobile-link" href="/funds.html">Funds</a>
+      <a class="mobile-link" href="/glossary.html">Glossary</a>
+      <a class="mobile-link nav-cta-mobile" href="/insights.html">Get briefed</a>
+    </nav>
+  </aside>
 
   <main class="main-content">
-    <section class="section section-sm"><div class="container"><span class="kicker reveal">Learning library</span><h1 class="reveal" data-delay="100">Investor education and practical tools</h1><p class="reveal" data-delay="200">Core concepts, risk frameworks, and quick calculators for portfolio teams and private investors.</p></div></section>
-    <section class="section"><div class="container grid grid-3"><article class="card reveal"><h3>Macro regime basics</h3><p>How growth, inflation, and policy combinations impact cross-asset leadership.</p></article><article class="card reveal" data-delay="100"><h3>Reading the yield curve</h3><p>Interpreting curve shape, forwards, and policy expectation shifts.</p></article><article class="card reveal" data-delay="200"><h3>Portfolio drawdown control</h3><p>Position sizing, stop framework design, and diversification limits.</p></article></div></section>
-    <section class="section"><div class="container"><article class="card reveal-scale"><h2>Position sizing calculator</h2><p>Estimate gross position size based on account capital, risk budget, and stop distance.</p><form id="position-calc" class="form-row"><label>Capital ($)<input id="capital" class="form-control" type="number" min="0" step="1000" value="500000"></label><label>Risk per trade (%)<input id="risk" class="form-control" type="number" min="0.1" step="0.1" value="0.75"></label><label>Stop distance (%)<input id="stop" class="form-control" type="number" min="0.1" step="0.1" value="3"></label><div style="display:flex;align-items:end"><button class="btn btn-primary" type="submit">Calculate</button></div></form><p id="calc-output" class="mt-8" style="font-weight:600;color:var(--color-text-primary)">Risk budget: $3,750 | Suggested gross position: $125,000</p></article></div></section>
+    <section class="section section-sm">
+      <div class="container">
+        <span class="kicker reveal">Learning library</span>
+        <h1 class="reveal" data-delay="100">Full investment curriculum and practical tools</h1>
+        <p class="reveal" data-delay="200">A structured education library spanning six pillars: financial markets, investing, personal finance, asset classes, UK investing tax, and pensions.</p>
+        <input id="curriculum-search" class="form-control reveal" data-delay="300" type="search" placeholder="Search modules: duration, factor investing, ISA, pensions, derivatives..." aria-label="Search education curriculum" style="max-width:760px">
+      </div>
+    </section>
+
+    <section class="section" data-skeleton-grid>
+      <div class="container">
+        <div class="skeleton-grid" data-skeleton>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+
+        <div class="grid grid-3 hidden" data-real>
+          <article class="card reveal" data-curriculum-card data-search="financial markets microstructure liquidity repo clearing settlement">
+            <span class="badge">Financial Markets</span>
+            <h3 class="mt-8">Financial Markets</h3>
+            <p>Market architecture, trading mechanics, clearing infrastructure, and systemic stress transmission channels.</p>
+            <div class="card-meta">10 modules · CFA-aligned · Micro + macro</div>
+            <a class="read-more" href="/education-financial-markets.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+
+          <article class="card reveal" data-delay="100" data-curriculum-card data-search="investing portfolio construction active passive factors attribution ips">
+            <span class="badge">Investing</span>
+            <h3 class="mt-8">Investing</h3>
+            <p>Policy design, strategic asset allocation, factor frameworks, rebalancing discipline, and attribution.</p>
+            <div class="card-meta">10 modules · Evidence-led · Portfolio practice</div>
+            <a class="read-more" href="/education-investing.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+
+          <article class="card reveal" data-delay="200" data-curriculum-card data-search="personal finance goals budgeting debt emergency insurance lifecycle">
+            <span class="badge">Personal Finance</span>
+            <h3 class="mt-8">Personal Finance</h3>
+            <p>Goal architecture, household cash-flow systems, debt design, risk protection, and lifecycle planning.</p>
+            <div class="card-meta">10 modules · Lifecycle focus · Decision framework</div>
+            <a class="read-more" href="/education-personal-finance.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+
+          <article class="card reveal" data-curriculum-card data-search="asset classes equities fixed income credit alternatives commodities derivatives fx">
+            <span class="badge">Asset Classes</span>
+            <h3 class="mt-8">Asset Classes &amp; Types</h3>
+            <p>Economic exposures, valuation frameworks, and regime behavior across major investable asset classes.</p>
+            <div class="card-meta">10 modules · Cross-asset · Valuation + risk</div>
+            <a class="read-more" href="/education-asset-classes-types.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+
+          <article class="card reveal" data-delay="100" data-curriculum-card data-search="uk tax isa cgt dividends bed and isa asset location self assessment">
+            <span class="badge">UK Investing &amp; Tax</span>
+            <h3 class="mt-8">UK Investing &amp; Tax</h3>
+            <p>Tax-aware investing for UK investors across wrappers, allowances, turnover, and annual planning flows.</p>
+            <div class="card-meta">10 modules · UK-specific · 2026/27 updated</div>
+            <a class="read-more" href="/education-uk-investing-tax.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+
+          <article class="card reveal" data-delay="200" data-curriculum-card data-search="pensions retirement sipp annual allowance decumulation sequence risk withdrawals">
+            <span class="badge">Pensions</span>
+            <h3 class="mt-8">Pensions</h3>
+            <p>Accumulation and decumulation strategy, allowance management, glide paths, and retirement sequencing.</p>
+            <div class="card-meta">10 modules · Accumulation + decumulation · Policy-first</div>
+            <a class="read-more" href="/education-pensions.html">Open curriculum <span class="arrow">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <article class="card reveal-scale">
+          <h2>Position sizing calculator</h2>
+          <p>Estimate gross position size using account capital, risk budget, and stop distance.</p>
+          <form id="position-calc" class="form-row">
+            <label>Capital ($)<input id="capital" class="form-control" type="number" min="0" step="1000" value="500000"></label>
+            <label>Risk per trade (%)<input id="risk" class="form-control" type="number" min="0.1" step="0.1" value="0.75"></label>
+            <label>Stop distance (%)<input id="stop" class="form-control" type="number" min="0.1" step="0.1" value="3"></label>
+            <div style="display:flex;align-items:end"><button class="btn btn-primary" type="submit">Calculate</button></div>
+          </form>
+          <p id="calc-output" class="mt-8" style="font-weight:600;color:var(--color-text-primary)">Risk budget: $3,750 | Suggested gross position: $125,000</p>
+        </article>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer"><canvas class="constellation-layer" data-constellation data-nodes="24"></canvas><div class="container footer-content"><div class="footer-grid reveal"><div><h4>The Market Brief Daily</h4><p>Institutional research and investor education.</p></div><div><h4>Navigation</h4><ul class="footer-list"><li><a href="/index.html">Home</a></li><li><a href="/insights.html">Insights</a></li><li><a href="/funds.html">Funds</a></li></ul></div><div><h4>Resources</h4><ul class="footer-list"><li><a href="/education.html">Education</a></li><li><a href="/glossary.html">Glossary</a></li><li><a href="/components.html">Components</a></li></ul></div><div><h4>Newsletter</h4><input class="form-control" type="email" placeholder="Work email"><button class="btn btn-primary mt-8" type="button">Subscribe</button></div></div><div class="footer-bottom">© 2026 The Market Brief Daily.</div></div></footer>
+  <footer class="site-footer">
+    <canvas class="constellation-layer" data-constellation data-nodes="24"></canvas>
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="reveal">
+          <h4>The Market Brief Daily</h4>
+          <p>Institutional research and investor education built around real portfolio decision workflows.</p>
+        </div>
+        <div class="reveal" data-delay="100">
+          <h4>Navigation</h4>
+          <ul class="footer-list"><li><a href="/index.html">Home</a></li><li><a href="/insights.html">Insights</a></li><li><a href="/funds.html">Funds</a></li></ul>
+        </div>
+        <div class="reveal" data-delay="200">
+          <h4>Resources</h4>
+          <ul class="footer-list"><li><a href="/education.html">Education</a></li><li><a href="/glossary.html">Glossary</a></li><li><a href="/components.html">Components</a></li></ul>
+        </div>
+        <div class="reveal" data-delay="300">
+          <h4>Newsletter</h4>
+          <p>Receive the pre-open institutional brief at 06:30 London time.</p>
+          <input class="form-control" type="email" placeholder="Work email" aria-label="Newsletter email">
+          <button class="btn btn-primary mt-8" type="button">Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-bottom reveal" data-delay="300">© 2026 The Market Brief Daily. Educational content only — not personal financial advice.</div>
+    </div>
+  </footer>
 </body>
 </html>
