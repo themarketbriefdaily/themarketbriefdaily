@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insights — The Market Brief Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-system.css" />
+  <script defer src="/animations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const filter = document.getElementById('insight-filter');
+      const search = document.getElementById('insight-search');
+      const cards = [...document.querySelectorAll('[data-insight-card]')];
+      const run = () => {
+        const f = filter.value;
+        const q = search.value.trim().toLowerCase();
+        cards.forEach((card) => {
+          const topic = card.dataset.topic;
+          const text = card.textContent.toLowerCase();
+          const passTopic = f === 'all' || topic === f;
+          const passSearch = !q || text.includes(q);
+          card.classList.toggle('hidden', !(passTopic && passSearch));
+        });
+      };
+      filter.addEventListener('change', run);
+      search.addEventListener('input', run);
+    });
+  </script>
+</head>
+<body>
+  <div class="page-transition-overlay" aria-hidden="true"></div>
+  <header class="site-header"><div class="container nav-inner"><a class="brand" href="/index.html"><span class="brand-dot"></span>The Market Brief Daily</a><nav class="nav-links"><a class="nav-link" href="/index.html">Home</a><a class="nav-link" href="/insights.html">Insights</a><a class="nav-link" href="/education.html">Education</a><a class="nav-link" href="/funds.html">Funds</a><a class="nav-link" href="/glossary.html">Glossary</a></nav><a class="nav-cta" href="/insights.html">Get briefed</a><button class="hamburger" type="button" data-menu-toggle aria-expanded="false" aria-label="Open menu"><span class="hamburger-lines"></span></button></div></header>
+  <aside class="mobile-menu" data-mobile-menu><nav><a class="mobile-link" href="/index.html">Home</a><a class="mobile-link" href="/insights.html">Insights</a><a class="mobile-link" href="/education.html">Education</a><a class="mobile-link" href="/funds.html">Funds</a><a class="mobile-link" href="/glossary.html">Glossary</a></nav></aside>
+
+  <main class="main-content">
+    <section class="section section-sm">
+      <div class="container">
+        <span class="kicker reveal">Research desk</span>
+        <h1 class="reveal" data-delay="100">Insights and market commentary</h1>
+        <p class="reveal" data-delay="200">Filter by domain and search by catalyst to scan the latest institutional-grade briefings.</p>
+        <div class="form-row reveal" data-delay="300" style="margin-top:var(--space-6)">
+          <label>Filter by topic<select id="insight-filter" class="form-control"><option value="all">All topics</option><option value="macro">Macro</option><option value="rates">Rates</option><option value="equities">Equities</option><option value="commodities">Commodities</option></select></label>
+          <label>Search briefs<input id="insight-search" class="form-control" type="search" placeholder="Search by event, region, or instrument"></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-3">
+        <article class="card reveal" data-insight-card data-topic="macro"><span class="badge">Macro</span><h3>Fed balance sheet runoff and reserve sensitivity</h3><p>Reserve drain thresholds indicate renewed front-end volatility risk into quarter end.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+        <article class="card reveal" data-delay="100" data-insight-card data-topic="rates"><span class="badge">Rates</span><h3>UST curve steepening via term premium expansion</h3><p>Auction tail dynamics suggest bear-steepening remains the path of least resistance.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+        <article class="card reveal" data-delay="200" data-insight-card data-topic="equities"><span class="badge">Equities</span><h3>Quality factor catches bid as earnings dispersion widens</h3><p>Defensive growth outperformance links directly to lower confidence in cyclical revisions.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+        <article class="card reveal" data-insight-card data-topic="commodities"><span class="badge">Commodities</span><h3>Crude backwardation intensifies on refining outages</h3><p>Prompt tightness supports curve carry while gasoline cracks lead volatility spillovers.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+        <article class="card reveal" data-delay="100" data-insight-card data-topic="macro"><span class="badge">Macro</span><h3>China credit impulse still below transmission threshold</h3><p>Current lending mix implies delayed impact on industrial metals and cyclical EM FX.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+        <article class="card reveal" data-delay="200" data-insight-card data-topic="equities"><span class="badge">Equities</span><h3>Short gamma pockets around index rebalance windows</h3><p>Dealer positioning map flags event-driven convexity risk for passive-heavy sectors.</p><a class="read-more" href="#">Read more <span class="arrow">→</span></a></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><canvas class="constellation-layer" data-constellation data-nodes="24"></canvas><div class="container footer-content"><div class="footer-grid reveal"><div><h4>The Market Brief Daily</h4><p>Actionable research for institutional investors.</p></div><div><h4>Navigation</h4><ul class="footer-list"><li><a href="/index.html">Home</a></li><li><a href="/insights.html">Insights</a></li><li><a href="/funds.html">Funds</a></li></ul></div><div><h4>Resources</h4><ul class="footer-list"><li><a href="/education.html">Education</a></li><li><a href="/glossary.html">Glossary</a></li><li><a href="/components.html">Components</a></li></ul></div><div><h4>Newsletter</h4><input class="form-control" type="email" placeholder="Work email"><button class="btn btn-primary mt-8" type="button">Subscribe</button></div></div><div class="footer-bottom">© 2026 The Market Brief Daily.</div></div></footer>
+</body>
+</html>
