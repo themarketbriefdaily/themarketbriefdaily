@@ -87,6 +87,63 @@ a { color: var(--accent); }
 .nav-link:hover,
 .nav-link.active { color: var(--ink); }
 .nav-link.active  { font-weight: 900; }
+
+/* dropdown reuse for education topbar */
+.topbar-nav .nav-dropdown { position: relative; }
+.topbar-nav .nav-dropdown > .nav-drop-toggle {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 13px; font-weight: 800;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s; cursor: pointer;
+  background: none; border: none; padding: 0;
+  line-height: inherit; font-family: inherit;
+}
+.topbar-nav .nav-dropdown > .nav-drop-toggle:hover,
+.topbar-nav .nav-dropdown > .nav-drop-toggle.active { color: var(--ink); }
+.topbar-nav .nav-dropdown > .nav-drop-toggle.active { font-weight: 900; }
+.topbar-nav .drop-caret {
+  display: inline-block; width: 10px; height: 10px;
+  position: relative; flex-shrink: 0; transition: transform .2s;
+}
+.topbar-nav .drop-caret::before {
+  content: ''; position: absolute; top: 2px; left: 1px;
+  border: 4px solid transparent; border-top-color: currentColor;
+}
+.topbar-nav .nav-dropdown.open > .nav-drop-toggle .drop-caret { transform: rotate(-180deg); }
+.topbar-nav .nav-drop-menu {
+  display: none; position: absolute;
+  top: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%);
+  min-width: 190px;
+  background: rgba(255,255,255,.98);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(2,8,23,.12), 0 2px 8px rgba(2,8,23,.06);
+  padding: 6px; z-index: 1100;
+  opacity: 0; transform: translateX(-50%) translateY(-6px);
+  transition: opacity .15s ease, transform .15s ease;
+  pointer-events: none;
+}
+.topbar-nav .nav-dropdown.open .nav-drop-menu {
+  display: block; opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.topbar-nav .nav-drop-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 13px; font-weight: 700;
+  color: var(--muted); text-decoration: none;
+  transition: background .15s, color .15s; white-space: nowrap;
+}
+.topbar-nav .nav-drop-menu a:hover { background: rgba(0,102,255,.06); color: var(--ink); }
+.topbar-nav .nav-drop-menu a.active { color: var(--ink); font-weight: 900; }
+.topbar-nav .nav-drop-menu .drop-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: rgba(0,102,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
 @media (max-width: 768px) {
   .topbar { padding: 0 20px; }
   .topbar-nav { display: none; }

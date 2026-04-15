@@ -145,8 +145,20 @@
         <a href="/funds.html">Funds</a>
         <a href="/posts.html">Research</a>
         <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
-        <a href="/education-library.html">Education</a>
+        <div class="nav-dropdown">
+          <button class="nav-drop-toggle" aria-haspopup="true" aria-expanded="false">
+            Learn <span class="drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu" role="menu">
+            <a href="/glossary.html" role="menuitem">
+              <span class="drop-icon">📖</span> Glossary
+            </a>
+            <div class="nav-drop-divider"></div>
+            <a href="/education-library.html" role="menuitem">
+              <span class="drop-icon">🎓</span> Education
+            </a>
+          </div>
+        </div>
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
       </nav>
@@ -708,5 +720,25 @@
       initExitIntentModal();
     });
   </script>
+<script>
+(function(){
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd){
+    var toggle = dd.querySelector('.nav-drop-toggle');
+    if(!toggle) return;
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = dd.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!open) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+})();
+</script>
 </body>
 </html>
