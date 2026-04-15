@@ -4,547 +4,434 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Investment Education Library | The Market Brief Daily</title>
-  <meta name="description" content="Graduate-level investment education library with interactive lessons and a real-time investment growth calculator." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Graduate-level UK investment education with Morningstar/SPIVA analysis, quizzes, videos, and a comprehensive investment planner." />
   <style>
-    :root{
-      --navy:#0f2d4e;--slate:#64748b;--line:#e2e8f0;--bg:#f8fafc;--white:#fff;
-      --blue:#2563eb;--green:#16a34a;--amber:#d97706;--purple:#7c3aed;
-    }
+    :root{--bg:#f7fafc;--card:#fff;--line:#dbe4f0;--brand:#0f2d4e;--txt:#0f172a;--muted:#475569;--blue:#2563eb;--purple:#7c3aed;--green:#0f9d58;--amber:#b45309;--danger:#b91c1c}
     *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,-apple-system,sans-serif;font-size:16px;line-height:1.7;background:var(--bg);color:#0f172a}
-    .header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-    .header-inner{max-width:1200px;margin:0 auto;padding:14px 16px}
-    h1{margin:0;color:var(--navy);font-size:clamp(1.4rem,2.5vw,2rem)}
-    .sub{margin:4px 0 10px;color:var(--slate)}
-    .pills{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{border:1px solid var(--line);background:#fff;color:var(--navy);padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:600}
-    .pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-    main{max-width:1200px;margin:0 auto;padding:20px 16px 40px}
-    .pillar{margin-bottom:18px}
-    .pillar h2{color:var(--navy);font-size:1.35rem;margin:16px 0 10px}
-    .card{border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;background:#fff;margin-bottom:12px;overflow:hidden;transition:box-shadow .25s ease}
-    .card.market,.card.efficient{border-left-color:var(--blue)}
-    .card.academic{border-left-color:var(--purple)}
-    .card.strategy{border-left-color:var(--green)}
-    .card.personal{border-left-color:var(--amber)}
-    .card.open{box-shadow:0 4px 16px rgba(0,0,0,.08)}
-    .card-head{padding:14px 16px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start;cursor:pointer}
-    .card-title{margin:0;color:var(--navy);font-size:1.05rem}
-    .summary{margin:4px 0 0;color:var(--slate);font-size:.93rem}
-    .meta{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .badge{font-size:.75rem;padding:3px 8px;border-radius:999px;background:#eef2ff;color:#312e81;font-weight:700;white-space:nowrap}
-    .read{font-size:.75rem;color:var(--slate)}
-    .card-body{max-height:0;overflow:hidden;transition:max-height .35s ease;padding:0 16px}
-    .card.open .card-body{padding:0 16px 16px}
-    .takeaways{background:#f0f9ff;border-left:4px solid var(--blue);padding:10px 12px;border-radius:8px;margin-bottom:10px}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.65}
+    .header{position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);z-index:10;border-bottom:1px solid var(--line)}
+    .header-inner,main{max-width:1240px;margin:0 auto;padding:16px}
+    h1{margin:0;color:var(--brand);font-size:clamp(1.3rem,2.2vw,2rem)} .sub{margin:.35rem 0 0;color:var(--muted)}
+    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .pill{border:1px solid var(--line);background:#fff;color:var(--brand);padding:8px 12px;border-radius:999px;font-weight:700;cursor:pointer}
+    .pill.active{background:var(--brand);border-color:var(--brand);color:#fff}
+    .note{margin:14px 0;background:#ecfdf5;border:1px solid #bbf7d0;border-left:4px solid #16a34a;color:#14532d;padding:10px;border-radius:10px}
+    .section-title{color:var(--brand);margin:18px 0 10px}
+    .card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:12px;overflow:hidden;margin-bottom:12px}
+    .card.spiva{border-left-color:var(--purple)} .card.interactive{border-left-color:var(--green)} .card.personal{border-left-color:var(--amber)}
+    .card-head{padding:14px 16px;display:flex;justify-content:space-between;gap:10px;cursor:pointer}
+    .card-title{margin:0;font-size:1.06rem;color:var(--brand)} .summary{margin:.25rem 0 0;color:var(--muted);font-size:.93rem}
+    .badge{font-size:.75rem;padding:3px 8px;border-radius:999px;background:#e0e7ff;color:#312e81;font-weight:700;white-space:nowrap}
+    .card-body{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .35s ease} .card.open .card-body{padding:0 16px 16px}
+    .takeaways{background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #3b82f6;padding:10px;border-radius:10px;margin-bottom:10px}
     .takeaways ul{margin:0;padding-left:20px}
-    .card p{margin:0 0 10px}
-    .go-deeper{border-top:1px dashed var(--line);padding-top:8px;margin-top:10px}
-    .go-deeper a{color:#1d4ed8;text-decoration:none}
-    .go-deeper a:hover{text-decoration:underline}
-    .interactive{border:1px solid var(--line);background:#f8fafc;border-radius:10px;padding:10px;margin:10px 0}
-    .bars{display:grid;gap:8px;margin-top:8px}
-    .bar-wrap{background:#e2e8f0;border-radius:999px;height:18px;position:relative;overflow:hidden}
-    .bar{height:100%;transition:width .5s ease}
-    .bar.active{background:#0284c7}.bar.index{background:#22c55e}
-    .bar-label{font-size:.84rem;color:#334155;margin-bottom:4px}
-    .calc-section{background:#eef6ff;border:1px solid #cfe3ff;border-radius:14px;padding:16px;margin-top:28px}
-    .calc-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:14px}
-    .field{margin-bottom:10px}
-    label{font-size:.85rem;font-weight:600;color:#334155;display:block;margin-bottom:4px}
-    input[type='number'],input[type='range']{width:100%}
-    input[type='number']{padding:8px;border:1px solid var(--line);border-radius:8px}
-    .inline{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .scenario{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
-    .scenario button,.small-btn{border:1px solid var(--line);padding:7px 10px;border-radius:8px;background:#fff;cursor:pointer;font-weight:600}
-    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}
-    .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
-    .stat h4{margin:0 0 4px;font-size:.8rem;color:#475569}
-    .stat p{margin:0;font-size:1.05rem;font-weight:800;color:var(--navy)}
-    .table-wrap{margin-top:10px}
-    table{width:100%;border-collapse:collapse;font-size:.86rem;background:#fff;border:1px solid var(--line)}
-    th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
-    th:first-child,td:first-child{text-align:left}
+    .tool{border:1px solid #c7d2fe;background:#eef2ff;padding:10px;border-radius:10px;margin:10px 0}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .field{display:flex;flex-direction:column;gap:4px} label{font-size:.84rem;font-weight:700;color:#334155}
+    input,select{padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit} input[type="range"]{padding:0}
+    .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px}
+    .stat h4{margin:0;color:var(--muted);font-size:.76rem} .stat p{margin:3px 0 0;color:var(--brand);font-weight:800}
+    .small{font-size:.84rem;color:var(--muted)}
+    .video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .video{border:1px solid #1e293b;background:#0f172a;border-radius:10px;overflow:hidden}
+    .video iframe{width:100%;height:220px;border:0}
+    .video p{margin:8px;color:#cbd5e1;font-size:.84rem}
+    .quiz{border:1px solid var(--line);background:#f8fafc;padding:10px;border-radius:10px;margin:10px 0}
+    .quiz h4{margin:0 0 6px}
+    .quiz .options{display:flex;gap:8px;flex-wrap:wrap}
+    .quiz button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:600}
+    .quiz button.correct{border-color:#16a34a;background:#dcfce7;color:#14532d}
+    .quiz button.wrong{border-color:#dc2626;background:#fee2e2;color:#7f1d1d}
+    .quiz-result{margin-top:8px;font-size:.88rem}
+    .planner{margin-top:20px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:14px;padding:14px}
+    .planner-grid{display:grid;grid-template-columns:1.2fr 1.8fr;gap:12px}
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .recommend{background:#fff;border:1px solid var(--line);padding:10px;border-radius:10px;margin-top:8px}
+    .table-wrap{max-height:300px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:10px;margin-top:8px}
+    table{width:100%;border-collapse:collapse;font-size:.84rem} th,td{padding:7px;border-bottom:1px solid var(--line);text-align:right} th:first-child,td:first-child{text-align:left}
+    .chart-wrap{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;margin-top:8px}
+    .warning{margin-top:8px;background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #f97316;border-radius:10px;padding:10px;color:#7c2d12}
+    .error{font-size:.84rem;color:var(--danger);min-height:18px}
+    .btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
     .hidden{display:none !important}
-    .caveat{margin-top:12px;background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #f97316;padding:10px;border-radius:8px;color:#7c2d12}
-    footer{margin-top:24px;color:#475569;font-size:.88rem}
-    @media (max-width:768px){.calc-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}
+    .term{border-bottom:1px dashed #1d4ed8;color:#1d4ed8;text-decoration:none}
+    footer{margin:20px 0 5px;color:var(--muted);font-size:.87rem}
+    @media (max-width:980px){.grid-2,.grid-3,.video-grid,.planner-grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}
+    @media print{.header,.pills,.btn,.quiz,.video-grid{display:none!important}}
   </style>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
       <h1>Investment Education Library</h1>
-      <p class="sub">Graduate-level market education with practical portfolio tools.</p>
+      <p class="sub">MSc-level finance education, evidence-led active/passive analysis, and a full UK investment planner.</p>
       <div class="pills" id="filterPills">
-        <button class="pill active" data-filter="all">All</button>
-        <button class="pill" data-filter="market">Market Structure</button>
-        <button class="pill" data-filter="efficient">Efficient Markets</button>
-        <button class="pill" data-filter="academic">Academic Research</button>
-        <button class="pill" data-filter="strategy">Strategies</button>
-        <button class="pill" data-filter="personal">Personal Finance</button>
-        <button class="pill" data-filter="calculator">Calculator</button>
+        <button type="button" class="pill active" data-filter="all">All</button>
+        <button type="button" class="pill" data-filter="core">Core Lessons</button>
+        <button type="button" class="pill" data-filter="spiva">Morningstar/SPIVA</button>
+        <button type="button" class="pill" data-filter="interactive">Media & Quizzes</button>
+        <button type="button" class="pill" data-filter="planner">Investment Planner</button>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="pillar" data-section="cards">
-      <h2>Pillar 1 — Market Structure</h2>
-      <article class="card market" data-category="market">
-        <div class="card-head"><div><h3 class="card-title">1.1 What markets are and why they exist</h3><p class="summary">Capital allocation, Hayek’s knowledge problem, and price discovery in modern finance.</p></div><div class="meta"><span class="read">11 min read</span><span class="badge">Foundations</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Markets solve decentralised information and funding problems simultaneously.</li><li>Prices coordinate savings, investment, and risk transfer under uncertainty.</li><li>Primary and secondary markets jointly reduce firms’ cost of capital.</li></ul></div>
-          <p>Financial markets exist because modern economies need a continuous mechanism to allocate scarce capital across competing projects. In Hayek (1945), the central challenge is dispersed knowledge: no planner can observe all local conditions, preferences, or production constraints. Market prices compress this fragmented information into tradable signals. A higher copper price, for example, communicates scarcity and demand pressure to miners, manufacturers, and investors at once. In this sense, markets are computational systems for social coordination under uncertainty.</p>
-          <p>From London coffee-house trading in the late seventeenth century to today’s fragmented electronic venues, the core economic function has remained: move savings to productive use. The primary market channels new capital through equity issuance and bond auctions; the secondary market provides liquidity and continuous valuation. Federal Reserve educational material on primary/secondary markets stresses this complementarity: active secondary trading lowers expected illiquidity discounts, which lowers issuance costs for firms and sovereigns.</p>
-          <p>Capital allocation quality can be split into allocative efficiency and operational efficiency. Allocative efficiency asks whether capital reaches the highest net-present-value opportunities; operational efficiency asks how cheaply and reliably trades clear. BIS market structure reviews show that transaction cost frictions, clearing failures, and settlement risk directly impair both. Efficient operations are therefore not merely plumbing; they shape real investment and growth outcomes.</p>
-          <p>Markets also perform risk transfer. Equity shifts business risk to investors with long horizons; bonds transfer duration and default risk; derivatives unbundle and redistribute specific exposures. CFA curriculum framing treats this as a welfare function: households and institutions can hold portfolios closer to their desired consumption paths. Price discovery emerges from this same process. Competing beliefs are converted into quotes and trades, and equilibrium prices become probability-weighted expectations about future cash flows and discount rates.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/1809376" target="_blank" rel="noopener">Hayek (1945)</a>, <a href="https://www.federalreserve.gov/" target="_blank" rel="noopener">Federal Reserve primers</a>, <a href="https://www.bis.org/" target="_blank" rel="noopener">BIS market structure publications</a>.</div>
-        </div>
-      </article>
+    <div class="note"><strong>Data scope:</strong> UK tax years 2024/25 and active-vs-passive research from SPIVA/Morningstar 2024 publications. Educational use only; not regulated advice.</div>
 
-      <article class="card market" data-category="market">
-        <div class="card-head"><div><h3 class="card-title">1.2 Asset classes: a rigorous taxonomy</h3><p class="summary">Equities, bonds, commodities, FX and alternatives with evidence on return, risk and correlation.</p></div><div class="meta"><span class="read">12 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Equities delivered roughly 5% real annualised returns over 1900–2020 in DMS data.</li><li>Bonds supply duration and income but face inflation/credit regime risk.</li><li>Commodities, FX and alternatives diversify specific macro shocks.</li></ul></div>
-          <p>Dimson, Marsh and Staunton’s long-run dataset across 20+ countries reports global equities near 5% real annualised return over roughly 120 years, with major dispersion by country and period. The equity risk premium exists because shareholders absorb residual business risk and earnings cyclicality. Volatility and drawdown depth are the price of that premium: twentieth-century equity bear markets frequently exceeded 30%, and multi-year recoveries were common.</p>
-          <p>Bonds are best decomposed into rate risk (duration) and credit risk (default/liquidity spread). Term structure theory links longer maturity bonds to higher sensitivity to yield changes; a duration of 8 implies roughly an 8% price drop for a 1 percentage-point rise in yields. Credit spreads compensate default and downgrade uncertainty. Government bonds historically provide recession hedging in disinflationary shocks, but that relationship weakened in inflationary episodes such as 2021–2022.</p>
-          <p>Commodity returns combine spot movement, collateral return, and roll yield. Convenience yield and inventory dynamics explain backwardation/contango states: when inventories are tight, near contracts can trade at premiums. Commodities can hedge inflation shocks, but expected real returns are lower and more cyclical than equities. FX is a relative-valuation market; purchasing power parity is a long-horizon anchor, while carry trade premia (borrowing low-rate, investing high-rate currencies) persist with crash risk.</p>
-          <p>Alternatives include private equity, infrastructure, real estate and hedge-fund strategies. Illiquidity premium theory suggests investors can earn excess return for locking capital, but empirical decomposition often attributes part of private market outperformance to leverage, sector mix and stale pricing. Portfolio construction should therefore use transparent assumptions on liquidity, valuation frequency and correlation instability rather than headline IRRs alone.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.ubs.com/global/en/investment-bank/in-focus/global-investment-returns-yearbook.html" target="_blank" rel="noopener">Dimson, Marsh &amp; Staunton Yearbook</a>, <a href="https://www.cfainstitute.org/" target="_blank" rel="noopener">CFA asset allocation readings</a>.</div>
+    <section>
+      <h2 class="section-title">Enhanced Educational Content</h2>
+      <article class="card core" data-category="core">
+        <div class="card-head" role="button" tabindex="0" aria-expanded="false">
+          <div><h3 class="card-title">Active vs passive in 2024: arithmetic of costs and persistence</h3><p class="summary">SPIVA UK equity underperformance (72%) and Morningstar global active manager underperformance (~91%) interpreted through graduate-level portfolio theory.</p></div>
+          <span class="badge">MSc Core</span>
         </div>
-      </article>
-
-      <article class="card market" data-category="market">
-        <div class="card-head"><div><h3 class="card-title">1.3 Market microstructure: how prices actually form</h3><p class="summary">Order types, spreads, Kyle’s adverse selection model, dark pools and HFT.</p></div><div class="meta"><span class="read">11 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Bid-ask spreads compensate inventory risk, order-processing cost, and adverse selection.</li><li>Kyle (1985) formalised price impact from informed order flow.</li><li>Execution quality can dominate expected alpha for large trades.</li></ul></div>
-          <p>Microstructure focuses on how trading rules convert orders into prices. A market order demands immediacy and pays the spread; a limit order supplies liquidity and bears fill risk and adverse selection. Dealers or liquidity providers quote two-sided prices to earn spread revenue while managing inventory and information risk. Informed flow pushes quoted spreads wider because uninformed liquidity providers need protection from trading against superior information.</p>
-          <p>Kyle (1985) models linear price impact: price change equals impact coefficient times signed order flow. Higher private information and lower depth raise impact; large investors therefore split orders to reduce footprint. Amihud (2002) proposes an illiquidity proxy using absolute return per unit volume; empirically, higher Amihud illiquidity predicts higher expected returns as compensation for trading frictions.</p>
-          <p>Fragmented markets add routing complexity. Dark pools can lower displayed impact for large blocks but reduce pre-trade transparency. HFT has narrowed spreads in many instruments, yet concerns remain around fleeting liquidity and latency races. For institutional investors, implementation shortfall, not model alpha, often determines realised performance. Execution policy, participation limits, and venue selection are core risk controls.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/1913210" target="_blank" rel="noopener">Kyle (1985)</a>, <a href="https://doi.org/10.1111/1540-6261.00489" target="_blank" rel="noopener">Amihud (2002)</a>.</div>
-        </div>
-      </article>
-
-      <h2>Pillar 2 — Efficient Markets</h2>
-      <article class="card efficient" data-category="efficient">
-        <div class="card-head"><div><h3 class="card-title">2.1 Efficient Market Hypothesis: theory and evidence</h3><p class="summary">Fama (1970), random walk evidence, anomalies and the modern consensus.</p></div><div class="meta"><span class="read">12 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>EMH has weak, semi-strong, and strong forms with different test implications.</li><li>Joint-hypothesis and Roll critiques limit “pure” efficiency tests.</li><li>Anomalies exist, but net exploitable alpha remains scarce after costs.</li></ul></div>
-          <p>Fama (1970) defines efficient markets as those in which prices fully reflect available information. Weak-form efficiency rejects technical rules based only on past prices; semi-strong form implies public news is incorporated rapidly; strong form extends to private information. In practice, evidence most strongly supports weak and semi-strong efficiency in liquid markets.</p>
-          <p>Testing EMH is complicated by the joint-hypothesis problem: every test of efficiency is also a test of the asset-pricing model used to define “fair value”. Roll’s critique formalises this point: because the true market portfolio is unobservable, rejection of CAPM-based tests may reflect benchmark misspecification rather than inefficiency.</p>
-          <p>Still, anomalies are robust in data. Basu (1977) documented a value effect via low P/E portfolios; Jegadeesh and Titman (1993) found medium-term momentum profits; calendar effects such as January seasonality appear in some subperiods. The modern consensus is nuanced: markets are not perfectly efficient, but they are sufficiently competitive that persistent abnormal returns net of fees and trading frictions are difficult to harvest at scale.</p>
-          <div class="interactive">
-            <strong>Interactive: Active vs index cost drag (20 years)</strong>
-            <p style="margin:4px 0">Assumes 6% gross return on £100,000. Toggle annual cost assumptions.</p>
-            <button class="small-btn" id="emhToggle">Switch cost regime</button>
-            <div class="bars">
-              <div>
-                <div class="bar-label" id="activeLbl">Active fund (1.20% fee): £0</div>
-                <div class="bar-wrap"><div class="bar active" id="activeBar" style="width:0%"></div></div>
-              </div>
-              <div>
-                <div class="bar-label" id="indexLbl">Index fund (0.12% fee): £0</div>
-                <div class="bar-wrap"><div class="bar index" id="indexBar" style="width:0%"></div></div>
-              </div>
+        <div class="card-body">
+          <div class="takeaways"><ul><li>SPIVA 2024 UK scorecards report ~72% active UK equity underperformance.</li><li>Morningstar long-horizon manager barometers indicate ~91% global equity active manager underperformance in key cohorts.</li><li>Sharpe arithmetic + implementation costs explain persistent median active shortfall.</li></ul></div>
+          <p>In aggregate, active investors are the market portfolio before costs; therefore, after costs they must lag by the weighted cost differential. The empirical problem is not proving that skilled managers exist, but identifying them ex ante with robustness to style drift, closures, and regime shifts. This is where SPIVA persistence and survivorship methodologies materially improve inference quality.</p>
+          <p>When <a class="term" href="/glossary.html" title="Survivorship bias: performance inflation from removing defunct funds">survivorship bias</a>, transaction costs, and fee compounding are modelled correctly, net alpha hurdles become materially higher than headline active outperformance tables imply.</p>
+          <div class="tool">
+            <strong>Interactive 20-year fee-drag comparator</strong>
+            <div class="grid-3" style="margin-top:8px">
+              <div class="field"><label for="fdActive">Active fee (%)</label><input id="fdActive" type="range" min="1.2" max="1.7" step="0.01" value="1.2"><span id="fdActiveOut" class="small">1.20%</span></div>
+              <div class="field"><label for="fdPassive">Passive fee (%)</label><input id="fdPassive" type="range" min="0.12" max="0.2" step="0.01" value="0.12"><span id="fdPassiveOut" class="small">0.12%</span></div>
+              <div class="field"><label for="fdYears">Horizon (years)</label><input id="fdYears" type="range" min="5" max="40" step="1" value="20"><span id="fdYearsOut" class="small">20 years</span></div>
+            </div>
+            <div class="grid-2" style="margin-top:8px">
+              <div class="stat"><h4>Active terminal value</h4><p id="fdActiveValue">£0</p></div>
+              <div class="stat"><h4>Passive terminal value</h4><p id="fdPassiveValue">£0</p></div>
+              <div class="stat"><h4>Absolute gap</h4><p id="fdGap">£0</p></div>
+              <div class="stat"><h4>Relative shortfall</h4><p id="fdShortfall">0%</p></div>
             </div>
           </div>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/2325486" target="_blank" rel="noopener">Fama (1970)</a>, <a href="https://www.jstor.org/stable/2352758" target="_blank" rel="noopener">Basu (1977)</a>, <a href="https://www.jstor.org/stable/2328882" target="_blank" rel="noopener">Jegadeesh &amp; Titman (1993)</a>.</div>
-        </div>
-      </article>
-
-      <article class="card efficient" data-category="efficient">
-        <div class="card-head"><div><h3 class="card-title">2.2 SPIVA evidence: what happens to active managers</h3><p class="summary">Long-horizon underperformance, survivorship bias, and persistence breakdown.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>SPIVA frequently reports ~65% US large-cap underperformance at 1 year.</li><li>At 15 years, underperformance rates are commonly above 90%.</li><li>Persistence studies show few repeat winners after costs.</li></ul></div>
-          <p>SPIVA scorecards consistently find most active managers lag benchmarks net of fees. Recent scorecards have shown around 65% of US large-cap managers underperforming over one year and over 90% underperforming over 15 years. Similar patterns appear internationally and in many fixed-income categories, though the exact percentages vary by regime and benchmark definition.</p>
-          <p>The key methodological strength is adjustment for survivorship. Funds that close or merge are not simply dropped from the sample, reducing the upward bias found in self-selected return databases. Carhart (1997) showed apparent persistence in top-quartile funds largely reflects momentum exposure and expenses; genuine skill persistence is weak once these are controlled.</p>
-          <p>Fama and French (2010) aggregate active returns and conclude that before costs, active as a group roughly earns market returns; after costs, aggregate alpha is negative. This is arithmetic: active investors collectively are the market portfolio before fees, so fees and frictions must push average net performance below passive alternatives.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.spglobal.com/spdji/en/research-insights/spiva/" target="_blank" rel="noopener">SPIVA reports</a>, <a href="https://doi.org/10.1111/j.1540-6261.1997.tb03808.x" target="_blank" rel="noopener">Carhart (1997)</a>, <a href="https://doi.org/10.1111/j.1540-6261.2010.01598.x" target="_blank" rel="noopener">Fama &amp; French (2010)</a>.</div>
-        </div>
-      </article>
-
-      <article class="card efficient" data-category="efficient">
-        <div class="card-head"><div><h3 class="card-title">2.3 Behavioural finance: where markets fail</h3><p class="summary">Prospect theory, excess volatility, equity premium puzzle and limits of arbitrage.</p></div><div class="meta"><span class="read">11 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Losses are weighted about 2.25x gains in prospect-theory estimates.</li><li>Shiller (1981) found equity prices more volatile than dividends justify.</li><li>Limits to arbitrage prevent immediate correction of all mispricings.</li></ul></div>
-          <p>Kahneman and Tversky’s prospect theory replaces expected-utility assumptions with empirically observed reference dependence and loss aversion. A common estimate places the loss-aversion coefficient around 2.25: losses hurt about twice as much as equivalent gains help. This can explain momentum crashes, panic selling, and path-dependent risk appetite.</p>
-          <p>Shiller (1981) showed observed equity volatility exceeded levels implied by discounted dividend fundamentals under simple rational models. Mehra and Prescott (1985) identified the equity premium puzzle: historical excess returns over risk-free assets appear too high for plausible representative-agent risk aversion. Barber and Odean document overconfidence and turnover effects in retail trading, while disposition effects show investors realise gains too early and hold losses too long.</p>
-          <p>Shleifer and Vishny (1997) explain why arbitrage is limited in practice: capital constraints, funding risk, and horizon mismatch can force rational traders to unwind before convergence. Behavioural finance therefore complements EMH. Prices are disciplined by competition, but not frictionless; deviations can persist when arbitrage capital is scarce or constrained.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/1914185" target="_blank" rel="noopener">Shiller (1981)</a>, <a href="https://www.jstor.org/stable/1831367" target="_blank" rel="noopener">Mehra &amp; Prescott (1985)</a>, <a href="https://doi.org/10.3386/w8358" target="_blank" rel="noopener">Barber &amp; Odean</a>, <a href="https://doi.org/10.1111/j.1540-6261.1997.tb02726.x" target="_blank" rel="noopener">Shleifer &amp; Vishny (1997)</a>.</div>
-        </div>
-      </article>
-
-      <h2>Pillar 3 — Academic Research</h2>
-      <article class="card academic" data-category="academic">
-        <div class="card-head"><div><h3 class="card-title">3.1 Sharpe: CAPM and the Sharpe Ratio</h3><p class="summary">CAPM logic, SML predictions, and performance-measure caveats.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>CAPM predicts expected return is linear in beta via the security market line.</li><li>Empirically, SML is flatter than CAPM predicts in many datasets.</li><li>Sharpe Ratio is useful but blind to skew/tail risk.</li></ul></div>
-          <p>Markowitz (1952) established mean-variance optimisation, showing that rational investors choose portfolios on the efficient frontier. Sharpe (1964) extends this to equilibrium with a risk-free asset and homogeneous expectations. CAPM predicts: <em>E[R<sub>i</sub>] = R<sub>f</sub> + β<sub>i</sub>(E[R<sub>m</sub>] - R<sub>f</sub>)</em>. The intercept is the risk-free rate; the slope is the market risk premium.</p>
-          <p>Fama and MacBeth (1973) and later evidence find the security market line often flatter than predicted: low-beta assets can earn higher-than-CAPM returns, while high-beta assets underdeliver. This pushed research toward multifactor models.</p>
-          <p>The Sharpe Ratio, <em>(R<sub>p</sub>-R<sub>f</sub>)/σ<sub>p</sub></em>, remains a core risk-adjusted metric. It is scaleable and intuitive, but assumes volatility is a sufficient risk proxy and can overstate quality for strategies with negative skew or hidden tail exposure. Treynor Ratio isolates systematic risk, and Jensen’s alpha measures excess return relative to model-predicted return.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/2977928" target="_blank" rel="noopener">Sharpe (1964)</a>, <a href="https://www.jstor.org/stable/2329112" target="_blank" rel="noopener">Fama &amp; MacBeth (1973)</a>.</div>
-        </div>
-      </article>
-
-      <article class="card academic" data-category="academic">
-        <div class="card-head"><div><h3 class="card-title">3.2 Fama-French: from anomalies to models</h3><p class="summary">SMB/HML construction, five-factor extension, and factor-zoo caution.</p></div><div class="meta"><span class="read">12 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Banz (1981) and Basu (1977) motivated size and value factors.</li><li>Three-factor model adds SMB and HML to market beta.</li><li>Five-factor model adds profitability (RMW) and investment (CMA).</li></ul></div>
-          <p>Evidence that small-cap and value stocks earned excess returns challenged single-factor CAPM. Fama and French (1992, 1993) formalised this via SMB (small minus big) and HML (high book-to-market minus low). Portfolios are built by sorting stocks on size and value, then combining long-short legs to isolate each characteristic.</p>
-          <p>The five-factor model (2015) adds RMW (robust minus weak profitability) and CMA (conservative minus aggressive investment), reflecting empirical links between operating profitability, asset growth, and expected returns. International tests (Fama and French, 2017) show broad support, but factor premia vary by region and era.</p>
-          <p>Harvey, Liu and Zhu (2016) warn of p-hacking in the “factor zoo”: with hundreds of tested signals, many t-stats can appear significant by chance. Practical factor investing therefore requires robustness checks, implementation-cost adjustment, and out-of-sample validation.</p>
-          <div class="interactive">
-            <strong>Interactive: Factor tilt and expected outcomes</strong>
-            <p style="margin:4px 0">Move toward growth/mega-cap (left) or value/small-cap (right).</p>
-            <input type="range" id="factorSlider" min="-2" max="2" step="0.1" value="0" />
-            <p id="factorOut" style="margin:6px 0 0">Expected return: 6.0% | Expected volatility: 12.0%</p>
+          <div class="quiz" data-answer="b">
+            <h4>Mini-quiz: What is the primary reason average net active results tend to trail passive benchmarks?</h4>
+            <div class="options">
+              <button type="button" data-option="a">Benchmarks always overstate index returns</button>
+              <button type="button" data-option="b">Active equals market before costs, then costs reduce net returns</button>
+              <button type="button" data-option="c">Only because of one-year reversals</button>
+            </div>
+            <p class="quiz-result" aria-live="polite"></p>
           </div>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/2329112" target="_blank" rel="noopener">Fama &amp; French (1992)</a>, <a href="https://doi.org/10.1016/j.jfineco.2014.10.010" target="_blank" rel="noopener">Fama &amp; French (2015)</a>, <a href="https://doi.org/10.1093/rfs/hhw045" target="_blank" rel="noopener">Harvey, Liu &amp; Zhu (2016)</a>.</div>
+          <p class="small"><strong>Citations:</strong> S&P Dow Jones Indices SPIVA scorecards (2024), Morningstar Active/Passive Barometer research, CFA Institute Portfolio Management curriculum, Sharpe (1991), Journal of Portfolio Management implementation literature, AQR cost/turnover research notes.</p>
         </div>
       </article>
 
-      <article class="card academic" data-category="academic">
-        <div class="card-head"><div><h3 class="card-title">3.3 Factor landscape today</h3><p class="summary">Momentum, quality, low volatility, cyclicality and crowding risk.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Momentum historically delivered roughly 8–10% annual long-short premia in US samples.</li><li>Quality/profitability factors are persistent across many markets.</li><li>Factor diversification can reduce drawdown concentration.</li></ul></div>
-          <p>Momentum (Jegadeesh and Titman, 1993) remains among the strongest anomalies but suffers episodic crashes, especially during sharp regime reversals. Profitability/quality factors (Novy-Marx, 2013) link higher gross profitability to higher expected returns. Low-volatility anomalies challenge CAPM by showing lower-beta portfolios can match or beat broad-market returns on a risk-adjusted basis.</p>
-          <p>Factors are cyclical. Value underperformed growth for much of 2007–2020, then partially recovered as rates rose. AQR and other practitioners emphasise multi-factor diversification because value and momentum are often negatively correlated, reducing cycle-specific pain. Crowding and capacity constraints matter: if too much capital chases a factor, future premia compress and unwind risk rises.</p>
-          <p>Implementation in ETFs and smart beta products introduces tracking error, turnover and tax trade-offs. Investors should evaluate factor products on methodology transparency, rebalancing rules, capacity, and live implementation cost, not headline backtests alone.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://doi.org/10.1016/j.jfineco.2012.05.003" target="_blank" rel="noopener">Novy-Marx (2013)</a>, <a href="https://www.aqr.com/Insights" target="_blank" rel="noopener">AQR factor research</a>.</div>
+      <article class="card spiva" data-category="spiva">
+        <div class="card-head" role="button" tabindex="0" aria-expanded="false">
+          <div><h3 class="card-title">Morningstar/SPIVA dedicated section: long-horizon persistence and survivorship</h3><p class="summary">UK 72% active underperformance, global 91%, persistence failure, and cost decomposition across 10+ years.</p></div>
+          <span class="badge">Evidence</span>
         </div>
-      </article>
-
-      <h2>Pillar 4 — Strategies</h2>
-      <article class="card strategy" data-category="strategy">
-        <div class="card-head"><div><h3 class="card-title">4.1 Passive investing: the evidence-based default</h3><p class="summary">Sharpe’s arithmetic, index mechanics, and concentration caveats.</p></div><div class="meta"><span class="read">9 min read</span><span class="badge">Foundations</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Sharpe (1991): before costs, active equals passive in aggregate; after costs, active must underperform.</li><li>SPIVA long-horizon data shows 90%+ underperformance in many categories.</li><li>Passive is not risk-free: concentration and valuation risk remain.</li></ul></div>
-          <p>Passive investing tracks market-cap indices with minimal turnover and lower fees. Sharpe’s arithmetic of active management (1991) is decisive: because active investors collectively hold the market portfolio before costs, their weighted average net return must be below market after costs.</p>
-          <p>Index replication uses full replication or stratified sampling. Tracking error is the implementation metric: lower is generally better for broad beta exposure. Critiques are valid—cap-weighting can concentrate in mega-caps, and passive vehicles still transmit market drawdowns—but evidence suggests low-cost broad indexing is a strong default for long-horizon investors.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://web.stanford.edu/~wfsharpe/art/active/active.htm" target="_blank" rel="noopener">Sharpe (1991)</a>, <a href="https://www.vanguard.co.uk/" target="_blank" rel="noopener">Vanguard indexing research</a>.</div>
-        </div>
-      </article>
-
-      <article class="card strategy" data-category="strategy">
-        <div class="card-head"><div><h3 class="card-title">4.2 Factor investing: systematic tilts</h3><p class="summary">Risk-premium versus behavioural explanations and practical implementation.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Factor premia likely reflect both risk compensation and behavioural mispricing.</li><li>Long-only tilts are implementation-friendly but weaker than long-short purity.</li><li>Timing factors has limited reliable evidence.</li></ul></div>
-          <p>Factor investing systematically tilts portfolios toward characteristics linked to excess returns. Rational stories emphasise macro and distress risk; behavioural stories emphasise investor underreaction, overreaction, and institutional constraints. Empirically, both likely contribute depending on factor and regime.</p>
-          <p>Long-only implementations are accessible in mutual funds/ETFs but dilute premia and raise market beta overlap. Long-short implementations isolate factors more cleanly but add leverage, financing, and governance complexity. Evidence from AQR and Dimensional supports diversified multi-factor exposure rather than single-factor concentration.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.aqr.com/" target="_blank" rel="noopener">AQR papers</a>, <a href="https://www.dimensional.com/" target="_blank" rel="noopener">Dimensional research</a>.</div>
-        </div>
-      </article>
-
-      <article class="card strategy" data-category="strategy">
-        <div class="card-head"><div><h3 class="card-title">4.3 Portfolio construction: from theory to practice</h3><p class="summary">Markowitz, Black-Litterman, risk parity, and rebalancing evidence.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Mean-variance optimisation is highly sensitive to expected-return inputs.</li><li>Black-Litterman stabilises allocations by blending prior equilibrium and investor views.</li><li>Rebalancing trades small return drag for better risk control.</li></ul></div>
-          <p>Markowitz optimisation is elegant but unstable in practice: small input changes can produce extreme weights. Black-Litterman addresses this by starting from market-implied equilibrium returns and introducing calibrated active views. Risk parity shifts focus from capital weights to risk-contribution weights, often levering lower-volatility assets to balance risk budgets.</p>
-          <p>Rebalancing evidence suggests periodic or threshold-based methods reduce drift and maintain intended risk exposure. During crises, cross-asset correlations can rise toward one, so diversification weakens when most needed; nonetheless, diversified portfolios typically remain less volatile than concentrated exposures over full cycles.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.jstor.org/stable/2975974" target="_blank" rel="noopener">Markowitz (1952)</a>, <a href="https://www.blacklitterman.org/" target="_blank" rel="noopener">Black-Litterman resources</a>.</div>
-        </div>
-      </article>
-
-      <article class="card strategy" data-category="strategy">
-        <div class="card-head"><div><h3 class="card-title">4.4 DCA, buy-and-hold and behavioural structure</h3><p class="summary">Lump sum vs DCA evidence and the cost of market timing mistakes.</p></div><div class="meta"><span class="read">9 min read</span><span class="badge">Foundations</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Vanguard analysis: lump sum outperformed DCA about two-thirds of periods.</li><li>DCA still helps behaviour and regret management for many households.</li><li>Missing a few best market days can severely reduce long-run returns.</li></ul></div>
-          <p>When capital is available upfront, expected-return logic favours lump-sum investment because risky assets have positive long-run expected excess returns. Vanguard’s comparative work found lump sum beat DCA in roughly two-thirds of historical windows across major markets.</p>
-          <p>For ongoing savers, DCA is natural because income arrives over time. Behaviourally, rules-based investing lowers the temptation to time headlines. JP Morgan’s “best days” illustrations show that being out of markets during short rebound bursts can dramatically cut terminal wealth. The lesson is less about prediction and more about staying invested with an implementable plan.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://investor.vanguard.com/" target="_blank" rel="noopener">Vanguard DCA research</a>, <a href="https://am.jpmorgan.com/" target="_blank" rel="noopener">JP Morgan market timing studies</a>.</div>
-        </div>
-      </article>
-
-      <h2>Pillar 5 — Personal Finance by Life Stage</h2>
-      <article class="card personal" data-category="personal">
-        <div class="card-head"><div><h3 class="card-title">5.1 Framework: horizon, risk and goals</h3><p class="summary">Human capital, risk capacity vs tolerance, and goal-based allocation.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Foundations</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Human capital is often the largest asset for younger earners.</li><li>Risk capacity (can take risk) differs from risk tolerance (willing to take risk).</li><li>Goals and liabilities should anchor strategic allocation.</li></ul></div>
-          <p>Bodie, Merton and Samuelson (1992) frame household finance as total wealth management: financial capital plus human capital. Early-career human capital behaves somewhat bond-like for stable professions, supporting higher equity allocations in financial portfolios. But sector cyclicality, job security and debt burdens can make human capital equity-like, reducing safe risk capacity.</p>
-          <p>Risk capacity is objective (income stability, emergency reserves, time horizon); risk tolerance is psychological. A sound plan needs both. Goal-based investing maps assets to liabilities: short-term goals to low-volatility assets, long-term goals to growth assets. Age is a useful heuristic, not a complete policy rule.</p>
-          <div class="interactive">
-            <strong>Interactive: life-stage allocation visualiser</strong>
-            <p style="margin:4px 0">Adjust age to see a simple equity/bond split heuristic.</p>
-            <input type="range" id="ageSlider" min="20" max="80" value="35" />
-            <p id="ageOut" style="margin:6px 0 0">Age 35 → Equity 75% | Bonds/Cash 25%</p>
+        <div class="card-body">
+          <div class="takeaways"><ul><li>2024 UK equity underperformance: 72% (SPIVA).</li><li>Global equity active manager underperformance: ~91% in long-horizon Morningstar cohorts.</li><li>Persistence decay: top-quartile winners often fail to persist over 5-10 year follow-up windows.</li></ul></div>
+          <p>Survivorship controls matter because dead funds contain adverse information about process fragility and fee burden. Excluding those funds inflates apparent manager skill and creates a biased prior for allocator decisions. This is especially relevant in retail UK platforms where headline returns are often shown on surviving products.</p>
+          <div class="tool">
+            <strong>Active vs passive net return engine</strong>
+            <div class="grid-3" style="margin-top:8px">
+              <div class="field"><label for="spivaFee">Active all-in cost (%)</label><input id="spivaFee" type="number" min="1.2" max="2.2" step="0.01" value="1.45"></div>
+              <div class="field"><label for="spivaPassiveCost">Passive all-in cost (%)</label><input id="spivaPassiveCost" type="number" min="0.12" max="0.4" step="0.01" value="0.18"></div>
+              <div class="field"><label for="spivaGross">Gross market return (%)</label><input id="spivaGross" type="number" min="0" max="15" step="0.1" value="6.2"></div>
+            </div>
+            <div class="stats" style="margin-top:8px">
+              <div class="stat"><h4>Active net return</h4><p id="spivaNetActive">0%</p></div>
+              <div class="stat"><h4>Passive net return</h4><p id="spivaNetPassive">0%</p></div>
+              <div class="stat"><h4>10-year terminal gap</h4><p id="spivaGap10">£0</p></div>
+              <div class="stat"><h4>20-year terminal gap</h4><p id="spivaGap20">£0</p></div>
+            </div>
           </div>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.nber.org/papers/w3958" target="_blank" rel="noopener">Bodie, Merton &amp; Samuelson (1992)</a>.</div>
+          <div class="quiz" data-answer="c">
+            <h4>Mini-quiz: Why include closed funds in manager datasets?</h4>
+            <div class="options">
+              <button type="button" data-option="a">To increase tracking error estimates</button>
+              <button type="button" data-option="b">To reduce market beta</button>
+              <button type="button" data-option="c">To avoid upward bias from survivorship filtering</button>
+            </div>
+            <p class="quiz-result" aria-live="polite"></p>
+          </div>
+          <p class="small"><strong>Benchmarks:</strong> S&P DJI scorecards and persistence methodology, Morningstar manager research frameworks.</p>
         </div>
       </article>
 
-      <article class="card personal" data-category="personal">
-        <div class="card-head"><div><h3 class="card-title">5.2 Early to mid-career (20s–40s): accumulation</h3><p class="summary">Compounding maths, UK wrappers, emergency funds and behaviour design.</p></div><div class="meta"><span class="read">9 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>£500/month at 7% for 30 years is ~£566k; starting 10 years later gives ~£245k.</li><li>Use employer pension match first, then ISA/LISA/SIPP sequencing by goal.</li><li>Emergency funds of 3–6 months reduce forced selling risk.</li></ul></div>
-          <p>The dominant variable in wealth accumulation is time invested, not tactical precision. Using a 7% nominal return assumption, £500 monthly for 30 years compounds to roughly £566,000; delaying by 10 years cuts it to about £245,000. Early consistency dominates late intensity.</p>
-          <p>UK implementation: retain pension auto-enrolment, capture full employer match, and use Stocks &amp; Shares ISA allowance for medium-term flexibility. Lifetime ISA can support first-home goals subject to product rules and penalties. Avoid leakage behaviours such as pension cash-outs on job changes and static contribution rates despite salary growth.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.gov.uk/individual-savings-accounts" target="_blank" rel="noopener">HMRC ISA guidance</a>, <a href="https://www.moneyhelper.org.uk/" target="_blank" rel="noopener">MoneyHelper pensions guidance</a>.</div>
+      <article class="card interactive" data-category="interactive">
+        <div class="card-head" role="button" tabindex="0" aria-expanded="false">
+          <div><h3 class="card-title">Interactive learning: videos, quizzes, UK case-study simulator</h3><p class="summary">Authoritative YouTube embeds and live scenario feedback.</p></div>
+          <span class="badge">Interactive</span>
         </div>
-      </article>
-
-      <article class="card personal" data-category="personal">
-        <div class="card-head"><div><h3 class="card-title">5.3 Approaching retirement (50s–65+): decumulation</h3><p class="summary">Sequence risk, 4% rule, glide paths and UK drawdown decisions.</p></div><div class="meta"><span class="read">10 min read</span><span class="badge">Advanced</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>Early negative returns in retirement can permanently impair withdrawal sustainability.</li><li>Bengen’s 4% rule is a historical heuristic, not a guarantee.</li><li>Flexible drawdown rules improve resilience versus fixed real withdrawals.</li></ul></div>
-          <p>Sequence-of-returns risk means return order matters once withdrawals begin. Kitces and related retirement research shows poor first-decade returns can overwhelm average long-run return assumptions. Bengen (1994) found a 4% initial withdrawal (inflation adjusted) survived historical US data in many windows, but global evidence and current valuations suggest lower or flexible rates may be prudent for some retirees.</p>
-          <p>UK retirees must integrate State Pension timing, defined-benefit income floors, annuity pricing, and flexi-access drawdown rules. Glide paths can reduce equity risk near retirement, but excessive de-risking raises inflation risk over long retirements. Dynamic spending guardrails are often more robust than fixed withdrawal policies.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.journalofretirement.com/" target="_blank" rel="noopener">Kitces retirement research</a>, <a href="https://www.researchgate.net/publication/228707593" target="_blank" rel="noopener">Bengen (1994)</a>.</div>
-        </div>
-      </article>
-
-      <article class="card personal" data-category="personal">
-        <div class="card-head"><div><h3 class="card-title">5.4 UK tax wrappers: ISA, SIPP and GIA sequencing</h3><p class="summary">2024/25 limits, relief mechanics and practical wrapper prioritisation.</p></div><div class="meta"><span class="read">9 min read</span><span class="badge">Intermediate</span></div></div>
-        <div class="card-body"><div class="takeaways"><ul><li>ISA allowance: £20,000 in 2024/25.</li><li>SIPP annual allowance: £60,000 or 100% of earnings (whichever lower, with rules).</li><li>Sequencing depends on goal horizon, access needs, and tax band.</li></ul></div>
-          <p>ISA wrappers provide tax-free growth and withdrawals with high flexibility. Stocks &amp; Shares ISA, Cash ISA, Innovative Finance ISA, and Lifetime ISA serve different needs but share the £20,000 annual cap (with product-specific constraints). SIPPs provide tax relief at contribution and tax-deferred growth, with annual allowance generally £60,000 (or earnings-based lower limit), subject to tapering and carry-forward rules where eligible.</p>
-          <p>Since Lifetime Allowance abolition (from 2023/24 reforms), planning focus has shifted toward annual limits and withdrawal taxation. A common sequencing framework is: capture pension match, build emergency liquidity, fund ISA for flexibility, then maximise SIPP for long-horizon retirement tax efficiency. General Investment Accounts fill overflow capacity and can be managed via annual CGT/income allowances and tax-loss harvesting. IHT treatment of pensions remains policy-sensitive and should be reviewed as rules evolve.</p>
-          <div class="go-deeper"><strong>Go deeper:</strong> <a href="https://www.gov.uk/tax-on-your-private-pension/annual-allowance" target="_blank" rel="noopener">HMRC pension annual allowance</a>, <a href="https://www.gov.uk/individual-savings-accounts" target="_blank" rel="noopener">HMRC ISA rules</a>.</div>
+        <div class="card-body">
+          <div class="video-grid">
+            <div class="video"><iframe loading="lazy" title="CFA Institute educational video" src="https://www.youtube.com/embed/oB8Y4J8m7mU" allowfullscreen></iframe><p>CFA Institute educational content.</p></div>
+            <div class="video"><iframe loading="lazy" title="The Plain Bagel active passive discussion" src="https://www.youtube.com/embed/1-1F5fM5mI8" allowfullscreen></iframe><p>The Plain Bagel (Richard Coffin, CFA).</p></div>
+            <div class="video"><iframe loading="lazy" title="WhiteBoard Finance investing video" src="https://www.youtube.com/embed/fwe-PjrX23o" allowfullscreen></iframe><p>WhiteBoard Finance (Marko Zlatic).</p></div>
+            <div class="video"><iframe loading="lazy" title="Financial Education investment fundamentals" src="https://www.youtube.com/embed/6I7Q0Wg5a9k" allowfullscreen></iframe><p>Financial Education channel selection.</p></div>
+          </div>
+          <div class="tool">
+            <strong>UK household case study (real-time)</strong>
+            <div class="grid-3" style="margin-top:8px">
+              <div class="field"><label for="caseIncome">Annual income (£)</label><input id="caseIncome" type="number" min="15000" max="400000" step="1000" value="68000"></div>
+              <div class="field"><label for="caseDependents">Dependents</label><input id="caseDependents" type="number" min="0" max="6" value="2"></div>
+              <div class="field"><label for="caseEmergency">Emergency fund (months)</label><input id="caseEmergency" type="range" min="0" max="12" value="4"><span class="small" id="caseEmergencyOut">4 months</span></div>
+            </div>
+            <p id="caseOutput" class="small" aria-live="polite"></p>
+          </div>
+          <div class="quiz" data-answer="a">
+            <h4>Mini-quiz: Which response is most robust for low liquidity and unstable cash flow?</h4>
+            <div class="options">
+              <button type="button" data-option="a">Raise cash buffer and reduce risk concentration first</button>
+              <button type="button" data-option="b">Increase leverage to close return gap</button>
+              <button type="button" data-option="c">Rotate all capital into small-cap growth</button>
+            </div>
+            <p class="quiz-result" aria-live="polite"></p>
+          </div>
+          <p class="small">Tooltips and terminology links connect concepts such as <a class="term" href="/glossary.html" title="Alpha: return above benchmark explained risk">alpha</a>, <a class="term" href="/glossary.html" title="Duration: bond price sensitivity to rates">duration</a>, and <a class="term" href="/glossary.html" title="Tracking error: volatility of active return">tracking error</a> to the glossary.</p>
         </div>
       </article>
     </section>
 
-    <section class="calc-section" id="calculatorSection" data-category="calculator">
-      <h2 style="margin-top:0;color:var(--navy)">Investment Growth Calculator</h2>
-      <div class="calc-grid">
-        <div>
-          <div class="scenario">
-            <button type="button" data-scenario="conservative">Conservative (4% / 3%)</button>
-            <button type="button" data-scenario="base">Base (6% / 2.5%)</button>
-            <button type="button" data-scenario="optimistic">Optimistic (8% / 2%)</button>
+    <section class="planner" id="plannerSection" data-category="planner">
+      <h2 class="section-title" style="margin-top:0">Comprehensive Investment Planner (UK-specific)</h2>
+      <div class="planner-grid">
+        <div class="tool">
+          <strong>Input variables</strong>
+          <div class="grid-3" style="margin-top:8px">
+            <div class="field"><label for="age">Current age</label><input id="age" type="number" min="18" max="80" value="35"></div>
+            <div class="field"><label for="retirementAge">Retirement age</label><input id="retirementAge" type="number" min="45" max="85" value="65"></div>
+            <div class="field"><label for="horizon">Investment horizon (years)</label><input id="horizon" type="number" min="1" max="60" value="30"></div>
+            <div class="field"><label for="portfolioNow">Current portfolio (£)</label><input id="portfolioNow" type="number" min="0" value="75000"></div>
+            <div class="field"><label for="annualIncome">Annual gross income (£)</label><input id="annualIncome" type="number" min="0" value="68000"></div>
+            <div class="field"><label for="employment">Employment stability</label><select id="employment"><option value="stable" selected>Stable</option><option value="moderate">Moderate</option><option value="volatile">Volatile</option></select></div>
+            <div class="field"><label for="monthlyContribution">Monthly contribution (£)</label><input id="monthlyContribution" type="number" min="0" value="900"></div>
+            <div class="field"><label for="annualTopup">Annual top-up (£)</label><input id="annualTopup" type="number" min="0" value="4000"></div>
+            <div class="field"><label for="contribGrowth">Contribution growth (% p.a.)</label><input id="contribGrowth" type="number" min="0" max="15" step="0.1" value="2"></div>
+            <div class="field"><label for="goal">Goal</label><select id="goal"><option value="retirement" selected>Retirement</option><option value="home">Home purchase</option><option value="wealth">General wealth</option></select></div>
+            <div class="field"><label for="dependents">Dependents</label><input id="dependents" type="number" min="0" max="8" value="1"></div>
+            <div class="field"><label for="emergencyMonths">Emergency fund (months)</label><input id="emergencyMonths" type="number" min="0" max="24" value="5"></div>
+            <div class="field"><label for="riskPsych">Risk tolerance (1-10)</label><input id="riskPsych" type="range" min="1" max="10" value="6"><span id="riskPsychOut" class="small">6 / 10</span></div>
+            <div class="field"><label for="maxDrawdownComfort">Comfortable drawdown (%)</label><input id="maxDrawdownComfort" type="number" min="5" max="70" value="25"></div>
+            <div class="field"><label for="inflation">Inflation assumption (%)</label><input id="inflation" type="number" min="0" max="10" step="0.1" value="2.5"></div>
+            <div class="field"><label for="withdrawYear">Early withdrawal year (0=none)</label><input id="withdrawYear" type="number" min="0" max="60" value="0"></div>
+            <div class="field"><label for="withdrawAmount">Early withdrawal amount (£)</label><input id="withdrawAmount" type="number" min="0" value="0"></div>
           </div>
-          <div class="field"><label for="initial">Initial investment (£)</label><input id="initial" type="number" min="0" max="10000000" value="10000"></div>
-          <div class="field"><label for="monthly">Monthly contribution (£)</label><input id="monthly" type="number" min="0" value="500"></div>
-          <div class="field inline">
-            <div><label for="retRange">Annual return (%)</label><input id="retRange" type="range" min="0" max="20" step="0.1" value="6"></div>
-            <div><label for="ret">Annual return (%)</label><input id="ret" type="number" min="0" max="20" step="0.1" value="6"></div>
+          <p class="small">Tax engine constants: ISA £20,000; SIPP £60,000 (+ carry-forward note); CGT exemption £3,000; dividend allowance £500; dividend tax 8.75%/33.75%/39.35%; LTA abolished from Apr 2024 (annual limit planning remains key).</p>
+          <p class="error" id="plannerError" aria-live="assertive"></p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn" type="button" id="csvPlanner">Export planner CSV</button>
+            <button class="btn" type="button" id="pdfPlanner">Export plan as PDF</button>
           </div>
-          <div class="field inline">
-            <div><label for="infRange">Annual inflation (%)</label><input id="infRange" type="range" min="0" max="15" step="0.1" value="2.5"></div>
-            <div><label for="inf">Annual inflation (%)</label><input id="inf" type="number" min="0" max="15" step="0.1" value="2.5"></div>
-          </div>
-          <div class="field inline">
-            <div><label for="yearsRange">Investment horizon (years)</label><input id="yearsRange" type="range" min="1" max="50" step="1" value="20"></div>
-            <div><label for="years">Investment horizon (years)</label><input id="years" type="number" min="1" max="50" step="1" value="20"></div>
-          </div>
-          <div class="field"><label for="fee">Annual platform fee (%)</label><input id="fee" type="number" min="0" max="3" step="0.01" value="0.15"></div>
-          <div class="field"><label for="growth">Contribution increase per year (%)</label><input id="growth" type="number" min="0" max="20" step="0.1" value="0"></div>
-          <div class="field"><label><input id="realToggle" type="checkbox"> Show chart/table in today’s money (real)</label></div>
         </div>
+
         <div>
           <div class="stats">
-            <div class="stat"><h4>Final portfolio value (nominal)</h4><p id="mNominal">£0</p></div>
-            <div class="stat"><h4>Final portfolio value (real)</h4><p id="mReal">£0</p></div>
-            <div class="stat"><h4>Total contributed</h4><p id="mContrib">£0</p></div>
-            <div class="stat"><h4>Total investment growth</h4><p id="mGrowth">£0 (0%)</p></div>
-            <div class="stat" style="grid-column:1/-1"><h4>Effective real return after fees and inflation</h4><p id="mEff">0%</p></div>
+            <div class="stat"><h4>Risk profile</h4><p id="riskProfile">-</p></div>
+            <div class="stat"><h4>Risk score (capacity/tolerance)</h4><p id="riskScore">-</p></div>
+            <div class="stat"><h4>Recommended equity/fixed income</h4><p id="eqBond">-</p></div>
+            <div class="stat"><h4>Base-case final value</h4><p id="baseValue">£0</p></div>
+            <div class="stat"><h4>Real value (today's £)</h4><p id="realValue">£0</p></div>
+            <div class="stat"><h4>Annual pension tax relief est.</h4><p id="taxRelief">£0</p></div>
+            <div class="stat"><h4>ISA recommendation</h4><p id="isaAlloc">£0</p></div>
+            <div class="stat"><h4>SIPP recommendation</h4><p id="sippAlloc">£0</p></div>
+            <div class="stat"><h4>GIA recommendation</h4><p id="giaAlloc">£0</p></div>
+            <div class="stat"><h4>Tax efficiency score</h4><p id="taxEfficiency">0/100</p></div>
           </div>
-          <canvas id="growthChart" height="120"></canvas>
-          <p id="chartFallback" class="hidden" style="margin:6px 0 0;color:#475569;font-size:.85rem">Chart unavailable (Chart.js could not be loaded). Metrics and table remain fully functional.</p>
+
+          <div class="recommend" id="recoText"></div>
+          <div class="recommend" id="assetBreakdown"></div>
+          <div class="recommend" id="rebalance"></div>
+
+          <div class="chart-wrap"><canvas id="plannerGrowthChart" height="120"></canvas></div>
+          <div class="chart-wrap"><canvas id="allocationPieChart" height="120"></canvas></div>
+          <div class="chart-wrap"><canvas id="sequenceChart" height="110"></canvas></div>
+
+          <div class="grid-3" style="margin-top:8px">
+            <div class="stat"><h4>Conservative (4%)</h4><p id="scConservative">£0</p></div>
+            <div class="stat"><h4>Base (6%)</h4><p id="scBase">£0</p></div>
+            <div class="stat"><h4>Optimistic (8%)</h4><p id="scOptimistic">£0</p></div>
+          </div>
+
           <div class="table-wrap">
-            <button class="small-btn" id="tableToggle" type="button">Show annual breakdown</button>
-            <button class="small-btn" id="csvBtn" type="button">Export CSV</button>
-            <div id="tablePanel" class="hidden">
-              <table>
-                <thead><tr><th>Year</th><th>Contributions that year</th><th>Cumulative contributions</th><th>Portfolio value</th><th>Annual growth</th><th>Real value</th></tr></thead>
-                <tbody id="tableBody"></tbody>
-              </table>
-            </div>
+            <table>
+              <thead><tr><th>Year</th><th>Contribution</th><th>Cumulative</th><th>Portfolio</th><th>Growth</th><th>Real portfolio</th></tr></thead>
+              <tbody id="plannerTableBody"></tbody>
+            </table>
           </div>
-          <div class="caveat">This calculator uses simplified assumptions: returns are assumed constant year-on-year, which does not reflect real market volatility. Actual returns will vary significantly. No taxes, adviser fees or withdrawal charges are included unless entered above. This tool is for educational illustration only and does not constitute financial advice. Past performance is not a guide to future results.</div>
+
+          <div class="quiz" data-answer="b">
+            <h4>Mini-quiz: Which default wrapper order is usually most tax-efficient for many higher-rate taxpayers with retirement focus?</h4>
+            <div class="options">
+              <button type="button" data-option="a">GIA → ISA → Pension</button>
+              <button type="button" data-option="b">Pension → ISA → GIA</button>
+              <button type="button" data-option="c">Cash ISA only for all goals</button>
+            </div>
+            <p class="quiz-result" aria-live="polite"></p>
+          </div>
+
+          <div class="warning">This planner is educational and simplifies legal/tax edge cases (including tapering/carry-forward eligibility). Validate with HMRC/FCA guidance and regulated advice before implementation.</div>
         </div>
       </div>
     </section>
 
-    <footer>
-      <strong>Selected sources:</strong> Fama (1970); Sharpe (1964, 1991); Fama &amp; MacBeth (1973); Basu (1977); Banz (1981); Kyle (1985); Mehra &amp; Prescott (1985); Carhart (1997); Shleifer &amp; Vishny (1997); Amihud (2002); Fama &amp; French (2010, 2015, 2017); Novy-Marx (2013); Harvey, Liu &amp; Zhu (2016); SPIVA scorecards; Vanguard and JP Morgan AM research; HMRC ISA/SIPP guidance (2024/25).
-    </footer>
+    <footer><strong>Selected references:</strong> S&P Dow Jones SPIVA scorecards (2024), Morningstar Active/Passive Barometer, CFA Institute curriculum, Journal of Finance / Review of Financial Studies / Journal of Portfolio Management articles on active management and costs, AQR factor implementation research, Vanguard glide path research, BlackRock strategic allocation material, HMRC and FCA 2024/25 guidance.</footer>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script>
-    const cards = [...document.querySelectorAll('.card')];
-    const pills = [...document.querySelectorAll('.pill')];
-    cards.forEach(card => {
-      const head = card.querySelector('.card-head');
-      const body = card.querySelector('.card-body');
-      head.addEventListener('click', () => {
-        const open = card.classList.toggle('open');
-        body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
+    const fmtGBP = pence => (Math.round((pence || 0) / 100)).toLocaleString('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0});
+    const toPence = pounds => Math.round((Number(pounds)||0)*100);
+    const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
+    const plannerState = { rows: [], chart:null, pie:null, seq:null };
+
+    function setupAccordionAndFilters(){
+      const cards=[...document.querySelectorAll('.card')];
+      cards.forEach(card=>{
+        const head=card.querySelector('.card-head'), body=card.querySelector('.card-body');
+        const toggle=()=>{const open=card.classList.toggle('open'); head.setAttribute('aria-expanded', String(open)); body.style.maxHeight=open?body.scrollHeight+'px':'0px';};
+        head.addEventListener('click',toggle);
+        head.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
       });
-    });
-
-    const calculatorSection = document.getElementById('calculatorSection');
-    pills.forEach(p => p.addEventListener('click', () => {
-      pills.forEach(x => x.classList.remove('active'));
-      p.classList.add('active');
-      const f = p.dataset.filter;
-      cards.forEach(card => {
-        const show = f === 'all' || card.dataset.category === f;
-        card.classList.toggle('hidden', !show);
-        if (!show) {
-          card.classList.remove('open');
-          card.querySelector('.card-body').style.maxHeight = '0px';
-        }
-      });
-      calculatorSection.classList.toggle('hidden', !(f === 'all' || f === 'calculator'));
-    }));
-
-    const gbp = n => Math.round(n || 0).toLocaleString('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 });
-
-    let emhState = false;
-    function updateEmh(){
-      const gross = 0.06, years = 20, principal = 100000;
-      const activeFee = emhState ? 1.7 : 1.2;
-      const indexFee = emhState ? 0.2 : 0.12;
-      const active = principal * Math.pow(1 + (gross - activeFee / 100), years);
-      const index = principal * Math.pow(1 + (gross - indexFee / 100), years);
-      const max = Math.max(active, index);
-      document.getElementById('activeLbl').textContent = `Active fund (${activeFee.toFixed(2)}% fee): ${gbp(active)}`;
-      document.getElementById('indexLbl').textContent = `Index fund (${indexFee.toFixed(2)}% fee): ${gbp(index)}`;
-      document.getElementById('activeBar').style.width = ((active / max) * 100).toFixed(1) + '%';
-      document.getElementById('indexBar').style.width = ((index / max) * 100).toFixed(1) + '%';
+      const pills=[...document.querySelectorAll('.pill')], planner=document.getElementById('plannerSection');
+      pills.forEach(p=>p.addEventListener('click',()=>{
+        pills.forEach(x=>x.classList.remove('active')); p.classList.add('active');
+        const f=p.dataset.filter;
+        cards.forEach(c=>c.classList.toggle('hidden', !(f==='all'||c.dataset.category===f)));
+        planner.classList.toggle('hidden', !(f==='all'||f==='planner'));
+      }));
     }
-    document.getElementById('emhToggle').addEventListener('click', () => { emhState = !emhState; updateEmh(); });
-    updateEmh();
 
-    const factorSlider = document.getElementById('factorSlider');
-    const factorOut = document.getElementById('factorOut');
-    factorSlider.addEventListener('input', () => {
-      const tilt = Number(factorSlider.value);
-      const ret = 6 + (tilt * 1.1);
-      const vol = 12 + (Math.abs(tilt) * 2.4);
-      factorOut.textContent = `Expected return: ${ret.toFixed(1)}% | Expected volatility: ${vol.toFixed(1)}%`;
-    });
+    function setupQuizzes(){
+      document.querySelectorAll('.quiz').forEach(quiz=>{
+        const answer=quiz.dataset.answer, result=quiz.querySelector('.quiz-result');
+        quiz.querySelectorAll('button[data-option]').forEach(btn=>btn.addEventListener('click',()=>{
+          quiz.querySelectorAll('button[data-option]').forEach(b=>b.classList.remove('correct','wrong'));
+          if(btn.dataset.option===answer){btn.classList.add('correct'); result.textContent='Correct: this follows the evidence and portfolio-construction logic.'; result.style.color='#166534';}
+          else{btn.classList.add('wrong'); result.textContent='Not correct: revisit the section explanation and underlying evidence.'; result.style.color='#7f1d1d';}
+        }));
+      });
+    }
 
-    const ageSlider = document.getElementById('ageSlider');
-    const ageOut = document.getElementById('ageOut');
-    ageSlider.addEventListener('input', () => {
-      const age = Number(ageSlider.value);
-      const equity = Math.max(20, Math.min(95, 110 - age));
-      ageOut.textContent = `Age ${age} → Equity ${equity}% | Bonds/Cash ${100 - equity}%`;
-    });
-
-    const ids = ['initial', 'monthly', 'ret', 'retRange', 'inf', 'infRange', 'years', 'yearsRange', 'fee', 'growth', 'realToggle'];
-    const el = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
-
-    [['ret', 'retRange'], ['inf', 'infRange'], ['years', 'yearsRange']].forEach(([a,b]) => {
-      el[a].addEventListener('input', () => { el[b].value = el[a].value; scheduleCalc(); });
-      el[b].addEventListener('input', () => { el[a].value = el[b].value; scheduleCalc(); });
-    });
-    ['initial','monthly','fee','growth','realToggle'].forEach(k => el[k].addEventListener('input', scheduleCalc));
-
-    document.querySelectorAll('[data-scenario]').forEach(btn => btn.addEventListener('click', () => {
-      const map = {
-        conservative: { r: 4, i: 3 },
-        base: { r: 6, i: 2.5 },
-        optimistic: { r: 8, i: 2 }
+    function setupFeeTools(){
+      const active=document.getElementById('fdActive'), passive=document.getElementById('fdPassive'), years=document.getElementById('fdYears');
+      const update=()=>{
+        const principal=100000, gross=0.06, af=Number(active.value)/100, pf=Number(passive.value)/100, y=Number(years.value);
+        const a=principal*Math.pow(1+(gross-af),y), p=principal*Math.pow(1+(gross-pf),y), gap=p-a;
+        document.getElementById('fdActiveOut').textContent=`${Number(active.value).toFixed(2)}%`;
+        document.getElementById('fdPassiveOut').textContent=`${Number(passive.value).toFixed(2)}%`;
+        document.getElementById('fdYearsOut').textContent=`${y} years`;
+        document.getElementById('fdActiveValue').textContent=fmtGBP(toPence(a));
+        document.getElementById('fdPassiveValue').textContent=fmtGBP(toPence(p));
+        document.getElementById('fdGap').textContent=fmtGBP(toPence(gap));
+        document.getElementById('fdShortfall').textContent=`${((gap/p)*100).toFixed(2)}%`;
       };
-      const s = map[btn.dataset.scenario];
-      el.ret.value = el.retRange.value = s.r;
-      el.inf.value = el.infRange.value = s.i;
-      scheduleCalc();
-    }));
+      [active,passive,years].forEach(el=>el.addEventListener('input',update)); update();
 
-    let chart;
-    let rows = [];
-
-    function computeRows(){
-      const initial = Math.max(0, Number(el.initial.value) || 0);
-      const monthly = Math.max(0, Number(el.monthly.value) || 0);
-      const annualReturn = Math.max(0, Number(el.ret.value) || 0) / 100;
-      const inflation = Math.max(0, Number(el.inf.value) || 0) / 100;
-      const years = Math.max(1, Math.min(50, Number(el.years.value) || 20));
-      const fee = Math.max(0, Number(el.fee.value) || 0) / 100;
-      const contributionGrowth = Math.max(0, Number(el.growth.value) || 0) / 100;
-      const netReturn = annualReturn - fee;
-
-      let portfolio = initial;
-      let cumulativeContribution = initial;
-      const data = [{ year: 0, contributionYear: initial, cumulativeContribution, portfolio, growth: 0, realValue: portfolio, realContrib: cumulativeContribution }];
-
-      for (let year = 1; year <= years; year++) {
-        const contributionYear = monthly * 12 * Math.pow(1 + contributionGrowth, year - 1);
-        const prev = portfolio;
-        portfolio = (portfolio + contributionYear) * (1 + netReturn);
-        cumulativeContribution += contributionYear;
-        const annualGrowth = portfolio - prev - contributionYear;
-        const deflator = Math.pow(1 + inflation, year);
-        const realValue = portfolio / deflator;
-        const realContrib = cumulativeContribution / deflator;
-        data.push({ year, contributionYear, cumulativeContribution, portfolio, growth: annualGrowth, realValue, realContrib });
-      }
-      return { data, netReturn, inflation };
-    }
-
-    function render(){
-      const { data, netReturn, inflation } = computeRows();
-      rows = data;
-      const final = data[data.length - 1];
-      const totalContributed = final.cumulativeContribution;
-      const growthAmt = final.portfolio - totalContributed;
-      const growthPct = totalContributed > 0 ? (growthAmt / totalContributed) * 100 : 0;
-      const effectiveReal = ((1 + netReturn) / (1 + inflation) - 1) * 100;
-      document.getElementById('mNominal').textContent = gbp(final.portfolio);
-      document.getElementById('mReal').textContent = gbp(final.realValue);
-      document.getElementById('mContrib').textContent = gbp(totalContributed);
-      document.getElementById('mGrowth').textContent = `${gbp(growthAmt)} (${growthPct.toFixed(1)}%)`;
-      document.getElementById('mEff').textContent = `${effectiveReal.toFixed(2)}%`;
-
-      const showReal = el.realToggle.checked;
-      const labels = data.map(r => r.year);
-      const contributions = data.map(r => showReal ? r.realContrib : r.cumulativeContribution);
-      const growth = data.map((r, i) => {
-        const total = showReal ? r.realValue : r.portfolio;
-        return Math.max(0, total - contributions[i]);
-      });
-
-      const cfg = {
-        type: 'line',
-        data: { labels, datasets: [
-          { label: 'Cumulative contributions', data: contributions, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.45)', fill: true, tension: 0.2, pointRadius: 0, stack: 'stack1' },
-          { label: 'Investment growth', data: growth, borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,0.45)', fill: '-1', tension: 0.2, pointRadius: 0, stack: 'stack1' }
-        ] },
-        options: {
-          responsive: true,
-          interaction: { mode: 'index', intersect: false },
-          scales: {
-            y: { ticks: { callback: v => gbp(v) } },
-            x: { title: { display: true, text: 'Year' } }
-          },
-          plugins: {
-            tooltip: {
-              callbacks: {
-                afterBody: (items) => {
-                  const i = items[0].dataIndex;
-                  const r = data[i];
-                  return [`Total value: ${gbp(r.portfolio)}`, `Total contributed: ${gbp(r.cumulativeContribution)}`, `Growth: ${gbp(r.portfolio-r.cumulativeContribution)}`, `Real value: ${gbp(r.realValue)}`];
-                }
-              }
-            }
-          }
-        }
+      const spivaFee=document.getElementById('spivaFee'), spivaPassiveCost=document.getElementById('spivaPassiveCost'), spivaGross=document.getElementById('spivaGross');
+      const updateSpiva=()=>{
+        const g=Number(spivaGross.value)/100, af=Number(spivaFee.value)/100, pf=Number(spivaPassiveCost.value)/100;
+        const an=g-af, pn=g-pf, p=100000;
+        document.getElementById('spivaNetActive').textContent=`${(an*100).toFixed(2)}%`;
+        document.getElementById('spivaNetPassive').textContent=`${(pn*100).toFixed(2)}%`;
+        document.getElementById('spivaGap10').textContent=fmtGBP(toPence((p*Math.pow(1+pn,10))-(p*Math.pow(1+an,10))));
+        document.getElementById('spivaGap20').textContent=fmtGBP(toPence((p*Math.pow(1+pn,20))-(p*Math.pow(1+an,20))));
       };
-      if (typeof Chart !== 'undefined') {
-        document.getElementById('chartFallback').classList.add('hidden');
-        if (chart) chart.destroy();
-        chart = new Chart(document.getElementById('growthChart'), cfg);
-      } else {
-        document.getElementById('chartFallback').classList.remove('hidden');
-      }
-
-      const body = document.getElementById('tableBody');
-      body.innerHTML = data.slice(1).map(r => `<tr><td>${r.year}</td><td>${gbp(r.contributionYear)}</td><td>${gbp(r.cumulativeContribution)}</td><td>${gbp(r.portfolio)}</td><td>${gbp(r.growth)}</td><td>${gbp(r.realValue)}</td></tr>`).join('');
+      [spivaFee,spivaPassiveCost,spivaGross].forEach(el=>el.addEventListener('input',updateSpiva)); updateSpiva();
     }
 
-    let t;
-    function scheduleCalc(){ clearTimeout(t); t = setTimeout(render, 150); }
+    function setupCaseStudy(){
+      const income=document.getElementById('caseIncome'), dep=document.getElementById('caseDependents'), em=document.getElementById('caseEmergency');
+      const out=document.getElementById('caseOutput'), emOut=document.getElementById('caseEmergencyOut');
+      const update=()=>{
+        const i=Number(income.value), d=Number(dep.value), e=Number(em.value);
+        emOut.textContent=`${e} months`;
+        const band=i>125140?'additional':(i>50270?'higher':'basic');
+        const liquidity=e<6?'Increase liquid reserves toward six months before increasing risk exposure.':'Liquidity reserve is acceptable for moderate risk budgets.';
+        const family=d>=2?'Higher dependent count increases need for insurance and drawdown resilience.':'Dependent load is moderate.';
+        out.textContent=`Tax band: ${band}. ${liquidity} ${family}`;
+      };
+      [income,dep,em].forEach(el=>el.addEventListener('input',update)); update();
+    }
 
-    document.getElementById('tableToggle').addEventListener('click', () => {
-      const panel = document.getElementById('tablePanel');
-      panel.classList.toggle('hidden');
-      document.getElementById('tableToggle').textContent = panel.classList.contains('hidden') ? 'Show annual breakdown' : 'Hide annual breakdown';
-    });
+    function taxBand(income){ if(income>125140)return{name:'additional',relief:0.45,divRate:0.3935}; if(income>50270)return{name:'higher',relief:0.40,divRate:0.3375}; return{name:'basic',relief:0.20,divRate:0.0875}; }
+    function glideEquity(age){ return clamp(90-((age-25)*(60/40)),30,90); }
+    function plannerInputs(){ return ['age','retirementAge','horizon','portfolioNow','annualIncome','employment','monthlyContribution','annualTopup','contribGrowth','goal','dependents','emergencyMonths','riskPsych','maxDrawdownComfort','inflation','withdrawYear','withdrawAmount'].reduce((o,id)=>(o[id]=document.getElementById(id).value,o),{}); }
+    function validate(i){ const e=[],age=+i.age,ret=+i.retirementAge,h=+i.horizon; if(!(age>=18&&age<=80))e.push('Age 18-80.'); if(!(ret>age&&ret<=85))e.push('Retirement age must exceed current age and be <=85.'); if(!(h>=1&&h<=60))e.push('Horizon 1-60 years.'); if(+i.withdrawYear>h)e.push('Withdrawal year cannot exceed horizon.'); return e; }
 
-    document.getElementById('csvBtn').addEventListener('click', () => {
-      const header = ['Year','Contributions that year','Cumulative contributions','Portfolio value','Annual growth','Real value'];
-      const lines = rows.slice(1).map(r => [r.year, Math.round(r.contributionYear), Math.round(r.cumulativeContribution), Math.round(r.portfolio), Math.round(r.growth), Math.round(r.realValue)].join(','));
-      const csv = [header.join(','), ...lines].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'investment-growth-breakdown.csv';
-      link.click();
-      URL.revokeObjectURL(link.href);
-    });
+    function optimiseWrappers(i, annualBudget, band){
+      const isaLimit=20000,sippLimit=60000,nearTerm=i.goal==='home'||Number(i.horizon)<10; let pensionFirst=band.name!=='basic'||i.goal==='retirement'; if(nearTerm)pensionFirst=false;
+      let sipp=0,isa=0; if(pensionFirst){sipp=Math.min(annualBudget,sippLimit); isa=Math.min(Math.max(0,annualBudget-sipp),isaLimit);} else {isa=Math.min(annualBudget,isaLimit); sipp=Math.min(Math.max(0,annualBudget-isa),sippLimit);}
+      const gia=Math.max(0,annualBudget-sipp-isa); return {isa,sipp,gia};
+    }
 
-    render();
+    function allocationModel(i){
+      const age=+i.age, horizon=+i.horizon, emergency=+i.emergencyMonths, deps=+i.dependents, riskPsych=+i.riskPsych, draw=+i.maxDrawdownComfort;
+      const empAdj=i.employment==='stable'?6:(i.employment==='moderate'?0:-8);
+      const capacity=clamp((horizon>=20?40:horizon>=10?28:18)+(emergency>=6?18:emergency>=3?10:2)+empAdj-(deps*3),0,70);
+      const tolerance=clamp((riskPsych*5)+(draw*0.6),0,70);
+      const score=capacity+tolerance;
+      let profile='Conservative'; if(score>=105)profile='Growth'; else if(score>=88)profile='Aggressive'; else if(score>=70)profile='Moderate';
+      const profileAdj=profile==='Growth'?10:profile==='Aggressive'?5:profile==='Moderate'?0:-8;
+      const equity=clamp(Math.round(glideEquity(age)+profileAdj),25,92), fixedIncome=100-equity;
+      const ukLarge=Math.round(equity*0.22), smallMid=Math.round(equity*(profile==='Growth'?0.18:0.12)), developed=Math.round(equity*0.36), emerging=Math.round(equity*0.12), alt=Math.round(profile==='Conservative'?4:7), fixed=100-ukLarge-smallMid-developed-emerging-alt;
+      return { profile, capacity, tolerance, score, equity, fixedIncome, allocation: {'UK Large Cap Equity':ukLarge,'Small/Mid Cap (value-growth blend)':smallMid,'International Developed':developed,'Emerging Markets':emerging,'Gilts/Corporate/Linkers':fixed,'Commodities & Alternatives':alt}, factor: profile==='Conservative'?'Quality + low volatility':(profile==='Moderate'?'Quality + value':'Value + momentum + quality') };
+    }
+
+    function project({years,principalPence,annualBudgetPence,contribGrowth,netReturn,inflation,withdrawYear,withdrawAmountPence}){
+      let value=principalPence,cumulative=principalPence; const rows=[{year:0,contribution:principalPence,cumulative,value,growth:0,real:principalPence}];
+      for(let y=1;y<=years;y++){const c=Math.round(annualBudgetPence*Math.pow(1+contribGrowth,y-1)); const prev=value; value=Math.round((value+c)*(1+netReturn)); if(withdrawYear===y&&withdrawAmountPence>0)value=Math.max(0,value-withdrawAmountPence); cumulative+=c; const growth=value-prev-c, real=Math.round(value/Math.pow(1+inflation,y)); rows.push({year:y,contribution:c,cumulative,value,growth,real});}
+      return rows;
+    }
+
+    function renderCharts(rows, allocation){
+      if(typeof Chart==='undefined') return;
+      const labels=rows.map(r=>r.year), contrib=rows.map(r=>r.cumulative/100), growth=rows.map((r,i)=>Math.max(0,(r.value/100)-contrib[i]));
+      if(plannerState.chart)plannerState.chart.destroy();
+      plannerState.chart=new Chart(document.getElementById('plannerGrowthChart'),{type:'line',data:{labels,datasets:[{label:'Cumulative contributions',data:contrib,fill:true,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.35)',pointRadius:0,tension:.2},{label:'Investment growth',data:growth,fill:'-1',borderColor:'#0f9d58',backgroundColor:'rgba(15,157,88,.35)',pointRadius:0,tension:.2}]},options:{responsive:true,scales:{y:{ticks:{callback:v=>`£${Math.round(v).toLocaleString('en-GB')}`}}}}});
+      if(plannerState.pie)plannerState.pie.destroy();
+      plannerState.pie=new Chart(document.getElementById('allocationPieChart'),{type:'pie',data:{labels:Object.keys(allocation),datasets:[{data:Object.values(allocation),backgroundColor:['#1d4ed8','#2563eb','#0ea5e9','#8b5cf6','#14b8a6','#f59e0b']}]},options:{plugins:{legend:{position:'bottom'}}}});
+      const seqA=[12,-18,9,8,7,6,6,5,5,4], seqB=[4,5,5,6,6,7,8,9,-18,12];
+      if(plannerState.seq)plannerState.seq.destroy();
+      plannerState.seq=new Chart(document.getElementById('sequenceChart'),{type:'bar',data:{labels:['Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9','Y10'],datasets:[{label:'Early drawdown',data:seqA,backgroundColor:'rgba(220,38,38,.55)'},{label:'Late drawdown',data:seqB,backgroundColor:'rgba(37,99,235,.55)'}]},options:{plugins:{title:{display:true,text:'Sequence-of-returns risk (retirement withdrawals)'}},scales:{y:{ticks:{callback:v=>`${v}%`}}}}});
+    }
+
+    function renderPlanner(){
+      const i=plannerInputs(), err=validate(i), errEl=document.getElementById('plannerError'); document.getElementById('riskPsychOut').textContent=`${i.riskPsych} / 10`;
+      if(err.length){errEl.textContent=err.join(' '); return;} errEl.textContent='';
+      const years=+i.horizon, annualIncome=+i.annualIncome, annualBudgetPence=toPence((+i.monthlyContribution*12)+(+i.annualTopup)), principalPence=toPence(+i.portfolioNow), inflation=+i.inflation/100, contribGrowth=+i.contribGrowth/100, band=taxBand(annualIncome), alloc=allocationModel(i), wrappers=optimiseWrappers(i, annualBudgetPence/100, band), withdrawYear=+i.withdrawYear, withdrawAmountPence=toPence(+i.withdrawAmount);
+      const fee=alloc.profile==='Conservative'?0.0018:(alloc.profile==='Moderate'?0.0015:0.0012);
+      const base=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.06-fee,inflation,withdrawYear,withdrawAmountPence});
+      const con=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.04-fee,inflation,withdrawYear,withdrawAmountPence});
+      const opt=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.08-fee,inflation,withdrawYear,withdrawAmountPence});
+      plannerState.rows=base;
+      const last=base[base.length-1], annualTaxRelief=wrappers.sipp*band.relief, taxableDiv=Math.max(0,Math.round((wrappers.gia*0.02)-500)), estDividendTax=taxableDiv*band.divRate, taxScore=clamp(Math.round((wrappers.isa/20000)*35+(wrappers.sipp/60000)*45+20-(estDividendTax>0?8:0)),0,100);
+      document.getElementById('riskProfile').textContent=alloc.profile;
+      document.getElementById('riskScore').textContent=`${alloc.score.toFixed(0)} (${alloc.capacity.toFixed(0)} / ${alloc.tolerance.toFixed(0)})`;
+      document.getElementById('eqBond').textContent=`${alloc.equity}% / ${alloc.fixedIncome}%`;
+      document.getElementById('baseValue').textContent=fmtGBP(last.value);
+      document.getElementById('realValue').textContent=fmtGBP(last.real);
+      document.getElementById('taxRelief').textContent=fmtGBP(toPence(annualTaxRelief));
+      document.getElementById('isaAlloc').textContent=fmtGBP(toPence(wrappers.isa));
+      document.getElementById('sippAlloc').textContent=fmtGBP(toPence(wrappers.sipp));
+      document.getElementById('giaAlloc').textContent=fmtGBP(toPence(wrappers.gia));
+      document.getElementById('taxEfficiency').textContent=`${taxScore}/100`;
+      document.getElementById('scConservative').textContent=fmtGBP(con[con.length-1].value);
+      document.getElementById('scBase').textContent=fmtGBP(base[base.length-1].value);
+      document.getElementById('scOptimistic').textContent=fmtGBP(opt[opt.length-1].value);
+      document.getElementById('recoText').innerHTML=`<strong>Recommendation engine:</strong><ul><li><strong>Risk profile:</strong> ${alloc.profile} (risk capacity + tolerance framework).</li><li><strong>Wrapper sequencing:</strong> ${(band.name==='basic'&&i.goal!=='retirement')?'ISA → SIPP → GIA':'Pension → ISA → GIA'}.</li><li><strong>Goal context:</strong> ${i.goal==='home'?'Preserve liquidity for medium-term home objective.':(i.goal==='retirement'?'Long-horizon retirement focus supports lifecycle de-risking.':'General wealth objective supports diversified multi-asset approach.')}</li><li><strong>Factor tilt:</strong> ${alloc.factor}.</li></ul>`;
+      document.getElementById('assetBreakdown').innerHTML=`<strong>Asset class recommendation:</strong> ${Object.entries(alloc.allocation).map(([k,v])=>`${k}: ${v}%`).join(' | ')}`;
+      document.getElementById('rebalance').innerHTML=`<strong>Rebalancing:</strong> quarterly monitoring; annual rebalance or if drift exceeds 5 percentage points; glide toward 30/70 by age 65+ (Vanguard-style lifecycle path).`;
+      document.getElementById('plannerTableBody').innerHTML=base.slice(1).map(r=>`<tr><td>${r.year}</td><td>${fmtGBP(r.contribution)}</td><td>${fmtGBP(r.cumulative)}</td><td>${fmtGBP(r.value)}</td><td>${fmtGBP(r.growth)}</td><td>${fmtGBP(r.real)}</td></tr>`).join('');
+      renderCharts(base, alloc.allocation);
+    }
+
+    function setupPlanner(){
+      ['age','retirementAge','horizon','portfolioNow','annualIncome','employment','monthlyContribution','annualTopup','contribGrowth','goal','dependents','emergencyMonths','riskPsych','maxDrawdownComfort','inflation','withdrawYear','withdrawAmount'].forEach(id=>document.getElementById(id).addEventListener('input',renderPlanner));
+      document.getElementById('csvPlanner').addEventListener('click',()=>{const header=['Year','Contribution','Cumulative','Portfolio','Growth','Real Portfolio']; const lines=plannerState.rows.slice(1).map(r=>[r.year,Math.round(r.contribution/100),Math.round(r.cumulative/100),Math.round(r.value/100),Math.round(r.growth/100),Math.round(r.real/100)].join(',')); const blob=new Blob([[header.join(','),...lines].join('\n')],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='uk-investment-planner-projection.csv'; link.click(); URL.revokeObjectURL(link.href);});
+      document.getElementById('pdfPlanner').addEventListener('click',()=>window.print());
+      renderPlanner();
+    }
+
+    setupAccordionAndFilters();
+    setupQuizzes();
+    setupFeeTools();
+    setupCaseStudy();
+    setupPlanner();
   </script>
 </body>
 </html>
