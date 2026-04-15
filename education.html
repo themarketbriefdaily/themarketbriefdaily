@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Education | The Market Brief Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/design-system.css" />
+  <style>
+    .hero-edu { padding: var(--space-20) 0 var(--space-10); }
+    .hero-edu .inner { background: rgba(255,255,255,0.55); border:1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-8); }
+    .topics-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-5); }
+    .topic-card { background: var(--color-brand-light); }
+    .topic-top { display:flex; justify-content:space-between; gap:var(--space-3); align-items:center; }
+    .topic-icon { width:40px;height:40px;border-radius:var(--radius-md);background:rgba(37,99,235,.12);color:var(--color-brand);display:grid;place-items:center; }
+    .topic-meta { margin-top: var(--space-3); display:flex; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted); }
+    .topic-content { margin-top: var(--space-3); display:none; font-size: var(--text-sm); }
+    .topic-card[aria-expanded="true"] .topic-content { display:block; }
+    .calc-card { margin-top: var(--space-10); }
+    .calc-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: var(--space-4); }
+    .calc-result { margin-top: var(--space-4); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-bg-muted); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+    @media (max-width: 1024px) { .topics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 767px) { .topics-grid, .calc-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page-transition-overlay" aria-hidden="true"></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/index.html"><span class="brand-dot" aria-hidden="true"></span>The Market Brief Daily</a>
+        <nav class="main-nav" aria-label="Main">
+          <a class="nav-link" href="/index.html">Home</a>
+          <a class="nav-link" href="/insights.html">Insights</a>
+          <a class="nav-link is-active" href="/education.html">Education</a>
+          <a class="nav-link" href="/funds.html">Funds</a>
+          <a class="nav-link" href="/glossary.html">Glossary</a>
+          <a class="btn btn-primary btn-nav-cta" href="#">Get briefed</a>
+        </nav>
+        <button class="mobile-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span class="hamburger"></span></button>
+      </div>
+      <div class="mobile-nav-panel" aria-hidden="true"><div class="mobile-nav-menu"><a href="/index.html">Home</a><a href="/insights.html">Insights</a><a href="/education.html">Education</a><a href="/funds.html">Funds</a><a href="/glossary.html">Glossary</a><a class="btn btn-primary" href="#">Get briefed</a></div></div>
+    </header>
+
+    <main>
+      <section class="hero-edu">
+        <div class="container inner reveal">
+          <h1>Education library for investor teams</h1>
+          <p class="section-subheading" style="margin-top:var(--space-4)">Build practical intuition across macro, market structure, and risk management with concise modules designed for analyst onboarding and PM refreshers.</p>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top:0;">
+        <div class="container">
+          <div class="topics-grid">
+            <article class="card topic-card reveal" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">∫</span><button class="btn btn-icon js-expand-row" data-target="edu-a" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Term premium and bond repricing</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Intermediate</span><span>10 min</span></div>
+              <div class="topic-content" id="edu-a" data-visible="false">Understand how term premium regimes alter valuation anchors and portfolio duration decisions.</div>
+            </article>
+            <article class="card topic-card reveal" data-delay="100" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">Δ</span><button class="btn btn-icon js-expand-row" data-target="edu-b" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Equity factor crowding signals</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Advanced</span><span>12 min</span></div>
+              <div class="topic-content" id="edu-b" data-visible="false">Identify where factor crowding can amplify drawdowns during liquidity shocks.</div>
+            </article>
+            <article class="card topic-card reveal" data-delay="200" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">Ω</span><button class="btn btn-icon js-expand-row" data-target="edu-c" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Commodity curve structure basics</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Foundational</span><span>8 min</span></div>
+              <div class="topic-content" id="edu-c" data-visible="false">Decode contango and backwardation signals to separate carry from directional conviction.</div>
+            </article>
+            <article class="card topic-card reveal" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">β</span><button class="btn btn-icon js-expand-row" data-target="edu-d" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Hedging with options overlays</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Intermediate</span><span>9 min</span></div>
+              <div class="topic-content" id="edu-d" data-visible="false">Construct pragmatic hedge overlays and evaluate protection efficiency versus carry drag.</div>
+            </article>
+            <article class="card topic-card reveal" data-delay="100" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">π</span><button class="btn btn-icon js-expand-row" data-target="edu-e" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Inflation nowcast interpretation</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Foundational</span><span>7 min</span></div>
+              <div class="topic-content" id="edu-e" data-visible="false">Translate nowcast model updates into rates and sector-level positioning implications.</div>
+            </article>
+            <article class="card topic-card reveal" data-delay="200" aria-expanded="false">
+              <div class="topic-top"><span class="topic-icon">λ</span><button class="btn btn-icon js-expand-row" data-target="edu-f" aria-expanded="false">⌄</button></div>
+              <h3 style="margin-top:var(--space-3)">Portfolio risk budgeting framework</h3>
+              <div class="topic-meta"><span class="badge badge-purple">Advanced</span><span>13 min</span></div>
+              <div class="topic-content" id="edu-f" data-visible="false">Build risk budgets that align position sizing with uncertainty and liquidity constraints.</div>
+            </article>
+          </div>
+
+          <article class="card calc-card reveal-scale">
+            <h2 class="section-heading" style="font-size:var(--text-3xl)">Growth calculator</h2>
+            <p class="section-subheading">Model compounding outcomes for investor education scenarios.</p>
+            <form class="js-growth-calculator">
+              <div class="calc-grid">
+                <label><span style="display:block;font-size:var(--text-sm);margin-bottom:var(--space-2)">Initial capital (£)</span><input class="input" id="principal" type="number" value="25000" min="0" /></label>
+                <label><span style="display:block;font-size:var(--text-sm);margin-bottom:var(--space-2)">Monthly contribution (£)</span><input class="input" id="monthly" type="number" value="750" min="0" /></label>
+                <label><span style="display:block;font-size:var(--text-sm);margin-bottom:var(--space-2)">Expected annual return (%)</span><input class="input" id="rate" type="number" value="6.5" step="0.1" /></label>
+                <label><span style="display:block;font-size:var(--text-sm);margin-bottom:var(--space-2)">Investment horizon (years)</span><input class="input" id="years" type="number" value="12" min="1" /></label>
+              </div>
+              <div style="margin-top:var(--space-4)"><button class="btn btn-primary" type="submit">Calculate growth</button></div>
+            </form>
+            <div class="calc-result js-growth-output">Projected value: £0 over 0 years.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="constellation-bg" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line class="constellation-line" x1="8" y1="20" x2="26" y2="36"></line><line class="constellation-line" x1="26" y1="36" x2="52" y2="30"></line><line class="constellation-line" x1="52" y1="30" x2="74" y2="48"></line><line class="constellation-line" x1="74" y1="48" x2="92" y2="34"></line><circle class="constellation-node" cx="8" cy="20" r="0.8"></circle><circle class="constellation-node" cx="26" cy="36" r="0.9"></circle><circle class="constellation-node" cx="52" cy="30" r="0.9"></circle><circle class="constellation-node" cx="74" cy="48" r="0.95"></circle><circle class="constellation-node" cx="92" cy="34" r="0.8"></circle></svg></div><div class="container"><div class="footer-grid reveal"><div><p class="footer-title">The Market Brief Daily</p><p>Institutional research, daily cadence.</p></div><div><p class="footer-title">Navigation</p><div class="footer-links"><a href="/index.html">Home</a><a href="/insights.html">Insights</a><a href="/funds.html">Funds</a></div></div><div><p class="footer-title">Resources</p><div class="footer-links"><a href="/education.html">Education</a><a href="/glossary.html">Glossary</a><a href="/components.html">Components</a></div></div><div><p class="footer-title">Newsletter</p><form class="newsletter-inline"><input class="input" type="email" placeholder="Work email" /><button type="button" class="btn btn-primary">Join</button></form></div></div><div class="footer-bottom">© 2026 The Market Brief Daily. All rights reserved.</div></div></footer>
+  </div>
+  <script src="/animations.js"></script>
+  <script>
+    document.querySelectorAll('.topic-card .js-expand-row').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.topic-card');
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        card.setAttribute('aria-expanded', String(!expanded));
+        const target = document.getElementById(btn.dataset.target);
+        target.dataset.visible = expanded ? 'false' : 'true';
+      });
+    });
+  </script>
+</body>
+</html>

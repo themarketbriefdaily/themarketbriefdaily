@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights | The Market Brief Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/design-system.css" />
+  <style>
+    .page-hero { padding: var(--space-20) 0 var(--space-10); }
+    .featured { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-10); }
+    .image-placeholder { aspect-ratio: 16 / 9; background: var(--color-bg-muted); border-radius: var(--radius-lg); border: 1px solid var(--color-border); display: grid; place-items: center; color: var(--color-text-muted); font-size: var(--text-sm); }
+    .filters { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6); }
+    .filters button { border: 1px solid var(--color-border); border-radius: var(--radius-full); background: var(--color-bg-surface); padding: var(--space-2) var(--space-4); font-size: var(--text-sm); color: var(--color-text-body); cursor: pointer; }
+    .filters button.is-active { background: var(--color-brand-light); color: var(--color-brand); border-color: #bfdbfe; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--space-5); }
+    .insight-card .excerpt { margin: var(--space-3) 0 var(--space-4); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .load-wrap { margin-top: var(--space-8); text-align: center; }
+    .skeleton-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-5); }
+    .skeleton-card { height: 250px; }
+    @media (max-width: 1024px) { .featured, .grid, .skeleton-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .featured .image-placeholder { grid-column: 1 / -1; } }
+    @media (max-width: 767px) { .featured, .grid, .skeleton-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="page-transition-overlay" aria-hidden="true"></div>
+  <div class="site-shell">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/index.html"><span class="brand-dot" aria-hidden="true"></span>The Market Brief Daily</a>
+        <nav class="main-nav" aria-label="Main">
+          <a class="nav-link" href="/index.html">Home</a>
+          <a class="nav-link is-active" href="/insights.html">Insights</a>
+          <a class="nav-link" href="/education.html">Education</a>
+          <a class="nav-link" href="/funds.html">Funds</a>
+          <a class="nav-link" href="/glossary.html">Glossary</a>
+          <a class="btn btn-primary btn-nav-cta" href="#">Get briefed</a>
+        </nav>
+        <button class="mobile-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span class="hamburger"></span></button>
+      </div>
+      <div class="mobile-nav-panel" aria-hidden="true"><div class="mobile-nav-menu"><a href="/index.html">Home</a><a href="/insights.html">Insights</a><a href="/education.html">Education</a><a href="/funds.html">Funds</a><a href="/glossary.html">Glossary</a><a class="btn btn-primary" href="#">Get briefed</a></div></div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <h1 class="reveal">Daily insights from the policy desk</h1>
+          <p class="section-subheading reveal" data-delay="100">Filter by desk and read what is moving rates, equities, commodities, and fund positioning today.</p>
+        </div>
+      </section>
+
+      <section class="container section" style="padding-top:0;">
+        <article class="card featured reveal-scale">
+          <div class="image-placeholder">Article image</div>
+          <div>
+            <span class="badge badge-amber">Macro</span>
+            <h2 style="font-size:var(--text-3xl);margin-top:var(--space-3)">Policy divergence is driving an asymmetric FX volatility regime</h2>
+            <p style="margin-top:var(--space-4)">Our desk maps how diverging central bank reaction functions are feeding implied vol repricing in G10 crosses. We outline what this means for hedging costs and cross-border equity allocations over the next quarter.</p>
+            <div class="avatar-row" style="margin:var(--space-4) 0">
+              <span class="avatar">MW</span><div class="author-meta"><strong>Maya Wood</strong><span>Lead Macro Strategist · 15 Apr 2026</span></div>
+            </div>
+            <a class="read-more" href="#">Read full briefing <span>→</span></a>
+          </div>
+        </article>
+
+        <div class="filters js-filter-group reveal" data-delay="100">
+          <button data-filter="all" class="is-active">All</button>
+          <button data-filter="macro">Macro</button>
+          <button data-filter="markets">Markets</button>
+          <button data-filter="funds">Funds</button>
+          <button data-filter="research">Research</button>
+        </div>
+
+        <div class="skeleton-grid js-skeleton" aria-hidden="true">
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+        </div>
+
+        <div class="grid js-skeleton-grid">
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="macro"><span class="badge badge-amber">Macro</span><h3 style="margin-top:var(--space-3)">US payroll dispersion and duration risk</h3><p class="excerpt">Wage momentum cooled unevenly across sectors, reducing confidence in a clean disinflation path.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="markets"><span class="badge badge-blue">Markets</span><h3 style="margin-top:var(--space-3)">Breadth rotation inside UK mid-caps</h3><p class="excerpt">Momentum factors remain resilient while value caught bids after earnings revisions stabilised.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="funds"><span class="badge badge-green">Funds</span><h3 style="margin-top:var(--space-3)">Net exposure reduced in cyclical sleeves</h3><p class="excerpt">PMs de-risked cyclicals and rotated toward quality carry to manage earnings-event volatility.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="research"><span class="badge badge-slate">Research</span><h3 style="margin-top:var(--space-3)">Liquidity pockets in European utilities</h3><p class="excerpt">Order-book depth improved in selected names where balance-sheet repricing is now lagging.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="macro"><span class="badge badge-amber">Macro</span><h3 style="margin-top:var(--space-3)">China credit impulse transmission channels</h3><p class="excerpt">Policy easing is showing up first in commodity-linked FX before filtering into global cyclicals.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item reveal" data-visible="true" data-category="markets"><span class="badge badge-blue">Markets</span><h3 style="margin-top:var(--space-3)">Volatility term structure normalising</h3><p class="excerpt">Front-month protection remains bid, but the curve is flattening as event risk is absorbed.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+
+          <article class="card insight-card js-filter-item js-load-item" data-visible="false" data-category="funds" hidden><span class="badge badge-green">Funds</span><h3 style="margin-top:var(--space-3)">Systematic books increase treasury overlay</h3><p class="excerpt">Quant funds added duration overlays to damp equity beta while maintaining gross exposure.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item" data-visible="false" data-category="research" hidden><span class="badge badge-slate">Research</span><h3 style="margin-top:var(--space-3)">Cross-market basis opportunities in energy</h3><p class="excerpt">Regional crude dislocations opened attractive spread structures for relative-value mandates.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+          <article class="card insight-card js-filter-item js-load-item" data-visible="false" data-category="macro" hidden><span class="badge badge-amber">Macro</span><h3 style="margin-top:var(--space-3)">Real rates and equity duration sensitivity</h3><p class="excerpt">Growth multiple sensitivity to real yields rose again, tightening tolerance for policy surprises.</p><a class="read-more" href="#">Read more <span>→</span></a></article>
+        </div>
+        <div class="load-wrap reveal"><button class="btn btn-secondary js-load-more" type="button">Load more</button></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="constellation-bg" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line class="constellation-line" x1="8" y1="20" x2="26" y2="36"></line><line class="constellation-line" x1="26" y1="36" x2="52" y2="30"></line><line class="constellation-line" x1="52" y1="30" x2="74" y2="48"></line><line class="constellation-line" x1="74" y1="48" x2="92" y2="34"></line><circle class="constellation-node" cx="8" cy="20" r="0.8"></circle><circle class="constellation-node" cx="26" cy="36" r="0.9"></circle><circle class="constellation-node" cx="52" cy="30" r="0.9"></circle><circle class="constellation-node" cx="74" cy="48" r="0.95"></circle><circle class="constellation-node" cx="92" cy="34" r="0.8"></circle></svg></div><div class="container"><div class="footer-grid reveal"><div><p class="footer-title">The Market Brief Daily</p><p>Institutional research, daily cadence.</p></div><div><p class="footer-title">Navigation</p><div class="footer-links"><a href="/index.html">Home</a><a href="/insights.html">Insights</a><a href="/funds.html">Funds</a></div></div><div><p class="footer-title">Resources</p><div class="footer-links"><a href="/education.html">Education</a><a href="/glossary.html">Glossary</a><a href="/components.html">Components</a></div></div><div><p class="footer-title">Newsletter</p><form class="newsletter-inline"><input class="input" type="email" placeholder="Work email" /><button type="button" class="btn btn-primary">Join</button></form></div></div><div class="footer-bottom">© 2026 The Market Brief Daily. All rights reserved.</div></div></footer>
+  </div>
+  <script src="/animations.js"></script>
+</body>
+</html>

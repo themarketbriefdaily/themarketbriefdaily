@@ -199,6 +199,7 @@
         $$('.js-filter-item').forEach((item) => {
           const show = value === 'all' || item.dataset.category === value;
           item.dataset.visible = String(show);
+          item.hidden = !show;
         });
       });
     });
@@ -212,7 +213,9 @@
       const query = input.value.trim().toLowerCase();
       $$('.js-search-item').forEach((item) => {
         const text = item.textContent.toLowerCase();
-        item.dataset.visible = String(!query || text.includes(query));
+        const show = !query || text.includes(query);
+        item.dataset.visible = String(show);
+        item.hidden = !show;
       });
     });
   }
@@ -239,6 +242,7 @@
       hidden.slice(0, 3).forEach((item, index) => {
         window.setTimeout(() => {
           item.dataset.visible = 'true';
+          item.hidden = false;
           item.classList.add('reveal', 'is-visible');
         }, index * 100);
       });
