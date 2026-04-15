@@ -28,7 +28,7 @@
     .header-inner{width:100%;max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px}
     .brand{font-size:15px;font-weight:900;letter-spacing:-.01em;color:var(--ink);text-decoration:none;white-space:nowrap;transition:opacity .2s;cursor:pointer}
     .brand:hover{opacity:.75}
-    nav{display:flex;gap:28px;align-items:center;margin-left:auto}
+    nav{display:flex;gap:22px;align-items:center;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
     nav a{font-size:13px;font-weight:800;color:var(--muted);text-decoration:none;transition:color .2s;cursor:pointer}
     nav a:hover{color:var(--ink)}
     @media (max-width:768px){header{padding:0 20px}nav{display:none}}
@@ -48,6 +48,12 @@
     .btn.ghost{background:rgba(255,255,255,.75);color:var(--ink);box-shadow:0 12px 30px rgba(2,8,23,.10)}
     .btn.ghost:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
     @media (max-width:768px){.hero-inner{padding:0 20px}.btn{width:100%}}
+    .newsletter-form{max-width:760px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr auto;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);box-shadow:var(--shadow-md)}
+    .newsletter-form input,.newsletter-form select{border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff}
+    .newsletter-form button{padding:12px 18px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:900;font-size:13px;cursor:pointer;transition:transform .2s var(--ease)}
+    .newsletter-form button:hover{transform:translateY(-1px)}
+    .form-note{margin-top:10px;font-size:12px;color:var(--muted2)}
+    @media (max-width:768px){.newsletter-form{grid-template-columns:1fr}}
 
     .container{max-width:var(--max);margin:0 auto}
     .section{padding:140px 48px}
@@ -133,12 +139,20 @@
     @media (max-width:1200px){.about-grid{grid-template-columns:1fr}}
 
     footer{border-top:1px solid var(--line);background:#f9fafb;padding:48px}
+    .footer-newsletter{padding:20px;border:1px solid var(--line);background:#fff;border-radius:14px;margin-top:14px}
     .footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
     .footer-col h4{font-weight:950;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:16px}
     .footer-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
     .footer-col a:hover{color:var(--ink)}
     .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
     @media (max-width:768px){.footer-inner{grid-template-columns:1fr}}
+
+    .exit-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.56);z-index:2200}
+    .exit-modal.active{display:flex}
+    .exit-modal-card{max-width:560px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-xl);padding:28px;position:relative}
+    .exit-close{position:absolute;top:14px;right:16px;background:transparent;border:none;font-size:26px;color:var(--muted);cursor:pointer}
+    .exit-title{font-size:1.55rem;font-weight:950;letter-spacing:-.02em}
+    .exit-copy{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.7}
   </style>
 </head>
 
@@ -149,6 +163,8 @@
       <nav>
         <a href="/funds.html">Funds</a>
         <a href="#insights">Insights</a>
+        <a href="/research-roadmap.html">Research Roadmap</a>
+        <a href="/glossary.html">Glossary</a>
         <a href="/about.html">About</a>
         <a href="/posts.html">Posts</a>
       </nav>
@@ -165,6 +181,17 @@
         <a class="btn ghost" href="/funds.html">Explore funds</a>
         <a class="btn ghost" href="/about.html">About us</a>
       </div>
+      <form class="newsletter-form signup-form" data-source="hero" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
+        <input type="email" name="email" placeholder="Work email for market brief updates" required />
+        <select name="preference" aria-label="Newsletter preference">
+          <option value="All">All Briefings</option>
+          <option value="Research">Research</option>
+          <option value="Funds">Funds</option>
+          <option value="Events">Events</option>
+        </select>
+        <button type="submit">Join Newsletter</button>
+      </form>
+      <p class="form-note">Mailchimp/ConvertKit ready: replace the form action URL with your provider endpoint.</p>
     </div>
   </section>
 
@@ -252,12 +279,26 @@
       <div>
         <h4>The Market Brief Daily</h4>
         <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
+        <div class="footer-newsletter">
+          <form class="newsletter-form signup-form" data-source="footer" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
+            <input type="email" name="email" placeholder="Email address" required />
+            <select name="preference" aria-label="Newsletter preference">
+              <option value="All">All</option>
+              <option value="Research">Research</option>
+              <option value="Funds">Funds</option>
+              <option value="Events">Events</option>
+            </select>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Research</h4>
         <a href="#insights">Latest insights</a>
         <a href="/posts.html">All posts</a>
         <a href="/funds.html">Funds</a>
+        <a href="/research-roadmap.html">Roadmap</a>
+        <a href="/glossary.html">Glossary</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
@@ -277,8 +318,29 @@
     </div>
   </footer>
 
+  <div class="exit-modal" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
+    <div class="exit-modal-card">
+      <button class="exit-close" type="button" id="exitClose" aria-label="Close popup">×</button>
+      <div class="k">Stay Connected</div>
+      <div class="exit-title" id="exitModalTitle">Get every market brief before the open</div>
+      <p class="exit-copy">Join our research newsletter for weekly macro, market structure, and supply updates.</p>
+      <form class="newsletter-form signup-form" data-source="exit-intent" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:16px">
+        <input type="email" name="email" placeholder="Email address" required />
+        <select name="preference" aria-label="Newsletter preference">
+          <option value="All">All Briefings</option>
+          <option value="Research">Research</option>
+          <option value="Funds">Funds</option>
+          <option value="Events">Events</option>
+        </select>
+        <button type="submit">Get Updates</button>
+      </form>
+    </div>
+  </div>
+
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
 
     // ===== ENHANCED NETWORK ANIMATION =====
     function createNetworkAnimation(canvasId) {
@@ -627,6 +689,7 @@
 
     // ===== ANIMATIONS =====
     function initAnimations() {
+      if (!window.gsap) return;
       const tl = gsap.timeline();
       tl.to('h1', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.2);
       tl.to('.hero p', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.3);
@@ -641,6 +704,63 @@
         opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
         scrollTrigger: { trigger: '.about-section', start: 'top 85%', once: true }
       });
+      gsap.from('.newsletter-form', {
+        opacity: 0,
+        y: 18,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.newsletter-form', start: 'top 92%', once: true }
+      });
+    }
+
+    function initNewsletterForms() {
+      document.querySelectorAll('.signup-form').forEach(form => {
+        form.addEventListener('submit', () => {
+          const emailInput = form.querySelector('input[name="email"]');
+          const preferenceSelect = form.querySelector('select[name="preference"]');
+          const source = form.dataset.source || 'site';
+          if (!emailInput || !preferenceSelect) return;
+          const record = {
+            email: emailInput.value.trim(),
+            preference: preferenceSelect.value,
+            source,
+            submittedAt: new Date().toISOString()
+          };
+          try {
+            localStorage.setItem('mbdNewsletterLastSignup', JSON.stringify(record));
+          } catch (_) {}
+        });
+      });
+    }
+
+    function initExitIntentModal() {
+      const modal = document.getElementById('exitModal');
+      if (!modal) return;
+      const closeBtn = document.getElementById('exitClose');
+      const storageKey = 'mbdExitIntentDismissed';
+      const sessionKey = 'mbdExitIntentSeenSession';
+      const showModal = () => {
+        modal.classList.add('active');
+        sessionStorage.setItem(sessionKey, '1');
+      };
+      const dismiss = () => {
+        modal.classList.remove('active');
+        localStorage.setItem(storageKey, '1');
+      };
+      closeBtn && closeBtn.addEventListener('click', dismiss);
+      modal.addEventListener('click', e => {
+        if (e.target === modal) dismiss();
+      });
+      document.addEventListener('mouseleave', e => {
+        if (e.clientY > 0) return;
+        if (window.innerWidth < 768) return;
+        if (localStorage.getItem(storageKey) === '1') return;
+        if (sessionStorage.getItem(sessionKey) === '1') return;
+        showModal();
+      });
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') modal.classList.remove('active');
+      });
     }
 
     // ===== INIT =====
@@ -650,9 +770,11 @@
       createNetworkAnimation('newsCanvas');
       createNetworkAnimation('aboutCanvas');
       
-      renderFunds();
-      renderNews();
-      initAnimations();
+      try { renderFunds(); } catch (_) {}
+      try { renderNews(); } catch (_) {}
+      try { initAnimations(); } catch (_) {}
+      initNewsletterForms();
+      initExitIntentModal();
     });
   </script>
 </body>

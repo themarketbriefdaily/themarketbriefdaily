@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Research Roadmap | The Market Brief Daily</title>
+  <meta name="description" content="Month-by-month research timeline for macro, supply constraints, market structure, and signals research drops." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1220;background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+    :root{--accent:#0066ff;--accent2:#0ea5e9;--ink:#0b1220;--muted:rgba(11,18,32,.62);--muted2:rgba(11,18,32,.42);--line:rgba(11,18,32,.10);--shadow-md:0 8px 22px rgba(2,8,23,.10);--shadow-lg:0 18px 50px rgba(2,8,23,.12);--shadow-xl:0 28px 80px rgba(2,8,23,.14);--ease:cubic-bezier(.2,.9,.2,1);--max:1200px;--headerH:64px}
+    @media (max-width:768px){:root{--headerH:56px}}
+
+    header{position:fixed;top:0;left:0;right:0;height:var(--headerH);display:flex;align-items:center;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:1000;box-shadow:var(--shadow-md);padding:0 48px}
+    .header-inner{width:100%;max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{font-size:15px;font-weight:900;letter-spacing:-.01em;color:var(--ink);text-decoration:none;white-space:nowrap;transition:opacity .2s}
+    .brand:hover{opacity:.75}
+    nav{display:flex;gap:20px;align-items:center;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+    nav a{font-size:13px;font-weight:800;color:var(--muted);text-decoration:none;transition:color .2s}
+    nav a:hover,nav a.active{color:var(--ink)}
+    nav a.active{font-weight:900}
+    @media (max-width:768px){header{padding:0 20px}nav{display:none}}
+
+    .container{max-width:var(--max);margin:0 auto}
+    .hero{padding:160px 48px 80px;background:#fff;position:relative;overflow:hidden}
+    .hero-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.6}
+    .hero-canvas-wrap canvas{width:100%;height:100%;display:block}
+    .hero-inner{max-width:860px;margin:0 auto;text-align:center;position:relative;z-index:2}
+    .kicker{font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
+    h1{font-size:clamp(2.3rem,5vw,3.4rem);font-weight:950;line-height:1.08;letter-spacing:-.03em;margin:0 0 16px;background:linear-gradient(135deg,#0b1220,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(18px)}
+    .lead{max-width:680px;margin:0 auto;color:var(--muted);font-size:1.08rem;line-height:1.8;opacity:0;transform:translateY(18px)}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px;opacity:0;transform:translateY(18px)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:900;text-decoration:none;border:1px solid var(--line);transition:all .3s var(--ease)}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.35);box-shadow:0 12px 34px rgba(0,102,255,.25)}
+    .btn.ghost{background:#fff;color:var(--ink)}
+    @media (max-width:768px){.hero{padding:110px 20px 60px}.btn{width:100%}}
+
+    .section{padding:30px 48px 100px}
+    @media (max-width:768px){.section{padding:30px 20px 70px}}
+    .section-head{text-align:center;margin-bottom:26px}
+    .section-head h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:950;letter-spacing:-.02em}
+    .section-head p{max-width:760px;margin:12px auto 0;color:var(--muted);font-size:1rem;line-height:1.8}
+
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px}
+    .filter-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:12px;font-weight:850;color:var(--muted);cursor:pointer;transition:all .2s}
+    .filter-btn:hover{color:var(--accent);border-color:rgba(0,102,255,.35)}
+    .filter-btn.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.6)}
+
+    .subscription-card{border:1px solid var(--line);border-radius:16px;padding:20px;background:linear-gradient(135deg,rgba(0,102,255,.04),rgba(2,8,23,.01));margin-bottom:22px}
+    .subscription-title{font-size:1rem;font-weight:900;letter-spacing:-.01em}
+    .subscription-note{font-size:13px;color:var(--muted);margin-top:6px}
+    .theme-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+    .theme-pill{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--ink)}
+    @media (max-width:900px){.theme-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:560px){.theme-grid{grid-template-columns:1fr}}
+
+    .timeline{position:relative;padding-left:18px}
+    .timeline::before{content:"";position:absolute;left:4px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,rgba(0,102,255,.4),rgba(11,18,32,.1))}
+    .timeline-item{position:relative;border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff;box-shadow:var(--shadow-md);margin-bottom:14px;opacity:0;transform:translateY(14px)}
+    .timeline-item::before{content:"";position:absolute;left:-21px;top:26px;width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#1d4ed8);box-shadow:0 0 0 5px rgba(0,102,255,.12)}
+    .timeline-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .timeline-month{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
+    .timeline-category{font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;border:1px solid rgba(0,102,255,.28);background:rgba(0,102,255,.08);color:var(--accent)}
+    .timeline-title{font-size:1.08rem;font-weight:900;letter-spacing:-.01em;margin-top:8px}
+    .timeline-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-top:8px}
+
+    .newsletter-wrap{margin-top:28px;padding:24px;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow-md)}
+    .newsletter-form{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;margin-top:12px}
+    .newsletter-form input,.newsletter-form select{border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:14px;font-family:inherit}
+    .newsletter-form button{border:none;border-radius:10px;padding:12px 18px;background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:900;cursor:pointer}
+    .helper{font-size:12px;color:var(--muted2);margin-top:8px}
+    @media (max-width:768px){.newsletter-form{grid-template-columns:1fr}}
+
+    footer{border-top:1px solid var(--line);background:#f9fafb;padding:48px}
+    .footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+    .footer-col h4{font-weight:950;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:16px}
+    .footer-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
+    .footer-col a:hover{color:var(--ink)}
+    .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
+    @media (max-width:768px){.footer-inner{grid-template-columns:1fr}}
+
+    .exit-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.56);z-index:2000}
+    .exit-modal.active{display:flex}
+    .exit-modal-card{max-width:560px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-xl);padding:28px;position:relative}
+    .exit-close{position:absolute;top:14px;right:16px;background:transparent;border:none;font-size:26px;color:var(--muted);cursor:pointer}
+    .exit-title{font-size:1.5rem;font-weight:950;letter-spacing:-.02em}
+    .exit-copy{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.7}
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="/">The Market Brief Daily</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/funds.html">Funds</a>
+        <a class="active" href="/research-roadmap.html">Roadmap</a>
+        <a href="/glossary.html">Glossary</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-canvas-wrap"><canvas id="heroCanvas"></canvas></div>
+    <div class="hero-inner">
+      <div class="kicker">Research Timeline</div>
+      <h1>12-month research roadmap</h1>
+      <p class="lead">Track upcoming monthly research drops across macro, supply constraints, market structure, and signals so you can plan your reading and portfolio review cadence.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="/posts.html">Open Research Studio</a>
+        <a class="btn ghost" href="/contact.html">Join Expert Roundtables</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>What’s shipping next</h2>
+        <p>Filter by research category and subscribe to your preferred themes. Preferences are stored locally in your browser.</p>
+      </div>
+
+      <div class="toolbar" id="filterToolbar">
+        <button class="filter-btn active" data-filter="All">All</button>
+        <button class="filter-btn" data-filter="Macro">Macro</button>
+        <button class="filter-btn" data-filter="Supply Constraints">Supply Constraints</button>
+        <button class="filter-btn" data-filter="Market Structure">Market Structure</button>
+        <button class="filter-btn" data-filter="Signals">Signals</button>
+      </div>
+
+      <div class="subscription-card">
+        <div class="subscription-title">Theme notifications</div>
+        <p class="subscription-note">Choose topics you want alerts for (saved via <code>localStorage</code>).</p>
+        <div class="theme-grid" id="themePreferences"></div>
+      </div>
+
+      <div class="timeline" id="timelineList"></div>
+
+      <div class="newsletter-wrap">
+        <div class="subscription-title">Get each roadmap drop in your inbox</div>
+        <p class="subscription-note">Use your Mailchimp/ConvertKit action URL to activate this form.</p>
+        <form class="newsletter-form signup-form" data-source="research-roadmap" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
+          <input type="email" name="email" placeholder="Email address" required />
+          <select name="preference" aria-label="Newsletter preference">
+            <option value="Research">Research</option>
+            <option value="Funds">Funds</option>
+            <option value="Events">Events</option>
+            <option value="All">All</option>
+          </select>
+          <button type="submit">Subscribe</button>
+        </form>
+        <p class="helper">Integration placeholder included for Mailchimp/ConvertKit embed wiring.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <h4>The Market Brief Daily</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
+        <form class="newsletter-form signup-form" data-source="footer" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:10px">
+          <input type="email" name="email" placeholder="Email address" required />
+          <select name="preference" aria-label="Newsletter preference">
+            <option value="All">All</option>
+            <option value="Research">Research</option>
+            <option value="Funds">Funds</option>
+            <option value="Events">Events</option>
+          </select>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+      <div class="footer-col">
+        <h4>Research</h4>
+        <a href="/posts.html">All Research</a>
+        <a href="/research-roadmap.html">Roadmap</a>
+        <a href="/glossary.html">Glossary</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/about.html">About us</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/funds.html">Funds</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="/disclaimer.html">Disclosures</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 The Market Brief Daily. All rights reserved. Not investment advice — see <a href="/disclaimer.html" style="color:inherit;text-decoration:underline">disclaimer</a>.</p>
+    </div>
+  </footer>
+
+  <div class="exit-modal" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
+    <div class="exit-modal-card">
+      <button class="exit-close" type="button" id="exitClose" aria-label="Close popup">×</button>
+      <div class="kicker">Stay Connected</div>
+      <div class="exit-title" id="exitModalTitle">Don’t miss the next roadmap release</div>
+      <p class="exit-copy">Subscribe for monthly research timeline updates and roundtable invitations.</p>
+      <form class="newsletter-form signup-form" data-source="exit-intent" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:16px">
+        <input type="email" name="email" placeholder="Email address" required />
+        <select name="preference" aria-label="Newsletter preference">
+          <option value="All">All Briefings</option>
+          <option value="Research">Research</option>
+          <option value="Funds">Funds</option>
+          <option value="Events">Events</option>
+        </select>
+        <button type="submit">Get Updates</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    const timelineData = [
+      { month: 'May 2026', category: 'Macro', title: 'US Rates Transmission Update', description: 'How policy repricing is flowing through real yields, credit spreads, and equity risk appetite.' },
+      { month: 'Jun 2026', category: 'Supply Constraints', title: 'Copper & Silver Bottleneck Monitor', description: 'Mine output, refining constraints, and visible inventory stress across key delivery hubs.' },
+      { month: 'Jul 2026', category: 'Market Structure', title: 'Liquidity Fragmentation in Index Futures', description: 'Depth, spread behavior, and execution slippage during macro data shocks.' },
+      { month: 'Aug 2026', category: 'Signals', title: 'Cross-Asset Regime Signal Pack v2', description: 'Updated factor blend for risk-on/risk-off transitions with confidence bands.' },
+      { month: 'Sep 2026', category: 'Macro', title: 'Global Growth Divergence Scorecard', description: 'A country-by-country framework linking growth impulses to FX and rates reaction functions.' },
+      { month: 'Oct 2026', category: 'Supply Constraints', title: 'Energy Curve Stress Playbook', description: 'Storage utilization, freight constraints, and term-structure diagnostics for crude and gas.' },
+      { month: 'Nov 2026', category: 'Market Structure', title: 'Options Dealer Positioning Brief', description: 'Gamma, vanna, and liquidity pocket mapping around event-heavy weeks.' },
+      { month: 'Dec 2026', category: 'Signals', title: 'Year-End Factor Rotation Signals', description: 'Systematic monitoring of momentum, value, and quality rotation probabilities.' },
+      { month: 'Jan 2027', category: 'Macro', title: 'Inflation Persistence Scenarios', description: 'A scenario framework for sticky services inflation and policy path risk.' },
+      { month: 'Feb 2027', category: 'Supply Constraints', title: 'Industrial Metals Delivery Stress Test', description: 'Exchange warehouse trends, off-exchange inventory shifts, and squeeze risk.' },
+      { month: 'Mar 2027', category: 'Market Structure', title: 'FX Liquidity Windows Study', description: 'Execution quality and spread behavior across session handovers and fix windows.' },
+      { month: 'Apr 2027', category: 'Signals', title: 'Macro-Structure Composite Model', description: 'Combining macro and microstructure indicators into one tactical dashboard.' }
+    ];
+
+    const categories = ['Macro', 'Supply Constraints', 'Market Structure', 'Signals'];
+    const timelineList = document.getElementById('timelineList');
+    const toolbar = document.getElementById('filterToolbar');
+    const themePreferences = document.getElementById('themePreferences');
+
+    function renderTimeline(filter = 'All') {
+      const filtered = filter === 'All' ? timelineData : timelineData.filter(item => item.category === filter);
+      timelineList.innerHTML = filtered.map(item => `
+        <article class="timeline-item" data-category="${item.category}">
+          <div class="timeline-meta">
+            <span class="timeline-month">${item.month}</span>
+            <span class="timeline-category">${item.category}</span>
+          </div>
+          <h3 class="timeline-title">${item.title}</h3>
+          <p class="timeline-desc">${item.description}</p>
+        </article>
+      `).join('');
+      if (window.gsap) {
+        gsap.to('.timeline-item', { opacity: 1, y: 0, duration: .5, stagger: .05, ease: 'power2.out' });
+      } else {
+        document.querySelectorAll('.timeline-item').forEach(item => {
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        });
+      }
+    }
+
+    function initFilters() {
+      toolbar.addEventListener('click', event => {
+        const button = event.target.closest('.filter-btn');
+        if (!button) return;
+        toolbar.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        renderTimeline(button.dataset.filter || 'All');
+      });
+    }
+
+    function initThemePreferences() {
+      const key = 'mbdRoadmapThemePrefs';
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (_) { saved = {}; }
+      themePreferences.innerHTML = categories.map(cat => `
+        <label class="theme-pill">
+          <input type="checkbox" data-category="${cat}" ${saved[cat] ? 'checked' : ''} />
+          <span>${cat}</span>
+        </label>
+      `).join('');
+      themePreferences.addEventListener('change', event => {
+        const checkbox = event.target;
+        if (!(checkbox instanceof HTMLInputElement)) return;
+        const category = checkbox.dataset.category;
+        if (!category) return;
+        saved[category] = checkbox.checked;
+        localStorage.setItem(key, JSON.stringify(saved));
+      });
+    }
+
+    function initNewsletterForms() {
+      document.querySelectorAll('.signup-form').forEach(form => {
+        form.addEventListener('submit', () => {
+          const emailInput = form.querySelector('input[name="email"]');
+          const preferenceSelect = form.querySelector('select[name="preference"]');
+          const source = form.dataset.source || 'site';
+          if (!emailInput || !preferenceSelect) return;
+          const record = {
+            email: emailInput.value.trim(),
+            preference: preferenceSelect.value,
+            source,
+            submittedAt: new Date().toISOString()
+          };
+          try { localStorage.setItem('mbdNewsletterLastSignup', JSON.stringify(record)); } catch (_) {}
+        });
+      });
+    }
+
+    function initExitIntentModal() {
+      const modal = document.getElementById('exitModal');
+      const closeBtn = document.getElementById('exitClose');
+      if (!modal) return;
+      const localKey = 'mbdExitIntentDismissed';
+      const sessionKey = 'mbdExitIntentSeenSession';
+      const dismiss = () => {
+        modal.classList.remove('active');
+        localStorage.setItem(localKey, '1');
+      };
+      closeBtn && closeBtn.addEventListener('click', dismiss);
+      modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
+      document.addEventListener('mouseleave', e => {
+        if (e.clientY > 0 || window.innerWidth < 768) return;
+        if (localStorage.getItem(localKey) === '1') return;
+        if (sessionStorage.getItem(sessionKey) === '1') return;
+        sessionStorage.setItem(sessionKey, '1');
+        modal.classList.add('active');
+      });
+      window.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('active'); });
+    }
+
+    function createNetworkAnimation(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      let parentHeight = canvas.parentElement.clientHeight;
+      function resize() { canvas.width = window.innerWidth * dpr; canvas.height = parentHeight * dpr; ctx.scale(dpr, dpr); }
+      resize();
+      const count = Math.max(50, Math.min(120, Math.floor(window.innerWidth * parentHeight / 20000)));
+      const particles = [];
+      for (let i = 0; i < count; i++) particles.push({ x: Math.random() * window.innerWidth, y: Math.random() * parentHeight, vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28, r: Math.random() * 1.8 + 1, phase: Math.random() * Math.PI * 2 });
+      let time = 0;
+      function animate() {
+        ctx.clearRect(0, 0, window.innerWidth, parentHeight); time += 0.015;
+        const grad = ctx.createRadialGradient(window.innerWidth * 0.5, parentHeight * 0.3, 0, window.innerWidth * 0.5, parentHeight * 0.3, parentHeight);
+        grad.addColorStop(0, 'rgba(0,102,255,0.09)'); grad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, window.innerWidth, parentHeight);
+        particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.phase += 0.018; if (p.x < 0) p.x = window.innerWidth; if (p.x > window.innerWidth) p.x = 0; if (p.y < 0) p.y = parentHeight; if (p.y > parentHeight) p.y = 0; });
+        for (let i = 0; i < particles.length; i++) for (let j = i + 1; j < particles.length; j++) { const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y, dist = Math.sqrt(dx * dx + dy * dy); if (dist < 130) { ctx.strokeStyle = `rgba(0,102,255,${(1 - dist / 130) * 0.12})`; ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); } }
+        for (const p of particles) { const pulse = 0.6 + Math.sin(p.phase + time) * 0.4; ctx.fillStyle = `rgba(0,102,255,${0.16 + pulse * 0.12})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill(); }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      createNetworkAnimation('heroCanvas');
+      renderTimeline();
+      initFilters();
+      initThemePreferences();
+      initNewsletterForms();
+      initExitIntentModal();
+      if (window.gsap) {
+        const tl = gsap.timeline();
+        tl.to('h1', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .15);
+        tl.to('.lead', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .26);
+        tl.to('.hero-actions', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .35);
+      } else {
+        document.querySelectorAll('h1, .lead, .hero-actions').forEach(el => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
