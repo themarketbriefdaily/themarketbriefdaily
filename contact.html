@@ -8,25 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{font-size:16px;scroll-behavior:smooth}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1220;background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
-    :root{--accent:#0066ff;--accent2:#0ea5e9;--ink:#0b1220;--muted:rgba(11,18,32,.62);--muted2:rgba(11,18,32,.42);--line:rgba(11,18,32,.10);--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--shadow-md:0 8px 22px rgba(2,8,23,.10);--shadow-lg:0 18px 50px rgba(2,8,23,.12);--shadow-xl:0 28px 80px rgba(2,8,23,.14);--ease:cubic-bezier(.2,.9,.2,1);--max:1200px;--headerH:64px}
-    @media (max-width:768px){:root{--headerH:56px}}
-
-    header{position:fixed;top:0;left:0;right:0;height:var(--headerH);display:flex;align-items:center;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:1000;box-shadow:var(--shadow-md);padding:0 48px}
-    .header-inner{width:100%;max-width:var(--max);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px}
-    .brand{font-size:15px;font-weight:900;letter-spacing:-.01em;color:var(--ink);text-decoration:none;white-space:nowrap;transition:opacity .2s}
-    .brand:hover{opacity:.75}
-    nav{display:flex;gap:20px;align-items:center;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
-    nav a{font-size:13px;font-weight:800;color:var(--muted);text-decoration:none;transition:color .2s}
-    nav a:hover,nav a.active{color:var(--ink)}
-    nav a.active{font-weight:900}
-    @media (max-width:768px){header{padding:0 20px}nav{display:none}}
-
     .container{max-width:var(--max);margin:0 auto}
 
     .hero{padding:160px 48px 100px;background:#fff;position:relative;overflow:hidden}
@@ -69,13 +54,6 @@
     .btn.primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 60px rgba(0,102,255,.4)}
     @media (max-width:768px){.cta-bar{padding:60px 20px}}
 
-    footer{border-top:1px solid var(--line);background:#f9fafb;padding:48px}
-    .footer-inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
-    .footer-col h4{font-weight:950;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);margin-bottom:16px}
-    .footer-col a{display:block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
-    .footer-col a:hover{color:var(--ink)}
-    .footer-bottom{max-width:var(--max);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--line);text-align:center;color:var(--muted2);font-size:12px;font-weight:700}
-    @media (max-width:768px){.footer-inner{grid-template-columns:1fr}}
   </style>
 </head>
 
@@ -84,13 +62,25 @@
     <div class="header-inner">
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
-        <a href="/">Home</a>
         <a href="/funds.html">Funds</a>
         <a href="/posts.html">Research</a>
         <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
+        <div class="nav-dropdown">
+          <button class="nav-drop-toggle" aria-haspopup="true" aria-expanded="false">
+            Learn <span class="drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu" role="menu">
+            <a href="/glossary.html" role="menuitem">
+              <span class="drop-icon">📖</span> Glossary
+            </a>
+            <div class="nav-drop-divider"></div>
+            <a href="/education-library.html" role="menuitem">
+              <span class="drop-icon">🎓</span> Education
+            </a>
+          </div>
+        </div>
         <a href="/about.html">About</a>
-        <a class="active" href="/contact.html">Contact</a>
+        <a  class="active" href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
@@ -224,5 +214,25 @@
       tl.to('.lead', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.35);
     });
   </script>
+<script>
+(function(){
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd){
+    var toggle = dd.querySelector('.nav-drop-toggle');
+    if(!toggle) return;
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = dd.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!open) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+})();
+</script>
 </body>
 </html>

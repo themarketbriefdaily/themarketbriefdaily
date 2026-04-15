@@ -10,9 +10,27 @@
 <body class="theme-pensions">
   <header class="topbar">
     <div class="topbar-inner">
-      <a class="brand" href="index.html">The Market Brief Daily</a>
+      <a class="brand" href="/">The Market Brief Daily</a>
       <nav class="topbar-nav">
-        <a class="nav-link" href="education-library.html">← Curriculum Hub</a>
+        <a class="nav-link" href="/funds.html">Funds</a>
+        <a class="nav-link" href="/posts.html">Research</a>
+        <a class="nav-link" href="/research-roadmap.html">Roadmap</a>
+        <div class="nav-dropdown">
+          <button class="nav-link nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">
+            Learn <span class="drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu" role="menu">
+            <a href="/glossary.html" role="menuitem">
+              <span class="drop-icon">📖</span> Glossary
+            </a>
+            <div class="nav-drop-divider"></div>
+            <a class="active" href="/education-library.html" role="menuitem">
+              <span class="drop-icon">🎓</span> Education
+            </a>
+          </div>
+        </div>
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
@@ -633,5 +651,25 @@
   <footer class="site-footer">
     <p>Educational content only. Pension and tax decisions should be validated against current legislation and regulated advice where appropriate. Figures correct at 2025/26 tax year — verify with HMRC and HMRC Pensions Tax Manual for latest thresholds.</p>
   </footer>
+<script>
+(function(){
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd){
+    var toggle = dd.querySelector('.nav-drop-toggle');
+    if(!toggle) return;
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = dd.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!open) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+})();
+</script>
 </body>
 </html>
