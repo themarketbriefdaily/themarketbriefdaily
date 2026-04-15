@@ -8,6 +8,7 @@
   <style>
     :root {
       --navy:#0f2d4e; --slate:#64748b; --line:#d9e2ec; --bg:#f8fafc; --blue:#2563eb; --green:#16a34a; --amber:#d97706; --purple:#7c3aed; --white:#ffffff;
+      --ref-bg:#eaf3ff; --ref-border:#1d4ed8; --ref-text:#1e3a8a;
     }
     * { box-sizing:border-box; }
     body { margin:0; font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; font-size:16px; line-height:1.7; background:var(--bg); color:#0f172a; }
@@ -38,7 +39,7 @@
     .card.open .card-body { padding:0 16px 16px; }
     .takeaways { background:#f0f9ff; border-left:4px solid var(--blue); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
     .takeaways ul { margin:0; padding-left:18px; }
-    .reference-box { background:#eaf3ff; border-left:4px solid #1d4ed8; border-radius:8px; padding:10px 12px; margin:10px 0 0; font-size:.87rem; color:#1e3a8a; }
+    .reference-box { background:var(--ref-bg); border-left:4px solid var(--ref-border); border-radius:8px; padding:10px 12px; margin:10px 0 0; font-size:.87rem; color:var(--ref-text); }
     .go-deeper { margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); }
     .go-deeper a { color:#1d4ed8; text-decoration:none; }
     .go-deeper a:hover { text-decoration:underline; }
@@ -254,18 +255,18 @@
       container.innerHTML = html;
     });
 
-    const boundCardHeads = new WeakSet();
+    const boundHeads = new WeakSet();
     const getCards = () => [...document.querySelectorAll('.card')];
     function bindCardEvents() {
       getCards().forEach(card => {
         const head = card.querySelector('.card-head');
-        if (boundCardHeads.has(head)) return;
+        if (boundHeads.has(head)) return;
         const body = card.querySelector('.card-body');
         head.addEventListener('click', () => {
           const open = card.classList.toggle('open');
           body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
         });
-        boundCardHeads.add(head);
+        boundHeads.add(head);
       });
     }
     bindCardEvents();
