@@ -142,7 +142,6 @@
     <div class="header-inner">
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
-        <a class="active" href="/">Home</a>
         <a href="/funds.html">Funds</a>
         <a href="/posts.html">Research</a>
         <a href="/research-roadmap.html">Roadmap</a>
@@ -427,8 +426,6 @@
     // ===== FUND CARDS DATA =====
     // Loaded from /assets/fund-data.js (shared with funds.html)
     const funds = FUND_DATA;
-    const BACKEND_URL = '';
-    let cachedSnapshot = null;
 
     const chartInstances = new Map();
     const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -454,11 +451,11 @@
                   <div class="card-meta">
                     <div>
                       <div class="card-meta-label">YTD Return</div>
-                      <div class="card-meta-value ${f.r1y >= 0 ? 'pos' : 'neg'}" data-stat-ytd="${f.id}">${fmtPct(f.r1y)}</div>
+                      <div class="card-meta-value ${f.r1y >= 0 ? 'pos' : 'neg'}">${fmtPct(f.r1y)}</div>
                     </div>
                     <div>
                       <div class="card-meta-label">vs ${f.bench}</div>
-                      <div class="card-meta-value ${rel >= 0 ? 'pos' : 'neg'}" data-stat-outperf="${f.id}">${fmtPct(rel)}</div>
+                      <div class="card-meta-value ${rel >= 0 ? 'pos' : 'neg'}">${fmtPct(rel)}</div>
                     </div>
                   </div>
                   <div class="alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join('')}</div>
@@ -595,40 +592,6 @@
       });
     }
 
-    async function fetchSnapshot() {
-      if (cachedSnapshot) return cachedSnapshot;
-      const res = await fetch(`${BACKEND_URL}/data/funds-snapshot.json`);
-      if (!res.ok) throw new Error(`Snapshot unavailable (HTTP ${res.status})`);
-      cachedSnapshot = await res.json();
-      return cachedSnapshot;
-    }
-
-    async function loadAllFundCardStats() {
-      try {
-        const snapshot = await fetchSnapshot();
-        if (!snapshot || !snapshot.funds) return;
-
-        for (const fund of funds) {
-          const fd = snapshot.funds[fund.id];
-          if (!fd) continue;
-
-          const ytdEl = document.querySelector(`[data-stat-ytd="${fund.id}"]`);
-          const outpEl = document.querySelector(`[data-stat-outperf="${fund.id}"]`);
-
-          if (fd.ytdReturn != null && ytdEl) {
-            ytdEl.textContent = fmtPct(fd.ytdReturn);
-            ytdEl.className = `card-meta-value ${fd.ytdReturn >= 0 ? 'pos' : 'neg'}`;
-          }
-          if (fd.outperformance != null && outpEl) {
-            outpEl.textContent = fmtPct(fd.outperformance);
-            outpEl.className = `card-meta-value ${fd.outperformance >= 0 ? 'pos' : 'neg'}`;
-          }
-        }
-      } catch (e) {
-        console.warn('Fund card stats unavailable:', e.message);
-      }
-    }
-
     // ===== NEWS SECTION =====
     function renderNews() {
       const newsGrid = document.getElementById('newsGrid');
@@ -751,7 +714,6 @@
       createNetworkAnimation('aboutCanvas');
       
       try { renderFunds(); } catch (error) { console.warn('Fund rendering skipped:', error); }
-      loadAllFundCardStats();
       try { renderNews(); } catch (error) { console.warn('News rendering skipped:', error); }
       try { initAnimations(); } catch (error) { console.warn('Animation initialization skipped:', error); }
       initNewsletterForms();
