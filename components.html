@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Components — The Market Brief Daily</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-system.css" />
+  <style>
+    .component-block { margin-bottom: var(--space-10); }
+    .component-row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  </style>
+  <script defer src="/animations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.querySelector('[data-demo-form]');
+      if (form) {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const note = form.querySelector('.form-note');
+          note.textContent = 'Submitted — this demo form is wired and ready for API integration.';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="page-transition-overlay" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="/index.html"><span class="brand-dot"></span>The Market Brief Daily</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link" href="/index.html">Home</a>
+        <a class="nav-link" href="/insights.html">Insights</a>
+        <a class="nav-link" href="/education.html">Education</a>
+        <a class="nav-link" href="/funds.html">Funds</a>
+        <a class="nav-link" href="/glossary.html">Glossary</a>
+      </nav>
+      <a class="nav-cta" href="/insights.html">Get briefed</a>
+      <button class="hamburger" type="button" data-menu-toggle aria-label="Open menu" aria-expanded="false"><span class="hamburger-lines"></span></button>
+    </div>
+  </header>
+
+  <aside class="mobile-menu" data-mobile-menu>
+    <nav aria-label="Mobile">
+      <a class="mobile-link" href="/index.html">Home</a>
+      <a class="mobile-link" href="/insights.html">Insights</a>
+      <a class="mobile-link" href="/education.html">Education</a>
+      <a class="mobile-link" href="/funds.html">Funds</a>
+      <a class="mobile-link" href="/glossary.html">Glossary</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <section class="section section-sm">
+      <div class="container">
+        <span class="kicker reveal">Design system</span>
+        <h1 class="reveal" data-delay="100">Component showcase</h1>
+        <p class="reveal" data-delay="200">Reusable building blocks used across the full site experience.</p>
+
+        <div class="component-block reveal" data-delay="300">
+          <h2>Buttons (5 variants)</h2>
+          <div class="component-row">
+            <button class="btn btn-primary">Primary action</button>
+            <button class="btn btn-secondary">Secondary action</button>
+            <button class="btn btn-ghost">Ghost action</button>
+            <button class="btn btn-danger">Danger action</button>
+            <button class="btn btn-icon" aria-label="Open settings">⚙</button>
+            <button class="btn btn-primary" disabled>Disabled state</button>
+          </div>
+        </div>
+
+        <div class="component-block reveal">
+          <h2>Cards (4 types)</h2>
+          <div class="grid grid-4">
+            <article class="card card-feature">
+              <span class="badge">Feature</span>
+              <h3>Macro pulse briefing</h3>
+              <p>Daily pre-open context for rates, FX, credit, and energy positioning.</p>
+              <a class="read-more" href="/insights.html">Read more <span class="arrow">→</span></a>
+            </article>
+            <article class="card card-stat">
+              <div class="card-meta">Gross exposure</div>
+              <div class="metric" data-counter="126" data-prefix="$" data-suffix="B">$0B</div>
+              <p>Portfolio-wide risk-adjusted capital deployed this quarter.</p>
+            </article>
+            <article class="card">
+              <div class="image-placeholder">Chart placeholder</div>
+              <h3 class="mt-8">Performance attribution</h3>
+              <p>Factor decomposition by region, style, and liquidity regime.</p>
+            </article>
+            <article class="card">
+              <h3>Research backlog</h3>
+              <ul class="card-list">
+                <li>US payroll revisions and real consumption</li>
+                <li>Refining margins and diesel crack spreads</li>
+                <li>China credit impulse transmission lag</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="component-block reveal-left">
+          <h2>Table + badges</h2>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th>Instrument</th><th>Price</th><th>1D</th><th>Signal</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>S&P 500 Futures</td><td>5,302.1</td><td style="color:#16a34a">+0.42%</td><td><span class="badge">Risk-on</span></td></tr>
+                <tr><td>US 10Y Yield</td><td>4.18%</td><td style="color:#dc2626">-0.05%</td><td><span class="badge">Duration bid</span></td></tr>
+                <tr><td>DXY Dollar Index</td><td>103.5</td><td style="color:#dc2626">-0.21%</td><td><span class="badge">Soft dollar</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="component-block reveal-right">
+          <h2>Form controls</h2>
+          <form class="card" data-demo-form>
+            <div class="form-row">
+              <label>Email<input class="form-control" type="email" placeholder="analyst@fund.com" required></label>
+              <label>Focus area
+                <select class="form-control" required>
+                  <option value="">Select focus</option>
+                  <option>Macro strategy</option>
+                  <option>Equity factor flow</option>
+                  <option>Commodity structure</option>
+                </select>
+              </label>
+            </div>
+            <label>Message<textarea class="form-control" rows="4" placeholder="Request a custom institutional briefing."></textarea></label>
+            <div class="mt-8 component-row">
+              <button class="btn btn-primary" type="submit">Submit inquiry</button>
+              <span class="form-note" style="color:var(--color-text-muted)">No placeholder backend — this demo is functional and intercepts submit.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <canvas class="constellation-layer" data-constellation data-nodes="26"></canvas>
+    <div class="container footer-content">
+      <div class="footer-grid reveal">
+        <div>
+          <h4>The Market Brief Daily</h4>
+          <p>Institutional market intelligence for hedge funds, allocators, and investment committees.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul class="footer-list">
+            <li><a href="/index.html">Home</a></li><li><a href="/insights.html">Insights</a></li><li><a href="/funds.html">Funds</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul class="footer-list">
+            <li><a href="/education.html">Education</a></li><li><a href="/glossary.html">Glossary</a></li><li><a href="/components.html">Components</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Newsletter</h4>
+          <input class="form-control" type="email" placeholder="Work email">
+          <button class="btn btn-primary mt-8" type="button">Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-bottom reveal" data-delay="200">© 2026 The Market Brief Daily. All rights reserved.</div>
+    </div>
+  </footer>
+</body>
+</html>
