@@ -211,7 +211,7 @@
             <div class="field"><label for="withdrawYear">Early withdrawal year (0=none)</label><input id="withdrawYear" type="number" min="0" max="60" value="0"></div>
             <div class="field"><label for="withdrawAmount">Early withdrawal amount (£)</label><input id="withdrawAmount" type="number" min="0" value="0"></div>
           </div>
-          <p class="small">Tax engine constants: ISA £20,000; SIPP £60,000 (+ carry-forward note); CGT exemption £3,000; dividend allowance £500; dividend tax 8.75%/33.75%/39.35%; LTA abolished from Apr 2024 (annual limit planning remains key).</p>
+          <p class="small">Tax engine constants: ISA £20,000; SIPP £60,000 (with potential carry-forward of unused allowances from the prior 3 tax years, subject to eligibility); CGT exemption £3,000; dividend allowance £500; dividend tax 8.75%/33.75%/39.35%; Lifetime Allowance is treated as abolished under post-2024 reforms (annual limit planning remains key).</p>
           <p class="error" id="plannerError" aria-live="assertive"></p>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn" type="button" id="csvPlanner">Export planner CSV</button>
@@ -274,10 +274,31 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script>
-    const fmtGBP = pence => (Math.round((pence || 0) / 100)).toLocaleString('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0});
+    // Monetary values are stored as integer pence for precision.
+    const fmtGBP = amountInPence => (Math.round((amountInPence || 0) / 100)).toLocaleString('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0});
     const toPence = pounds => Math.round((Number(pounds)||0)*100);
     const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
     const plannerState = { rows: [], chart:null, pie:null, seq:null };
+    const TAX = {
+      ISA_LIMIT: 20000,
+      SIPP_LIMIT: 60000,
+      CGT_EXEMPTION: 3000,
+      DIVIDEND_ALLOWANCE: 500,
+      HIGHER_RATE_THRESHOLD: 50270,
+      ADDITIONAL_RATE_THRESHOLD: 125140
+    };
+    const PROFILE_FEE = { Conservative: 0.0018, Moderate: 0.0015, Aggressive: 0.0012, Growth: 0.0012 };
+    // Assumed weighted annual all-in platform + fund costs by portfolio style.
+    const EQUITY_SPLITS = {
+      UK_LARGE: 0.22,
+      SMALL_MID_DEFAULT: 0.12,
+      SMALL_MID_GROWTH: 0.18,
+      DEVELOPED: 0.36,
+      EMERGING: 0.12,
+      ALT_CONSERVATIVE: 0.04,
+      ALT_OTHER: 0.07
+    };
+    const SCORE_WEIGHTS = { ISA_UTILIZATION: 35, SIPP_UTILIZATION: 45, CGT_HEADROOM: 20, DIVIDEND_TAX_PENALTY: 8 };
 
     function setupAccordionAndFilters(){
       const cards=[...document.querySelectorAll('.card')];
@@ -340,7 +361,7 @@
       const update=()=>{
         const i=Number(income.value), d=Number(dep.value), e=Number(em.value);
         emOut.textContent=`${e} months`;
-        const band=i>125140?'additional':(i>50270?'higher':'basic');
+        const band=i > TAX.ADDITIONAL_RATE_THRESHOLD ? 'additional' : (i > TAX.HIGHER_RATE_THRESHOLD ? 'higher' : 'basic');
         const liquidity=e<6?'Increase liquid reserves toward six months before increasing risk exposure.':'Liquidity reserve is acceptable for moderate risk budgets.';
         const family=d>=2?'Higher dependent count increases need for insurance and drawdown resilience.':'Dependent load is moderate.';
         out.textContent=`Tax band: ${band}. ${liquidity} ${family}`;
@@ -348,15 +369,40 @@
       [income,dep,em].forEach(el=>el.addEventListener('input',update)); update();
     }
 
-    function taxBand(income){ if(income>125140)return{name:'additional',relief:0.45,divRate:0.3935}; if(income>50270)return{name:'higher',relief:0.40,divRate:0.3375}; return{name:'basic',relief:0.20,divRate:0.0875}; }
+    function taxBand(income){
+      if (income > TAX.ADDITIONAL_RATE_THRESHOLD) return { name:'additional', relief:0.45, divRate:0.3935 };
+      if (income > TAX.HIGHER_RATE_THRESHOLD) return { name:'higher', relief:0.40, divRate:0.3375 };
+      return { name:'basic', relief:0.20, divRate:0.0875 };
+    }
     function glideEquity(age){ return clamp(90-((age-25)*(60/40)),30,90); }
     function plannerInputs(){ return ['age','retirementAge','horizon','portfolioNow','annualIncome','employment','monthlyContribution','annualTopup','contribGrowth','goal','dependents','emergencyMonths','riskPsych','maxDrawdownComfort','inflation','withdrawYear','withdrawAmount'].reduce((o,id)=>(o[id]=document.getElementById(id).value,o),{}); }
-    function validate(i){ const e=[],age=+i.age,ret=+i.retirementAge,h=+i.horizon; if(!(age>=18&&age<=80))e.push('Age 18-80.'); if(!(ret>age&&ret<=85))e.push('Retirement age must exceed current age and be <=85.'); if(!(h>=1&&h<=60))e.push('Horizon 1-60 years.'); if(+i.withdrawYear>h)e.push('Withdrawal year cannot exceed horizon.'); return e; }
+    function validate(i){
+      const e=[],age=+i.age,ret=+i.retirementAge,h=+i.horizon;
+      if(!(age>=18&&age<=80))e.push('Age must be between 18 and 80.');
+      if(!(ret>age&&ret<=85))e.push('Retirement age must exceed current age and be 85 or below.');
+      if(!(h>=1&&h<=60))e.push('Investment horizon must be between 1 and 60 years.');
+      if(+i.withdrawYear>h)e.push('Withdrawal year cannot exceed investment horizon.');
+      return e;
+    }
 
     function optimiseWrappers(i, annualBudget, band){
-      const isaLimit=20000,sippLimit=60000,nearTerm=i.goal==='home'||Number(i.horizon)<10; let pensionFirst=band.name!=='basic'||i.goal==='retirement'; if(nearTerm)pensionFirst=false;
-      let sipp=0,isa=0; if(pensionFirst){sipp=Math.min(annualBudget,sippLimit); isa=Math.min(Math.max(0,annualBudget-sipp),isaLimit);} else {isa=Math.min(annualBudget,isaLimit); sipp=Math.min(Math.max(0,annualBudget-isa),sippLimit);}
-      const gia=Math.max(0,annualBudget-sipp-isa); return {isa,sipp,gia};
+      const isaLimit = TAX.ISA_LIMIT;
+      const sippLimit = TAX.SIPP_LIMIT;
+      const nearTerm = i.goal === 'home' || Number(i.horizon) < 10;
+      let pensionFirst = band.name !== 'basic' || i.goal === 'retirement';
+      if (nearTerm) pensionFirst = false;
+
+      let sipp = 0;
+      let isa = 0;
+      if (pensionFirst) {
+        sipp = Math.min(annualBudget, sippLimit);
+        isa = Math.min(Math.max(0, annualBudget - sipp), isaLimit);
+      } else {
+        isa = Math.min(annualBudget, isaLimit);
+        sipp = Math.min(Math.max(0, annualBudget - isa), sippLimit);
+      }
+      const gia = Math.max(0, annualBudget - sipp - isa);
+      return { isa, sipp, gia };
     }
 
     function allocationModel(i){
@@ -368,7 +414,12 @@
       let profile='Conservative'; if(score>=105)profile='Growth'; else if(score>=88)profile='Aggressive'; else if(score>=70)profile='Moderate';
       const profileAdj=profile==='Growth'?10:profile==='Aggressive'?5:profile==='Moderate'?0:-8;
       const equity=clamp(Math.round(glideEquity(age)+profileAdj),25,92), fixedIncome=100-equity;
-      const ukLarge=Math.round(equity*0.22), smallMid=Math.round(equity*(profile==='Growth'?0.18:0.12)), developed=Math.round(equity*0.36), emerging=Math.round(equity*0.12), alt=Math.round(profile==='Conservative'?4:7), fixed=100-ukLarge-smallMid-developed-emerging-alt;
+      const ukLarge = Math.round(equity * EQUITY_SPLITS.UK_LARGE);
+      const smallMid = Math.round(equity * (profile === 'Growth' ? EQUITY_SPLITS.SMALL_MID_GROWTH : EQUITY_SPLITS.SMALL_MID_DEFAULT));
+      const developed = Math.round(equity * EQUITY_SPLITS.DEVELOPED);
+      const emerging = Math.round(equity * EQUITY_SPLITS.EMERGING);
+      const alt = Math.round((profile === 'Conservative' ? EQUITY_SPLITS.ALT_CONSERVATIVE : EQUITY_SPLITS.ALT_OTHER) * 100);
+      const fixed = 100 - ukLarge - smallMid - developed - emerging - alt;
       return { profile, capacity, tolerance, score, equity, fixedIncome, allocation: {'UK Large Cap Equity':ukLarge,'Small/Mid Cap (value-growth blend)':smallMid,'International Developed':developed,'Emerging Markets':emerging,'Gilts/Corporate/Linkers':fixed,'Commodities & Alternatives':alt}, factor: profile==='Conservative'?'Quality + low volatility':(profile==='Moderate'?'Quality + value':'Value + momentum + quality') };
     }
 
@@ -385,6 +436,8 @@
       plannerState.chart=new Chart(document.getElementById('plannerGrowthChart'),{type:'line',data:{labels,datasets:[{label:'Cumulative contributions',data:contrib,fill:true,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.35)',pointRadius:0,tension:.2},{label:'Investment growth',data:growth,fill:'-1',borderColor:'#0f9d58',backgroundColor:'rgba(15,157,88,.35)',pointRadius:0,tension:.2}]},options:{responsive:true,scales:{y:{ticks:{callback:v=>`£${Math.round(v).toLocaleString('en-GB')}`}}}}});
       if(plannerState.pie)plannerState.pie.destroy();
       plannerState.pie=new Chart(document.getElementById('allocationPieChart'),{type:'pie',data:{labels:Object.keys(allocation),datasets:[{data:Object.values(allocation),backgroundColor:['#1d4ed8','#2563eb','#0ea5e9','#8b5cf6','#14b8a6','#f59e0b']}]},options:{plugins:{legend:{position:'bottom'}}}});
+      // Same average return profile with different ordering: seqA has an early drawdown, seqB a late drawdown.
+      // This highlights how early losses can impair withdrawal sustainability even when long-run averages look similar.
       const seqA=[12,-18,9,8,7,6,6,5,5,4], seqB=[4,5,5,6,6,7,8,9,-18,12];
       if(plannerState.seq)plannerState.seq.destroy();
       plannerState.seq=new Chart(document.getElementById('sequenceChart'),{type:'bar',data:{labels:['Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9','Y10'],datasets:[{label:'Early drawdown',data:seqA,backgroundColor:'rgba(220,38,38,.55)'},{label:'Late drawdown',data:seqB,backgroundColor:'rgba(37,99,235,.55)'}]},options:{plugins:{title:{display:true,text:'Sequence-of-returns risk (retirement withdrawals)'}},scales:{y:{ticks:{callback:v=>`${v}%`}}}}});
@@ -393,13 +446,36 @@
     function renderPlanner(){
       const i=plannerInputs(), err=validate(i), errEl=document.getElementById('plannerError'); document.getElementById('riskPsychOut').textContent=`${i.riskPsych} / 10`;
       if(err.length){errEl.textContent=err.join(' '); return;} errEl.textContent='';
-      const years=+i.horizon, annualIncome=+i.annualIncome, annualBudgetPence=toPence((+i.monthlyContribution*12)+(+i.annualTopup)), principalPence=toPence(+i.portfolioNow), inflation=+i.inflation/100, contribGrowth=+i.contribGrowth/100, band=taxBand(annualIncome), alloc=allocationModel(i), wrappers=optimiseWrappers(i, annualBudgetPence/100, band), withdrawYear=+i.withdrawYear, withdrawAmountPence=toPence(+i.withdrawAmount);
-      const fee=alloc.profile==='Conservative'?0.0018:(alloc.profile==='Moderate'?0.0015:0.0012);
+      const years = +i.horizon;
+      const annualIncome = +i.annualIncome;
+      const annualBudgetPence = toPence((+i.monthlyContribution * 12) + (+i.annualTopup));
+      const principalPence = toPence(+i.portfolioNow);
+      const inflation = +i.inflation / 100;
+      const contribGrowth = +i.contribGrowth / 100;
+      const band = taxBand(annualIncome);
+      const alloc = allocationModel(i);
+      const wrappers = optimiseWrappers(i, annualBudgetPence / 100, band);
+      const withdrawYear = +i.withdrawYear;
+      const withdrawAmountPence = toPence(+i.withdrawAmount);
+      const fee = PROFILE_FEE[alloc.profile] ?? PROFILE_FEE.Moderate;
       const base=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.06-fee,inflation,withdrawYear,withdrawAmountPence});
       const con=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.04-fee,inflation,withdrawYear,withdrawAmountPence});
       const opt=project({years,principalPence,annualBudgetPence,contribGrowth,netReturn:0.08-fee,inflation,withdrawYear,withdrawAmountPence});
       plannerState.rows=base;
-      const last=base[base.length-1], annualTaxRelief=wrappers.sipp*band.relief, taxableDiv=Math.max(0,Math.round((wrappers.gia*0.02)-500)), estDividendTax=taxableDiv*band.divRate, taxScore=clamp(Math.round((wrappers.isa/20000)*35+(wrappers.sipp/60000)*45+20-(estDividendTax>0?8:0)),0,100);
+      const last = base[base.length - 1];
+      const annualTaxRelief = wrappers.sipp * band.relief;
+      const taxableDiv = Math.max(0, Math.round((wrappers.gia * 0.02) - TAX.DIVIDEND_ALLOWANCE));
+      const estDividendTax = taxableDiv * band.divRate;
+      const taxScore = clamp(
+        Math.round(
+          (wrappers.isa / TAX.ISA_LIMIT) * SCORE_WEIGHTS.ISA_UTILIZATION +
+          (wrappers.sipp / TAX.SIPP_LIMIT) * SCORE_WEIGHTS.SIPP_UTILIZATION +
+          (TAX.CGT_EXEMPTION / 3000) * SCORE_WEIGHTS.CGT_HEADROOM -
+          (estDividendTax > 0 ? SCORE_WEIGHTS.DIVIDEND_TAX_PENALTY : 0)
+        ),
+        0,
+        100
+      );
       document.getElementById('riskProfile').textContent=alloc.profile;
       document.getElementById('riskScore').textContent=`${alloc.score.toFixed(0)} (${alloc.capacity.toFixed(0)} / ${alloc.tolerance.toFixed(0)})`;
       document.getElementById('eqBond').textContent=`${alloc.equity}% / ${alloc.fixedIncome}%`;
@@ -421,9 +497,33 @@
     }
 
     function setupPlanner(){
-      ['age','retirementAge','horizon','portfolioNow','annualIncome','employment','monthlyContribution','annualTopup','contribGrowth','goal','dependents','emergencyMonths','riskPsych','maxDrawdownComfort','inflation','withdrawYear','withdrawAmount'].forEach(id=>document.getElementById(id).addEventListener('input',renderPlanner));
-      document.getElementById('csvPlanner').addEventListener('click',()=>{const header=['Year','Contribution','Cumulative','Portfolio','Growth','Real Portfolio']; const lines=plannerState.rows.slice(1).map(r=>[r.year,Math.round(r.contribution/100),Math.round(r.cumulative/100),Math.round(r.value/100),Math.round(r.growth/100),Math.round(r.real/100)].join(',')); const blob=new Blob([[header.join(','),...lines].join('\n')],{type:'text/csv;charset=utf-8;'}); const link=document.createElement('a'); link.href=URL.createObjectURL(blob); link.download='uk-investment-planner-projection.csv'; link.click(); URL.revokeObjectURL(link.href);});
-      document.getElementById('pdfPlanner').addEventListener('click',()=>window.print());
+      const plannerIds = [
+        'age', 'retirementAge', 'horizon', 'portfolioNow', 'annualIncome',
+        'employment', 'monthlyContribution', 'annualTopup', 'contribGrowth',
+        'goal', 'dependents', 'emergencyMonths', 'riskPsych',
+        'maxDrawdownComfort', 'inflation', 'withdrawYear', 'withdrawAmount'
+      ];
+      plannerIds.forEach(id => document.getElementById(id).addEventListener('input', renderPlanner));
+
+      document.getElementById('csvPlanner').addEventListener('click', () => {
+        const header = ['Year', 'Contribution', 'Cumulative', 'Portfolio', 'Growth', 'Real Portfolio'];
+        const lines = plannerState.rows.slice(1).map(r => [
+          r.year,
+          Math.round(r.contribution / 100),
+          Math.round(r.cumulative / 100),
+          Math.round(r.value / 100),
+          Math.round(r.growth / 100),
+          Math.round(r.real / 100)
+        ].join(','));
+        const blob = new Blob([[header.join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'uk-investment-planner-projection.csv';
+        link.click();
+        URL.revokeObjectURL(link.href);
+      });
+
+      document.getElementById('pdfPlanner').addEventListener('click', () => window.print());
       renderPlanner();
     }
 
