@@ -242,7 +242,7 @@
         const update = () => {
           if (box.dataset.calc === 'dcf') {
             const fcf = get('fcf'), wacc = get('wacc'), g = get('g');
-            if ([fcf, wacc, g].some(v => v === null) || wacc <= g) { out.textContent = 'Invalid (need WACC > g)'; return; }
+            if ([fcf, wacc, g].some(v => v === null) || (wacc - g) <= 0.000001) { out.textContent = 'Invalid (need WACC > g)'; return; }
             out.textContent = `£${((fcf * (1 + g / 100)) / ((wacc - g) / 100)).toFixed(1)}m`;
           }
           if (box.dataset.calc === 'kelly') {
