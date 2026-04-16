@@ -18,6 +18,8 @@
       --success: #16a34a;
       --shadow: 0 14px 36px rgba(13, 39, 80, 0.1);
       --radius: 14px;
+      --max: 1200px;
+      --headerH: 64px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -27,6 +29,146 @@
       color: var(--ink);
       background: linear-gradient(180deg, #eff6ff 0%, #eaf3ff 100%);
       line-height: 1.65;
+      padding-top: calc(var(--headerH) + 8px);
+    }
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--headerH);
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      z-index: 1000;
+      box-shadow: 0 8px 22px rgba(2,8,23,.10);
+      padding: 0 48px;
+    }
+    .header-inner {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .brand {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity .2s;
+    }
+    .brand:hover { opacity: .75; }
+    nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      margin-left: auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav a {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    nav a:hover, nav a.active { color: var(--ink); }
+    nav a.active { font-weight: 900; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > .nav-drop-toggle {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: inherit;
+      font-family: inherit;
+    }
+    .nav-dropdown > .nav-drop-toggle:hover,
+    .nav-dropdown > .nav-drop-toggle.active { color: var(--ink); }
+    .nav-dropdown > .nav-drop-toggle.active { font-weight: 900; }
+    .nav-drop-toggle .drop-caret {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    .nav-drop-toggle .drop-caret::before {
+      content: '';
+      position: absolute;
+      top: 2px; left: 1px;
+      border: 4px solid transparent;
+      border-top-color: currentColor;
+    }
+    .nav-dropdown.open > .nav-drop-toggle .drop-caret { transform: rotate(-180deg); }
+    .nav-drop-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 190px;
+      background: rgba(255,255,255,.98);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(2,8,23,.12), 0 2px 8px rgba(2,8,23,.06);
+      padding: 6px;
+      z-index: 1200;
+      opacity: 0;
+      transition: opacity .15s ease, transform .15s ease;
+      pointer-events: none;
+    }
+    .nav-dropdown.open .nav-drop-menu {
+      display: block;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .nav-drop-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-drop-menu a:hover { background: rgba(0,102,255,.06); color: var(--ink); }
+    .nav-drop-menu a.active { color: var(--ink); font-weight: 900; }
+    .nav-drop-menu .drop-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: rgba(0,102,255,.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .nav-drop-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 4px 6px;
     }
     .layout {
       max-width: 1700px;
@@ -45,8 +187,8 @@
     }
     .sidebar, .rightbar {
       position: sticky;
-      top: 14px;
-      max-height: calc(100vh - 28px);
+      top: calc(var(--headerH) + 14px);
+      max-height: calc(100vh - (var(--headerH) + 28px));
       overflow: auto;
       padding: 16px;
     }
@@ -489,9 +631,88 @@
       .inline-grid { grid-template-columns: 1fr; }
       .topic-guide-grid { grid-template-columns: 1fr; }
     }
+    @media (max-width: 768px) {
+      :root { --headerH: 56px; }
+      header { padding: 0 14px; }
+      .header-inner { gap: 10px; }
+      .brand {
+        flex: 0 1 auto;
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      nav {
+        flex: 1 1 0;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 14px;
+        min-width: 0;
+        overflow-x: auto;
+        justify-content: flex-start;
+        scrollbar-width: thin;
+      }
+      .nav-dropdown > .nav-drop-toggle { display: none; }
+      .nav-drop-menu {
+        position: static;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .nav-drop-menu a {
+        padding: 0;
+        border-radius: 0;
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--muted);
+        background: transparent;
+      }
+      .nav-drop-menu a:hover,
+      .nav-drop-menu a.active {
+        color: var(--ink);
+        font-weight: 900;
+      }
+      .nav-drop-menu .drop-icon,
+      .nav-drop-divider { display: none; }
+    }
   </style>
 </head>
 <body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="/">The Market Brief Daily</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/funds.html">Funds</a>
+        <a href="/posts.html">Research</a>
+        <a href="/research-roadmap.html">Roadmap</a>
+        <div class="nav-dropdown">
+          <button class="nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">
+            Learn <span class="drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu" role="menu">
+            <a href="/glossary.html" role="menuitem">
+              <span class="drop-icon">📖</span> Glossary
+            </a>
+            <div class="nav-drop-divider"></div>
+            <a class="active" href="/education" role="menuitem">
+              <span class="drop-icon">🎓</span> Education
+            </a>
+          </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
   <div class="layout">
     <aside class="panel sidebar">
       <h1>CFA + IMC Curriculum Library</h1>
@@ -1419,6 +1640,26 @@
     updateCapm();
     updateBond();
     updateFrontier();
+  </script>
+  <script>
+    (function(){
+      document.querySelectorAll('.nav-dropdown').forEach(function(dd){
+        var toggle = dd.querySelector('.nav-drop-toggle');
+        if(!toggle) return;
+        toggle.addEventListener('click', function(e){
+          e.stopPropagation();
+          var open = dd.classList.contains('open');
+          document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+          if(!open) dd.classList.add('open');
+        });
+      });
+      document.addEventListener('click', function(){
+        document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      });
+    })();
   </script>
 </body>
 </html>
