@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/education", "destination": "/education.html" },
+    { "source": "/education/", "destination": "/education.html" },
     { "source": "/api/:path*", "destination": "/api/market-data.js" }
   ]
 }
