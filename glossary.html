@@ -4,369 +4,384 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Investment Glossary | The Market Brief Daily</title>
-  <meta name="description" content="Financial and investment glossary covering market structure, macro, supply chain, and strategy terms." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta name="description" content="Academic investment glossary with formulas, context, worked examples, and interactive tools." />
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/non-home-theme.css">
   <link rel="stylesheet" href="/assets/design-system.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
   <style>
-    .container{max-width:var(--max);margin:0 auto}
-    .hero{padding:150px 48px 70px;background:#fff}
-    .hero-inner{text-align:center;max-width:860px;margin:0 auto}
-    .kicker{font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
-    h1{font-size:clamp(2.2rem,5vw,3.3rem);font-weight:950;line-height:1.08;letter-spacing:-.03em;margin-bottom:16px;background:linear-gradient(135deg,#0b1220,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(18px)}
-    .lead{max-width:700px;margin:0 auto;color:var(--muted);font-size:1.05rem;line-height:1.8;opacity:0;transform:translateY(18px)}
-    @media (max-width:768px){.hero{padding:110px 20px 50px}}
-
-    .section{padding:20px 48px 100px}
-    @media (max-width:768px){.section{padding:20px 20px 70px}}
-
-    .controls{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:20px}
-    .search{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit}
-    .category-filter{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff}
-    @media (max-width:768px){.controls{grid-template-columns:1fr}}
-
-    .category-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-    .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:850;color:var(--muted);cursor:pointer;transition:all .2s}
-    .chip.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.6)}
-
-    .glossary-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:1000px){.glossary-list{grid-template-columns:1fr}}
-    .term-card{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow-md);overflow:hidden}
-    .term-header{width:100%;border:none;background:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;cursor:pointer}
-    .term-title{font-size:15px;font-weight:900;letter-spacing:-.01em}
-    .term-meta{font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.25);color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
-    .term-body{max-height:0;overflow:hidden;transition:max-height .28s var(--ease),padding .28s var(--ease);padding:0 16px}
-    .term-card.open .term-body{max-height:220px;padding:0 16px 16px}
-    .term-desc{font-size:14px;color:var(--muted);line-height:1.7}
-    .caret{font-size:16px;color:var(--muted2);transition:transform .2s}
-    .term-card.open .caret{transform:rotate(180deg)}
-
-    .newsletter-wrap{margin-top:24px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,rgba(0,102,255,.04),rgba(2,8,23,.01))}
-    .newsletter-title{font-size:1rem;font-weight:900}
-    .newsletter-note{font-size:13px;color:var(--muted);margin-top:6px}
-    .newsletter-form{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;margin-top:12px}
-    .newsletter-form input,.newsletter-form select{border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:14px;font-family:inherit}
-    .newsletter-form button{border:none;border-radius:10px;padding:12px 18px;background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:900;cursor:pointer}
-    .helper{font-size:12px;color:var(--muted2);margin-top:8px}
-    @media (max-width:768px){.newsletter-form{grid-template-columns:1fr}}
-
-
-    .exit-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.56);z-index:2000}
-    .exit-modal.active{display:flex}
-    .exit-modal-card{max-width:560px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-xl);padding:28px;position:relative}
-    .exit-close{position:absolute;top:14px;right:16px;background:transparent;border:none;font-size:26px;color:var(--muted);cursor:pointer}
-    .exit-title{font-size:1.5rem;font-weight:950;letter-spacing:-.02em}
-    .exit-copy{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.7}
+    :root{--accent:#2563eb;--line:#dbe6f6;--ink:#0f172a;--muted:#475569}
+    body{background:#f2f8ff}
+    .page{max-width:1180px;margin:0 auto;padding:115px 20px 90px}
+    .hero{border:1px solid var(--line);background:linear-gradient(140deg,#fff,#ecf4ff);border-radius:18px;padding:24px}
+    .hero h1{margin:8px 0 10px;font-size:clamp(1.8rem,4vw,2.5rem)}
+    .hero p{margin:0;color:var(--muted);line-height:1.65}
+    .controls{display:grid;grid-template-columns:1.5fr auto auto 1fr;gap:10px;margin:14px 0}
+    .controls input,.controls select{border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;background:#fff}
+    .guide-note{margin:10px 0 12px;color:#334155;line-height:1.6}
+    .status-msg{margin:0 0 12px;color:#1d4ed8;font-size:.86rem}
+    .toggle{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .toggle button{border:none;background:transparent;padding:0 14px;font-weight:800;cursor:pointer}
+    .toggle button.active{background:var(--accent);color:#fff}
+    .btn{border:none;background:var(--accent);color:#fff;border-radius:12px;padding:0 14px;font-weight:800;cursor:pointer}
+    .az{position:sticky;top:72px;z-index:20;background:rgba(242,248,255,.93);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .az a{font-size:11px;font-weight:800;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:999px}
+    .az a.active{background:#dbeafe;color:#1d4ed8}
+    .letter{scroll-margin-top:118px;font-size:.96rem;color:#1e3a8a;margin:6px 0 0}
+    .card{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;transition:opacity .2s}
+    .card.faded{opacity:.2}
+    .card.match{box-shadow:0 0 0 2px #bfdbfe inset}
+    .head{display:flex;justify-content:space-between;gap:10px;padding:13px}
+    .head h3{margin:0;font-size:1rem}
+    .simple{margin:5px 0 0;color:var(--muted);line-height:1.55;font-size:.92rem}
+    .pills{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+    .pill{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border:1px solid #c8d9f9;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:4px 7px}
+    .actions{display:flex;gap:7px}
+    .icon{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 8px;cursor:pointer}
+    .body{border-top:1px solid var(--line);padding:0 13px;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease}
+    .card.open .body{max-height:1200px;padding:13px}
+    .mode-simple .body{display:none!important}
+    .s-title{font-size:.84rem;font-weight:800;color:#1e3a8a;margin:0 0 5px}
+    .copy{margin:0 0 10px;color:#334155;line-height:1.6;font-size:.9rem}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f8fbff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin:0 0 9px;font-size:.85rem}
+    .calc{border:1px dashed #bfd3fb;background:#f7fbff;border-radius:10px;padding:9px;margin:8px 0 10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px}
+    .calc input{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 7px}
+    .out{font-size:.87rem;font-weight:800;color:#1d4ed8;margin-top:8px}
+    .links{display:flex;gap:7px;flex-wrap:wrap}
+    .links a{font-size:.79rem;text-decoration:none;color:#1d4ed8;border:1px solid #c8d9f9;background:#eff6ff;border-radius:999px;padding:4px 8px}
+    .saved-launch{position:fixed;right:16px;bottom:16px;z-index:50;background:#0f172a;color:#fff;border:none;border-radius:999px;padding:10px 13px;font-weight:800;cursor:pointer}
+    .saved{position:fixed;right:-360px;top:0;height:100vh;width:340px;max-width:92vw;background:#fff;border-left:1px solid var(--line);transition:right .25s;z-index:70;display:flex;flex-direction:column}
+    .saved.open{right:0}
+    .saved-h{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+    .saved-list{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+    .saved-item{border:1px solid var(--line);border-radius:9px;padding:8px;background:#f8fbff}
+    .saved-item a{text-decoration:none;font-weight:700;color:#1d4ed8}
+    mark{background:#fff3bf;border-radius:3px}
+    @media (max-width:940px){.controls{grid-template-columns:1fr 1fr}.toggle,.btn{height:42px}}
+    @media (max-width:680px){.controls{grid-template-columns:1fr}}
   </style>
-  <script src="/assets/animations.js" defer></script>
 </head>
-
 <body>
-  <header>
-    <div class="header-inner">
+  <header class="topbar">
+    <div class="topbar-inner">
       <a class="brand" href="/">The Market Brief Daily</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/funds.html">Funds</a>
-        <a href="/posts.html">Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
+      <nav class="topbar-nav">
+        <a href="/">Home</a><a class="nav-link" href="/funds.html">Funds</a><a class="nav-link" href="/posts.html">Research</a><a class="nav-link" href="/research-roadmap.html">Roadmap</a>
         <div class="nav-dropdown">
-          <button class="nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">
-            Learn <span class="drop-caret" aria-hidden="true"></span>
-          </button>
+          <button class="nav-link nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">Learn <span class="drop-caret" aria-hidden="true"></span></button>
           <div class="nav-drop-menu" role="menu">
-            <a class="active" href="/glossary.html" role="menuitem">
-              <span class="drop-icon">📖</span> Glossary
-            </a>
+            <a class="active" href="/glossary.html" role="menuitem"><span class="drop-icon">📖</span> Glossary</a>
             <div class="nav-drop-divider"></div>
-            <a href="/education-library.html" role="menuitem">
-              <span class="drop-icon">🎓</span> Education
-            </a>
+            <a href="/education-library.html" role="menuitem"><span class="drop-icon">🎓</span> Education</a>
           </div>
         </div>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
+        <a class="nav-link" href="/about.html">About</a><a class="nav-link" href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <section class="hero" data-constellation>
-    <div class="container hero-inner">
-      <div class="kicker">Research Glossary</div>
-      <h1>Market and macro terms, simplified</h1>
-      <p class="lead">A practitioner glossary for hedge fund and institutional research readers. Use search, category filters, and expandable definitions to quickly decode technical language.</p>
-    </div>
-  </section>
+  <main class="page" id="root">
+    <section class="hero">
+      <span class="kicker">Living Academic Reference</span>
+      <h1>Glossary — theory, formulas, stories, and practice</h1>
+      <p>Use Simple mode for plain English recall and Technical mode for full mini-lessons with definitions, formulas, assumptions, worked examples, and cross-links to lessons.</p>
+    </section>
+    <p class="guide-note">Best workflow: filter by topic, save priority terms with ☆, then open their linked lessons to move from definition-level recall to case-based application.</p>
 
-  <section class="section">
-    <div class="container">
-      <div class="controls">
-        <input id="searchInput" class="search" type="search" placeholder="Search terms or definitions (e.g., basis, gamma, carry)" />
-        <select id="categorySelect" class="category-filter" aria-label="Filter glossary category">
-          <option value="All">All Categories</option>
-          <option value="Market Structure Terms">Market Structure Terms</option>
-          <option value="Macro Terms">Macro Terms</option>
-          <option value="Supply Chain Terms">Supply Chain Terms</option>
-          <option value="Strategy Terms">Strategy Terms</option>
-        </select>
-      </div>
+    <section class="controls">
+      <input id="search" type="search" placeholder="Search terms, cases, formulas (e.g., LTCM, CAPM, DCF, VaR)">
+      <div class="toggle"><button id="simpleBtn" class="active" type="button">Simple</button><button id="techBtn" type="button">Technical</button></div>
+      <button id="sheetBtn" class="btn" type="button">Study sheet</button>
+      <select id="topic">
+        <option value="All">All</option><option>Ratios & Performance</option><option>Risk</option><option>Portfolio Theory</option><option>Strategies</option><option>Fixed Income</option><option>Derivatives</option><option>Valuation</option><option>Corporate Finance</option><option>Behavioural Finance</option><option>ESG</option>
+      </select>
+    </section>
+    <p id="statusMsg" class="status-msg" aria-live="polite"></p>
 
-      <div class="category-grid" id="categoryChips">
-        <button class="chip active" data-category="All">All</button>
-        <button class="chip" data-category="Market Structure Terms">Market Structure</button>
-        <button class="chip" data-category="Macro Terms">Macro</button>
-        <button class="chip" data-category="Supply Chain Terms">Supply Chain</button>
-        <button class="chip" data-category="Strategy Terms">Strategy</button>
-      </div>
+    <nav id="az" class="az" aria-label="A to Z"></nav>
+    <section id="list"></section>
+  </main>
 
-      <div class="glossary-list" id="glossaryList"></div>
-
-      <div class="newsletter-wrap">
-        <div class="newsletter-title">Get research explainers in your inbox</div>
-        <p class="newsletter-note">Add your Mailchimp/ConvertKit form action URL to activate this signup.</p>
-        <form class="newsletter-form signup-form" data-source="glossary" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
-          <input type="email" name="email" placeholder="Email address" required />
-          <select name="preference" aria-label="Newsletter preference">
-            <option value="Research">Research</option>
-            <option value="Funds">Funds</option>
-            <option value="Events">Events</option>
-            <option value="All">All</option>
-          </select>
-          <button type="submit">Subscribe</button>
-        </form>
-        <p class="helper">Preferences are captured alongside email to support segmented campaigns.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-inner">
-      <div>
-        <h4>The Market Brief Daily</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
-        <form class="newsletter-form signup-form" data-source="footer" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:10px">
-          <input type="email" name="email" placeholder="Email address" required />
-          <select name="preference" aria-label="Newsletter preference">
-            <option value="All">All</option>
-            <option value="Research">Research</option>
-            <option value="Funds">Funds</option>
-            <option value="Events">Events</option>
-          </select>
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-      <div class="footer-col">
-        <h4>Research</h4>
-        <a href="/posts.html">All Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
-        <a href="/education-library.html">Education</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="/about.html">About us</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/funds.html">Funds</a>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <a href="/disclaimer.html">Disclosures</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved. Not investment advice — see <a href="/disclaimer.html" style="color:inherit;text-decoration:underline">disclaimer</a>.</p>
-    </div>
-  </footer>
-
-  <div class="exit-modal" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
-    <div class="exit-modal-card">
-      <button class="exit-close" type="button" id="exitClose" aria-label="Close popup">×</button>
-      <div class="kicker">Stay Connected</div>
-      <div class="exit-title" id="exitModalTitle">Continue learning with each new brief</div>
-      <p class="exit-copy">Subscribe for new glossary explainers, market structure notes, and macro research updates.</p>
-      <form class="newsletter-form signup-form" data-source="exit-intent" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:16px">
-        <input type="email" name="email" placeholder="Email address" required />
-        <select name="preference" aria-label="Newsletter preference">
-          <option value="All">All Briefings</option>
-          <option value="Research">Research</option>
-          <option value="Funds">Funds</option>
-          <option value="Events">Events</option>
-        </select>
-        <button type="submit">Get Updates</button>
-      </form>
-    </div>
-  </div>
+  <button id="savedLaunch" class="saved-launch" type="button">⭐ My saved terms (0)</button>
+  <aside id="savedPanel" class="saved"><div class="saved-h"><strong>My saved terms</strong><button id="savedClose" class="icon" type="button">Close</button></div><div id="savedList" class="saved-list"></div></aside>
 
   <script>
-    const glossaryTerms = [
-      { term: 'Order Flow', category: 'Market Structure Terms', definition: 'The sequence of buy and sell orders entering a market, often revealing urgency and directional pressure before price fully adjusts.' },
-      { term: 'Bid-Ask Spread', category: 'Market Structure Terms', definition: 'The difference between the best available buy and sell prices. Wider spreads usually imply lower liquidity or higher uncertainty.' },
-      { term: 'Market Depth', category: 'Market Structure Terms', definition: 'The volume of resting orders at each price level in the order book, used to estimate how much size the market can absorb.' },
-      { term: 'Slippage', category: 'Market Structure Terms', definition: 'The gap between expected execution price and the actual fill price, typically caused by volatility or low liquidity.' },
-      { term: 'Gamma Exposure', category: 'Market Structure Terms', definition: 'Sensitivity of options delta to changes in the underlying. Dealer gamma positioning can amplify or dampen market moves.' },
-      { term: 'Vanna', category: 'Market Structure Terms', definition: 'A second-order options Greek measuring sensitivity of delta to volatility changes, relevant during vol regime shifts.' },
-      { term: 'Open Interest', category: 'Market Structure Terms', definition: 'The total number of outstanding derivative contracts that remain open, often used to gauge positioning intensity.' },
-      { term: 'Liquidity Fragmentation', category: 'Market Structure Terms', definition: 'When trading volume disperses across venues or instruments, reducing unified depth and increasing execution complexity.' },
-      { term: 'Basis', category: 'Market Structure Terms', definition: 'The difference between spot and futures price. Persistent basis moves may signal funding stress, carry demand, or delivery tightness.' },
-      { term: 'Market Impact', category: 'Market Structure Terms', definition: 'The price movement caused by executing an order, especially relevant for large institutional trades.' },
-
-      { term: 'Real Yields', category: 'Macro Terms', definition: 'Bond yields adjusted for inflation expectations; a key channel through which policy affects risk assets and financial conditions.' },
-      { term: 'Term Premium', category: 'Macro Terms', definition: 'Extra compensation investors demand for holding longer-duration bonds instead of rolling short-term instruments.' },
-      { term: 'Yield Curve', category: 'Macro Terms', definition: 'A plot of interest rates across maturities. Curve shape helps infer growth expectations and policy stance.' },
-      { term: 'Policy Transmission', category: 'Macro Terms', definition: 'The process by which central bank actions influence borrowing costs, asset prices, and eventually economic activity.' },
-      { term: 'Financial Conditions', category: 'Macro Terms', definition: 'A composite of rates, spreads, equity levels, and currency strength indicating how easy or tight financing is.' },
-      { term: 'Disinflation', category: 'Macro Terms', definition: 'A decline in the rate of inflation, meaning prices still rise but at a slower pace.' },
-      { term: 'Reflation', category: 'Macro Terms', definition: 'A regime where policy and growth dynamics push nominal growth and inflation expectations higher.' },
-      { term: 'Risk-Off', category: 'Macro Terms', definition: 'A market environment where investors reduce exposure to cyclical assets and prefer cash, bonds, or defensive sectors.' },
-      { term: 'Dollar Liquidity', category: 'Macro Terms', definition: 'Availability and cost of US dollar funding globally, critical for cross-border asset pricing and stress propagation.' },
-      { term: 'Nowcasting', category: 'Macro Terms', definition: 'Real-time estimation of current economic conditions using high-frequency indicators before official data releases.' },
-
-      { term: 'Inventory Draw', category: 'Supply Chain Terms', definition: 'A reduction in stored physical supply, often interpreted as demand exceeding near-term production or delivery availability.' },
-      { term: 'Warehouse Stocks', category: 'Supply Chain Terms', definition: 'Exchange-reported inventories held in approved locations, used to monitor potential delivery pressure.' },
-      { term: 'Freight Bottleneck', category: 'Supply Chain Terms', definition: 'A logistics constraint where shipping capacity is insufficient, delaying physical movement and lifting transport costs.' },
-      { term: 'Refining Margin', category: 'Supply Chain Terms', definition: 'The spread between refined product value and feedstock cost, indicating stress or slack in processing capacity.' },
-      { term: 'Contango', category: 'Supply Chain Terms', definition: 'A futures curve state where later-dated contracts trade above spot, often associated with comfortable inventory conditions.' },
-      { term: 'Backwardation', category: 'Supply Chain Terms', definition: 'A curve state where near contracts trade above deferred contracts, often signaling near-term scarcity.' },
-      { term: 'Throughput', category: 'Supply Chain Terms', definition: 'The volume processed or transported through a facility over a period; drops can indicate supply chain stress.' },
-      { term: 'Capacity Utilization', category: 'Supply Chain Terms', definition: 'The percentage of total production capability currently in use, important for estimating spare capacity.' },
-
-      { term: 'Factor Tilt', category: 'Strategy Terms', definition: 'Intentional over- or under-weighting toward factors like value, momentum, quality, or size within a portfolio.' },
-      { term: 'Carry Trade', category: 'Strategy Terms', definition: 'A strategy capturing yield differentials, often by borrowing in lower-rate assets and holding higher-yielding ones.' },
-      { term: 'Volatility Targeting', category: 'Strategy Terms', definition: 'Adjusting position size dynamically so portfolio volatility remains near a predefined risk budget.' },
-      { term: 'Drawdown', category: 'Strategy Terms', definition: 'The percentage decline from a portfolio peak to a subsequent trough before recovery.' },
-      { term: 'Sharpe Ratio', category: 'Strategy Terms', definition: 'Risk-adjusted performance metric calculated as excess return divided by return volatility.' },
-      { term: 'Regime Shift', category: 'Strategy Terms', definition: 'A structural change in market behavior where relationships between assets, factors, or policy signals materially change.' },
-      { term: 'Position Sizing', category: 'Strategy Terms', definition: 'The method used to determine how much capital to allocate to each trade based on conviction and risk constraints.' },
-      { term: 'Stop-Loss Discipline', category: 'Strategy Terms', definition: 'A predefined rule set for reducing or closing positions when losses reach specified thresholds.' }
+    const baseTerms = [
+      {id:'alpha',term:'Alpha',topic:'Ratios & Performance',simple:'Excess return beyond what market risk predicts.',academic:'Alpha is the regression intercept in a factor model and captures abnormal performance after controlling for risk exposures.',formula:'α = R_p - [R_f + β(R_m-R_f)]',limits:'Unit: % per period. CAPM misspecification can overstate alpha.',history:'Jensen (1968) created alpha as a manager-skill test in mutual fund studies.',example:'R_p 11%, R_f 3%, β 1.1, R_m 9% => expected 9.6%, alpha +1.4%.',application:'Allocator due diligence: true alpha vs hidden beta.',related:['beta','information-ratio','tracking-error'],lesson:'education-library.html#module-e1',source:'Jensen (1968).'},
+      {id:'beta',term:'Beta',topic:'Risk',simple:'Sensitivity of an asset to market movements.',academic:'Beta is covariance with market returns divided by market variance.',formula:'β = Cov(R_i,R_m)/Var(R_m)',limits:'Unitless, unstable across regimes.',history:'Core CAPM parameter from Sharpe-Lintner asset pricing.',example:'Cov 0.018, market variance 0.012 => β = 1.5.',application:'Cost of equity and portfolio risk budgeting.',related:['capm','security-market-line','cost-of-equity'],lesson:'education-library.html#module-b2',source:'Sharpe (1964).',interactive:'capm'},
+      {id:'sharpe-ratio',term:'Sharpe Ratio',topic:'Ratios & Performance',simple:'Excess return per unit of volatility.',academic:'Risk-adjusted return ratio comparing excess return to total risk.',formula:'S = (R_p - R_f)/σ_p',limits:'Assumes volatility is full risk; weak on fat tails.',history:'Sharpe formalised it for comparing funds.',example:'10%-3% over 14% volatility => 0.50.',application:'Manager screening and mandate thresholds.',related:['sortino-ratio','standard-deviation','maximum-drawdown'],lesson:'education-library.html#module-e1',source:'Sharpe (1994).',interactive:'sharpe'},
+      {id:'information-ratio',term:'Information Ratio',topic:'Ratios & Performance',simple:'Active return earned per unit of active risk.',academic:'Measures benchmark-relative skill by dividing active return by tracking error.',formula:'IR = (R_p-R_b)/TE',limits:'Depends heavily on benchmark quality.',history:'Institutional consultants adopted it for manager selection.',example:'2.4% active return / 4% TE = 0.60.',application:'Distinguishing skilled active management from benchmark hugging.',related:['tracking-error','active-share','closet-indexing'],lesson:'education-library.html#module-e1',source:'Grinold & Kahn.'},
+      {id:'tracking-error',term:'Tracking Error',topic:'Ratios & Performance',simple:'Volatility of active returns vs benchmark.',academic:'Standard deviation of (portfolio return - benchmark return).',formula:'TE = StdDev(R_p-R_b)',limits:'Backward-looking; can jump in regime shifts.',history:'Benchmark-based mandates made TE a central risk limit.',example:'Monthly active stdev 1.2% => annual TE ~4.16%.',application:'Risk governance in pension and mutual funds.',related:['information-ratio','active-share','benchmark-hugging'],lesson:'education-library.html#module-e1',source:'CFA Institute readings.'},
+      {id:'value-at-risk',term:'Value at Risk (VaR)',topic:'Risk',simple:'Loss threshold unlikely to be exceeded at chosen confidence.',academic:'A quantile of the loss distribution: at confidence c, loss exceeds VaR with probability 1-c.',formula:'VaR = z × σ × V',limits:'Does not measure loss severity beyond cutoff.',history:'RiskMetrics popularised VaR; LTCM showed model risk limits.',example:'£10m, 2% daily vol, z=1.65 => VaR ≈ £330k.',application:'Bank risk dashboards and regulatory reporting.',related:['conditional-var','tail-risk','black-swan'],lesson:'education-library.html#module-a5',source:'Jorion, Value at Risk.',interactive:'var'},
+      {id:'conditional-var',term:'Conditional VaR (Expected Shortfall)',topic:'Risk',simple:'Average loss in the tail beyond VaR.',academic:'CVaR computes expected loss conditional on losses exceeding VaR.',formula:'ES_α = E[L | L > VaR_α]',limits:'Sensitive to tail model assumptions.',history:'Post-2008 reforms shifted toward ES.',example:'If worst 5% losses average £1.6m, ES = £1.6m.',application:'Tail-risk management for nonlinear portfolios.',related:['value-at-risk','fat-tail','tail-risk'],lesson:'education-library.html#module-a5',source:'Basel FRTB.'},
+      {id:'maximum-drawdown',term:'Maximum Drawdown',topic:'Risk',simple:'Largest peak-to-trough loss before recovery.',academic:'Path-dependent risk measure capturing worst historical capital decline.',formula:'MDD = (Trough - Peak)/Peak',limits:'Horizon dependent; no probability interpretation.',history:'Popular in hedge funds after volatility-only metrics failed in crises.',example:'120 to 78 => -35% drawdown.',application:'Retirement and risk-budget stress thresholds.',related:['drawdown-period','sequence-of-returns-risk','sortino-ratio'],lesson:'education-library.html#module-c5',source:'CFA Institute.'},
+      {id:'capm',term:'CAPM',topic:'Portfolio Theory',simple:'Expected return equals risk-free rate plus beta times market premium.',academic:'Single-factor equilibrium model linking expected return to systematic market risk only.',formula:'E[R_i]=R_f+β_i(E[R_m]-R_f)',limits:'Assumes frictionless markets and one risk factor.',history:'Sharpe, Lintner, Mossin in the 1960s.',example:'R_f 3%, β 1.2, market premium 5% => 9%.',application:'Core input to cost of equity and WACC.',related:['beta','security-market-line','cost-of-equity'],lesson:'education-library.html#module-b2',source:'Sharpe (1964).',interactive:'capm'},
+      {id:'efficient-frontier',term:'Efficient Frontier',topic:'Portfolio Theory',simple:'Best-return portfolios for each risk level.',academic:'Set of mean-variance efficient portfolios that dominate all feasible alternatives.',formula:'min w\'Σw, subject to E[R]=target',limits:'Input-estimation error can dominate optimisation.',history:'Markowitz founded modern portfolio theory.',example:'Low-correlation assets create superior risk-return mixes.',application:'Strategic asset allocation frameworks.',related:['modern-portfolio-theory','correlation','capital-market-line'],lesson:'education-library.html#module-e2',source:'Markowitz (1952).'},
+      {id:'fama-french-three-factor-model',term:'Fama-French Three-Factor Model',topic:'Portfolio Theory',simple:'Returns explained by market, size, and value factors.',academic:'Extension of CAPM using MKT, SMB, and HML factors for stronger explanatory power.',formula:'R_i-R_f = α+βMKT+βSMB+βHML+ε',limits:'Factors are cyclic and can underperform for long periods.',history:'Fama and French challenged CAPM sufficiency in 1993.',example:'Small value funds usually show SMB and HML loadings.',application:'Performance attribution and smart beta design.',related:['five-factor-model','momentum-factor','smart-beta'],lesson:'education-library.html#module-e1',source:'Fama & French (1993).'},
+      {id:'smart-beta',term:'Smart Beta',topic:'Strategies',simple:'Rules-based portfolios targeting factors rather than cap weight.',academic:'Systematic factor exposures implemented transparently and at lower cost than discretionary active.',formula:'w_i ∝ factor score_i (constraints applied)',limits:'Crowding and factor cyclicality can produce long droughts.',history:'ETF growth turned factors into investable products.',example:'Low-volatility ETFs overweight defensive sectors.',application:'Core-satellite allocations.',related:['factor-zoo','active-management','passive-management'],lesson:'education-library.html#module-e1',source:'AQR factor research.'},
+      {id:'carry-trade',term:'Carry Trade',topic:'Strategies',simple:'Earning yield differentials while hoping price/funding stays benign.',academic:'Borrow low-yield assets/currencies to own high-yield ones; negatively skewed payoff profile.',formula:'Return ≈ carry + spot move + funding shock',limits:'Crash-prone in risk-off regimes.',history:'Classic FX strategy; repeated crisis unwind episodes.',example:'JPY-funded EM carry can lose years of gains quickly.',application:'Global macro and multi-asset tactical books.',related:['tail-risk','global-macro','trend-following'],lesson:'education-library.html#module-a3',source:'Burnside et al.'},
+      {id:'duration',term:'Duration',topic:'Fixed Income',simple:'Approximate bond price sensitivity to rate moves.',academic:'Modified duration estimates first-order percentage price change for a yield shift.',formula:'ΔP/P ≈ -D_mod × Δy',limits:'Linear approximation; convexity needed for larger shocks.',history:'Developed for immunisation and ALM.',example:'D_mod 6 and +1% yields => ~-6% price move.',application:'LDI, pension hedging, and rates risk control.',related:['modified-duration','convexity','yield-to-maturity'],lesson:'education-library.html#module-a3',source:'CFA Fixed Income.',interactive:'duration'},
+      {id:'convexity',term:'Convexity',topic:'Fixed Income',simple:'Second-order correction to duration for non-linear bond pricing.',academic:'Measures curvature of price-yield relation and improves risk estimates.',formula:'ΔP/P ≈ -DΔy + 0.5C(Δy)^2',limits:'Critical for large moves and option-embedded bonds.',history:'Risk desks integrated convexity after duration-only errors.',example:'Higher-convexity bonds lose less when rates rise sharply.',application:'Treasury and mortgage portfolio management.',related:['duration','mortgage-backed-security','orange-county'],lesson:'education-library.html#module-a3',source:'Tuckman, Fixed Income.'},
+      {id:'credit-default-swap',term:'Credit Default Swap (CDS)',topic:'Derivatives',simple:'Contract transferring default risk from buyer to seller.',academic:'Protection buyer pays periodic spread; seller pays loss given default on credit event.',formula:'CDS PV = premium leg - protection leg',limits:'Counterparty and recovery assumptions are central.',history:'AIG’s 2008 collapse highlighted CDS systemic risk.',example:'100 bps on £10m notional = £100k annual premium.',application:'Credit hedging and synthetic exposure.',related:['credit-spread','counterparty-risk','cdo'],lesson:'education-library.html#module-a4',source:'ISDA framework.'},
+      {id:'collateralised-debt-obligation',term:'Collateralised Debt Obligation (CDO)',topic:'Derivatives',simple:'Debt pool sliced into tranches with different seniority.',academic:'Structured finance vehicle reallocating losses via waterfall: equity, mezzanine, senior.',formula:'Loss order: Equity → Mezzanine → Senior',limits:'Correlation assumptions can catastrophically fail.',history:'Core mechanism in 2008 mortgage crisis.',example:'First-loss equity wiped out before senior notes touched.',application:'Credit risk transfer and yield engineering.',related:['securitisation','asset-backed-security','mortgage-backed-security'],lesson:'education-library.html#module-a6',source:'Lewis, The Big Short.'},
+      {id:'discounted-cash-flow',term:'Discounted Cash Flow (DCF)',topic:'Valuation',simple:'Value equals discounted future free cash flows.',academic:'Enterprise value is present value of FCFF plus terminal value discounted at WACC.',formula:'EV = Σ FCFF/(1+WACC)^t + TV/(1+WACC)^n',limits:'Highly sensitive to WACC and terminal growth.',history:'Bedrock valuation method in corporate finance and equity research.',example:'Small 1% WACC shift can move valuation double digits.',application:'M&A, strategy, and equity valuation models.',related:['wacc','terminal-value','free-cash-flow'],lesson:'education-library.html#module-b2',source:'Damodaran, Investment Valuation.'},
+      {id:'wacc',term:'WACC',topic:'Valuation',simple:'Blended required return from debt and equity capital providers.',academic:'Weighted average of cost of equity and after-tax cost of debt using target capital structure.',formula:'WACC=(E/V)R_e+(D/V)R_d(1-T)',limits:'Requires stable long-run structure assumptions.',history:'Standard discount rate in corporate valuation.',example:'60/40 equity-debt, R_e 10%, R_d 5%, tax 25% => 7.5%.',application:'Capital budgeting hurdle and DCF discounting.',related:['cost-of-equity','cost-of-debt','discounted-cash-flow'],lesson:'education-library.html#module-b2',source:'Brealey, Myers & Allen.'},
+      {id:'ev-ebitda',term:'EV/EBITDA',topic:'Valuation',simple:'Enterprise value multiple against operating cash earnings.',academic:'Capital-structure-neutral multiple used for comparables and transactions.',formula:'EV/EBITDA = Enterprise Value ÷ EBITDA',limits:'Ignores capex intensity and working-capital strain.',history:'Banking and PE adopted it for quick valuation screens.',example:'EV £2.4bn / EBITDA £300m = 8.0x.',application:'Relative valuation and deal pricing.',related:['price-to-earnings','free-cash-flow','private-equity'],lesson:'education-library.html#module-b3',source:'CFA Equity valuation.'},
+      {id:'agency-problem',term:'Agency Problem',topic:'Corporate Finance',simple:'Manager incentives diverge from owner interests.',academic:'Principal-agent conflict creates monitoring costs, adverse decisions, and value leakage.',formula:'Firm value drag = monitoring + bonding + residual loss',limits:'Cannot be eliminated, only managed by governance.',history:'Jensen & Meckling; Enron and WeWork as canonical cases.',example:'Short-term bonus metrics can encourage earnings manipulation.',application:'Compensation design and board oversight.',related:['information-asymmetry','principal-agent-problem','moral-hazard'],lesson:'education-library.html#module-b1',source:'Jensen & Meckling (1976).'},
+      {id:'information-asymmetry',term:'Information Asymmetry',topic:'Corporate Finance',simple:'One side in a transaction knows more than the other.',academic:'Uneven information creates adverse selection ex ante and moral hazard ex post.',formula:'Expected deal quality falls when signal quality is weak',limits:'Disclosure and verification can reduce but not remove asymmetry.',history:'Akerlof’s “lemons” framework.',example:'Opaque issuers face higher financing costs.',application:'IPO underpricing, credit spreads, and governance checks.',related:['adverse-selection','moral-hazard','agency-problem'],lesson:'education-library.html#module-b1',source:'Akerlof (1970).'},
+      {id:'esg',term:'ESG',topic:'ESG',simple:'Environmental, social, and governance factors that can affect cash flows and risk.',academic:'Financially material ESG factors alter expected cash flows, risk premia, and terminal value assumptions.',formula:'Value channel: ΔCF + ΔWACC + Δterminal risk',limits:'Provider ratings diverge materially; materiality is industry-specific.',history:'From ethics screen to risk framework; Dieselgate accelerated this shift.',example:'VW’s share price dropped ~35% in two days after diesel fraud revelation.',application:'Security selection, engagement, and risk control.',related:['greenwashing','materiality-esg','carbon-risk'],lesson:'education-library.html#module-d1',source:'Edmans; Friede et al. (2015).'},
+      {id:'greenwashing',term:'Greenwashing',topic:'ESG',simple:'Marketing sustainability claims that outrun reality.',academic:'A disclosure credibility gap where ESG narratives exceed verifiable operational outcomes.',formula:'Claim intensity > evidence quality',limits:'Hard to detect without audited, decision-useful metrics.',history:'DWS and multiple consumer-brand cases exposed credibility risk.',example:'“Sustainable” products later found to carry worse footprints than advertised.',application:'Investor due diligence now tests data lineage and material outcomes.',related:['esg','materiality-esg','stranded-assets'],lesson:'education-library.html#module-d3',source:'FCA/ESMA sustainable disclosure guidance.'},
+      {id:'behavioural-finance',term:'Behavioural Finance',topic:'Behavioural Finance',simple:'How human biases distort financial decisions and prices.',academic:'Integrates psychology with finance to explain persistent deviations from fully rational equilibrium.',formula:'Observed price = fundamental value + behavioural component',limits:'Bias effects vary by regime and institutional constraints.',history:'Kahneman, Tversky, Shiller and Thaler transformed the field.',example:'Dot-com bubble reflected herding, overconfidence and recency bias.',application:'Build rules to protect investors from themselves.',related:['prospect-theory','loss-aversion','limits-to-arbitrage'],lesson:'education-library.html#module-c2',source:'Shiller, Irrational Exuberance.'},
+      {id:'prospect-theory',term:'Prospect Theory',topic:'Behavioural Finance',simple:'People feel losses more strongly than equivalent gains.',academic:'Reference-dependent utility with loss aversion and non-linear probability weighting.',formula:'Loss aversion coefficient λ ≈ 2.25',limits:'Parameters vary across framing and populations.',history:'Kahneman & Tversky (1979) challenged expected utility.',example:'Many reject a fair gamble because downside pain dominates upside pleasure.',application:'Explains disposition effect and panic selling.',related:['loss-aversion','mental-accounting','framing-effect'],lesson:'education-library.html#module-c1',source:'Kahneman & Tversky (1979).'},
+      {id:'efficient-market-hypothesis',term:'Efficient Market Hypothesis',topic:'Portfolio Theory',simple:'Prices rapidly reflect available information.',academic:'Under EMH, expected abnormal returns conditional on public information are near zero.',formula:'E[α | Information_t] ≈ 0',limits:'Anomalies exist; limits-to-arbitrage can delay correction.',history:'Fama (1970) formalised weak, semi-strong and strong forms.',example:'Most active funds underperform after fees over long horizons.',application:'Foundation for indexing and benchmark discipline.',related:['random-walk','limits-to-arbitrage','active-management'],lesson:'education-library.html#module-c3',source:'Fama (1970).'},
+      {id:'net-present-value',term:'Net Present Value',topic:'Corporate Finance',simple:'Present value of cash inflows minus initial cost.',academic:'A project creates value when discounted future cash flows exceed upfront investment.',formula:'NPV = Σ CF_t/(1+r)^t - I_0',limits:'Discount rate choice dominates output.',history:'Gold-standard capital budgeting criterion.',example:'PV inflows £130m, cost £100m => NPV +£30m.',application:'Project approval and M&A screening.',related:['internal-rate-of-return','discount-rate','opportunity-cost'],lesson:'education-library.html#module-b2',source:'Corporate Finance texts.'}
     ];
 
-    const glossaryList = document.getElementById('glossaryList');
-    const searchInput = document.getElementById('searchInput');
-    const categorySelect = document.getElementById('categorySelect');
-    const categoryChips = document.getElementById('categoryChips');
+    const supplementalTerms = [
+      {id:'sortino-ratio',term:'Sortino Ratio',topic:'Ratios & Performance',simple:'Downside-risk-adjusted return metric.',academic:'Sortino divides excess return by downside deviation below a target rate.',formula:'Sortino = (R_p - R_t) / σ_downside',limits:'Sensitive to target choice and tail sample size.',history:'Developed to avoid penalising upside volatility.',example:'6% excess return and 8% downside deviation gives 0.75.',application:'Useful for skewed hedge fund strategies.',related:['sharpe-ratio','maximum-drawdown','value-at-risk'],lesson:'education-library.html#module-e1',source:'Sortino & Price (1994).'},
+      {id:'treynor-ratio',term:'Treynor Ratio',topic:'Ratios & Performance',simple:'Excess return earned per unit of systematic risk.',academic:'Treynor uses beta rather than total volatility in the denominator.',formula:'Treynor = (R_p - R_f) / β_p',limits:'Only meaningful for diversified portfolios.',history:'Early CAPM-era performance metric.',example:'Excess return 5%, beta 1.25 => Treynor 4.0.',application:'Compares managers with different market exposures.',related:['sharpe-ratio','beta','capm'],lesson:'education-library.html#module-e1',source:'Treynor, Financial Analysts Journal.'},
+      {id:'jensens-alpha',term:'Jensen’s Alpha',topic:'Ratios & Performance',simple:'CAPM-based abnormal return estimate.',academic:'Jensen alpha is the CAPM residual return after adjusting for beta risk.',formula:'α_J = R_p - [R_f + β(R_m-R_f)]',limits:'Model risk if CAPM is incomplete.',history:'Jensen applied CAPM to mutual fund performance.',example:'CAPM expected 8.5%; realised 10.0% => alpha +1.5%.',application:'Manager skill decomposition in institutional reports.',related:['alpha','capm','information-ratio'],lesson:'education-library.html#module-e1',source:'Jensen (1968).'},
+      {id:'active-share',term:'Active Share',topic:'Ratios & Performance',simple:'How different holdings are from benchmark weights.',academic:'Half the sum of absolute active weight differences across securities.',formula:'AS = 0.5 × Σ|w_p - w_b|',limits:'Needs holdings data; not return-based.',history:'Popularised in closet indexing debate.',example:'Absolute weight differences sum to 80%; active share = 40%.',application:'Fee justification and mandate monitoring.',related:['tracking-error','closet-indexing','active-management'],lesson:'education-library.html#module-e1',source:'Cremers & Petajisto (2009).'},
+      {id:'standard-deviation',term:'Standard Deviation',topic:'Risk',simple:'Average dispersion of returns around the mean.',academic:'Square root of variance used as volatility proxy in finance.',formula:'σ = √Var(R)',limits:'Assumes symmetric risk around mean.',history:'Central risk measure in modern portfolio theory.',example:'Returns with 12% annual σ are more volatile than 6% σ.',application:'Risk budgeting and allocation sizing.',related:['variance','value-at-risk','sharpe-ratio'],lesson:'education-library.html#module-c1',source:'Markowitz (1952).'},
+      {id:'variance',term:'Variance',topic:'Risk',simple:'Squared dispersion of returns around the average.',academic:'Second central moment of return distribution.',formula:'Var(R)=E[(R-E[R])²]',limits:'Harder to interpret directly than standard deviation.',history:'Statistical foundation of mean-variance optimisation.',example:'If σ is 10%, variance is 0.01.',application:'Portfolio covariance matrix construction.',related:['standard-deviation','covariance','modern-portfolio-theory'],lesson:'education-library.html#module-c1',source:'CFA Quantitative Methods.'},
+      {id:'skewness',term:'Skewness',topic:'Risk',simple:'Measures asymmetry of return distribution.',academic:'Third standardized moment; negative skew implies frequent small gains and occasional large losses.',formula:'Skew = E[((R-μ)/σ)^3]',limits:'Unstable in short samples.',history:'Highlighted in option-selling and carry strategies.',example:'Short-vol portfolios often exhibit negative skew.',application:'Tail-risk diagnostics beyond volatility.',related:['kurtosis','tail-risk','value-at-risk'],lesson:'education-library.html#module-a5',source:'CFA curriculum.'},
+      {id:'kurtosis',term:'Kurtosis',topic:'Risk',simple:'Measures fat-tailedness of outcomes.',academic:'Fourth standardized moment; excess kurtosis indicates more extreme outcomes than normal.',formula:'Kurt = E[((R-μ)/σ)^4]',limits:'Very sensitive to outliers.',history:'Risk managers adopted after repeated “once-in-a-century” losses.',example:'Crisis-period return series show high excess kurtosis.',application:'Stress testing and model validation.',related:['skewness','black-swan','conditional-var'],lesson:'education-library.html#module-a5',source:'Taleb; CFA risk readings.'},
+      {id:'tail-risk',term:'Tail Risk',topic:'Risk',simple:'Risk of extreme losses in the distribution tails.',academic:'Probability-weighted exposure to low-frequency, high-severity outcomes.',formula:'Tail loss focus: P(L > threshold) × severity',limits:'Hard to estimate reliably from short histories.',history:'LTCM and 2008 made tail-risk management mainstream.',example:'AIG CDS book priced normal times, not tail states.',application:'Hedging via convex instruments and stress scenarios.',related:['black-swan','conditional-var','value-at-risk'],lesson:'education-library.html#module-a5',source:'Taleb, The Black Swan.'},
+      {id:'black-swan',term:'Black Swan',topic:'Risk',simple:'Rare, high-impact, retrospectively rationalised event.',academic:'Taleb framework for model failure under deep uncertainty and fat tails.',formula:'Model-implied probability ≪ realised impact',limits:'Not all shocks are true black swans.',history:'Popularised after global crises and model breakdowns.',example:'2008 systemic freeze exceeded many VaR assumptions.',application:'Scenario planning and antifragile portfolio design.',related:['tail-risk','kurtosis','antifragility'],lesson:'education-library.html#module-c1',source:'Taleb, The Black Swan.'},
+      {id:'correlation',term:'Correlation',topic:'Portfolio Theory',simple:'Co-movement strength between two assets.',academic:'Standardized covariance bounded between -1 and +1.',formula:'ρ = Cov(X,Y)/(σ_Xσ_Y)',limits:'Not stable; tends to rise in crises.',history:'Core input to diversification and frontier models.',example:'Equity-bond correlation can flip sign across inflation regimes.',application:'Portfolio construction and risk overlays.',related:['covariance','efficient-frontier','risk-parity'],lesson:'education-library.html#module-e2',source:'Markowitz (1952).'},
+      {id:'covariance',term:'Covariance',topic:'Portfolio Theory',simple:'Joint variability between two return series.',academic:'Expected product of deviations from each mean.',formula:'Cov(X,Y)=E[(X-μ_X)(Y-μ_Y)]',limits:'Scale-dependent, unlike correlation.',history:'Foundation of the covariance matrix in optimisation.',example:'Negative covariance improves diversification benefit.',application:'Strategic and tactical asset allocation.',related:['correlation','variance','modern-portfolio-theory'],lesson:'education-library.html#module-e2',source:'CFA Portfolio Management.'},
+      {id:'modern-portfolio-theory',term:'Modern Portfolio Theory',topic:'Portfolio Theory',simple:'Framework for balancing expected return against risk through diversification.',academic:'Mean-variance optimisation uses expected returns and covariance matrix to identify efficient portfolios.',formula:'min_w w\'Σw, subject to return target',limits:'Sensitive to estimation error and normality assumptions.',history:'Markowitz’s 1952 paper reshaped investment theory.',example:'Combining imperfectly correlated assets lowers portfolio variance.',application:'Institutional strategic asset allocation.',related:['efficient-frontier','capital-market-line','correlation'],lesson:'education-library.html#module-e2',source:'Markowitz (1952).'},
+      {id:'capital-market-line',term:'Capital Market Line',topic:'Portfolio Theory',simple:'Risk-return line from risk-free asset to market portfolio.',academic:'In CAPM equilibrium, efficient portfolios are combinations of risk-free asset and market portfolio.',formula:'E[R_p] = R_f + [(E[R_m)-R_f)/σ_m] × σ_p',limits:'Assumes investors can borrow/lend at risk-free rate.',history:'Derived from Tobin separation and CAPM structure.',example:'Levered market exposure moves up the CML.',application:'Benchmark for efficient diversified portfolios.',related:['efficient-frontier','capm','security-market-line'],lesson:'education-library.html#module-e2',source:'Sharpe-Lintner framework.'},
+      {id:'security-market-line',term:'Security Market Line',topic:'Portfolio Theory',simple:'Expected return as a function of beta.',academic:'SML is CAPM pricing relation in beta-return space.',formula:'E[R_i]=R_f+β_i(E[R_m]-R_f)',limits:'Empirical anomalies challenge single-factor sufficiency.',history:'CAPM testing focused on SML slope and intercept.',example:'β 1.4 asset should earn more than β 0.8 in equilibrium.',application:'Cost of equity estimation.',related:['capm','beta','jensens-alpha'],lesson:'education-library.html#module-b2',source:'Fama & MacBeth tests.'},
+      {id:'five-factor-model',term:'Fama-French Five-Factor Model',topic:'Portfolio Theory',simple:'Adds profitability and investment factors to the three-factor model.',academic:'Extends MKT, SMB, HML with RMW and CMA factors.',formula:'R-R_f = α+β_MKT+β_SMB+β_HML+β_RMW+β_CMA',limits:'Momentum still often needed separately.',history:'Introduced in 2015 to improve cross-sectional fit.',example:'High-profitability firms load positively on RMW.',application:'Attribution and factor-aware portfolio design.',related:['fama-french-three-factor-model','momentum-factor','quality-factor'],lesson:'education-library.html#module-e1',source:'Fama & French (2015).'},
+      {id:'momentum-factor',term:'Momentum Factor',topic:'Strategies',simple:'Tendency of past winners to keep outperforming in the medium term.',academic:'Cross-sectional return premium captured by long recent winners / short losers.',formula:'MOM ≈ R_winners - R_losers',limits:'Prone to sharp crash episodes.',history:'Carhart (1997) added momentum to mutual fund models.',example:'Momentum suffered major reversals in post-crash rebounds.',application:'Systematic equity and futures strategies.',related:['trend-following','factor-zoo','smart-beta'],lesson:'education-library.html#module-e1',source:'Carhart (1997).'},
+      {id:'factor-zoo',term:'Factor Zoo',topic:'Strategies',simple:'Large set of published factors with varying robustness.',academic:'Refers to proliferation of anomalies, many likely data-mined.',formula:'Expected t-stat stability is key robustness test',limits:'Multiple-testing bias can produce false positives.',history:'Debate intensified with hundreds of claimed factors.',example:'Out-of-sample decay often eliminates headline factor alpha.',application:'Factor selection with strong economic rationale.',related:['smart-beta','momentum-factor','quality-factor'],lesson:'education-library.html#module-e1',source:'Harvey, Liu & Zhu.'},
+      {id:'active-management',term:'Active Management',topic:'Strategies',simple:'Intentional deviation from benchmark to seek outperformance.',academic:'Manager selects securities, sectors, factors, and timing decisions based on research views.',formula:'Active Return = Portfolio Return - Benchmark Return',limits:'Fees and turnover drag reduce net alpha odds.',history:'Dominant pre-index era approach; now challenged by evidence.',example:'Peter Lynch outperformance sparked skill vs luck debate.',application:'Concentrated mandates and specialist niches.',related:['passive-management','information-ratio','active-share'],lesson:'education-library.html#module-e1',source:'Malkiel, A Random Walk Down Wall Street.'},
+      {id:'passive-management',term:'Passive Management',topic:'Strategies',simple:'Track a benchmark at low cost rather than beat it.',academic:'Rules-based replication of index exposures minimising tracking error and fees.',formula:'Net Return ≈ Benchmark Return - Costs',limits:'Still exposed to market drawdowns.',history:'Bogle’s indexing revolution scaled passive investing globally.',example:'S&P 500 ETFs outperform many active funds after fees.',application:'Core portfolio building block.',related:['index-fund','etf','active-management'],lesson:'education-library.html#module-e1',source:'Bogle, Common Sense Investing.'},
+      {id:'index-fund',term:'Index Fund',topic:'Strategies',simple:'Fund designed to mirror a market index.',academic:'Pooled vehicle tracking index constituents and weights through physical or optimized replication.',formula:'Tracking difference = Fund return - Index return',limits:'Tracking and tax friction can still occur.',history:'Pioneered for low-cost broad diversification.',example:'Global equity index funds provide market beta efficiently.',application:'Core long-horizon household and institutional allocations.',related:['etf','passive-management','tracking-error'],lesson:'education-library.html#module-e1',source:'Vanguard indexing research.'},
+      {id:'etf',term:'ETF',topic:'Strategies',simple:'Exchange-traded fund with intraday tradability.',academic:'Open-ended pooled structure using creation/redemption mechanism with authorized participants.',formula:'Premium/Discount = ETF price - NAV',limits:'Liquidity depends on underlying assets and market makers.',history:'ETF growth transformed market access and factor delivery.',example:'Bond ETFs traded at discounts during stress while aiding price discovery.',application:'Tactical and strategic portfolio implementation.',related:['index-fund','mutual-fund','nav'],lesson:'education-library.html#module-e1',source:'CFA Institute ETF readings.'},
+      {id:'mutual-fund',term:'Mutual Fund',topic:'Strategies',simple:'Pooled fund priced at end-of-day NAV.',academic:'Open-ended collective investment vehicle buying/selling shares at daily net asset value.',formula:'NAV = (Assets - Liabilities) / Shares',limits:'No intraday trading; potential dilution without controls.',history:'Main retail investment wrapper before ETF dominance.',example:'Active mutual funds face persistent fee pressure.',application:'Retirement accounts and managed portfolios.',related:['etf','nav','active-management'],lesson:'education-library.html#module-e1',source:'ICI and CFA references.'},
+      {id:'hedge-fund',term:'Hedge Fund',topic:'Strategies',simple:'Flexible pooled strategy vehicle using broader instruments and leverage.',academic:'Alternative investment structure with less constrained mandates, often charging performance fees.',formula:'Net Return = Gross Return - Mgmt Fee - Incentive Fee',limits:'Opacity, leverage, and liquidity mismatch risk.',history:'LTCM and 2008 highlighted both innovation and fragility.',example:'Macro and relative-value funds can diversify long-only books.',application:'Institutional alternatives allocation.',related:['long-short-equity','global-macro','cta-managed-futures'],lesson:'education-library.html#module-e1',source:'Fung & Hsieh research.'},
+      {id:'long-short-equity',term:'Long/Short Equity',topic:'Strategies',simple:'Buy expected winners and short expected losers.',academic:'Net and gross exposures are managed to isolate security selection alpha.',formula:'Net Exposure = Long % - Short %',limits:'Short squeezes and borrow costs can hurt returns.',history:'One of the most common hedge fund strategy styles.',example:'Market-neutral variants target low beta with stock-picking risk.',application:'Absolute-return and portable-alpha mandates.',related:['market-neutral','hedge-fund','beta'],lesson:'education-library.html#module-e1',source:'CFA Alternative Investments.'},
+      {id:'market-neutral',term:'Market Neutral',topic:'Strategies',simple:'Portfolio designed to have near-zero market beta.',academic:'Balances long and short books to reduce directional market exposure.',formula:'β_portfolio ≈ 0',limits:'Factor and liquidity shocks still matter.',history:'Expanded in statistical arbitrage and quant equity.',example:'Pairs trading books target relative mispricing, not market direction.',application:'Diversifying return stream in multi-strategy funds.',related:['long-short-equity','statistical-arbitrage','beta'],lesson:'education-library.html#module-e1',source:'Quant hedge fund literature.'},
+      {id:'global-macro',term:'Global Macro',topic:'Strategies',simple:'Top-down strategy trading rates, FX, equities, and commodities.',academic:'Positions built from macro regime views across countries and policy cycles.',formula:'Return drivers: carry + trend + policy surprises',limits:'High model and narrative risk.',history:'Prominent in major crisis and policy-transition periods.',example:'Rate and FX bets around central-bank pivots.',application:'Diversifier against equity-centric portfolios.',related:['carry-trade','cta-managed-futures','hedge-fund'],lesson:'education-library.html#module-e1',source:'Macro hedge fund case studies.'},
+      {id:'cta-managed-futures',term:'CTA / Managed Futures',topic:'Strategies',simple:'Systematic futures trading often using trend models.',academic:'Rule-based long/short futures strategy across asset classes with dynamic risk scaling.',formula:'Signal-based position sizing across contracts',limits:'Can underperform in choppy non-trending regimes.',history:'Often performs strongly in sustained crisis trends.',example:'Long bonds/short equities in stress phases can hedge balanced portfolios.',application:'Liquid alternatives allocation.',related:['trend-following','global-macro','hedge-fund'],lesson:'education-library.html#module-e1',source:'SG CTA index research.'},
+      {id:'private-equity',term:'Private Equity',topic:'Corporate Finance',simple:'Private ownership investments in non-listed companies.',academic:'Control or significant-influence investments seeking value creation through operations, governance, and capital structure.',formula:'IRR driven by EBITDA growth + multiple change + leverage',limits:'Illiquidity and valuation lag risk.',history:'Institutional asset class matured via LBO and growth strategies.',example:'Alliance Boots contrasted with debt-heavy value extraction cases.',application:'Long-dated institutional portfolios.',related:['venture-capital','leverage-buyout-lbo','j-curve'],lesson:'education-library.html#module-b6',source:'CFA Alternative Investments.'},
+      {id:'venture-capital',term:'Venture Capital',topic:'Corporate Finance',simple:'Equity funding for high-growth early-stage businesses.',academic:'Stage-based private financing under high uncertainty with power-law outcomes.',formula:'Portfolio return dominated by few outsized winners',limits:'High failure rate and long holding periods.',history:'Core financing channel for innovation ecosystems.',example:'WeWork showed growth narrative can outrun fundamentals.',application:'High-risk innovation exposure for sophisticated allocators.',related:['private-equity','information-asymmetry','agency-problem'],lesson:'education-library.html#module-b6',source:'VC performance literature.'},
+      {id:'leverage-buyout-lbo',term:'Leverage Buyout (LBO)',topic:'Corporate Finance',simple:'Acquisition financed with substantial debt secured on target cash flows.',academic:'Buyout structure where debt amplifies equity returns and downside fragility.',formula:'Equity IRR ↑ with leverage, all else equal',limits:'Refinancing and downturn risk can destroy equity quickly.',history:'Hallmark private equity transaction format.',example:'Toys R Us and Debenhams highlight leverage fragility.',application:'Private equity deal structuring.',related:['private-equity','hurdle-rate','j-curve'],lesson:'education-library.html#module-b6',source:'LBO case studies.'},
+      {id:'hurdle-rate',term:'Hurdle Rate',topic:'Corporate Finance',simple:'Minimum return required before incentive fees or investment approval.',academic:'Threshold return used in capital budgeting and private fund carry waterfalls.',formula:'Approve if IRR > hurdle',limits:'Can incentivise risk-shifting near threshold.',history:'Standard term in PE/VC partnership agreements.',example:'8% preferred return before carry distribution.',application:'GP/LP alignment and project screening.',related:['internal-rate-of-return','carried-interest','private-equity'],lesson:'education-library.html#module-b6',source:'Private equity fund terms.'},
+      {id:'j-curve',term:'J-Curve',topic:'Corporate Finance',simple:'Pattern where private fund returns are negative early and improve later.',academic:'Early fees and unrealised losses precede operational gains and exits in private funds.',formula:'Early net cash flow < 0, later distribution > 0',limits:'Can persist longer than expected in weak exit markets.',history:'Observed repeatedly in PE fund vintage performance.',example:'Early-year TVPI often low before exits materialise.',application:'Liquidity planning for LP commitments.',related:['private-equity','hurdle-rate','net-present-value'],lesson:'education-library.html#module-b6',source:'PE benchmark studies.'},
+      {id:'nav',term:'NAV',topic:'Strategies',simple:'Net asset value per share/unit of a fund.',academic:'Accounting value of assets minus liabilities divided by outstanding fund units.',formula:'NAV = (Assets - Liabilities)/Units',limits:'Private assets rely on appraisal assumptions.',history:'Core valuation anchor for pooled vehicles.',example:'ETF premium/discount measured relative to NAV.',application:'Fund reporting and investor subscriptions/redemptions.',related:['mutual-fund','etf','mark-to-market'],lesson:'education-library.html#module-e2',source:'Fund accounting standards.'},
+      {id:'mark-to-market',term:'Mark-to-Market',topic:'Risk',simple:'Valuing positions at current market prices.',academic:'Daily revaluation process recognising unrealised gains/losses based on observable prices.',formula:'P&L_t = Position × (Price_t - Price_(t-1))',limits:'Can force procyclical deleveraging in stress.',history:'Central in futures margining and modern risk control.',example:'Enron abused mark-to-market assumptions in opaque contracts.',application:'Risk reporting, collateral, and liquidity management.',related:['value-at-risk','liquidity-premium','repo'],lesson:'education-library.html#module-a4',source:'CFA and accounting standards.'},
+      {id:'liquidity-premium',term:'Liquidity Premium',topic:'Fixed Income',simple:'Extra return demanded for holding less liquid assets.',academic:'Compensation for trading frictions, market depth risk, and forced-sale discounts.',formula:'Yield = Risk-free + Credit + Liquidity premium',limits:'Difficult to isolate from credit risk.',history:'Became prominent after 2008 funding stress.',example:'Off-the-run bonds often yield more than similar on-the-run issues.',application:'Credit and private-market valuation adjustments.',related:['illiquidity-discount','credit-spread','repo'],lesson:'education-library.html#module-e2',source:'Fixed-income research.'},
+      {id:'credit-spread',term:'Credit Spread',topic:'Fixed Income',simple:'Yield difference between risky bond and risk-free benchmark.',academic:'Compensation for expected default loss plus risk premia (liquidity, uncertainty).',formula:'Spread ≈ Yield_corporate - Yield_government',limits:'Spread moves can reflect liquidity and macro fear, not just default odds.',history:'Core credit risk pricing gauge.',example:'High-yield spreads widened sharply in crises.',application:'Credit allocation and relative value analysis.',related:['default-risk','investment-grade','high-yield'],lesson:'education-library.html#module-e3',source:'CFA Fixed Income.'},
+      {id:'investment-grade',term:'Investment Grade',topic:'Fixed Income',simple:'Higher-credit-quality bonds (typically BBB-/Baa3 or above).',academic:'Issuer ratings indicating lower expected default risk relative to high yield.',formula:'Rating threshold: BBB-/Baa3+',limits:'Ratings are lagging and not guarantees.',history:'Ratings-based mandates shaped institutional fixed-income markets.',example:'Downgrade from IG to HY can force index and mandate selling.',application:'Bond index construction and risk budgeting.',related:['high-yield','credit-spread','default-risk'],lesson:'education-library.html#module-e3',source:'S&P/Moody’s methodologies.'},
+      {id:'high-yield',term:'High Yield',topic:'Fixed Income',simple:'Below-investment-grade bonds offering higher coupon yields.',academic:'Sub-investment-grade credit priced with elevated default and spread volatility risk.',formula:'HY Yield = Base rate + Wider spread',limits:'Liquidity and drawdown risk can be severe in recessions.',history:'Junk bond market expanded in the 1980s.',example:'HY spreads can behave like equity risk in stress.',application:'Income strategies with active credit risk control.',related:['investment-grade','credit-spread','recovery-rate'],lesson:'education-library.html#module-e3',source:'Credit market histories.'},
+      {id:'default-risk',term:'Default Risk',topic:'Fixed Income',simple:'Risk that borrower fails to meet contractual debt payments.',academic:'Probability of default combined with expected loss given default drives credit pricing.',formula:'Expected loss ≈ PD × LGD',limits:'Correlated defaults rise in downturns.',history:'Core pillar of credit analysis.',example:'Cyclicals show rising default risk in recessionary credit tightening.',application:'Bond selection and CDS hedging.',related:['recovery-rate','credit-spread','credit-default-swap'],lesson:'education-library.html#module-e3',source:'Credit risk modeling literature.'},
+      {id:'recovery-rate',term:'Recovery Rate',topic:'Fixed Income',simple:'Portion of claim recovered after default.',academic:'Percentage of principal recovered post-default under restructuring or liquidation.',formula:'LGD = 1 - Recovery Rate',limits:'Varies by seniority, collateral, and legal regime.',history:'Key input in CDS and expected-loss pricing.',example:'Senior secured debt typically recovers more than subordinated claims.',application:'Credit valuation and stress testing.',related:['default-risk','credit-default-swap','high-yield'],lesson:'education-library.html#module-a4',source:'Moody’s recovery studies.'},
+      {id:'securitisation',term:'Securitisation',topic:'Derivatives',simple:'Pooling loans and issuing securities backed by those cash flows.',academic:'Transfer of loan assets to SPV, then structured issuance with tranching and waterfall rules.',formula:'Pool cash flow → tranche waterfall',limits:'Underwriting quality and correlation assumptions are crucial.',history:'Scaled credit markets but amplified 2008 fragility.',example:'Subprime mortgages repackaged into structured products.',application:'Bank funding and risk transfer.',related:['asset-backed-security','mortgage-backed-security','collateralised-debt-obligation'],lesson:'education-library.html#module-a6',source:'The Big Short and CFA readings.'},
+      {id:'asset-backed-security',term:'Asset-Backed Security (ABS)',topic:'Derivatives',simple:'Security backed by non-mortgage receivables such as auto or card loans.',academic:'Structured product collateralised by a pool of consumer or commercial receivables.',formula:'ABS cash flow = borrower payments - servicing costs',limits:'Performance linked to borrower quality and servicing standards.',history:'Expanded consumer-credit funding channels.',example:'Auto-loan ABS performance depends on used-car and default cycles.',application:'Structured credit portfolios.',related:['securitisation','mortgage-backed-security','credit-spread'],lesson:'education-library.html#module-a6',source:'Structured finance references.'},
+      {id:'mortgage-backed-security',term:'Mortgage-Backed Security (MBS)',topic:'Derivatives',simple:'Security backed by residential or commercial mortgage pools.',academic:'Pass-through or tranched securities exposed to prepayment and extension risk.',formula:'MBS duration varies with rates due to prepayment option',limits:'Negative convexity can amplify hedging demand.',history:'Central instrument in 2008 crisis narrative.',example:'Rising delinquencies impaired subprime MBS tranches.',application:'Agency and non-agency fixed-income investing.',related:['securitisation','convexity','collateralised-debt-obligation'],lesson:'education-library.html#module-a6',source:'Agency MBS literature.'},
+      {id:'repo',term:'Repo',topic:'Derivatives',simple:'Secured short-term borrowing using securities as collateral.',academic:'Repurchase agreement where one party sells securities and agrees to repurchase later at a higher price.',formula:'Repo rate ≈ financing cost on collateral',limits:'Haircut and rollover risk in stress.',history:'Core “plumbing” market for dealer funding.',example:'Repo market stress can trigger broader liquidity dislocations.',application:'Leverage financing and collateral management.',related:['mark-to-market','liquidity-premium','carry-trade'],lesson:'education-library.html#module-a4',source:'BIS market plumbing reports.'},
+      {id:'arbitrage',term:'Arbitrage',topic:'Strategies',simple:'Simultaneous trades seeking riskless profit from price discrepancies.',academic:'Classical no-arbitrage condition underpins derivative pricing and law of one price.',formula:'Arbitrage profit = mispricing - transaction costs',limits:'True riskless arbitrage is rare in practice.',history:'Foundational concept in modern financial economics.',example:'Cash-futures basis trades exploit temporary dislocations.',application:'Pricing discipline in derivatives and fixed income.',related:['statistical-arbitrage','basis-trade','limits-to-arbitrage'],lesson:'education-library.html#module-c3',source:'Derivative pricing theory.'},
+      {id:'statistical-arbitrage',term:'Statistical Arbitrage',topic:'Strategies',simple:'Model-driven relative-value trading based on historical relationships.',academic:'Mean-reverting spread strategies using probabilistic, not riskless, arbitrage assumptions.',formula:'Signal = deviation from estimated equilibrium',limits:'Model drift and crowding risk.',history:'Scaled with quantitative hedge fund growth.',example:'Pairs spreads can widen further before converging.',application:'Market-neutral quant portfolios.',related:['mean-reversion','market-neutral','limits-to-arbitrage'],lesson:'education-library.html#module-c3',source:'Quant finance literature.'},
+      {id:'mean-reversion',term:'Mean Reversion',topic:'Strategies',simple:'Tendency for valuation or spread extremes to move back toward long-run averages.',academic:'Time-series property where deviations from equilibrium decay over time.',formula:'Δx_t = -k(x_t - μ) + ε_t',limits:'Can fail for prolonged structural regime shifts.',history:'Widely used in statistical arbitrage and value investing.',example:'Extreme valuation spreads may normalize across cycles.',application:'Rebalancing and relative-value design.',related:['statistical-arbitrage','momentum','rebalancing'],lesson:'education-library.html#module-c5',source:'Time-series finance research.'},
+      {id:'trend-following',term:'Trend Following',topic:'Strategies',simple:'Systematic strategy that rides persistent price trends.',academic:'Rule-based approach taking long positions in rising markets and short in falling markets.',formula:'Signal often based on moving-average crossover or breakout',limits:'Whipsaw losses in range-bound markets.',history:'Long-run CTA style with crisis-hedging episodes.',example:'Trend strategies often perform during sustained crisis selloffs.',application:'Diversifier in multi-asset portfolios.',related:['momentum-factor','cta-managed-futures','global-macro'],lesson:'education-library.html#module-e1',source:'Managed futures research.'},
+      {id:'rebalancing',term:'Rebalancing',topic:'Strategies',simple:'Resetting portfolio weights back to target allocations.',academic:'Disciplined rule that controls risk drift and enforces buy-low/sell-high mechanics.',formula:'Trade amount = target weight - current weight',limits:'Turnover costs and taxes can reduce benefit.',history:'Institutional policy portfolios rely on systematic rebalancing bands.',example:'After equity rally, trimming equities restores target risk.',application:'Core IPS implementation practice.',related:['dollar-cost-averaging','mean-reversion','sequence-of-returns-risk'],lesson:'education-library.html#module-c5',source:'Vanguard and CFA PM guidance.'},
+      {id:'discount-rate',term:'Discount Rate',topic:'Valuation',simple:'Rate used to convert future cash flows into present value.',academic:'Opportunity cost of capital reflecting time value and risk.',formula:'PV = CF_t / (1+r)^t',limits:'Small rate changes can materially alter valuation.',history:'Fundamental concept in corporate finance and project appraisal.',example:'Higher discount rates sharply reduce long-duration growth valuations.',application:'DCF, NPV, and liability valuation.',related:['net-present-value','wacc','terminal-value'],lesson:'education-library.html#module-b2',source:'Corporate Finance texts.'},
+      {id:'terminal-value',term:'Terminal Value',topic:'Valuation',simple:'Estimated value of business cash flows beyond explicit forecast period.',academic:'Captures continuing value via perpetuity growth or exit multiple methods.',formula:'TV_Gordon = FCF_(n+1)/(WACC-g)',limits:'Often dominates DCF output, so sensitivity is essential.',history:'Standard DCF component for long-lived firms.',example:'1% change in g can significantly reprice equity value.',application:'Equity research and M&A valuation.',related:['discounted-cash-flow','wacc','discount-rate'],lesson:'education-library.html#module-b2',source:'Damodaran valuation practice.'},
+      {id:'cost-of-equity',term:'Cost of Equity',topic:'Valuation',simple:'Return required by equity investors for bearing risk.',academic:'Estimated expected return demanded by shareholders, often via CAPM.',formula:'R_e = R_f + β(E[R_m]-R_f)',limits:'Beta and market premium inputs are uncertain.',history:'Used in hurdle-rate and WACC estimation.',example:'Higher beta firms require higher cost of equity.',application:'Valuation, capital budgeting, and performance evaluation.',related:['capm','beta','wacc'],lesson:'education-library.html#module-b2',source:'CFA Corporate Issuers.'},
+      {id:'cost-of-debt',term:'Cost of Debt',topic:'Valuation',simple:'Effective borrowing rate paid by a company.',academic:'Yield required by lenders adjusted for tax deductibility in WACC.',formula:'After-tax cost = R_d × (1-T)',limits:'Floating-rate and covenant dynamics can shift realized cost.',history:'Central to capital-structure optimisation.',example:'Credit spread widening raises refinancing costs and lowers valuation.',application:'WACC and debt-capacity analysis.',related:['wacc','credit-spread','investment-grade'],lesson:'education-library.html#module-b2',source:'Corporate Finance standards.'},
+      {id:'price-to-earnings',term:'Price-to-Earnings (P/E)',topic:'Valuation',simple:'Share price relative to earnings per share.',academic:'Equity valuation multiple reflecting expected growth, risk, and payout quality.',formula:'P/E = Price per share / EPS',limits:'Earnings can be cyclical or accounting-distorted.',history:'Most cited equity valuation multiple.',example:'High P/E may be justified by higher expected growth and quality.',application:'Relative valuation and regime comparison.',related:['ev-ebitda','price-to-book','discounted-cash-flow'],lesson:'education-library.html#module-b3',source:'Equity valuation literature.'},
+      {id:'price-to-book',term:'Price-to-Book (P/B)',topic:'Valuation',simple:'Market value relative to accounting book equity.',academic:'Multiple often linked to expected ROE relative to cost of equity.',formula:'P/B = Market Cap / Book Equity',limits:'Book value less useful for intangible-heavy firms.',history:'Classic value-investing signal.',example:'Low P/B can indicate distress or undervaluation depending on profitability.',application:'Bank and insurer valuation, factor screens.',related:['price-to-earnings','roic','margin-of-safety'],lesson:'education-library.html#module-b3',source:'Graham and modern factor research.'},
+      {id:'free-cash-flow',term:'Free Cash Flow',topic:'Valuation',simple:'Cash left after operating and reinvestment needs.',academic:'Core valuation cash-flow measure for equity and enterprise value frameworks.',formula:'FCFF = EBIT(1-T)+D&A-Capex-ΔNWC',limits:'Working-capital and capex cyclicality can obscure normalized levels.',history:'Cash-flow focus rose as accounting earnings limitations became clear.',example:'High accounting profit with weak FCF may signal low earnings quality.',application:'DCF and debt servicing analysis.',related:['discounted-cash-flow','wacc','net-present-value'],lesson:'education-library.html#module-b2',source:'Damodaran and CFA valuation readings.'},
+      {id:'benchmark-hugging',term:'Benchmark Hugging',topic:'Strategies',simple:'Staying very close to benchmark while claiming active management.',academic:'Low active risk positioning that minimises deviation from benchmark outcomes.',formula:'Typical profile: low active share + low tracking error',limits:'Clients pay active fees without meaningful differentiation.',history:'Post-fee-performance scrutiny increased regulator focus.',example:'Closet benchmark portfolios often underdeliver after fees.',application:'Manager oversight and mandate redesign.',related:['closet-indexing','active-share','tracking-error'],lesson:'education-library.html#module-e1',source:'FCA/ESMA active share discussions.'},
+      {id:'closet-indexing',term:'Closet Indexing',topic:'Strategies',simple:'Charging active fees for near-index portfolios.',academic:'Quasi-passive positioning inside active wrappers with low true active risk.',formula:'High fee + low AS + low TE = closet-index risk',limits:'Thresholds vary by universe and style.',history:'Regulatory and allocator concern in Europe and US markets.',example:'“Active” funds closely mirroring benchmark weights.',application:'Fee governance and manager selection.',related:['benchmark-hugging','active-share','passive-management'],lesson:'education-library.html#module-e1',source:'ESMA and FCA publications.'},
+      {id:'random-walk',term:'Random Walk',topic:'Portfolio Theory',simple:'Short-horizon price changes are difficult to predict from past prices alone.',academic:'Weak-form efficient prices follow a near-random increment process.',formula:'P_t = P_(t-1) + ε_t',limits:'Does not preclude long-horizon risk premia.',history:'Popularized for investors by Malkiel.',example:'Many chart rules fail after costs and out-of-sample tests.',application:'Supports low-cost broad diversification.',related:['efficient-market-hypothesis','passive-management','behavioural-finance'],lesson:'education-library.html#module-c3',source:'Malkiel, A Random Walk Down Wall Street.'},
+      {id:'limits-to-arbitrage',term:'Limits to Arbitrage',topic:'Behavioural Finance',simple:'Constraints that prevent rational traders from fully correcting mispricing.',academic:'Funding, horizon, and noise-trader risks can delay or reverse arbitrage convergence.',formula:'Arb capital constrained by financing and drawdown tolerance',limits:'Mispricings can persist far longer than expected.',history:'Formalised by Shleifer & Vishny (1997).',example:'Royal Dutch/Shell spread persisted despite obvious parity logic.',application:'Risk-aware implementation of relative-value strategies.',related:['arbitrage','statistical-arbitrage','behavioural-finance'],lesson:'education-library.html#module-c3',source:'Shleifer & Vishny (1997).'},
+      {id:'materiality-esg',term:'Materiality (ESG)',topic:'ESG',simple:'Only ESG issues likely to affect financial outcomes should drive valuation.',academic:'Industry-specific mapping of ESG factors to cash flow, cost of capital, and risk channels.',formula:'Material ESG → ΔCF, ΔWACC, Δterminal value',limits:'Materiality evolves with regulation and technology.',history:'SASB-style frameworks improved investor relevance.',example:'Safety and emissions are more material in autos/energy than in software.',application:'Prioritised ESG due diligence and engagement.',related:['esg','greenwashing','carbon-risk'],lesson:'education-library.html#module-d1',source:'SASB/ISSB materiality frameworks.'},
+      {id:'climate-risk',term:'Climate Risk',topic:'ESG',simple:'Financial risk from climate-driven physical damage and policy transition.',academic:'Combines physical risk (storms, heat, flood) and transition risk (policy, technology, demand shifts) into valuation impacts.',formula:'Climate value impact = Physical losses + Transition repricing',limits:'Long-horizon uncertainty makes discounting and scenario choice critical.',history:'Mainstreamed by TCFD and institutional stress-testing mandates.',example:'Utilities and insurers face combined physical and transition exposures.',application:'Scenario analysis, capital allocation, and strategic adaptation.',related:['carbon-risk','stranded-assets','value-at-risk'],lesson:'education-library.html#module-d4',source:'TCFD framework.'},
+      {id:'carbon-risk',term:'Carbon Risk',topic:'ESG',simple:'Financial risk from emissions exposure under tighter climate policy.',academic:'Transition risk linked to carbon pricing, regulation, technology shifts, and demand substitution.',formula:'Value impact ∝ Carbon intensity × Carbon price',limits:'Policy path uncertainty is high.',history:'Became central after Paris-era decarbonisation policies.',example:'Carbon-intensive assets can face margin compression and write-downs.',application:'Scenario analysis in climate-aware valuation.',related:['stranded-assets','esg','materiality-esg'],lesson:'education-library.html#module-d4',source:'TCFD and climate-finance research.'},
+      {id:'stranded-assets',term:'Stranded Assets',topic:'ESG',simple:'Assets that lose economic value before expected life ends.',academic:'Capital stock impaired by policy, technology, or market shifts during energy transition.',formula:'Write-down = Carrying value - Recoverable value',limits:'Timing uncertainty can mask risk until sudden repricing.',history:'Coal-sector collapses made concept mainstream.',example:'Peabody bankruptcy highlighted transition-driven impairment.',application:'Long-horizon energy and utility valuation.',related:['carbon-risk','climate-risk','esg'],lesson:'education-library.html#module-d4',source:'Carbon Tracker research.'},
+      {id:'adverse-selection',term:'Adverse Selection',topic:'Corporate Finance',simple:'Higher-risk participants are more likely to transact when information is uneven.',academic:'Pre-contract information asymmetry causes lower-quality borrowers or assets to dominate accepted deals.',formula:'Average expected quality declines as screening weakens',limits:'Reduced through underwriting, collateral, and verification.',history:'Akerlof’s lemons model formalized adverse selection dynamics.',example:'Weak credit screening raises default rates in consumer lending pools.',application:'Credit origination standards and pricing tiers.',related:['information-asymmetry','moral-hazard','principal-agent-problem'],lesson:'education-library.html#module-b1',source:'Akerlof (1970).'},
+      {id:'antifragility',term:'Antifragility',topic:'Risk',simple:'Systems that can benefit from volatility and disorder rather than merely survive it.',academic:'Taleb’s concept describing structures with convex payoff profiles that gain from stress, uncertainty, or regime breaks.',formula:'Payoff convexity > 0 under stress',limits:'Can be costly to maintain in quiet markets.',history:'Popularized in post-crisis risk design discussions.',example:'Long-volatility hedges can offset crisis losses elsewhere in a portfolio.',application:'Portfolio insurance and robust risk architecture.',related:['black-swan','tail-risk','fat-tail'],lesson:'education-library.html#module-c1',source:'Taleb, Antifragile.'},
+      {id:'basis-trade',term:'Basis Trade',topic:'Strategies',simple:'Trade that seeks to profit from convergence between related cash and derivative prices.',academic:'Relative-value strategy exploiting temporary spread between spot and futures (or similar linked instruments).',formula:'Basis = Futures price - Spot price',limits:'Funding, margin, and forced unwind risk can dominate convergence logic.',history:'Became widely discussed after leveraged Treasury basis episodes.',example:'Levered long cash bond/short futures positions can face margin stress.',application:'Macro relative-value and fixed-income arbitrage.',related:['arbitrage','carry-trade','repo'],lesson:'education-library.html#module-a3',source:'BIS and market-structure analyses.'},
+      {id:'carried-interest',term:'Carried Interest',topic:'Corporate Finance',simple:'Performance-based share of private fund profits paid to the manager.',academic:'General partner incentive allocation, typically after return of capital and preferred hurdle to limited partners.',formula:'Carry payout = Carry % × profits above hurdle/waterfall terms',limits:'Waterfall terms and clawbacks vary by fund agreement.',history:'Core private-equity/venture incentive mechanism.',example:'A 20% carry can materially increase GP economics in strong exit vintages.',application:'LP due diligence and manager alignment assessment.',related:['private-equity','hurdle-rate','internal-rate-of-return'],lesson:'education-library.html#module-b6',source:'Private fund limited partnership agreements.'},
+      {id:'cdo',term:'CDO',topic:'Derivatives',simple:'Abbreviation for collateralised debt obligation.',academic:'Structured credit vehicle that tranches pooled debt cash flows into layered risk claims.',formula:'Loss waterfall: equity → mezzanine → senior',limits:'Correlation and underwriting assumptions are critical.',history:'CDO complexity and ratings failures were central to 2008 losses.',example:'Junior tranches absorbed losses first, but senior tranches were later impaired in stress.',application:'Structured-credit analysis and risk transfer.',related:['collateralised-debt-obligation','securitisation','mortgage-backed-security'],lesson:'education-library.html#module-a6',source:'CFA structured products readings.'},
+      {id:'counterparty-risk',term:'Counterparty Risk',topic:'Risk',simple:'Risk that the other side of a contract fails to perform.',academic:'Exposure to contractual default by a trading, lending, or derivatives counterparty before final settlement.',formula:'Expected exposure × default probability × loss given default',limits:'Collateral and netting reduce but do not eliminate risk.',history:'AIG and Lehman failures highlighted concentrated counterparty exposure.',example:'OTC derivatives books can incur losses if counterparties fail during volatility spikes.',application:'ISDA, collateral, clearing, and limit frameworks.',related:['credit-default-swap','repo','mark-to-market'],lesson:'education-library.html#module-a4',source:'ISDA and Basel counterparty credit risk guidance.'},
+      {id:'dollar-cost-averaging',term:'Dollar-Cost Averaging',topic:'Strategies',simple:'Investing a fixed amount at regular intervals regardless of market level.',academic:'Systematic contribution policy that smooths entry prices and reduces timing-risk regret.',formula:'Units bought each period = fixed contribution / current price',limits:'Can underperform lump-sum investing in sustained bull markets.',history:'Widely used in retirement savings and auto-invest plans.',example:'Monthly pension contributions buy more units when prices are lower.',application:'Behavioural discipline for long-horizon investors.',related:['rebalancing','sequence-of-returns-risk','behavioural-finance'],lesson:'education-library.html#module-c5',source:'Vanguard investor behavior research.'},
+      {id:'drawdown-period',term:'Drawdown Period',topic:'Risk',simple:'Time it takes to recover from a peak-to-trough loss back to prior high.',academic:'Path-dependent duration metric complementing maximum drawdown depth.',formula:'Recovery period = date(new high) - date(prior peak)',limits:'Highly regime dependent and hard to forecast.',history:'Institutional risk reports increasingly include depth + duration drawdown analytics.',example:'A portfolio may recover a 30% drawdown only after several years.',application:'Retirement planning and liquidity stress tolerance.',related:['maximum-drawdown','sequence-of-returns-risk','tail-risk'],lesson:'education-library.html#module-c5',source:'Portfolio risk management literature.'},
+      {id:'fat-tail',term:'Fat Tail',topic:'Risk',simple:'Distribution with more extreme outcomes than a normal distribution predicts.',academic:'Higher probability mass in distribution tails, increasing likelihood of severe gains/losses.',formula:'Tail probability > normal-model tail probability',limits:'Difficult to estimate robustly from short samples.',history:'Repeated crisis losses challenged normality assumptions in risk models.',example:'Many return series exhibit more 5-sigma events than Gaussian models imply.',application:'Stress testing and conservative capital buffers.',related:['kurtosis','black-swan','conditional-var'],lesson:'education-library.html#module-a5',source:'Taleb and risk-statistics literature.'},
+      {id:'framing-effect',term:'Framing Effect',topic:'Behavioural Finance',simple:'Choices change depending on how equivalent information is presented.',academic:'Cognitive bias where decision preferences differ under gain/loss wording despite identical probabilities.',formula:'Decision utility varies by frame, not only outcomes',limits:'Effects vary with expertise and context.',history:'Kahneman and Tversky documented framing in risk decisions.',example:'Investors may prefer “90% survival” over “10% failure” framing despite equivalence.',application:'Investor communication and governance process design.',related:['prospect-theory','loss-aversion','mental-accounting'],lesson:'education-library.html#module-c2',source:'Kahneman & Tversky behavioral experiments.'},
+      {id:'illiquidity-discount',term:'Illiquidity Discount',topic:'Valuation',simple:'Reduction in valuation for assets that are hard to trade quickly at fair value.',academic:'Pricing adjustment reflecting expected transaction costs, delay, and forced-sale risk for non-liquid positions.',formula:'Illiquid value = liquid benchmark value × (1 - discount)',limits:'Discount magnitude is model-dependent and state-dependent.',history:'Private markets and stressed credit periods highlighted execution gaps.',example:'Private-company stakes trade below listed peers to compensate liquidity constraints.',application:'Private-asset valuation and deal negotiation.',related:['liquidity-premium','private-equity','mark-to-market'],lesson:'education-library.html#module-e2',source:'Private market valuation practice.'},
+      {id:'internal-rate-of-return',term:'Internal Rate of Return (IRR)',topic:'Corporate Finance',simple:'Discount rate that sets project or investment NPV to zero.',academic:'Annualized implied return from cash-flow timing profile, commonly used in private-market reporting.',formula:'0 = Σ CF_t/(1+IRR)^t',limits:'Can be misleading with multiple sign changes or interim-reinvestment assumptions.',history:'Standard metric in project appraisal and PE performance reporting.',example:'A project with front-loaded inflows can show high IRR even with modest total value.',application:'Capital budgeting and private-fund performance evaluation.',related:['net-present-value','hurdle-rate','carried-interest'],lesson:'education-library.html#module-b6',source:'Corporate finance and PE reporting standards.'},
+      {id:'loss-aversion',term:'Loss Aversion',topic:'Behavioural Finance',simple:'People dislike losses more than they value equal-size gains.',academic:'Core Prospect Theory feature where utility slope is steeper for losses than gains around a reference point.',formula:'Typical λ (loss aversion) > 1',limits:'Magnitude varies by context, framing, and stakes.',history:'Documented extensively in behavioral decision research.',example:'Investors often hold losers too long to avoid realizing loss pain.',application:'Portfolio rules to reduce disposition-effect errors.',related:['prospect-theory','framing-effect','mental-accounting'],lesson:'education-library.html#module-c1',source:'Kahneman & Tversky (1979).'},
+      {id:'margin-of-safety',term:'Margin of Safety',topic:'Valuation',simple:'Buying below estimated intrinsic value to allow for estimation error.',academic:'Value-investing principle that embeds uncertainty buffer between price and intrinsic value estimate.',formula:'Margin of Safety = (Intrinsic value - Price) / Intrinsic value',limits:'Intrinsic value itself is uncertain and model-sensitive.',history:'Popularized by Graham and Dodd in security analysis.',example:'Buying at a 30% discount to base-case valuation provides downside buffer.',application:'Position sizing and valuation discipline.',related:['discounted-cash-flow','price-to-book','opportunity-cost'],lesson:'education-library.html#module-b3',source:'Graham & Dodd, Security Analysis.'},
+      {id:'mental-accounting',term:'Mental Accounting',topic:'Behavioural Finance',simple:'Treating money differently based on arbitrary labels or source.',academic:'Behavioral segmentation of wealth into non-fungible “accounts,” leading to inconsistent risk and spending decisions.',formula:'Decision utility depends on labeled account, not total wealth',limits:'Can be adaptive for budgeting but harmful in portfolio optimization.',history:'Thaler formalized mental accounting in behavioral economics.',example:'Investors may take high risk with “bonus money” while being conservative elsewhere.',application:'Holistic household balance-sheet planning.',related:['framing-effect','loss-aversion','behavioural-finance'],lesson:'education-library.html#module-c2',source:'Thaler behavioral finance research.'},
+      {id:'modified-duration',term:'Modified Duration',topic:'Fixed Income',simple:'Duration measure translating yield changes into approximate percentage price changes.',academic:'Macaulay duration adjusted by yield compounding to estimate first-order price sensitivity.',formula:'D_mod = D_mac / (1 + y/m)',limits:'Needs convexity for larger non-linear moves.',history:'Standardized in fixed-income risk management and immunization.',example:'A bond with modified duration 7 loses roughly 7% for a 1% yield rise.',application:'Interest-rate hedging and duration targeting.',related:['duration','convexity','yield-to-maturity'],lesson:'education-library.html#module-a3',source:'CFA fixed-income curriculum.'},
+      {id:'momentum',term:'Momentum',topic:'Strategies',simple:'Tendency for assets with recent strong returns to keep outperforming over intermediate horizons.',academic:'Persistent return continuation phenomenon observed across assets, linked to behavioral and risk-based explanations.',formula:'Momentum spread = Return(winners) - Return(losers)',limits:'Susceptible to sharp reversal crashes.',history:'Documented in cross-sectional equity and time-series futures literature.',example:'Past 12-month winners often outperform past losers over the next few months.',application:'Factor allocation and systematic strategy design.',related:['momentum-factor','trend-following','mean-reversion'],lesson:'education-library.html#module-e1',source:'Jegadeesh & Titman; Carhart.'},
+      {id:'moral-hazard',term:'Moral Hazard',topic:'Corporate Finance',simple:'Taking greater risk because downside is partly borne by others.',academic:'Post-contract behavior distortion when one party is insulated from full consequences of risk choices.',formula:'Risk-taking incentive increases as private downside decreases',limits:'Mitigated via covenants, monitoring, and skin-in-the-game structures.',history:'Key concept in insurance, banking, and agency theory.',example:'Highly levered entities may prefer riskier projects due to asymmetric payoff.',application:'Contract design and financial regulation.',related:['adverse-selection','agency-problem','principal-agent-problem'],lesson:'education-library.html#module-b1',source:'Corporate governance and contract theory.'},
+      {id:'opportunity-cost',term:'Opportunity Cost',topic:'Valuation',simple:'Value of the best alternative forgone when choosing an option.',academic:'Economic cost measured as return sacrificed by not deploying capital in next-best comparable-risk use.',formula:'Opportunity cost = Return(next best alternative) - Return(chosen option)',limits:'Requires credible alternatives with similar risk/liquidity profiles.',history:'Foundational concept in economics and capital allocation.',example:'Holding excess cash may forgo higher expected real returns from diversified assets.',application:'Capital budgeting, portfolio allocation, and hurdle-rate setting.',related:['discount-rate','net-present-value','margin-of-safety'],lesson:'education-library.html#module-b2',source:'Microeconomics and corporate finance fundamentals.'},
+      {id:'orange-county',term:'Orange County (1994)',topic:'Fixed Income',simple:'Case study of leveraged duration exposure causing municipal investment failure.',academic:'Large public portfolio losses from leveraged inverse-floater and duration bets after interest-rate shock.',formula:'Leverage × duration shock → amplified capital loss',limits:'Case-specific, but broadly relevant for leverage and liquidity governance.',history:'One of the largest municipal bankruptcies in US history at the time.',example:'Rate hikes triggered margin calls and forced unwinds in leveraged positions.',application:'Public treasury risk controls and stress testing.',related:['duration','modified-duration','mark-to-market'],lesson:'education-library.html#module-a3',source:'Orange County bankruptcy analyses.'},
+      {id:'principal-agent-problem',term:'Principal-Agent Problem',topic:'Corporate Finance',simple:'Conflict when decision-makers do not fully share owners’ incentives.',academic:'Agency friction where delegated agents optimize private utility rather than principal value unless constrained.',formula:'Agency cost = monitoring + bonding + residual loss',limits:'Can only be reduced, not fully eliminated.',history:'Core framework in modern corporate governance economics.',example:'Compensation tied to short-term EPS can discourage value-creating long-term investment.',application:'Board design, compensation policy, and mandate governance.',related:['agency-problem','moral-hazard','information-asymmetry'],lesson:'education-library.html#module-b1',source:'Jensen & Meckling (1976).'},
+      {id:'quality-factor',term:'Quality Factor',topic:'Strategies',simple:'Factor tilt toward firms with strong profitability, stability, and governance quality.',academic:'Systematic exposure to companies with high earnings quality, prudent investment, and robust balance-sheet characteristics.',formula:'Quality score combines profitability + leverage + earnings stability',limits:'Definitions vary across providers and can crowd.',history:'Expanded as part of post-crisis smart-beta product growth.',example:'High-quality firms often hold up better in stress but may lag in speculative rallies.',application:'Defensive equity factor allocation.',related:['five-factor-model','smart-beta','momentum-factor'],lesson:'education-library.html#module-e1',source:'AQR and academic factor research.'},
+      {id:'risk-parity',term:'Risk Parity',topic:'Portfolio Theory',simple:'Allocating capital so each asset class contributes similar risk rather than similar dollars.',academic:'Portfolio construction framework balancing marginal risk contributions, often with leverage on lower-volatility assets.',formula:'Target: Risk contribution_i ≈ equal across assets',limits:'Can struggle in inflation shocks when stock-bond diversification breaks down.',history:'Popularized in institutional multi-asset allocations.',example:'Bond-heavy risk-parity portfolios were challenged during sharp rate repricing.',application:'Strategic multi-asset allocation design.',related:['correlation','efficient-frontier','modern-portfolio-theory'],lesson:'education-library.html#module-e2',source:'Bridgewater and multi-asset research.'},
+      {id:'roic',term:'ROIC',topic:'Corporate Finance',simple:'Return generated on invested operating capital.',academic:'After-tax operating profit divided by invested capital, used to assess value creation relative to WACC.',formula:'ROIC = NOPAT / Invested Capital',limits:'Accounting adjustments can materially affect comparability.',history:'Central metric in economic-profit and quality-of-growth analysis.',example:'Value is created when ROIC persistently exceeds WACC.',application:'Corporate strategy, valuation, and capital allocation review.',related:['wacc','free-cash-flow','price-to-book'],lesson:'education-library.html#module-b3',source:'Corporate finance performance frameworks.'},
+      {id:'sequence-of-returns-risk',term:'Sequence-of-Returns Risk',topic:'Risk',simple:'Risk that poor returns early in withdrawals irreversibly damage retirement outcomes.',academic:'Path-dependent decumulation risk where return order matters when cash outflows are ongoing.',formula:'Early negative returns + withdrawals = accelerated capital depletion',limits:'Most relevant in withdrawal phase, less in pure accumulation.',history:'Retirement research emphasized sequence effects in drawdown planning.',example:'Two portfolios with identical average returns can end with very different balances due to return ordering.',application:'Glide-path design, withdrawal rules, and cash-buffer policy.',related:['maximum-drawdown','drawdown-period','dollar-cost-averaging'],lesson:'education-library.html#module-c5',source:'Retirement income planning literature.'},
+      {id:'yield-to-maturity',term:'Yield to Maturity (YTM)',topic:'Fixed Income',simple:'Single discount rate equating bond price with present value of promised cash flows.',academic:'Internal rate of return of a bond if held to maturity and coupons are reinvested at the same rate.',formula:'Price = Σ Coupon/(1+YTM)^t + Principal/(1+YTM)^n',limits:'Assumes no default and coupon reinvestment at YTM.',history:'Standard quoting convention in fixed-income markets.',example:'Premium bonds typically have coupon rates above their YTM.',application:'Bond valuation, relative value, and duration interpretation.',related:['duration','modified-duration','credit-spread'],lesson:'education-library.html#module-a3',source:'CFA Fixed Income.'}
+    ];
 
-    function renderGlossary() {
-      const search = searchInput.value.trim().toLowerCase();
-      const selectedCategory = categorySelect.value;
-      const filtered = glossaryTerms.filter(item => {
-        const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
-        const matchesSearch = !search || item.term.toLowerCase().includes(search) || item.definition.toLowerCase().includes(search);
-        return matchesCategory && matchesSearch;
-      });
+    const terms = [...baseTerms, ...supplementalTerms];
 
-      glossaryList.innerHTML = filtered.map(item => `
-        <article class="term-card" data-category="${item.category}">
-          <button class="term-header" type="button">
-            <div>
-              <div class="term-title">${item.term}</div>
-              <div class="term-meta">${item.category}</div>
-            </div>
-            <span class="caret">⌄</span>
-          </button>
-          <div class="term-body">
-            <p class="term-desc">${item.definition}</p>
+    const map = Object.fromEntries(terms.map(t => [t.id,t]));
+    const root = document.getElementById('root');
+    const list = document.getElementById('list');
+    const az = document.getElementById('az');
+    const search = document.getElementById('search');
+    const topic = document.getElementById('topic');
+    const simpleBtn = document.getElementById('simpleBtn');
+    const techBtn = document.getElementById('techBtn');
+    const savedLaunch = document.getElementById('savedLaunch');
+    const savedPanel = document.getElementById('savedPanel');
+    const savedList = document.getElementById('savedList');
+    const sheetBtn = document.getElementById('sheetBtn');
+    const STORE = 'mbdSavedTermsV3';
+
+    const saved = () => {
+      try { return JSON.parse(localStorage.getItem(STORE) || '[]'); }
+      catch(error) { console.warn('Failed to parse saved terms from localStorage. Returning empty array.', error); return []; }
+    };
+    const setSaved = ids => localStorage.setItem(STORE, JSON.stringify([...new Set(ids)]));
+    const escRegex = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    const highlightTerm = (text, query) => {
+      const safeText = escapeHtml(text);
+      if (!query) return safeText;
+      const pattern = new RegExp(`(${escRegex(query)})`, 'ig');
+      return safeText.replace(pattern, '<mark>$1</mark>');
+    };
+
+    function calc(term){
+      if (term.interactive === 'sharpe') return `<div class="calc" data-calc="sharpe"><div class="s-title">Interactive calculator</div><div class="grid"><label>Rₚ %<input data-k="rp" value="10" type="number" step="0.1"></label><label>R𝒇 %<input data-k="rf" value="3" type="number" step="0.1"></label><label>σ %<input data-k="vol" value="14" type="number" step="0.1"></label></div><div class="out">Sharpe: <span data-out></span></div></div>`;
+      if (term.interactive === 'capm') return `<div class="calc" data-calc="capm"><div class="s-title">Interactive calculator</div><div class="grid"><label>R𝒇 %<input data-k="rf" value="3" type="number" step="0.1"></label><label>β<input data-k="beta" value="1.1" type="number" step="0.1"></label><label>Rₘ %<input data-k="rm" value="9" type="number" step="0.1"></label></div><div class="out">Expected return: <span data-out></span></div></div>`;
+      if (term.interactive === 'duration') return `<div class="calc" data-calc="duration"><div class="s-title">Interactive calculator</div><div class="grid"><label>Duration<input data-k="dur" value="6" type="number" step="0.1"></label><label>Δy %<input data-k="dy" value="1" type="number" step="0.1"></label></div><div class="out">Price change: <span data-out></span></div></div>`;
+      if (term.interactive === 'var') return `<div class="calc" data-calc="var"><div class="s-title">Interactive calculator</div><div class="grid"><label>Portfolio £<input data-k="v" value="10000000" type="number" step="10000"></label><label>Vol %<input data-k="vol" value="2" type="number" step="0.1"></label><label>z<input data-k="z" value="1.65" type="number" step="0.01"></label></div><div class="out">1-day VaR: <span data-out></span></div><svg width="100%" height="48" viewBox="0 0 320 48"><path d="M6 40 C74 6,246 6,314 40" fill="none" stroke="#1e3a8a" stroke-width="2"/><line x1="112" y1="11" x2="112" y2="43" stroke="#ef4444" stroke-width="2"/><text x="118" y="16" fill="#ef4444" font-size="10">VaR cutoff</text></svg></div>`;
+      return '';
+    }
+
+    function card(t,q,s){
+      const related = (t.related||[]).map(id => map[id]).filter(Boolean).map(x => `<a href="#${x.id}">${escapeHtml(x.term)}</a>`).join('');
+      return `<article id="${t.id}" class="card" data-letter="${t.term[0].toUpperCase()}" data-topic="${t.topic}" data-search="${(t.term+' '+t.simple+' '+t.academic+' '+t.history+' '+t.application).toLowerCase()}">
+        <div class="head">
+          <div>
+            <h3>${highlightTerm(t.term, q)}</h3>
+            <p class="simple">${t.simple}</p>
+            <div class="pills"><span class="pill">${t.topic}</span><span class="pill">${t.term[0].toUpperCase()}</span></div>
           </div>
-        </article>
-      `).join('');
-
-      if (!filtered.length) {
-        glossaryList.innerHTML = '<p style="grid-column:1/-1;padding:20px;border:1px solid var(--line);border-radius:12px;color:var(--muted)">No matching terms found. Try broadening your search.</p>';
-      }
+          <div class="actions"><button class="icon save" data-id="${t.id}" type="button">${s.includes(t.id) ? '★' : '☆'}</button><button class="icon open" type="button">▾</button></div>
+        </div>
+        <div class="body">
+          <div class="s-title">Academic definition</div><p class="copy">${t.academic}</p><div class="formula">${t.formula}</div><p class="copy"><strong>Units, assumptions, limitations:</strong> ${t.limits}</p>
+          ${calc(t)}
+          <div class="s-title">Context & history</div><p class="copy">${t.history}</p>
+          <div class="s-title">Worked example</div><p class="copy">${t.example}</p>
+          <div class="s-title">Real-world application</div><p class="copy">${t.application}</p>
+          <div class="s-title">Related terms</div><div class="links">${related}</div>
+          <p class="copy" style="margin-top:8px"><strong>Appears in lesson:</strong> <a href="/${t.lesson}" style="color:#1d4ed8">Open curriculum lesson</a><br><strong>Key source:</strong> ${t.source}</p>
+        </div>
+      </article>`;
     }
 
-    function syncChipState(category) {
-      categoryChips.querySelectorAll('.chip').forEach(chip => {
-        chip.classList.toggle('active', chip.dataset.category === category);
-      });
-    }
-
-    function initControls() {
-      searchInput.addEventListener('input', renderGlossary);
-      categorySelect.addEventListener('change', () => {
-        syncChipState(categorySelect.value);
-        renderGlossary();
-      });
-      categoryChips.addEventListener('click', event => {
-        const chip = event.target.closest('.chip');
-        if (!chip) return;
-        categorySelect.value = chip.dataset.category || 'All';
-        syncChipState(categorySelect.value);
-        renderGlossary();
-      });
-    }
-
-    function initAccordion() {
-      glossaryList.addEventListener('click', event => {
-        const button = event.target.closest('.term-header');
-        if (!button) return;
-        const card = button.closest('.term-card');
-        if (!card) return;
-        card.classList.toggle('open');
-      });
-    }
-
-    function initNewsletterForms() {
-      document.querySelectorAll('.signup-form').forEach(form => {
-        form.addEventListener('submit', () => {
-          const emailInput = form.querySelector('input[name="email"]');
-          const preferenceSelect = form.querySelector('select[name="preference"]');
-          const source = form.dataset.source || 'site';
-          if (!emailInput || !preferenceSelect) return;
-          const record = {
-            email: emailInput.value.trim(),
-            preference: preferenceSelect.value,
-            source,
-            submittedAt: new Date().toISOString()
+    function bindCalcs(){
+      document.querySelectorAll('[data-calc]').forEach(box => {
+        const update = () => {
+          const getNumberValue = key => {
+            const el = box.querySelector(`[data-k="${key}"]`);
+            if (!el) return null;
+            const val = Number(el.value);
+            return Number.isFinite(val) ? val : null;
           };
-          try { localStorage.setItem('mbdNewsletterLastSignup', JSON.stringify(record)); } catch (_) {}
-        });
+          const out = box.querySelector('[data-out]');
+          if (!out) return;
+          if (box.dataset.calc === 'sharpe') {
+            const rp = getNumberValue('rp'), rf = getNumberValue('rf'), vol = getNumberValue('vol');
+            out.textContent = [rp, rf, vol].some(v => v === null) ? '—' : ((rp - rf) / Math.max(vol, 0.0001)).toFixed(2);
+          }
+          if (box.dataset.calc === 'capm') {
+            const rf = getNumberValue('rf'), beta = getNumberValue('beta'), rm = getNumberValue('rm');
+            out.textContent = [rf, beta, rm].some(v => v === null) ? '—' : `${(rf + beta * (rm - rf)).toFixed(2)}%`;
+          }
+          if (box.dataset.calc === 'duration') {
+            const dur = getNumberValue('dur'), dy = getNumberValue('dy');
+            out.textContent = [dur, dy].some(v => v === null) ? '—' : `${(-dur * (dy / 100) * 100).toFixed(2)}%`;
+          }
+          if (box.dataset.calc === 'var') {
+            const v = getNumberValue('v'), vol = getNumberValue('vol'), z = getNumberValue('z');
+            out.textContent = [v, vol, z].some(v => v === null) ? '—' : `£${Math.round(v * (vol / 100) * z).toLocaleString('en-GB')}`;
+          }
+        };
+        box.querySelectorAll('input').forEach(i => i.addEventListener('input', update)); update();
       });
     }
 
-    function initExitIntentModal() {
-      const modal = document.getElementById('exitModal');
-      const closeBtn = document.getElementById('exitClose');
-      if (!modal) return;
-      const localKey = 'mbdExitIntentDismissed';
-      const sessionKey = 'mbdExitIntentSeenSession';
-      const dismiss = () => {
-        modal.classList.remove('active');
-        localStorage.setItem(localKey, '1');
-      };
-      closeBtn && closeBtn.addEventListener('click', dismiss);
-      modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
-      document.addEventListener('mouseleave', e => {
-        if (e.clientY > 0 || window.innerWidth < 768) return;
-        if (localStorage.getItem(localKey) === '1') return;
-        if (sessionStorage.getItem(sessionKey) === '1') return;
-        sessionStorage.setItem(sessionKey, '1');
-        modal.classList.add('active');
-      });
-      window.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('active'); });
+    function renderSaved(){
+      const ids = saved();
+      savedLaunch.textContent = `⭐ My saved terms (${ids.length})`;
+      if (!ids.length){ savedList.innerHTML = '<p style="color:#64748b">No saved terms yet.</p>'; return; }
+      savedList.innerHTML = ids.map(id => map[id]).filter(Boolean).map(t => `<div class="saved-item"><a href="#${t.id}">${escapeHtml(t.term)}</a><div style="font-size:12px;color:#64748b;margin-top:4px">${escapeHtml(t.simple)}</div></div>`).join('');
+      savedList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => savedPanel.classList.remove('open')));
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderGlossary();
-      initControls();
-      initAccordion();
-      initNewsletterForms();
-      initExitIntentModal();
-      if (window.gsap) {
-        const tl = gsap.timeline();
-        tl.to('h1', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .15);
-        tl.to('.lead', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .26);
-      } else {
-        document.querySelectorAll('h1, .lead').forEach(el => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
+    function observeLetters(){
+      const links = [...document.querySelectorAll('[data-l]')], heads = [...document.querySelectorAll('.letter')];
+      if (!heads.length || !window.IntersectionObserver) return;
+      const mapL = Object.fromEntries(links.map(l => [l.dataset.l,l]));
+      const obs = new IntersectionObserver(entries => entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const l = e.target.id.replace('letter-','');
+        links.forEach(x => x.classList.remove('active'));
+        mapL[l]?.classList.add('active');
+      }),{rootMargin:'-20% 0px -75% 0px'});
+      heads.forEach(h => obs.observe(h));
+    }
+
+    function render(){
+      const q = search.value.trim().toLowerCase(), t = topic.value, s = saved();
+      const items = terms.filter(x => t === 'All' || x.topic === t).sort((a,b) => a.term.localeCompare(b.term));
+      const letters = [...new Set(items.map(x => x.term[0].toUpperCase()))];
+      az.innerHTML = letters.map(l => `<a data-l="${l}" href="#letter-${l}">${l}</a>`).join('');
+      let html='', current='';
+      items.forEach(x => { const L = x.term[0].toUpperCase(); if (L !== current){ current = L; html += `<h2 class="letter" id="letter-${L}">${L}</h2>`; } html += card(x,q,s); });
+      list.innerHTML = html || '<p style="color:#64748b">No matching terms.</p>';
+      list.querySelectorAll('.card').forEach(c => { const match = !q || (c.dataset.search||'').includes(q); c.classList.toggle('faded', !!q && !match); c.classList.toggle('match', !!q && match); });
+      list.querySelectorAll('.open').forEach(b => b.onclick = e => { const c = e.target.closest('.card'); if (!root.classList.contains('mode-simple')) c.classList.toggle('open'); });
+      list.querySelectorAll('.save').forEach(b => b.onclick = e => { const id = e.target.dataset.id; const ids = saved(); setSaved(ids.includes(id) ? ids.filter(x => x !== id) : [...ids,id]); render(); });
+      bindCalcs(); renderSaved(); observeLetters();
+    }
+
+    function exportSheet(){
+      const ids = saved();
+      const status = document.getElementById('statusMsg');
+      if (!ids.length) {
+        if (status) status.textContent = 'Save at least one term with ☆ before generating a study sheet.';
+        return;
       }
-    });
+      if (status) status.textContent = '';
+      const selected = ids.map(id => map[id]).filter(Boolean);
+      const w = window.open('', '_blank');
+      w.document.write(`<!doctype html><html><head><title>Study Sheet</title><style>body{font-family:Inter,system-ui,sans-serif;padding:24px}article{border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin-bottom:10px}.f{font-family:monospace;background:#f8fafc;border-radius:8px;padding:6px}</style></head><body><h1>Saved Glossary Terms</h1>${selected.map(t=>`<article><h2>${escapeHtml(t.term)}</h2><p><strong>Simple:</strong> ${escapeHtml(t.simple)}</p><p><strong>Academic:</strong> ${escapeHtml(t.academic)}</p><div class="f">${escapeHtml(t.formula)}</div><p><strong>Worked example:</strong> ${escapeHtml(t.example)}</p><p><strong>Key source:</strong> ${escapeHtml(t.source)}</p></article>`).join('')}<script>window.print()<\/script></body></html>`);
+      w.document.close();
+    }
+
+    search.addEventListener('input', render);
+    topic.addEventListener('change', render);
+    simpleBtn.addEventListener('click', () => { simpleBtn.classList.add('active'); techBtn.classList.remove('active'); root.classList.add('mode-simple'); document.querySelectorAll('.card').forEach(c => c.classList.remove('open')); });
+    techBtn.addEventListener('click', () => { techBtn.classList.add('active'); simpleBtn.classList.remove('active'); root.classList.remove('mode-simple'); });
+    document.getElementById('savedLaunch').addEventListener('click', () => savedPanel.classList.add('open'));
+    document.getElementById('savedClose').addEventListener('click', () => savedPanel.classList.remove('open'));
+    sheetBtn.addEventListener('click', exportSheet);
+    root.classList.add('mode-simple');
+    render();
   </script>
 </body>
 </html>
