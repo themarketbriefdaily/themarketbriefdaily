@@ -703,7 +703,7 @@
               <span class="drop-icon">📖</span> Glossary
             </a>
             <div class="nav-drop-divider"></div>
-            <a class="active" href="/education" role="menuitem">
+            <a class="active" href="/education.html" role="menuitem">
               <span class="drop-icon">🎓</span> Education
             </a>
           </div>
@@ -1644,21 +1644,21 @@
   <script>
     (function(){
       function closeAllDropdowns() {
-        document.querySelectorAll('.nav-dropdown.open').forEach(function(o){
-          o.classList.remove('open');
-          var t = o.querySelector('.nav-drop-toggle');
-          if (t) t.setAttribute('aria-expanded', 'false');
+        document.querySelectorAll('.nav-dropdown.open').forEach(function(dropdown){
+          dropdown.classList.remove('open');
+          var toggle = dropdown.querySelector('.nav-drop-toggle');
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
         });
       }
-      document.querySelectorAll('.nav-dropdown').forEach(function(dd){
-        var toggle = dd.querySelector('.nav-drop-toggle');
+      document.querySelectorAll('.nav-dropdown').forEach(function(dropdown){
+        var toggle = dropdown.querySelector('.nav-drop-toggle');
         if (!toggle) return;
         toggle.addEventListener('click', function(e){
           e.stopPropagation();
-          var open = dd.classList.contains('open');
+          var open = dropdown.classList.contains('open');
           closeAllDropdowns();
           if (!open) {
-            dd.classList.add('open');
+            dropdown.classList.add('open');
             toggle.setAttribute('aria-expanded', 'true');
           }
         });
