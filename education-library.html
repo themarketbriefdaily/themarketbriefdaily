@@ -250,6 +250,7 @@
   <script>
     const search = document.getElementById('lessonSearch');
     const searchable = [...document.querySelectorAll('[data-search]')];
+    // Tiny positive guard to prevent unstable denominator behavior when WACC and g are effectively equal.
     const MINIMUM_WACC_GROWTH_SPREAD = 0.000001;
     const calculateGordonGrowthTV = (fcfCurrentYear, waccPercent, growthPercent) => (fcfCurrentYear * (1 + growthPercent / 100)) / ((waccPercent - growthPercent) / 100);
     const modulePlaybook = {
@@ -306,7 +307,7 @@
     const openLessonPage = lesson => {
       const detail = lessonDetailMap[lesson.id];
       if (!detail) return;
-      const moduleMatch = (lesson.id || '').match(/^module-([a-z]+)\d/i);
+      const moduleMatch = (lesson.id || '').match(/^module-([a-z]+)\d/);
       const moduleKey = moduleMatch ? moduleMatch[1].toLowerCase() : '';
       const modulePack = modulePlaybook[moduleKey] || {objectives:[],framework:'',exam:''};
       lessonPageTitle.textContent = lesson.title;
@@ -362,7 +363,7 @@
         const update = () => {
           if (box.dataset.calc === 'dcf') {
             const fcf = get('fcf'), wacc = get('wacc'), g = get('g');
-            if ([fcf, wacc, g].some(v => v === null) || ((wacc - g) / 100) <= MINIMUM_WACC_GROWTH_SPREAD) { out.textContent = 'Invalid (WACC must exceed growth rate by a positive margin)'; return; }
+            if ([fcf, wacc, g].some(v => v === null) || ((wacc - g) / 100) <= MINIMUM_WACC_GROWTH_SPREAD) { out.textContent = 'Invalid (WACC must be greater than growth rate)'; return; }
             out.textContent = `£${calculateGordonGrowthTV(fcf, wacc, g).toFixed(1)}m`;
           }
           if (box.dataset.calc === 'kelly') {
