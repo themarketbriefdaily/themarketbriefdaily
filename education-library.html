@@ -163,7 +163,7 @@
       searchable.forEach(el => {
         const t = (el.dataset.search + ' ' + el.textContent).toLowerCase();
         const ok = !q || t.includes(q);
-        el.style.opacity = ok ? '1' : '.22';
+        el.style.opacity = ok ? '1' : '.5';
       });
     });
     document.querySelectorAll('.module > button').forEach(btn => btn.addEventListener('click', () => btn.parentElement.classList.toggle('open')));
@@ -172,8 +172,27 @@
       const el = document.querySelector(location.hash);
       if (!el) return;
       const mod = el.closest('.module');
-      if (mod) mod.classList.add('open');
-      setTimeout(() => el.scrollIntoView({behavior:'smooth',block:'start'}), 120);
+      const scrollToLesson = () => el.scrollIntoView({behavior:'smooth',block:'start'});
+      if (mod && !mod.classList.contains('open')) {
+        mod.classList.add('open');
+        const body = mod.querySelector('.module-body');
+        if (body) {
+          let timeoutId = null;
+          const onEnd = event => {
+            if (event.target !== body || event.propertyName !== 'max-height') return;
+            if (timeoutId) clearTimeout(timeoutId);
+            scrollToLesson();
+            body.removeEventListener('transitionend', onEnd);
+          };
+          body.addEventListener('transitionend', onEnd);
+          timeoutId = setTimeout(() => {
+            body.removeEventListener('transitionend', onEnd);
+            scrollToLesson();
+          }, 350);
+          return;
+        }
+      }
+      scrollToLesson();
     };
     window.addEventListener('load', openFromHash);
     window.addEventListener('hashchange', openFromHash);

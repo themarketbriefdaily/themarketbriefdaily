@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -93,6 +93,7 @@
         <option value="All">All</option><option>Ratios & Performance</option><option>Risk</option><option>Portfolio Theory</option><option>Strategies</option><option>Fixed Income</option><option>Derivatives</option><option>Valuation</option><option>Corporate Finance</option><option>Behavioural Finance</option><option>ESG</option>
       </select>
     </section>
+    <p id="statusMsg" style="margin:0 0 12px;color:#1d4ed8;font-size:.86rem" aria-live="polite"></p>
 
     <nav id="az" class="az" aria-label="A to Z"></nav>
     <section id="list"></section>
@@ -147,10 +148,12 @@
     const sheetBtn = document.getElementById('sheetBtn');
     const STORE = 'mbdSavedTermsV3';
 
-    const saved = () => { try { return JSON.parse(localStorage.getItem(STORE) || '[]'); } catch(_) { return []; } };
+    const saved = () => {
+      try { return JSON.parse(localStorage.getItem(STORE) || '[]'); }
+      catch(error) { console.warn('Failed to parse saved terms from localStorage. Returning empty array.', error); return []; }
+    };
     const setSaved = ids => localStorage.setItem(STORE, JSON.stringify([...new Set(ids)]));
-    const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const mark = (txt,q) => !q ? txt : txt.replace(new RegExp(`(${esc(q)})`,'ig'), '<mark>$1</mark>');
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
     function calc(term){
       if (term.interactive === 'sharpe') return `<div class="calc" data-calc="sharpe"><div class="s-title">Interactive calculator</div><div class="grid"><label>Rₚ %<input data-k="rp" value="10" type="number" step="0.1"></label><label>R𝒇 %<input data-k="rf" value="3" type="number" step="0.1"></label><label>σ %<input data-k="vol" value="14" type="number" step="0.1"></label></div><div class="out">Sharpe: <span data-out></span></div></div>`;
@@ -161,11 +164,11 @@
     }
 
     function card(t,q,s){
-      const related = (t.related||[]).map(id => map[id]).filter(Boolean).map(x => `<a href="#${x.id}">${x.term}</a>`).join('');
+      const related = (t.related||[]).map(id => map[id]).filter(Boolean).map(x => `<a href="#${x.id}">${escapeHtml(x.term)}</a>`).join('');
       return `<article id="${t.id}" class="card" data-letter="${t.term[0].toUpperCase()}" data-topic="${t.topic}" data-search="${(t.term+' '+t.simple+' '+t.academic+' '+t.history+' '+t.application).toLowerCase()}">
         <div class="head">
           <div>
-            <h3>${mark(t.term,q)}</h3>
+            <h3>${escapeHtml(t.term)}</h3>
             <p class="simple">${t.simple}</p>
             <div class="pills"><span class="pill">${t.topic}</span><span class="pill">${t.term[0].toUpperCase()}</span></div>
           </div>
@@ -186,13 +189,30 @@
     function bindCalcs(){
       document.querySelectorAll('[data-calc]').forEach(box => {
         const update = () => {
-          const n = k => Number(box.querySelector(`[data-k="${k}"]`)?.value || 0);
+          const getNumberValue = key => {
+            const el = box.querySelector(`[data-k="${key}"]`);
+            if (!el) return null;
+            const val = Number(el.value);
+            return Number.isFinite(val) ? val : null;
+          };
           const out = box.querySelector('[data-out]');
           if (!out) return;
-          if (box.dataset.calc === 'sharpe') out.textContent = ((n('rp')-n('rf'))/Math.max(n('vol'),0.0001)).toFixed(2);
-          if (box.dataset.calc === 'capm') out.textContent = `${(n('rf')+n('beta')*(n('rm')-n('rf'))).toFixed(2)}%`;
-          if (box.dataset.calc === 'duration') out.textContent = `${(-n('dur')*(n('dy')/100)*100).toFixed(2)}%`;
-          if (box.dataset.calc === 'var') out.textContent = `£${Math.round(n('v')*(n('vol')/100)*n('z')).toLocaleString('en-GB')}`;
+          if (box.dataset.calc === 'sharpe') {
+            const rp = getNumberValue('rp'), rf = getNumberValue('rf'), vol = getNumberValue('vol');
+            out.textContent = [rp, rf, vol].some(v => v === null) ? '—' : ((rp - rf) / Math.max(vol, 0.0001)).toFixed(2);
+          }
+          if (box.dataset.calc === 'capm') {
+            const rf = getNumberValue('rf'), beta = getNumberValue('beta'), rm = getNumberValue('rm');
+            out.textContent = [rf, beta, rm].some(v => v === null) ? '—' : `${(rf + beta * (rm - rf)).toFixed(2)}%`;
+          }
+          if (box.dataset.calc === 'duration') {
+            const dur = getNumberValue('dur'), dy = getNumberValue('dy');
+            out.textContent = [dur, dy].some(v => v === null) ? '—' : `${(-dur * (dy / 100) * 100).toFixed(2)}%`;
+          }
+          if (box.dataset.calc === 'var') {
+            const v = getNumberValue('v'), vol = getNumberValue('vol'), z = getNumberValue('z');
+            out.textContent = [v, vol, z].some(v => v === null) ? '—' : `£${Math.round(v * (vol / 100) * z).toLocaleString('en-GB')}`;
+          }
         };
         box.querySelectorAll('input').forEach(i => i.addEventListener('input', update)); update();
       });
@@ -202,7 +222,7 @@
       const ids = saved();
       savedLaunch.textContent = `⭐ My saved terms (${ids.length})`;
       if (!ids.length){ savedList.innerHTML = '<p style="color:#64748b">No saved terms yet.</p>'; return; }
-      savedList.innerHTML = ids.map(id => map[id]).filter(Boolean).map(t => `<div class="saved-item"><a href="#${t.id}">${t.term}</a><div style="font-size:12px;color:#64748b;margin-top:4px">${t.simple}</div></div>`).join('');
+      savedList.innerHTML = ids.map(id => map[id]).filter(Boolean).map(t => `<div class="saved-item"><a href="#${t.id}">${escapeHtml(t.term)}</a><div style="font-size:12px;color:#64748b;margin-top:4px">${escapeHtml(t.simple)}</div></div>`).join('');
       savedList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => savedPanel.classList.remove('open')));
     }
 
@@ -234,10 +254,16 @@
     }
 
     function exportSheet(){
-      const ids = saved(); if (!ids.length) return alert('Save terms first with ☆.');
+      const ids = saved();
+      const status = document.getElementById('statusMsg');
+      if (!ids.length) {
+        if (status) status.textContent = 'Save at least one term with ☆ before generating a study sheet.';
+        return;
+      }
+      if (status) status.textContent = '';
       const selected = ids.map(id => map[id]).filter(Boolean);
       const w = window.open('', '_blank');
-      w.document.write(`<!doctype html><html><head><title>Study Sheet</title><style>body{font-family:Inter,system-ui,sans-serif;padding:24px}article{border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin-bottom:10px}.f{font-family:monospace;background:#f8fafc;border-radius:8px;padding:6px}</style></head><body><h1>Saved Glossary Terms</h1>${selected.map(t=>`<article><h2>${t.term}</h2><p><strong>Simple:</strong> ${t.simple}</p><p><strong>Academic:</strong> ${t.academic}</p><div class="f">${t.formula}</div><p><strong>Worked example:</strong> ${t.example}</p><p><strong>Key source:</strong> ${t.source}</p></article>`).join('')}<script>window.print()</script></body></html>`);
+      w.document.write(`<!doctype html><html><head><title>Study Sheet</title><style>body{font-family:Inter,system-ui,sans-serif;padding:24px}article{border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin-bottom:10px}.f{font-family:monospace;background:#f8fafc;border-radius:8px;padding:6px}</style></head><body><h1>Saved Glossary Terms</h1>${selected.map(t=>`<article><h2>${escapeHtml(t.term)}</h2><p><strong>Simple:</strong> ${escapeHtml(t.simple)}</p><p><strong>Academic:</strong> ${escapeHtml(t.academic)}</p><div class="f">${escapeHtml(t.formula)}</div><p><strong>Worked example:</strong> ${escapeHtml(t.example)}</p><p><strong>Key source:</strong> ${escapeHtml(t.source)}</p></article>`).join('')}<script>window.print()<\/script></body></html>`);
       w.document.close();
     }
 
