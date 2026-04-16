@@ -1643,21 +1643,31 @@
   </script>
   <script>
     (function(){
+      function closeAllDropdowns() {
+        document.querySelectorAll('.nav-dropdown.open').forEach(function(o){
+          o.classList.remove('open');
+          var t = o.querySelector('.nav-drop-toggle');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+      }
       document.querySelectorAll('.nav-dropdown').forEach(function(dd){
         var toggle = dd.querySelector('.nav-drop-toggle');
         if (!toggle) return;
         toggle.addEventListener('click', function(e){
           e.stopPropagation();
           var open = dd.classList.contains('open');
-          document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
-          if (!open) dd.classList.add('open');
+          closeAllDropdowns();
+          if (!open) {
+            dd.classList.add('open');
+            toggle.setAttribute('aria-expanded', 'true');
+          }
         });
       });
       document.addEventListener('click', function(){
-        document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+        closeAllDropdowns();
       });
       document.addEventListener('keydown', function(e){
-        if (e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+        if (e.key === 'Escape') closeAllDropdowns();
       });
     })();
   </script>
