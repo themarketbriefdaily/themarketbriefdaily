@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CFA Curriculum Library | The Market Brief Daily</title>
-  <meta name="description" content="Complete CFA Program curriculum (Levels I–III) in a Kaplan-style learning environment with interactive tools." />
+  <title>CFA + IMC Curriculum Library | The Market Brief Daily</title>
+  <meta name="description" content="Complete CFA and IMC curriculum coverage in a Kaplan-style learning environment with interactive tools and exam-focused study guidance." />
   <style>
     :root {
       --bg: #eaf3ff;
@@ -346,7 +346,7 @@
 <body>
   <div class="layout">
     <aside class="panel sidebar">
-      <h1>CFA Curriculum Library</h1>
+      <h1>CFA + IMC Curriculum Library</h1>
       <p class="subtle">The Market Brief Daily</p>
       <div class="progress-wrap">
         <div class="donut" id="completionDonut"><span id="completionPct">0%</span></div>
@@ -378,6 +378,8 @@
           <option value="alternatives">Alternatives</option>
           <option value="portfolio-management">Portfolio Management</option>
           <option value="ethics">Ethics</option>
+          <option value="imc-investment-environment">IMC Unit 1: Investment Environment</option>
+          <option value="imc-investment-practice">IMC Unit 2: Investment Practice</option>
         </select>
       </section>
       <section class="toc">
@@ -388,8 +390,8 @@
 
     <main class="panel content">
       <header class="content-header">
-        <h1>Complete CFA Program (Levels I–III) — Story-First, Formula-Driven</h1>
-        <p>This curriculum mirrors Kaplan-style structure with continuous, rigorous coverage of the 10 CFA topic areas. Every lesson opens with a real-world event, then moves into formal framework, equations, empirical evidence, implementation risk, and institutional decision rules.</p>
+        <h1>Complete CFA + IMC Program — Story-First, Formula-Driven</h1>
+        <p>This curriculum combines CFA depth with full IMC unit coverage. Every lesson opens with a practical context, then moves into formal framework, equations, empirical evidence, implementation risk, and exam-focused decision rules for learners starting from zero.</p>
       </header>
 
       <section class="interactive-card" id="interactive-lab">
@@ -435,7 +437,7 @@
 
     <aside class="panel rightbar">
       <h2>Research Desk</h2>
-      <div class="sticky-box"><strong>Coverage:</strong> Level I foundations, Level II valuation depth, Level III portfolio implementation and ethics in practice.</div>
+      <div class="sticky-box"><strong>Coverage:</strong> CFA Levels I–III plus IMC Unit 1 (Investment Environment) and Unit 2 (Investment Practice), with first-principles through advanced implementation sequencing.</div>
       <div class="sticky-box"><strong>Story anchors:</strong> LTCM, Enron, Dot-com bubble, 2008 CDO crisis, Kodak, South Sea Bubble, Madoff, LIBOR, WeWork, UK LDI episode.</div>
       <div class="sticky-box"><strong>Evidence lens:</strong> Fama-French premia, Shiller CAPE, BIS leverage cycles, Khan-Serafeim-Yoon ESG materiality, Jensen alpha decomposition, active-share and cost-drag studies.</div>
       <div class="sticky-box">
@@ -443,6 +445,7 @@
         <ul class="source-list">
           <li>CFA Institute Program Curriculum LOS (L1–L3)</li>
           <li>Kaplan Schweser Notes and concept-check style</li>
+          <li>CISI IMC syllabus learning outcomes (Unit 1 and Unit 2)</li>
           <li>Damodaran, <em>Investment Valuation</em></li>
           <li>Malkiel, Taleb, Howard Marks, Graham & Dodd</li>
           <li>Edmans, Shiller, Kahneman & Tversky, Fama & French</li>
@@ -509,6 +512,28 @@
         { id: 'pm-3', title: 'Behavioral portfolio controls and decision journals', level: 'Level III', difficulty: 'intermediate', story: 'Isaac Newton\'s South Sea Bubble loss highlights regret, herding, and re-entry bias even among top intellects.', formula: 'Sharpe = (E[R_p]-R_f)/sigma_p; process quality is required to sustain realized Sharpe.', evidence: 'Behavioral finance studies document overconfidence and disposition effects as persistent performance drags.', application: 'Implement pre-trade checklists, decision journals, and post-mortem scorecards.' },
         { id: 'pm-4', title: 'Strategic asset allocation and liability-aware optimization', level: 'Level II', difficulty: 'intermediate', story: 'Institutions with similar return targets often diverge because liability structure and spending policy differ materially.', formula: 'Optimization objective: maximize expected utility subject to drawdown, liquidity, and liability constraints.', evidence: 'Endowment and pension evidence shows governance quality is as important as model precision in long-horizon outcomes.', application: 'Define risk in funding-ratio and spending-volatility terms, not just benchmark tracking error.' },
         { id: 'pm-5', title: 'Sequence risk, withdrawal policy, and retirement sustainability', level: 'Level III', difficulty: 'advanced', story: 'Two retirees with identical average returns can experience very different outcomes if early returns are weak during withdrawals.', formula: 'Safe-withdrawal stress uses path-dependent simulation, not average-return assumptions.', evidence: 'Retirement studies show dynamic spending rules can improve longevity of capital vs static real-withdrawal rules.', application: 'Use guardrail-based spending bands linked to portfolio drawdown and inflation regimes.' }
+      ]},
+      { id: 'imc-investment-environment', title: 'IMC Unit 1 — Investment Environment', overview: 'Unit 1 builds the legal, regulatory, economic, accounting, and risk foundations needed to operate safely and competently in UK investment markets.', lessons: [
+        { id: 'imc1-1', title: 'UK financial services architecture: FCA, PRA, BoE and FPC', level: 'Level I', difficulty: 'foundations', story: 'Post-crisis reform split prudential and conduct supervision because a single lens failed to catch both solvency risk and client harm early enough.', formula: 'Regulatory objective mapping: systemic stability controls + consumer protection controls + market integrity controls.', evidence: 'Regulatory reviews repeatedly show failures arise when firms optimize one objective (growth) while neglecting prudential and conduct constraints.', application: 'When analyzing a firm, classify every control into prudential, conduct, governance, and market-integrity buckets before forming a suitability view.' },
+        { id: 'imc1-2', title: 'Authorisation, permissions, and the regulatory perimeter', level: 'Level I', difficulty: 'foundations', story: 'Firms have failed by offering advice or promotions outside permissions, creating remediation costs and reputational damage far beyond original revenue.', formula: 'Permission test: activity + client type + communication mode + product type must sit within approved perimeter.', evidence: 'FCA enforcement outcomes show perimeter breaches are often linked to weak product governance and poor distribution oversight.', application: 'Use a pre-launch checklist to verify permissions, disclosure wording, target market, and approval governance for each proposition.' },
+        { id: 'imc1-3', title: 'Conduct of business, treating customers fairly, and vulnerable clients', level: 'Level I', difficulty: 'foundations', story: 'Mis-selling episodes repeatedly involved products sold to clients with poor understanding, unsuitable risk capacity, or unmet liquidity needs.', formula: 'Suitability lens: recommendation quality = appropriateness + affordability + risk capacity + objective alignment.', evidence: 'Consumer-duty style reviews indicate harm often occurs from cumulative small frictions: unclear fees, optimistic communications, and weak ongoing monitoring.', application: 'Build evidence trails showing how client objectives, capacity for loss, and comprehension were tested before and after recommendation.' },
+        { id: 'imc1-4', title: 'Financial crime controls: AML, sanctions, bribery and market abuse', level: 'Level II', difficulty: 'intermediate', story: 'Firms with strong investment process still fail if onboarding, surveillance, or escalation controls are weak against illicit flows or abusive trading patterns.', formula: 'Control triad: customer due diligence + transaction monitoring + suspicious activity escalation.', evidence: 'Global enforcement trends show risk spikes around weak beneficial-ownership checks and fragmented alert governance.', application: 'Define risk-based KYC tiers, refresh intervals, escalation SLAs, and independent second-line challenge for high-risk accounts.' },
+        { id: 'imc1-5', title: 'Macroeconomic foundations for market participants', level: 'Level I', difficulty: 'foundations', story: 'Retail and institutional losses often follow from misunderstanding how inflation and policy rates affect discount rates, credit risk, and real wealth.', formula: 'Real return ≈ nominal return - inflation; policy reaction often links inflation gap and output gap.', evidence: 'Historical regimes show valuation and funding conditions can shift rapidly when inflation expectations unanchor.', application: 'Translate macro views into expected impacts on equities, bonds, credit spreads, and client suitability outcomes.' },
+        { id: 'imc1-6', title: 'Financial statements for investment professionals', level: 'Level I', difficulty: 'foundations', story: 'Investors relying on headline profit without cash-flow context miss deterioration in quality and balance-sheet flexibility.', formula: 'Core checks: accrual ratio, cash conversion, leverage ratios, and interest coverage.', evidence: 'Quality-factor and credit research consistently tie weak cash conversion to future downgrades and underperformance.', application: 'Reconcile revenue growth, receivables, and operating cash flow before accepting management guidance as economically robust.' },
+        { id: 'imc1-7', title: 'Time value of money, discounting and valuation intuition', level: 'Level I', difficulty: 'foundations', story: 'Clients underestimate how discount rate shifts can dominate short-term earnings surprises in present-value based assets.', formula: 'PV = sum(CF_t/(1+r)^t); duration intuition captures sensitivity of value to discount-rate changes.', evidence: 'Rate-shock episodes repeatedly show long-duration assets rerate faster than near-term cash generators.', application: 'Teach clients and committees to separate cash-flow uncertainty from discount-rate uncertainty in every valuation discussion.' },
+        { id: 'imc1-8', title: 'Risk statistics and portfolio mathematics for IMC', level: 'Level II', difficulty: 'intermediate', story: 'Portfolios with similar expected return can have very different drawdown paths due to volatility clustering and correlation instability.', formula: 'Portfolio variance: w1^2*s1^2 + w2^2*s2^2 + 2w1w2s1s2rho; Sharpe = excess return/volatility.', evidence: 'Empirical portfolio studies show correlations rise in stress, reducing diversification benefits exactly when needed most.', application: 'Use stress correlations, drawdown limits, and liquidity overlays instead of relying only on long-term average covariance matrices.' }
+      ]},
+      { id: 'imc-investment-practice', title: 'IMC Unit 2 — Investment Practice', overview: 'Unit 2 converts environment knowledge into investment practice: client objectives, strategic and tactical allocation, security analysis, implementation, and performance oversight.', lessons: [
+        { id: 'imc2-1', title: 'Client fact-find, objectives and investment policy design', level: 'Level I', difficulty: 'foundations', story: 'Many portfolio failures begin with vague objectives; when constraints are not quantified, implementation drifts into unsuitable risk.', formula: 'IPS structure: objectives + constraints (liquidity, horizon, taxes, legal, unique factors) + governance rules.', evidence: 'Wealth-management research shows goal clarity and spending discipline are stronger predictors of success than product selection alone.', application: 'Document explicit return target ranges, maximum drawdown tolerance, liquidity floors, and review cadence before portfolio construction.' },
+        { id: 'imc2-2', title: 'Strategic asset allocation and long-horizon risk budgeting', level: 'Level II', difficulty: 'intermediate', story: 'Institutions with similar expected returns produce different outcomes because their liabilities, governance quality, and rebalancing discipline differ.', formula: 'Expected portfolio return = sum(w_i * E[R_i]); risk budget allocates total volatility or drawdown capacity by sleeve.', evidence: 'Pension and endowment evidence suggests policy allocation explains a large share of long-term variance in outcomes.', application: 'Build strategic allocation around liability and cash-flow realities, then map each sleeve to explicit risk budgets and monitoring triggers.' },
+        { id: 'imc2-3', title: 'Equity analysis workflow: business model to valuation', level: 'Level II', difficulty: 'intermediate', story: 'Overpaying for quality or underpaying for cyclicality often stems from weak integration between narrative assessment and valuation assumptions.', formula: 'Equity value via DCF and justified multiples triangulation; test implied growth and margin assumptions against history.', evidence: 'Cross-sectional studies support profitability, capital discipline, and valuation starting point as durable return drivers.', application: 'Write one-page investment cases with thesis, valuation range, key risks, catalysts, and explicit kill criteria.' },
+        { id: 'imc2-4', title: 'Fixed income practice: duration, curve risk and credit selection', level: 'Level II', difficulty: 'intermediate', story: 'Bond investors often underestimate non-parallel curve shifts and refinancing risk in late-cycle conditions.', formula: 'Price sensitivity ≈ -Duration*Delta y + 0.5*Convexity*(Delta y)^2; spread decomposition separates default and liquidity premia.', evidence: 'Credit-cycle research finds risk premium repricing often leads fundamentals, producing abrupt mark-to-market losses.', application: 'Pair duration targets with key-rate limits and issuer-level downside scenarios, including refinancing-window closure assumptions.' },
+        { id: 'imc2-5', title: 'Derivatives in portfolio implementation and risk control', level: 'Level II', difficulty: 'intermediate', story: 'Derivative overlays can reduce tracking error efficiently, but poor collateral planning can force de-risking at adverse times.', formula: 'Overlay P&L combines directional delta, convexity, volatility, carry, and financing effects.', evidence: 'Institutional case studies show implementation success depends on collateral governance as much as pricing precision.', application: 'Define overlay objective, allowable instruments, collateral waterfall, and independent valuation controls before execution.' },
+        { id: 'imc2-6', title: 'Collective vehicles and fund structures in practice', level: 'Level I', difficulty: 'foundations', story: 'Investors frequently select funds by recent returns while ignoring structure, dealing terms, and hidden implementation frictions.', formula: 'Net investor outcome = gross strategy return - OCF - transaction drag - tax leakage.', evidence: 'Fund selection evidence shows fee discipline and process consistency improve persistence more than headline star rankings.', application: 'Evaluate funds using repeatable templates: mandate fit, process edge, fee stack, capacity, governance, and liquidity terms.' },
+        { id: 'imc2-7', title: 'Alternative assets and liquidity-adjusted portfolio role', level: 'Level II', difficulty: 'intermediate', story: 'Alternatives can improve diversification, but mismatched lockups and valuation smoothing can create false comfort in stressed markets.', formula: 'Liquidity-adjusted expected return = expected gross return - illiquidity premium required + implementation and governance drag.', evidence: 'Allocator research highlights dispersion and manager selection as first-order drivers of realized alternative outcomes.', application: 'Treat alternatives as governance-intensive sleeves with explicit liquidity budgeting and pacing plans.' },
+        { id: 'imc2-8', title: 'Performance measurement, attribution and manager review', level: 'Level II', difficulty: 'intermediate', story: 'Committees often mistake luck for skill without structured attribution and horizon-aware evaluation.', formula: 'Active return decomposition: allocation effect + selection effect + interaction; risk-adjusted metrics include information ratio.', evidence: 'Manager persistence studies show short-horizon rankings are noisy and heavily influenced by style cycles.', application: 'Use multi-horizon scorecards with benchmark appropriateness checks, style context, and fee-adjusted value-add tests.' },
+        { id: 'imc2-9', title: 'Behavioral biases and governance controls in decision-making', level: 'Level I', difficulty: 'foundations', story: 'Even experienced teams fall into herding, anchoring, and confirmation bias during volatile periods.', formula: 'Process reliability improves when decision quality is measured separately from short-term outcome noise.', evidence: 'Behavioral finance literature consistently links overconfidence and disposition effects to avoidable performance drag.', application: 'Implement pre-mortems, decision journals, red-team challenge, and structured post-investment reviews.' },
+        { id: 'imc2-10', title: 'Exam execution: integrated case reasoning and answer structure', level: 'Level I', difficulty: 'foundations', story: 'Candidates who know content still lose marks by failing to connect regulatory duties, analytics, and recommendation logic under time pressure.', formula: 'Answer architecture: identify objective -> state framework -> compute/justify -> test risks -> conclude with action.', evidence: 'Exam-preparation studies show retrieval practice, spaced repetition, and timed mixed-question sets improve transfer performance.', application: 'Use weekly cumulative revision cycles, error logs, and timed mocks focused on weak domains until accuracy is consistently high.' }
       ]},
       { id: 'ethics', title: 'Ethical and Professional Standards', overview: 'Ethics is an alpha-preserving risk-control framework: trust, market integrity, and fiduciary duty directly impact capital cost and franchise value.', lessons: [
         { id: 'et-1', title: 'Madoff and due-diligence failure', level: 'Level I', difficulty: 'foundations', story: 'Madoff\'s fraud persisted because investors outsourced skepticism and ignored impossible return smoothness.', formula: 'Red-flag heuristic: if claimed alpha is high and volatility unrealistically low, require independent verification and custodian segregation.', evidence: 'Fraud-case studies show governance and operational diligence failures dominate quantitative blind spots.', application: 'Apply CFA Code and Standards: diligence, reasonable basis, and loyalty to clients.' },
@@ -649,6 +674,32 @@
           'Escalate conflicts early and preserve auditable decision trails.',
           'Prioritize loyalty, prudence, and fairness over short-term revenue pressure.'
         ]
+      },
+      'imc-investment-environment': {
+        examFocus: 'IMC Unit 1 tests whether you can operate safely inside the UK investment environment: regulation, conduct, economics, accounting, risk, and legal obligations must be integrated in every recommendation.',
+        objectives: [
+          'Understand how UK regulators and firm governance structures protect market integrity and consumers.',
+          'Apply core economics, accounting, and risk mathematics to practical investment decisions.',
+          'Identify where client harm and compliance failures typically originate in real workflows.'
+        ],
+        checklist: [
+          'Map each scenario to relevant regulatory duty and control owner.',
+          'Show calculations clearly and explain the investment meaning, not just the number.',
+          'Escalate perimeter, conduct, and financial-crime risks with documented rationale.'
+        ]
+      },
+      'imc-investment-practice': {
+        examFocus: 'IMC Unit 2 tests implementation competence: convert objectives into portfolios, evaluate securities and managers, and maintain disciplined monitoring under realistic constraints.',
+        objectives: [
+          'Build client-aligned portfolios using allocation, security analysis, and risk controls.',
+          'Evaluate funds and managers with fee-aware, benchmark-aware, and governance-aware frameworks.',
+          'Use attribution and review processes to separate process quality from short-term noise.'
+        ],
+        checklist: [
+          'Start every answer from client objective and constraints before discussing products.',
+          'Include valuation/risk logic plus implementation frictions (fees, liquidity, taxes).',
+          'Conclude with a clear action, monitoring trigger, and governance responsibility.'
+        ]
       }
     };
 
@@ -702,7 +753,7 @@
         <h3>Exam coaching</h3>
         <p><strong>How this is typically tested:</strong> Examiners usually ask you to connect the historical context to the model, then defend an implementation choice with explicit assumptions and risk controls.</p>
         <p><strong>Common trap to avoid:</strong> ${difficultyCoaching[lesson.difficulty]}</p>
-        <p><strong>Level-specific expectation:</strong> ${levelCoaching[lesson.level]}</p>
+        <p><strong>Level-specific expectation:</strong> ${levelCoaching[lesson.level] || 'IMC emphasis: show clear objective mapping, compliant process logic, and practical implementation judgment under UK market and conduct constraints.'}</p>
       </div>
     `;
 
