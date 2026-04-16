@@ -29,6 +29,10 @@
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
         const isOpen = dd.classList.contains('open');
+        if (isOpen) {
+          window.location.assign('/education-library.html');
+          return;
+        }
         closeAll(dd);
         dd.classList.toggle('open', !isOpen);
         toggle.setAttribute('aria-expanded', String(!isOpen));
