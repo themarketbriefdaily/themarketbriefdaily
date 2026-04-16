@@ -319,6 +319,37 @@
     }
     .novice-box strong { display: block; color: #1e40af; margin-bottom: 4px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.02em; }
     .novice-box ul { margin: 0; padding-left: 16px; }
+    .foundation-ramp {
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .foundation-ramp h3 { margin: 0 0 8px; color: #312e81; font-size: 0.95rem; }
+    .foundation-ramp p { margin: 0 0 8px; color: #334155; font-size: 0.83rem; }
+    .foundation-ramp-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .foundation-ramp-box {
+      border: 1px solid #c7d2fe;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+    .foundation-ramp-box strong {
+      display: block;
+      color: #3730a3;
+      margin-bottom: 4px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .foundation-ramp-box ul { margin: 0; padding-left: 16px; }
     .novice-primer {
       margin-top: 8px;
       border: 1px solid #dbeafe;
@@ -344,6 +375,27 @@
       font-size: 0.8rem;
       color: #475569;
     }
+    .term-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .term-chip {
+      font-size: 0.72rem;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 700;
+    }
+    .checkpoint-box {
+      margin-top: 7px;
+      border: 1px dashed #bfdbfe;
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+      font-size: 0.79rem;
+      color: #334155;
+    }
+    .checkpoint-box p { margin: 0 0 5px; font-size: 0.79rem; color: #334155; }
+    .checkpoint-box p:last-child { margin-bottom: 0; }
     .mastery-framework {
       border: 1px solid #bfdbfe;
       background: #eff6ff;
@@ -526,6 +578,46 @@
         </div>
         <div id="frontierResult" class="result"></div>
         <canvas id="frontierChart" width="840" height="220" aria-label="Efficient frontier chart"></canvas>
+      </section>
+
+      <section class="foundation-ramp" id="imc-foundation-ramp">
+        <h3>IMC Foundation Ramp (Zero Knowledge → Exam Language)</h3>
+        <p>Before your first full revision cycle, build this minimum base so every later lesson is understandable and testable under time pressure.</p>
+        <div class="foundation-ramp-grid">
+          <div class="foundation-ramp-box">
+            <strong>Finance language first</strong>
+            <ul>
+              <li>Memorize and use 25 essential terms per week in your own words.</li>
+              <li>For each term, write one plain-English sentence and one exam-style sentence.</li>
+              <li>If you cannot define a term in 10 seconds, you are not exam ready on that domain.</li>
+            </ul>
+          </div>
+          <div class="foundation-ramp-box">
+            <strong>Command words decoder</strong>
+            <ul>
+              <li>Define: precise meaning with no story.</li>
+              <li>Explain: cause → effect chain in 2–3 steps.</li>
+              <li>Compare: similarities + differences + judgement.</li>
+              <li>Evaluate: state recommendation with explicit trade-offs.</li>
+            </ul>
+          </div>
+          <div class="foundation-ramp-box">
+            <strong>Formula ladder</strong>
+            <ul>
+              <li>Stage 1: TVM, real return, Sharpe, and two-asset variance.</li>
+              <li>Stage 2: duration/convexity, attribution, and allocation math.</li>
+              <li>Stage 3: integrated case calculations under timed constraints.</li>
+            </ul>
+          </div>
+          <div class="foundation-ramp-box">
+            <strong>Go / no-go rules</strong>
+            <ul>
+              <li>Proceed only when current-week mixed quiz is at least 85%.</li>
+              <li>If any domain is under 80%, stop forward progress and rebuild.</li>
+              <li>Use same-day error correction and 48-hour retest for every miss.</li>
+            </ul>
+          </div>
+        </div>
       </section>
 
       <section class="novice-bootcamp" id="imc-bootcamp">
@@ -884,6 +976,7 @@
           'Intro accounting texts on statement linkage and cash-flow quality.',
           'Macro primer on inflation, rates, and transmission to asset prices.'
         ],
+        progressionGate: 'You should not advance to Unit 2 until you score at least 85% on two consecutive mixed Unit 1 checks and no domain is below 80%.',
         masteryGates: [
           'Pass 300+ mixed Unit 1 question attempts with at least 85% rolling accuracy.',
           'Demonstrate clean workings for all core calculations (TVM, risk stats, real return).',
@@ -913,12 +1006,34 @@
           'Fund due-diligence and fee-impact research notes.',
           'Performance attribution basics and benchmark construction primers.'
         ],
+        progressionGate: 'You should not book final exams until three mixed mocks average at least 85% and each major domain remains above 80%.',
         masteryGates: [
           'Pass 350+ mixed Unit 2 question attempts with at least 85% rolling accuracy.',
           'Produce 25 timed integrated-case answers with command-word compliant structure.',
           'Complete 3 full mixed mocks above 85% before final exam entry.'
         ]
       }
+    };
+
+    const imcLessonSupport = {
+      'imc1-1': { prerequisites: ['What regulators do vs what firms do', 'Difference between prudential and conduct risk'], commandWord: 'Explain', keyTerms: ['FCA', 'PRA', 'BoE', 'FPC'], selfCheckQ: 'Why can a firm look profitable but still fail regulatory expectations?', selfCheckA: 'Because prudential strength and conduct quality are separate tests; earnings alone do not prove client protection or system safety.' },
+      'imc1-2': { prerequisites: ['Basic product/advice distinction', 'Client type categories'], commandWord: 'Evaluate', keyTerms: ['Perimeter', 'Permissions', 'Financial promotion'], selfCheckQ: 'What is the first check before launching a new client proposition?', selfCheckA: 'Confirm activity, client segment, channel, and product all sit inside approved permissions.' },
+      'imc1-3': { prerequisites: ['Risk tolerance vs capacity for loss', 'Client objective basics'], commandWord: 'Compare', keyTerms: ['Suitability', 'Vulnerability', 'Consumer duty'], selfCheckQ: 'How can a product be good but still unsuitable?', selfCheckA: 'If the client lacks liquidity capacity, understanding, or risk capacity, suitability fails regardless of product quality.' },
+      'imc1-4': { prerequisites: ['KYC basics', 'Why escalation matters'], commandWord: 'Analyze', keyTerms: ['AML', 'Sanctions', 'Market abuse'], selfCheckQ: 'Why is AML monitoring continuous rather than one-off?', selfCheckA: 'Risk changes over time through new transactions, counterparties, and behavior patterns.' },
+      'imc1-5': { prerequisites: ['Inflation basics', 'Nominal vs real'], commandWord: 'Explain', keyTerms: ['Real return', 'Policy rate', 'Output gap'], selfCheckQ: 'Why do rising real yields often pressure growth equities?', selfCheckA: 'Higher real discount rates reduce present value most for long-duration cash flows.' },
+      'imc1-6': { prerequisites: ['Three financial statements', 'Cash vs profit'], commandWord: 'Evaluate', keyTerms: ['Cash conversion', 'Accruals', 'Leverage'], selfCheckQ: 'Which is safer: high EPS with weak cash conversion, or lower EPS with strong cash?', selfCheckA: 'Usually stronger cash conversion, because it better supports resilience and debt service.' },
+      'imc1-7': { prerequisites: ['Percentages and compounding', 'Basic discounting'], commandWord: 'Calculate', keyTerms: ['Present value', 'Discount rate', 'Duration intuition'], selfCheckQ: 'What happens to PV when discount rate rises?', selfCheckA: 'PV falls, with larger impact on cash flows received further in the future.' },
+      'imc1-8': { prerequisites: ['Volatility concept', 'Weighted averages'], commandWord: 'Calculate', keyTerms: ['Correlation', 'Portfolio variance', 'Sharpe ratio'], selfCheckQ: 'Why can diversification fail in stress?', selfCheckA: 'Correlations often rise during crises, shrinking diversification benefits when risk is highest.' },
+      'imc2-1': { prerequisites: ['Unit 1 suitability basics', 'Client objective language'], commandWord: 'Define', keyTerms: ['IPS', 'Constraints', 'Governance'], selfCheckQ: 'What makes an IPS weak?', selfCheckA: 'Vague goals, no quantified constraints, and no monitoring or decision rules.' },
+      'imc2-2': { prerequisites: ['Expected return basics', 'Risk budget idea'], commandWord: 'Explain', keyTerms: ['Strategic allocation', 'Rebalancing', 'Risk budget'], selfCheckQ: 'Why can two portfolios with same expected return have very different outcomes?', selfCheckA: 'Different risk budgets, liabilities, governance quality, and rebalancing discipline.' },
+      'imc2-3': { prerequisites: ['Business model logic', 'Valuation basics'], commandWord: 'Evaluate', keyTerms: ['DCF', 'Margin assumptions', 'Catalyst'], selfCheckQ: 'Why does narrative-only equity analysis lose marks?', selfCheckA: 'IMC answers require quantified valuation logic, risks, and explicit recommendation structure.' },
+      'imc2-4': { prerequisites: ['Yield and bond price inverse relation', 'Duration basics'], commandWord: 'Calculate', keyTerms: ['Duration', 'Convexity', 'Spread'], selfCheckQ: 'Why is duration-only analysis incomplete?', selfCheckA: 'It misses convexity effects, credit spread moves, and liquidity/funding shocks.' },
+      'imc2-5': { prerequisites: ['Hedging purpose', 'Collateral basics'], commandWord: 'Analyze', keyTerms: ['Overlay', 'Margin', 'Counterparty'], selfCheckQ: 'Why can a good hedge still create losses?', selfCheckA: 'Collateral, basis risk, and execution frictions can hurt outcomes despite correct hedge intent.' },
+      'imc2-6': { prerequisites: ['Gross vs net return', 'Fee components'], commandWord: 'Compare', keyTerms: ['OCF', 'Turnover drag', 'Liquidity terms'], selfCheckQ: 'What is the minimum comparison for two similar funds?', selfCheckA: 'Mandate fit, net-of-fee expected outcome, process repeatability, and dealing/liquidity terms.' },
+      'imc2-7': { prerequisites: ['Liquidity risk basics', 'Manager dispersion idea'], commandWord: 'Evaluate', keyTerms: ['Lockup', 'Valuation lag', 'Pacing'], selfCheckQ: 'Why can alternatives look less volatile than they really are?', selfCheckA: 'Appraisal smoothing and delayed marks can understate true economic risk.' },
+      'imc2-8': { prerequisites: ['Benchmark concept', 'Active return basics'], commandWord: 'Analyze', keyTerms: ['Attribution', 'Selection effect', 'Information ratio'], selfCheckQ: 'Why is one-quarter outperformance not enough to conclude skill?', selfCheckA: 'Short periods are noisy and can reflect style cycle luck rather than repeatable process edge.' },
+      'imc2-9': { prerequisites: ['Behavioral bias basics', 'Decision process logs'], commandWord: 'Explain', keyTerms: ['Anchoring', 'Herding', 'Decision journal'], selfCheckQ: 'How do you reduce behavior-driven errors?', selfCheckA: 'Use structured pre-mortems, red-team challenge, and post-decision review controls.' },
+      'imc2-10': { prerequisites: ['All prior Unit 1 and 2 concepts', 'Timed-answer structure'], commandWord: 'Evaluate', keyTerms: ['Command words', 'Integrated case', 'Error log'], selfCheckQ: 'What is the core exam-writing sequence?', selfCheckA: 'Objective, framework, calculation/logic, risk-control check, and clear action conclusion.' }
     };
 
     const imcLessonPrimer = {
@@ -971,6 +1086,7 @@
       const checklistHtml = guide.checklist.map((item) => `<li>${item}</li>`).join('');
       const cadenceHtml = guide.cadence ? `<div class="topic-guide-box"><strong>Weekly Cadence</strong><ul>${guide.cadence.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
       const readingsHtml = guide.readings ? `<div class="topic-guide-box"><strong>Core Readings</strong><ul>${guide.readings.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
+      const progressionHtml = guide.progressionGate ? `<div class="topic-guide-box"><strong>Progression Gate</strong><ul><li>${guide.progressionGate}</li></ul></div>` : '';
       const masteryHtml = guide.masteryGates ? `<div class="topic-guide-box"><strong>Mastery Gates</strong><ul>${guide.masteryGates.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
       return `
         <div class="topic-guide">
@@ -987,6 +1103,7 @@
             </div>
             ${cadenceHtml}
             ${readingsHtml}
+            ${progressionHtml}
             ${masteryHtml}
           </div>
         </div>
@@ -995,27 +1112,48 @@
 
     const createNovicePrimer = (lesson) => {
       const primer = imcLessonPrimer[lesson.id];
+      const support = imcLessonSupport[lesson.id];
       if (!primer) return '';
       const readings = primer.readings.map((item) => `<li>${item}</li>`).join('');
+      const terms = support?.keyTerms?.length ? `<div class="term-chips">${support.keyTerms.map((item) => `<span class="term-chip">${item}</span>`).join('')}</div>` : '';
+      const checkpoint = support?.selfCheckQ ? `
+        <div class="checkpoint-box">
+          <p><strong>Quick self-check:</strong> ${support.selfCheckQ}</p>
+          <p><strong>Pass answer test:</strong> ${support.selfCheckA}</p>
+        </div>
+      ` : '';
       return `
         <div class="novice-primer">
           <h3>Zero-Knowledge Teaching Notes</h3>
           <p><strong>First principles:</strong> ${primer.firstPrinciples}</p>
           <p><strong>Worked example you should practice:</strong> ${primer.workedExample}</p>
           <p><strong>Common mistake to avoid:</strong> ${primer.mistakeToAvoid}</p>
+          ${terms}
+          ${checkpoint}
           <ul>${readings}</ul>
         </div>
       `;
     };
 
-    const createLessonDeepDive = (lesson) => `
-      <div class="lesson-deep-dive">
-        <h3>Exam coaching</h3>
-        <p><strong>How this is typically tested:</strong> Examiners usually ask you to connect the historical context to the model, then defend an implementation choice with explicit assumptions and risk controls.</p>
-        <p><strong>Common trap to avoid:</strong> ${difficultyCoaching[lesson.difficulty]}</p>
-        <p><strong>Level-specific expectation:</strong> ${levelCoaching[lesson.level] || 'IMC emphasis: show clear objective mapping, compliant process logic, and practical implementation judgment under UK market and conduct constraints.'}</p>
-      </div>
-    `;
+    const createLessonDeepDive = (lesson) => {
+      const support = imcLessonSupport[lesson.id];
+      const prereqHtml = support?.prerequisites?.length
+        ? `<p><strong>Prerequisites to verify first:</strong> ${support.prerequisites.join('; ')}.</p>`
+        : '';
+      const commandWordHtml = support?.commandWord
+        ? `<p><strong>Primary command-word mode:</strong> ${support.commandWord} — answer in that structure before adding extra detail.</p>`
+        : '';
+      return `
+        <div class="lesson-deep-dive">
+          <h3>Exam coaching</h3>
+          <p><strong>How this is typically tested:</strong> Examiners usually ask you to connect the historical context to the model, then defend an implementation choice with explicit assumptions and risk controls.</p>
+          <p><strong>Common trap to avoid:</strong> ${difficultyCoaching[lesson.difficulty]}</p>
+          ${prereqHtml}
+          ${commandWordHtml}
+          <p><strong>Level-specific expectation:</strong> ${levelCoaching[lesson.level] || 'IMC emphasis: show clear objective mapping, compliant process logic, and practical implementation judgment under UK market and conduct constraints.'}</p>
+        </div>
+      `;
+    };
 
     const createLesson = (topic, lesson) => {
       const article = document.createElement('article');
