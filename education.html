@@ -225,6 +225,68 @@
     .formula { background: #ecfdf5; border-color: #b7ebc7; }
     .evidence { background: #fff7ed; border-color: #fed7aa; }
     .application { background: #f5f3ff; border-color: #ddd6fe; }
+    .topic-guide {
+      margin: 10px 0 14px;
+      border: 1px solid #cfdcf4;
+      background: #f7faff;
+      border-radius: 11px;
+      padding: 11px;
+    }
+    .topic-guide h3 {
+      margin: 0 0 7px;
+      font-size: 0.9rem;
+      color: #1e3a8a;
+    }
+    .topic-guide p {
+      margin: 0 0 8px;
+      font-size: 0.84rem;
+      color: #334155;
+    }
+    .topic-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .topic-guide-box {
+      border: 1px solid #dbe6fa;
+      background: #fff;
+      border-radius: 9px;
+      padding: 8px;
+    }
+    .topic-guide-box strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.74rem;
+      color: #1d4ed8;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .topic-guide-box ul {
+      margin: 0;
+      padding-left: 16px;
+      color: #475569;
+      font-size: 0.8rem;
+    }
+    .lesson-deep-dive {
+      margin-top: 8px;
+      border: 1px dashed #bfd3ff;
+      border-radius: 10px;
+      background: #f8fbff;
+      padding: 9px 10px;
+    }
+    .lesson-deep-dive h3 {
+      margin: 0 0 6px;
+      color: #1e40af;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .lesson-deep-dive p {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      color: #334155;
+    }
+    .lesson-deep-dive p:last-of-type { margin-bottom: 0; }
     .lesson-actions { margin-top: 8px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
     .complete-btn {
       border: 1px solid #9ac0ff;
@@ -277,6 +339,7 @@
       .sidebar { position: static; max-height: none; }
       .content { padding: 14px; }
       .inline-grid { grid-template-columns: 1fr; }
+      .topic-guide-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -456,6 +519,151 @@
       ]}
     ];
 
+    const topicStudyGuide = {
+      'quantitative-methods': {
+        examFocus: 'Treat Quant as decision infrastructure, not formula memorization. You must interpret outputs, diagnose model fragility, and explain what changes when assumptions break under stress.',
+        objectives: [
+          'Translate distributions, confidence intervals, and regression diagnostics into investment decisions with error bounds.',
+          'Distinguish in-sample statistical fit from out-of-sample economic usefulness.',
+          'Use scenario overlays and regime-awareness to complement historical estimation.'
+        ],
+        checklist: [
+          'State assumptions explicitly (stationarity, independence, linearity, normality).',
+          'Show robustness checks (sub-period tests, alternative specs, transaction costs).',
+          'Define escalation triggers when model confidence deteriorates.'
+        ]
+      },
+      economics: {
+        examFocus: 'Economics questions are often integration questions: link growth, inflation, and policy to discount rates, margins, credit risk, and relative asset-class performance.',
+        objectives: [
+          'Map macro regime changes to expected returns and valuation multiple compression/expansion.',
+          'Connect monetary/fiscal policy transmission lags with market timing risk.',
+          'Interpret exchange-rate and real-yield shifts in cross-border portfolio context.'
+        ],
+        checklist: [
+          'Separate cyclical vs structural drivers in each macro view.',
+          'Stress both earnings and required return channels.',
+          'Document base/bull/bear scenarios with probability weights.'
+        ]
+      },
+      'financial-statement-analysis': {
+        examFocus: 'FSA at CFA depth requires converting reported accounting outcomes into normalized economic earnings, cash durability, and balance-sheet resilience under stress.',
+        objectives: [
+          'Identify earnings quality distortions from accruals, capitalization policy, and recognition timing.',
+          'Reconcile income statement momentum with cash-flow conversion and financing dependence.',
+          'Detect solvency and covenant risk before it appears in headline EPS.'
+        ],
+        checklist: [
+          'Cross-check NI, CFO, and working-capital trends for consistency.',
+          'Review footnotes for hidden obligations and one-off adjustments.',
+          'Normalize margins and cash generation across the cycle.'
+        ]
+      },
+      'corporate-issuers': {
+        examFocus: 'Corporate issuer analysis is capital allocation analysis: test whether management decisions raise long-run intrinsic value after cost of capital and governance frictions.',
+        objectives: [
+          'Evaluate financing choices, payout policy, and project selection against value-creation hurdles.',
+          'Assess governance quality as an explicit valuation and risk parameter.',
+          'Frame M&A claims with probability-weighted synergy realism.'
+        ],
+        checklist: [
+          'Compare ROIC trajectory to WACC under multiple macro states.',
+          'Score governance incentives, disclosure quality, and board independence.',
+          'Require post-investment KPI accountability for major capital decisions.'
+        ]
+      },
+      equity: {
+        examFocus: 'Equity questions test whether you can move from narrative to numbers and back: justify valuation with realistic growth, margin, and reinvestment assumptions.',
+        objectives: [
+          'Use DCF and relative valuation jointly to triangulate fair value.',
+          'Interpret implied expectations embedded in current market price.',
+          'Separate factor/style tailwinds from durable business quality.'
+        ],
+        checklist: [
+          'Build base-case valuation, then reverse-DCF implied expectations.',
+          'Benchmark assumptions against peers and historical ranges.',
+          'Write explicit downside thesis with catalyst and time horizon.'
+        ]
+      },
+      'fixed-income': {
+        examFocus: 'Fixed income mastery requires decomposition: identify what portion of risk comes from rates, curve shape, spread, convexity, optionality, liquidity, and leverage.',
+        objectives: [
+          'Quantify price sensitivity using duration/convexity and key-rate frameworks.',
+          'Disentangle spread carry from default and liquidity compensation.',
+          'Align bond exposures with liability and collateral constraints.'
+        ],
+        checklist: [
+          'Run parallel and non-parallel rate-shock scenarios.',
+          'Evaluate refinancing walls and downgrade migration pathways.',
+          'Stress funding, margin, and forced-sale conditions.'
+        ]
+      },
+      derivatives: {
+        examFocus: 'Derivatives are implementation tools with nonlinear and balance-sheet consequences; the exam expects precise payoff logic plus risk-governance controls.',
+        objectives: [
+          'Explain payoff replication, hedge intent, and residual basis risk.',
+          'Compute and interpret Greeks and valuation adjustments in changing volatility/funding states.',
+          'Incorporate legal, collateral, and counterparty terms into valuation.'
+        ],
+        checklist: [
+          'Confirm objective: hedge, income enhancement, or tactical expression.',
+          'Map path-dependent P&L under stress and gap scenarios.',
+          'Define margin/collateral liquidity runway before trade approval.'
+        ]
+      },
+      alternatives: {
+        examFocus: 'Alternative investments require liquidity-aware underwriting and governance-aware manager selection, not headline return chasing.',
+        objectives: [
+          'Evaluate private and real-asset performance using cash-flow-aware metrics.',
+          'Separate operational edge from leverage and multiple expansion effects.',
+          'Understand fee, liquidity, and valuation subjectivity impacts on realized outcomes.'
+        ],
+        checklist: [
+          'Use liquidity-adjusted return expectations and lockup compatibility tests.',
+          'Assess manager process repeatability, team stability, and controls.',
+          'Stress valuation marks against exit and financing conditions.'
+        ]
+      },
+      'portfolio-management': {
+        examFocus: 'Portfolio Management integrates the full curriculum into policy and implementation: objective setting, constraints, strategic allocation, and behavioral discipline.',
+        objectives: [
+          'Convert IPS language into measurable risk budgets and decision rules.',
+          'Balance strategic diversification with tactical flexibility and governance.',
+          'Design monitoring frameworks that prevent process drift and panic changes.'
+        ],
+        checklist: [
+          'Define success metrics net of fees, taxes, and implementation shortfall.',
+          'Set rebalance triggers and drawdown response playbooks in advance.',
+          'Review mandate fit as liabilities, cash needs, and market regimes evolve.'
+        ]
+      },
+      ethics: {
+        examFocus: 'Ethics questions are practical fiduciary tests: identify conflicts, preserve market integrity, and apply Standards with client welfare and documentation discipline.',
+        objectives: [
+          'Apply CFA Code and Standards to realistic ambiguous scenarios.',
+          'Differentiate compliant mosaic research from MNPI contamination risk.',
+          'Design governance controls that reduce conduct and reporting failures.'
+        ],
+        checklist: [
+          'Document rationale, data provenance, and client suitability analysis.',
+          'Escalate conflicts early and preserve auditable decision trails.',
+          'Prioritize loyalty, prudence, and fairness over short-term revenue pressure.'
+        ]
+      }
+    };
+
+    const difficultyCoaching = {
+      foundations: 'Foundations exam angle: define core terms precisely, execute one clean calculation, then interpret the sign and magnitude in plain investment language.',
+      intermediate: 'Intermediate exam angle: connect at least two frameworks (for example valuation + risk decomposition) and show where assumption sensitivity changes the decision.',
+      advanced: 'Advanced exam angle: layer model output with implementation frictions (liquidity, governance, collateral, behavior) and justify a robust policy response.'
+    };
+
+    const levelCoaching = {
+      'Level I': 'Level I emphasis: concept definition, direct formula usage, and interpretation of straightforward scenarios.',
+      'Level II': 'Level II emphasis: valuation depth, accounting/economic adjustment quality, and attribution across interacting drivers.',
+      'Level III': 'Level III emphasis: portfolio construction, mandate constraints, trade-offs, and implementation governance under uncertainty.'
+    };
+
     const curriculumRoot = document.getElementById('curriculumRoot');
     const tocRoot = document.getElementById('tocRoot');
     const difficultyFilter = document.getElementById('difficultyFilter');
@@ -465,6 +673,38 @@
     const completionText = document.getElementById('completionText');
     const activeFilterText = document.getElementById('activeFilterText');
     const completed = new Set(JSON.parse(localStorage.getItem('cfa-completed-lessons') || '[]'));
+
+    const createTopicGuide = (topic) => {
+      const guide = topicStudyGuide[topic.id];
+      if (!guide) return '';
+      const objectivesHtml = guide.objectives.map((item) => `<li>${item}</li>`).join('');
+      const checklistHtml = guide.checklist.map((item) => `<li>${item}</li>`).join('');
+      return `
+        <div class="topic-guide">
+          <h3>Course-Level Study Blueprint</h3>
+          <p>${guide.examFocus}</p>
+          <div class="topic-guide-grid">
+            <div class="topic-guide-box">
+              <strong>Learning Objectives</strong>
+              <ul>${objectivesHtml}</ul>
+            </div>
+            <div class="topic-guide-box">
+              <strong>Analyst Checklist</strong>
+              <ul>${checklistHtml}</ul>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    const createLessonDeepDive = (lesson) => `
+      <div class="lesson-deep-dive">
+        <h3>Exam coaching</h3>
+        <p><strong>How this is typically tested:</strong> Examiners usually ask you to connect the historical context to the model, then defend an implementation choice with explicit assumptions and risk controls.</p>
+        <p><strong>Common trap to avoid:</strong> ${difficultyCoaching[lesson.difficulty]}</p>
+        <p><strong>Level-specific expectation:</strong> ${levelCoaching[lesson.level]}</p>
+      </div>
+    `;
 
     const createLesson = (topic, lesson) => {
       const article = document.createElement('article');
@@ -484,6 +724,7 @@
         <div class="formula"><strong>Framework & formula:</strong> ${lesson.formula}</div>
         <div class="evidence"><strong>Empirical lens:</strong> ${lesson.evidence}</div>
         <div class="application"><strong>Implementation rule:</strong> ${lesson.application}</div>
+        ${createLessonDeepDive(lesson)}
         <div class="lesson-actions"><button class="complete-btn" data-lesson-id="${lesson.id}">Mark complete</button></div>
       `;
       return article;
@@ -495,7 +736,7 @@
         const topicEl = document.createElement('section');
         topicEl.className = 'topic-section';
         topicEl.id = topic.id;
-        topicEl.innerHTML = `<h1>${topic.title}</h1><p class="topic-overview">${topic.overview}</p>`;
+        topicEl.innerHTML = `<h1>${topic.title}</h1><p class="topic-overview">${topic.overview}</p>${createTopicGuide(topic)}`;
         topic.lessons.forEach((lesson) => topicEl.appendChild(createLesson(topic, lesson)));
         curriculumRoot.appendChild(topicEl);
       });
