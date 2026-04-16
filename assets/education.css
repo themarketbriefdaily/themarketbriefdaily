@@ -164,6 +164,7 @@ a { color: var(--accent); }
     overflow-x: auto;
     justify-content: flex-start;
     scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
   }
   .topbar-nav::-webkit-scrollbar { height: 4px; }
   .topbar-nav::-webkit-scrollbar-thumb {
