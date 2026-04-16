@@ -1,372 +1,255 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Investment Glossary | The Market Brief Daily</title>
-  <meta name="description" content="Financial and investment glossary covering market structure, macro, supply chain, and strategy terms." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta name="description" content="Academic investment glossary with formulas, context, worked examples, and interactive tools." />
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/assets/non-home-theme.css">
   <link rel="stylesheet" href="/assets/design-system.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
   <style>
-    .container{max-width:var(--max);margin:0 auto}
-    .hero{padding:150px 48px 70px;background:#fff}
-    .hero-inner{text-align:center;max-width:860px;margin:0 auto}
-    .kicker{font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:12px}
-    h1{font-size:clamp(2.2rem,5vw,3.3rem);font-weight:950;line-height:1.08;letter-spacing:-.03em;margin-bottom:16px;background:linear-gradient(135deg,#0b1220,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(18px)}
-    .lead{max-width:700px;margin:0 auto;color:var(--muted);font-size:1.05rem;line-height:1.8;opacity:0;transform:translateY(18px)}
-    @media (max-width:768px){.hero{padding:110px 20px 50px}}
-
-    .section{padding:20px 48px 100px}
-    @media (max-width:768px){.section{padding:20px 20px 70px}}
-
-    .controls{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:20px}
-    .search{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit}
-    .category-filter{border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;background:#fff}
-    @media (max-width:768px){.controls{grid-template-columns:1fr}}
-
-    .category-grid{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-    .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:850;color:var(--muted);cursor:pointer;transition:all .2s}
-    .chip.active{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.6)}
-
-    .glossary-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:1000px){.glossary-list{grid-template-columns:1fr}}
-    .term-card{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow-md);overflow:hidden}
-    .term-header{width:100%;border:none;background:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;cursor:pointer}
-    .term-title{font-size:15px;font-weight:900;letter-spacing:-.01em}
-    .term-meta{font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.25);color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
-    .term-body{max-height:0;overflow:hidden;transition:max-height .28s var(--ease),padding .28s var(--ease);padding:0 16px}
-    .term-card.open .term-body{max-height:220px;padding:0 16px 16px}
-    .term-desc{font-size:14px;color:var(--muted);line-height:1.7}
-    .caret{font-size:16px;color:var(--muted2);transition:transform .2s}
-    .term-card.open .caret{transform:rotate(180deg)}
-
-    .newsletter-wrap{margin-top:24px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,rgba(0,102,255,.04),rgba(2,8,23,.01))}
-    .newsletter-title{font-size:1rem;font-weight:900}
-    .newsletter-note{font-size:13px;color:var(--muted);margin-top:6px}
-    .newsletter-form{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;margin-top:12px}
-    .newsletter-form input,.newsletter-form select{border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:14px;font-family:inherit}
-    .newsletter-form button{border:none;border-radius:10px;padding:12px 18px;background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:900;cursor:pointer}
-    .helper{font-size:12px;color:var(--muted2);margin-top:8px}
-    @media (max-width:768px){.newsletter-form{grid-template-columns:1fr}}
-
-
-    .exit-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.56);z-index:2000}
-    .exit-modal.active{display:flex}
-    .exit-modal-card{max-width:560px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-xl);padding:28px;position:relative}
-    .exit-close{position:absolute;top:14px;right:16px;background:transparent;border:none;font-size:26px;color:var(--muted);cursor:pointer}
-    .exit-title{font-size:1.5rem;font-weight:950;letter-spacing:-.02em}
-    .exit-copy{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.7}
+    :root{--accent:#2563eb;--line:#dbe6f6;--ink:#0f172a;--muted:#475569}
+    body{background:#f2f8ff}
+    .page{max-width:1180px;margin:0 auto;padding:115px 20px 90px}
+    .hero{border:1px solid var(--line);background:linear-gradient(140deg,#fff,#ecf4ff);border-radius:18px;padding:24px}
+    .hero h1{margin:8px 0 10px;font-size:clamp(1.8rem,4vw,2.5rem)}
+    .hero p{margin:0;color:var(--muted);line-height:1.65}
+    .controls{display:grid;grid-template-columns:1.5fr auto auto 1fr;gap:10px;margin:14px 0}
+    .controls input,.controls select{border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;background:#fff}
+    .toggle{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+    .toggle button{border:none;background:transparent;padding:0 14px;font-weight:800;cursor:pointer}
+    .toggle button.active{background:var(--accent);color:#fff}
+    .btn{border:none;background:var(--accent);color:#fff;border-radius:12px;padding:0 14px;font-weight:800;cursor:pointer}
+    .az{position:sticky;top:72px;z-index:20;background:rgba(242,248,255,.93);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+    .az a{font-size:11px;font-weight:800;color:#64748b;text-decoration:none;padding:4px 8px;border-radius:999px}
+    .az a.active{background:#dbeafe;color:#1d4ed8}
+    .letter{scroll-margin-top:118px;font-size:.96rem;color:#1e3a8a;margin:6px 0 0}
+    .card{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;transition:opacity .2s}
+    .card.faded{opacity:.2}
+    .card.match{box-shadow:0 0 0 2px #bfdbfe inset}
+    .head{display:flex;justify-content:space-between;gap:10px;padding:13px}
+    .head h3{margin:0;font-size:1rem}
+    .simple{margin:5px 0 0;color:var(--muted);line-height:1.55;font-size:.92rem}
+    .pills{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+    .pill{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;border:1px solid #c8d9f9;border-radius:999px;background:#eff6ff;color:#1d4ed8;padding:4px 7px}
+    .actions{display:flex;gap:7px}
+    .icon{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 8px;cursor:pointer}
+    .body{border-top:1px solid var(--line);padding:0 13px;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease}
+    .card.open .body{max-height:1200px;padding:13px}
+    .mode-simple .body{display:none!important}
+    .s-title{font-size:.84rem;font-weight:800;color:#1e3a8a;margin:0 0 5px}
+    .copy{margin:0 0 10px;color:#334155;line-height:1.6;font-size:.9rem}
+    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f8fbff;border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin:0 0 9px;font-size:.85rem}
+    .calc{border:1px dashed #bfd3fb;background:#f7fbff;border-radius:10px;padding:9px;margin:8px 0 10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px}
+    .calc input{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 7px}
+    .out{font-size:.87rem;font-weight:800;color:#1d4ed8;margin-top:8px}
+    .links{display:flex;gap:7px;flex-wrap:wrap}
+    .links a{font-size:.79rem;text-decoration:none;color:#1d4ed8;border:1px solid #c8d9f9;background:#eff6ff;border-radius:999px;padding:4px 8px}
+    .saved-launch{position:fixed;right:16px;bottom:16px;z-index:50;background:#0f172a;color:#fff;border:none;border-radius:999px;padding:10px 13px;font-weight:800;cursor:pointer}
+    .saved{position:fixed;right:-360px;top:0;height:100vh;width:340px;max-width:92vw;background:#fff;border-left:1px solid var(--line);transition:right .25s;z-index:70;display:flex;flex-direction:column}
+    .saved.open{right:0}
+    .saved-h{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+    .saved-list{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+    .saved-item{border:1px solid var(--line);border-radius:9px;padding:8px;background:#f8fbff}
+    .saved-item a{text-decoration:none;font-weight:700;color:#1d4ed8}
+    mark{background:#fff3bf;border-radius:3px}
+    @media (max-width:940px){.controls{grid-template-columns:1fr 1fr}.toggle,.btn{height:42px}}
+    @media (max-width:680px){.controls{grid-template-columns:1fr}}
   </style>
-  <script src="/assets/animations.js" defer></script>
 </head>
-
 <body>
-  <header>
-    <div class="header-inner">
+  <header class="topbar">
+    <div class="topbar-inner">
       <a class="brand" href="/">The Market Brief Daily</a>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/funds.html">Funds</a>
-        <a href="/posts.html">Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
+      <nav class="topbar-nav">
+        <a href="/">Home</a><a class="nav-link" href="/funds.html">Funds</a><a class="nav-link" href="/posts.html">Research</a><a class="nav-link" href="/research-roadmap.html">Roadmap</a>
         <div class="nav-dropdown">
-          <button class="nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">
-            Learn <span class="drop-caret" aria-hidden="true"></span>
-          </button>
+          <button class="nav-link nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">Learn <span class="drop-caret" aria-hidden="true"></span></button>
           <div class="nav-drop-menu" role="menu">
-            <a class="active" href="/glossary.html" role="menuitem">
-              <span class="drop-icon">📖</span> Glossary
-            </a>
+            <a class="active" href="/glossary.html" role="menuitem"><span class="drop-icon">📖</span> Glossary</a>
             <div class="nav-drop-divider"></div>
-            <a href="/education-library.html" role="menuitem">
-              <span class="drop-icon">🎓</span> Education
-            </a>
+            <a href="/education-library.html" role="menuitem"><span class="drop-icon">🎓</span> Education</a>
           </div>
         </div>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
+        <a class="nav-link" href="/about.html">About</a><a class="nav-link" href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <section class="hero" data-constellation>
-    <div class="container hero-inner">
-      <div class="kicker">Research Glossary</div>
-      <h1>Market and macro terms, simplified</h1>
-      <p class="lead">A practitioner glossary for hedge fund and institutional research readers. Use search, category filters, and expandable definitions to quickly decode technical language.</p>
-    </div>
-  </section>
+  <main class="page" id="root">
+    <section class="hero">
+      <span class="kicker">Living Academic Reference</span>
+      <h1>Glossary — theory, formulas, stories, and practice</h1>
+      <p>Use Simple mode for plain-English recall and Technical mode for full mini-lessons with definitions, formulas, assumptions, worked examples, and cross-links to lessons.</p>
+    </section>
 
-  <section class="section">
-    <div class="container">
-      <div class="controls">
-        <input id="searchInput" class="search" type="search" placeholder="Search terms or definitions (e.g., basis, gamma, carry)" />
-        <select id="categorySelect" class="category-filter" aria-label="Filter glossary category">
-          <option value="All">All Categories</option>
-          <option value="Market Structure Terms">Market Structure Terms</option>
-          <option value="Macro Terms">Macro Terms</option>
-          <option value="Supply Chain Terms">Supply Chain Terms</option>
-          <option value="Strategy Terms">Strategy Terms</option>
-        </select>
-      </div>
+    <section class="controls">
+      <input id="search" type="search" placeholder="Search terms, cases, formulas (e.g., LTCM, CAPM, DCF, VaR)">
+      <div class="toggle"><button id="simpleBtn" class="active" type="button">Simple</button><button id="techBtn" type="button">Technical</button></div>
+      <button id="sheetBtn" class="btn" type="button">Study sheet</button>
+      <select id="topic">
+        <option value="All">All</option><option>Ratios & Performance</option><option>Risk</option><option>Portfolio Theory</option><option>Strategies</option><option>Fixed Income</option><option>Derivatives</option><option>Valuation</option><option>Corporate Finance</option><option>Behavioural Finance</option><option>ESG</option>
+      </select>
+    </section>
 
-      <div class="category-grid" id="categoryChips">
-        <button class="chip active" data-category="All">All</button>
-        <button class="chip" data-category="Market Structure Terms">Market Structure</button>
-        <button class="chip" data-category="Macro Terms">Macro</button>
-        <button class="chip" data-category="Supply Chain Terms">Supply Chain</button>
-        <button class="chip" data-category="Strategy Terms">Strategy</button>
-      </div>
+    <nav id="az" class="az" aria-label="A to Z"></nav>
+    <section id="list"></section>
+  </main>
 
-      <div class="glossary-list" id="glossaryList"></div>
-
-      <div class="newsletter-wrap">
-        <div class="newsletter-title">Get research explainers in your inbox</div>
-        <p class="newsletter-note">Add your Mailchimp/ConvertKit form action URL to activate this signup.</p>
-        <form class="newsletter-form signup-form" data-source="glossary" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
-          <input type="email" name="email" placeholder="Email address" required />
-          <select name="preference" aria-label="Newsletter preference">
-            <option value="Research">Research</option>
-            <option value="Funds">Funds</option>
-            <option value="Events">Events</option>
-            <option value="All">All</option>
-          </select>
-          <button type="submit">Subscribe</button>
-        </form>
-        <p class="helper">Preferences are captured alongside email to support segmented campaigns.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-inner">
-      <div>
-        <h4>The Market Brief Daily</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
-        <form class="newsletter-form signup-form" data-source="footer" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:10px">
-          <input type="email" name="email" placeholder="Email address" required />
-          <select name="preference" aria-label="Newsletter preference">
-            <option value="All">All</option>
-            <option value="Research">Research</option>
-            <option value="Funds">Funds</option>
-            <option value="Events">Events</option>
-          </select>
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-      <div class="footer-col">
-        <h4>Research</h4>
-        <a href="/posts.html">All Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
-        <a href="/education-library.html">Education</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="/about.html">About us</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/funds.html">Funds</a>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <a href="/disclaimer.html">Disclosures</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved. Not investment advice — see <a href="/disclaimer.html" style="color:inherit;text-decoration:underline">disclaimer</a>.</p>
-    </div>
-  </footer>
-
-  <div class="exit-modal" id="exitModal" role="dialog" aria-modal="true" aria-labelledby="exitModalTitle">
-    <div class="exit-modal-card">
-      <button class="exit-close" type="button" id="exitClose" aria-label="Close popup">×</button>
-      <div class="kicker">Stay Connected</div>
-      <div class="exit-title" id="exitModalTitle">Continue learning with each new brief</div>
-      <p class="exit-copy">Subscribe for new glossary explainers, market structure notes, and macro research updates.</p>
-      <form class="newsletter-form signup-form" data-source="exit-intent" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post" style="margin-top:16px">
-        <input type="email" name="email" placeholder="Email address" required />
-        <select name="preference" aria-label="Newsletter preference">
-          <option value="All">All Briefings</option>
-          <option value="Research">Research</option>
-          <option value="Funds">Funds</option>
-          <option value="Events">Events</option>
-        </select>
-        <button type="submit">Get Updates</button>
-      </form>
-    </div>
-  </div>
+  <button id="savedLaunch" class="saved-launch" type="button">⭐ My saved terms (0)</button>
+  <aside id="savedPanel" class="saved"><div class="saved-h"><strong>My saved terms</strong><button id="savedClose" class="icon" type="button">Close</button></div><div id="savedList" class="saved-list"></div></aside>
 
   <script>
-    const glossaryTerms = [
-      { term: 'Order Flow', category: 'Market Structure Terms', definition: 'The sequence of buy and sell orders entering a market, often revealing urgency and directional pressure before price fully adjusts.' },
-      { term: 'Bid-Ask Spread', category: 'Market Structure Terms', definition: 'The difference between the best available buy and sell prices. Wider spreads usually imply lower liquidity or higher uncertainty.' },
-      { term: 'Market Depth', category: 'Market Structure Terms', definition: 'The volume of resting orders at each price level in the order book, used to estimate how much size the market can absorb.' },
-      { term: 'Slippage', category: 'Market Structure Terms', definition: 'The gap between expected execution price and the actual fill price, typically caused by volatility or low liquidity.' },
-      { term: 'Gamma Exposure', category: 'Market Structure Terms', definition: 'Sensitivity of options delta to changes in the underlying. Dealer gamma positioning can amplify or dampen market moves.' },
-      { term: 'Vanna', category: 'Market Structure Terms', definition: 'A second-order options Greek measuring sensitivity of delta to volatility changes, relevant during vol regime shifts.' },
-      { term: 'Open Interest', category: 'Market Structure Terms', definition: 'The total number of outstanding derivative contracts that remain open, often used to gauge positioning intensity.' },
-      { term: 'Liquidity Fragmentation', category: 'Market Structure Terms', definition: 'When trading volume disperses across venues or instruments, reducing unified depth and increasing execution complexity.' },
-      { term: 'Basis', category: 'Market Structure Terms', definition: 'The difference between spot and futures price. Persistent basis moves may signal funding stress, carry demand, or delivery tightness.' },
-      { term: 'Market Impact', category: 'Market Structure Terms', definition: 'The price movement caused by executing an order, especially relevant for large institutional trades.' },
-
-      { term: 'Real Yields', category: 'Macro Terms', definition: 'Bond yields adjusted for inflation expectations; a key channel through which policy affects risk assets and financial conditions.' },
-      { term: 'Term Premium', category: 'Macro Terms', definition: 'Extra compensation investors demand for holding longer-duration bonds instead of rolling short-term instruments.' },
-      { term: 'Yield Curve', category: 'Macro Terms', definition: 'A plot of interest rates across maturities. Curve shape helps infer growth expectations and policy stance.' },
-      { term: 'Policy Transmission', category: 'Macro Terms', definition: 'The process by which central bank actions influence borrowing costs, asset prices, and eventually economic activity.' },
-      { term: 'Financial Conditions', category: 'Macro Terms', definition: 'A composite of rates, spreads, equity levels, and currency strength indicating how easy or tight financing is.' },
-      { term: 'Disinflation', category: 'Macro Terms', definition: 'A decline in the rate of inflation, meaning prices still rise but at a slower pace.' },
-      { term: 'Reflation', category: 'Macro Terms', definition: 'A regime where policy and growth dynamics push nominal growth and inflation expectations higher.' },
-      { term: 'Risk-Off', category: 'Macro Terms', definition: 'A market environment where investors reduce exposure to cyclical assets and prefer cash, bonds, or defensive sectors.' },
-      { term: 'Dollar Liquidity', category: 'Macro Terms', definition: 'Availability and cost of US dollar funding globally, critical for cross-border asset pricing and stress propagation.' },
-      { term: 'Nowcasting', category: 'Macro Terms', definition: 'Real-time estimation of current economic conditions using high-frequency indicators before official data releases.' },
-
-      { term: 'Inventory Draw', category: 'Supply Chain Terms', definition: 'A reduction in stored physical supply, often interpreted as demand exceeding near-term production or delivery availability.' },
-      { term: 'Warehouse Stocks', category: 'Supply Chain Terms', definition: 'Exchange-reported inventories held in approved locations, used to monitor potential delivery pressure.' },
-      { term: 'Freight Bottleneck', category: 'Supply Chain Terms', definition: 'A logistics constraint where shipping capacity is insufficient, delaying physical movement and lifting transport costs.' },
-      { term: 'Refining Margin', category: 'Supply Chain Terms', definition: 'The spread between refined product value and feedstock cost, indicating stress or slack in processing capacity.' },
-      { term: 'Contango', category: 'Supply Chain Terms', definition: 'A futures curve state where later-dated contracts trade above spot, often associated with comfortable inventory conditions.' },
-      { term: 'Backwardation', category: 'Supply Chain Terms', definition: 'A curve state where near contracts trade above deferred contracts, often signaling near-term scarcity.' },
-      { term: 'Throughput', category: 'Supply Chain Terms', definition: 'The volume processed or transported through a facility over a period; drops can indicate supply chain stress.' },
-      { term: 'Capacity Utilization', category: 'Supply Chain Terms', definition: 'The percentage of total production capability currently in use, important for estimating spare capacity.' },
-
-      { term: 'Factor Tilt', category: 'Strategy Terms', definition: 'Intentional over- or under-weighting toward factors like value, momentum, quality, or size within a portfolio.' },
-      { term: 'Carry Trade', category: 'Strategy Terms', definition: 'A strategy capturing yield differentials, often by borrowing in lower-rate assets and holding higher-yielding ones.' },
-      { term: 'Volatility Targeting', category: 'Strategy Terms', definition: 'Adjusting position size dynamically so portfolio volatility remains near a predefined risk budget.' },
-      { term: 'Drawdown', category: 'Strategy Terms', definition: 'The percentage decline from a portfolio peak to a subsequent trough before recovery.' },
-      { term: 'Sharpe Ratio', category: 'Strategy Terms', definition: 'Risk-adjusted performance metric calculated as excess return divided by return volatility.' },
-      { term: 'Regime Shift', category: 'Strategy Terms', definition: 'A structural change in market behavior where relationships between assets, factors, or policy signals materially change.' },
-      { term: 'Position Sizing', category: 'Strategy Terms', definition: 'The method used to determine how much capital to allocate to each trade based on conviction and risk constraints.' },
-      { term: 'Stop-Loss Discipline', category: 'Strategy Terms', definition: 'A predefined rule set for reducing or closing positions when losses reach specified thresholds.' }
+    const terms = [
+      {id:'alpha',term:'Alpha',topic:'Ratios & Performance',simple:'Excess return beyond what market risk predicts.',academic:'Alpha is the regression intercept in a factor model and captures abnormal performance after controlling for risk exposures.',formula:'α = R_p - [R_f + β(R_m-R_f)]',limits:'Unit: % per period. CAPM misspecification can overstate alpha.',history:'Jensen (1968) created alpha as a manager-skill test in mutual fund studies.',example:'R_p 11%, R_f 3%, β 1.1, R_m 9% => expected 9.6%, alpha +1.4%.',application:'Allocator due diligence: true alpha vs hidden beta.',related:['beta','information-ratio','tracking-error'],lesson:'education-library.html#module-e1',source:'Jensen (1968).'},
+      {id:'beta',term:'Beta',topic:'Risk',simple:'Sensitivity of an asset to market movements.',academic:'Beta is covariance with market returns divided by market variance.',formula:'β = Cov(R_i,R_m)/Var(R_m)',limits:'Unitless, unstable across regimes.',history:'Core CAPM parameter from Sharpe-Lintner asset pricing.',example:'Cov 0.018, market variance 0.012 => β = 1.5.',application:'Cost of equity and portfolio risk budgeting.',related:['capm','security-market-line','cost-of-equity'],lesson:'education-library.html#module-b2',source:'Sharpe (1964).',interactive:'capm'},
+      {id:'sharpe-ratio',term:'Sharpe Ratio',topic:'Ratios & Performance',simple:'Excess return per unit of volatility.',academic:'Risk-adjusted return ratio comparing excess return to total risk.',formula:'S = (R_p - R_f)/σ_p',limits:'Assumes volatility is full risk; weak on fat tails.',history:'Sharpe formalised it for comparing funds.',example:'10%-3% over 14% volatility => 0.50.',application:'Manager screening and mandate thresholds.',related:['sortino-ratio','standard-deviation','maximum-drawdown'],lesson:'education-library.html#module-e1',source:'Sharpe (1994).',interactive:'sharpe'},
+      {id:'information-ratio',term:'Information Ratio',topic:'Ratios & Performance',simple:'Active return earned per unit of active risk.',academic:'Measures benchmark-relative skill by dividing active return by tracking error.',formula:'IR = (R_p-R_b)/TE',limits:'Depends heavily on benchmark quality.',history:'Institutional consultants adopted it for manager selection.',example:'2.4% active return / 4% TE = 0.60.',application:'Distinguishing skilled active management from benchmark hugging.',related:['tracking-error','active-share','closet-indexing'],lesson:'education-library.html#module-e1',source:'Grinold & Kahn.'},
+      {id:'tracking-error',term:'Tracking Error',topic:'Ratios & Performance',simple:'Volatility of active returns vs benchmark.',academic:'Standard deviation of (portfolio return - benchmark return).',formula:'TE = StdDev(R_p-R_b)',limits:'Backward-looking; can jump in regime shifts.',history:'Benchmark-based mandates made TE a central risk limit.',example:'Monthly active stdev 1.2% => annual TE ~4.16%.',application:'Risk governance in pension and mutual funds.',related:['information-ratio','active-share','benchmark-hugging'],lesson:'education-library.html#module-e1',source:'CFA Institute readings.'},
+      {id:'value-at-risk',term:'Value at Risk (VaR)',topic:'Risk',simple:'Loss threshold unlikely to be exceeded at chosen confidence.',academic:'A quantile of the loss distribution: at confidence c, loss exceeds VaR with probability 1-c.',formula:'VaR = z × σ × V',limits:'Does not measure loss severity beyond cutoff.',history:'RiskMetrics popularised VaR; LTCM showed model risk limits.',example:'£10m, 2% daily vol, z=1.65 => VaR ≈ £330k.',application:'Bank risk dashboards and regulatory reporting.',related:['conditional-var','tail-risk','black-swan'],lesson:'education-library.html#module-a5',source:'Jorion, Value at Risk.',interactive:'var'},
+      {id:'conditional-var',term:'Conditional VaR (Expected Shortfall)',topic:'Risk',simple:'Average loss in the tail beyond VaR.',academic:'CVaR computes expected loss conditional on losses exceeding VaR.',formula:'ES_α = E[L | L > VaR_α]',limits:'Sensitive to tail model assumptions.',history:'Post-2008 reforms shifted toward ES.',example:'If worst 5% losses average £1.6m, ES = £1.6m.',application:'Tail-risk management for nonlinear portfolios.',related:['value-at-risk','fat-tail','tail-risk'],lesson:'education-library.html#module-a5',source:'Basel FRTB.'},
+      {id:'maximum-drawdown',term:'Maximum Drawdown',topic:'Risk',simple:'Largest peak-to-trough loss before recovery.',academic:'Path-dependent risk measure capturing worst historical capital decline.',formula:'MDD = (Trough - Peak)/Peak',limits:'Horizon dependent; no probability interpretation.',history:'Popular in hedge funds after volatility-only metrics failed in crises.',example:'120 to 78 => -35% drawdown.',application:'Retirement and risk-budget stress thresholds.',related:['drawdown-period','sequence-of-returns-risk','sortino-ratio'],lesson:'education-library.html#module-c5',source:'CFA Institute.'},
+      {id:'capm',term:'CAPM',topic:'Portfolio Theory',simple:'Expected return equals risk-free rate plus beta times market premium.',academic:'Single-factor equilibrium model linking expected return to systematic market risk only.',formula:'E[R_i]=R_f+β_i(E[R_m]-R_f)',limits:'Assumes frictionless markets and one risk factor.',history:'Sharpe, Lintner, Mossin in the 1960s.',example:'R_f 3%, β 1.2, market premium 5% => 9%.',application:'Core input to cost of equity and WACC.',related:['beta','security-market-line','cost-of-equity'],lesson:'education-library.html#module-b2',source:'Sharpe (1964).',interactive:'capm'},
+      {id:'efficient-frontier',term:'Efficient Frontier',topic:'Portfolio Theory',simple:'Best-return portfolios for each risk level.',academic:'Set of mean-variance efficient portfolios that dominate all feasible alternatives.',formula:'min w\'Σw, subject to E[R]=target',limits:'Input-estimation error can dominate optimisation.',history:'Markowitz founded modern portfolio theory.',example:'Low-correlation assets create superior risk-return mixes.',application:'Strategic asset allocation frameworks.',related:['modern-portfolio-theory','correlation','capital-market-line'],lesson:'education-library.html#module-e2',source:'Markowitz (1952).'},
+      {id:'fama-french-three-factor-model',term:'Fama-French Three-Factor Model',topic:'Portfolio Theory',simple:'Returns explained by market, size, and value factors.',academic:'Extension of CAPM using MKT, SMB, and HML factors for stronger explanatory power.',formula:'R_i-R_f = α+βMKT+βSMB+βHML+ε',limits:'Factors are cyclic and can underperform for long periods.',history:'Fama and French challenged CAPM sufficiency in 1993.',example:'Small value funds usually show SMB and HML loadings.',application:'Performance attribution and smart beta design.',related:['five-factor-model','momentum-factor','smart-beta'],lesson:'education-library.html#module-e1',source:'Fama & French (1993).'},
+      {id:'smart-beta',term:'Smart Beta',topic:'Strategies',simple:'Rules-based portfolios targeting factors rather than cap weight.',academic:'Systematic factor exposures implemented transparently and at lower cost than discretionary active.',formula:'w_i ∝ factor score_i (constraints applied)',limits:'Crowding and factor cyclicality can produce long droughts.',history:'ETF growth turned factors into investable products.',example:'Low-volatility ETFs overweight defensive sectors.',application:'Core-satellite allocations.',related:['factor-zoo','active-management','passive-management'],lesson:'education-library.html#module-e1',source:'AQR factor research.'},
+      {id:'carry-trade',term:'Carry Trade',topic:'Strategies',simple:'Earning yield differentials while hoping price/funding stays benign.',academic:'Borrow low-yield assets/currencies to own high-yield ones; negatively skewed payoff profile.',formula:'Return ≈ carry + spot move + funding shock',limits:'Crash-prone in risk-off regimes.',history:'Classic FX strategy; repeated crisis unwind episodes.',example:'JPY-funded EM carry can lose years of gains quickly.',application:'Global macro and multi-asset tactical books.',related:['tail-risk','global-macro','trend-following'],lesson:'education-library.html#module-a3',source:'Burnside et al.'},
+      {id:'duration',term:'Duration',topic:'Fixed Income',simple:'Approximate bond price sensitivity to rate moves.',academic:'Modified duration estimates first-order percentage price change for a yield shift.',formula:'ΔP/P ≈ -D_mod × Δy',limits:'Linear approximation; convexity needed for larger shocks.',history:'Developed for immunisation and ALM.',example:'D_mod 6 and +1% yields => ~-6% price move.',application:'LDI, pension hedging, and rates risk control.',related:['modified-duration','convexity','yield-to-maturity'],lesson:'education-library.html#module-a3',source:'CFA Fixed Income.',interactive:'duration'},
+      {id:'convexity',term:'Convexity',topic:'Fixed Income',simple:'Second-order correction to duration for non-linear bond pricing.',academic:'Measures curvature of price-yield relation and improves risk estimates.',formula:'ΔP/P ≈ -DΔy + 0.5C(Δy)^2',limits:'Critical for large moves and option-embedded bonds.',history:'Risk desks integrated convexity after duration-only errors.',example:'Higher-convexity bonds lose less when rates rise sharply.',application:'Treasury and mortgage portfolio management.',related:['duration','mortgage-backed-security','orange-county'],lesson:'education-library.html#module-a3',source:'Tuckman, Fixed Income.'},
+      {id:'credit-default-swap',term:'Credit Default Swap (CDS)',topic:'Derivatives',simple:'Contract transferring default risk from buyer to seller.',academic:'Protection buyer pays periodic spread; seller pays loss given default on credit event.',formula:'CDS PV = premium leg - protection leg',limits:'Counterparty and recovery assumptions are central.',history:'AIG’s 2008 collapse highlighted CDS systemic risk.',example:'100 bps on £10m notional = £100k annual premium.',application:'Credit hedging and synthetic exposure.',related:['credit-spread','counterparty-risk','cdo'],lesson:'education-library.html#module-a4',source:'ISDA framework.'},
+      {id:'collateralised-debt-obligation',term:'Collateralised Debt Obligation (CDO)',topic:'Derivatives',simple:'Debt pool sliced into tranches with different seniority.',academic:'Structured finance vehicle reallocating losses via waterfall: equity, mezzanine, senior.',formula:'Loss order: Equity → Mezzanine → Senior',limits:'Correlation assumptions can catastrophically fail.',history:'Core mechanism in 2008 mortgage crisis.',example:'First-loss equity wiped out before senior notes touched.',application:'Credit risk transfer and yield engineering.',related:['securitisation','asset-backed-security','mortgage-backed-security'],lesson:'education-library.html#module-a6',source:'Lewis, The Big Short.'},
+      {id:'discounted-cash-flow',term:'Discounted Cash Flow (DCF)',topic:'Valuation',simple:'Value equals discounted future free cash flows.',academic:'Enterprise value is present value of FCFF plus terminal value discounted at WACC.',formula:'EV = Σ FCFF/(1+WACC)^t + TV/(1+WACC)^n',limits:'Highly sensitive to WACC and terminal growth.',history:'Bedrock valuation method in corporate finance and equity research.',example:'Small 1% WACC shift can move valuation double digits.',application:'M&A, strategy, and equity valuation models.',related:['wacc','terminal-value','free-cash-flow'],lesson:'education-library.html#module-b2',source:'Damodaran, Investment Valuation.'},
+      {id:'wacc',term:'WACC',topic:'Valuation',simple:'Blended required return from debt and equity capital providers.',academic:'Weighted average of cost of equity and after-tax cost of debt using target capital structure.',formula:'WACC=(E/V)R_e+(D/V)R_d(1-T)',limits:'Requires stable long-run structure assumptions.',history:'Standard discount rate in corporate valuation.',example:'60/40 equity-debt, R_e 10%, R_d 5%, tax 25% => 7.5%.',application:'Capital budgeting hurdle and DCF discounting.',related:['cost-of-equity','cost-of-debt','discounted-cash-flow'],lesson:'education-library.html#module-b2',source:'Brealey, Myers & Allen.'},
+      {id:'ev-ebitda',term:'EV/EBITDA',topic:'Valuation',simple:'Enterprise value multiple against operating cash earnings.',academic:'Capital-structure-neutral multiple used for comparables and transactions.',formula:'EV/EBITDA = Enterprise Value ÷ EBITDA',limits:'Ignores capex intensity and working-capital strain.',history:'Banking and PE adopted it for quick valuation screens.',example:'EV £2.4bn / EBITDA £300m = 8.0x.',application:'Relative valuation and deal pricing.',related:['price-to-earnings','free-cash-flow','private-equity'],lesson:'education-library.html#module-b3',source:'CFA Equity valuation.'},
+      {id:'agency-problem',term:'Agency Problem',topic:'Corporate Finance',simple:'Manager incentives diverge from owner interests.',academic:'Principal-agent conflict creates monitoring costs, adverse decisions, and value leakage.',formula:'Firm value drag = monitoring + bonding + residual loss',limits:'Cannot be eliminated, only managed by governance.',history:'Jensen & Meckling; Enron and WeWork as canonical cases.',example:'Short-term bonus metrics can encourage earnings manipulation.',application:'Compensation design and board oversight.',related:['information-asymmetry','principal-agent-problem','moral-hazard'],lesson:'education-library.html#module-b1',source:'Jensen & Meckling (1976).'},
+      {id:'information-asymmetry',term:'Information Asymmetry',topic:'Corporate Finance',simple:'One side in a transaction knows more than the other.',academic:'Uneven information creates adverse selection ex ante and moral hazard ex post.',formula:'Expected deal quality falls when signal quality is weak',limits:'Disclosure and verification can reduce but not remove asymmetry.',history:'Akerlof’s “lemons” framework.',example:'Opaque issuers face higher financing costs.',application:'IPO underpricing, credit spreads, and governance checks.',related:['adverse-selection','moral-hazard','agency-problem'],lesson:'education-library.html#module-b1',source:'Akerlof (1970).'},
+      {id:'esg',term:'ESG',topic:'ESG',simple:'Environmental, social, and governance factors that can affect cash flows and risk.',academic:'Financially material ESG factors alter expected cash flows, risk premia, and terminal value assumptions.',formula:'Value channel: ΔCF + ΔWACC + Δterminal risk',limits:'Provider ratings diverge materially; materiality is industry-specific.',history:'From ethics screen to risk framework; Dieselgate accelerated this shift.',example:'VW’s share price dropped ~35% in two days after diesel fraud revelation.',application:'Security selection, engagement, and risk control.',related:['greenwashing','materiality-esg','carbon-risk'],lesson:'education-library.html#module-d1',source:'Edmans; Friede et al. (2015).'},
+      {id:'greenwashing',term:'Greenwashing',topic:'ESG',simple:'Marketing sustainability claims that outrun reality.',academic:'A disclosure credibility gap where ESG narratives exceed verifiable operational outcomes.',formula:'Claim intensity > evidence quality',limits:'Hard to detect without audited, decision-useful metrics.',history:'DWS and multiple consumer-brand cases exposed credibility risk.',example:'“Sustainable” products later found to carry worse footprints than advertised.',application:'Investor due diligence now tests data lineage and material outcomes.',related:['esg','materiality-esg','stranded-assets'],lesson:'education-library.html#module-d3',source:'FCA/ESMA sustainable disclosure guidance.'},
+      {id:'behavioural-finance',term:'Behavioural Finance',topic:'Behavioural Finance',simple:'How human biases distort financial decisions and prices.',academic:'Integrates psychology with finance to explain persistent deviations from fully rational equilibrium.',formula:'Observed price = fundamental value + behavioural component',limits:'Bias effects vary by regime and institutional constraints.',history:'Kahneman, Tversky, Shiller and Thaler transformed the field.',example:'Dot-com bubble reflected herding, overconfidence and recency bias.',application:'Build rules to protect investors from themselves.',related:['prospect-theory','loss-aversion','limits-to-arbitrage'],lesson:'education-library.html#module-c2',source:'Shiller, Irrational Exuberance.'},
+      {id:'prospect-theory',term:'Prospect Theory',topic:'Behavioural Finance',simple:'People feel losses more strongly than equivalent gains.',academic:'Reference-dependent utility with loss aversion and non-linear probability weighting.',formula:'Loss aversion coefficient λ ≈ 2.25',limits:'Parameters vary across framing and populations.',history:'Kahneman & Tversky (1979) challenged expected utility.',example:'Many reject a fair gamble because downside pain dominates upside pleasure.',application:'Explains disposition effect and panic selling.',related:['loss-aversion','mental-accounting','framing-effect'],lesson:'education-library.html#module-c1',source:'Kahneman & Tversky (1979).'},
+      {id:'efficient-market-hypothesis',term:'Efficient Market Hypothesis',topic:'Portfolio Theory',simple:'Prices rapidly reflect available information.',academic:'Under EMH, expected abnormal returns conditional on public information are near zero.',formula:'E[α | Information_t] ≈ 0',limits:'Anomalies exist; limits-to-arbitrage can delay correction.',history:'Fama (1970) formalised weak, semi-strong and strong forms.',example:'Most active funds underperform after fees over long horizons.',application:'Foundation for indexing and benchmark discipline.',related:['random-walk','limits-to-arbitrage','active-management'],lesson:'education-library.html#module-c3',source:'Fama (1970).'},
+      {id:'net-present-value',term:'Net Present Value',topic:'Corporate Finance',simple:'Present value of cash inflows minus initial cost.',academic:'A project creates value when discounted future cash flows exceed upfront investment.',formula:'NPV = Σ CF_t/(1+r)^t - I_0',limits:'Discount rate choice dominates output.',history:'Gold-standard capital budgeting criterion.',example:'PV inflows £130m, cost £100m => NPV +£30m.',application:'Project approval and M&A screening.',related:['internal-rate-of-return','discount-rate','opportunity-cost'],lesson:'education-library.html#module-b2',source:'Corporate Finance texts.'}
     ];
 
-    const glossaryList = document.getElementById('glossaryList');
-    const searchInput = document.getElementById('searchInput');
-    const categorySelect = document.getElementById('categorySelect');
-    const categoryChips = document.getElementById('categoryChips');
+    const map = Object.fromEntries(terms.map(t => [t.id,t]));
+    const root = document.getElementById('root');
+    const list = document.getElementById('list');
+    const az = document.getElementById('az');
+    const search = document.getElementById('search');
+    const topic = document.getElementById('topic');
+    const simpleBtn = document.getElementById('simpleBtn');
+    const techBtn = document.getElementById('techBtn');
+    const savedLaunch = document.getElementById('savedLaunch');
+    const savedPanel = document.getElementById('savedPanel');
+    const savedList = document.getElementById('savedList');
+    const sheetBtn = document.getElementById('sheetBtn');
+    const STORE = 'mbdSavedTermsV3';
 
-    function renderGlossary() {
-      const search = searchInput.value.trim().toLowerCase();
-      const selectedCategory = categorySelect.value;
-      const filtered = glossaryTerms.filter(item => {
-        const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
-        const matchesSearch = !search || item.term.toLowerCase().includes(search) || item.definition.toLowerCase().includes(search);
-        return matchesCategory && matchesSearch;
-      });
+    const saved = () => { try { return JSON.parse(localStorage.getItem(STORE) || '[]'); } catch(_) { return []; } };
+    const setSaved = ids => localStorage.setItem(STORE, JSON.stringify([...new Set(ids)]));
+    const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const mark = (txt,q) => !q ? txt : txt.replace(new RegExp(`(${esc(q)})`,'ig'), '<mark>$1</mark>');
 
-      glossaryList.innerHTML = filtered.map(item => `
-        <article class="term-card" data-category="${item.category}">
-          <button class="term-header" type="button">
-            <div>
-              <div class="term-title">${item.term}</div>
-              <div class="term-meta">${item.category}</div>
-            </div>
-            <span class="caret">⌄</span>
-          </button>
-          <div class="term-body">
-            <p class="term-desc">${item.definition}</p>
+    function calc(term){
+      if (term.interactive === 'sharpe') return `<div class="calc" data-calc="sharpe"><div class="s-title">Interactive calculator</div><div class="grid"><label>Rₚ %<input data-k="rp" value="10" type="number" step="0.1"></label><label>R𝒇 %<input data-k="rf" value="3" type="number" step="0.1"></label><label>σ %<input data-k="vol" value="14" type="number" step="0.1"></label></div><div class="out">Sharpe: <span data-out></span></div></div>`;
+      if (term.interactive === 'capm') return `<div class="calc" data-calc="capm"><div class="s-title">Interactive calculator</div><div class="grid"><label>R𝒇 %<input data-k="rf" value="3" type="number" step="0.1"></label><label>β<input data-k="beta" value="1.1" type="number" step="0.1"></label><label>Rₘ %<input data-k="rm" value="9" type="number" step="0.1"></label></div><div class="out">Expected return: <span data-out></span></div></div>`;
+      if (term.interactive === 'duration') return `<div class="calc" data-calc="duration"><div class="s-title">Interactive calculator</div><div class="grid"><label>Duration<input data-k="dur" value="6" type="number" step="0.1"></label><label>Δy %<input data-k="dy" value="1" type="number" step="0.1"></label></div><div class="out">Price change: <span data-out></span></div></div>`;
+      if (term.interactive === 'var') return `<div class="calc" data-calc="var"><div class="s-title">Interactive calculator</div><div class="grid"><label>Portfolio £<input data-k="v" value="10000000" type="number" step="10000"></label><label>Vol %<input data-k="vol" value="2" type="number" step="0.1"></label><label>z<input data-k="z" value="1.65" type="number" step="0.01"></label></div><div class="out">1-day VaR: <span data-out></span></div><svg width="100%" height="48" viewBox="0 0 320 48"><path d="M6 40 C74 6,246 6,314 40" fill="none" stroke="#1e3a8a" stroke-width="2"/><line x1="112" y1="11" x2="112" y2="43" stroke="#ef4444" stroke-width="2"/><text x="118" y="16" fill="#ef4444" font-size="10">VaR cutoff</text></svg></div>`;
+      return '';
+    }
+
+    function card(t,q,s){
+      const related = (t.related||[]).map(id => map[id]).filter(Boolean).map(x => `<a href="#${x.id}">${x.term}</a>`).join('');
+      return `<article id="${t.id}" class="card" data-letter="${t.term[0].toUpperCase()}" data-topic="${t.topic}" data-search="${(t.term+' '+t.simple+' '+t.academic+' '+t.history+' '+t.application).toLowerCase()}">
+        <div class="head">
+          <div>
+            <h3>${mark(t.term,q)}</h3>
+            <p class="simple">${t.simple}</p>
+            <div class="pills"><span class="pill">${t.topic}</span><span class="pill">${t.term[0].toUpperCase()}</span></div>
           </div>
-        </article>
-      `).join('');
-
-      if (!filtered.length) {
-        glossaryList.innerHTML = '<p style="grid-column:1/-1;padding:20px;border:1px solid var(--line);border-radius:12px;color:var(--muted)">No matching terms found. Try broadening your search.</p>';
-      }
+          <div class="actions"><button class="icon save" data-id="${t.id}" type="button">${s.includes(t.id) ? '★' : '☆'}</button><button class="icon open" type="button">▾</button></div>
+        </div>
+        <div class="body">
+          <div class="s-title">Academic definition</div><p class="copy">${t.academic}</p><div class="formula">${t.formula}</div><p class="copy"><strong>Units, assumptions, limitations:</strong> ${t.limits}</p>
+          ${calc(t)}
+          <div class="s-title">Context & history</div><p class="copy">${t.history}</p>
+          <div class="s-title">Worked example</div><p class="copy">${t.example}</p>
+          <div class="s-title">Real-world application</div><p class="copy">${t.application}</p>
+          <div class="s-title">Related terms</div><div class="links">${related}</div>
+          <p class="copy" style="margin-top:8px"><strong>Appears in lesson:</strong> <a href="/${t.lesson}" style="color:#1d4ed8">Open curriculum lesson</a><br><strong>Key source:</strong> ${t.source}</p>
+        </div>
+      </article>`;
     }
 
-    function syncChipState(category) {
-      categoryChips.querySelectorAll('.chip').forEach(chip => {
-        chip.classList.toggle('active', chip.dataset.category === category);
+    function bindCalcs(){
+      document.querySelectorAll('[data-calc]').forEach(box => {
+        const update = () => {
+          const n = k => Number(box.querySelector(`[data-k="${k}"]`)?.value || 0);
+          const out = box.querySelector('[data-out]');
+          if (!out) return;
+          if (box.dataset.calc === 'sharpe') out.textContent = ((n('rp')-n('rf'))/Math.max(n('vol'),0.0001)).toFixed(2);
+          if (box.dataset.calc === 'capm') out.textContent = `${(n('rf')+n('beta')*(n('rm')-n('rf'))).toFixed(2)}%`;
+          if (box.dataset.calc === 'duration') out.textContent = `${(-n('dur')*(n('dy')/100)*100).toFixed(2)}%`;
+          if (box.dataset.calc === 'var') out.textContent = `£${Math.round(n('v')*(n('vol')/100)*n('z')).toLocaleString('en-GB')}`;
+        };
+        box.querySelectorAll('input').forEach(i => i.addEventListener('input', update)); update();
       });
     }
 
-    function initControls() {
-      searchInput.addEventListener('input', renderGlossary);
-      categorySelect.addEventListener('change', () => {
-        syncChipState(categorySelect.value);
-        renderGlossary();
-      });
-      categoryChips.addEventListener('click', event => {
-        const chip = event.target.closest('.chip');
-        if (!chip) return;
-        categorySelect.value = chip.dataset.category || 'All';
-        syncChipState(categorySelect.value);
-        renderGlossary();
-      });
+    function renderSaved(){
+      const ids = saved();
+      savedLaunch.textContent = `⭐ My saved terms (${ids.length})`;
+      if (!ids.length){ savedList.innerHTML = '<p style="color:#64748b">No saved terms yet.</p>'; return; }
+      savedList.innerHTML = ids.map(id => map[id]).filter(Boolean).map(t => `<div class="saved-item"><a href="#${t.id}">${t.term}</a><div style="font-size:12px;color:#64748b;margin-top:4px">${t.simple}</div></div>`).join('');
+      savedList.querySelectorAll('a').forEach(a => a.addEventListener('click', () => savedPanel.classList.remove('open')));
     }
 
-    function initAccordion() {
-      glossaryList.addEventListener('click', event => {
-        const button = event.target.closest('.term-header');
-        if (!button) return;
-        const card = button.closest('.term-card');
-        if (!card) return;
-        card.classList.toggle('open');
-      });
+    function observeLetters(){
+      const links = [...document.querySelectorAll('[data-l]')], heads = [...document.querySelectorAll('.letter')];
+      if (!heads.length || !window.IntersectionObserver) return;
+      const mapL = Object.fromEntries(links.map(l => [l.dataset.l,l]));
+      const obs = new IntersectionObserver(entries => entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const l = e.target.id.replace('letter-','');
+        links.forEach(x => x.classList.remove('active'));
+        mapL[l]?.classList.add('active');
+      }),{rootMargin:'-20% 0px -75% 0px'});
+      heads.forEach(h => obs.observe(h));
     }
 
-    function initNewsletterForms() {
-      document.querySelectorAll('.signup-form').forEach(form => {
-        form.addEventListener('submit', () => {
-          const emailInput = form.querySelector('input[name="email"]');
-          const preferenceSelect = form.querySelector('select[name="preference"]');
-          const source = form.dataset.source || 'site';
-          if (!emailInput || !preferenceSelect) return;
-          const record = {
-            email: emailInput.value.trim(),
-            preference: preferenceSelect.value,
-            source,
-            submittedAt: new Date().toISOString()
-          };
-          try { localStorage.setItem('mbdNewsletterLastSignup', JSON.stringify(record)); } catch (_) {}
-        });
-      });
+    function render(){
+      const q = search.value.trim().toLowerCase(), t = topic.value, s = saved();
+      const items = terms.filter(x => t === 'All' || x.topic === t).sort((a,b) => a.term.localeCompare(b.term));
+      const letters = [...new Set(items.map(x => x.term[0].toUpperCase()))];
+      az.innerHTML = letters.map(l => `<a data-l="${l}" href="#letter-${l}">${l}</a>`).join('');
+      let html='', current='';
+      items.forEach(x => { const L = x.term[0].toUpperCase(); if (L !== current){ current = L; html += `<h2 class="letter" id="letter-${L}">${L}</h2>`; } html += card(x,q,s); });
+      list.innerHTML = html || '<p style="color:#64748b">No matching terms.</p>';
+      list.querySelectorAll('.card').forEach(c => { const match = !q || (c.dataset.search||'').includes(q); c.classList.toggle('faded', !!q && !match); c.classList.toggle('match', !!q && match); });
+      list.querySelectorAll('.open').forEach(b => b.onclick = e => { const c = e.target.closest('.card'); if (!root.classList.contains('mode-simple')) c.classList.toggle('open'); });
+      list.querySelectorAll('.save').forEach(b => b.onclick = e => { const id = e.target.dataset.id; const ids = saved(); setSaved(ids.includes(id) ? ids.filter(x => x !== id) : [...ids,id]); render(); });
+      bindCalcs(); renderSaved(); observeLetters();
     }
 
-    function initExitIntentModal() {
-      const modal = document.getElementById('exitModal');
-      const closeBtn = document.getElementById('exitClose');
-      if (!modal) return;
-      const localKey = 'mbdExitIntentDismissed';
-      const sessionKey = 'mbdExitIntentSeenSession';
-      const dismiss = () => {
-        modal.classList.remove('active');
-        localStorage.setItem(localKey, '1');
-      };
-      closeBtn && closeBtn.addEventListener('click', dismiss);
-      modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
-      document.addEventListener('mouseleave', e => {
-        if (e.clientY > 0 || window.innerWidth < 768) return;
-        if (localStorage.getItem(localKey) === '1') return;
-        if (sessionStorage.getItem(sessionKey) === '1') return;
-        sessionStorage.setItem(sessionKey, '1');
-        modal.classList.add('active');
-      });
-      window.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('active'); });
+    function exportSheet(){
+      const ids = saved(); if (!ids.length) return alert('Save terms first with ☆.');
+      const selected = ids.map(id => map[id]).filter(Boolean);
+      const w = window.open('', '_blank');
+      w.document.write(`<!doctype html><html><head><title>Study Sheet</title><style>body{font-family:Inter,system-ui,sans-serif;padding:24px}article{border:1px solid #cbd5e1;border-radius:10px;padding:10px;margin-bottom:10px}.f{font-family:monospace;background:#f8fafc;border-radius:8px;padding:6px}</style></head><body><h1>Saved Glossary Terms</h1>${selected.map(t=>`<article><h2>${t.term}</h2><p><strong>Simple:</strong> ${t.simple}</p><p><strong>Academic:</strong> ${t.academic}</p><div class="f">${t.formula}</div><p><strong>Worked example:</strong> ${t.example}</p><p><strong>Key source:</strong> ${t.source}</p></article>`).join('')}<script>window.print()</script></body></html>`);
+      w.document.close();
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderGlossary();
-      initControls();
-      initAccordion();
-      initNewsletterForms();
-      initExitIntentModal();
-      if (window.gsap) {
-        const tl = gsap.timeline();
-        tl.to('h1', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .15);
-        tl.to('.lead', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, .26);
-      } else {
-        document.querySelectorAll('h1, .lead').forEach(el => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      }
-    });
+    search.addEventListener('input', render);
+    topic.addEventListener('change', render);
+    simpleBtn.addEventListener('click', () => { simpleBtn.classList.add('active'); techBtn.classList.remove('active'); root.classList.add('mode-simple'); document.querySelectorAll('.card').forEach(c => c.classList.remove('open')); });
+    techBtn.addEventListener('click', () => { techBtn.classList.add('active'); simpleBtn.classList.remove('active'); root.classList.remove('mode-simple'); });
+    document.getElementById('savedLaunch').addEventListener('click', () => savedPanel.classList.add('open'));
+    document.getElementById('savedClose').addEventListener('click', () => savedPanel.classList.remove('open'));
+    sheetBtn.addEventListener('click', exportSheet);
+    root.classList.add('mode-simple');
+    render();
   </script>
 </body>
 </html>
