@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFA Curriculum Library | The Market Brief Daily</title>
+  <meta name="description" content="Complete CFA Program curriculum (Levels I–III) in a Kaplan-style learning environment with interactive tools." />
+  <style>
+    :root {
+      --bg: #eaf3ff;
+      --surface: #ffffff;
+      --surface-soft: #f5f9ff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #c8d7ee;
+      --navy: #0b2a52;
+      --accent: #2563eb;
+      --success: #16a34a;
+      --shadow: 0 14px 36px rgba(13, 39, 80, 0.1);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eff6ff 0%, #eaf3ff 100%);
+      line-height: 1.65;
+    }
+    .layout {
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 300px;
+      gap: 20px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .sidebar, .rightbar {
+      position: sticky;
+      top: 14px;
+      max-height: calc(100vh - 28px);
+      overflow: auto;
+      padding: 16px;
+    }
+    .sidebar h1 { margin: 0; font-size: 1.04rem; color: var(--navy); letter-spacing: 0.01em; }
+    .subtle { margin: 4px 0 0; color: var(--muted); font-size: 0.78rem; font-weight: 600; }
+    .progress-wrap {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 12px;
+      align-items: center;
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .donut {
+      width: 68px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent) 0deg, #dbe7ff 0deg 360deg);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+    .donut::after {
+      content: "";
+      width: 48px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: white;
+      position: absolute;
+      inset: 0;
+      margin: auto;
+    }
+    .donut span { position: relative; z-index: 1; font-size: 0.73rem; font-weight: 900; color: var(--navy); }
+    .progress-meta p { margin: 0; font-size: 0.82rem; color: var(--muted); }
+    .progress-meta strong { display: block; font-size: 0.95rem; color: var(--ink); margin-bottom: 4px; }
+    .filters {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      background: #fff;
+    }
+    .filters h2, .toc h2, .rightbar h2 {
+      margin: 0 0 8px;
+      font-size: 0.77rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    label { display: block; font-size: 0.75rem; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
+    select, input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 8px;
+      font: inherit;
+      font-size: 0.84rem;
+      background: #fff;
+      margin-bottom: 8px;
+    }
+    .toc { margin-top: 14px; }
+    .toc-topic {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .toc-btn {
+      width: 100%;
+      border: 0;
+      background: #fff;
+      color: var(--navy);
+      font-weight: 800;
+      padding: 9px 10px;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 0.83rem;
+    }
+    .toc-btn:hover { background: #f2f7ff; }
+    .toc-list {
+      margin: 0;
+      padding: 0 8px 8px;
+      list-style: none;
+      display: none;
+    }
+    .toc-topic.open .toc-list { display: block; }
+    .toc-list a {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .toc-list a:hover, .toc-list a.active { color: var(--accent); background: #edf3ff; }
+    .check { color: var(--success); font-weight: 900; }
+    .content {
+      padding: 24px;
+      min-height: calc(100vh - 40px);
+      background: #f9fbff;
+    }
+    .content-header {
+      background: linear-gradient(140deg, #ffffff, #e9f2ff);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .content-header h1 { margin: 0 0 8px; font-size: clamp(1.45rem, 2.2vw, 2.1rem); color: var(--navy); }
+    .content-header p { margin: 0; color: var(--muted); }
+    .topic-section {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 18px;
+      margin: 0 0 16px;
+      scroll-margin-top: 20px;
+    }
+    .topic-section > h1 { margin: 0; font-size: 1.35rem; color: var(--navy); }
+    .topic-overview { margin: 8px 0 14px; color: var(--muted); font-size: 0.95rem; }
+    .lesson {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #fcfdff;
+    }
+    .lesson-header {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: start;
+      flex-wrap: wrap;
+    }
+    .lesson h2 { margin: 0; font-size: 1rem; color: #132f57; }
+    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge {
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border: 1px solid;
+    }
+    .level { background: #eef4ff; color: #1d4ed8; border-color: #c7dafc; }
+    .difficulty-foundations { background: #ecfdf5; color: #166534; border-color: #bbf7d0; }
+    .difficulty-intermediate { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .difficulty-advanced { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+    .story {
+      margin: 9px 0;
+      background: #eef4ff;
+      border: 1px solid #bfd3ff;
+      border-radius: 10px;
+      padding: 10px;
+      color: #1e3a8a;
+      font-size: 0.88rem;
+    }
+    .formula, .evidence, .application {
+      margin: 8px 0;
+      padding: 9px 10px;
+      border-radius: 9px;
+      font-size: 0.86rem;
+      border: 1px solid;
+    }
+    .formula { background: #ecfdf5; border-color: #b7ebc7; }
+    .evidence { background: #fff7ed; border-color: #fed7aa; }
+    .application { background: #f5f3ff; border-color: #ddd6fe; }
+    .lesson-actions { margin-top: 8px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+    .complete-btn {
+      border: 1px solid #9ac0ff;
+      background: #eef4ff;
+      color: #1d4ed8;
+      font-size: 0.74rem;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .complete-btn.done { border-color: #86efac; background: #ecfdf5; color: #15803d; }
+    .interactive-card {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .interactive-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 0.96rem; }
+    .inline-grid { display: grid; gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    canvas {
+      width: 100%;
+      height: 200px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      display: block;
+      margin-top: 8px;
+    }
+    .result { margin-top: 8px; font-size: 0.82rem; color: #1d4ed8; font-weight: 700; }
+    .source-list { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.81rem; }
+    .rightbar .sticky-box {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .rightbar strong { color: var(--navy); }
+    .footer-note { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; font-size: 0.76rem; color: #64748b; }
+    @media (max-width: 1260px) {
+      .layout { grid-template-columns: 280px 1fr; }
+      .rightbar { grid-column: 1 / -1; position: static; max-height: none; }
+    }
+    @media (max-width: 940px) {
+      .layout { grid-template-columns: 1fr; padding: 12px; }
+      .sidebar { position: static; max-height: none; }
+      .content { padding: 14px; }
+      .inline-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="panel sidebar">
+      <h1>CFA Curriculum Library</h1>
+      <p class="subtle">The Market Brief Daily</p>
+      <div class="progress-wrap">
+        <div class="donut" id="completionDonut"><span id="completionPct">0%</span></div>
+        <div class="progress-meta">
+          <strong>Overall completion</strong>
+          <p id="completionText">0 of 0 lessons complete</p>
+          <p id="activeFilterText">All lessons visible</p>
+        </div>
+      </div>
+      <section class="filters">
+        <h2>Filters</h2>
+        <label for="difficultyFilter">Difficulty</label>
+        <select id="difficultyFilter">
+          <option value="all">All</option>
+          <option value="foundations">Foundations</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <label for="topicFilter">Topic</label>
+        <select id="topicFilter">
+          <option value="all">All</option>
+          <option value="quantitative-methods">Quantitative Methods</option>
+          <option value="economics">Economics</option>
+          <option value="financial-statement-analysis">FSA</option>
+          <option value="corporate-issuers">Corporate Issuers</option>
+          <option value="equity">Equity</option>
+          <option value="fixed-income">Fixed Income</option>
+          <option value="derivatives">Derivatives</option>
+          <option value="alternatives">Alternatives</option>
+          <option value="portfolio-management">Portfolio Management</option>
+          <option value="ethics">Ethics</option>
+        </select>
+      </section>
+      <section class="toc">
+        <h2>Table of Contents</h2>
+        <div id="tocRoot"></div>
+      </section>
+    </aside>
+
+    <main class="panel content">
+      <header class="content-header">
+        <h1>Complete CFA Program (Levels I–III) — Story-First, Formula-Driven</h1>
+        <p>This curriculum mirrors Kaplan-style structure with continuous, rigorous coverage of the 10 CFA topic areas. Every lesson opens with a real-world event, then moves into formal framework, equations, empirical evidence, implementation risk, and institutional decision rules.</p>
+      </header>
+
+      <section class="interactive-card" id="interactive-lab">
+        <h3>Interactive Lab 1 — CAPM Required Return + Security Market Line</h3>
+        <div class="inline-grid">
+          <div><label for="capmRf">Risk-free rate (%)</label><input id="capmRf" type="number" value="3.5" step="0.1" /></div>
+          <div><label for="capmMkt">Expected market return (%)</label><input id="capmMkt" type="number" value="9" step="0.1" /></div>
+          <div><label for="capmBeta">Portfolio beta</label><input id="capmBeta" type="number" value="1.2" step="0.01" /></div>
+          <div><label for="capmExpected">Observed expected return (%)</label><input id="capmExpected" type="number" value="10.8" step="0.1" /></div>
+        </div>
+        <div id="capmResult" class="result"></div>
+        <canvas id="capmChart" width="840" height="220" aria-label="Security market line chart"></canvas>
+      </section>
+
+      <section class="interactive-card">
+        <h3>Interactive Lab 2 — Bond Pricing, Duration Shock & Convexity</h3>
+        <div class="inline-grid">
+          <div><label for="bondCoupon">Coupon rate (%)</label><input id="bondCoupon" type="number" value="4.5" step="0.1" /></div>
+          <div><label for="bondYield">Yield to maturity (%)</label><input id="bondYield" type="number" value="5.2" step="0.1" /></div>
+          <div><label for="bondMaturity">Maturity (years)</label><input id="bondMaturity" type="number" value="8" step="1" /></div>
+          <div><label for="bondShock">Yield shock (bps)</label><input id="bondShock" type="number" value="80" step="5" /></div>
+        </div>
+        <div id="bondResult" class="result"></div>
+        <canvas id="bondChart" width="840" height="220" aria-label="Bond price yield curve"></canvas>
+      </section>
+
+      <section class="interactive-card">
+        <h3>Interactive Lab 3 — Two-Asset Frontier, Volatility & Sharpe</h3>
+        <div class="inline-grid">
+          <div><label for="wEq">Equity weight (%)</label><input id="wEq" type="number" value="60" step="1" /></div>
+          <div><label for="rho">Equity-Bond correlation</label><input id="rho" type="number" value="0.2" step="0.05" /></div>
+          <div><label for="eqRet">Equity expected return (%)</label><input id="eqRet" type="number" value="9" step="0.1" /></div>
+          <div><label for="bdRet">Bond expected return (%)</label><input id="bdRet" type="number" value="4" step="0.1" /></div>
+          <div><label for="eqVol">Equity volatility (%)</label><input id="eqVol" type="number" value="18" step="0.1" /></div>
+          <div><label for="bdVol">Bond volatility (%)</label><input id="bdVol" type="number" value="7" step="0.1" /></div>
+        </div>
+        <div id="frontierResult" class="result"></div>
+        <canvas id="frontierChart" width="840" height="220" aria-label="Efficient frontier chart"></canvas>
+      </section>
+
+      <div id="curriculumRoot"></div>
+    </main>
+
+    <aside class="panel rightbar">
+      <h2>Research Desk</h2>
+      <div class="sticky-box"><strong>Coverage:</strong> Level I foundations, Level II valuation depth, Level III portfolio implementation and ethics in practice.</div>
+      <div class="sticky-box"><strong>Story anchors:</strong> LTCM, Enron, Dot-com bubble, 2008 CDO crisis, Kodak, South Sea Bubble, Madoff, LIBOR, WeWork, UK LDI episode.</div>
+      <div class="sticky-box"><strong>Evidence lens:</strong> Fama-French premia, Shiller CAPE, BIS leverage cycles, Khan-Serafeim-Yoon ESG materiality, Jensen alpha decomposition, active-share and cost-drag studies.</div>
+      <div class="sticky-box">
+        <strong>Source spine:</strong>
+        <ul class="source-list">
+          <li>CFA Institute Program Curriculum LOS (L1–L3)</li>
+          <li>Kaplan Schweser Notes and concept-check style</li>
+          <li>Damodaran, <em>Investment Valuation</em></li>
+          <li>Malkiel, Taleb, Howard Marks, Graham & Dodd</li>
+          <li>Edmans, Shiller, Kahneman & Tversky, Fama & French</li>
+        </ul>
+      </div>
+      <div class="footer-note">Educational content only. Not investment advice. Validate assumptions against current market and regulatory data before decision use.</div>
+    </aside>
+  </div>
+
+  <script>
+    const curriculum = [
+      { id: 'quantitative-methods', title: 'Quantitative Methods', overview: 'Statistics, probability, time-series and machine-learning diagnostics build the evidence architecture of investment decisions.', lessons: [
+        { id: 'qm-1', title: 'Probability, Bayes, and model error in crisis forecasting', level: 'Level I', difficulty: 'foundations', story: 'Long-Term Capital Management (1998) trusted historical spread behavior; when Russia defaulted, priors collapsed and conditional probabilities shifted violently.', formula: 'Bayes: P(H|E)=P(E|H)P(H)/P(E). In risk committees, update default and correlation priors when regime evidence changes.', evidence: 'Empirical risk papers show volatility clustering and structural breaks; static Gaussian assumptions systematically underprice tail events.', application: 'Use Bayesian updating, rolling windows, and stress priors for break regimes; escalate when likelihood ratios exceed pre-set limits.' },
+        { id: 'qm-2', title: 'Multiple regression, factor attribution, and false discovery', level: 'Level II', difficulty: 'intermediate', story: 'Dot-com portfolio managers claimed stock-picking genius in 1999; post-crash decomposition showed beta and growth-factor loading explained most returns.', formula: 'r_p - r_f = alpha + b1F1 + b2F2 + ... + e. Test t-stats with out-of-sample validation and p-hacking controls.', evidence: 'Harvey-Liu-Zhu demonstrates many published factors fail robust replication after data-mining adjustments.', application: 'Require economic rationale + monotonicity + transaction-cost-adjusted persistence before approving a factor signal.' },
+        { id: 'qm-3', title: 'Time-series forecasting, GARCH, and regime shifts', level: 'Level III', difficulty: 'advanced', story: 'The UK LDI stress episode (2022) showed how sudden yield spikes can invalidate low-volatility calibration and force rapid collateral calls.', formula: 'GARCH(1,1): sigma_t^2 = w + a*e_(t-1)^2 + b*sigma_(t-1)^2, with stress overrides for jump risk.', evidence: 'BIS and central-bank studies confirm leverage and liquidity shocks amplify volatility persistence.', application: 'Blend statistical forecasts with scenario overlays and liquidity stress ladders tied to collateral runways.' }
+      ]},
+      { id: 'economics', title: 'Economics', overview: 'Macro, monetary transmission, exchange rates, and growth regimes determine discount rates, margins, and capital allocation outcomes.', lessons: [
+        { id: 'ec-1', title: 'Business cycles and policy lags through the 2008 crisis', level: 'Level I', difficulty: 'foundations', story: 'In 2008, credit contraction and deleveraging overwhelmed standard DSGE intuition, revealing nonlinear policy transmission.', formula: 'Output gap and Taylor-type policy rules: i = r* + pi + 0.5(pi - pi*) + 0.5(y - y*).', evidence: 'Post-crisis macro literature documents zero-lower-bound frictions and amplified balance-sheet recessions.', application: 'Translate macro scenarios into sector earnings elasticity and valuation duration buckets.' },
+        { id: 'ec-2', title: 'FX parity, carry trades, and sudden stops', level: 'Level II', difficulty: 'intermediate', story: 'The Yen carry unwind repeatedly punished leveraged investors who treated uncovered parity violations as permanent alpha.', formula: 'Covered parity: (1+i_d) = (F/S)(1+i_f). Deviations indicate funding, basis, or counterparty stress.', evidence: 'Research finds carry premia exist but are exposed to crash risk during funding squeezes.', application: 'Position-size carry strategies to tail drawdown, not average Sharpe.' }
+      ]},
+      { id: 'financial-statement-analysis', title: 'Financial Statement Analysis', overview: 'Accounting quality, accrual diagnostics, and forensic adjustments bridge reported earnings to economic reality.', lessons: [
+        { id: 'fsa-1', title: 'Enron and the anatomy of accounting opacity', level: 'Level I', difficulty: 'foundations', story: 'Enron used SPEs and aggressive mark-to-market assumptions to convert fragile economics into smooth accounting narratives.', formula: 'Sustainable growth and quality checks: CFO/NI, accrual ratio = (NI - CFO)/Avg Assets.', evidence: 'Forensic-accounting studies show high accrual intensity predicts weaker future returns and earnings reversals.', application: 'Rebuild statements using cash conversion, off-balance-sheet obligations, and footnote covenant stress.' },
+        { id: 'fsa-2', title: 'Cash-flow statement signaling in cyclical downturns', level: 'Level II', difficulty: 'intermediate', story: 'During 2020 and 2022 shocks, firms with similar EPS diverged sharply due to working-capital stress and refinancing quality.', formula: 'FCFF = CFO + Int(1-T) - CapEx; quality improves when CFO consistently finances reinvestment.', evidence: 'Credit studies show weak cash conversion predicts spread widening faster than EPS misses.', application: 'Build liquidity runway scorecards: cash, revolvers, maturities, covenant headroom.' }
+      ]},
+      { id: 'corporate-issuers', title: 'Corporate Issuers', overview: 'Capital structure, governance, payout policy, and project appraisal determine whether firms create or transfer value.', lessons: [
+        { id: 'ci-1', title: 'Kodak, innovation option value, and capital allocation failure', level: 'Level I', difficulty: 'foundations', story: 'Kodak invented digital imaging but protected legacy film economics, sacrificing long-term option value for near-term margin defense.', formula: 'EVA = NOPAT - WACC * Invested Capital; value creation requires sustained ROIC > WACC.', evidence: 'Edmans and long-horizon governance literature links stakeholder investment quality with durable cash-flow outcomes.', application: 'Evaluate capex by strategic optionality, not only one-period IRR optics.' },
+        { id: 'ci-2', title: 'WeWork and governance discount rates', level: 'Level II', difficulty: 'intermediate', story: 'WeWork\'s S-1 exposed founder-control asymmetry, related-party complexity, and fragile unit economics.', formula: 'Value sensitivity: Delta EV ~ Delta FCF /(WACC-g); governance shocks act through higher required return and lower terminal confidence.', evidence: 'Empirical governance studies show weak board independence is associated with higher crash risk.', application: 'Separate operating forecast risk from governance risk; apply explicit governance risk premia.' }
+      ]},
+      { id: 'equity', title: 'Equity Investments', overview: 'Equity valuation combines narrative and numbers: growth durability, margins, reinvestment, and market-implied expectations.', lessons: [
+        { id: 'eq-1', title: 'Dot-com valuation drift and narrative excess', level: 'Level I', difficulty: 'foundations', story: 'Pets.com and Webvan showed how attention metrics replaced cash economics during bubbles.', formula: 'DCF core: EV = sum(FCFF_t/(1+WACC)^t) + TV/(1+WACC)^n.', evidence: 'Shiller CAPE history shows extreme valuation multiples often imply lower long-horizon real returns.', application: 'Use reverse DCF to infer what growth and margin path current prices require.' },
+        { id: 'eq-2', title: 'Relative valuation and justified multiples', level: 'Level II', difficulty: 'intermediate', story: 'Comparables failed badly in sector manias when business-model quality and capital intensity were ignored.', formula: 'Justified P/B = (ROE - g)/(r - g); justified P/E ties payout and required return.', evidence: 'Cross-sectional evidence supports profitability and investment discipline as persistent valuation anchors.', application: 'Cluster peers by economic model, reinvestment needs, and accounting policy quality before applying multiples.' }
+      ]},
+      { id: 'fixed-income', title: 'Fixed Income', overview: 'Term structure, spread decomposition, and interest-rate risk management are core to portfolio resilience and liability matching.', lessons: [
+        { id: 'fi-1', title: 'Orange County and leveraged duration', level: 'Level I', difficulty: 'foundations', story: 'Orange County reached for yield via leveraged inverse floaters and was overwhelmed when rates rose.', formula: 'Delta P/P ~ -D_mod Delta y + 0.5 C(Delta y)^2.', evidence: 'Historical bond selloffs show convexity and leverage jointly drive nonlinear losses.', application: 'Set risk limits on effective duration and funding-adjusted duration, not nominal duration alone.' },
+        { id: 'fi-2', title: 'Curve strategies, key-rate duration, and LDI constraints', level: 'Level III', difficulty: 'advanced', story: 'UK pension LDI stress illustrated key-rate mismatch and collateral spiral risk under fast curve repricing.', formula: 'Portfolio Delta P ~ sum(KRD_i * Delta y_i).', evidence: 'Regulatory reports show concentration in similar liability-hedge structures can amplify systemic liquidity risk.', application: 'Pair key-rate hedging with minimum collateral runway and forced-sale hierarchy governance.' }
+      ]},
+      { id: 'derivatives', title: 'Derivatives', overview: 'Options, futures, swaps, and structured exposures provide precision and leverage; misuse magnifies convexity and liquidity risk.', lessons: [
+        { id: 'dr-1', title: 'LTCM, basis convergence, and margin spirals', level: 'Level II', difficulty: 'advanced', story: 'LTCM was directionally right on many spreads, but repo haircuts and correlation shocks forced liquidation at the worst time.', formula: 'Basis return ~ carry + convergence - financing spread - margin drag.', evidence: 'Funding-liquidity research confirms arbitrage capital is most constrained when expected returns appear highest.', application: 'Integrate leverage limits with stress-tested financing availability.' },
+        { id: 'dr-2', title: 'AIG CDS and wrong-way counterparty risk', level: 'Level II', difficulty: 'intermediate', story: 'AIG sold enormous CDS notional with weak collateral planning; spread widening triggered destabilizing collateral calls.', formula: 'CDS MTM = PV(protection leg) - PV(premium leg).', evidence: 'Post-crisis reforms emphasize central clearing, initial margin, and bilateral CVA controls.', application: 'Model exposure with jump-to-default and collateral threshold cliffs.' }
+      ]},
+      { id: 'alternatives', title: 'Alternative Investments', overview: 'Private equity, real estate, infrastructure, commodities, and hedge funds require liquidity-adjusted and governance-aware analysis.', lessons: [
+        { id: 'al-1', title: 'Private equity return decomposition: skill vs structure', level: 'Level II', difficulty: 'intermediate', story: 'Some buyout vintages looked exceptional until exits normalized and leverage tailwinds faded.', formula: 'IRR attribution = operational growth + multiple change + leverage effect.', evidence: 'Academic evidence shows dispersion in manager outcomes is wide; due diligence quality dominates headline median returns.', application: 'Evaluate DPI, TVPI, and leverage stress, not IRR alone.' },
+        { id: 'al-2', title: 'Commodity supercycles and inflation hedging limits', level: 'Level I', difficulty: 'foundations', story: 'Oil shocks and post-pandemic inflation renewed commodity allocations, but roll yield and contango often diluted expected hedging.', formula: 'Futures total return = spot return + roll yield + collateral yield.', evidence: 'Long-run studies show inflation hedging efficacy varies by horizon and regime.', application: 'Define hedge objective precisely: short inflation shock protection vs long-term real return.' }
+      ]},
+      { id: 'portfolio-management', title: 'Portfolio Management & Wealth Planning', overview: 'Policy statements, risk budgets, factor mix, and implementation discipline integrate all prior curriculum into executable mandates.', lessons: [
+        { id: 'pm-1', title: 'Active vs passive after fees and behavior', level: 'Level I', difficulty: 'foundations', story: 'Malkiel and SPIVA evidence showed many active strategies underperform after costs despite persuasive narratives.', formula: 'Net alpha = gross alpha - fees - turnover costs - taxes.', evidence: 'SPIVA persistence reports show few top-quartile managers remain top quartile across periods.', application: 'Use core-satellite design with explicit fee budgets and benchmark-relative risk limits.' },
+        { id: 'pm-2', title: 'Factor investing governance through value drawdowns', level: 'Level III', difficulty: 'advanced', story: 'Value\'s long underperformance decade tested institutional discipline and committee patience.', formula: 'Ex ante tracking error: TE = stdev(R_p - R_b).', evidence: 'AQR and Fama-French literature supports long-cycle premia but with painful multiyear droughts.', application: 'Pre-commit rebalancing bands, drawdown protocols, and communication templates to avoid capitulation.' },
+        { id: 'pm-3', title: 'Behavioral portfolio controls and decision journals', level: 'Level III', difficulty: 'intermediate', story: 'Isaac Newton\'s South Sea Bubble loss highlights regret, herding, and re-entry bias even among top intellects.', formula: 'Sharpe = (E[R_p]-R_f)/sigma_p; process quality is required to sustain realized Sharpe.', evidence: 'Behavioral finance studies document overconfidence and disposition effects as persistent performance drags.', application: 'Implement pre-trade checklists, decision journals, and post-mortem scorecards.' }
+      ]},
+      { id: 'ethics', title: 'Ethical and Professional Standards', overview: 'Ethics is an alpha-preserving risk-control framework: trust, market integrity, and fiduciary duty directly impact capital cost and franchise value.', lessons: [
+        { id: 'et-1', title: 'Madoff and due-diligence failure', level: 'Level I', difficulty: 'foundations', story: 'Madoff\'s fraud persisted because investors outsourced skepticism and ignored impossible return smoothness.', formula: 'Red-flag heuristic: if claimed alpha is high and volatility unrealistically low, require independent verification and custodian segregation.', evidence: 'Fraud-case studies show governance and operational diligence failures dominate quantitative blind spots.', application: 'Apply CFA Code and Standards: diligence, reasonable basis, and loyalty to clients.' },
+        { id: 'et-2', title: 'LIBOR manipulation and benchmark integrity', level: 'Level II', difficulty: 'intermediate', story: 'LIBOR rigging showed how benchmark manipulation can contaminate trillions of contracts and public trust.', formula: 'Expected client harm = exposure notional x manipulated spread x duration impact.', evidence: 'Regulatory enforcement records show significant transfer effects from small benchmark distortions.', application: 'Mandate robust Chinese walls, surveillance, and whistleblowing governance.' },
+        { id: 'et-3', title: 'GIPS, performance reporting, and manager selection', level: 'Level III', difficulty: 'advanced', story: 'In manager beauty contests, selective track-record presentation can mislead allocators without strict composite standards.', formula: 'Information ratio = alpha / tracking-error, reported net of all fees and with compliant composite construction.', evidence: 'Manager due-diligence failures often stem from inconsistent performance definitions and survivorship bias.', application: 'Require GIPS-aligned records, dispersion data, and independent verification.' }
+      ]}
+    ];
+
+    const curriculumRoot = document.getElementById('curriculumRoot');
+    const tocRoot = document.getElementById('tocRoot');
+    const difficultyFilter = document.getElementById('difficultyFilter');
+    const topicFilter = document.getElementById('topicFilter');
+    const completionDonut = document.getElementById('completionDonut');
+    const completionPct = document.getElementById('completionPct');
+    const completionText = document.getElementById('completionText');
+    const activeFilterText = document.getElementById('activeFilterText');
+    const completed = new Set(JSON.parse(localStorage.getItem('cfa-completed-lessons') || '[]'));
+
+    const createLesson = (topic, lesson) => {
+      const article = document.createElement('article');
+      article.className = 'lesson';
+      article.id = lesson.id;
+      article.dataset.topic = topic.id;
+      article.dataset.difficulty = lesson.difficulty;
+      article.innerHTML = `
+        <div class="lesson-header">
+          <h2>${lesson.title}</h2>
+          <div class="badge-row">
+            <span class="badge level">${lesson.level}</span>
+            <span class="badge difficulty-${lesson.difficulty}">${lesson.difficulty}</span>
+          </div>
+        </div>
+        <div class="story"><strong>Story trigger:</strong> ${lesson.story}</div>
+        <div class="formula"><strong>Framework & formula:</strong> ${lesson.formula}</div>
+        <div class="evidence"><strong>Empirical lens:</strong> ${lesson.evidence}</div>
+        <div class="application"><strong>Implementation rule:</strong> ${lesson.application}</div>
+        <div class="lesson-actions"><button class="complete-btn" data-lesson-id="${lesson.id}">Mark complete</button></div>
+      `;
+      return article;
+    };
+
+    const renderCurriculum = () => {
+      curriculumRoot.innerHTML = '';
+      curriculum.forEach((topic) => {
+        const topicEl = document.createElement('section');
+        topicEl.className = 'topic-section';
+        topicEl.id = topic.id;
+        topicEl.innerHTML = `<h1>${topic.title}</h1><p class="topic-overview">${topic.overview}</p>`;
+        topic.lessons.forEach((lesson) => topicEl.appendChild(createLesson(topic, lesson)));
+        curriculumRoot.appendChild(topicEl);
+      });
+      bindCompletionButtons();
+      applyCompletionUI();
+    };
+
+    const renderTOC = () => {
+      tocRoot.innerHTML = '';
+      curriculum.forEach((topic, index) => {
+        const block = document.createElement('div');
+        block.className = 'toc-topic' + (index === 0 ? ' open' : '');
+        const btn = document.createElement('button');
+        btn.className = 'toc-btn';
+        btn.type = 'button';
+        btn.innerHTML = `<span>${topic.title}</span><span>▾</span>`;
+        btn.addEventListener('click', () => block.classList.toggle('open'));
+        const list = document.createElement('ul');
+        list.className = 'toc-list';
+        topic.lessons.forEach((lesson) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `#${lesson.id}`;
+          a.dataset.lessonLink = lesson.id;
+          a.innerHTML = `<span>${lesson.title}</span><span class="check" data-check-id="${lesson.id}"></span>`;
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+        block.appendChild(btn);
+        block.appendChild(list);
+        tocRoot.appendChild(block);
+      });
+      applyCompletionUI();
+    };
+
+    const applyCompletionUI = () => {
+      document.querySelectorAll('.complete-btn').forEach((btn) => {
+        const lessonId = btn.dataset.lessonId;
+        const isDone = completed.has(lessonId);
+        btn.classList.toggle('done', isDone);
+        btn.textContent = isDone ? 'Completed ✓' : 'Mark complete';
+      });
+      document.querySelectorAll('[data-check-id]').forEach((check) => {
+        check.textContent = completed.has(check.dataset.checkId) ? '✓' : '';
+      });
+      const allLessons = [...document.querySelectorAll('.lesson')];
+      const total = allLessons.length;
+      const done = allLessons.filter((lesson) => completed.has(lesson.id)).length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      completionPct.textContent = `${pct}%`;
+      completionText.textContent = `${done} of ${total} lessons complete`;
+      completionDonut.style.background = `conic-gradient(var(--accent) ${pct * 3.6}deg, #dbe7ff 0deg 360deg)`;
+      localStorage.setItem('cfa-completed-lessons', JSON.stringify([...completed]));
+    };
+
+    const bindCompletionButtons = () => {
+      document.querySelectorAll('.complete-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const lessonId = btn.dataset.lessonId;
+          if (completed.has(lessonId)) completed.delete(lessonId); else completed.add(lessonId);
+          applyCompletionUI();
+        });
+      });
+    };
+
+    const applyFilters = () => {
+      const diff = difficultyFilter.value;
+      const topic = topicFilter.value;
+      let visible = 0;
+      document.querySelectorAll('.lesson').forEach((lesson) => {
+        const matchDiff = diff === 'all' || lesson.dataset.difficulty === diff;
+        const matchTopic = topic === 'all' || lesson.dataset.topic === topic;
+        const show = matchDiff && matchTopic;
+        lesson.style.display = show ? '' : 'none';
+        if (show) visible += 1;
+      });
+      document.querySelectorAll('.topic-section').forEach((section) => {
+        const hasVisible = [...section.querySelectorAll('.lesson')].some((lesson) => lesson.style.display !== 'none');
+        section.style.display = hasVisible ? '' : 'none';
+      });
+      document.querySelectorAll('.toc-list a').forEach((a) => {
+        const lessonEl = document.getElementById(a.dataset.lessonLink);
+        a.style.display = lessonEl && lessonEl.style.display !== 'none' ? '' : 'none';
+      });
+      activeFilterText.textContent = `${visible} lessons visible`;
+    };
+
+    const activateTocOnScroll = () => {
+      const links = [...document.querySelectorAll('.toc-list a')];
+      const lessonSections = links.map((link) => document.getElementById(link.dataset.lessonLink)).filter(Boolean);
+      const onScroll = () => {
+        const marker = 170;
+        let current = null;
+        lessonSections.forEach((section) => { if (section.getBoundingClientRect().top < marker) current = section.id; });
+        links.forEach((link) => link.classList.toggle('active', link.dataset.lessonLink === current));
+      };
+      document.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    };
+
+    const drawAxes = (ctx, w, h) => {
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(40, 10);
+      ctx.lineTo(40, h - 25);
+      ctx.lineTo(w - 10, h - 25);
+      ctx.stroke();
+    };
+
+    const updateCapm = () => {
+      const rf = Number(document.getElementById('capmRf').value) / 100;
+      const rm = Number(document.getElementById('capmMkt').value) / 100;
+      const beta = Number(document.getElementById('capmBeta').value);
+      const observed = Number(document.getElementById('capmExpected').value) / 100;
+      const req = rf + beta * (rm - rf);
+      const alpha = observed - req;
+      document.getElementById('capmResult').textContent = `Required return = ${(req * 100).toFixed(2)}% | Jensen alpha vs observed = ${(alpha * 100).toFixed(2)}%`;
+      const canvas = document.getElementById('capmChart');
+      const ctx = canvas.getContext('2d');
+      const { width: w, height: h } = canvas;
+      drawAxes(ctx, w, h);
+      const minB = 0, maxB = 2;
+      const minR = Math.min(rf, req, observed) - 0.02;
+      const maxR = Math.max(rm, req, observed) + 0.02;
+      const x = (b) => 40 + ((b - minB) / (maxB - minB)) * (w - 60);
+      const y = (r) => (h - 25) - ((r - minR) / (maxR - minR || 1)) * (h - 45);
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x(minB), y(rf));
+      ctx.lineTo(x(maxB), y(rf + maxB * (rm - rf)));
+      ctx.stroke();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(x(beta), y(observed), 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#2563eb';
+      ctx.font = '12px Inter, sans-serif';
+      ctx.fillText('SML', x(1.6), y(rf + 1.6 * (rm - rf)) - 8);
+      ctx.fillStyle = '#0f172a';
+      ctx.fillText('Portfolio', x(beta) + 7, y(observed) - 7);
+    };
+
+    const bondPrice = (couponRate, ytm, years, face = 100) => {
+      let pv = 0;
+      const c = face * couponRate;
+      for (let t = 1; t <= years; t += 1) pv += c / (1 + ytm) ** t;
+      pv += face / (1 + ytm) ** years;
+      return pv;
+    };
+
+    const updateBond = () => {
+      const c = Number(document.getElementById('bondCoupon').value) / 100;
+      const y = Number(document.getElementById('bondYield').value) / 100;
+      const n = Math.max(1, Math.floor(Number(document.getElementById('bondMaturity').value)));
+      const shock = Number(document.getElementById('bondShock').value) / 10000;
+      const p0 = bondPrice(c, y, n), p1 = bondPrice(c, y + shock, n);
+      const change = ((p1 - p0) / p0) * 100;
+      document.getElementById('bondResult').textContent = `Price @ current YTM: ${p0.toFixed(2)} | Price after shock: ${p1.toFixed(2)} | Return impact: ${change.toFixed(2)}%`;
+      const canvas = document.getElementById('bondChart');
+      const ctx = canvas.getContext('2d');
+      const { width: w, height: h } = canvas;
+      drawAxes(ctx, w, h);
+      const yMin = Math.max(0.001, y - 0.03), yMax = y + 0.04, points = [];
+      for (let i = 0; i <= 35; i += 1) {
+        const yi = yMin + ((yMax - yMin) * i / 35);
+        points.push({ yi, p: bondPrice(c, yi, n) });
+      }
+      const pMin = Math.min(...points.map((pt) => pt.p)), pMax = Math.max(...points.map((pt) => pt.p));
+      const x = (yi) => 40 + ((yi - yMin) / (yMax - yMin || 1)) * (w - 60);
+      const yPx = (p) => (h - 25) - ((p - pMin) / (pMax - pMin || 1)) * (h - 45);
+      ctx.strokeStyle = '#0ea5e9';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      points.forEach((pt, i) => { if (i === 0) ctx.moveTo(x(pt.yi), yPx(pt.p)); else ctx.lineTo(x(pt.yi), yPx(pt.p)); });
+      ctx.stroke();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(x(y), yPx(p0), 4, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const updateFrontier = () => {
+      const we = Number(document.getElementById('wEq').value) / 100, wb = 1 - we;
+      const rho = Number(document.getElementById('rho').value);
+      const re = Number(document.getElementById('eqRet').value) / 100, rb = Number(document.getElementById('bdRet').value) / 100;
+      const se = Number(document.getElementById('eqVol').value) / 100, sb = Number(document.getElementById('bdVol').value) / 100;
+      const rf = Number(document.getElementById('capmRf').value) / 100;
+      const rp = we * re + wb * rb;
+      const vp = Math.sqrt((we ** 2) * (se ** 2) + (wb ** 2) * (sb ** 2) + 2 * we * wb * se * sb * rho);
+      const sharpe = (rp - rf) / (vp || 1);
+      document.getElementById('frontierResult').textContent = `Portfolio return: ${(rp * 100).toFixed(2)}% | Volatility: ${(vp * 100).toFixed(2)}% | Sharpe: ${sharpe.toFixed(2)}`;
+      const canvas = document.getElementById('frontierChart');
+      const ctx = canvas.getContext('2d');
+      const { width: w, height: h } = canvas;
+      drawAxes(ctx, w, h);
+      const frontier = [];
+      for (let i = 0; i <= 100; i += 1) {
+        const xw = i / 100, yw = 1 - xw;
+        const r = xw * re + yw * rb;
+        const v = Math.sqrt((xw ** 2) * (se ** 2) + (yw ** 2) * (sb ** 2) + 2 * xw * yw * se * sb * rho);
+        frontier.push({ r, v });
+      }
+      const vMin = Math.min(...frontier.map((p) => p.v)), vMax = Math.max(...frontier.map((p) => p.v));
+      const rMin = Math.min(...frontier.map((p) => p.r)), rMax = Math.max(...frontier.map((p) => p.r));
+      const x = (v) => 40 + ((v - vMin) / (vMax - vMin || 1)) * (w - 60);
+      const y = (r) => (h - 25) - ((r - rMin) / (rMax - rMin || 1)) * (h - 45);
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      frontier.forEach((p, i) => { if (i === 0) ctx.moveTo(x(p.v), y(p.r)); else ctx.lineTo(x(p.v), y(p.r)); });
+      ctx.stroke();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(x(vp), y(rp), 5, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    renderCurriculum();
+    renderTOC();
+    activateTocOnScroll();
+    [difficultyFilter, topicFilter].forEach((el) => el.addEventListener('change', applyFilters));
+    ['capmRf', 'capmMkt', 'capmBeta', 'capmExpected'].forEach((id) => document.getElementById(id).addEventListener('input', () => { updateCapm(); updateFrontier(); }));
+    ['bondCoupon', 'bondYield', 'bondMaturity', 'bondShock'].forEach((id) => document.getElementById(id).addEventListener('input', updateBond));
+    ['wEq', 'rho', 'eqRet', 'bdRet', 'eqVol', 'bdVol'].forEach((id) => document.getElementById(id).addEventListener('input', updateFrontier));
+    applyFilters();
+    applyCompletionUI();
+    updateCapm();
+    updateBond();
+    updateFrontier();
+  </script>
+</body>
+</html>
