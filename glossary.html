@@ -17,6 +17,8 @@
     .hero p{margin:0;color:var(--muted);line-height:1.65}
     .controls{display:grid;grid-template-columns:1.5fr auto auto 1fr;gap:10px;margin:14px 0}
     .controls input,.controls select{border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;background:#fff}
+    .guide-note{margin:10px 0 12px;color:#334155;line-height:1.6}
+    .status-msg{margin:0 0 12px;color:#1d4ed8;font-size:.86rem}
     .toggle{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
     .toggle button{border:none;background:transparent;padding:0 14px;font-weight:800;cursor:pointer}
     .toggle button.active{background:var(--accent);color:#fff}
@@ -82,9 +84,9 @@
     <section class="hero">
       <span class="kicker">Living Academic Reference</span>
       <h1>Glossary — theory, formulas, stories, and practice</h1>
-      <p>Use Simple mode for plain-English recall and Technical mode for full mini-lessons with definitions, formulas, assumptions, worked examples, and cross-links to lessons.</p>
+      <p>Use Simple mode for plain English recall and Technical mode for full mini-lessons with definitions, formulas, assumptions, worked examples, and cross-links to lessons.</p>
     </section>
-    <p style="margin:10px 0 12px;color:#334155;line-height:1.6">Best workflow: filter by topic, save priority terms with ☆, then open their linked lessons to move from definition-level recall to case-based application.</p>
+    <p class="guide-note">Best workflow: filter by topic, save priority terms with ☆, then open their linked lessons to move from definition-level recall to case-based application.</p>
 
     <section class="controls">
       <input id="search" type="search" placeholder="Search terms, cases, formulas (e.g., LTCM, CAPM, DCF, VaR)">
@@ -94,7 +96,7 @@
         <option value="All">All</option><option>Ratios & Performance</option><option>Risk</option><option>Portfolio Theory</option><option>Strategies</option><option>Fixed Income</option><option>Derivatives</option><option>Valuation</option><option>Corporate Finance</option><option>Behavioural Finance</option><option>ESG</option>
       </select>
     </section>
-    <p id="statusMsg" style="margin:0 0 12px;color:#1d4ed8;font-size:.86rem" aria-live="polite"></p>
+    <p id="statusMsg" class="status-msg" aria-live="polite"></p>
 
     <nav id="az" class="az" aria-label="A to Z"></nav>
     <section id="list"></section>

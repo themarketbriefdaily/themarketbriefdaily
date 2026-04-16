@@ -28,6 +28,7 @@
     .module > button{width:100%;border:none;background:#fff;padding:14px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;text-align:left}
     .module-title{margin:0;font-size:1.02rem;color:#0f172a}
     .module-sub{margin:4px 0 0;color:#475569;font-size:.86rem}
+    .module-intro{margin:0 0 10px}
     .module-body{max-height:0;overflow:hidden;border-top:1px solid transparent;transition:max-height .26s ease,padding .26s ease,border-color .26s ease;padding:0 14px}
     .module.open .module-body{max-height:4600px;padding:14px;border-color:#dbe6f6}
     .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
@@ -70,7 +71,7 @@
     <section class="hero">
       <span class="kicker">Curriculum Hub</span>
       <h1>CFA-depth, story-first investment education</h1>
-      <p>Each major concept is taught through a real case first, then decoded using theory, formulas, and practical implementation — the same way professionals remember hard material under pressure. Every module is structured to move from intuition, to formal framework, to application and risk controls.</p>
+      <p>Each major concept is taught through a real case first, then decoded using theory, formulas, and practical implementation — “story-first” means each lesson opens with a real market or corporate episode before moving into formal tools. Every module is structured to move from intuition, to formal framework, to application and risk controls.</p>
       <div class="stats">
         <span class="stat">5 New Advanced Modules</span>
         <span class="stat">24 Story-Led Lesson Cards</span>
@@ -91,7 +92,7 @@
     <section class="module-wrap" id="advancedModules">
       <article class="module" data-search="derivatives options futures swaps vix cdo">
         <button type="button"><div><h3 class="module-title">Module A — Derivatives &amp; Options (6 cards)</h3><p class="module-sub">From early futures markets to modern volatility and structured-credit crises, with pricing logic, payoff geometry, and implementation failure modes.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub" style="margin:0 0 10px">You will master derivative use-cases, pricing intuition, and failure points across options, futures, swaps, volatility products, and structured credit.</p><div class="lesson-grid">
+        <div class="module-body"><p class="module-sub module-intro">You will master derivative use-cases, pricing intuition, and failure points across options, futures, swaps, volatility products, and structured credit.</p><div class="lesson-grid">
           <article class="lesson" id="module-a1"><h4>A1 — What derivatives are and why they exist</h4><p>Chicago grain merchants used early futures to survive harvest uncertainty; that same logic powers modern hedging. We separate notional exposure from economic risk and explain why Buffett warned about derivatives while still using them where collateral, terms, and counterparties are controlled.</p><p class="meta">Lens: hedge vs speculation · forwards/futures/options/swaps · source: Berkshire letters.</p></article>
           <article class="lesson" id="module-a2"><h4>A2 — Options: the most misunderstood instrument in finance</h4><p>Nick Leeson’s short Nikkei structures looked low-vol until the Kobe shock revealed convex downside. We build call/put intuition, Black-Scholes inputs (S, K, T, r, σ), and Greeks as exposure coordinates, not trivia.</p><p class="meta">Interactive: payoff diagram · Story: Barings 1995.</p></article>
           <article class="lesson" id="module-a3"><h4>A3 — Futures and the basis in practice</h4><p>Metallgesellschaft’s hedge failed not because theory was wrong but because maturity mismatch and liquidity stress broke implementation. Cost-of-carry pricing (F = S × e^(r−q)T), basis risk, and roll yield are tied to operational funding reality.</p><p class="meta">Interactive: futures P&amp;L + basis sensitivity.</p></article>
@@ -103,7 +104,7 @@
 
       <article class="module" data-search="corporate finance valuation dcf wacc m&a private equity">
         <button type="button"><div><h3 class="module-title">Module B — Corporate Finance &amp; Valuation (6 cards)</h3><p class="module-sub">From corporate objective setting to full valuation stack (DCF, multiples, capital structure, M&amp;A, and LBO incentives) through real deal outcomes.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub" style="margin:0 0 10px">You will connect firm objectives to valuation mechanics, then test capital structure, M&amp;A logic, and private-equity incentives against real outcomes.</p><div class="lesson-grid">
+        <div class="module-body"><p class="module-sub module-intro">You will connect firm objectives to valuation mechanics, then test capital structure, M&amp;A logic, and private-equity incentives against real outcomes.</p><div class="lesson-grid">
           <article class="lesson" id="module-b1"><h4>B1 — The goal of the firm: shareholder vs stakeholder</h4><p>Friedman’s profit doctrine is tested against Edmans’ evidence that treating stakeholders well can improve long-run shareholder returns. Kodak, Costco, and Patagonia show this as an empirical valuation question, not a slogan contest.</p><p class="meta">Story stack: Kodak · Costco · Patagonia.</p></article>
           <article class="lesson" id="module-b2"><h4>B2 — DCF: the central idea in finance</h4><p>Amazon in 2000 looked overvalued on near-term cash flows; narrative and numbers had to be coherent over decades. We build FCFF/FCFE, WACC via CAPM, terminal value, and sensitivity discipline to show where model precision ends.</p><p class="meta">Interactive: DCF calculator · source: Damodaran.</p></article>
           <article class="lesson" id="module-b3"><h4>B3 — Relative valuation and multiple traps</h4><p>The dot-com “price-to-eyeballs” era showed what happens when comparability rules collapse. EV/EBITDA, P/E, P/B, EV/Sales, P/FCF, and CAPE are taught alongside Buffett’s mean-reversion warning from 1999.</p><p class="meta">Interactive: comparables range builder.</p></article>
@@ -115,7 +116,7 @@
 
       <article class="module" data-search="behavioural finance biases prospect theory herding arbitrage wework">
         <button type="button"><div><h3 class="module-title">Module C — Behavioural Finance Deep-Dive (5 cards)</h3><p class="module-sub">From foundational cognitive biases to institutional implementation constraints, ending with decision architectures that reduce costly investor behavior.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub" style="margin:0 0 10px">You will map major investor biases, understand why mispricing can persist, and build pre-commitment portfolio rules that reduce behavioral error.</p><div class="lesson-grid">
+        <div class="module-body"><p class="module-sub module-intro">You will map major investor biases, understand why mispricing can persist, and build pre-commitment portfolio rules that reduce behavioral error.</p><div class="lesson-grid">
           <article class="lesson" id="module-c1"><h4>C1 — Why humans are not rational</h4><p>Newton’s South Sea re-entry loss opens the module: analytical brilliance does not immunise emotion. Prospect Theory (value function, probability weighting, reference dependence) explains why markets can overshoot fundamentals.</p><p class="meta">Interactive: prospect-theory curve.</p></article>
           <article class="lesson" id="module-c2"><h4>C2 — Biases that move markets</h4><p>The dot-com bubble becomes a full behavioural laboratory: overconfidence, recency, anchoring, herding, disposition effect, and mental accounting. We combine theory with empirical findings (e.g., Barber &amp; Odean).</p><p class="meta">Source anchor: Shiller, Irrational Exuberance.</p></article>
           <article class="lesson" id="module-c3"><h4>C3 — Limits to arbitrage</h4><p>Royal Dutch/Shell twin-share mispricing persisted despite “obvious” arbitrage because funding risk, noise trader risk, and career risk can outlast capital. Smart money can be right and still go broke first.</p><p class="meta">Framework: Shleifer &amp; Vishny (1997).</p></article>
@@ -126,7 +127,7 @@
 
       <article class="module" data-search="esg sustainability dieselgate greenwashing climate risk">
         <button type="button"><div><h3 class="module-title">Module D — ESG &amp; Sustainable Investing (4 cards)</h3><p class="module-sub">Industry materiality, evidence interpretation, credibility testing, and climate transition mechanics translated into cash-flow and valuation impacts.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub" style="margin:0 0 10px">You will separate ESG signal from narrative noise, evaluate evidence quality, and translate transition risk into valuation and capital-allocation decisions.</p><div class="lesson-grid">
+        <div class="module-body"><p class="module-sub module-intro">You will separate ESG signal from narrative noise, evaluate evidence quality, and translate transition risk into valuation and capital-allocation decisions.</p><div class="lesson-grid">
           <article class="lesson" id="module-d1"><h4>D1 — ESG definition and materiality</h4><p>VW Dieselgate turns ESG into finance: governance and environmental failures became a sudden valuation event. We use SASB-style materiality to separate decision-useful ESG from checklist noise.</p><p class="meta">Interactive: industry materiality matrix.</p></article>
           <article class="lesson" id="module-d2"><h4>D2 — ESG and performance evidence</h4><p>The Friede et al. meta-analysis and Edmans’ employee-satisfaction evidence are examined with factor-adjustment caution. Is ESG alpha real, or factor exposure plus period effects?</p><p class="meta">Case: Unilever under Paul Polman.</p></article>
           <article class="lesson" id="module-d3"><h4>D3 — Greenwashing and credibility crisis</h4><p>DWS and retail fashion “sustainable” claims show the gap between labels and measurable outcomes. We treat ESG assurance quality as a core risk input, not a compliance afterthought.</p><p class="meta">Story: H&amp;M Conscious Collection controversy.</p></article>
@@ -136,7 +137,7 @@
 
       <article class="module" data-search="alternatives hedge funds private markets commodities real estate">
         <button type="button"><div><h3 class="module-title">Module E — Alternative Assets (3 cards)</h3><p class="module-sub">Alternative strategy map covering fee drag, liquidity terms, factor decomposition, and when alternatives improve or worsen portfolio resilience.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub" style="margin:0 0 10px">You will evaluate alternative strategies through fees, liquidity, and factor decomposition, then judge when alternatives improve diversification in practice.</p><div class="lesson-grid">
+        <div class="module-body"><p class="module-sub module-intro">You will evaluate alternative strategies through fees, liquidity, and factor decomposition, then judge when alternatives improve diversification in practice.</p><div class="lesson-grid">
           <article class="lesson" id="module-e1"><h4>E1 — Hedge funds: strategy map and fee drag</h4><p>LTCM opens the module: elite models plus leverage can fail when liquidity evaporates and correlations jump. We map strategy buckets, high-water marks, and how 2-and-20 compounds fee drag.</p><p class="meta">Interactive: fee drag calculator.</p></article>
           <article class="lesson" id="module-e2"><h4>E2 — Private markets and the illiquidity debate</h4><p>Yale’s endowment success shows what skill plus access can do; failed imitators show why governance and horizon matter as much as asset class labels. IRR, TVPI, DPI, and vintage-year effects are compared directly.</p><p class="meta">Story: Swensen model, and its replication limits.</p></article>
           <article class="lesson" id="module-e3"><h4>E3 — Commodities, real estate, and inflation hedging</h4><p>The Hunt brothers’ silver episode shows that market structure and rule-setters matter as much as thesis. We decompose commodity futures returns (spot + roll + collateral) and compare direct real estate with REIT structures.</p><p class="meta">Interactive: roll-return decomposition.</p></article>
@@ -151,7 +152,7 @@
         <li>Edmans (Grow the Pie), Damodaran, Buffett annual letters, Malkiel, Taleb, Shiller, Kindleberger, Lewis.</li>
         <li>Fama-French, Carhart, AQR, Shleifer &amp; Vishny, Kahneman &amp; Tversky, Friede-Busch-Bassen, Khan-Serafeim-Yoon.</li>
         <li>Institutional and regulatory sources: BIS, FCA, HMRC, TCFD, SASB/ISSB-aligned materiality frameworks.</li>
-        <li>Lesson architecture: story trigger → formal framework → worked mechanics → implementation risks → investor decision rules.</li>
+        <li>Lesson architecture: story trigger -&gt; formal framework -&gt; worked mechanics -&gt; implementation risks -&gt; investor decision rules.</li>
         <li>Cross-linking: each glossary term points to module anchors for fast revision workflows.</li>
       </ul>
     </section>
