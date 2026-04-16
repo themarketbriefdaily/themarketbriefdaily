@@ -14,6 +14,18 @@
     const dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
     if (!dropdowns.length) return;
 
+    function getDropdownDestination(dd) {
+      const links = Array.from(dd.querySelectorAll('.nav-drop-menu a[href]'));
+      if (!links.length) return '';
+      const activeLink = links.find((link) => link.classList.contains('active'));
+      if (activeLink) return activeLink.getAttribute('href');
+      const educationLink = links.find((link) => {
+        const href = link.getAttribute('href') || '';
+        return href.includes('education');
+      });
+      return (educationLink || links[0])?.getAttribute('href') || '';
+    }
+
     function closeAll(except) {
       dropdowns.forEach((dd) => {
         if (dd === except) return;
@@ -30,7 +42,9 @@
         e.preventDefault();
         const isOpen = dd.classList.contains('open');
         if (isOpen) {
-          window.location.assign('/education-library.html');
+          closeAll();
+          const destination = getDropdownDestination(dd);
+          if (destination) window.location.assign(destination);
           return;
         }
         closeAll(dd);
