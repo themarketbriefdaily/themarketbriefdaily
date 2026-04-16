@@ -30,43 +30,18 @@
     .module-sub{margin:4px 0 0;color:#475569;font-size:.86rem}
     .module-intro{margin:0 0 10px}
     .module-body{max-height:0;overflow:hidden;border-top:1px solid transparent;transition:max-height .26s ease,padding .26s ease,border-color .26s ease;padding:0 14px}
-    .module.open .module-body{max-height:8000px;padding:14px;border-color:#dbe6f6}
+    .module.open .module-body{max-height:4600px;padding:14px;border-color:#dbe6f6}
     .lesson-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
     .lesson{border:1px solid #dbe6f6;border-radius:12px;padding:11px;background:#f8fbff}
     .lesson h4{margin:0 0 5px;font-size:.93rem;color:#1e3a8a}
     .lesson p{margin:0 0 7px;color:#334155;font-size:.85rem;line-height:1.6}
-    .lesson-open{display:inline-flex;align-items:center;gap:6px;border:1px solid #c9dbfb;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 10px;font-size:.74rem;font-weight:800;cursor:pointer}
     .meta{font-size:.78rem;color:#1d4ed8}
     .meta a{color:#1d4ed8}
     .kicker{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#64748b}
     .caret{color:#64748b;font-size:1rem}
-    .lab{margin-top:18px;border:1px solid #dbe6f6;border-radius:14px;background:#fff;padding:14px}
-    .lab h3{margin:0 0 10px}
-    .lab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
-    .tool{border:1px solid #dbe6f6;border-radius:12px;background:#f8fbff;padding:10px}
-    .tool h4{margin:0 0 6px;color:#1e3a8a;font-size:.92rem}
-    .tool p{margin:0 0 8px;color:#334155;font-size:.84rem;line-height:1.55}
-    .tool label{display:block;font-size:.78rem;color:#334155;margin-top:6px}
-    .tool input{width:100%;border:1px solid #dbe6f6;border-radius:8px;padding:6px 7px;font:inherit;background:#fff}
-    .tool-out{margin-top:8px;font-size:.84rem;font-weight:800;color:#1d4ed8}
     .refs{margin-top:18px;border:1px solid #dbe6f6;border-radius:14px;background:#fff;padding:14px}
     .refs h3{margin:0 0 8px}
     .refs ul{margin:0;padding-left:18px;color:#334155}
-    .lesson-page-overlay{position:fixed;inset:0;background:rgba(15,23,42,.56);display:none;align-items:center;justify-content:center;padding:18px;z-index:90}
-    .lesson-page-overlay.open{display:flex}
-    .lesson-page{background:#fff;border-radius:16px;border:1px solid #dbe6f6;width:min(980px,96vw);max-height:90vh;overflow:auto}
-    .lesson-page-head{position:sticky;top:0;background:#fff;border-bottom:1px solid #dbe6f6;padding:14px;display:flex;justify-content:space-between;gap:10px;z-index:2}
-    .lesson-page-head h3{margin:0;color:#0f172a}
-    .lesson-page-sub{margin:4px 0 0;color:#475569;font-size:.84rem}
-    .close-page{border:1px solid #dbe6f6;background:#fff;border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer}
-    .lesson-page-body{padding:14px}
-    .lesson-page-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    .lesson-block{border:1px solid #dbe6f6;border-radius:12px;padding:11px;background:#f8fbff}
-    .lesson-block h4{margin:0 0 6px;color:#1e3a8a;font-size:.9rem}
-    .lesson-block p,.lesson-block li{margin:0;color:#334155;line-height:1.58;font-size:.85rem}
-    .lesson-block ul{margin:0;padding-left:18px;display:grid;gap:5px}
-    .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#fff;border:1px solid #dbe6f6;border-radius:8px;padding:7px 9px;color:#0f172a;font-size:.82rem}
-    @media (max-width:760px){.lesson-page-overlay{padding:8px}.lesson-page{max-height:94vh}}
   </style>
 </head>
 <body>
@@ -98,9 +73,9 @@
       <h1>CFA-depth, story-first investment education</h1>
       <p>Each major concept is taught through a real case first, then decoded using theory, formulas, and practical implementation — “story-first” means each lesson opens with a real market or corporate episode before moving into formal tools. Every module is structured to move from intuition, to formal framework, to application and risk controls.</p>
       <div class="stats">
-        <span class="stat">7 Curriculum Modules</span>
-        <span class="stat">35 Story-Led Lesson Cards</span>
-        <span class="stat">CFA L1–L2 + MSc Rigor</span>
+        <span class="stat">5 New Advanced Modules</span>
+        <span class="stat">24 Story-Led Lesson Cards</span>
+        <span class="stat">CFA Level 1–2 Depth</span>
       </div>
       <div class="search-wrap"><input id="lessonSearch" class="search" type="search" placeholder="Search modules, stories, formulas (e.g., LTCM, DCF, Dieselgate, Kelly)"></div>
     </section>
@@ -115,234 +90,77 @@
     </section>
 
     <section class="module-wrap" id="advancedModules">
-      <article class="module" data-search="risk derivatives ltcm barings aig orange county cdo var">
-        <button type="button"><div><h3 class="module-title">Module A — Risk, Derivatives &amp; Systemic Stress (6 cards)</h3><p class="module-sub">LTCM, Barings, AIG, and Orange County turn formulas into living risk management lessons.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">Every card begins with a failure or near-failure, then rebuilds the framework using VaR, CVaR, duration/convexity, counterparty risk, and liquidity stress logic.</p><div class="lesson-grid">
-          <article class="lesson" id="module-a1"><h4>A1 — LTCM and the illusion of controlled risk</h4><p>LTCM’s Nobel-powered models looked elegant until Russia defaulted, spreads gapped, and correlations converged toward one. We show why VaR = zσV looked safe in calm data but collapsed under fat tails, funding stress, and 25:1 leverage.</p><p class="meta">Core tools: VaR, CVaR, leverage, liquidity spiral · Source: Lowenstein, <em>When Genius Failed</em>.</p></article>
-          <article class="lesson" id="module-a2"><h4>A2 — Barings and short convexity</h4><p>Nick Leeson’s hidden short-option profile generated small steady gains then catastrophic convex losses. Option payoff geometry and gamma explain why “collecting pennies” can end in institutional ruin.</p><p class="meta">Story: Barings 1995 · Lens: Greeks and operational control failure.</p></article>
-          <article class="lesson" id="module-a3"><h4>A3 — Orange County and duration leverage</h4><p>Robert Citron reached for yield with leveraged inverse floaters; when rates rose, modified duration and convexity transformed a policy mistake into bankruptcy. Duration math is taught through that exact chain.</p><p class="meta">Formula lens: ΔP/P ≈ -D_modΔy + 0.5C(Δy)².</p></article>
-          <article class="lesson" id="module-a4"><h4>A4 — AIG CDS and counterparty fragility</h4><p>AIG wrote roughly $440bn of CDS protection with inadequate capital buffers. We map premium leg vs protection leg, wrong-way collateral calls, and why mark-to-model confidence vanished under stress.</p><p class="meta">Source: Lewis, <em>The Big Short</em> · Concept: counterparty risk.</p></article>
-          <article class="lesson" id="module-a5"><h4>A5 — 2008 CDO machine and ratings failure</h4><p>Mortgage pools were tranched into securities that looked safe in Gaussian correlation assumptions but were fragile in clustered defaults. Tranche waterfalls explain why “AAA” did not mean low economic risk.</p><p class="meta">Concept stack: securitisation, MBS, CDO, correlation breakdown.</p></article>
-          <article class="lesson" id="module-a6"><h4>A6 — Repo, basis trades, and modern plumbing risk</h4><p>Basis traders can be directionally right and still fail if repo haircuts rise. We connect carry, financing, and margin mechanics to crisis-era forced deleveraging dynamics.</p><p class="meta">Practical use: hedge fund risk committee diagnostics.</p></article>
+      <article class="module" data-search="derivatives options futures swaps vix cdo">
+        <button type="button"><div><h3 class="module-title">Module A — Derivatives &amp; Options (6 cards)</h3><p class="module-sub">From early futures markets to modern volatility and structured-credit crises, with pricing logic, payoff geometry, and implementation failure modes.</p></div><span class="caret">▾</span></button>
+        <div class="module-body"><p class="module-sub module-intro">You will master derivative use-cases, pricing intuition, and failure points across options, futures, swaps, volatility products, and structured credit.</p><div class="lesson-grid">
+          <article class="lesson" id="module-a1"><h4>A1 — What derivatives are and why they exist</h4><p>Chicago grain merchants used early futures to survive harvest uncertainty; that same logic powers modern hedging. We separate notional exposure from economic risk and explain why Buffett warned about derivatives while still using them where collateral, terms, and counterparties are controlled.</p><p class="meta">Lens: hedge vs speculation · forwards/futures/options/swaps · source: Berkshire letters.</p></article>
+          <article class="lesson" id="module-a2"><h4>A2 — Options: the most misunderstood instrument in finance</h4><p>Nick Leeson’s short Nikkei structures looked low-vol until the Kobe shock revealed convex downside. We build call/put intuition, Black-Scholes inputs (S, K, T, r, σ), and Greeks as exposure coordinates, not trivia.</p><p class="meta">Interactive: payoff diagram · Story: Barings 1995.</p></article>
+          <article class="lesson" id="module-a3"><h4>A3 — Futures and the basis in practice</h4><p>Metallgesellschaft’s hedge failed not because theory was wrong but because maturity mismatch and liquidity stress broke implementation. Cost-of-carry pricing (F = S × e^(r−q)T), basis risk, and roll yield are tied to operational funding reality.</p><p class="meta">Interactive: futures P&amp;L + basis sensitivity.</p></article>
+          <article class="lesson" id="module-a4"><h4>A4 — Swaps: plumbing of global finance</h4><p>The LIBOR scandal showed benchmark integrity is a balance-sheet risk. We map fixed-floating swaps, currency swaps, total return swaps, and the LIBOR→SOFR transition through legal and valuation mechanics.</p><p class="meta">Story: LIBOR manipulation by major banks.</p></article>
+          <article class="lesson" id="module-a5"><h4>A5 — Volatility as an asset class</h4><p>Volmageddon (2018) destroyed inverse-volatility products because investors sold convex insurance without understanding path dependence. Implied vs realised vol, VIX construction, and volatility risk premium are taught through that unwind.</p><p class="meta">Story: XIV -96% in one day.</p></article>
+          <article class="lesson" id="module-a6"><h4>A6 — Structured products and the CDO machine</h4><p>Through The Big Short narrative, we follow mortgages into tranches and CDO-squared structures where rating assumptions masked correlation risk. Waterfall logic and tranche attachment points explain why “AAA” was fragile.</p><p class="meta">Interactive: tranche loss waterfall.</p></article>
         </div></div>
       </article>
 
-      <article class="module" data-search="agency governance enron wework kodak principal agent information asymmetry">
-        <button type="button"><div><h3 class="module-title">Module B — Agency, Governance &amp; Corporate Finance (5 cards)</h3><p class="module-sub">Enron, WeWork, and Kodak show agency problems as valuation problems, not ethics footnotes.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">This module links principal-agent theory to real corporate outcomes, then maps governance quality into cash flows, discount rates, and terminal value.</p><div class="lesson-grid">
-          <article class="lesson" id="module-b1"><h4>B1 — Enron and mark-to-market agency distortion</h4><p>Enron used opaque mark-to-market assumptions and SPE structures to manufacture earnings while executives extracted private benefit. Principal-agent theory explains why incentive design and audit limits failed together.</p><p class="meta">Source: McLean, <em>The Smartest Guys in the Room</em>.</p></article>
-          <article class="lesson" id="module-b2"><h4>B2 — WeWork’s prospectus as governance diagnosis</h4><p>The S-1 made valuation hubris visible: dual-class control, related-party complexity, and no path to economic profit. We quantify founder-control risk as higher discount rate and lower terminal confidence.</p><p class="meta">Lens: information asymmetry + agency cost of capital.</p></article>
-          <article class="lesson" id="module-b3"><h4>B3 — Kodak and short-termism</h4><p>Kodak invented the digital camera in 1975 yet protected film cash flows instead of re-architecting the business. Edmans’ stakeholder lens frames this as underinvestment in long-run value, not bad luck.</p><p class="meta">Source: Edmans, <em>Grow the Pie</em>.</p></article>
-          <article class="lesson" id="module-b4"><h4>B4 — Capital structure in the real world</h4><p>MM gives a clean benchmark; distress cases show its boundaries. We use debt tax shields, expected distress cost, and refinancing risk to evaluate when leverage creates value versus fragility.</p><p class="meta">Bridge to LBO and EVA frameworks.</p></article>
-          <article class="lesson" id="module-b5"><h4>B5 — Private equity incentives: carry, hurdles, and J-curve</h4><p>Alliance Boots and Debenhams show divergence between operational value creation and financial extraction. We track IRR, TVPI, DPI, carry waterfalls, and vintage effects to separate skill from structure.</p><p class="meta">Concepts: LBO, carried interest, hurdle rate, vintage year.</p></article>
+      <article class="module" data-search="corporate finance valuation dcf wacc m&a private equity">
+        <button type="button"><div><h3 class="module-title">Module B — Corporate Finance &amp; Valuation (6 cards)</h3><p class="module-sub">From corporate objective setting to full valuation stack (DCF, multiples, capital structure, M&amp;A, and LBO incentives) through real deal outcomes.</p></div><span class="caret">▾</span></button>
+        <div class="module-body"><p class="module-sub module-intro">You will connect firm objectives to valuation mechanics, then test capital structure, M&amp;A logic, and private-equity incentives against real outcomes.</p><div class="lesson-grid">
+          <article class="lesson" id="module-b1"><h4>B1 — The goal of the firm: shareholder vs stakeholder</h4><p>Friedman’s profit doctrine is tested against Edmans’ evidence that treating stakeholders well can improve long-run shareholder returns. Kodak, Costco, and Patagonia show this as an empirical valuation question, not a slogan contest.</p><p class="meta">Story stack: Kodak · Costco · Patagonia.</p></article>
+          <article class="lesson" id="module-b2"><h4>B2 — DCF: the central idea in finance</h4><p>Amazon in 2000 looked overvalued on near-term cash flows; narrative and numbers had to be coherent over decades. We build FCFF/FCFE, WACC via CAPM, terminal value, and sensitivity discipline to show where model precision ends.</p><p class="meta">Interactive: DCF calculator · source: Damodaran.</p></article>
+          <article class="lesson" id="module-b3"><h4>B3 — Relative valuation and multiple traps</h4><p>The dot-com “price-to-eyeballs” era showed what happens when comparability rules collapse. EV/EBITDA, P/E, P/B, EV/Sales, P/FCF, and CAPE are taught alongside Buffett’s mean-reversion warning from 1999.</p><p class="meta">Interactive: comparables range builder.</p></article>
+          <article class="lesson" id="module-b4"><h4>B4 — Capital structure: MM and reality</h4><p>MM proves irrelevance in frictionless worlds; Toys R Us shows reality where tax shields meet distress and strategic fragility. We connect Proposition I/II, trade-off, and pecking-order theory to debt capacity limits.</p><p class="meta">Interactive: leverage vs WACC visualiser.</p></article>
+          <article class="lesson" id="module-b5"><h4>B5 — M&amp;A and the winner’s curse</h4><p>AOL-Time Warner demonstrates how synergy stories, hubris, and agency incentives can destroy acquirer value. We map deal logic, accretion/dilution, and why target shareholders usually capture gains.</p><p class="meta">Evidence: acquirer underperformance meta-analyses.</p></article>
+          <article class="lesson" id="module-b6"><h4>B6 — Private equity: value creation or extraction?</h4><p>Debenhams and Alliance Boots form a contrast: leverage can either fund operational transformation or transfer value out before fragility appears. LBO mechanics, carry, hurdle rates, and J-curve dynamics are linked to incentives.</p><p class="meta">Interactive: mini LBO IRR model.</p></article>
         </div></div>
       </article>
 
-      <article class="module" data-search="valuation amazon dcf terminal value beffett dot com pe pb">
-        <button type="button"><div><h3 class="module-title">Module C — Valuation Under Uncertainty (5 cards)</h3><p class="module-sub">Amazon, dot-com excess, and Buffett’s textile regret teach where models fail and judgment matters.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">From DCF mechanics to narrative risk, this module teaches how discount rates, margins, and terminal assumptions transmit into valuation error.</p><div class="lesson-grid">
-          <article class="lesson" id="module-c1"><h4>C1 — Amazon and terminal-value sensitivity</h4><p>Late-1990s DCFs often valued Amazon near zero because near-term free cash flow was weak and discount rates were high. Damodaran’s narrative-and-numbers framework shows why long runway assumptions can dominate static snapshots.</p><p class="meta">Formula anchor: EV = ΣFCFF/(1+WACC)^t + TV/(1+WACC)^n.</p></article>
-          <article class="lesson" id="module-c2"><h4>C2 — Dot-com valuation breakdown</h4><p>Price-to-eyeballs and price-to-clicks replaced economic discipline. We contrast that period with P/E, EV/EBITDA, and FCF-based valuation guardrails to show why metric choice can institutionalize delusion.</p><p class="meta">Story: Pets.com, Webvan, and valuation drift.</p></article>
-          <article class="lesson" id="module-c3"><h4>C3 — Buffett’s Berkshire textile lesson</h4><p>Buying “cheap” textile assets without durable economics became a classic value trap. Margin of safety is not just low multiples; it needs reinvestment quality and long-run ROIC above WACC.</p><p class="meta">Source: Buffett annual letters.</p></article>
-          <article class="lesson" id="module-c4"><h4>C4 — DCF, NPV, IRR, and payback in one decision stack</h4><p>Capital budgeting choices are ranked with NPV first, IRR second, and payback as a liquidity check. We walk through conflicts between metrics and why opportunity cost sets discount rates.</p><p class="meta">Decision architecture for research and corporate finance.</p></article>
-          <article class="lesson" id="module-c5"><h4>C5 — Multiples, EVA, and quality of value creation</h4><p>Economic Value Added (EVA = NOPAT − WACC×capital) links accounting performance to true value creation. We integrate ROIC-WACC spread with multiple analysis to avoid cosmetic “cheapness.”</p><p class="meta">Concepts: EVA, ROIC, P/B, value traps.</p></article>
+      <article class="module" data-search="behavioural finance biases prospect theory herding arbitrage wework">
+        <button type="button"><div><h3 class="module-title">Module C — Behavioural Finance Deep-Dive (5 cards)</h3><p class="module-sub">From foundational cognitive biases to institutional implementation constraints, ending with decision architectures that reduce costly investor behavior.</p></div><span class="caret">▾</span></button>
+        <div class="module-body"><p class="module-sub module-intro">You will map major investor biases, understand why mispricing can persist, and build pre-commitment portfolio rules that reduce behavioral error.</p><div class="lesson-grid">
+          <article class="lesson" id="module-c1"><h4>C1 — Why humans are not rational</h4><p>Newton’s South Sea re-entry loss opens the module: analytical brilliance does not immunise emotion. Prospect Theory (value function, probability weighting, reference dependence) explains why markets can overshoot fundamentals.</p><p class="meta">Interactive: prospect-theory curve.</p></article>
+          <article class="lesson" id="module-c2"><h4>C2 — Biases that move markets</h4><p>The dot-com bubble becomes a full behavioural laboratory: overconfidence, recency, anchoring, herding, disposition effect, and mental accounting. We combine theory with empirical findings (e.g., Barber &amp; Odean).</p><p class="meta">Source anchor: Shiller, Irrational Exuberance.</p></article>
+          <article class="lesson" id="module-c3"><h4>C3 — Limits to arbitrage</h4><p>Royal Dutch/Shell twin-share mispricing persisted despite “obvious” arbitrage because funding risk, noise trader risk, and career risk can outlast capital. Smart money can be right and still go broke first.</p><p class="meta">Framework: Shleifer &amp; Vishny (1997).</p></article>
+          <article class="lesson" id="module-c4"><h4>C4 — Behavioural corporate finance</h4><p>WeWork’s S-1 language and valuation path illustrate CEO overconfidence and investor narrative capture. Biases do not live only in markets; they distort corporate investment and M&amp;A choices.</p><p class="meta">Story: WeWork governance and valuation collapse.</p></article>
+          <article class="lesson" id="module-c5"><h4>C5 — Build a portfolio that protects you from you</h4><p>Odysseus and the Sirens frame pre-commitment: rules beat willpower. IPS design, rebalancing rules, dollar-cost averaging, and guardrails become behavioural risk controls, not just “process.”</p><p class="meta">Outcome: less regret-driven decision making.</p></article>
         </div></div>
       </article>
 
-      <article class="module" data-search="active passive emh peter lynch bill miller medallion factors value decade">
-        <button type="button"><div><h3 class="module-title">Module D — EMH, Active Management &amp; Factors (5 cards)</h3><p class="module-sub">Lynch, Miller, Medallion, and value’s lost decade sharpen the skill-vs-luck debate.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">The module tests efficient markets against institutional reality, survivorship bias, and factor cyclicality, then designs implementable portfolio policy.</p><div class="lesson-grid">
-          <article class="lesson" id="module-d1"><h4>D1 — Peter Lynch: skill or survivorship?</h4><p>Magellan’s 29.2% annualized record is extraordinary, but one outlier does not invalidate EMH alone. We use base-rate reasoning, distribution tails, and false-discovery logic to evaluate manager skill claims.</p><p class="meta">Source: Lynch and Malkiel debate framing.</p></article>
-          <article class="lesson" id="module-d2"><h4>D2 — Bill Miller’s streak and collapse</h4><p>Fifteen years beating the S&amp;P 500 were followed by a 55% drawdown in 2008. The same history can be read as skill persistence or regime-dependent risk loading.</p><p class="meta">Core idea: distinguish alpha from latent factor bets.</p></article>
-          <article class="lesson" id="module-d3"><h4>D3 — Medallion and EMH boundary conditions</h4><p>Renaissance Medallion’s long-run returns challenge simplistic market-efficiency caricatures but also highlight capacity, secrecy, and implementation barriers for ordinary investors.</p><p class="meta">Takeaway: anomaly existence ≠ broad exploitability.</p></article>
-          <article class="lesson" id="module-d4"><h4>D4 — Value’s lost decade (2007–2017)</h4><p>HML underperformance tested institutional patience and career risk tolerance. Factor investors need long horizons, governance discipline, and pre-committed rebalancing to harvest noisy premia.</p><p class="meta">Concepts: factor cyclicality, benchmark pressure, alpha decay.</p></article>
-          <article class="lesson" id="module-d5"><h4>D5 — Smart beta, low-vol anomaly, and implementation costs</h4><p>We compare theory to net results after turnover, capacity, tax, and spread costs. Smart beta is not free alpha; it is a transparent package of factor exposures with execution risk.</p><p class="meta">Framework: gross-to-net decomposition.</p></article>
+      <article class="module" data-search="esg sustainability dieselgate greenwashing climate risk">
+        <button type="button"><div><h3 class="module-title">Module D — ESG &amp; Sustainable Investing (4 cards)</h3><p class="module-sub">Industry materiality, evidence interpretation, credibility testing, and climate transition mechanics translated into cash-flow and valuation impacts.</p></div><span class="caret">▾</span></button>
+        <div class="module-body"><p class="module-sub module-intro">You will separate ESG signal from narrative noise, evaluate evidence quality, and translate transition risk into valuation and capital-allocation decisions.</p><div class="lesson-grid">
+          <article class="lesson" id="module-d1"><h4>D1 — ESG definition and materiality</h4><p>VW Dieselgate turns ESG into finance: governance and environmental failures became a sudden valuation event. We use SASB-style materiality to separate decision-useful ESG from checklist noise.</p><p class="meta">Interactive: industry materiality matrix.</p></article>
+          <article class="lesson" id="module-d2"><h4>D2 — ESG and performance evidence</h4><p>The Friede et al. meta-analysis and Edmans’ employee-satisfaction evidence are examined with factor-adjustment caution. Is ESG alpha real, or factor exposure plus period effects?</p><p class="meta">Case: Unilever under Paul Polman.</p></article>
+          <article class="lesson" id="module-d3"><h4>D3 — Greenwashing and credibility crisis</h4><p>DWS and retail fashion “sustainable” claims show the gap between labels and measurable outcomes. We treat ESG assurance quality as a core risk input, not a compliance afterthought.</p><p class="meta">Story: H&amp;M Conscious Collection controversy.</p></article>
+          <article class="lesson" id="module-d4"><h4>D4 — Climate risk is financial risk</h4><p>Peabody’s bankruptcy and Ørsted’s transition are opposite capital-allocation outcomes under changing policy and energy economics. Physical risk, transition risk, and stranded asset valuation are modelled explicitly.</p><p class="meta">Interactive: carbon price vs asset write-down.</p></article>
         </div></div>
       </article>
 
-      <article class="module" data-search="behavioural finance newton south sea bubble shiller dot com herding january effect">
-        <button type="button"><div><h3 class="module-title">Module E — Behavioural Finance &amp; Limits to Arbitrage (5 cards)</h3><p class="module-sub">Newton’s South Sea loss opens a rigorous tour through bias, reflexivity, and market micro-behaviour.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">Story-first sequencing: South Sea → dot-com → calendar anomalies → limits to arbitrage → personal decision architecture.</p><div class="lesson-grid">
-          <article class="lesson" id="module-e1"><h4>E1 — Newton and Prospect Theory</h4><p>Newton exited the South Sea Bubble profitably, re-entered near peak, and lost heavily. Prospect Theory and loss aversion explain why intelligence does not immunize investors from crowd-driven re-entry errors.</p><p class="meta">Quote anchor: “madness of people.”</p></article>
-          <article class="lesson" id="module-e2"><h4>E2 — Dot-com as a behavioural laboratory</h4><p>The 1999–2000 collapse (~$6.7tn US equity value erased) illustrates overconfidence, recency, anchoring, and herding in one episode. Shiller’s excess-volatility argument becomes concrete.</p><p class="meta">Source: <em>Irrational Exuberance</em>.</p></article>
-          <article class="lesson" id="module-e3"><h4>E3 — January effect and why arbitrage is not frictionless</h4><p>Calendar anomalies persist partly because implementation frictions, shorting constraints, and career risk can outweigh theoretical alpha. Limits-to-arbitrage is the bridge between EMH and observed mispricing.</p><p class="meta">Framework: Shleifer &amp; Vishny.</p></article>
-          <article class="lesson" id="module-e4"><h4>E4 — Noise traders and reflexivity loops</h4><p>When sentiment trading pushes prices, fundamentals can adapt through financing channels and feedback effects. Reflexivity explains why bubbles can self-reinforce before collapsing.</p><p class="meta">Concepts: noise trader risk, reflexivity, convex unwind.</p></article>
-          <article class="lesson" id="module-e5"><h4>E5 — Behavioral control architecture</h4><p>We convert theory into rules: pre-committed rebalancing, dollar-cost averaging, checklists against sunk-cost and disposition effects, and explicit circle-of-competence boundaries.</p><p class="meta">Outcome: fewer regret-driven decisions.</p></article>
+      <article class="module" data-search="alternatives hedge funds private markets commodities real estate">
+        <button type="button"><div><h3 class="module-title">Module E — Alternative Assets (3 cards)</h3><p class="module-sub">Alternative strategy map covering fee drag, liquidity terms, factor decomposition, and when alternatives improve or worsen portfolio resilience.</p></div><span class="caret">▾</span></button>
+        <div class="module-body"><p class="module-sub module-intro">You will evaluate alternative strategies through fees, liquidity, and factor decomposition, then judge when alternatives improve diversification in practice.</p><div class="lesson-grid">
+          <article class="lesson" id="module-e1"><h4>E1 — Hedge funds: strategy map and fee drag</h4><p>LTCM opens the module: elite models plus leverage can fail when liquidity evaporates and correlations jump. We map strategy buckets, high-water marks, and how 2-and-20 compounds fee drag.</p><p class="meta">Interactive: fee drag calculator.</p></article>
+          <article class="lesson" id="module-e2"><h4>E2 — Private markets and the illiquidity debate</h4><p>Yale’s endowment success shows what skill plus access can do; failed imitators show why governance and horizon matter as much as asset class labels. IRR, TVPI, DPI, and vintage-year effects are compared directly.</p><p class="meta">Story: Swensen model, and its replication limits.</p></article>
+          <article class="lesson" id="module-e3"><h4>E3 — Commodities, real estate, and inflation hedging</h4><p>The Hunt brothers’ silver episode shows that market structure and rule-setters matter as much as thesis. We decompose commodity futures returns (spot + roll + collateral) and compare direct real estate with REIT structures.</p><p class="meta">Interactive: roll-return decomposition.</p></article>
         </div></div>
       </article>
-
-      <article class="module" data-search="esg dieselgate bp deepwater unilever patagonia greenwashing materiality">
-        <button type="button"><div><h3 class="module-title">Module F — ESG, Materiality &amp; Stakeholder Capitalism (5 cards)</h3><p class="module-sub">Dieselgate, Deepwater, Unilever, and Patagonia show ESG as cash-flow reality, not branding.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">Each lesson translates environmental or governance choices into valuation channels: Δcash flow, ΔWACC, and terminal-risk repricing.</p><div class="lesson-grid">
-          <article class="lesson" id="module-f1"><h4>F1 — Dieselgate and financial materiality</h4><p>Volkswagen’s defeat-device scandal wiped roughly 35% off market value in two days and generated $30bn+ in penalties. ESG failure is taught as sudden balance-sheet and discount-rate shock.</p><p class="meta">Concepts: governance failure, legal liability, carbon risk.</p></article>
-          <article class="lesson" id="module-f2"><h4>F2 — BP Deepwater and deferred safety cost</h4><p>Cost-cutting looked accretive until catastrophic tail liability appeared. We map low-probability operational risk into expected value and enterprise risk budgeting.</p><p class="meta">Lens: expected loss = probability × severity.</p></article>
-          <article class="lesson" id="module-f3"><h4>F3 — Unilever under Paul Polman</h4><p>By removing quarterly guidance and emphasizing long-horizon execution, Unilever reframed stakeholder investment as a strategic compounding engine rather than a PR exercise.</p><p class="meta">Source: Edmans and long-run evidence debates.</p></article>
-          <article class="lesson" id="module-f4"><h4>F4 — Patagonia and the frontier of ownership design</h4><p>Yvon Chouinard’s 2022 transfer to a trust/purpose structure tests the outer edge of stakeholder capitalism. We evaluate what this means for governance rights and capital discipline.</p><p class="meta">Concepts: mission lock, control, accountability.</p></article>
-          <article class="lesson" id="module-f5"><h4>F5 — Greenwashing diagnostics and impact credibility</h4><p>DWS and consumer “sustainable” controversies show why labels fail without auditable KPIs. We build a due-diligence checklist for impact intent, measurement, and additionality.</p><p class="meta">Outcome: separate marketing narrative from measurable impact.</p></article>
-        </div></div>
-      </article>
-
-      <article class="module" data-search="personal finance pensions sequence risk uk pension crisis lottery winners withdrawal glide path ldi">
-        <button type="button"><div><h3 class="module-title">Module G — Personal Finance, Pensions &amp; Lifecycle Risk (4 cards)</h3><p class="module-sub">Household capital allocation taught with institutional-grade risk logic.</p></div><span class="caret">▾</span></button>
-        <div class="module-body"><p class="module-sub module-intro">From compounding to retirement drawdown, this module treats household decisions with the same discipline as institutional portfolio management.</p><div class="lesson-grid">
-          <article class="lesson" id="module-g1"><h4>G1 — Wealth shocks and financial literacy</h4><p>Lottery-winner bankruptcy data (often cited near 70% over five years) illustrates that capital without process is fragile. We translate this into budgeting, reserve design, and behavioural controls.</p><p class="meta">Principle: wealth is a stock; literacy is a system.</p></article>
-          <article class="lesson" id="module-g2"><h4>G2 — UK pension shift and sequence risk</h4><p>The move from DB to DC transferred longevity and market risk to individuals. We model sequence-of-returns risk to show why early retirement drawdowns can permanently impair outcomes.</p><p class="meta">Tools: safe withdrawal rate, guardrails, cash buckets.</p></article>
-          <article class="lesson" id="module-g3"><h4>G3 — Glide paths, LDI, and asset-liability matching</h4><p>Institutional ALM principles are adapted for households: liability timing first, asset mix second. We compare target-date glide paths with personalized liability-matching frameworks.</p><p class="meta">Concepts: duration matching, funded-status mindset.</p></article>
-          <article class="lesson" id="module-g4"><h4>G4 — Compounding, Rule of 72, and decision hygiene</h4><p>Compound interest is powerful but path-dependent. We connect Rule of 72 intuition to opportunity-cost thinking, sunk-cost avoidance, and circle-of-competence discipline for long-run behaviour.</p><p class="meta">Behavioural translation of core finance mathematics.</p></article>
-        </div></div>
-      </article>
-    </section>
-
-    <section class="lab" data-search="interactive calculator dcf kelly retirement sequence risk">
-      <h3>Interactive practice studio</h3>
-      <div class="lab-grid">
-        <article class="tool" data-calc="dcf">
-          <h4>DCF terminal-value sensitivity</h4>
-          <p>See how small shifts in WACC and perpetual growth reprice long-duration assets.</p>
-          <label>FCF current year (£m)<input data-k="fcf" type="number" value="120"></label>
-          <label>WACC %<input data-k="wacc" type="number" value="9" step="0.1"></label>
-          <label>Growth g %<input data-k="g" type="number" value="2.5" step="0.1"></label>
-          <div class="tool-out">Implied terminal value: <span data-out>—</span></div>
-        </article>
-        <article class="tool" data-calc="kelly">
-          <h4>Kelly position sizing</h4>
-          <p>Test edge assumptions and compare full Kelly with half-Kelly implementation.</p>
-          <label>Win probability p<input data-k="p" type="number" value="0.55" step="0.01"></label>
-          <label>Win/loss payoff b<input data-k="b" type="number" value="1.2" step="0.1"></label>
-          <div class="tool-out">Kelly f*: <span data-out>—</span></div>
-        </article>
-        <article class="tool" data-calc="withdrawal">
-          <h4>Retirement withdrawal stress</h4>
-          <p>Estimate first-year withdrawal and shock it with an early drawdown to visualize sequence risk.</p>
-          <label>Portfolio (£)<input data-k="pv" type="number" value="1000000" step="10000"></label>
-          <label>Withdrawal rate %<input data-k="wr" type="number" value="4" step="0.1"></label>
-          <label>Year-1 market return %<input data-k="r1" type="number" value="-15" step="0.1"></label>
-          <div class="tool-out">End of year-1 balance: <span data-out>—</span></div>
-        </article>
-      </div>
     </section>
 
     <section class="refs">
       <h3>Source standards used in this curriculum</h3>
       <ul>
         <li>CFA Institute curriculum and LOS structure.</li>
-        <li>Edmans (Grow the Pie), Damodaran, Buffett annual letters, Malkiel, Taleb, Shiller, Kindleberger, Lewis, Lowenstein, Graham, Bogle, Peter Lynch.</li>
-        <li>Fama-French, Carhart, AQR, Shleifer &amp; Vishny, Kahneman &amp; Tversky, Friede-Busch-Bassen, Khan-Serafeim-Yoon, Soros reflexivity work.</li>
+        <li>Edmans (Grow the Pie), Damodaran, Buffett annual letters, Malkiel, Taleb, Shiller, Kindleberger, Lewis.</li>
+        <li>Fama-French, Carhart, AQR, Shleifer &amp; Vishny, Kahneman &amp; Tversky, Friede-Busch-Bassen, Khan-Serafeim-Yoon.</li>
         <li>Institutional and regulatory sources: BIS, FCA, HMRC, TCFD, SASB/ISSB-aligned materiality frameworks.</li>
         <li>Lesson architecture: story trigger -&gt; formal framework -&gt; worked mechanics -&gt; implementation risks -&gt; investor decision rules.</li>
         <li>Cross-linking: each glossary term points to module anchors for fast revision workflows.</li>
       </ul>
     </section>
   </main>
-  <div id="lessonPageOverlay" class="lesson-page-overlay" role="dialog" aria-modal="true" aria-labelledby="lessonPageTitle">
-    <article class="lesson-page">
-      <header class="lesson-page-head">
-        <div>
-          <h3 id="lessonPageTitle">Lesson</h3>
-          <p id="lessonPageSub" class="lesson-page-sub"></p>
-        </div>
-        <button id="lessonPageClose" class="close-page" type="button">Close</button>
-      </header>
-      <div id="lessonPageBody" class="lesson-page-body"></div>
-    </article>
-  </div>
 
   <script>
     const search = document.getElementById('lessonSearch');
     const searchable = [...document.querySelectorAll('[data-search]')];
-    // Tiny positive guard to prevent unstable denominator behavior when WACC and g are effectively equal.
-    const MINIMUM_WACC_GROWTH_SPREAD = 0.000001;
-    const calculateGordonGrowthTV = (fcfCurrentYear, waccPercent, growthPercent) => (fcfCurrentYear * (1 + growthPercent / 100)) / ((waccPercent - growthPercent) / 100);
-    const modulePlaybook = {
-      a:{objectives:['Diagnose leverage, liquidity, and convexity risks before they become solvency risks.','Translate headline events into measurable distribution, funding, and collateral mechanics.','Apply VaR/CVaR limits with explicit model-risk and stress overrides.'],framework:'Use a three-layer risk stack: market risk (delta/gamma/vega), funding risk (margin/haircut), and governance risk (control failures).',exam:'Exam lens: identify why a strategy that is statistically profitable can still fail through path dependency.'},
-      b:{objectives:['Map agency frictions into valuation channels (cash flows, discount rates, terminal confidence).','Identify how governance design changes capital-allocation quality.','Differentiate accounting performance from economic value creation.'],framework:'Principal-agent diagnosis: incentive design -> behavior distortion -> accounting signal noise -> valuation error.',exam:'Exam lens: distinguish value destruction from temporary earnings weakness.'},
-      c:{objectives:['Build valuation from drivers, not multiples alone.','Run sensitivity and scenario analysis around WACC, reinvestment, and terminal assumptions.','Separate narrative plausibility from narrative overreach.'],framework:'Valuation stack: strategy narrative -> unit economics -> FCF conversion -> discount rate -> terminal value.',exam:'Exam lens: justify model choice (DCF, multiples, EVA) based on business maturity and data quality.'},
-      d:{objectives:['Evaluate skill-vs-luck with base rates and distribution thinking.','Explain factor cyclicality and implementation drag.','Design policy that survives career and benchmark pressure.'],framework:'Evidence hierarchy: gross signal -> net implementation -> persistence test -> governance feasibility.',exam:'Exam lens: infer whether outperformance likely came from alpha, factor tilts, or luck.'},
-      e:{objectives:['Link cognitive bias to measurable portfolio errors.','Explain why mispricing can persist despite apparent arbitrage.','Implement behavioral guardrails in policy and execution.'],framework:'Behavior chain: trigger -> bias -> trade error -> portfolio consequence -> corrective rule.',exam:'Exam lens: propose process changes that reduce repeat behavioral drawdowns.'},
-      f:{objectives:['Translate ESG claims into financially material variables.','Differentiate genuine impact from greenwashing.','Integrate transition and physical risk into valuation.'],framework:'Materiality bridge: ESG event -> Δcash flow / ΔWACC / Δterminal value -> repricing path.',exam:'Exam lens: identify when ESG information is decision-useful versus narrative noise.'},
-      g:{objectives:['Apply institutional risk principles to household finance.','Model sequence risk and withdrawal sustainability.','Build long-horizon behavior systems that survive stress.'],framework:'Lifecycle design: goals/liabilities -> asset mix -> withdrawal rules -> behavioral controls.',exam:'Exam lens: compare two retirees with same average return but different return sequence.'}
-    };
-    const lessonDetailMap = {
-      'module-a1':{focus:'LTCM combined convergence trades with extreme leverage; the strategy failed when spreads widened and financing evaporated simultaneously.',formula:'Portfolio VaR = z × σ × V; stress override: Liquidity-adjusted VaR = VaR + liquidation haircut.',worked:'If £2bn gross equity supports £50bn exposures (25:1), a 4% adverse spread move implies ~£2bn mark-to-market loss before financing strain.',implementation:['Run scenario ladders beyond normality assumptions.','Impose leverage caps linked to funding depth.','Predefine de-risk triggers before margin calls arrive.'],pitfalls:['Assuming correlation stability.','Ignoring market depth under stress.','Treating backtests as structural truth.'],sources:['Lowenstein, When Genius Failed','CFA Institute risk curriculum']},
-      'module-a2':{focus:'Barings demonstrates how short convexity plus weak controls can create hidden tail exposures.',formula:'Option P&L ≈ ΔS·Delta + 0.5·Gamma·(ΔS)^2 + Vega·Δσ',worked:'A short-gamma position that earns £2m monthly can lose >£40m in one gap move when volatility spikes and delta hedging slips.',implementation:['Segregate trading and settlement functions.','Monitor gamma and vega limits, not only VaR.','Escalate unexplained reconciliation breaks immediately.'],pitfalls:['Relying on smooth volatility.','Control override culture.','Underestimating overnight gap risk.'],sources:['Barings post-mortems','Hull, Options Futures and Other Derivatives']},
-      'module-a3':{focus:'Orange County reached for yield using leveraged duration bets that unraveled when rates rose.',formula:'ΔP/P ≈ -D_modΔy + 0.5C(Δy)^2',worked:'With modified duration 8 and convexity 0.9, a +2% shock implies roughly -15.8% price impact before leverage amplification.',implementation:['Report duration in both asset and funded-status terms.','Stress non-parallel curve shifts.','Limit leverage on inverse-floater structures.'],pitfalls:['Confusing yield pickup with true risk-adjusted return.','Ignoring convexity under large shocks.','Liquidity mismatch.'],sources:['Orange County bankruptcy analyses','CFA fixed income readings']},
-      'module-a4':{focus:'AIG sold massive CDS protection with inadequate collateral and capital planning.',formula:'CDS value = PV(protection leg) - PV(premium leg)',worked:'Selling 150 bps protection on $100bn notionals generates $1.5bn annual premium but can trigger tens of billions in collateral needs under spread widening.',implementation:['Track wrong-way risk and collateral cliff points.','Model joint stress of spread widening and funding freeze.','Concentrate counterparty limits by sector and trigger events.'],pitfalls:['Mark-to-model complacency.','Under-collateralized bilateral books.','Tail-risk premium underpricing.'],sources:['The Big Short','ISDA and Basel CCR guidance']},
-      'module-a5':{focus:'CDO tranching created apparent safety by redistributing, not eliminating, correlated credit risk.',formula:'Expected tranche loss = f(default probability, recovery, default correlation)',worked:'A mezzanine tranche can appear robust under 5% default assumptions yet be wiped out when defaults cluster and recovery falls together.',implementation:['Model correlation regime shifts explicitly.','Challenge rating assumptions with bottom-up loan quality.','Use waterfall simulation, not ratings labels, for risk limits.'],pitfalls:['Believing AAA equals low structural risk.','Ignoring underwriting drift.','Overfitting Gaussian copulas.'],sources:['Lewis, The Big Short','CFA structured products']},
-      'module-a6':{focus:'Basis trades are vulnerable to financing shocks even when convergence thesis is correct.',formula:'Basis return ≈ carry + convergence - financing spread - margin drag',worked:'A 40 bps expected convergence can become negative if repo costs rise 60 bps and forced unwind crystallizes losses.',implementation:['Link gross notional to secured funding capacity.','Track haircut sensitivity daily.','Define forced-unwind hierarchy before stress.'],pitfalls:['Funding concentration.','Carry illusion during calm regimes.','Ignoring balance-sheet constraints.'],sources:['BIS repo market reports','Fixed income relative-value literature']},
-      'module-b1':{focus:'Enron shows agency failure when compensation and governance reward optical earnings over economic substance.',formula:'Agency cost = monitoring cost + bonding cost + residual loss',worked:'If aggressive accounting raises EPS by 15% short term but destroys 40% terminal value confidence, DCF value can fall despite higher headline earnings.',implementation:['Tie compensation to multi-year economic metrics.','Require independent board-level risk and audit challenge.','Reconcile accounting earnings to cash conversion quality.'],pitfalls:['Complexity as concealment.','Board capture.','Overreliance on external validation.'],sources:['McLean and Elkind','Jensen & Meckling (1976)']},
-      'module-b2':{focus:'WeWork’s filing revealed governance and business-model fragility before listing.',formula:'Enterprise value sensitivity: ΔEV ≈ ΔFCF / (WACC - g)',worked:'A 200 bps higher discount rate for governance risk can compress long-duration valuation by >20% with unchanged growth assumptions.',implementation:['Score governance risk separately from operating forecast.','Stress founder-control downside scenarios.','Discount narratives lacking unit economics.'],pitfalls:['Narrative capture.','Ignoring related-party complexity.','Using peer multiples without model comparability.'],sources:['WeWork S-1 analysis','Damodaran valuation lectures']},
-      'module-b3':{focus:'Kodak illustrates how short-term protection of incumbency can destroy long-term option value.',formula:'Strategic NPV = NPV(core) + NPV(innovation options)',worked:'Forgoing a digital project with uncertain £1bn upside to protect £200m annual legacy margin can be rational short-term but value-destructive over the cycle.',implementation:['Use hurdle rates that do not punish long-duration innovation unfairly.','Measure cannibalization versus disruption risk explicitly.','Align incentives with multi-cycle value creation.'],pitfalls:['Quarterly fixation.','False trade-off between stakeholders and shareholders.','Path dependence denial.'],sources:['Edmans, Grow the Pie','Corporate strategy case studies']},
-      'module-b4':{focus:'Capital structure decisions should balance tax shield benefit against distress and flexibility costs.',formula:'WACC = (E/V)Re + (D/V)Rd(1-T)',worked:'Raising debt from 30% to 55% may reduce WACC initially, but if spread widens by 250 bps under downturn stress the benefit can reverse.',implementation:['Estimate debt capacity with downside EBITDA scenarios.','Model covenant headroom under stress.','Value strategic flexibility as an explicit asset.'],pitfalls:['Static capital structure assumptions.','Ignoring refinancing windows.','Using average-cycle inputs only.'],sources:['Brealey Myers Allen','CFA corporate issuers']},
-      'module-b5':{focus:'Private equity outcomes diverge sharply depending on whether value comes from operations or leverage engineering.',formula:'Equity IRR driver decomposition: growth + margin + multiple + leverage',worked:'A deal can show 22% IRR with modest value creation if high leverage and favorable exits dominate; stress-testing exit multiples can halve IRR.',implementation:['Decompose returns before manager selection.','Evaluate carry incentives relative to downside protections.','Compare funds within vintage context.'],pitfalls:['IRR myopia.','Ignoring DPI quality.','Underestimating refinancing risk.'],sources:['PE benchmarking literature','CFA alternatives curriculum']},
-      'module-c1':{focus:'Amazon emphasizes terminal-value dominance and the danger of overprecision in early-stage forecasting.',formula:'EV = Σ FCFF/(1+WACC)^t + TV/(1+WACC)^n',worked:'With FCFF £120m, WACC 9%, g 2.5%, terminal value ≈ £1.95bn before discounting; a 1% WACC shift materially changes equity value.',implementation:['Anchor valuation to reinvestment and unit economics.','Run bull/base/bear with probability weights.','Audit terminal assumptions against industry structure.'],pitfalls:['Linear extrapolation of early growth.','Ignoring dilution and capital intensity.','Single-point valuation confidence.'],sources:['Damodaran, Narrative and Numbers','Amazon shareholder letters']},
-      'module-c2':{focus:'Dot-com valuation failures came from replacing cash-flow discipline with popularity metrics.',formula:'Intrinsic value must map to cash generation: Value = f(cash flow, growth durability, cost of capital)',worked:'Two firms at 10x sales can diverge massively if one reaches 20% FCF margin and the other remains negative with high reinvestment burn.',implementation:['Triangulate DCF with justified multiples.','Discard metrics not linked to cash economics.','Enforce comparables discipline (business model, margin, cycle).'],pitfalls:['Metric invention to justify price.','Ignoring survivorship bias.','Regime euphoria.'],sources:['Shiller, Irrational Exuberance','Damodaran valuation commentary']},
-      'module-c3':{focus:'Buffett’s textile lesson separates cheap assets from quality compounding businesses.',formula:'Value creation when ROIC > WACC over time',worked:'A 0.7x book-value company with ROIC 4% and WACC 9% can be value-destructive despite “low multiple” optics.',implementation:['Focus on incremental ROIC, not only current multiple.','Assess moat durability and capital allocation quality.','Demand margin of safety from both price and business quality.'],pitfalls:['Value trap bias.','Ignoring reinvestment runway.','Static moat assumptions.'],sources:['Buffett annual letters','Graham and Dodd']},
-      'module-c4':{focus:'NPV should lead decisions; IRR and payback are supporting diagnostics.',formula:'NPV = Σ CF_t/(1+r)^t - I0',worked:'Project A (higher NPV, lower IRR) can dominate Project B for shareholder value when scale and duration are properly considered.',implementation:['Use opportunity-cost-consistent discount rates.','Check ranking conflicts between NPV and IRR.','Add sensitivity and scenario analysis before approval.'],pitfalls:['IRR ranking errors on mutually exclusive projects.','Payback overuse.','Inconsistent discount rates across projects.'],sources:['Corporate finance texts','CFA curriculum']},
-      'module-c5':{focus:'EVA and ROIC-WACC spread reveal whether reported profits represent real economic value creation.',formula:'EVA = NOPAT - (WACC × Invested Capital)',worked:'NOPAT £180m with £2bn invested capital and 8% WACC gives EVA £20m; positive accounting earnings can still imply negative EVA.',implementation:['Track EVA trend and capital turnover jointly.','Normalize one-off accounting items.','Tie management incentives to sustained ROIC spread.'],pitfalls:['Metric cherry-picking.','Underestimating capital base adjustments.','Short horizon evaluation.'],sources:['Stewart, The Quest for Value','CFA performance analysis']},
-      'module-d1':{focus:'Lynch’s record requires base-rate context before concluding persistent skill.',formula:'Posterior skill probability ∝ prior skill base rate × observed persistence likelihood',worked:'If only a small share of managers are truly skilled, long streaks can still emerge by chance in large universes.',implementation:['Use multi-period attribution and style-adjusted benchmarks.','Penalize survivorship and backfill bias.','Require process evidence, not only outcome evidence.'],pitfalls:['Outcome bias.','Narrative overfitting.','Ignoring fee drag.'],sources:['Malkiel, Random Walk','Manager evaluation literature']},
-      'module-d2':{focus:'Bill Miller’s arc illustrates regime dependency and latent factor concentrations.',formula:'Active return = true alpha + factor tilts + noise',worked:'A value-tilted strategy may outperform for years then suffer deep drawdowns when factor regime flips.',implementation:['Decompose returns with multi-factor models.','Set governance for drought tolerance.','Monitor concentration and liquidity alongside factor exposure.'],pitfalls:['Mistaking factor timing for stock-picking skill.','Benchmark-relative panic.','Risk-budget drift.'],sources:['Malkiel','Fama-French and Carhart']},
-      'module-d3':{focus:'Medallion demonstrates exploitable structure may exist, but capacity and secrecy limit replicability.',formula:'Net alpha = gross signal - costs - capacity decay',worked:'A signal with 120 bps gross edge can disappear after slippage, borrow, and crowding when scaled.',implementation:['Evaluate portability of strategy edge.','Separate research alpha from execution alpha.','Control for implementation shortfall.'],pitfalls:['Assuming institutional edge is democratically accessible.','Neglecting turnover costs.','Capacity overreach.'],sources:['Zuckerman, The Man Who Solved the Market','Quant implementation research']},
-      'module-d4':{focus:'Value’s lost decade tests whether investors can survive factor cyclicality long enough to harvest premia.',formula:'Factor return = structural premium + cyclical regime component',worked:'A decade of underperformance can occur even if long-run expected premium remains positive.',implementation:['Pre-commit factor allocations and rebalance bands.','Educate stakeholders on cycle length uncertainty.','Diversify across economically distinct factors.'],pitfalls:['Abandoning strategy at troughs.','Career risk-induced timing.','Overconcentration in single-factor narratives.'],sources:['AQR value cycle research','Fama-French evidence']},
-      'module-d5':{focus:'Smart beta must be judged on net realized outcomes, not factor story alone.',formula:'Net factor return = gross factor premium - turnover cost - spread/impact - tax drag',worked:'A 2% gross anomaly can be largely neutralized by 120 bps turnover costs and 70 bps tax friction.',implementation:['Estimate full cost stack before allocation.','Use liquidity-aware portfolio construction.','Prefer transparent methodologies with capacity controls.'],pitfalls:['Index label complacency.','Ignoring transaction-cost model error.','Overreacting to short windows.'],sources:['AQR papers','CFA ETF and smart beta readings']},
-      'module-e1':{focus:'Newton’s South Sea behavior captures loss aversion, regret, and re-entry bias in a single narrative.',formula:'Prospect value: v(x)=x^α for gains; -λ(-x)^β for losses',worked:'A trader who locks a gain early may re-enter at worse prices to avoid regret, increasing tail exposure.',implementation:['Predefine re-entry rules after exits.','Use decision journals to audit emotional triggers.','Anchor to base-rate valuation, not recent price moves.'],pitfalls:['Regret-driven chasing.','Reference-point fixation.','Status signaling trades.'],sources:['Kahneman & Tversky','South Sea historical accounts']},
-      'module-e2':{focus:'Dot-com shows interacting biases: overconfidence, recency, herding, and anchoring.',formula:'Observed price = fundamental value + behavioral premium',worked:'When investors extrapolate 50% growth indefinitely, justified valuation can overshoot by multiple turns of sales.',implementation:['Use valuation guardrails and checklists before adding risk.','Require disconfirming evidence in investment memos.','Set concentration limits during narrative euphoria.'],pitfalls:['Consensus validation loops.','Narrative substitution for analysis.','Underweighting downside scenarios.'],sources:['Shiller','Barber & Odean']},
-      'module-e3':{focus:'Calendar anomalies persist when arbitrage is constrained by financing and institutional frictions.',formula:'Arbitrage P&L = expected convergence - funding cost - noise-trader drawdown risk',worked:'A 1.2% seasonal edge is unattractive if carrying cost and drawdown tolerance consume most expected excess return.',implementation:['Scale trades to funding resilience, not only expected alpha.','Pair anomaly signals with risk controls.','Measure strategy half-life and decay.'],pitfalls:['Leverage misuse on weak signals.','Ignoring implementation frictions.','Data-mining seasonal effects.'],sources:['Shleifer & Vishny','Anomaly literature']},
-      'module-e4':{focus:'Noise traders can push prices, and reflexive financing loops can amplify deviations from fundamentals.',formula:'Feedback loop: Price↑ -> collateral↑ -> leverage↑ -> demand↑',worked:'Rising collateral values expand borrowing capacity, fueling additional buying until funding conditions reverse.',implementation:['Track leverage growth as a risk signal.','Use liquidity-adjusted position limits.','Stress test de-leveraging reflexivity.'],pitfalls:['Assuming quick mean reversion.','Ignoring collateral channel.','Overconfidence in timing reversals.'],sources:['Soros reflexivity','Behavioral macro studies']},
-      'module-e5':{focus:'Behavioral risk is reduced by pre-commitment architecture, not motivational slogans.',formula:'Rule-based trade trigger > discretionary impulse response',worked:'A quarterly rebalancing rule can systematically buy weakness and trim exuberance without emotional override.',implementation:['Adopt written IPS with if-then rules.','Automate contributions and rebalancing where possible.','Use pre-mortems for major allocation changes.'],pitfalls:['Policy drift after drawdowns.','Rule complexity overload.','No accountability loop.'],sources:['Thaler and behavioral portfolio research','CFA PM']},
-      'module-f1':{focus:'Dieselgate converted governance failure into abrupt equity and legal-liability repricing.',formula:'Event impact ≈ Δexpected cash flows + Δlitigation reserves + Δrisk premium',worked:'A 35% equity drop in two sessions can be interpreted as combined cash-flow impairment and discount-rate shock.',implementation:['Map ESG incidents to quantified P&L channels.','Stress legal and regulatory penalty ranges.','Incorporate conduct risk into valuation base case.'],pitfalls:['Treating ESG as non-financial.','Underestimating enforcement trajectory.','Delayed recognition of trust erosion.'],sources:['VW disclosures','ESG materiality research']},
-      'module-f2':{focus:'Deepwater Horizon shows deferred safety spending can create enormous tail liabilities.',formula:'Expected loss = probability × severity; severity distribution is highly skewed',worked:'Small annual safety savings can be overwhelmed by multi-year cleanup, litigation, and franchise damage costs.',implementation:['Integrate operational risk into capital budgeting.','Review safety KPI leading indicators.','Price downside tails in project hurdle rates.'],pitfalls:['Short-term margin optimization bias.','Weak near-miss governance.','Ignoring social license risk.'],sources:['BP case analyses','Operational risk frameworks']},
-      'module-f3':{focus:'Unilever under Polman reframed stakeholder investment as long-duration compounding strategy.',formula:'Long-run value = f(brand trust, employee productivity, customer retention)',worked:'Reducing quarterly guidance pressure can support investment in intangible assets that improve long-term cash-flow persistence.',implementation:['Measure intangible investment returns with lag-aware KPIs.','Align incentives with multi-year outcomes.','Separate signal from quarterly noise in board reviews.'],pitfalls:['Overclaiming causality from single cases.','Weak measurement discipline.','Purpose without execution rigor.'],sources:['Edmans','Corporate sustainability-performance studies']},
-      'module-f4':{focus:'Patagonia’s ownership design tests the boundary of mission lock and financial discipline.',formula:'Governance design -> capital allocation constraints -> long-run stakeholder outcomes',worked:'Purpose trust structures can alter payout policy and reinvestment priorities, changing both risk and return profile.',implementation:['Assess governance rights and accountability pathways.','Map mission clauses to capital-allocation flexibility.','Treat ownership structure as valuation input.'],pitfalls:['Assuming mission lock guarantees efficient execution.','Ignoring financing constraints.','Under-modeling governance complexity.'],sources:['Patagonia ownership filings','Stakeholder governance literature']},
-      'module-f5':{focus:'Greenwashing risk is best controlled through auditable metrics and data lineage checks.',formula:'Credibility gap = claim intensity - evidence quality',worked:'A fund branded sustainable but with weak emissions data and inconsistent taxonomy alignment faces repricing and reputational risk.',implementation:['Demand KPI assurance and methodology transparency.','Test additionality for impact claims.','Compare portfolio-level metrics across multiple data providers.'],pitfalls:['Label reliance.','Selective disclosure bias.','Ignoring measurement uncertainty.'],sources:['FCA/ESMA guidance','GIIN and ISSB frameworks']},
-      'module-g1':{focus:'Windfall wealth without process often decays quickly; system design matters more than starting capital.',formula:'Sustainable wealth path = return process - spending drift - behavioral error',worked:'A household with £2m windfall and 8% spending growth can still deplete capital rapidly if allocation and governance are absent.',implementation:['Build emergency reserve and liability map first.','Automate savings/investment policy.','Use spending guardrails linked to portfolio drawdown state.'],pitfalls:['Lifestyle inflation.','Concentration in familiar assets.','No written decision framework.'],sources:['Personal finance behavior studies','CFA personal wealth management']},
-      'module-g2':{focus:'DC pension reality places sequencing and longevity risk on individuals.',formula:'Withdrawal sustainability depends on return order, not only average return',worked:'Two retirees with identical 20-year average returns can end with opposite outcomes if early years are negative under withdrawals.',implementation:['Use flexible guardrail withdrawals.','Maintain near-term cash/short-duration bucket.','Reassess withdrawal rates after major drawdowns.'],pitfalls:['Static withdrawal assumptions.','Ignoring inflation variability.','Yield-chasing near retirement.'],sources:['Retirement income research','UK pension transition literature']},
-      'module-g3':{focus:'Household ALM applies liability timing and duration concepts from pension funds.',formula:'Funded status = PV(assets) - PV(liabilities)',worked:'Matching near-term spending liabilities with lower-volatility assets reduces forced selling during equity drawdowns.',implementation:['Segment liabilities by horizon.','Assign matching assets for essential spending.','Use growth bucket for long-dated goals only.'],pitfalls:['Single-bucket portfolios for all goals.','Duration mismatch.','Overconfidence in target-date defaults.'],sources:['ALM literature','CFA retirement planning']},
-      'module-g4':{focus:'Compounding works best when paired with behavioral hygiene and opportunity-cost awareness.',formula:'FV = PV(1+r)^n; doubling time ≈ 72/r%',worked:'At 8%, £100k compounds to ~£1.0m over 30 years; interrupting process with repeated panic exits can destroy most of that path.',implementation:['Automate monthly investing.','Use checklists against sunk-cost and anchoring biases.','Restrict active bets to circle of competence.'],pitfalls:['Timing obsession.','Behavioral overtrading.','Ignoring fee drag.'],sources:['Bogle','Graham','CFA quantitative methods']}
-    };
-    const lessonPageOverlay = document.getElementById('lessonPageOverlay');
-    const lessonPageBody = document.getElementById('lessonPageBody');
-    const lessonPageTitle = document.getElementById('lessonPageTitle');
-    const lessonPageSub = document.getElementById('lessonPageSub');
-    const lessonPageClose = document.getElementById('lessonPageClose');
-    const openLessonPage = lesson => {
-      const detail = lessonDetailMap[lesson.id];
-      if (!detail) return;
-      const moduleMatch = (lesson.id || '').match(/^module-([a-z]+)\d/);
-      const moduleKey = moduleMatch ? moduleMatch[1].toLowerCase() : '';
-      const modulePack = modulePlaybook[moduleKey] || {objectives:[],framework:'',exam:''};
-      lessonPageTitle.textContent = lesson.title;
-      lessonPageSub.textContent = lesson.meta;
-      lessonPageBody.innerHTML = `<div class="lesson-page-grid">
-        <section class="lesson-block"><h4>Story opening and why it matters</h4><p>${lesson.summary}</p><p style="margin-top:7px">${detail.focus}</p></section>
-        <section class="lesson-block"><h4>Learning objectives</h4><ul>${modulePack.objectives.map(x=>`<li>${x}</li>`).join('')}</ul></section>
-        <section class="lesson-block"><h4>Formal framework</h4><p>${modulePack.framework}</p><div class="formula" style="margin-top:7px">${detail.formula}</div></section>
-        <section class="lesson-block"><h4>Worked mechanics</h4><p>${detail.worked}</p></section>
-        <section class="lesson-block"><h4>Implementation checklist</h4><ul>${detail.implementation.map(x=>`<li>${x}</li>`).join('')}</ul></section>
-        <section class="lesson-block"><h4>Failure modes and exam traps</h4><ul>${detail.pitfalls.map(x=>`<li>${x}</li>`).join('')}</ul><p style="margin-top:7px"><strong>Exam-style prompt:</strong> ${modulePack.exam}</p></section>
-        <section class="lesson-block"><h4>Sources and further reading</h4><ul>${detail.sources.map(x=>`<li>${x}</li>`).join('')}</ul><p style="margin-top:7px"><a href="/glossary.html" style="color:#1d4ed8">Revise linked formulas in glossary</a></p></section>
-      </div>`;
-      lessonPageOverlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    };
-    const closeLessonPage = () => {
-      lessonPageOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    };
-    const bindLessonPages = () => {
-      document.querySelectorAll('.lesson').forEach(card => {
-        if (card.querySelector('.lesson-open')) return;
-        const title = card.querySelector('h4')?.textContent?.trim() || 'Lesson';
-        const summary = card.querySelector('p:not(.meta)')?.textContent?.trim() || '';
-        const meta = card.querySelector('.meta')?.textContent?.trim() || '';
-        const lesson = {id: card.id, title, summary, meta};
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'lesson-open';
-        btn.textContent = 'Open lesson page';
-        btn.addEventListener('click', () => openLessonPage(lesson));
-        card.appendChild(btn);
-      });
-    };
     search.addEventListener('input', () => {
       const q = (search.value || '').trim().toLowerCase();
       searchable.forEach(el => {
@@ -351,39 +169,6 @@
         el.style.opacity = ok ? '1' : '.5';
       });
     });
-    const bindTools = () => {
-      document.querySelectorAll('[data-calc]').forEach(box => {
-        const get = key => {
-          const el = box.querySelector(`[data-k="${key}"]`);
-          const val = Number(el?.value);
-          return Number.isFinite(val) ? val : null;
-        };
-        const out = box.querySelector('[data-out]');
-        if (!out) return;
-        const update = () => {
-          if (box.dataset.calc === 'dcf') {
-            const fcf = get('fcf'), wacc = get('wacc'), g = get('g');
-            if ([fcf, wacc, g].some(v => v === null) || ((wacc - g) / 100) <= MINIMUM_WACC_GROWTH_SPREAD) { out.textContent = 'Invalid (WACC must be greater than growth rate)'; return; }
-            out.textContent = `£${calculateGordonGrowthTV(fcf, wacc, g).toFixed(1)}m`;
-          }
-          if (box.dataset.calc === 'kelly') {
-            const p = get('p'), b = get('b');
-            if ([p, b].some(v => v === null) || b <= 0 || p < 0 || p > 1) { out.textContent = 'Invalid'; return; }
-            const f = ((b * p) - (1 - p)) / b;
-            out.textContent = `${(f * 100).toFixed(1)}% (half-Kelly ${((f / 2) * 100).toFixed(1)}%)`;
-          }
-          if (box.dataset.calc === 'withdrawal') {
-            const pv = get('pv'), wr = get('wr'), r1 = get('r1');
-            if ([pv, wr, r1].some(v => v === null)) { out.textContent = '—'; return; }
-            const withdraw = pv * (wr / 100);
-            const end = (pv - withdraw) * (1 + r1 / 100);
-            out.textContent = `£${Math.max(end, 0).toLocaleString('en-GB', {maximumFractionDigits:0})}`;
-          }
-        };
-        box.querySelectorAll('input').forEach(i => i.addEventListener('input', update));
-        update();
-      });
-    };
     document.querySelectorAll('.module > button').forEach(btn => btn.addEventListener('click', () => btn.parentElement.classList.toggle('open')));
     const openFromHash = () => {
       if (!location.hash) return;
@@ -413,12 +198,7 @@
       scrollToLesson();
     };
     window.addEventListener('load', openFromHash);
-    window.addEventListener('load', bindTools);
-    window.addEventListener('load', bindLessonPages);
     window.addEventListener('hashchange', openFromHash);
-    lessonPageClose.addEventListener('click', closeLessonPage);
-    lessonPageOverlay.addEventListener('click', event => { if (event.target === lessonPageOverlay) closeLessonPage(); });
-    window.addEventListener('keydown', event => { if (event.key === 'Escape' && lessonPageOverlay.classList.contains('open')) closeLessonPage(); });
   </script>
 </body>
 </html>
