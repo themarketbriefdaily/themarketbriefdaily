@@ -41,8 +41,18 @@
     .term-title{font-size:15px;font-weight:900;letter-spacing:-.01em}
     .term-meta{font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px;background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.25);color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
     .term-body{max-height:0;overflow:hidden;transition:max-height .28s var(--ease),padding .28s var(--ease);padding:0 16px}
-    .term-card.open .term-body{max-height:220px;padding:0 16px 16px}
-    .term-desc{font-size:14px;color:var(--muted);line-height:1.7}
+    .term-card.open .term-body{max-height:620px;padding:0 16px 16px}
+    .term-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+    .term-useful{font-size:13px;line-height:1.7;color:#1f2937;background:rgba(0,102,255,.05);border:1px solid rgba(0,102,255,.14);padding:10px 12px;border-radius:10px;margin-bottom:10px}
+    .term-visual{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:linear-gradient(135deg,rgba(2,8,23,.01),rgba(0,102,255,.03));margin-bottom:10px}
+    .visual-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .visual-title{font-size:12px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2)}
+    .visual-tag{font-size:11px;font-weight:800;color:var(--accent)}
+    .visual-bars{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;height:28px;margin-bottom:8px}
+    .visual-bars span{display:block;border-radius:4px;background:linear-gradient(180deg,var(--accent),#1d4ed8)}
+    .visual-caption{font-size:12px;line-height:1.6;color:var(--muted)}
+    .term-sources{font-size:12px;color:var(--muted2);line-height:1.6}
+    .term-sources a{color:var(--accent);text-decoration:underline}
     .caret{font-size:16px;color:var(--muted2);transition:transform .2s}
     .term-card.open .caret{transform:rotate(180deg)}
 
@@ -204,46 +214,72 @@
 
   <script>
     const glossaryTerms = [
-      { term: 'Order Flow', category: 'Market Structure Terms', definition: 'The sequence of buy and sell orders entering a market, often revealing urgency and directional pressure before price fully adjusts.' },
-      { term: 'Bid-Ask Spread', category: 'Market Structure Terms', definition: 'The difference between the best available buy and sell prices. Wider spreads usually imply lower liquidity or higher uncertainty.' },
-      { term: 'Market Depth', category: 'Market Structure Terms', definition: 'The volume of resting orders at each price level in the order book, used to estimate how much size the market can absorb.' },
-      { term: 'Slippage', category: 'Market Structure Terms', definition: 'The gap between expected execution price and the actual fill price, typically caused by volatility or low liquidity.' },
-      { term: 'Gamma Exposure', category: 'Market Structure Terms', definition: 'Sensitivity of options delta to changes in the underlying. Dealer gamma positioning can amplify or dampen market moves.' },
-      { term: 'Vanna', category: 'Market Structure Terms', definition: 'A second-order options Greek measuring sensitivity of delta to volatility changes, relevant during vol regime shifts.' },
-      { term: 'Open Interest', category: 'Market Structure Terms', definition: 'The total number of outstanding derivative contracts that remain open, often used to gauge positioning intensity.' },
-      { term: 'Liquidity Fragmentation', category: 'Market Structure Terms', definition: 'When trading volume disperses across venues or instruments, reducing unified depth and increasing execution complexity.' },
-      { term: 'Basis', category: 'Market Structure Terms', definition: 'The difference between spot and futures price. Persistent basis moves may signal funding stress, carry demand, or delivery tightness.' },
-      { term: 'Market Impact', category: 'Market Structure Terms', definition: 'The price movement caused by executing an order, especially relevant for large institutional trades.' },
+      { term: 'Order Flow', category: 'Market Structure Terms', definition: 'The stream of buy and sell orders entering the market over time.', usefulness: 'Helps identify whether aggressive buyers or sellers are driving short-term price direction.', visual: 'Aggressive buy orders lifting offers often precede a momentum squeeze.' },
+      { term: 'Bid-Ask Spread', category: 'Market Structure Terms', definition: 'The gap between the highest bid and lowest ask currently quoted.', usefulness: 'A quick proxy for execution cost and liquidity quality before placing size.', visual: 'Tighter spread = lower friction; wider spread = higher uncertainty and slippage risk.' },
+      { term: 'Market Depth', category: 'Market Structure Terms', definition: 'How much resting volume is available at different prices in the order book.', usefulness: 'Shows how easily a larger order can be executed without moving price materially.', visual: 'Thin depth can produce air pockets where price jumps through levels quickly.' },
+      { term: 'Slippage', category: 'Market Structure Terms', definition: 'The difference between intended execution price and actual fill price.', usefulness: 'Critical for realistic P&L attribution and trade sizing, especially during volatility spikes.', visual: 'Expected 100.00 fill executes at 100.18 when liquidity vanishes.' },
+      { term: 'Gamma Exposure', category: 'Market Structure Terms', definition: 'How sensitive option delta is to changes in the underlying price.', usefulness: 'Dealer hedging flows from gamma positioning can either dampen or amplify market moves.', visual: 'Negative dealer gamma can force hedging in the direction of the move, increasing swings.' },
+      { term: 'Vanna', category: 'Market Structure Terms', definition: 'An options Greek measuring how delta changes when implied volatility changes.', usefulness: 'Useful during vol shocks because hedging pressure can shift even if spot barely moves.', visual: 'Falling implied vol can reduce put deltas and change dealer hedge demand.' },
+      { term: 'Open Interest', category: 'Market Structure Terms', definition: 'The total number of outstanding derivative contracts not yet closed or delivered.', usefulness: 'Helps distinguish fresh positioning from simple turnover in trading volume.', visual: 'Rising OI with rising price can signal conviction instead of short covering alone.' },
+      { term: 'Liquidity Fragmentation', category: 'Market Structure Terms', definition: 'When trading interest is dispersed across many venues or instruments.', usefulness: 'Important for execution routing because displayed liquidity may understate true market capacity.', visual: 'Top-of-book looks thin until multiple venues are aggregated.' },
+      { term: 'Basis', category: 'Market Structure Terms', definition: 'The difference between spot price and futures price for the same asset.', usefulness: 'Used to infer funding stress, carry opportunities, or physical tightness.', visual: 'A sharply positive basis can reflect expensive financing or delivery constraints.' },
+      { term: 'Market Impact', category: 'Market Structure Terms', definition: 'The price change caused by executing a trade.', usefulness: 'Guides order slicing and participation rates to protect implementation shortfall.', visual: 'Large market order walks the book and leaves price at a worse level.' },
 
-      { term: 'Real Yields', category: 'Macro Terms', definition: 'Bond yields adjusted for inflation expectations; a key channel through which policy affects risk assets and financial conditions.' },
-      { term: 'Term Premium', category: 'Macro Terms', definition: 'Extra compensation investors demand for holding longer-duration bonds instead of rolling short-term instruments.' },
-      { term: 'Yield Curve', category: 'Macro Terms', definition: 'A plot of interest rates across maturities. Curve shape helps infer growth expectations and policy stance.' },
-      { term: 'Policy Transmission', category: 'Macro Terms', definition: 'The process by which central bank actions influence borrowing costs, asset prices, and eventually economic activity.' },
-      { term: 'Financial Conditions', category: 'Macro Terms', definition: 'A composite of rates, spreads, equity levels, and currency strength indicating how easy or tight financing is.' },
-      { term: 'Disinflation', category: 'Macro Terms', definition: 'A decline in the rate of inflation, meaning prices still rise but at a slower pace.' },
-      { term: 'Reflation', category: 'Macro Terms', definition: 'A regime where policy and growth dynamics push nominal growth and inflation expectations higher.' },
-      { term: 'Risk-Off', category: 'Macro Terms', definition: 'A market environment where investors reduce exposure to cyclical assets and prefer cash, bonds, or defensive sectors.' },
-      { term: 'Dollar Liquidity', category: 'Macro Terms', definition: 'Availability and cost of US dollar funding globally, critical for cross-border asset pricing and stress propagation.' },
-      { term: 'Nowcasting', category: 'Macro Terms', definition: 'Real-time estimation of current economic conditions using high-frequency indicators before official data releases.' },
+      { term: 'Real Yields', category: 'Macro Terms', definition: 'Nominal bond yields adjusted for expected inflation.', usefulness: 'A key driver of valuation pressure across equities, gold, and long-duration assets.', visual: 'Rising real yields often tighten financial conditions and weigh on risk assets.' },
+      { term: 'Term Premium', category: 'Macro Terms', definition: 'Extra compensation investors require for holding longer-maturity bonds.', usefulness: 'Helps explain long-end yield moves that are not purely policy-rate expectations.', visual: 'Higher term premium can steepen long maturities even with stable front-end rates.' },
+      { term: 'Yield Curve', category: 'Macro Terms', definition: 'A graph of government bond yields across maturities.', usefulness: 'Curve shape is widely used to assess growth expectations and policy stance.', visual: 'Inversion signals tighter policy backdrop; steepening can signal reacceleration or risk repricing.' },
+      { term: 'Policy Transmission', category: 'Macro Terms', definition: 'How central bank policy changes affect rates, credit, asset prices, and the real economy.', usefulness: 'Frames timing lags between policy decisions and observable macro outcomes.', visual: 'Rate hike -> tighter credit -> slower demand -> lower inflation pressure.' },
+      { term: 'Financial Conditions', category: 'Macro Terms', definition: 'A broad measure of how easy or restrictive financing conditions are.', usefulness: 'Useful as a real-time macro risk gauge beyond policy rates alone.', visual: 'Wider spreads + stronger USD + weaker equities usually imply tighter conditions.' },
+      { term: 'Disinflation', category: 'Macro Terms', definition: 'A slowing in the rate of inflation, while prices still rise.', usefulness: 'Helps distinguish easing price pressure from outright deflation.', visual: 'Inflation falls from 6% to 3%: prices rise, but at a slower pace.' },
+      { term: 'Reflation', category: 'Macro Terms', definition: 'A regime where policy and growth dynamics lift nominal growth and inflation expectations.', usefulness: 'Often linked to cyclical leadership, steeper curves, and stronger commodities.', visual: 'Growth surprise + policy support can rotate leadership toward value and cyclicals.' },
+      { term: 'Risk-Off', category: 'Macro Terms', definition: 'A market state where investors de-risk toward safer and more liquid assets.', usefulness: 'Sets expectations for cross-asset behavior during stress episodes.', visual: 'Equities down, credit spreads wider, dollar and government bonds stronger.' },
+      { term: 'Dollar Liquidity', category: 'Macro Terms', definition: 'Availability and cost of obtaining US dollar funding globally.', usefulness: 'Essential for understanding stress transmission across global markets.', visual: 'Dollar funding stress often appears via wider cross-currency basis and tighter EM conditions.' },
+      { term: 'Nowcasting', category: 'Macro Terms', definition: 'Estimating current economic conditions using high-frequency and partial data.', usefulness: 'Reduces lag in decision-making between official macro releases.', visual: 'Card spending, freight, and labor signals combine into live GDP estimates.' },
 
-      { term: 'Inventory Draw', category: 'Supply Chain Terms', definition: 'A reduction in stored physical supply, often interpreted as demand exceeding near-term production or delivery availability.' },
-      { term: 'Warehouse Stocks', category: 'Supply Chain Terms', definition: 'Exchange-reported inventories held in approved locations, used to monitor potential delivery pressure.' },
-      { term: 'Freight Bottleneck', category: 'Supply Chain Terms', definition: 'A logistics constraint where shipping capacity is insufficient, delaying physical movement and lifting transport costs.' },
-      { term: 'Refining Margin', category: 'Supply Chain Terms', definition: 'The spread between refined product value and feedstock cost, indicating stress or slack in processing capacity.' },
-      { term: 'Contango', category: 'Supply Chain Terms', definition: 'A futures curve state where later-dated contracts trade above spot, often associated with comfortable inventory conditions.' },
-      { term: 'Backwardation', category: 'Supply Chain Terms', definition: 'A curve state where near contracts trade above deferred contracts, often signaling near-term scarcity.' },
-      { term: 'Throughput', category: 'Supply Chain Terms', definition: 'The volume processed or transported through a facility over a period; drops can indicate supply chain stress.' },
-      { term: 'Capacity Utilization', category: 'Supply Chain Terms', definition: 'The percentage of total production capability currently in use, important for estimating spare capacity.' },
+      { term: 'Inventory Draw', category: 'Supply Chain Terms', definition: 'A decline in stored inventories over a measured period.', usefulness: 'Can indicate near-term demand strength or supply disruption.', visual: 'Persistent draws often coincide with tighter prompt pricing and stronger nearby spreads.' },
+      { term: 'Warehouse Stocks', category: 'Supply Chain Terms', definition: 'Reported inventories held in exchange-approved storage locations.', usefulness: 'Tracks deliverable supply and potential settlement pressure in physical markets.', visual: 'Falling exchange stocks can increase sensitivity to delivery demand.' },
+      { term: 'Freight Bottleneck', category: 'Supply Chain Terms', definition: 'A transport constraint that delays movement of goods and increases shipping costs.', usefulness: 'Useful for anticipating margin pressure, delays, and inflation pass-through.', visual: 'Port congestion and vessel queues extend delivery lead times.' },
+      { term: 'Refining Margin', category: 'Supply Chain Terms', definition: 'The spread between refined product value and feedstock input cost.', usefulness: 'Signals whether processing capacity is tight or underutilized.', visual: 'Rising crack spreads often indicate downstream scarcity or demand strength.' },
+      { term: 'Contango', category: 'Supply Chain Terms', definition: 'A futures curve shape where deferred contracts trade above nearby contracts.', usefulness: 'Often associated with comfortable inventories and positive storage economics.', visual: 'Upward-sloping curve rewards storing inventory for future delivery.' },
+      { term: 'Backwardation', category: 'Supply Chain Terms', definition: 'A futures curve shape where nearby contracts trade above deferred contracts.', usefulness: 'Typically points to prompt scarcity and stronger convenience yield.', visual: 'Downward-sloping curve incentivizes releasing inventory now.' },
+      { term: 'Throughput', category: 'Supply Chain Terms', definition: 'The volume processed or transported through a system in a given period.', usefulness: 'A practical measure of operational capacity and bottleneck stress.', visual: 'Throughput drops can reveal outages, maintenance, or logistics friction.' },
+      { term: 'Capacity Utilization', category: 'Supply Chain Terms', definition: 'The share of total production capacity currently being used.', usefulness: 'Helps estimate spare capacity and sensitivity to incremental demand.', visual: 'Utilization near limits increases the odds of price spikes after disruptions.' },
 
-      { term: 'Factor Tilt', category: 'Strategy Terms', definition: 'Intentional over- or under-weighting toward factors like value, momentum, quality, or size within a portfolio.' },
-      { term: 'Carry Trade', category: 'Strategy Terms', definition: 'A strategy capturing yield differentials, often by borrowing in lower-rate assets and holding higher-yielding ones.' },
-      { term: 'Volatility Targeting', category: 'Strategy Terms', definition: 'Adjusting position size dynamically so portfolio volatility remains near a predefined risk budget.' },
-      { term: 'Drawdown', category: 'Strategy Terms', definition: 'The percentage decline from a portfolio peak to a subsequent trough before recovery.' },
-      { term: 'Sharpe Ratio', category: 'Strategy Terms', definition: 'Risk-adjusted performance metric calculated as excess return divided by return volatility.' },
-      { term: 'Regime Shift', category: 'Strategy Terms', definition: 'A structural change in market behavior where relationships between assets, factors, or policy signals materially change.' },
-      { term: 'Position Sizing', category: 'Strategy Terms', definition: 'The method used to determine how much capital to allocate to each trade based on conviction and risk constraints.' },
-      { term: 'Stop-Loss Discipline', category: 'Strategy Terms', definition: 'A predefined rule set for reducing or closing positions when losses reach specified thresholds.' }
+      { term: 'Factor Tilt', category: 'Strategy Terms', definition: 'Intentional over- or under-weighting of factors such as value, momentum, or quality.', usefulness: 'Makes portfolio exposures explicit instead of accidental.', visual: 'Overweight quality + underweight size shifts return drivers toward defensiveness.' },
+      { term: 'Carry Trade', category: 'Strategy Terms', definition: 'A strategy that earns return from yield differentials between assets.', usefulness: 'Useful in stable volatility regimes but vulnerable to sharp reversals.', visual: 'Borrow low-yield funding, hold higher-yield asset, harvest spread.' },
+      { term: 'Volatility Targeting', category: 'Strategy Terms', definition: 'Dynamically changing position size to keep portfolio volatility near a target.', usefulness: 'Creates a consistent risk budget across changing market regimes.', visual: 'As realized vol rises, gross exposure is mechanically reduced.' },
+      { term: 'Drawdown', category: 'Strategy Terms', definition: 'The decline from a portfolio peak to a subsequent trough.', usefulness: 'A core metric for risk tolerance, strategy resilience, and capital planning.', visual: 'A -12% drawdown means portfolio value fell 12% from its high before recovery.' },
+      { term: 'Sharpe Ratio', category: 'Strategy Terms', definition: 'Excess return per unit of return volatility.', usefulness: 'Allows risk-adjusted comparison across strategies with different return profiles.', visual: 'Two strategies with same return can differ sharply once volatility is considered.' },
+      { term: 'Regime Shift', category: 'Strategy Terms', definition: 'A structural change in market behavior that alters prior relationships.', usefulness: 'Highlights when historical correlations or signals may stop working.', visual: 'Inflation regime change can invert growth-vs-value leadership patterns.' },
+      { term: 'Position Sizing', category: 'Strategy Terms', definition: 'Determining how much capital to allocate to each position.', usefulness: 'Primary control for limiting downside while scaling high-conviction ideas.', visual: 'Higher-conviction trade may still get capped to fit portfolio risk limits.' },
+      { term: 'Stop-Loss Discipline', category: 'Strategy Terms', definition: 'Predefined rules for reducing or exiting positions after adverse moves.', usefulness: 'Prevents single-position losses from overwhelming portfolio objectives.', visual: 'Rule-based exits remove emotion during fast market drawdowns.' }
     ];
+
+    const categorySources = {
+      'Market Structure Terms': [
+        { label: 'SEC Investor Glossary', url: 'https://www.investor.gov/introduction-investing/investing-basics/glossary' },
+        { label: 'Cboe Options Greeks', url: 'https://www.cboe.com/optionsinstitute/learning-center/options-greeks/' }
+      ],
+      'Macro Terms': [
+        { label: 'Federal Reserve (Monetary Policy)', url: 'https://www.federalreserve.gov/monetarypolicy.htm' },
+        { label: 'IMF World Economic Outlook', url: 'https://www.imf.org/en/Publications/WEO' }
+      ],
+      'Supply Chain Terms': [
+        { label: 'US EIA Energy Glossary', url: 'https://www.eia.gov/tools/glossary/' },
+        { label: 'CME: Contango & Backwardation', url: 'https://www.cmegroup.com/education/courses/introduction-to-futures/what-is-contango-and-backwardation.html' }
+      ],
+      'Strategy Terms': [
+        { label: 'MSCI Factor Investing', url: 'https://www.msci.com/research-and-insights/topic/factor-investing' },
+        { label: 'SEC Investor Glossary', url: 'https://www.investor.gov/introduction-investing/investing-basics/glossary' }
+      ]
+    };
+
+    const categoryBarProfiles = {
+      'Market Structure Terms': [22, 40, 26, 48, 34],
+      'Macro Terms': [36, 24, 18, 30, 44],
+      'Supply Chain Terms': [18, 32, 46, 28, 42],
+      'Strategy Terms': [26, 34, 22, 40, 30]
+    };
 
     const glossaryList = document.getElementById('glossaryList');
     const searchInput = document.getElementById('searchInput');
@@ -255,7 +291,7 @@
       const selectedCategory = categorySelect.value;
       const filtered = glossaryTerms.filter(item => {
         const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
-        const matchesSearch = !search || item.term.toLowerCase().includes(search) || item.definition.toLowerCase().includes(search);
+        const matchesSearch = !search || item.term.toLowerCase().includes(search) || item.definition.toLowerCase().includes(search) || item.usefulness.toLowerCase().includes(search);
         return matchesCategory && matchesSearch;
       });
 
@@ -270,6 +306,21 @@
           </button>
           <div class="term-body">
             <p class="term-desc">${item.definition}</p>
+            <p class="term-useful"><strong>Why it is useful:</strong> ${item.usefulness}</p>
+            <div class="term-visual">
+              <div class="visual-head">
+                <span class="visual-title">Visual cue</span>
+                <span class="visual-tag">${item.category.replace(' Terms','')}</span>
+              </div>
+              <div class="visual-bars">
+                ${(categoryBarProfiles[item.category] || [20, 30, 25, 35, 28]).map(height => `<span style="height:${height}px"></span>`).join('')}
+              </div>
+              <p class="visual-caption">${item.visual}</p>
+            </div>
+            <p class="term-sources">
+              <strong>Sources:</strong>
+              ${(categorySources[item.category] || []).map(source => `<a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.label}</a>`).join(' · ')}
+            </p>
           </div>
         </article>
       `).join('');
