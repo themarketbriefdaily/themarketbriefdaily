@@ -183,7 +183,7 @@
         <article class="tool" data-calc="dcf">
           <h4>DCF terminal-value sensitivity</h4>
           <p>See how small shifts in WACC and perpetual growth reprice long-duration assets.</p>
-          <label>FCF next year (£m)<input data-k="fcf" type="number" value="120"></label>
+          <label>FCF current year (£m)<input data-k="fcf" type="number" value="120"></label>
           <label>WACC %<input data-k="wacc" type="number" value="9" step="0.1"></label>
           <label>Growth g %<input data-k="g" type="number" value="2.5" step="0.1"></label>
           <div class="tool-out">Implied terminal value: <span data-out>—</span></div>
@@ -223,7 +223,7 @@
     const search = document.getElementById('lessonSearch');
     const searchable = [...document.querySelectorAll('[data-search]')];
     const DCF_EPSILON = 0.000001;
-    const calculateGordonGrowthTV = (fcf, waccPercent, growthPercent) => (fcf * (1 + growthPercent / 100)) / ((waccPercent - growthPercent) / 100);
+    const calculateGordonGrowthTV = (fcfCurrentYear, waccPercent, growthPercent) => (fcfCurrentYear * (1 + growthPercent / 100)) / ((waccPercent - growthPercent) / 100);
     search.addEventListener('input', () => {
       const q = (search.value || '').trim().toLowerCase();
       searchable.forEach(el => {
@@ -244,14 +244,14 @@
         const update = () => {
           if (box.dataset.calc === 'dcf') {
             const fcf = get('fcf'), wacc = get('wacc'), g = get('g');
-            if ([fcf, wacc, g].some(v => v === null) || (wacc - g) <= DCF_EPSILON) { out.textContent = 'Invalid (WACC% must be > g%)'; return; }
+            if ([fcf, wacc, g].some(v => v === null) || ((wacc - g) / 100) <= DCF_EPSILON) { out.textContent = 'Invalid (WACC% must be > g%)'; return; }
             out.textContent = `£${calculateGordonGrowthTV(fcf, wacc, g).toFixed(1)}m`;
           }
           if (box.dataset.calc === 'kelly') {
             const p = get('p'), b = get('b');
             if ([p, b].some(v => v === null) || b <= 0 || p < 0 || p > 1) { out.textContent = 'Invalid'; return; }
             const f = ((b * p) - (1 - p)) / b;
-            out.textContent = `${(f * 100).toFixed(1)}% (half-Kelly ${(f * 50).toFixed(1)}%)`;
+            out.textContent = `${(f * 100).toFixed(1)}% (half-Kelly ${((f / 2) * 100).toFixed(1)}%)`;
           }
           if (box.dataset.calc === 'withdrawal') {
             const pv = get('pv'), wr = get('wr'), r1 = get('r1');
