@@ -344,6 +344,45 @@
       font-size: 0.8rem;
       color: #475569;
     }
+    .mastery-framework {
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .mastery-framework h3 {
+      margin: 0 0 8px;
+      color: #1e3a8a;
+      font-size: 0.95rem;
+    }
+    .mastery-framework p {
+      margin: 0 0 8px;
+      color: #334155;
+      font-size: 0.83rem;
+    }
+    .mastery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .mastery-box {
+      border: 1px solid #bfdbfe;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+    .mastery-box strong {
+      display: block;
+      color: #1e40af;
+      margin-bottom: 4px;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .mastery-box ul, .mastery-box ol { margin: 0; padding-left: 16px; }
     .lesson-actions { margin-top: 8px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
     .complete-btn {
       border: 1px solid #9ac0ff;
@@ -528,6 +567,53 @@
               <li>Basic accounting and valuation primers (income statement, cash flow, TVM).</li>
               <li>Past-paper style practice sets with rationale review.</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="mastery-framework" id="imc-complete-course">
+        <h3>IMC Complete-Course Mastery Framework (100% target pathway)</h3>
+        <p>This section enforces full IMC coverage and mastery gating so no syllabus area is skipped before final exam attempts.</p>
+        <div class="mastery-grid">
+          <div class="mastery-box">
+            <strong>Unit 1 full coverage map</strong>
+            <ul>
+              <li>Regulatory structure, perimeter, and authorisation checks.</li>
+              <li>Conduct, suitability, vulnerable clients, and client outcomes.</li>
+              <li>AML/sanctions/market-abuse controls and escalation workflow.</li>
+              <li>Economics, macro transmission, and inflation/real-return logic.</li>
+              <li>Accounting interpretation, statement linkage, and cash quality.</li>
+              <li>TVM, discounting, portfolio risk, and diversification math.</li>
+            </ul>
+          </div>
+          <div class="mastery-box">
+            <strong>Unit 2 full coverage map</strong>
+            <ul>
+              <li>Fact-find, IPS drafting, and objective/constraint quantification.</li>
+              <li>Strategic allocation, rebalancing, and risk-budget controls.</li>
+              <li>Equity, fixed-income, derivative, fund, and alternatives workflows.</li>
+              <li>Implementation frictions: fees, liquidity, taxes, collateral.</li>
+              <li>Attribution, manager review, and governance decision controls.</li>
+              <li>Integrated case-answer structure under timed conditions.</li>
+            </ul>
+          </div>
+          <div class="mastery-box">
+            <strong>Mandatory novice outputs</strong>
+            <ol>
+              <li>Create a personal glossary of 250+ IMC terms.</li>
+              <li>Build a formula sheet and complete 200+ calculation drills.</li>
+              <li>Write 60+ structured case responses using exam command words.</li>
+              <li>Maintain an error log with correction notes and retest dates.</li>
+            </ol>
+          </div>
+          <div class="mastery-box">
+            <strong>Mock-exam protocol</strong>
+            <ol>
+              <li>Complete 6 full timed mocks (3 per unit equivalent weighting).</li>
+              <li>No final booking unless last 3 mocks average at least 85%.</li>
+              <li>Any domain below 80% triggers mandatory rebuild and retest.</li>
+              <li>Final week target: mixed-domain timed sets at 90%+ accuracy.</li>
+            </ol>
           </div>
         </div>
       </section>
@@ -797,6 +883,11 @@
           'FCA conduct, suitability, and financial promotions guidance summaries.',
           'Intro accounting texts on statement linkage and cash-flow quality.',
           'Macro primer on inflation, rates, and transmission to asset prices.'
+        ],
+        masteryGates: [
+          'Pass 300+ mixed Unit 1 question attempts with at least 85% rolling accuracy.',
+          'Demonstrate clean workings for all core calculations (TVM, risk stats, real return).',
+          'Complete a compliance casebook covering perimeter, suitability, and AML escalation.'
         ]
       },
       'imc-investment-practice': {
@@ -821,6 +912,11 @@
           'Intro portfolio management texts on allocation, diversification, and rebalancing.',
           'Fund due-diligence and fee-impact research notes.',
           'Performance attribution basics and benchmark construction primers.'
+        ],
+        masteryGates: [
+          'Pass 350+ mixed Unit 2 question attempts with at least 85% rolling accuracy.',
+          'Produce 25 timed integrated-case answers with command-word compliant structure.',
+          'Complete 3 full mixed mocks above 85% before final exam entry.'
         ]
       }
     };
@@ -875,6 +971,7 @@
       const checklistHtml = guide.checklist.map((item) => `<li>${item}</li>`).join('');
       const cadenceHtml = guide.cadence ? `<div class="topic-guide-box"><strong>Weekly Cadence</strong><ul>${guide.cadence.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
       const readingsHtml = guide.readings ? `<div class="topic-guide-box"><strong>Core Readings</strong><ul>${guide.readings.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
+      const masteryHtml = guide.masteryGates ? `<div class="topic-guide-box"><strong>Mastery Gates</strong><ul>${guide.masteryGates.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
       return `
         <div class="topic-guide">
           <h3>Course-Level Study Blueprint</h3>
@@ -890,6 +987,7 @@
             </div>
             ${cadenceHtml}
             ${readingsHtml}
+            ${masteryHtml}
           </div>
         </div>
       `;
