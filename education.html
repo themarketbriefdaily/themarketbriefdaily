@@ -287,6 +287,63 @@
       color: #334155;
     }
     .lesson-deep-dive p:last-of-type { margin-bottom: 0; }
+    .novice-bootcamp {
+      border: 1px solid #bfdbfe;
+      background: #f8fbff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .novice-bootcamp h3 {
+      margin: 0 0 8px;
+      color: #1e3a8a;
+      font-size: 0.95rem;
+    }
+    .novice-bootcamp p {
+      margin: 0 0 8px;
+      color: #334155;
+      font-size: 0.83rem;
+    }
+    .novice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .novice-box {
+      border: 1px solid #dbeafe;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: #475569;
+    }
+    .novice-box strong { display: block; color: #1e40af; margin-bottom: 4px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.02em; }
+    .novice-box ul { margin: 0; padding-left: 16px; }
+    .novice-primer {
+      margin-top: 8px;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      background: #f8fbff;
+      padding: 9px 10px;
+    }
+    .novice-primer h3 {
+      margin: 0 0 6px;
+      color: #1d4ed8;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .novice-primer p {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      color: #334155;
+    }
+    .novice-primer ul {
+      margin: 6px 0 0;
+      padding-left: 16px;
+      font-size: 0.8rem;
+      color: #475569;
+    }
     .lesson-actions { margin-top: 8px; display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
     .complete-btn {
       border: 1px solid #9ac0ff;
@@ -430,6 +487,49 @@
         </div>
         <div id="frontierResult" class="result"></div>
         <canvas id="frontierChart" width="840" height="220" aria-label="Efficient frontier chart"></canvas>
+      </section>
+
+      <section class="novice-bootcamp" id="imc-bootcamp">
+        <h3>IMC Zero-to-Pass Bootcamp (for complete beginners)</h3>
+        <p>If you are starting from zero, use this sequence before moving lesson-by-lesson: first learn language and formulas, then exam application, then timed practice with error correction.</p>
+        <div class="novice-grid">
+          <div class="novice-box">
+            <strong>12-Week cadence</strong>
+            <ul>
+              <li>Weeks 1–4: Unit 1 core concepts + glossary drills.</li>
+              <li>Weeks 5–8: Unit 2 portfolio/application blocks + worked examples.</li>
+              <li>Weeks 9–10: Mixed-topic retrieval practice and weak-area rebuild.</li>
+              <li>Weeks 11–12: Full mocks, timing, and final error-log revision.</li>
+            </ul>
+          </div>
+          <div class="novice-box">
+            <strong>Daily study template (90–120 min)</strong>
+            <ul>
+              <li>20 min: vocabulary + formula flashcards.</li>
+              <li>35 min: one lesson deep read with notes in your own words.</li>
+              <li>25 min: calculations + one worked case write-up.</li>
+              <li>15 min: quiz yourself from memory; update mistake log.</li>
+            </ul>
+          </div>
+          <div class="novice-box">
+            <strong>Exam method for every question</strong>
+            <ul>
+              <li>Define objective and identify the IMC domain tested.</li>
+              <li>Select the framework/formula and compute clearly.</li>
+              <li>Interpret result in client/regulatory language.</li>
+              <li>State one risk/control that could invalidate your answer.</li>
+            </ul>
+          </div>
+          <div class="novice-box">
+            <strong>Core readings to cycle weekly</strong>
+            <ul>
+              <li>CISI IMC official Unit 1 and Unit 2 learning outcomes.</li>
+              <li>FCA handbook summary pages on conduct and client duty.</li>
+              <li>Basic accounting and valuation primers (income statement, cash flow, TVM).</li>
+              <li>Past-paper style practice sets with rationale review.</li>
+            </ul>
+          </div>
+        </div>
       </section>
 
       <div id="curriculumRoot"></div>
@@ -686,6 +786,17 @@
           'Map each scenario to relevant regulatory duty and control owner.',
           'Show calculations clearly and explain the investment meaning, not just the number.',
           'Escalate perimeter, conduct, and financial-crime risks with documented rationale.'
+        ],
+        cadence: [
+          'Week A: regulation + conduct topics with daily glossary recall.',
+          'Week B: economics + accounting topics with two end-to-end worked examples.',
+          'Week C: risk statistics recap + mixed Unit 1 question blocks under time.'
+        ],
+        readings: [
+          'CISI IMC Unit 1 official syllabus outcomes and chapter-end checks.',
+          'FCA conduct, suitability, and financial promotions guidance summaries.',
+          'Intro accounting texts on statement linkage and cash-flow quality.',
+          'Macro primer on inflation, rates, and transmission to asset prices.'
         ]
       },
       'imc-investment-practice': {
@@ -699,8 +810,40 @@
           'Start every answer from client objective and constraints before discussing products.',
           'Include valuation/risk logic plus implementation frictions (fees, liquidity, taxes).',
           'Conclude with a clear action, monitoring trigger, and governance responsibility.'
+        ],
+        cadence: [
+          'Week D: IPS design + asset allocation + risk-budget drills.',
+          'Week E: equity, fixed income, funds, and derivatives application sets.',
+          'Week F: attribution, behavior, and timed integrated case responses.'
+        ],
+        readings: [
+          'CISI IMC Unit 2 official syllabus outcomes and chapter-end checks.',
+          'Intro portfolio management texts on allocation, diversification, and rebalancing.',
+          'Fund due-diligence and fee-impact research notes.',
+          'Performance attribution basics and benchmark construction primers.'
         ]
       }
+    };
+
+    const imcLessonPrimer = {
+      'imc1-1': { firstPrinciples: 'Start with a simple idea: markets fail when trust fails. Regulators split duties so no single blind spot can destabilize clients or the system.', workedExample: 'Map a hypothetical wealth manager issue (capital shortfall + unsuitable advice) to PRA prudential controls and FCA conduct controls.', mistakeToAvoid: 'Do not memorize acronyms only; always connect each body to a concrete action and outcome.', readings: ['CISI Unit 1: UK regulators chapter', 'BoE/FPC and FCA role summaries'] },
+      'imc1-2': { firstPrinciples: 'Permissions are legal boundaries on what a firm can do. Revenue never justifies operating outside scope.', workedExample: 'Given a new marketing campaign, test activity, client type, channel, and product against firm permissions before launch.', mistakeToAvoid: 'Ignoring distribution channels: a compliant product can become non-compliant via wrong promotion route.', readings: ['FCA perimeter guidance notes', 'CISI Unit 1 authorisation outcomes'] },
+      'imc1-3': { firstPrinciples: 'Suitability means the recommendation must fit the person, not just the product specification.', workedExample: 'For a vulnerable client with low liquidity, reject high-volatility locked products even if return projections look attractive.', mistakeToAvoid: 'Confusing risk tolerance with capacity for loss; both must be satisfied.', readings: ['Consumer duty principles overview', 'CISI Unit 1 conduct/suitability section'] },
+      'imc1-4': { firstPrinciples: 'Financial crime controls protect market integrity and client safety before any investment process begins.', workedExample: 'Design a high-risk onboarding flow: source-of-funds evidence, enhanced due diligence, alert thresholds, and escalation route.', mistakeToAvoid: 'Treating AML monitoring as a one-off event instead of a continuous process.', readings: ['CISI AML/sanctions chapter', 'FCA financial crime systems examples'] },
+      'imc1-5': { firstPrinciples: 'Macro variables change discount rates and earnings simultaneously; both drive asset prices.', workedExample: 'Rate-hike scenario: estimate impact on bonds (price down), growth equities (multiple compression), and credit spreads (wider).', mistakeToAvoid: 'Using nominal returns without adjusting for inflation when assessing real client outcomes.', readings: ['CISI macro outcomes', 'Inflation/rates primer for beginners'] },
+      'imc1-6': { firstPrinciples: 'Accounting translates business activity into statements; investment quality depends on interpreting those links correctly.', workedExample: 'Compare two firms with equal earnings: choose the one with stronger operating cash conversion and lower leverage risk.', mistakeToAvoid: 'Relying on EPS alone without balance-sheet and cash-flow context.', readings: ['CISI financial reporting outcomes', 'Beginner guide to three-statement linkage'] },
+      'imc1-7': { firstPrinciples: 'Money today is worth more than money later because of opportunity cost and uncertainty.', workedExample: 'Discount three future cash flows at two different rates to show why higher rates reduce present value.', mistakeToAvoid: 'Forgetting compounding frequency and time-period consistency in calculations.', readings: ['TVM formula worksheet', 'CISI valuation/time value outcomes'] },
+      'imc1-8': { firstPrinciples: 'Diversification depends on correlation, not just holding many assets.', workedExample: 'Calculate two-asset variance under low vs high correlation to show stress-period diversification decay.', mistakeToAvoid: 'Assuming historical correlation remains stable during crises.', readings: ['Portfolio math primer', 'CISI Unit 1 risk statistics section'] },
+      'imc2-1': { firstPrinciples: 'Every portfolio starts with client goals and constraints; products come after policy.', workedExample: 'Draft a mini-IPS for a client with near-term cash needs and moderate risk tolerance.', mistakeToAvoid: 'Writing objectives without measurable ranges and review triggers.', readings: ['CISI Unit 2 client objectives outcomes', 'IPS drafting checklist'] },
+      'imc2-2': { firstPrinciples: 'Strategic allocation is the long-run engine; tactical moves are small adjustments around policy.', workedExample: 'Build a base allocation, then assign volatility budget and rebalance thresholds by sleeve.', mistakeToAvoid: 'Changing strategy after short-term noise without governance rules.', readings: ['Asset allocation fundamentals', 'CISI Unit 2 strategic allocation outcomes'] },
+      'imc2-3': { firstPrinciples: 'A good equity decision integrates business quality, valuation, and scenario risk.', workedExample: 'Create a valuation range using base/bull/bear assumptions for revenue growth and margin.', mistakeToAvoid: 'Accepting management narrative without testing valuation implications.', readings: ['Beginner equity valuation primer', 'CISI Unit 2 equity outcomes'] },
+      'imc2-4': { firstPrinciples: 'Bond returns come from carry, yield changes, and spread changes; duration measures sensitivity.', workedExample: 'Estimate approximate bond price change using duration/convexity after a 75 bps yield shock.', mistakeToAvoid: 'Ignoring credit and liquidity components when interpreting spread moves.', readings: ['Duration and convexity workbook', 'CISI Unit 2 fixed income outcomes'] },
+      'imc2-5': { firstPrinciples: 'Derivatives are tools for risk transfer, not shortcuts to free return.', workedExample: 'Set up an equity futures overlay and evaluate tracking-error reduction plus collateral needs.', mistakeToAvoid: 'Forgetting operational constraints (margin calls, legal terms, valuation controls).', readings: ['Derivatives basics for portfolio users', 'CISI Unit 2 derivatives outcomes'] },
+      'imc2-6': { firstPrinciples: 'Fund structure, fees, and dealing terms shape investor outcomes as much as strategy label.', workedExample: 'Compare two funds with equal gross return but different OCF, turnover, and liquidity terms.', mistakeToAvoid: 'Selecting based on recent returns without capacity/process due diligence.', readings: ['Fund-fee impact notes', 'CISI Unit 2 collective vehicles outcomes'] },
+      'imc2-7': { firstPrinciples: 'Alternatives can diversify but introduce valuation lag, lockups, and manager-selection risk.', workedExample: 'Stress-test a private-asset allocation under delayed exits and funding needs.', mistakeToAvoid: 'Treating smoothed marks as low risk instead of low reported volatility.', readings: ['Alternatives due-diligence primer', 'CISI Unit 2 alternative investments outcomes'] },
+      'imc2-8': { firstPrinciples: 'Attribution separates where value was added from where risk was taken.', workedExample: 'Break active return into allocation and selection effects and judge whether excess return was repeatable.', mistakeToAvoid: 'Judging managers on one short period without style-cycle context.', readings: ['Attribution fundamentals', 'CISI Unit 2 performance measurement outcomes'] },
+      'imc2-9': { firstPrinciples: 'Behavioral errors are predictable, so process controls can reduce them.', workedExample: 'Use a decision journal template before trade entry and post-mortem the result later.', mistakeToAvoid: 'Evaluating decisions solely by outcome rather than decision quality.', readings: ['Behavioral bias checklist', 'CISI Unit 2 behavioral finance outcomes'] },
+      'imc2-10': { firstPrinciples: 'Exam marks come from structured reasoning under time, not from isolated facts.', workedExample: 'Practice a 5-step answer: objective, framework, calculation, interpretation, risk control.', mistakeToAvoid: 'Writing long theory paragraphs without directly answering command words.', readings: ['Timed mock papers + error-log review', 'CISI exam-technique guidance'] }
     };
 
     const difficultyCoaching = {
@@ -730,6 +873,8 @@
       if (!guide) return '';
       const objectivesHtml = guide.objectives.map((item) => `<li>${item}</li>`).join('');
       const checklistHtml = guide.checklist.map((item) => `<li>${item}</li>`).join('');
+      const cadenceHtml = guide.cadence ? `<div class="topic-guide-box"><strong>Weekly Cadence</strong><ul>${guide.cadence.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
+      const readingsHtml = guide.readings ? `<div class="topic-guide-box"><strong>Core Readings</strong><ul>${guide.readings.map((item) => `<li>${item}</li>`).join('')}</ul></div>` : '';
       return `
         <div class="topic-guide">
           <h3>Course-Level Study Blueprint</h3>
@@ -743,7 +888,24 @@
               <strong>Analyst Checklist</strong>
               <ul>${checklistHtml}</ul>
             </div>
+            ${cadenceHtml}
+            ${readingsHtml}
           </div>
+        </div>
+      `;
+    };
+
+    const createNovicePrimer = (lesson) => {
+      const primer = imcLessonPrimer[lesson.id];
+      if (!primer) return '';
+      const readings = primer.readings.map((item) => `<li>${item}</li>`).join('');
+      return `
+        <div class="novice-primer">
+          <h3>Zero-Knowledge Teaching Notes</h3>
+          <p><strong>First principles:</strong> ${primer.firstPrinciples}</p>
+          <p><strong>Worked example you should practice:</strong> ${primer.workedExample}</p>
+          <p><strong>Common mistake to avoid:</strong> ${primer.mistakeToAvoid}</p>
+          <ul>${readings}</ul>
         </div>
       `;
     };
@@ -775,6 +937,7 @@
         <div class="formula"><strong>Framework & formula:</strong> ${lesson.formula}</div>
         <div class="evidence"><strong>Empirical lens:</strong> ${lesson.evidence}</div>
         <div class="application"><strong>Implementation rule:</strong> ${lesson.application}</div>
+        ${createNovicePrimer(lesson)}
         ${createLessonDeepDive(lesson)}
         <div class="lesson-actions"><button class="complete-btn" data-lesson-id="${lesson.id}">Mark complete</button></div>
       `;
