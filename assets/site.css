@@ -28,6 +28,7 @@ body {
   --muted:     rgba(11,18,32,.62);
   --muted2:    rgba(11,18,32,.42);
   --line:      rgba(11,18,32,.10);
+  --scrollbar-thumb: rgba(11,18,32,.22);
   --mono:      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                "Liberation Mono", "Courier New", monospace;
   --shadow-md: 0 8px 22px rgba(2,8,23,.10);
@@ -197,20 +198,26 @@ nav a.active  { font-weight: 900; }
   header { padding: 0 14px; }
   .header-inner { gap: 10px; }
   .brand {
-    max-width: 44%;
+    flex: 0 1 auto;
+    max-width: 170px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   nav {
+    flex: 1 1 0;
     display: flex;
     flex-wrap: nowrap;
     gap: 14px;
-    max-width: 56%;
+    min-width: 0;
     overflow-x: auto;
     justify-content: flex-start;
-    scrollbar-width: none;
+    scrollbar-width: thin;
   }
-  nav::-webkit-scrollbar { display: none; }
+  nav::-webkit-scrollbar { height: 4px; }
+  nav::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 999px;
+  }
 }
 
 /* ── Footer ────────────────────────────────────────────────────── */
