@@ -273,6 +273,18 @@
     const terms = [...baseTerms, ...supplementalTerms, ...expansionTerms];
 
     const map = Object.fromEntries(terms.map(t => [t.id,t]));
+    const lessonByTopic = {
+      'Ratios & Performance':'education-library.html#module-d1',
+      'Risk':'education-library.html#module-a1',
+      'Portfolio Theory':'education-library.html#module-d4',
+      'Strategies':'education-library.html#module-d5',
+      'Fixed Income':'education-library.html#module-a3',
+      'Derivatives':'education-library.html#module-a5',
+      'Valuation':'education-library.html#module-c1',
+      'Corporate Finance':'education-library.html#module-b1',
+      'Behavioural Finance':'education-library.html#module-e1',
+      'ESG':'education-library.html#module-f1'
+    };
     const root = document.getElementById('root');
     const list = document.getElementById('list');
     const az = document.getElementById('az');
@@ -310,6 +322,7 @@
 
     function card(t,q,s){
       const related = (t.related||[]).map(id => map[id]).filter(Boolean).map(x => `<a href="#${x.id}">${escapeHtml(x.term)}</a>`).join('');
+      const lessonTarget = lessonByTopic[t.topic] || t.lesson || 'education-library.html';
       return `<article id="${t.id}" class="card" data-letter="${t.term[0].toUpperCase()}" data-topic="${t.topic}" data-search="${(t.term+' '+t.simple+' '+t.academic+' '+t.history+' '+t.application).toLowerCase()}">
         <div class="head">
           <div>
@@ -326,7 +339,7 @@
           <div class="s-title">Worked example</div><p class="copy">${t.example}</p>
           <div class="s-title">Real-world application</div><p class="copy">${t.application}</p>
           <div class="s-title">Related terms</div><div class="links">${related}</div>
-          <p class="copy" style="margin-top:8px"><strong>Appears in lesson:</strong> <a href="/${t.lesson}" style="color:#1d4ed8">Open curriculum lesson</a><br><strong>Key source:</strong> ${t.source}</p>
+          <p class="copy" style="margin-top:8px"><strong>Appears in lesson:</strong> <a href="/${lessonTarget}" style="color:#1d4ed8">Open curriculum lesson</a><br><strong>Key source:</strong> ${t.source}</p>
         </div>
       </article>`;
     }
