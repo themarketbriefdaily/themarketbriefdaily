@@ -1,6 +1,5 @@
 (function () {
   const data = window.EDUCATION_UNITS;
-  if (!data) return;
 
   function escapeHtml(text) {
     return String(text)
@@ -14,7 +13,7 @@
   function withTooltips(text) {
     if (!text) return '';
     return text.replace(/\[\[(.+?)::(.+?)\]\]/g, (_, term, def) =>
-      `<span class="edu-tooltip" tabindex="0" data-tip="${escapeHtml(def)}" aria-label="${escapeHtml(term)}: ${escapeHtml(def)}">${escapeHtml(term)}<span class="edu-visually-hidden">: ${escapeHtml(def)}</span></span>`
+      `<span class="edu-tooltip" tabindex="0" data-tip="${escapeHtml(def)}" aria-label="${escapeHtml(term)}: ${escapeHtml(def)}">${escapeHtml(term)}</span>`
     );
   }
 
@@ -124,6 +123,7 @@
   }
 
   function renderUnit(unitKey) {
+    if (!data || !data.units) return;
     const unit = data.units[unitKey];
     if (!unit) return;
 
@@ -195,9 +195,13 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function initEducationPage() {
     const key = document.body.getAttribute('data-unit-key');
-    if (key) {
+    if (!data) {
+      if (document.getElementById('chapterList')) {
+        console.warn('Education content data is unavailable. Ensure /assets/data/education-units.js loaded successfully.');
+      }
+    } else if (key) {
       renderUnit(key);
     } else if (document.getElementById('chapterList')) {
       console.warn('data-unit-key attribute missing on <body> tag. Cannot render education unit content.');
@@ -217,5 +221,11 @@
     document.addEventListener('click', () => {
       document.querySelectorAll('.nav-dropdown.open').forEach((o) => o.classList.remove('open'));
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEducationPage);
+  } else {
+    initEducationPage();
+  }
 })();
