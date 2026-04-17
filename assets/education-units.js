@@ -46,6 +46,20 @@
       .join('');
   }
 
+  function scenarioHtml(scenarios) {
+    return (scenarios || [])
+      .map(
+        (s, index) => `
+          <article class="edu-box scenario-set">
+            <h4>Scenario ${index + 1}: ${withTooltips(s.title)}</h4>
+            <p>${withTooltips(s.summary)}</p>
+            <p><strong>Decision focus:</strong> ${withTooltips(s.decisionFocus)}</p>
+          </article>
+        `
+      )
+      .join('');
+  }
+
   function chapterHtml(chapter, idx) {
     const core = (chapter.coreConcepts || [])
       .map(
@@ -85,6 +99,9 @@
           <h4>${withTooltips(chapter.caseStudy.title)}</h4>
           <p>${withTooltips(chapter.caseStudy.summary)}</p>
         </div>
+
+        <h3 class="edu-subhead">Scenario set</h3>
+        ${scenarioHtml(chapter.scenarioSets)}
 
         <details class="edu-box exam-tip">
           <summary><strong>Exam Tip (expand)</strong></summary>

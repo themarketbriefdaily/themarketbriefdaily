@@ -15,13 +15,21 @@
    - Technical explanation
    - Application layer
    - Risk/compliance/real-world caveat
-5. In practice card
-6. Mini case study
-7. Common misunderstandings
-8. Practical checklist
-9. Chapter roundup
-10. Knowledge-check questions
-11. Model answers with reasoning and weaker-alternative explanation
+5. Scenario set (minimum 2 applied scenarios per chapter)
+6. In practice card
+7. Mini case study
+8. Common misunderstandings
+9. Practical checklist
+10. Chapter roundup
+11. Knowledge-check questions
+12. Model answers with reasoning and weaker-alternative explanation
+
+## Question-bank baseline
+- Minimum 3 exam-style knowledge-check questions per chapter
+- Each question includes:
+  - correct answer key
+  - reasoning for correct option
+  - explicit explanation of weaker alternatives
 
 ## Callout taxonomy
 - **Exam Tip**: exam strategy and answer framing guidance (expandable)

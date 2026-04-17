@@ -33,3 +33,9 @@
 - `CONTENT_MAP.md`
 - `STYLE_GUIDE_EDUCATION.md`
 - `CHANGELOG_EDUCATION.md`
+
+## Batch 2 depth pass
+- Expanded every Unit 1 and Unit 2 chapter with a dedicated multi-scenario set (2 scenarios per chapter).
+- Increased question-bank volume to a baseline of 3 knowledge-check questions per chapter.
+- Preserved model-answer reasoning and “why alternatives are weaker” explanations for all added questions.
+- Updated renderer to display chapter scenario sets in the long-form reading flow.

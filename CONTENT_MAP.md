@@ -31,11 +31,14 @@
 ## Shared cross-unit systems
 - Shared glossary terms (tooltips + glossary section)
 - Dependency map (mastery sequence)
+- Scenario sets: 2 applied scenarios per chapter
+- Question bank baseline: 3 knowledge-check questions per chapter with model reasoning
 - Consistent chapter taxonomy:
   - Introduction
   - Why this matters
   - Learning outcomes
   - Core concepts (plain + technical + application + caveats)
+  - Scenario set
   - In-practice card
   - Mini case study
   - Common misunderstandings
