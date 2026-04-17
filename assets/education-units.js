@@ -1,5 +1,5 @@
 (function () {
-  const data = window.EDUCATION_UNITS;
+  let data = window.EDUCATION_UNITS;
 
   function escapeHtml(text) {
     return String(text)
@@ -192,14 +192,20 @@
         { rootMargin: '-15% 0px -70% 0px' }
       );
       chaptersNode.forEach((node) => obs.observe(node));
+    } else {
+      console.warn('IntersectionObserver unavailable: chapter progress highlighting is disabled in this browser.');
     }
   }
 
-  function initEducationPage() {
+  function initEducationPage(retries = 0) {
+    data = window.EDUCATION_UNITS;
     const key = document.body.getAttribute('data-unit-key');
     if (!data) {
       if (document.getElementById('chapterList')) {
         console.warn('Education content data is unavailable. Ensure /assets/data/education-units.js loaded successfully.');
+        if (retries < 10) {
+          setTimeout(() => initEducationPage(retries + 1), 100);
+        }
       }
     } else if (key) {
       renderUnit(key);

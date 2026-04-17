@@ -73,6 +73,11 @@
 .edu-qa-answer ul { margin-top: 6px; }
 
 .edu-tooltip { border-bottom: 1px dashed #6a88c6; cursor: help; position: relative; }
+.edu-tooltip:focus-visible {
+  outline: 2px solid #6a88c6;
+  outline-offset: 2px;
+  border-bottom-color: transparent;
+}
 .edu-tooltip:hover::after,
 .edu-tooltip:focus::after {
   content: attr(data-tip);
