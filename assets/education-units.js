@@ -2,6 +2,7 @@
   const MAX_DATA_LOAD_RETRIES = 10;
   const DATA_LOAD_RETRY_DELAY_MS = 100;
   let data = window.EDUCATION_UNITS;
+  let navHandlersBound = false;
 
   function escapeHtml(text) {
     return String(text)
@@ -196,39 +197,53 @@
       chaptersNode.forEach((node) => obs.observe(node));
     } else {
       console.warn('IntersectionObserver unavailable: chapter progress highlighting is disabled in this browser.');
+      if (progressText) {
+        progressText.textContent = 'Chapter progress tracking is unavailable in this browser.';
+      }
     }
   }
 
   function initEducationPage(retries = 0) {
     data = window.EDUCATION_UNITS;
     const key = document.body.getAttribute('data-unit-key');
+    const chapterList = document.getElementById('chapterList');
     if (!data) {
-      if (document.getElementById('chapterList')) {
+      if (chapterList) {
         console.warn('Education content data is unavailable. Ensure /assets/data/education-units.js loaded successfully.');
         if (retries < MAX_DATA_LOAD_RETRIES) {
           setTimeout(() => initEducationPage(retries + 1), DATA_LOAD_RETRY_DELAY_MS);
+        } else if (!chapterList.querySelector('[data-edu-load-error]')) {
+          chapterList.innerHTML = `
+            <div class="edu-box warning" data-edu-load-error>
+              <h4>Education content unavailable</h4>
+              <p>Chapter data failed to load after multiple attempts. Please refresh and try again.</p>
+            </div>
+          `;
         }
       }
     } else if (key) {
       renderUnit(key);
-    } else if (document.getElementById('chapterList')) {
+    } else if (chapterList) {
       console.warn('data-unit-key attribute missing on <body> tag. Cannot render education unit content.');
     }
 
-    document.querySelectorAll('.nav-dropdown').forEach((dd) => {
-      const toggle = dd.querySelector('.nav-drop-toggle');
-      if (!toggle) return;
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const open = dd.classList.contains('open');
-        document.querySelectorAll('.nav-dropdown.open').forEach((o) => o.classList.remove('open'));
-        if (!open) dd.classList.add('open');
+    if (!navHandlersBound) {
+      document.querySelectorAll('.nav-dropdown').forEach((dd) => {
+        const toggle = dd.querySelector('.nav-drop-toggle');
+        if (!toggle) return;
+        toggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const open = dd.classList.contains('open');
+          document.querySelectorAll('.nav-dropdown.open').forEach((o) => o.classList.remove('open'));
+          if (!open) dd.classList.add('open');
+        });
       });
-    });
 
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.nav-dropdown.open').forEach((o) => o.classList.remove('open'));
-    });
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.nav-dropdown.open').forEach((o) => o.classList.remove('open'));
+      });
+      navHandlersBound = true;
+    }
   }
 
   if (document.readyState === 'loading') {
