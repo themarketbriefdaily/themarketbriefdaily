@@ -542,7 +542,7 @@ window.EDUCATION_UNITS = {
             {
               "heading": "Risk in client terms",
               "plain": "Risk is not only volatility; it is failure to meet goals.",
-              "technical": "Risk tolerance, return requirement, and [[Capacity for loss::Maximum absorbable loss without critical goal failure]] must be aligned.",
+              "technical": "Risk tolerance, return requirement, and [[Capacity for loss::Level of loss a client can absorb without breaking essential financial goals]] must be aligned.",
               "application": "Use adverse-scenario discussion in plain language before final sign-off.",
               "caveats": "Behavioral response under stress can dominate model assumptions."
             }
