@@ -31,8 +31,8 @@
 ## Shared cross-unit systems
 - Shared glossary terms (tooltips + glossary section)
 - Dependency map (mastery sequence)
-- Scenario sets: 2 applied scenarios per chapter
-- Question bank baseline: 3 knowledge-check questions per chapter with model reasoning
+- Scenario sets: 3 applied scenarios per chapter (Batch 3 baseline)
+- Question bank baseline: 4 knowledge-check questions per chapter with model reasoning (Batch 3 baseline)
 - Consistent chapter taxonomy:
   - Introduction
   - Why this matters

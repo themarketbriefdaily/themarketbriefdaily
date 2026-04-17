@@ -15,7 +15,7 @@
    - Technical explanation
    - Application layer
    - Risk/compliance/real-world caveat
-5. Scenario set (minimum 2 applied scenarios per chapter)
+5. Scenario set (minimum 3 applied scenarios per chapter)
 6. In practice card
 7. Mini case study
 8. Common misunderstandings
@@ -25,7 +25,7 @@
 12. Model answers with reasoning and weaker-alternative explanation
 
 ## Question-bank baseline
-- Minimum 3 exam-style knowledge-check questions per chapter
+- Minimum 4 exam-style knowledge-check questions per chapter
 - Each question includes:
   - correct answer key
   - reasoning for correct option

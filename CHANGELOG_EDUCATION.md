@@ -39,3 +39,9 @@
 - Increased question-bank volume to a baseline of 3 knowledge-check questions per chapter.
 - Preserved model-answer reasoning and “why alternatives are weaker” explanations for all added questions.
 - Updated renderer to display chapter scenario sets in the long-form reading flow.
+
+## Batch 3 depth pass
+- Expanded every Unit 1 and Unit 2 chapter scenario set from 2 to 3 applied scenarios.
+- Increased per-chapter question-bank volume from 3 to 4 knowledge-check questions.
+- Preserved model-answer structure for all new questions (answer key, reasoning, weaker-alternative explanations).
+- Updated documentation baselines to reflect Batch 3 depth standards.

@@ -167,6 +167,22 @@ window.EDUCATION_UNITS = {
                 "Settlement risk remains and must be controlled separately.",
                 "Spread costs still apply even with phased execution."
               ]
+            },
+            {
+              "question": "What best links market microstructure knowledge to client outcomes?",
+              "options": [
+                "Selecting the lowest headline commission only",
+                "Matching order strategy to liquidity and venue conditions",
+                "Using identical order type for all instruments",
+                "Ignoring timing because long-term investors are indifferent"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Execution strategy aligned to real liquidity conditions materially affects slippage and net returns.",
+              "wrongReasons": [
+                "Commission is only one part of total implementation cost.",
+                "Instrument liquidity differs; one-size routing is suboptimal.",
+                "Timing and impact still matter even for long-term allocations."
+              ]
             }
           ],
           "scenarioSets": [
@@ -179,6 +195,11 @@ window.EDUCATION_UNITS = {
               "title": "Corporate bond rebalance under spread widening",
               "summary": "A balanced portfolio needs duration reduction while dealer inventories are thin and bid-ask spreads are widening.",
               "decisionFocus": "Trade-off urgency versus liquidity cost and document best-execution rationale."
+            },
+            {
+              "title": "ETF creation-redemption stress window",
+              "summary": "During a risk-off open, ETF spreads widen while underlying basket liquidity fragments across venues.",
+              "decisionFocus": "Balance immediacy and execution certainty by sequencing orders around liquidity pockets."
             }
           ]
         },
@@ -280,6 +301,22 @@ window.EDUCATION_UNITS = {
                 "Client detail requests do not define control sufficiency.",
                 "Fee level does not determine conflict severity by itself."
               ]
+            },
+            {
+              "question": "Which control most effectively reduces incentives-driven mis-selling risk?",
+              "options": [
+                "Longer product brochures",
+                "Independent suitability challenge prior to recommendation sign-off",
+                "Higher team sales targets with quarterly reviews",
+                "Client waiver of detailed risk discussions"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Independent challenge introduces objective friction before client harm occurs.",
+              "wrongReasons": [
+                "Disclosure volume does not by itself correct recommendation bias.",
+                "Higher targets can increase conduct pressure.",
+                "Client waivers do not remove firm conduct duties."
+              ]
             }
           ],
           "scenarioSets": [
@@ -292,6 +329,11 @@ window.EDUCATION_UNITS = {
               "title": "Performance communication in drawdown",
               "summary": "Client reporting emphasizes benchmark-relative outperformance while underreporting absolute losses and downside risks.",
               "decisionFocus": "Reframe communication to be fair, clear, and balanced."
+            },
+            {
+              "title": "Soft-pressure cross-selling cycle",
+              "summary": "Relationship managers are nudged to cross-sell structured notes to clients with low complexity tolerance.",
+              "decisionFocus": "Apply suitability-first governance and challenge commercial pressure with documented rationale."
             }
           ]
         },
@@ -393,6 +435,22 @@ window.EDUCATION_UNITS = {
                 "Rebates alone can conflict with client outcomes.",
                 "Relationship longevity does not prove execution quality."
               ]
+            },
+            {
+              "question": "What is the strongest evidence that conduct obligations are being applied, not just documented?",
+              "options": [
+                "Policy files updated annually",
+                "Case records showing recommendation decisions changed after compliance challenge",
+                "Generic risk disclaimer appended to all emails",
+                "Advisor attestation completion rate"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Observable decision changes from challenge demonstrate the framework influences real behavior.",
+              "wrongReasons": [
+                "Document refreshes alone do not prove frontline application.",
+                "Generic disclaimers can be non-specific and weak.",
+                "Attestation is useful but not outcome evidence."
+              ]
             }
           ],
           "scenarioSets": [
@@ -405,6 +463,11 @@ window.EDUCATION_UNITS = {
               "title": "Best-execution policy versus desk incentives",
               "summary": "Routing logic favors venues with rebates, while periodic reviews show weaker fills for less-liquid names.",
               "decisionFocus": "Redesign routing controls around net client outcome metrics."
+            },
+            {
+              "title": "Cross-border communication mismatch",
+              "summary": "A UK client receives marketing language from another jurisdiction that conflicts with UK conduct expectations.",
+              "decisionFocus": "Reconcile communications to local obligations and evidence fair, clear, non-misleading standards."
             }
           ]
         },
@@ -506,6 +569,22 @@ window.EDUCATION_UNITS = {
                 "Suitability duties remain regardless of ownership form.",
                 "Retail structures can also involve nominee ownership."
               ]
+            },
+            {
+              "question": "In advice implementation, why does beneficial ownership analysis matter?",
+              "options": [
+                "It determines office workflow preferences only",
+                "It clarifies who bears economic outcomes and whose interests must be protected",
+                "It removes need for suitability review",
+                "It applies only to institutional pensions"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Beneficial ownership identifies the party economically affected and central to client-outcome duties.",
+              "wrongReasons": [
+                "It is not merely administrative.",
+                "Suitability obligations still apply.",
+                "Retail and private-client structures can also separate legal and beneficial ownership."
+              ]
             }
           ],
           "scenarioSets": [
@@ -518,6 +597,11 @@ window.EDUCATION_UNITS = {
               "title": "Trust mandate mismatch",
               "summary": "An advisor proposes high-turnover strategy for a trust with conservative income-distribution obligations.",
               "decisionFocus": "Align implementation with trustee duty, mandate limits, and beneficiary horizon."
+            },
+            {
+              "title": "Power-of-attorney boundary confusion",
+              "summary": "An attorney requests high-risk reallocations that appear inconsistent with the principal’s established mandate.",
+              "decisionFocus": "Validate scope of authority and duty to the beneficial party before acting."
             }
           ]
         },
@@ -619,6 +703,22 @@ window.EDUCATION_UNITS = {
                 "Newsletter cycles are informational, not suitability triggers.",
                 "Index updates do not inherently change personal objectives."
               ]
+            },
+            {
+              "question": "Which action best reflects suitability maintenance over time?",
+              "options": [
+                "Preserve original recommendation until annual review date",
+                "Reassess objective priority and capacity for loss after material life changes",
+                "Switch to highest historical-return model automatically",
+                "Wait for client complaint before reviewing fit"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Material changes require timely reassessment to keep recommendations aligned with current circumstances.",
+              "wrongReasons": [
+                "Fixed calendar cycles can miss urgent suitability drift.",
+                "Past return ranking is not a substitute for suitability analysis.",
+                "Complaint-triggered review is reactive and late."
+              ]
             }
           ],
           "scenarioSets": [
@@ -631,6 +731,11 @@ window.EDUCATION_UNITS = {
               "title": "Review-gap vulnerability",
               "summary": "A portfolio remains unchanged for years despite major client life events and altered cash-flow requirements.",
               "decisionFocus": "Apply event-based review triggers and update suitability records."
+            },
+            {
+              "title": "Liquidity-needs reprioritization event",
+              "summary": "A client’s near-term education funding objective becomes urgent after employment disruption.",
+              "decisionFocus": "Re-order objective hierarchy and adjust risk budget to protect short-horizon capital needs."
             }
           ]
         },
@@ -732,6 +837,22 @@ window.EDUCATION_UNITS = {
                 "Pure tax minimization can conflict with client goals.",
                 "Indefinite delay can create tracking and suitability drift."
               ]
+            },
+            {
+              "question": "What best describes effective tax-aware portfolio design?",
+              "options": [
+                "Pursue lowest tax in every isolated trade regardless of goal fit",
+                "Integrate tax, costs, and objective alignment to maximize long-run net outcomes",
+                "Prioritize turnover to harvest all short-term opportunities",
+                "Avoid all realizations even when strategy drift is high"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Tax is one component of integrated net-outcome optimization under client objectives and constraints.",
+              "wrongReasons": [
+                "Trade-level tax minimization alone can conflict with suitability.",
+                "High turnover often increases friction and tax drag.",
+                "Never realizing gains can entrench unsuitable drift."
+              ]
             }
           ],
           "scenarioSets": [
@@ -744,6 +865,11 @@ window.EDUCATION_UNITS = {
               "title": "Income-heavy allocation drift",
               "summary": "A client chooses higher-yield instruments without modeling tax drag and inflation-adjusted purchasing power.",
               "decisionFocus": "Evaluate after-tax real return rather than headline yield."
+            },
+            {
+              "title": "Allowance sequencing oversight",
+              "summary": "Annual wrapper allowances are underused while taxable disposals generate avoidable gains realization.",
+              "decisionFocus": "Sequence implementation to optimize after-tax compounding without breaking mandate suitability."
             }
           ]
         }
@@ -849,6 +975,22 @@ window.EDUCATION_UNITS = {
                 "Concealing conflicts breaches communication quality standards.",
                 "Return-only framing omits risk and fairness context."
               ]
+            },
+            {
+              "question": "Why are standardized escalation thresholds important in live advisory practice?",
+              "options": [
+                "They remove all need for professional judgment",
+                "They reduce arbitrary treatment and improve consistent client protection",
+                "They increase sales conversion reliability",
+                "They allow omission of recommendation notes"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Consistent thresholds reduce uneven treatment and make conduct controls more reliable.",
+              "wrongReasons": [
+                "Judgment remains necessary for case specifics.",
+                "Commercial outcomes are not the core conduct objective.",
+                "Documentation duties remain essential."
+              ]
             }
           ],
           "scenarioSets": [
@@ -861,6 +1003,11 @@ window.EDUCATION_UNITS = {
               "title": "Commercial target versus suitability",
               "summary": "Advisors are asked to prioritize new-product penetration in unsuitable client segments.",
               "decisionFocus": "Escalate and enforce target-market and suitability controls."
+            },
+            {
+              "title": "Escalation threshold inconsistency",
+              "summary": "Different teams escalate conduct concerns at materially different thresholds during volatile periods.",
+              "decisionFocus": "Standardize escalation triggers and reinforce ethics-led intervention timing."
             }
           ]
         },
@@ -955,6 +1102,22 @@ window.EDUCATION_UNITS = {
                 "Judgment remains essential in controls.",
                 "Monitoring frequency should match risk, not ownership alone."
               ]
+            },
+            {
+              "question": "What is the biggest governance risk when process automation skips challenge checkpoints?",
+              "options": [
+                "Reduced manual formatting consistency",
+                "Undetected unsuitable recommendations at scale",
+                "Lower dashboard refresh frequency",
+                "Increased training material length"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Automation can amplify errors quickly if suitability challenge controls are bypassed.",
+              "wrongReasons": [
+                "Formatting issues are secondary to client-outcome risk.",
+                "Refresh speed is not the primary control failure.",
+                "Training length does not define governance quality."
+              ]
             }
           ],
           "scenarioSets": [
@@ -967,6 +1130,11 @@ window.EDUCATION_UNITS = {
               "title": "Monitoring without remediation",
               "summary": "A dashboard flags repeated suitability exceptions, but no ownership is assigned for fixes.",
               "decisionFocus": "Pair metrics with accountable remediation timelines."
+            },
+            {
+              "title": "Control drift after process automation",
+              "summary": "Workflow automation improves speed but drops mandatory challenge checkpoints in edge cases.",
+              "decisionFocus": "Reinsert control gates and define exception governance for automated pathways."
             }
           ]
         },
@@ -1068,6 +1236,22 @@ window.EDUCATION_UNITS = {
                 "Request alone is insufficient.",
                 "Income alone does not prove relevant product-risk understanding."
               ]
+            },
+            {
+              "question": "Which record feature best protects defensibility across mixed service channels?",
+              "options": [
+                "Single blended file note for all interactions",
+                "Time-stamped service-path tagging with obligation-specific rationale",
+                "Removing non-advised orders from records",
+                "Capturing only final trade ticket"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Clear channel tagging plus obligation-specific reasoning preserves legal and conduct traceability.",
+              "wrongReasons": [
+                "Blended notes obscure duty boundaries.",
+                "Record omission weakens evidence integrity.",
+                "Trade ticket alone lacks suitability/appropriateness rationale."
+              ]
             }
           ],
           "scenarioSets": [
@@ -1080,6 +1264,11 @@ window.EDUCATION_UNITS = {
               "title": "Mixed-service documentation drift",
               "summary": "Advised portfolio changes and execution-only complex trades are recorded in one blended note.",
               "decisionFocus": "Separate service pathways and assessment obligations clearly."
+            },
+            {
+              "title": "Service-channel switching ambiguity",
+              "summary": "A client alternates between advisory meetings and app-based execution-only orders without clear pathway labeling.",
+              "decisionFocus": "Preserve explicit boundary evidence between suitability and appropriateness obligations."
             }
           ]
         },
@@ -1181,6 +1370,22 @@ window.EDUCATION_UNITS = {
                 "Sanctions checks remain separate obligations.",
                 "Monitoring remains necessary after refresh."
               ]
+            },
+            {
+              "question": "What most improves detection of emerging market-abuse risk?",
+              "options": [
+                "Review only one account at a time",
+                "Correlate activity across accounts, timing windows, and instrument events",
+                "Rely exclusively on client self-certifications",
+                "Pause surveillance during high-volume days"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Cross-entity correlation is essential for identifying coordinated behavior patterns.",
+              "wrongReasons": [
+                "Single-account review can miss coordinated abuse.",
+                "Self-certification is not sufficient detection evidence.",
+                "High-volume periods often require stronger, not weaker, surveillance."
+              ]
             }
           ],
           "scenarioSets": [
@@ -1193,6 +1398,11 @@ window.EDUCATION_UNITS = {
               "title": "Potential inside-information contamination",
               "summary": "Team chat includes non-public issuer details shortly before unusual client order flow.",
               "decisionFocus": "Contain information, escalate surveillance review, and preserve records."
+            },
+            {
+              "title": "Pattern-level surveillance blind spot",
+              "summary": "Single transactions look ordinary, but cross-account sequencing suggests coordinated suspicious behavior.",
+              "decisionFocus": "Move from event-level to pattern-level monitoring and escalation."
             }
           ]
         },
@@ -1294,6 +1504,22 @@ window.EDUCATION_UNITS = {
                 "Stress tests do not guarantee market outcomes.",
                 "Review processes remain essential."
               ]
+            },
+            {
+              "question": "Why can benchmark-centric framing become unsuitable in client advice?",
+              "options": [
+                "Benchmarks are never relevant in portfolio design",
+                "It can displace client-specific objective, horizon, and capacity-for-loss priorities",
+                "It automatically increases diversification",
+                "It removes implementation cost considerations"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Benchmarks are tools, not objectives; recommendations must remain anchored to client outcomes.",
+              "wrongReasons": [
+                "Benchmarks can be informative when used appropriately.",
+                "Benchmark focus does not guarantee diversification quality.",
+                "Costs remain central to net outcomes."
+              ]
             }
           ],
           "scenarioSets": [
@@ -1306,6 +1532,11 @@ window.EDUCATION_UNITS = {
               "title": "Rebalancing policy override temptation",
               "summary": "Strong short-term outperformance encourages discretionary drift away from risk-budget limits.",
               "decisionFocus": "Reinforce policy-aligned rebalance discipline."
+            },
+            {
+              "title": "Benchmark-anchoring recommendation bias",
+              "summary": "Portfolio revisions are justified primarily by benchmark tracking optics rather than client-objective mapping.",
+              "decisionFocus": "Recenter advice on objective-linked sleeves and risk-budget adherence."
             }
           ]
         },
@@ -1407,6 +1638,22 @@ window.EDUCATION_UNITS = {
                 "Profitability is not the control trigger.",
                 "Waiting for complaints is reactive and late."
               ]
+            },
+            {
+              "question": "What is the clearest indicator of high-quality recommendation documentation?",
+              "options": [
+                "All mandatory fields populated identically across clients",
+                "Case-specific rationale linking objectives, options considered, and final recommendation",
+                "Longest narrative length regardless of relevance",
+                "No noted alternatives to maintain brevity"
+              ],
+              "answerIndex": 1,
+              "reasoning": "Quality is demonstrated by tailored reasoning and transparent option comparison tied to client facts.",
+              "wrongReasons": [
+                "Uniform text may indicate weak personalization.",
+                "Length is not a proxy for quality.",
+                "Omitting alternatives weakens defensibility."
+              ]
             }
           ],
           "scenarioSets": [
@@ -1419,6 +1666,11 @@ window.EDUCATION_UNITS = {
               "title": "Exception-path overuse",
               "summary": "Teams repeatedly use urgent exceptions for normal recommendations, weakening governance consistency.",
               "decisionFocus": "Reset exception thresholds and enforce senior sign-off with post-event review."
+            },
+            {
+              "title": "Template-driven documentation weakness",
+              "summary": "Files are complete on paper but contain copy-forward rationale that does not match current client context.",
+              "decisionFocus": "Shift evidence quality from template completion to case-specific reasoning integrity."
             }
           ]
         }
