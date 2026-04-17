@@ -1,16 +1,15 @@
 {
-  "asof_iso": "2026-04-17T11:44:20.462892+00:00",
+  "asof_iso": "2026-04-17T13:03:57.491455+00:00",
   "last_trading_day": "2026-04-16",
   "source": "alphavantage_free",
   "prices": {
     "AGI": 48.37,
+    "FSM": 10.43,
+    "GAU": 2.51,
     "NFGC": 2.09,
     "VGZ": 2.16,
     "NEWP": 5.4,
     "GOOGL": 336.02
   },
-  "errors": {
-    "FSM": "Information: Thank you for using Alpha Vantage! This is a premium endpoint. You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock all premium endpoints",
-    "GAU": "Information: Thank you for using Alpha Vantage! This is a premium endpoint. You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock all premium endpoints"
-  }
+  "errors": {}
 }
