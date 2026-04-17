@@ -183,7 +183,7 @@
     if (key) {
       renderUnit(key);
     } else if (document.getElementById('chapterList')) {
-      console.warn('Education unit key is missing on page body.');
+      console.warn('data-unit-key attribute missing on body element. Cannot render education unit content.');
     }
 
     document.querySelectorAll('.nav-dropdown').forEach((dd) => {
