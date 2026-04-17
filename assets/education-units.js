@@ -1,6 +1,6 @@
 (function () {
-  const MAX_DATA_LOAD_RETRIES = 10;
-  const DATA_LOAD_RETRY_DELAY_MS = 100;
+  const MAX_EDUCATION_DATA_LOAD_RETRIES = 10;
+  const EDUCATION_DATA_LOAD_RETRY_DELAY_MS = 100;
   let data = window.EDUCATION_UNITS;
   let navHandlersBound = false;
 
@@ -198,7 +198,7 @@
     } else {
       console.warn('IntersectionObserver unavailable: chapter progress highlighting is disabled in this browser.');
       if (progressText) {
-        progressText.textContent = 'Chapter progress tracking is unavailable in this browser.';
+        progressText.textContent = 'Chapter progress and active navigation highlighting are unavailable in this browser.';
       }
     }
   }
@@ -210,13 +210,13 @@
     if (!data) {
       if (chapterList) {
         console.warn('Education content data is unavailable. Ensure /assets/data/education-units.js loaded successfully.');
-        if (retries < MAX_DATA_LOAD_RETRIES) {
-          setTimeout(() => initEducationPage(retries + 1), DATA_LOAD_RETRY_DELAY_MS);
+        if (retries < MAX_EDUCATION_DATA_LOAD_RETRIES) {
+          setTimeout(() => initEducationPage(retries + 1), EDUCATION_DATA_LOAD_RETRY_DELAY_MS);
         } else if (!chapterList.querySelector('[data-edu-load-error]')) {
           chapterList.innerHTML = `
             <div class="edu-box warning" data-edu-load-error>
               <h4>Education content unavailable</h4>
-              <p>Chapter data failed to load after multiple attempts. Please refresh and try again.</p>
+              <p>Chapter data failed to load after multiple attempts. Please check your network connection and refresh the page.</p>
             </div>
           `;
         }
