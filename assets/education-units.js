@@ -14,7 +14,7 @@
   function withTooltips(text) {
     if (!text) return '';
     return text.replace(/\[\[(.+?)::(.+?)\]\]/g, (_, term, def) =>
-      `<span class="edu-tooltip" tabindex="0" title="${escapeHtml(def)}" data-tip="${escapeHtml(def)}">${escapeHtml(term)}</span>`
+      `<span class="edu-tooltip" tabindex="0" title="${escapeHtml(def)}" data-tip="${escapeHtml(def)}" aria-label="${escapeHtml(term)}: ${escapeHtml(def)}">${escapeHtml(term)}<span class="edu-visually-hidden">: ${escapeHtml(def)}</span></span>`
     );
   }
 
