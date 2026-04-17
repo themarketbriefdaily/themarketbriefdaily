@@ -1,4 +1,6 @@
 (function () {
+  const MAX_DATA_LOAD_RETRIES = 10;
+  const DATA_LOAD_RETRY_DELAY_MS = 100;
   let data = window.EDUCATION_UNITS;
 
   function escapeHtml(text) {
@@ -203,8 +205,8 @@
     if (!data) {
       if (document.getElementById('chapterList')) {
         console.warn('Education content data is unavailable. Ensure /assets/data/education-units.js loaded successfully.');
-        if (retries < 10) {
-          setTimeout(() => initEducationPage(retries + 1), 100);
+        if (retries < MAX_DATA_LOAD_RETRIES) {
+          setTimeout(() => initEducationPage(retries + 1), DATA_LOAD_RETRY_DELAY_MS);
         }
       }
     } else if (key) {
