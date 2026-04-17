@@ -2,10 +2,19 @@
   const data = window.EDUCATION_UNITS;
   if (!data) return;
 
+  function escapeHtml(text) {
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function withTooltips(text) {
     if (!text) return '';
     return text.replace(/\[\[(.+?)::(.+?)\]\]/g, (_, term, def) =>
-      `<span class="edu-tooltip" tabindex="0" data-tip="${def.replace(/"/g, '&quot;')}">${term}</span>`
+      `<span class="edu-tooltip" tabindex="0" title="${escapeHtml(def)}" data-tip="${escapeHtml(def)}">${escapeHtml(term)}</span>`
     );
   }
 
@@ -16,8 +25,9 @@
   function qaHtml(questions) {
     return (questions || [])
       .map((q, index) => {
+        const alphaLabel = (i) => (i < 26 ? String.fromCharCode(65 + i) : `Option ${i + 1}`);
         const options = q.options
-          .map((opt, i) => `<li>${String.fromCharCode(65 + i)}. ${withTooltips(opt)}</li>`)
+          .map((opt, i) => `<li>${alphaLabel(i)}. ${withTooltips(opt)}</li>`)
           .join('');
         const wrong = (q.wrongReasons || []).map((r) => `<li>${withTooltips(r)}</li>`).join('');
         return `
@@ -25,7 +35,7 @@
             <summary>Question ${index + 1}: ${withTooltips(q.question)}</summary>
             <ol>${options}</ol>
             <div class="edu-qa-answer">
-              <strong>Answer:</strong> ${String.fromCharCode(65 + q.answerIndex)}
+              <strong>Answer:</strong> ${alphaLabel(q.answerIndex)}
               <p>${withTooltips(q.reasoning)}</p>
               <strong>Why alternatives are weaker</strong>
               <ul>${wrong}</ul>
@@ -170,7 +180,11 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const key = document.body.getAttribute('data-unit-key');
-    if (key) renderUnit(key);
+    if (key) {
+      renderUnit(key);
+    } else if (document.getElementById('chapterList')) {
+      console.warn('Education unit key is missing on page body.');
+    }
 
     document.querySelectorAll('.nav-dropdown').forEach((dd) => {
       const toggle = dd.querySelector('.nav-drop-toggle');

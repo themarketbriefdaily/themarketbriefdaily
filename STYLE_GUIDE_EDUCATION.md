@@ -4,6 +4,7 @@
 - Professional, clear, and instructional
 - Original synthesis (no textbook copying/paraphrase)
 - Authoritative but readable; plain language before technical depth
+- If external references are used, cite only public/official sources actually consulted and restate concepts in fresh wording
 
 ## Section template (required per chapter)
 1. Introduction
