@@ -1,5 +1,5 @@
 {
-  "asof_iso": "2026-04-18T04:27:11.942335+00:00",
+  "asof_iso": "2026-04-18T05:55:54.923022+00:00",
   "last_trading_day": "2026-04-17",
   "source": "alphavantage_free",
   "prices": {
@@ -8,9 +8,8 @@
     "GAU": 2.59,
     "NFGC": 2.16,
     "VGZ": 2.24,
-    "NEWP": 5.49
+    "NEWP": 5.49,
+    "GOOGL": 341.68
   },
-  "errors": {
-    "GOOGL": "Information: Thank you for using Alpha Vantage! Please consider spreading out your free API requests more sparingly (1 request per second). You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/ to lift the free key rate limit (25 requests per day), raise the per-second burst limit, and instantly unlock all premium endpoints"
-  }
+  "errors": {}
 }
