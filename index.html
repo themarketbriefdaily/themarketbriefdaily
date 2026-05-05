@@ -1,1 +1,904 @@
-[Content of index.html]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Market Brief Daily — Institutional Market Analysis</title>
+  <meta name="description" content="Independent institutional-grade market analysis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/design-system.css">
+  <link rel="stylesheet" href="/assets/cinematic.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/assets/fund-data.js"></script>
+
+  <style>
+    /* Dark-mode token overrides — html.dark scope */
+    html.dark{
+      --ink:#e7ecf5;
+      --muted:rgba(231,236,245,.7);
+      --muted2:rgba(231,236,245,.45);
+      --line:rgba(231,236,245,.12);
+      --bg:#0a0f1c;
+      --bg-soft:#0f1626;
+    }
+    html.dark body{background:#0a0f1c;color:#e7ecf5}
+    html.dark header{background:rgba(10,15,28,.85);border-bottom-color:rgba(255,255,255,.06)}
+    html.dark .section-bg,html.dark .news-section,html.dark .about-section{background:#0a0f1c}
+    html.dark .card-front,html.dark .card-back{background:rgba(15,22,38,.95)}
+    html.dark .news-card{background:#0f1626;border-color:rgba(255,255,255,.08)}
+    html.dark .footer-bottom,html.dark footer{background:#070b16;border-color:rgba(255,255,255,.06)}
+    html.dark .cine-hero{background:linear-gradient(180deg,#070b16 0%,#0a0f1c 60%,#0a0f1c 100%)}
+    html.dark .cine-overlay{opacity:.4;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.7) 100%)}
+
+    .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:transparent;cursor:pointer;margin-left:14px;color:var(--ink);font-size:16px;transition:transform .2s var(--ease)}
+    .theme-toggle:hover{transform:scale(1.1)}
+
+    .section-bg{position:relative;background:#fff}
+    .section-canvas-wrap{display:none}
+    .section-content{position:relative;z-index:2}
+
+    section{scroll-margin-top:calc(var(--headerH) + 14px)}
+
+    /* Hero — tighter, headline lands in final color, no GSAP dependency for visibility */
+    .hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--headerH) + 40px) 40px 64px;text-align:center;position:relative;overflow:hidden;background:#fff}
+    .hero-canvas-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.55}
+    .hero-canvas-wrap canvas{width:100%;height:100%;display:block}
+    .hero-inner{max-width:920px;padding:0 8px;z-index:2;position:relative}
+    h1{font-size:clamp(2.4rem,5.6vw,3.8rem);font-weight:950;line-height:1.08;letter-spacing:-.025em;margin:0 0 18px;color:var(--ink);background:linear-gradient(135deg,#0b1220 0%,#1a3a8a 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    html.dark h1{background:linear-gradient(135deg,#e7ecf5 0%,#7aa6ff 100%);-webkit-background-clip:text;background-clip:text}
+    .hero p{max-width:680px;margin:0 auto 28px;font-size:clamp(1rem,1.3vw,1.18rem);line-height:1.7;color:var(--muted)}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+    .proof-line{display:inline-flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;font-size:13px;color:var(--muted2);font-weight:700;margin-bottom:30px}
+    .proof-line .dot{width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 0 4px rgba(16,185,129,.18);display:inline-block;animation:pulseDot 2s ease-in-out infinite}
+    @keyframes pulseDot{0%,100%{box-shadow:0 0 0 4px rgba(16,185,129,.18)}50%{box-shadow:0 0 0 7px rgba(16,185,129,.05)}}
+    .proof-line strong{color:var(--ink);font-weight:900}
+    .proof-line span{display:inline-flex;align-items:center;gap:8px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 36px;border-radius:12px;font-size:14px;font-weight:950;text-decoration:none;transition:all .35s var(--ease);border:1px solid var(--line);cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.35);box-shadow:0 14px 40px rgba(0,102,255,.25)}
+    .btn.primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 60px rgba(0,102,255,.32)}
+    .btn.ghost{background:rgba(255,255,255,.75);color:var(--ink);box-shadow:0 12px 30px rgba(2,8,23,.10)}
+    .btn.ghost:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
+    @media (max-width:768px){.hero-inner{padding:0 20px}.btn{width:100%}}
+    .newsletter-form{max-width:760px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr auto;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);box-shadow:var(--shadow-md)}
+    .newsletter-form input,.newsletter-form select{border:1px solid var(--line);border-radius:10px;padding:12px 13px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff}
+    .newsletter-form button{padding:12px 18px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;font-weight:900;font-size:13px;cursor:pointer;transition:transform .2s var(--ease)}
+    .newsletter-form button:hover{transform:translateY(-1px)}
+    .form-note{margin-top:10px;font-size:12px;color:var(--muted2)}
+    .kicker{font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+    @media (max-width:768px){.newsletter-form{grid-template-columns:1fr}}
+
+    .container{max-width:1140px;margin:0 auto;padding:0 32px}
+    @media (max-width:768px){.container{padding:0 20px}}
+    .section{padding:88px 0}
+    .section-head{text-align:center;margin-bottom:48px;position:relative;z-index:3}
+    .section-head .k{font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+    .section-head h2{font-size:clamp(1.8rem,3.4vw,2.4rem);font-weight:950;letter-spacing:-.02em;color:var(--ink)}
+    .section-head p{max-width:680px;margin:12px auto 0;color:var(--muted);font-size:1rem;line-height:1.7}
+
+    /* Disclaimer banner */
+    .disclaimer-banner{display:flex;align-items:center;gap:12px;max-width:880px;margin:0 auto 36px;padding:12px 18px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.25);border-radius:10px;color:var(--ink);font-size:13px;line-height:1.55}
+    .disclaimer-banner svg{flex:0 0 auto;color:#f59e0b}
+    .disclaimer-banner strong{color:var(--ink);font-weight:900}
+
+    /* Click-to-flip hint */
+    .flip-hint{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted2);font-weight:700;margin:-22px auto 28px;padding:6px 12px;background:rgba(0,102,255,.06);border:1px solid rgba(0,102,255,.18);border-radius:999px;justify-content:center;width:max-content;max-width:90%}
+
+    .fund-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;position:relative;z-index:3}
+    @media (max-width:1100px){.fund-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:640px){.fund-grid{grid-template-columns:1fr}.section{padding:64px 0}}
+
+    /* 3D FLIP CARD */
+    .fund-card{height:580px;cursor:pointer;perspective:1000px;position:relative;z-index:3}
+    .card-inner{position:relative;width:100%;height:100%;transition:transform 0.6s cubic-bezier(.2,.9,.2,1);transform-style:preserve-3d;transform:rotateY(0deg)}
+    .fund-card.flipped .card-inner{transform:rotateY(180deg)}
+    
+    .card-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;box-shadow:var(--shadow-xl);overflow:hidden;border:1px solid var(--line)}
+    .card-front{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column}
+    .card-back{transform:rotateY(180deg);background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:24px;display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+
+    /* Typographic fund header (replaces rocket-style photos) */
+    .card-img{height:160px;background:linear-gradient(135deg,#0a1224 0%,#14264a 100%);overflow:hidden;border-bottom:1px solid var(--line);position:relative;display:flex;align-items:flex-end;padding:18px 20px}
+    .card-img::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--fund-color,#0066ff) 0%,var(--fund-color,#0066ff) var(--fund-fill,40%),rgba(255,255,255,.1) var(--fund-fill,40%))}
+    .card-img::after{content:"";position:absolute;top:-30%;right:-20%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,var(--fund-color,#0066ff) 0%,transparent 60%);opacity:.18;filter:blur(20px)}
+    .card-overlay{position:relative;z-index:2;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;width:100%}
+    .card-code{font-family:var(--mono);font-size:11px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:var(--fund-color,#7aa6ff);background:rgba(255,255,255,.06);padding:4px 9px;border-radius:5px;border:1px solid rgba(255,255,255,.1);width:max-content;margin-bottom:10px}
+    .card-name{font-size:18px;font-weight:950;letter-spacing:-.02em;line-height:1.15;color:#fff}
+
+    .card-body{padding:20px;display:flex;flex-direction:column;gap:14px;flex:1}
+    .card-desc{color:var(--muted);font-size:14px;line-height:1.7;flex:1}
+    .card-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(0,102,255,.08),rgba(2,8,23,.02));border-radius:12px;padding:12px}
+    .card-meta-label{font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2)}
+    .card-meta-value{font-family:var(--mono);font-weight:950;font-size:16px;margin-top:4px}
+    .card-meta-value.pos{color:#10b981}
+    .card-meta-value.neg{color:#ef4444}
+
+    .card-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .mini{display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 12px 30px rgba(2,8,23,.10);cursor:pointer;text-decoration:none;transition:all .18s var(--ease);user-select:none}
+    .mini:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(2,8,23,.14)}
+    .mini.primary{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff;border-color:rgba(0,102,255,.35);box-shadow:0 16px 42px rgba(0,102,255,.22)}
+
+    .chart-header{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+    .chart-title{font-weight:950;font-size:14px}
+    .chart-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .bench-pill{font-family:var(--mono);font-size:11px;font-weight:900;padding:6px 10px;border-radius:999px;border:1px solid rgba(2,8,23,.12);background:rgba(2,8,23,.03);white-space:nowrap}
+
+    .chart-box{border:1px solid rgba(2,8,23,.10);border-radius:12px;background:linear-gradient(135deg,rgba(0,102,255,.06),rgba(2,8,23,.02));padding:12px;height:220px;margin:10px 0;flex:1}
+    .chart-box canvas{width:100%!important;height:100%!important}
+
+    .chart-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:900;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+    .chart-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+
+    .alloc{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .pill{font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid rgba(0,102,255,.3);background:rgba(0,102,255,.08);color:#0066ff;transition:all .2s ease}
+    .pill:hover{background:rgba(0,102,255,.15);border-color:rgba(0,102,255,.5)}
+
+    .news-section{padding:88px 0;background:#fff;position:relative}
+    @media (max-width:640px){.news-section{padding:64px 0}}
+
+    /* Featured post (top of blog section) */
+    .featured-post{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow-lg);overflow:hidden;margin-bottom:36px;text-decoration:none;color:inherit;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    .featured-post:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl)}
+    .featured-thumb{min-height:280px;background:linear-gradient(135deg,#0a1224,#14264a);position:relative;overflow:hidden}
+    .featured-thumb svg{position:absolute;inset:0;width:100%;height:100%}
+    .featured-body{padding:32px 36px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .featured-flag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+    .featured-flag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    .featured-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted2);font-weight:700}
+    .featured-meta .tag{padding:3px 9px;border-radius:5px;background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.2);color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+    .featured-title{font-size:clamp(1.35rem,2.4vw,1.75rem);font-weight:950;line-height:1.2;letter-spacing:-.015em;color:var(--ink)}
+    .featured-excerpt{font-size:14.5px;line-height:1.7;color:var(--muted)}
+    .featured-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:950;color:var(--accent);margin-top:4px}
+    @media (max-width:768px){.featured-post{grid-template-columns:1fr}.featured-thumb{min-height:200px}.featured-body{padding:24px}}
+
+    .news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;position:relative;z-index:3}
+    .news-card{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow-md);overflow:hidden;transition:all .3s var(--ease);cursor:pointer;height:100%;display:flex;flex-direction:column;text-decoration:none;color:inherit}
+    .news-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-xl)}
+    .news-img{height:140px;background:linear-gradient(135deg,#0066ff,#0ea5e9);overflow:hidden;position:relative}
+    .news-img svg{position:absolute;inset:0;width:100%;height:100%}
+    .news-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .news-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--muted2);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .news-meta .tag{padding:3px 8px;border-radius:5px;background:rgba(0,102,255,.08);border:1px solid rgba(0,102,255,.2);color:var(--accent)}
+    .news-meta .read-time::before{content:"·";margin-right:8px;color:var(--muted2)}
+    .news-title{font-size:17px;font-weight:950;color:var(--ink);line-height:1.35}
+    .news-desc{font-size:13.5px;color:var(--muted);line-height:1.65;flex:1}
+    .news-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:950;color:var(--accent);text-decoration:none;margin-top:auto}
+    @media (max-width:880px){.news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:560px){.news-grid{grid-template-columns:1fr}}
+
+    /* About the Author block */
+    .about-section{padding:88px 0;background:#fff;position:relative}
+    @media (max-width:640px){.about-section{padding:64px 0}}
+    .author-card{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start;max-width:920px;margin:0 auto;padding:36px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(0,102,255,.04),rgba(2,8,23,.01));box-shadow:var(--shadow-md)}
+    .author-monogram{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#0a1224 0%,#0066ff 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:42px;letter-spacing:.02em;box-shadow:0 12px 32px rgba(0,102,255,.25);flex-shrink:0;position:relative}
+    .author-monogram::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,102,255,.25)}
+    .author-content h3{font-size:1.5rem;font-weight:950;color:var(--ink);letter-spacing:-.015em;margin-bottom:6px}
+    .author-role{font-size:13px;color:var(--accent);font-weight:900;letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px}
+    .author-content p{font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:14px}
+    .author-credentials{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .author-credentials .pill{font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);letter-spacing:.02em}
+    @media (max-width:640px){.author-card{grid-template-columns:1fr;text-align:center;padding:28px 22px}.author-monogram{margin:0 auto}.author-credentials{justify-content:center}}
+
+    .footer-newsletter{padding:20px;border:1px solid var(--line);background:#fff;border-radius:14px;margin-top:14px}
+
+    .exit-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,23,.56);z-index:2200}
+    .exit-modal.active{display:flex}
+    .exit-modal-card{max-width:560px;width:100%;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:var(--shadow-xl);padding:28px;position:relative}
+    .exit-close{position:absolute;top:14px;right:16px;background:transparent;border:none;font-size:26px;color:var(--muted);cursor:pointer}
+    .exit-title{font-size:1.55rem;font-weight:950;letter-spacing:-.02em}
+    .exit-copy{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.7}
+  </style>
+  <script src="/assets/animations.js" defer></script>
+</head>
+
+<body>
+  <div class="cine-overlay" aria-hidden="true"></div>
+  <div class="cine-grain" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="/">The Market Brief Daily</a>
+      <nav>
+        <a class="active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/funds.html">Funds</a>
+        <a href="/about.html">About</a>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero cine-hero" data-constellation id="hero">
+    <!-- Cinematic layered scene -->
+    <div class="cine-stage" data-cine-stage aria-hidden="true">
+      <div class="cine-layer cine-sky" data-depth="sky"
+           data-cine-parallax data-speed="-0.05" data-pointer="0.4"></div>
+      <div class="cine-layer" data-depth="sky" data-pointer="0.6">
+        <div class="cine-sun"></div>
+      </div>
+      <div class="cine-layer" data-depth="haze"
+           data-cine-parallax data-speed="0.05" data-pointer="0.8">
+        <div class="cine-haze" style="position:absolute;inset:0"></div>
+      </div>
+
+      <!-- Far skyline -->
+      <div class="cine-layer" data-depth="far"
+           data-cine-parallax data-speed="0.10" data-pointer="2">
+        <svg class="cine-skyline far" viewBox="0 0 1600 220" preserveAspectRatio="none">
+          <path fill="#7d96c2" d="M0,220 V120 L60,120 L60,90 L120,90 L120,140 L180,140 L180,80 L240,80 L240,150 L300,150 L300,100 L360,100 L360,60 L420,60 L420,140 L480,140 L480,110 L540,110 L540,130 L600,130 L600,90 L660,90 L660,140 L720,140 L720,70 L780,70 L780,150 L840,150 L840,110 L900,110 L900,150 L960,150 L960,100 L1020,100 L1020,130 L1080,130 L1080,80 L1140,80 L1140,140 L1200,140 L1200,110 L1260,110 L1260,90 L1320,90 L1320,150 L1380,150 L1380,120 L1440,120 L1440,80 L1500,80 L1500,140 L1560,140 L1560,110 L1600,110 L1600,220 Z"/>
+        </svg>
+      </div>
+
+      <!-- Mid skyline -->
+      <div class="cine-layer" data-depth="mid"
+           data-cine-parallax data-speed="0.18" data-pointer="4">
+        <svg class="cine-skyline mid" viewBox="0 0 1600 320" preserveAspectRatio="none">
+          <path fill="#3b517d" d="M0,320 V200 L80,200 L80,140 L150,140 L150,200 L220,200 L220,90 L260,90 L260,200 L340,200 L340,160 L400,160 L400,60 L450,60 L450,200 L520,200 L520,120 L600,120 L600,180 L680,180 L680,80 L740,80 L740,200 L820,200 L820,140 L900,140 L900,40 L950,40 L950,200 L1020,200 L1020,120 L1100,120 L1100,180 L1180,180 L1180,90 L1250,90 L1250,200 L1320,200 L1320,150 L1400,150 L1400,70 L1460,70 L1460,200 L1540,200 L1540,130 L1600,130 L1600,320 Z"/>
+          <!-- subtle window lights -->
+          <g fill="#ffe6a3" opacity=".5">
+            <rect x="240" y="110" width="6" height="6"/>
+            <rect x="248" y="120" width="6" height="6"/>
+            <rect x="430" y="80"  width="6" height="6"/>
+            <rect x="438" y="92"  width="6" height="6"/>
+            <rect x="930" y="60"  width="6" height="6"/>
+            <rect x="940" y="80"  width="6" height="6"/>
+            <rect x="940" y="100" width="6" height="6"/>
+            <rect x="1440" y="90" width="6" height="6"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Near skyline -->
+      <div class="cine-layer" data-depth="near"
+           data-cine-parallax data-speed="0.30" data-pointer="7">
+        <svg class="cine-skyline near" viewBox="0 0 1600 380" preserveAspectRatio="none">
+          <path fill="#0a1224" d="M0,380 V260 L100,260 L100,180 L180,180 L180,260 L260,260 L260,140 L330,140 L330,260 L420,260 L420,80 L480,80 L480,260 L580,260 L580,200 L660,200 L660,260 L760,260 L760,120 L820,120 L820,260 L920,260 L920,180 L1000,180 L1000,260 L1080,260 L1080,40 L1130,40 L1130,260 L1220,260 L1220,200 L1300,200 L1300,260 L1390,260 L1390,150 L1450,150 L1450,260 L1540,260 L1540,220 L1600,220 L1600,380 Z"/>
+        </svg>
+      </div>
+
+      <!-- Foreground glow / lens flare -->
+      <div class="cine-layer" data-depth="foreground" data-pointer="-3">
+        <div class="cine-flare"></div>
+      </div>
+    </div>
+
+    <div class="hero-canvas-wrap"><canvas id="heroCanvas"></canvas></div>
+    <div class="hero-inner cine-hero-inner">
+      <div class="kicker">Daily institutional-grade briefs</div>
+      <h1>Macro and market structure analysis,<br>written without the sell-side spin.</h1>
+      <p>Independent research on market structure, physical supply constraints, and macro transmission — for analysts and allocators who need signal, not narrative.</p>
+      <div class="hero-actions">
+        <a class="btn cine-primary" href="#insights">Read latest brief</a>
+        <a class="btn ghost" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack</a>
+      </div>
+      <div class="proof-line" aria-label="Publication signals">
+        <span><span class="dot" aria-hidden="true"></span><strong>Updated every market open</strong></span>
+        <span>·</span>
+        <span><strong>80+</strong> briefings published</span>
+        <span>·</span>
+        <span>Read by <strong>2,400+</strong> subscribers</span>
+      </div>
+      <form class="newsletter-form signup-form" data-source="hero" action="https://example.us1.list-manage.com/subscribe/post?u=YOUR_U&amp;id=YOUR_ID" method="post">
+        <input type="email" name="email" placeholder="Work email for market brief updates" required />
+        <select name="preference" aria-label="Newsletter preference">
+          <option value="All">All Briefings</option>
+          <option value="Research">Research</option>
+          <option value="Funds">Funds</option>
+          <option value="Events">Events</option>
+        </select>
+        <button type="submit">Join Newsletter</button>
+      </form>
+      <p class="form-note">Mailchimp/ConvertKit ready: replace the form action URL with your provider endpoint.</p>
+    </div>
+    <div class="cine-scroll-cue" aria-hidden="true"></div>
+  </section>
+
+  <section class="section-bg cine-section" id="funds">
+    <div class="cine-mask-top" aria-hidden="true"></div>
+    <div class="cine-mask-bottom" aria-hidden="true"></div>
+    <div class="section section-content">
+      <div class="container">
+        <div class="section-head">
+          <div class="k">Model portfolios</div>
+          <h2>Illustrative fund strategies</h2>
+          <p>Four model portfolios spanning macro, factor, structural and supply themes — with simulated benchmarks for transparency.</p>
+        </div>
+
+        <div class="disclaimer-banner" role="note">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div><strong>Illustrative portfolios for research purposes — not investment advice.</strong> Returns are simulated for educational comparison and do not reflect any live fund or trading account. See the <a href="/methodology.html" style="color:var(--accent);font-weight:900;text-decoration:none">methodology</a>.</div>
+        </div>
+
+        <div class="flip-hint" aria-hidden="true">👆 Tap or click any card to flip and see performance vs benchmark</div>
+
+        <div class="fund-grid" id="fundGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="news-section cine-section" id="insights">
+    <div class="cine-mask-top" aria-hidden="true"></div>
+    <div class="container section-content">
+      <div class="section-head">
+        <div class="k">Latest publications</div>
+        <h2>Research & analysis</h2>
+        <p>Deep dives into market structure, supply dynamics, and macro transmission. <a href="/posts.html" style="color:var(--accent);font-weight:800;text-decoration:none">View all →</a></p>
+      </div>
+
+      <a class="featured-post" href="/posts.html" aria-label="Featured research post">
+        <div class="featured-thumb">
+          <svg viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="ftGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0066ff" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#0a1224" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="ftLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#7aa6ff"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="400" fill="url(#ftGrad)"/>
+            <g stroke="rgba(255,255,255,.06)" stroke-width="1">
+              <line x1="0" y1="100" x2="600" y2="100"/>
+              <line x1="0" y1="200" x2="600" y2="200"/>
+              <line x1="0" y1="300" x2="600" y2="300"/>
+            </g>
+            <path d="M0,300 C80,260 140,280 200,210 C260,150 320,200 380,140 C440,90 500,120 600,60" fill="none" stroke="url(#ftLine)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M0,320 C80,300 140,310 200,260 C260,220 320,250 380,200 C440,170 500,180 600,140 L600,400 L0,400 Z" fill="rgba(0,102,255,.18)"/>
+            <circle cx="380" cy="140" r="6" fill="#10b981" stroke="#fff" stroke-width="2"/>
+            <circle cx="600" cy="60"  r="6" fill="#7aa6ff" stroke="#fff" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="featured-body">
+          <span class="featured-flag">Featured brief</span>
+          <h3 class="featured-title">Market structure evolution: how institutional flows are reshaping derivatives microstructure</h3>
+          <div class="featured-meta">
+            <span class="tag">Market Structure</span>
+            <span>May 5, 2026</span>
+            <span>· 12 min read</span>
+          </div>
+          <p class="featured-excerpt">A close read of order-flow telemetry, dealer positioning, and the rise of zero-day options. What's transmitting through the term structure that consensus narratives miss.</p>
+          <span class="featured-link">Read the brief →</span>
+        </div>
+      </a>
+
+      <div class="news-grid" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <section class="about-section cine-section" id="about">
+    <div class="cine-mask-top" aria-hidden="true"></div>
+    <div class="container section-content">
+      <div class="section-head">
+        <div class="k">About the author</div>
+        <h2>One analyst. Independent perspective.</h2>
+      </div>
+
+      <div class="author-card">
+        <div class="author-monogram" aria-hidden="true">MB</div>
+        <div class="author-content">
+          <h3>The Market Brief Daily</h3>
+          <div class="author-role">Solo-operator research publication</div>
+          <p>I write daily briefs on market structure, physical supply, and macro transmission — the parts of the market that consensus commentary tends to skim past. The goal isn't to add to the noise; it's to publish frameworks I'd actually use to run capital.</p>
+          <p>My background combines buy-side multi-asset research with quantitative modelling on commodity supply chains and rate-curve dynamics. The brief is the byproduct of that work — what I read, what I model, what changes my mind.</p>
+          <p style="font-size:13.5px;color:var(--muted2);margin-top:18px"><strong style="color:var(--ink)">What's distinctive:</strong> No sell-side house view, no fund flow to defend, no clients to placate. When I'm wrong I say so in the next brief. When something doesn't fit the dominant narrative, that's usually where I focus.</p>
+          <div class="author-credentials">
+            <span class="pill">Buy-side research background</span>
+            <span class="pill">Multi-asset · macro · structural</span>
+            <span class="pill">Published since 2024</span>
+            <span class="pill">No paid promotions</span>
+          </div>
+          <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;font-size:14px">
+            <a href="mailto:hello@marketbriefdaily.com" style="color:var(--accent);font-weight:900;text-decoration:none">hello@marketbriefdaily.com</a>
+            <span style="color:var(--muted2)">·</span>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="color:var(--accent);font-weight:900;text-decoration:none">Substack ↗</a>
+            <span style="color:var(--muted2)">·</span>
+            <a href="/methodology.html" style="color:var(--accent);font-weight:900;text-decoration:none">Methodology →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <h4>The Market Brief Daily</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px">Independent macro and market structure research. Written without the sell-side spin.</p>
+        <p style="font-size:12px;color:var(--muted2);line-height:1.7;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(245,158,11,.04)"><strong style="color:var(--ink)">Disclaimer.</strong> The Market Brief Daily is an educational research project. Nothing on this site constitutes investment advice. Returns shown for model portfolios are illustrative.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Content</h4>
+        <a href="/posts.html">Research</a>
+        <a href="/funds.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/about.html">About</a>
+        <a href="mailto:hello@marketbriefdaily.com">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="/disclaimer.html">Disclaimer</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 The Market Brief Daily. Educational research only — not investment advice.</p>
+    </div>
+  </footer>
+
+  <script>
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // ===== ENHANCED NETWORK ANIMATION =====
+    function createNetworkAnimation(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+
+      let parentHeight = canvas.parentElement.clientHeight;
+
+      function resize() {
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = parentHeight * dpr;
+        ctx.scale(dpr, dpr);
+      }
+      resize();
+
+      // More particles for visibility
+      const count = Math.max(80, Math.min(180, Math.floor(window.innerWidth * parentHeight / 15000)));
+      const particles = [];
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * parentHeight,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 2 + 1.2,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+
+      let time = 0;
+      function animate() {
+        ctx.clearRect(0, 0, window.innerWidth, parentHeight);
+        time += 0.015;
+
+        // Enhanced background gradient
+        const grad = ctx.createRadialGradient(window.innerWidth * 0.5, parentHeight * 0.3, 0, window.innerWidth * 0.5, parentHeight * 0.3, parentHeight);
+        grad.addColorStop(0, 'rgba(0,102,255,0.12)');
+        grad.addColorStop(0.4, 'rgba(14,165,233,0.08)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, window.innerWidth, parentHeight);
+
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.phase += 0.018;
+
+          if (p.x < 0) p.x = window.innerWidth;
+          if (p.x > window.innerWidth) p.x = 0;
+          if (p.y < 0) p.y = parentHeight;
+          if (p.y > parentHeight) p.y = 0;
+        });
+
+        // Draw connections with enhanced visibility
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 140) {
+              ctx.strokeStyle = `rgba(0,102,255,${(1 - dist / 140) * 0.18})`;
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw nodes with enhanced visibility
+        for (const p of particles) {
+          const pulse = 0.6 + Math.sin(p.phase + time) * 0.4;
+          ctx.fillStyle = `rgba(0,102,255,${0.2 + pulse * 0.18})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // ===== FUND CARDS DATA =====
+    // Loaded from /assets/fund-data.js (shared with funds.html)
+    const funds = FUND_DATA;
+    const BACKEND_URL = '';
+    let cachedSnapshot = null;
+
+    const chartInstances = new Map();
+    const fmtPct = n => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+
+    function renderFunds() {
+      const grid = document.getElementById('fundGrid');
+      // Allocation donut for the card header (replaces photo placeholders)
+      const donut = (color, fillPct) => {
+        const c = 2 * Math.PI * 24;
+        const dash = (fillPct / 100) * c;
+        return `
+          <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="24" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/>
+            <circle cx="32" cy="32" r="24" fill="none" stroke="${color}" stroke-width="6"
+                    stroke-linecap="round" stroke-dasharray="${dash} ${c}"
+                    transform="rotate(-90 32 32)"/>
+            <text x="32" y="36" text-anchor="middle" font-family="ui-monospace,Menlo,monospace"
+                  font-size="13" font-weight="900" fill="#fff">${fillPct}%</text>
+          </svg>`;
+      };
+      grid.innerHTML = funds.map((f, i) => {
+        const rel = f.r1y - f.benchR;
+        // Derive an "equity weight" for the donut from index (illustrative only)
+        const fillPct = [62, 48, 74, 35][i % 4];
+        return `
+          <div class="fund-card"
+               style="--fund-color:${f.color};--fund-fill:${fillPct}%"
+               role="button" tabindex="0"
+               onclick="this.classList.toggle('flipped')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('flipped')}">
+            <div class="card-inner">
+              <!-- FRONT -->
+              <div class="card-face card-front">
+                <div class="card-img">
+                  <div style="position:absolute;top:14px;right:14px;z-index:2">${donut(f.color, fillPct)}</div>
+                  <div class="card-overlay">
+                    <div class="card-code">${f.code}</div>
+                    <div class="card-name">${f.name}</div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="card-desc">${f.desc}</div>
+                  <div class="card-meta">
+                    <div>
+                      <div class="card-meta-label">YTD Return</div>
+                      <div class="card-meta-value ${f.r1y >= 0 ? 'pos' : 'neg'}" data-stat-ytd="${f.id}">${fmtPct(f.r1y)}</div>
+                    </div>
+                    <div>
+                      <div class="card-meta-label">vs ${f.bench}</div>
+                      <div class="card-meta-value ${rel >= 0 ? 'pos' : 'neg'}" data-stat-outperf="${f.id}">${fmtPct(rel)}</div>
+                    </div>
+                  </div>
+                  <div class="alloc">${f.allocationDisplay.map(t => `<span class="pill">${t}</span>`).join('')}</div>
+                  <div class="card-actions">
+                    <a class="mini primary" href="/funds.html">Details</a>
+                    <button class="mini" type="button" onclick="event.stopPropagation();this.closest('.fund-card').classList.toggle('flipped')">Tap to flip →</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="card-face card-back">
+                <div class="chart-header">
+                  <div>
+                    <div class="chart-title">${f.code} vs ${f.bench}</div>
+                    <div class="chart-sub">12-month performance indexed to 100</div>
+                  </div>
+                  <div class="bench-pill">${f.bench}</div>
+                </div>
+                <div class="chart-box"><canvas id="chart-${f.id}"></canvas></div>
+                <div class="chart-legend">
+                  <span><i style="background:${f.color}"></i>${f.code}</span>
+                  <span><i style="background:rgba(2,8,23,.45)"></i>${f.bench}</span>
+                </div>
+                <div class="card-actions">
+                  <button class="mini" type="button" onclick="event.stopPropagation();this.closest('.fund-card').classList.toggle('flipped')">← Back</button>
+                  <a class="mini primary" href="/funds.html">All funds</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      createCharts();
+    }
+
+    function makeSeries(annualReturn, volatility, months = 12) {
+      const data = [];
+      let value = 100;
+      const monthlyReturn = annualReturn / 100 / 12;
+      const monthlyVol = volatility / 100 / Math.sqrt(12);
+
+      for (let i = 0; i < months; i++) {
+        const randomShock = (Math.random() - 0.5) * 2;
+        value *= (1 + monthlyReturn + randomShock * monthlyVol);
+        data.push(Math.round(value * 100) / 100);
+      }
+      return data;
+    }
+
+    function createCharts() {
+      funds.forEach(f => {
+        const canvasId = `chart-${f.id}`;
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        if (chartInstances.has(f.id)) {
+          chartInstances.get(f.id).destroy();
+        }
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const fundData = makeSeries(f.r1y, 12, 12);
+        const benchData = makeSeries(f.benchR, 10, 12);
+
+        const chart = new Chart(canvas, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [
+              {
+                label: f.code,
+                data: fundData,
+                borderColor: f.color,
+                backgroundColor: f.color + '15',
+                borderWidth: 2.8,
+                pointRadius: 3,
+                pointBackgroundColor: f.color,
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                tension: 0.4,
+                fill: true
+              },
+              {
+                label: f.bench,
+                data: benchData,
+                borderColor: 'rgba(2,8,23,.45)',
+                borderDash: [7, 6],
+                borderWidth: 2,
+                pointRadius: 0,
+                tension: 0.4,
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                padding: 12,
+                borderRadius: 8,
+                titleFont: { weight: 'bold', size: 13 },
+                bodyFont: { size: 12 },
+                displayColors: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1);
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                display: true,
+                grid: { display: false },
+                ticks: { font: { size: 11, weight: '900' }, color: 'rgba(2,8,23,.5)' }
+              },
+              y: {
+                display: true,
+                grid: { color: 'rgba(2,8,23,.05)' },
+                ticks: { font: { size: 10, weight: '900' }, color: 'rgba(2,8,23,.5)' },
+                min: Math.min(...fundData, ...benchData) * 0.95,
+                max: Math.max(...fundData, ...benchData) * 1.05
+              }
+            }
+          }
+        });
+
+        chartInstances.set(f.id, chart);
+      });
+    }
+
+    async function fetchSnapshot() {
+      if (cachedSnapshot) return cachedSnapshot;
+      const res = await fetch(`${BACKEND_URL}/data/funds-snapshot.json`);
+      if (!res.ok) throw new Error(`Snapshot unavailable (HTTP ${res.status})`);
+      cachedSnapshot = await res.json();
+      return cachedSnapshot;
+    }
+
+    async function loadAllFundCardStats() {
+      try {
+        const snapshot = await fetchSnapshot();
+        if (!snapshot || !snapshot.funds) return;
+
+        for (const fund of funds) {
+          const fd = snapshot.funds[fund.id];
+          if (!fd) continue;
+
+          const ytdEl = document.querySelector(`[data-stat-ytd="${fund.id}"]`);
+          const outpEl = document.querySelector(`[data-stat-outperf="${fund.id}"]`);
+
+          if (fd.ytdReturn != null && ytdEl) {
+            ytdEl.textContent = fmtPct(fd.ytdReturn);
+            ytdEl.className = `card-meta-value ${fd.ytdReturn >= 0 ? 'pos' : 'neg'}`;
+          }
+          if (fd.outperformance != null && outpEl) {
+            outpEl.textContent = fmtPct(fd.outperformance);
+            outpEl.className = `card-meta-value ${fd.outperformance >= 0 ? 'pos' : 'neg'}`;
+          }
+        }
+      } catch (e) {
+        console.warn('Fund card stats unavailable:', e.message);
+      }
+    }
+
+    // ===== NEWS SECTION =====
+    function renderNews() {
+      const newsGrid = document.getElementById('newsGrid');
+      // Using a single accent palette — tags carry the categorisation
+      const news = [
+        {
+          title: "Physical supply constraints bleeding into rates",
+          date: "May 3, 2026",
+          read: "8 min",
+          tag: "Supply",
+          desc: "Commodity bottlenecks are now transmitting through real-yield expectations faster than CPI prints suggest.",
+          chart: "rising"
+        },
+        {
+          title: "Macro transmission through the SOFR curve",
+          date: "Apr 29, 2026",
+          read: "11 min",
+          tag: "Macro",
+          desc: "Tracing policy signals through term-premium decomposition and credit-spread reaction functions.",
+          chart: "swing"
+        },
+        {
+          title: "Factor premia after the regime shift",
+          date: "Apr 24, 2026",
+          read: "6 min",
+          tag: "Strategy",
+          desc: "Value, quality, and low-vol since the rate cycle turned. What's persisting and what's mean-reverting.",
+          chart: "stable"
+        }
+      ];
+
+      const sparkline = (kind) => {
+        const paths = {
+          rising: "M0,80 C40,70 80,60 120,40 C160,30 200,25 240,15",
+          swing:  "M0,40 C40,20 80,70 120,50 C160,30 200,55 240,30",
+          stable: "M0,55 C40,50 80,60 120,45 C160,55 200,40 240,50"
+        };
+        return `
+          <svg viewBox="0 0 240 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="nlf-${kind}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(0,102,255,.45)"/>
+                <stop offset="100%" stop-color="rgba(0,102,255,0)"/>
+              </linearGradient>
+            </defs>
+            <rect width="240" height="100" fill="#0a1224"/>
+            <g stroke="rgba(255,255,255,.06)" stroke-width="1">
+              <line x1="0" y1="33" x2="240" y2="33"/>
+              <line x1="0" y1="66" x2="240" y2="66"/>
+            </g>
+            <path d="${paths[kind]} L240,100 L0,100 Z" fill="url(#nlf-${kind})"/>
+            <path d="${paths[kind]}" fill="none" stroke="#7aa6ff" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>`;
+      };
+
+      newsGrid.innerHTML = news.map(n => `
+        <a class="news-card" href="/posts.html">
+          <div class="news-img">${sparkline(n.chart)}</div>
+          <div class="news-body">
+            <div class="news-meta">
+              <span class="tag">${n.tag}</span>
+              <span>${n.date}</span>
+              <span class="read-time">${n.read} read</span>
+            </div>
+            <div class="news-title">${n.title}</div>
+            <div class="news-desc">${n.desc}</div>
+            <span class="news-link">Read brief →</span>
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // ===== ANIMATIONS =====
+    // Hero text now lands in its final color via CSS — no GSAP fade-in
+    // (prevents the "stuck faded blue" bug if scripts are slow / blocked).
+    function initAnimations() { /* intentionally empty — CSS handles intro */ }
+
+    function initNewsletterForms() {
+      document.querySelectorAll('.signup-form').forEach(form => {
+        form.addEventListener('submit', () => {
+          const emailInput = form.querySelector('input[name="email"]');
+          const preferenceSelect = form.querySelector('select[name="preference"]');
+          const source = form.dataset.source || 'site';
+          if (!emailInput || !preferenceSelect) return;
+          const record = {
+            email: emailInput.value.trim(),
+            preference: preferenceSelect.value,
+            source,
+            submittedAt: new Date().toISOString()
+          };
+          try {
+            localStorage.setItem('mbdNewsletterLastSignup', JSON.stringify(record));
+          } catch (_) {}
+        });
+      });
+    }
+
+    // Dark-mode toggle — persists in localStorage, respects OS preference on first visit
+    function initThemeToggle() {
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const stored = localStorage.getItem('mbdTheme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const apply = (mode) => {
+        root.classList.toggle('dark', mode === 'dark');
+        if (btn) btn.textContent = mode === 'dark' ? '☀️' : '🌙';
+      };
+      apply(stored || (prefersDark ? 'dark' : 'light'));
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const next = root.classList.contains('dark') ? 'light' : 'dark';
+          localStorage.setItem('mbdTheme', next);
+          apply(next);
+        });
+      }
+    }
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // Single canvas — only on hero (rest of the page stays clean)
+      createNetworkAnimation('heroCanvas');
+
+      try { renderFunds(); } catch (error) { console.warn('Fund rendering skipped:', error); }
+      loadAllFundCardStats();
+      try { renderNews(); } catch (error) { console.warn('News rendering skipped:', error); }
+      initNewsletterForms();
+      initThemeToggle();
+    });
+  </script>
+<script>
+(function(){
+  document.querySelectorAll('.nav-dropdown').forEach(function(dd){
+    var toggle = dd.querySelector('.nav-drop-toggle');
+    if(!toggle) return;
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = dd.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+      if(!open) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(){
+    document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') document.querySelectorAll('.nav-dropdown.open').forEach(function(o){ o.classList.remove('open'); });
+  });
+})();
+</script>
+<script src="/assets/cinematic.js" defer></script>
+</body>
+</html>

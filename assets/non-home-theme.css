@@ -1,0 +1,232 @@
+:root {
+  --nh-bg: linear-gradient(180deg, #f8fbff 0%, #ffffff 34%, #f4f8ff 100%);
+  --nh-surface: rgba(255, 255, 255, 0.92);
+  --nh-surface-strong: #ffffff;
+  --nh-border: rgba(11, 18, 32, 0.1);
+  --nh-accent-soft: rgba(0, 102, 255, 0.08);
+  --nh-shadow: 0 14px 40px rgba(2, 8, 23, 0.1);
+  --nh-shadow-lg: 0 24px 64px rgba(2, 8, 23, 0.12);
+}
+
+body {
+  background: var(--nh-bg);
+}
+
+header,
+.topbar,
+.site-header {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid var(--nh-border) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav a,
+.topbar-nav .nav-link,
+nav a {
+  border-radius: 10px;
+}
+
+main.container,
+.page-wrap,
+.page,
+.section,
+.funds-section,
+.news-section,
+.about-section,
+.research-section,
+.thesis-section,
+.hero,
+.hero-inner,
+.hero .container,
+.hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  background: transparent !important;
+}
+
+.hero::before,
+.page-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(0, 102, 255, 0.06), rgba(14, 165, 233, 0.03));
+  border: 1px solid rgba(0, 102, 255, 0.12);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero-canvas-wrap {
+  opacity: 0.8 !important;
+}
+
+.hero-actions .btn,
+.btn,
+.btn-lite,
+.newsletter-form button,
+.dashboard-cta,
+.cta,
+.p-btn {
+  border-radius: 12px;
+}
+
+.section-card,
+.refs,
+.note,
+.subscription-card,
+.newsletter-wrap,
+.policy-card,
+.contact-channel,
+.term-card,
+.timeline-item,
+.news-card,
+.thesis-card,
+.phil-card,
+.team-card,
+.approach-card,
+.disclaimer-card,
+.topic-card,
+.fund-card,
+.metric-card,
+.chart-wrapper,
+.dashboard-content,
+.card,
+.module,
+.module-nav,
+.module-panel,
+.layout > aside,
+.layout > section {
+  background: var(--nh-surface) !important;
+  border: 1px solid var(--nh-border) !important;
+  box-shadow: var(--nh-shadow);
+}
+
+.section-card:hover,
+.topic-card:hover,
+.contact-channel:hover,
+.news-card:hover,
+.fund-card:hover,
+.timeline-item:hover,
+.phil-card:hover,
+.team-card:hover,
+.thesis-card:hover {
+  box-shadow: var(--nh-shadow-lg) !important;
+}
+
+.kicker,
+.section-head .k,
+.page-kicker,
+.card-kicker,
+.timeline-month,
+.policy-title,
+.stat-label,
+.meta .pill,
+.pill,
+.post-tag,
+.timeline-category {
+  letter-spacing: 0.08em;
+}
+
+.search,
+input[type="search"],
+input[type="email"],
+select,
+textarea {
+  background: #fff;
+  border: 1px solid var(--nh-border);
+  border-radius: 12px;
+}
+
+.search:focus,
+input[type="search"]:focus,
+input[type="email"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(0, 102, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
+}
+
+footer,
+.site-footer {
+  background: rgba(249, 251, 255, 0.9) !important;
+  border-top: 1px solid var(--nh-border) !important;
+}
+
+/* Education pages */
+.topbar {
+  height: var(--headerH, 64px);
+  padding: 0 24px;
+}
+
+.container {
+  max-width: var(--max, 1200px);
+}
+
+.layout {
+  gap: 24px;
+}
+
+.module-nav {
+  position: sticky;
+  top: calc(var(--headerH, 64px) + 20px);
+}
+
+.module {
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.module h2,
+.module h3,
+.module h4,
+.topic-card h3,
+.page-title,
+.card-title,
+.thesis-title,
+.news-title,
+.timeline-title {
+  letter-spacing: -0.02em;
+}
+
+.refs ul,
+.prose ul {
+  padding-left: 20px;
+}
+
+/* Post detail pages using assets/style.css */
+body .site-header {
+  position: sticky;
+}
+
+body .page {
+  padding-top: 72px;
+}
+
+body .prose,
+body .prose p,
+body .prose li {
+  color: rgba(11, 18, 32, 0.75);
+}
+
+body .prose h2,
+body .prose h3,
+body .prose strong {
+  color: #0b1220;
+}
+
+@media (max-width: 900px) {
+  .hero::before,
+  .page-wrap::before {
+    inset: 10px;
+    border-radius: 18px;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+}

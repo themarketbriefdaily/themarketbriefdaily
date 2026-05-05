@@ -1,0 +1,283 @@
+/* ================================================================
+   Cinematic Layer — depth, parallax, masks, grain, vignette
+   Layers on top of site.css. Variables inherit from :root.
+   ================================================================ */
+
+:root {
+  --cine-ease-camera: cubic-bezier(.16,.84,.32,1);
+  --cine-ease-glide:  cubic-bezier(.22,1,.36,1);
+  --cine-ease-dolly:  cubic-bezier(.65,0,.35,1);
+  --cine-ink-deep:    #050913;
+  --cine-ink-night:   #0a1224;
+  --cine-gold:        #c8a35a;
+  --cine-glow:        rgba(0,102,255,.55);
+}
+
+html.cine { scroll-behavior: smooth; }
+body.cine { background: #fff; }
+
+/* ── Site-wide overlays (vignette + grain) ──────────────────── */
+.cine-overlay {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 1500;
+  mix-blend-mode: multiply;
+  background:
+    radial-gradient(ellipse at center,
+      transparent 55%,
+      rgba(2,8,23,.18) 92%,
+      rgba(2,8,23,.32) 100%);
+  opacity: .9;
+}
+.cine-grain {
+  position: fixed; inset: -50%;
+  pointer-events: none;
+  z-index: 1501;
+  opacity: .07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  animation: cineGrainShift 1.2s steps(6) infinite;
+}
+@keyframes cineGrainShift {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-2%,1%); }
+  40%  { transform: translate(1%,-1%); }
+  60%  { transform: translate(-1%,2%); }
+  80%  { transform: translate(2%,-2%); }
+  100% { transform: translate(0,0); }
+}
+
+/* ── Cinematic Hero Scene ───────────────────────────────────── */
+.cine-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(180deg,#dfeaff 0%, #f6f9ff 60%, #ffffff 100%);
+}
+.cine-stage {
+  position: absolute; inset: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 55%;
+  z-index: 0;
+}
+.cine-layer {
+  position: absolute; inset: 0;
+  will-change: transform;
+  transform-origin: 50% 60%;
+  pointer-events: none;
+}
+
+/* depth tiers — driven by JS data-depth attribute */
+.cine-layer[data-depth="sky"]      { z-index: 1; }
+.cine-layer[data-depth="haze"]     { z-index: 2; }
+.cine-layer[data-depth="far"]      { z-index: 3; }
+.cine-layer[data-depth="mid"]      { z-index: 4; }
+.cine-layer[data-depth="near"]     { z-index: 5; }
+.cine-layer[data-depth="foreground"]{ z-index: 6; }
+
+.cine-sky {
+  background:
+    radial-gradient(120% 70% at 50% 18%, #ffffff 0%, #e7efff 35%, #c8d8f7 70%, #9bb6ea 100%);
+}
+.cine-sun {
+  position: absolute;
+  left: 50%; top: 22%;
+  width: 520px; height: 520px;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(255,225,170,.85) 0%, rgba(255,200,140,.35) 35%, rgba(255,200,140,0) 70%);
+  filter: blur(8px);
+  animation: cineSunBreathe 9s var(--cine-ease-camera) infinite alternate;
+}
+@keyframes cineSunBreathe {
+  from { transform: translate(-50%,-50%) scale(1);   opacity: .9; }
+  to   { transform: translate(-50%,-52%) scale(1.06); opacity: 1; }
+}
+.cine-haze {
+  background:
+    linear-gradient(to bottom,
+      rgba(255,255,255,0) 40%,
+      rgba(220,232,255,.55) 70%,
+      rgba(245,250,255,.85) 100%);
+  backdrop-filter: blur(.5px);
+}
+
+/* SVG skyline silhouettes */
+.cine-skyline {
+  position: absolute;
+  left: -5%; right: -5%;
+  bottom: 0;
+  width: 110%;
+  display: block;
+}
+.cine-skyline.far  { bottom: 22%; opacity: .35; filter: blur(1.4px); }
+.cine-skyline.mid  { bottom: 8%;  opacity: .65; filter: blur(.4px); }
+.cine-skyline.near { bottom: 0;   opacity: .92; }
+
+/* foreground glass / lens flare */
+.cine-flare {
+  position: absolute;
+  width: 80vw; height: 80vw;
+  left: 60%; top: -20%;
+  background: radial-gradient(circle, rgba(0,102,255,.18) 0%, rgba(0,102,255,0) 60%);
+  filter: blur(20px);
+  mix-blend-mode: screen;
+  animation: cineFlareDrift 14s linear infinite;
+}
+@keyframes cineFlareDrift {
+  0%   { transform: translate(0,0)   rotate(0deg); }
+  50%  { transform: translate(-4%,3%) rotate(180deg); }
+  100% { transform: translate(0,0)   rotate(360deg); }
+}
+
+/* hero content above the scene */
+.cine-hero-inner {
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Cinematic title reveal ─────────────────────────────────── */
+.cine-title {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1.05;
+}
+.cine-title .cine-line {
+  display: block;
+  overflow: hidden;
+}
+.cine-title .cine-word {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: cineTitleRise 1.3s var(--cine-ease-camera) forwards;
+}
+.cine-title .cine-word + .cine-word { margin-left: .25em; }
+@keyframes cineTitleRise {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ── Section transition: mask wipe + fade-to-deep ──────────── */
+.cine-section {
+  position: relative;
+  isolation: isolate;
+}
+.cine-mask-top, .cine-mask-bottom {
+  position: absolute; left: 0; right: 0;
+  height: 140px;
+  pointer-events: none;
+  z-index: 5;
+}
+.cine-mask-top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+.cine-mask-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(5,9,19,.06), rgba(255,255,255,0));
+}
+
+/* ── Ken Burns image treatment ─────────────────────────────── */
+.cine-kb {
+  position: relative;
+  overflow: hidden;
+}
+.cine-kb > img,
+.cine-kb > .cine-kb-img {
+  position: absolute; inset: -8%;
+  width: 116%; height: 116%;
+  object-fit: cover;
+  transform: scale(1.04) translate(0,0);
+  transition: transform 14s var(--cine-ease-glide);
+  will-change: transform;
+}
+.cine-kb.in-view > img,
+.cine-kb.in-view > .cine-kb-img {
+  transform: scale(1.18) translate(-2%, -2%);
+}
+
+/* ── Tilt-on-hover (3D card) ────────────────────────────────── */
+.cine-tilt {
+  transform-style: preserve-3d;
+  transition: transform .6s var(--cine-ease-glide);
+  will-change: transform;
+}
+.cine-tilt-shine {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    600px circle at var(--mx,50%) var(--my,30%),
+    rgba(255,255,255,.35),
+    rgba(255,255,255,0) 40%);
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity .35s var(--cine-ease-glide);
+  border-radius: inherit;
+}
+.cine-tilt:hover .cine-tilt-shine { opacity: 1; }
+
+/* ── Scene reveal (mask up) ─────────────────────────────────── */
+.cine-reveal {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.2s var(--cine-ease-camera);
+}
+.cine-reveal.in-view { clip-path: inset(0 0 0 0); }
+
+/* ── Cinematic primary button (lens-style) ─────────────────── */
+.btn.cine-primary {
+  position: relative;
+  background: linear-gradient(135deg,#0a1224 0%, #14264a 50%, #0066ff 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 14px 38px rgba(0,102,255,.30),
+    inset 0 0 0 1px rgba(255,255,255,.08),
+    inset 0 -20px 30px rgba(0,0,0,.35);
+  letter-spacing: .04em;
+  overflow: hidden;
+}
+.btn.cine-primary::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform .9s var(--cine-ease-camera);
+}
+.btn.cine-primary:hover { transform: translateY(-3px) scale(1.02); }
+.btn.cine-primary:hover::after { transform: translateX(120%); }
+
+/* ── Scroll cue ─────────────────────────────────────────────── */
+.cine-scroll-cue {
+  position: absolute;
+  left: 50%; bottom: 28px;
+  transform: translateX(-50%);
+  width: 28px; height: 44px;
+  border: 1.5px solid rgba(11,18,32,.45);
+  border-radius: 16px;
+  z-index: 10;
+}
+.cine-scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 8px;
+  width: 4px; height: 8px;
+  border-radius: 2px;
+  background: rgba(11,18,32,.65);
+  transform: translateX(-50%);
+  animation: cineScroll 1.8s var(--cine-ease-camera) infinite;
+}
+@keyframes cineScroll {
+  0%   { transform: translate(-50%,0);    opacity: 1; }
+  60%  { transform: translate(-50%,16px); opacity: 0; }
+  61%  { transform: translate(-50%,0);    opacity: 0; }
+  100% { transform: translate(-50%,0);    opacity: 1; }
+}
+
+/* ── Reduced motion respect ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cine-grain, .cine-sun, .cine-flare { animation: none; }
+  .cine-title .cine-word { animation: none; transform: none; opacity: 1; }
+  .cine-kb.in-view > img,
+  .cine-kb.in-view > .cine-kb-img { transition: none; transform: scale(1.04); }
+  .cine-reveal { clip-path: inset(0 0 0 0); transition: none; }
+}
