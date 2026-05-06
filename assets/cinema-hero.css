@@ -1,0 +1,384 @@
+/* ================================================================
+   Cinema Hero — full-page scroll backdrop
+   - Canvas is fixed to the viewport, not pinned to the hero section
+   - Frames advance with whole-page scroll progress
+   - The hero section is now just the "title card" — content below
+     sits on top of the cinematic backdrop with translucent treatments
+   ================================================================ */
+
+/* The hero section is one viewport tall now (no sticky scroll runway).
+   Frame advancement is driven by document scroll, not section scroll. */
+.cinema-hero {
+  position: relative;
+  min-height: 100vh;
+  background: #000;
+  isolation: isolate;
+}
+
+/* Stage = fixed-position layer behind everything on the page */
+.cinema-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;                         /* behind all page content */
+  background-image: url("/assets/hero-frames/frame-001.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.cinema-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .8s cubic-bezier(.16,.84,.32,1);
+}
+.cinema-canvas.ready { opacity: 1; }
+
+/* Color grade — film vignette + bottom-fade, slightly lifted globally so
+   later content (which sits on top of the canvas) stays legible */
+.cinema-grade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 30%, transparent 38%, rgba(0,0,0,.55) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,.30) 0%, rgba(0,0,0,.10) 35%, rgba(0,0,0,.55) 100%);
+}
+
+/* Letterbox bars — only visible while we're in the hero (top of page) */
+.cinema-letterbox {
+  position: absolute;
+  left: 0; right: 0;
+  height: 6vh;
+  min-height: 36px;
+  background: #000;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(var(--lb-from, -100%));
+  transition: opacity .9s cubic-bezier(.16,.84,.32,1) .15s,
+              transform 1.1s cubic-bezier(.16,.84,.32,1);
+}
+.cinema-letterbox.top    { top: 0;    --lb-from: -100%; }
+.cinema-letterbox.bottom { bottom: 0; --lb-from:  100%; }
+.cinema-stage.lb-in .cinema-letterbox {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Once the user has scrolled past the title card, retract the bars
+   (so they don't float in the middle of the page) */
+.cinema-stage.scrolled .cinema-letterbox {
+  opacity: 0;
+  transform: translateY(var(--lb-from));
+  transition-delay: 0s;
+}
+
+/* Hero title-card content (centred in first viewport) */
+.cinema-hero .container.hero-inner,
+.cinema-hero .hero-inner {
+  position: relative;
+  z-index: 5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: var(--headerH, 64px);
+  padding-bottom: 80px;
+}
+
+.cinema-hero .hero-eyebrow {
+  color: rgba(255,255,255,.78);
+  letter-spacing: .18em;
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.cinema-hero h1 {
+  color: #fff !important;
+  background: none !important;
+  -webkit-text-fill-color: #fff !important;
+  text-shadow: 0 2px 24px rgba(0,0,0,.5), 0 0 1px rgba(0,0,0,.6);
+  letter-spacing: -.02em;
+  font-size: clamp(2.2rem, 5.4vw, 3.6rem) !important;
+  line-height: 1.08 !important;
+  margin: 0 0 18px;
+  max-width: 940px;
+}
+.cinema-hero h1 br { display: inline; }
+
+.cinema-hero p {
+  color: rgba(255,255,255,.85) !important;
+  text-shadow: 0 1px 12px rgba(0,0,0,.45);
+  max-width: 640px;
+  font-size: clamp(1rem, 1.25vw, 1.12rem) !important;
+}
+
+.cinema-hero .hero-actions {
+  margin-top: 6px;
+  margin-bottom: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cinema-hero .btn {
+  border-color: rgba(255,255,255,.22);
+  color: #fff;
+}
+.cinema-hero .btn.primary {
+  background: linear-gradient(135deg, #0066ff 0%, #1d4ed8 100%);
+  border-color: rgba(255,255,255,.25);
+  color: #fff;
+  box-shadow: 0 18px 48px rgba(0,102,255,.55), inset 0 0 0 1px rgba(255,255,255,.12);
+}
+.cinema-hero .btn:not(.primary) {
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(8px);
+}
+.cinema-hero .btn:not(.primary):hover {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.4);
+}
+
+.cinema-hero .proof-line {
+  color: rgba(255,255,255,.78);
+  text-shadow: 0 1px 8px rgba(0,0,0,.45);
+}
+.cinema-hero .proof-line strong { color: #fff; }
+.cinema-hero .proof-line .dot { background: #34d399; box-shadow: 0 0 0 4px rgba(52,211,153,.22); }
+
+.cinema-loader {
+  position: absolute;
+  left: 50%; bottom: 12vh;
+  transform: translateX(-50%);
+  width: 200px; height: 2px;
+  background: rgba(255,255,255,.16);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 7;
+  opacity: 1;
+  transition: opacity .5s ease;
+}
+.cinema-loader.done { opacity: 0; }
+.cinema-stage.scrolled .cinema-loader { opacity: 0; }
+.cinema-loader::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  background: linear-gradient(90deg, #7aa6ff, #fff);
+  transition: width .25s linear;
+}
+
+.cinema-progress {
+  position: fixed;
+  right: 18px; top: 50%;
+  width: 2px; height: 120px;
+  background: rgba(255,255,255,.14);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 60;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.cinema-progress::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: var(--scrollp, 0%);
+  background: linear-gradient(180deg, #7aa6ff, #fff);
+}
+
+.cinema-cue {
+  position: absolute;
+  left: 50%; bottom: 24px;
+  transform: translateX(-50%);
+  width: 26px; height: 42px;
+  border: 1.5px solid rgba(255,255,255,.55);
+  border-radius: 14px;
+  z-index: 6;
+  opacity: 1;
+  transition: opacity .4s ease;
+}
+.cinema-stage.scrolled .cinema-cue { opacity: 0; }
+.cinema-cue::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 8px;
+  width: 3px; height: 8px;
+  border-radius: 2px;
+  background: rgba(255,255,255,.85);
+  transform: translateX(-50%);
+  animation: cineScrollCue 1.8s cubic-bezier(.16,.84,.32,1) infinite;
+}
+@keyframes cineScrollCue {
+  0%   { transform: translate(-50%, 0);    opacity: 1; }
+  60%  { transform: translate(-50%, 14px); opacity: 0; }
+  61%  { transform: translate(-50%, 0);    opacity: 0; }
+  100% { transform: translate(-50%, 0);    opacity: 1; }
+}
+
+/* ================================================================
+   Content layered ON TOP of the cinema backdrop.
+   Sections after the hero use a translucent dark glass treatment so
+   the scrolling frame backdrop remains visible and contributes to the
+   cinematic feel throughout the page.
+   ================================================================ */
+
+/* Body has to be transparent so the fixed canvas shows through */
+body.cinema-mode {
+  background: transparent !important;
+}
+body.cinema-mode .site-header {
+  background: rgba(8, 12, 24, .72);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: rgba(255,255,255,.08);
+}
+body.cinema-mode .site-header a,
+body.cinema-mode .site-header .brand-title,
+body.cinema-mode .site-header .brand-sub {
+  color: rgba(255,255,255,.92);
+}
+body.cinema-mode .site-header .nav a {
+  color: rgba(255,255,255,.78);
+}
+body.cinema-mode .site-header .nav a.is-active,
+body.cinema-mode .site-header .nav a:hover {
+  color: #fff;
+}
+
+/* Main content sections become tinted glass over the backdrop */
+.cinema-section {
+  position: relative;
+  background: rgba(8, 12, 24, .80);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  color: rgba(255,255,255,.92);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 96px 0;
+}
+.cinema-section.tight { padding: 64px 0; }
+.cinema-section.bleed { background: rgba(8, 12, 24, .55); }
+
+/* Featured story strip — match cinema treatment */
+body.cinema-mode .featured-strip {
+  background: rgba(8, 12, 24, .82);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+body.cinema-mode .featured-strip .featured-label { color: rgba(255,255,255,.55); }
+body.cinema-mode .featured-strip .featured-link { color: #fff; }
+body.cinema-mode .featured-strip .featured-meta { color: rgba(255,255,255,.55); }
+body.cinema-mode .featured-strip .featured-btn {
+  background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.18);
+  color: #fff;
+  box-shadow: none;
+}
+body.cinema-mode .featured-strip .featured-btn:hover {
+  background: rgba(255,255,255,.12);
+}
+
+/* Headings, kickers, paragraphs over the cinema backdrop */
+.cinema-section .kicker {
+  color: rgba(122, 166, 255, .85);
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.cinema-section h2 {
+  color: #fff;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: 850;
+  letter-spacing: -.02em;
+  margin: 0 0 14px;
+  line-height: 1.12;
+}
+.cinema-section .lead,
+.cinema-section p {
+  color: rgba(255,255,255,.75);
+  line-height: 1.7;
+}
+
+/* Cards on cinema sections — dark glass tiles */
+.cine-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 22px 22px 20px;
+  transition: transform .3s ease, border-color .3s ease, background .3s ease;
+}
+.cine-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(122,166,255,.35);
+  background: rgba(255,255,255,.06);
+}
+.cine-card .card-kicker {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: rgba(122,166,255,.85);
+  margin-bottom: 10px;
+}
+.cine-card h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 8px;
+  letter-spacing: -.01em;
+}
+.cine-card p {
+  color: rgba(255,255,255,.72);
+  font-size: 14.5px;
+  line-height: 1.65;
+  margin: 0;
+}
+.cine-card .card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: #7aa6ff;
+  font-weight: 700;
+  font-size: 13.5px;
+}
+.cine-card .card-link:hover { color: #fff; text-decoration: none; }
+
+/* Footer treatment in cinema mode */
+body.cinema-mode .site-footer {
+  background: rgba(0, 0, 0, .82);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.78);
+}
+body.cinema-mode .site-footer a { color: rgba(255,255,255,.78); }
+body.cinema-mode .site-footer a:hover { color: #fff; }
+body.cinema-mode .site-footer .footer-brand { color: #fff; }
+body.cinema-mode .site-footer .footer-sub { color: rgba(255,255,255,.55); }
+
+/* Mobile tuning */
+@media (max-width: 768px) {
+  .cinema-letterbox { height: 4vh; min-height: 24px; }
+  .cinema-progress { display: none; }
+  .cinema-section { padding: 64px 0; }
+  .cinema-hero h1 { font-size: clamp(1.8rem, 7vw, 2.4rem) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-canvas { transition: none; }
+  .cinema-letterbox { transition: none; opacity: 1; transform: translateY(0); }
+  .cinema-cue::after { animation: none; }
+}
