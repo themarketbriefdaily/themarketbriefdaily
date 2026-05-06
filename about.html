@@ -98,25 +98,9 @@
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
         <a href="/">Home</a>
-        <a href="/funds.html">Funds</a>
         <a href="/posts.html">Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <div class="nav-dropdown">
-          <button class="nav-drop-toggle" aria-haspopup="true" aria-expanded="false">
-            Learn <span class="drop-caret" aria-hidden="true"></span>
-          </button>
-          <div class="nav-drop-menu" role="menu">
-            <a href="/glossary.html" role="menuitem">
-              <span class="drop-icon">📖</span> Glossary
-            </a>
-            <div class="nav-drop-divider"></div>
-            <a href="/education" role="menuitem">
-              <span class="drop-icon">🎓</span> Education
-            </a>
-          </div>
-        </div>
-        <a  class="active" href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
+        <a href="/funds.html">Funds</a>
+        <a class="active" href="/about.html">About</a>
       </nav>
     </div>
   </header>
@@ -125,33 +109,41 @@
   <section class="hero" data-constellation>
     <div class="hero-canvas-wrap"><canvas id="heroCanvas"></canvas></div>
     <div class="hero-inner">
-      <div class="kicker">About The Market Brief Daily</div>
-      <h1>Institutional rigour.<br>Independent perspective.</h1>
-      <p class="lead">We deliver institutional-grade market analysis — examining market structure, physical supply dynamics, and macro transmission mechanisms without bias or conflicts of interest.</p>
+      <div class="kicker">About the author</div>
+      <h1>One analyst.<br>Independent perspective.</h1>
+      <p class="lead">A solo-operator publication. Written without a sell-side house view, fund flows to defend, or clients to placate.</p>
     </div>
   </section>
 
-  <!-- Stats bar -->
-  <div class="stats-bar">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Model Funds</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">Daily</div>
-        <div class="stat-label">Data Refresh</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">Multi-asset</div>
-        <div class="stat-label">Coverage</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">Independent</div>
-        <div class="stat-label">Research</div>
+  <!-- Author block -->
+  <section class="section" style="background:#fff">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start;max-width:920px;margin:0 auto;padding:36px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,rgba(0,102,255,.04),rgba(2,8,23,.01));box-shadow:var(--shadow-md)">
+        <div aria-hidden="true" style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#0a1224 0%,#0066ff 100%);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:42px;letter-spacing:.02em;box-shadow:0 12px 32px rgba(0,102,255,.25);flex-shrink:0;position:relative">MB
+          <span style="position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(0,102,255,.25)"></span>
+        </div>
+        <div>
+          <h3 style="font-size:1.5rem;font-weight:950;color:var(--ink);letter-spacing:-.015em;margin-bottom:6px">The Market Brief Daily</h3>
+          <div style="font-size:13px;color:var(--accent);font-weight:900;letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px">Solo-operator research publication · Published since 2024</div>
+          <p style="font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:14px">I write daily briefs on market structure, physical supply, and macro transmission — the parts of the market that consensus commentary tends to skim past. The goal isn't to add to the noise; it's to publish frameworks I'd actually use to run capital.</p>
+          <p style="font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:14px">My background combines buy-side multi-asset research with quantitative modelling on commodity supply chains and rate-curve dynamics. The brief is the byproduct of that work — what I read, what I model, what changes my mind.</p>
+          <p style="font-size:13.5px;color:var(--muted2);margin-top:18px"><strong style="color:var(--ink)">What's distinctive:</strong> No sell-side house view, no fund flow to defend, no clients to placate. When I'm wrong I say so in the next brief. When something doesn't fit the dominant narrative, that's usually where I focus.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px">
+            <span style="font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);letter-spacing:.02em">Buy-side research background</span>
+            <span style="font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);letter-spacing:.02em">Multi-asset · macro · structural</span>
+            <span style="font-size:11.5px;font-weight:800;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink);letter-spacing:.02em">No paid promotions</span>
+          </div>
+          <div style="margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;font-size:14px">
+            <a href="mailto:hello@marketbriefdaily.com" style="color:var(--accent);font-weight:900;text-decoration:none">hello@marketbriefdaily.com</a>
+            <span style="color:var(--muted2)">·</span>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="color:var(--accent);font-weight:900;text-decoration:none">Substack ↗</a>
+            <span style="color:var(--muted2)">·</span>
+            <a href="/methodology.html" style="color:var(--accent);font-weight:900;text-decoration:none">Methodology →</a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Investment Philosophy -->
   <section class="section" style="background:#fff">
@@ -181,54 +173,6 @@
     </div>
   </section>
 
-  <!-- Team -->
-  <section class="section" style="background:#f9fafb">
-    <div class="container">
-      <div class="section-head">
-        <div class="k">Our Team</div>
-        <h2>Built by market practitioners</h2>
-        <p>A dedicated team of analysts, portfolio strategists, and quantitative researchers focused on delivering institutional-quality insights.</p>
-      </div>
-      <div class="team-grid">
-        <div class="team-card">
-          <div class="team-avatar">CIO</div>
-          <div class="team-name">Chief Investment Officer</div>
-          <div class="team-role">Strategy & Portfolio Oversight</div>
-          <div class="team-bio">Oversees fund construction, risk management frameworks, and macro regime assessment across all model portfolios.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">MR</div>
-          <div class="team-name">Macro Research</div>
-          <div class="team-role">Global Macro & Rates</div>
-          <div class="team-bio">Specialises in monetary policy transmission, yield curve dynamics, and cross-asset macro regime identification.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">MS</div>
-          <div class="team-name">Market Structure</div>
-          <div class="team-role">Microstructure & Flow Analysis</div>
-          <div class="team-bio">Tracks institutional order flow, derivatives positioning, and liquidity dynamics across equity and commodity markets.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">CM</div>
-          <div class="team-name">Commodities Research</div>
-          <div class="team-role">Physical Markets & Metals</div>
-          <div class="team-bio">Monitors COMEX inventory, delivery data, and physical tightness signals across precious metals and energy markets.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">QA</div>
-          <div class="team-name">Quantitative Analytics</div>
-          <div class="team-role">Factor Research & Risk Models</div>
-          <div class="team-bio">Develops Fama-French factor models, performance attribution frameworks, and systematic risk monitoring signals.</div>
-        </div>
-        <div class="team-card">
-          <div class="team-avatar">TS</div>
-          <div class="team-name">Technology & Systems</div>
-          <div class="team-role">Data Infrastructure</div>
-          <div class="team-bio">Builds and maintains the daily data pipeline, backend performance calculations, and live analytics infrastructure.</div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Our Approach -->
   <section class="section" style="background:#fff">
@@ -278,9 +222,9 @@
       <h2>Start exploring our research</h2>
       <p>Access our four model funds with live analytics, or read our latest institutional market research.</p>
       <div class="cta-btns">
-        <a class="btn primary" href="/funds.html">Explore Funds</a>
-        <a class="btn ghost-light" href="/posts.html">Read Research</a>
-        <a class="btn ghost-light" href="/contact.html">Get in Touch</a>
+        <a class="btn primary" href="/posts.html">Read latest brief</a>
+        <a class="btn ghost-light" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack</a>
+        <a class="btn ghost-light" href="/methodology.html">Methodology</a>
       </div>
     </div>
   </section>
@@ -289,31 +233,29 @@
     <div class="footer-inner">
       <div>
         <h4>The Market Brief Daily</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px">Independent macro and market structure research. Written without the sell-side spin.</p>
+        <p style="font-size:12px;color:var(--muted2);line-height:1.7;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(245,158,11,.04)"><strong style="color:var(--ink)">Disclaimer.</strong> The Market Brief Daily is an educational research project. Nothing on this site constitutes investment advice.</p>
       </div>
       <div class="footer-col">
-        <h4>Research</h4>
-        <a href="/">Home</a>
-        <a href="/posts.html">All Research</a>
+        <h4>Content</h4>
+        <a href="/posts.html">Research</a>
         <a href="/funds.html">Funds</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
+        <a href="/methodology.html">Methodology</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="/about.html">About us</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/disclaimer.html">Disclaimer</a>
+        <a href="/about.html">About</a>
+        <a href="mailto:hello@marketbriefdaily.com">Contact</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
+        <a href="/disclaimer.html">Disclaimer</a>
         <a href="#">Privacy</a>
         <a href="#">Terms</a>
-        <a href="/disclaimer.html">Disclosures</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved. Not investment advice — see <a href="/disclaimer.html" style="color:inherit;text-decoration:underline">disclaimer</a>.</p>
+      <p>© 2026 The Market Brief Daily. Educational research only — not investment advice.</p>
     </div>
   </footer>
 

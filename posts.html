@@ -66,6 +66,17 @@
     .note{font-size:13px;color:var(--muted2);background:rgba(11,18,32,.03);border:1px solid var(--line);border-radius:10px;padding:14px 18px;line-height:1.7;max-width:860px;margin:0 auto}
     .note a{color:var(--accent);text-decoration:none;font-weight:700}
 
+    /* Search + tag filter bar */
+    .filter-bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;max-width:1140px;margin:0 auto 28px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow-md)}
+    .filter-bar .search-wrap{flex:1;min-width:240px;position:relative}
+    .filter-bar input[type="search"]{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;outline:none}
+    .filter-bar input[type="search"]:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,102,255,.15)}
+    .filter-bar .search-wrap::before{content:"";position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;background:no-repeat center/contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23647088' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>")}
+    .filter-tags{display:flex;gap:6px;flex-wrap:wrap}
+    .filter-tag{padding:7px 12px;font-size:12px;font-weight:800;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;letter-spacing:.04em;transition:all .18s var(--ease)}
+    .filter-tag:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-tag.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
   </style>
   <script src="/assets/animations.js" defer></script>
 </head>
@@ -76,25 +87,9 @@
       <a class="brand" href="/">The Market Brief Daily</a>
       <nav>
         <a href="/">Home</a>
+        <a class="active" href="/posts.html">Research</a>
         <a href="/funds.html">Funds</a>
-        <a  class="active" href="/posts.html">Research</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <div class="nav-dropdown">
-          <button class="nav-drop-toggle" aria-haspopup="true" aria-expanded="false">
-            Learn <span class="drop-caret" aria-hidden="true"></span>
-          </button>
-          <div class="nav-drop-menu" role="menu">
-            <a href="/glossary.html" role="menuitem">
-              <span class="drop-icon">📖</span> Glossary
-            </a>
-            <div class="nav-drop-divider"></div>
-            <a href="/education" role="menuitem">
-              <span class="drop-icon">🎓</span> Education
-            </a>
-          </div>
-        </div>
         <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </header>
@@ -122,6 +117,21 @@
         <p>Live-loaded from our Substack feed. Click any card to read the full article.</p>
       </div>
 
+      <div class="filter-bar" role="search">
+        <div class="search-wrap">
+          <input type="search" id="searchInput" placeholder="Search briefs by title, topic, or term…" autocomplete="off" />
+        </div>
+        <div class="filter-tags" id="tagFilters" role="tablist" aria-label="Filter by category">
+          <button type="button" class="filter-tag active" data-tag="all">All</button>
+          <button type="button" class="filter-tag" data-tag="Macro">Macro</button>
+          <button type="button" class="filter-tag" data-tag="Market Structure">Market Structure</button>
+          <button type="button" class="filter-tag" data-tag="Supply">Supply</button>
+          <button type="button" class="filter-tag" data-tag="Strategy">Strategy</button>
+          <button type="button" class="filter-tag" data-tag="Rates">Rates</button>
+          <button type="button" class="filter-tag" data-tag="FX">FX</button>
+        </div>
+      </div>
+
       <div id="newsGrid" class="news-grid">
         <div class="feed-status" style="grid-column:1/-1">Loading latest research…</div>
       </div>
@@ -137,31 +147,30 @@
     <div class="footer-inner">
       <div>
         <h4>The Market Brief Daily</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:1.8">Independent institutional-grade market analysis.</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px">Independent macro and market structure research. Written without the sell-side spin.</p>
+        <p style="font-size:12px;color:var(--muted2);line-height:1.7;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(245,158,11,.04)"><strong style="color:var(--ink)">Disclaimer.</strong> The Market Brief Daily is an educational research project. Nothing on this site constitutes investment advice.</p>
       </div>
       <div class="footer-col">
-        <h4>Research</h4>
-        <a href="/">Home</a>
-        <a href="/posts.html">All Research</a>
+        <h4>Content</h4>
+        <a href="/posts.html">Research</a>
         <a href="/funds.html">Funds</a>
-        <a href="/research-roadmap.html">Roadmap</a>
-        <a href="/glossary.html">Glossary</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS feed</a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="/about.html">About us</a>
-        <a href="/contact.html">Contact</a>
-        <a href="/disclaimer.html">Disclaimer</a>
+        <a href="/about.html">About</a>
+        <a href="mailto:hello@marketbriefdaily.com">Contact</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
+        <a href="/disclaimer.html">Disclaimer</a>
         <a href="#">Privacy</a>
         <a href="#">Terms</a>
-        <a href="/disclaimer.html">Disclosures</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 The Market Brief Daily. All rights reserved. Not investment advice — see <a href="/disclaimer.html" style="color:inherit;text-decoration:underline">disclaimer</a>.</p>
+      <p>© 2026 The Market Brief Daily. Educational research only — not investment advice.</p>
     </div>
   </footer>
 
@@ -230,37 +239,82 @@
       return "Research";
     }
 
+    var allItems = [];      // normalized list for filtering
+    var activeTag = 'all';
+    var activeQuery = '';
+
+    function estimateReadTime(text){
+      var words = (text || '').trim().split(/\s+/).filter(Boolean).length;
+      return Math.max(2, Math.round(words / 220)) + ' min';
+    }
+
     function renderFeed(items) {
       var grid = document.getElementById("newsGrid");
       if (!items || !items.length) {
         grid.innerHTML = '<div class="feed-status" style="grid-column:1/-1">No articles found. <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Visit Substack</a>.</div>';
         return;
       }
-      grid.innerHTML = "";
-      items.slice(0, 24).forEach(function (item) {
-        var title = stripHtml(item.title),
-            link = item.link,
-            date = fmtDate(item.pubDate),
-            img = pickImage(item),
-            tag = guessTag(item);
+      // Normalize once, filter on every interaction
+      allItems = items.slice(0, 30).map(function(item){
+        var title = stripHtml(item.title);
         var excerptRaw = stripHtml(item.description || item.content);
         var excerpt = excerptRaw.length > 160 ? excerptRaw.slice(0, 160) + "…" : excerptRaw;
+        return {
+          title: title, link: item.link, date: fmtDate(item.pubDate),
+          img: pickImage(item), tag: guessTag(item), excerpt: excerpt,
+          read: estimateReadTime(excerptRaw + ' ' + title),
+          haystack: (title + ' ' + excerptRaw).toLowerCase()
+        };
+      });
+      applyFilters();
+    }
+
+    function applyFilters(){
+      var grid = document.getElementById("newsGrid");
+      var q = activeQuery.trim().toLowerCase();
+      var filtered = allItems.filter(function(it){
+        var tagOk = activeTag === 'all' || it.tag === activeTag;
+        var qOk = !q || it.haystack.indexOf(q) >= 0;
+        return tagOk && qOk;
+      });
+      if (!filtered.length){
+        grid.innerHTML = '<div class="feed-status" style="grid-column:1/-1">No briefs match this filter. <button type="button" onclick="resetFilters()" style="background:none;border:none;color:var(--accent);font-weight:900;cursor:pointer">Clear filters</button>.</div>';
+        return;
+      }
+      grid.innerHTML = '';
+      filtered.forEach(function(it){
         var a = document.createElement("a");
         a.className = "news-card";
-        a.href = link;
-        a.target = "_blank";
-        a.rel = "noopener";
+        a.href = it.link; a.target = "_blank"; a.rel = "noopener";
         a.innerHTML =
-          '<div class="news-thumb-wrap"><img class="news-thumb" src="' + img + '" alt="" loading="lazy" onerror="this.parentElement.style.background=\'linear-gradient(135deg,#0066ff,#0ea5e9)\'"></div>' +
+          '<div class="news-thumb-wrap"><img class="news-thumb" src="' + it.img + '" alt="" loading="lazy" onerror="this.parentElement.style.background=\'linear-gradient(135deg,#0066ff,#0ea5e9)\'"></div>' +
           '<div class="news-body">' +
-            '<div class="news-meta"><span class="news-tag">' + tag + '</span><span>' + date + '</span></div>' +
-            '<h3 class="news-title">' + title + '</h3>' +
-            '<p class="news-desc">' + excerpt + '</p>' +
+            '<div class="news-meta"><span class="news-tag">' + it.tag + '</span><span>' + it.date + '</span><span>· ' + it.read + ' read</span></div>' +
+            '<h3 class="news-title">' + it.title + '</h3>' +
+            '<p class="news-desc">' + it.excerpt + '</p>' +
             '<span class="news-link">Read article →</span>' +
           '</div>';
         grid.appendChild(a);
       });
     }
+
+    function resetFilters(){
+      activeTag = 'all'; activeQuery = '';
+      document.getElementById('searchInput').value = '';
+      document.querySelectorAll('.filter-tag').forEach(function(b){ b.classList.toggle('active', b.dataset.tag === 'all'); });
+      applyFilters();
+    }
+
+    document.addEventListener('input', function(e){
+      if (e.target && e.target.id === 'searchInput'){ activeQuery = e.target.value; applyFilters(); }
+    });
+    document.addEventListener('click', function(e){
+      var btn = e.target.closest && e.target.closest('.filter-tag');
+      if (!btn) return;
+      activeTag = btn.dataset.tag;
+      document.querySelectorAll('.filter-tag').forEach(function(b){ b.classList.toggle('active', b === btn); });
+      applyFilters();
+    });
 
     async function loadFeed() {
       var cached = localStorage.getItem(CACHE_KEY);
