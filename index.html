@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Market Brief Daily — Independent macro & market structure research</title>
+  <meta name="description" content="Macro and market structure analysis, written without the sell-side spin. Briefs on physical supply, transmission, and factor premia, with transparent illustrative model portfolios." />
+  <meta name="theme-color" content="#0a0f1c" />
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/cinema-hero.css" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-001.jpg" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-030.jpg" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-060.jpg" />
+
+  <style>
+    /* Ensure legacy hero-bg/overlay (from style.css) is hidden */
+    .hero .hero-bg, .hero .hero-overlay, .hero .hero-fade { display: none !important; }
+
+    /* Featured strip layout */
+    .featured-strip { border-top:1px solid rgba(15,23,42,.08); border-bottom:1px solid rgba(15,23,42,.08); }
+    .featured-inner { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:14px 0; }
+    .featured-left { display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .featured-label { font-size:12px; font-weight:750; letter-spacing:.08em; text-transform:uppercase; color:rgba(15,23,42,.55); }
+    .featured-link { font-size:15px; font-weight:750; color:#0f172a; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:68vw; display:block; }
+    .featured-link:hover { text-decoration:underline; text-underline-offset:3px; }
+    .featured-meta { font-size:12px; color:rgba(15,23,42,.60); }
+    .featured-btn { display:inline-flex; align-items:center; justify-content:center; padding:10px 14px; border-radius:999px; border:1px solid rgba(15,23,42,.14); background:#fff; color:#0f172a; text-decoration:none; font-weight:650; font-size:14px; box-shadow:0 10px 24px rgba(2,6,23,.06); flex:0 0 auto; }
+    .featured-btn:hover { box-shadow:0 14px 34px rgba(2,6,23,.10); }
+
+    /* Hero proof line — honest signals only */
+    .proof-line { display:inline-flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:flex-start; font-size:13px; font-weight:600; margin-top:18px; }
+    .proof-line .dot { width:7px; height:7px; border-radius:50%; display:inline-block; animation:pulseDot 2s ease-in-out infinite; }
+    @keyframes pulseDot { 0%,100%{ box-shadow:0 0 0 4px rgba(52,211,153,.22) } 50%{ box-shadow:0 0 0 8px rgba(52,211,153,.05) } }
+
+    /* Two-up grids inside cinema sections */
+    .cine-grid-2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:20px; }
+    .cine-grid-3 { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:20px; }
+    .cine-grid-4 { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:18px; }
+    @media (max-width: 980px) { .cine-grid-2, .cine-grid-3, .cine-grid-4 { grid-template-columns: 1fr; } }
+
+    .section-head { max-width: 760px; margin: 0 0 40px; }
+    .section-head .actions { margin-top: 16px; }
+
+    /* Fund teaser */
+    .fund-teaser {
+      display:flex; flex-direction:column; gap:14px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      padding:22px;
+      transition: all .3s ease;
+    }
+    .fund-teaser:hover { border-color: rgba(122,166,255,.35); transform: translateY(-3px); }
+    .fund-teaser .ft-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .fund-teaser .ft-code { font-size:11px; font-weight:850; letter-spacing:.1em; text-transform:uppercase; color: rgba(255,255,255,.55); }
+    .fund-teaser .ft-name { font-size:1.05rem; font-weight:800; color:#fff; letter-spacing:-.01em; line-height:1.25; margin-top:4px; }
+    .fund-teaser .ft-spark { width: 100%; height: 56px; }
+    .fund-teaser .ft-stats { display:flex; gap:16px; }
+    .fund-teaser .ft-stat-label { font-size:10px; letter-spacing:.1em; text-transform:uppercase; color: rgba(255,255,255,.48); font-weight:800; }
+    .fund-teaser .ft-stat-val { font-family: ui-monospace, Menlo, monospace; font-weight:800; font-size:1.05rem; }
+    .pos { color:#10b981; }
+    .neg { color:#ef4444; }
+
+    /* Method/edu cards already styled via .cine-card */
+    .arrow-link { display:inline-flex; align-items:center; gap:6px; color:#7aa6ff; font-weight:700; font-size:14px; }
+    .arrow-link:hover { color:#fff; text-decoration:none; }
+
+    /* Buttons inside cinema sections */
+    .btn-cine {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:11px 18px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff; font-weight:700; font-size:14px;
+      backdrop-filter: blur(8px);
+      text-decoration: none;
+    }
+    .btn-cine:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.4); }
+    .btn-cine.primary {
+      background: linear-gradient(135deg, #0066ff 0%, #1d4ed8 100%);
+      border-color: rgba(255,255,255,.25);
+      box-shadow: 0 12px 32px rgba(0,102,255,.4);
+    }
+    .btn-cine.primary:hover { box-shadow: 0 16px 40px rgba(0,102,255,.55); }
+
+    /* Note row */
+    .note-cine {
+      margin-top: 24px;
+      font-size: 13px; color: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 16px;
+    }
+    .note-cine a { color: #7aa6ff; }
+
+    @media (max-width: 700px) {
+      .featured-inner{ flex-direction:column; align-items:flex-start; }
+      .featured-link{ max-width:92vw; }
+      .proof-line{ font-size:12px; gap:10px; }
+    }
+  </style>
+</head>
+
+<body class="cinema-mode">
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/education.html">Learn</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CINEMA HERO — fixed-position canvas backdrops the whole page -->
+  <section class="hero cinema-hero" aria-label="Hero">
+    <div class="cinema-stage">
+      <canvas class="cinema-canvas" id="cinemaCanvas" aria-hidden="true"></canvas>
+      <div class="cinema-grade" aria-hidden="true"></div>
+      <div class="cinema-letterbox top" aria-hidden="true"></div>
+      <div class="cinema-letterbox bottom" aria-hidden="true"></div>
+      <div class="cinema-loader" aria-hidden="true"></div>
+      <div class="cinema-progress" aria-hidden="true"></div>
+      <div class="cinema-cue" aria-hidden="true"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-panel">
+        <div class="hero-eyebrow">Independent macro &amp; market structure research</div>
+        <h1>Markets, written<br>without the sell-side spin.</h1>
+        <p>
+          Briefings on physical supply constraints, market microstructure, and macro
+          transmission — for analysts, allocators, and operators who need signal, not narrative.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="/posts.html">Read latest brief</a>
+          <a class="btn" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack</a>
+          <a class="btn" href="/investments.html">View model funds</a>
+        </div>
+
+        <div class="proof-line" aria-label="Publication signals">
+          <span><span class="dot" aria-hidden="true"></span><strong>Publishing</strong></span>
+          <span aria-hidden="true">·</span>
+          <span>Free on Substack</span>
+          <span aria-hidden="true">·</span>
+          <span>Educational only — not investment advice</span>
+        </div>
+
+        <div class="note" style="border-top-color: rgba(255,255,255,.22); color: rgba(255,255,255,.80); margin-top:22px;">
+          For informational purposes only. See
+          <a href="/disclaimer.html" style="color:#fff; text-decoration:underline; text-underline-offset:3px;">full disclaimer</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured story strip (auto updates from Substack RSS) -->
+  <section class="featured-strip" aria-label="Featured story" style="background: rgba(8,12,24,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
+    <div class="container featured-inner">
+      <div class="featured-left">
+        <div class="featured-label" style="color: rgba(255,255,255,.55);">Featured story</div>
+        <a id="featuredLink" class="featured-link" href="/posts.html" style="color: #fff;">Latest post loading…</a>
+        <div id="featuredMeta" class="featured-meta" style="color: rgba(255,255,255,.55);">Auto-updated from Substack</div>
+      </div>
+      <a class="featured-btn" href="/posts.html" style="background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18); color:#fff; box-shadow:none;">View all posts →</a>
+    </div>
+  </section>
+
+  <!-- LATEST RESEARCH -->
+  <section class="cinema-section" id="content" aria-label="Latest research">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Latest</div>
+        <h2>Recent research</h2>
+        <p class="lead">A working archive — every brief notes its mechanics, what to watch, and what would change the call.</p>
+      </div>
+
+      <div class="cine-grid-3" id="latestGrid">
+        <!-- Populated by Substack feed (fallback below) -->
+        <article class="cine-card">
+          <div class="card-kicker">Loading…</div>
+          <h3>Pulling latest posts from Substack</h3>
+          <p>If the feed is unavailable, you can still view all posts in the newsroom.</p>
+          <a class="card-link" href="/posts.html">View archive →</a>
+        </article>
+      </div>
+
+      <div style="margin-top: 32px;">
+        <a class="btn-cine" href="/posts.html">Browse all research →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ILLUSTRATIVE FUNDS — teasers that drive to /investments.html -->
+  <section class="cinema-section bleed" aria-label="Model funds">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Illustrative model portfolios</div>
+        <h2>Four strategies, transparently modelled.</h2>
+        <p class="lead">Macro overlay, market-structure alpha, physical supply premia, and a regime-aware factor sleeve. All returns are simulated for educational comparison — not a live trading account.</p>
+      </div>
+
+      <div class="cine-grid-4" id="fundTeasers"></div>
+
+      <div class="note-cine">
+        Illustrative only — not investment advice. Read the
+        <a href="/methodology.html">methodology</a> before drawing conclusions.
+      </div>
+
+      <div style="margin-top: 24px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-cine primary" href="/investments.html">Open fund dashboards →</a>
+        <a class="btn-cine" href="/methodology.html">How they're built</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="cinema-section" aria-label="Method">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Method</div>
+        <h2>How we think</h2>
+        <p class="lead">Clear mechanics, conservative claims, and a practical "what to watch" list at the end of every brief.</p>
+      </div>
+
+      <div class="cine-grid-3">
+        <div class="cine-card">
+          <div class="card-kicker">Market structure</div>
+          <h3>Where the marginal trade clears</h3>
+          <p>Delivery windows, exchange inventories, futures–physical linkage, settlement incentives, and positioning pressure.</p>
+          <a class="card-link" href="/methodology.html#structure">Read more →</a>
+        </div>
+        <div class="cine-card">
+          <div class="card-kicker">Physical tightness</div>
+          <h3>When paper and physical diverge</h3>
+          <p>Lease and funding regimes, availability constraints, and the conditions in which the futures curve mis-prices the cash market.</p>
+          <a class="card-link" href="/methodology.html#supply">Read more →</a>
+        </div>
+        <div class="cine-card">
+          <div class="card-kicker">Macro transmission</div>
+          <h3>From rates to risk assets</h3>
+          <p>How real yields, dollar liquidity, and credit spreads propagate into commodity, equity, and FX pricing.</p>
+          <a class="card-link" href="/methodology.html#macro">Read more →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARN — preview of the education hub -->
+  <section class="cinema-section bleed" aria-label="Learn">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Learn</div>
+        <h2>Build the foundations.</h2>
+        <p class="lead">Plain-English working notes on financial markets, asset classes, UK personal finance, and the CFA syllabus — written to actually be referred back to.</p>
+      </div>
+
+      <div class="cine-grid-3">
+        <a class="cine-card" href="/education.html#markets" style="text-decoration:none;">
+          <div class="card-kicker">Foundations</div>
+          <h3>Financial markets &amp; instruments</h3>
+          <p>Equity, fixed income, derivatives, FX — what each instrument actually does and why it exists.</p>
+          <span class="card-link">Open →</span>
+        </a>
+        <a class="cine-card" href="/education.html#assets" style="text-decoration:none;">
+          <div class="card-kicker">Asset classes</div>
+          <h3>Risk, return, and what drives each one</h3>
+          <p>From stocks and bonds to commodities, real estate, and alternatives — with the mechanics, not just the labels.</p>
+          <span class="card-link">Open →</span>
+        </a>
+        <a class="cine-card" href="/education.html#uk" style="text-decoration:none;">
+          <div class="card-kicker">UK investor</div>
+          <h3>ISA, SIPP &amp; tax-efficient investing</h3>
+          <p>Wrappers, allowances, capital gains, and how to actually structure a UK portfolio for after-tax returns.</p>
+          <span class="card-link">Open →</span>
+        </a>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <a class="btn-cine" href="/education.html">Open the learning library →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cinema-section tight" aria-label="Subscribe">
+    <div class="container" style="text-align:center; max-width: 720px;">
+      <div class="kicker" style="display:inline-block;">Subscribe</div>
+      <h2 style="margin-top:8px;">Get every brief in your inbox.</h2>
+      <p class="lead" style="margin: 12px auto 24px;">Free. No upsell. The newsletter is the product.</p>
+      <a class="btn-cine primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack →</a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">The Market Brief Daily</div>
+        <div class="footer-sub">Independent macro &amp; market structure research. Educational only — not investment advice.</div>
+      </div>
+
+      <div class="footer-links">
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/education.html">Learn</a>
+        <a href="/about.html">About</a>
+        <a href="mailto:hello@marketbriefdaily.com">Contact</a>
+        <a href="/disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cinema hero (full-page frame sequence) -->
+  <script src="/assets/cinema-hero.js" defer></script>
+
+  <script>
+    /* ----------------------------------------------------------------
+       Substack featured + latest grid
+       Pulls the RSS feed via rss2json, caches in localStorage 30min.
+       Renders top item into the strip, next 3 into the latest grid.
+    ---------------------------------------------------------------- */
+    const SUBSTACK_FEED = "https://marketbriefdaily.substack.com/feed";
+    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+    const CACHE_KEY = "mbd_substack_feed_v2";
+    const CACHE_TTL_MS = 30 * 60 * 1000;
+
+    function stripHtml(html){
+      const tmp = document.createElement("div");
+      tmp.innerHTML = html || "";
+      return (tmp.textContent || tmp.innerText || "").trim();
+    }
+    function fmtDate(d){
+      try { return new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"}); }
+      catch { return ""; }
+    }
+
+    function renderFeatured(item){
+      const linkEl = document.getElementById("featuredLink");
+      const metaEl = document.getElementById("featuredMeta");
+      if (!linkEl || !metaEl || !item) return;
+      linkEl.textContent = item.title;
+      linkEl.href = item.link;
+      linkEl.target = "_blank";
+      linkEl.rel = "noopener";
+      metaEl.textContent = `${item.date} • Market Brief Daily (Substack)`;
+    }
+
+    function renderLatest(items){
+      const grid = document.getElementById("latestGrid");
+      if (!grid || !items || !items.length) return;
+      grid.innerHTML = items.slice(0, 3).map(it => {
+        const excerpt = stripHtml(it.description || "").slice(0, 160);
+        return `
+          <article class="cine-card">
+            <div class="card-kicker">${it.date}</div>
+            <h3>${it.title}</h3>
+            <p>${excerpt}${excerpt.length === 160 ? '…' : ''}</p>
+            <a class="card-link" href="${it.link}" target="_blank" rel="noopener">Read on Substack →</a>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function loadFeed(){
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached){
+        try{
+          const c = JSON.parse(cached);
+          if (Date.now() - c.time < CACHE_TTL_MS && c.items){
+            renderFeatured(c.items[0]);
+            renderLatest(c.items);
+            return;
+          }
+        }catch{}
+      }
+      try{
+        const url = RSS2JSON + encodeURIComponent(SUBSTACK_FEED);
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("Feed fetch failed");
+        const data = await res.json();
+        if (!data.items || !data.items.length) throw new Error("No items");
+        const items = data.items.map(it => ({
+          title: stripHtml(it.title),
+          link: it.link,
+          date: fmtDate(it.pubDate),
+          description: it.description
+        }));
+        renderFeatured(items[0]);
+        renderLatest(items);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), items }));
+      }catch(err){
+        const linkEl = document.getElementById("featuredLink");
+        const metaEl = document.getElementById("featuredMeta");
+        if (linkEl) { linkEl.textContent = "View latest research"; linkEl.href = "/posts.html"; }
+        if (metaEl) metaEl.textContent = "Substack feed temporarily unavailable";
+        console.error(err);
+      }
+    }
+    loadFeed();
+
+    /* ----------------------------------------------------------------
+       Fund teaser cards with mini sparklines.
+       Numbers are illustrative — replace with live data wired from
+       /data/funds-snapshot.json on the Funds page.
+    ---------------------------------------------------------------- */
+    const FUND_TEASERS = [
+      { code:"MBD-MACRO",  name:"Macro Transmission Sleeve", color:"#7aa6ff", ytd: 8.4,  bench: 5.1, benchName:"60/40",
+        spark: [100,99.4,100.6,101.8,101.2,102.4,103.1,102.6,104.0,104.6,105.1,106.2,106.8,107.5,108.4] },
+      { code:"MBD-STRUCT", name:"Market Structure Alpha",    color:"#a78bfa", ytd: 6.2,  bench: 4.4, benchName:"S&P 500",
+        spark: [100,100.5,100.2,101.1,100.6,101.5,102.2,102.0,103.0,102.8,103.6,104.2,105.0,105.6,106.2] },
+      { code:"MBD-SUPPLY", name:"Physical Supply Premia",    color:"#10b981", ytd:11.7,  bench: 6.8, benchName:"Bloomberg Cmdty",
+        spark: [100,101.2,102.4,103.0,104.1,103.8,105.2,106.5,107.4,108.1,109.0,110.0,110.6,111.2,111.7] },
+      { code:"MBD-FACT",   name:"Regime-Aware Factor",       color:"#c8a35a", ytd: 7.1,  bench: 5.4, benchName:"MSCI World",
+        spark: [100,100.6,100.2,101.3,101.8,102.2,103.0,103.4,104.0,104.6,105.2,105.8,106.3,106.7,107.1] }
+    ];
+
+    function sparkSvg(points, color){
+      const w = 240, h = 56, pad = 4;
+      const min = Math.min(...points), max = Math.max(...points);
+      const range = max - min || 1;
+      const step = (w - pad*2) / (points.length - 1);
+      const path = points.map((v,i) => {
+        const x = pad + i*step;
+        const y = h - pad - ((v - min) / range) * (h - pad*2);
+        return `${i===0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(' ');
+      // Build the "fill under curve" path
+      const lastX = pad + (points.length-1)*step;
+      const fill = `${path} L${lastX.toFixed(1)},${h-pad} L${pad},${h-pad} Z`;
+      return `
+        <svg class="ft-spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="g-${color.replace('#','')}" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="${color}" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="${fill}" fill="url(#g-${color.replace('#','')})" stroke="none"/>
+          <path d="${path}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+    }
+
+    function fmtPct(n){ return `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`; }
+
+    function renderTeasers(){
+      const grid = document.getElementById('fundTeasers');
+      if (!grid) return;
+      grid.innerHTML = FUND_TEASERS.map(f => {
+        const rel = f.ytd - f.bench;
+        return `
+          <a href="/investments.html" class="fund-teaser" style="text-decoration:none;">
+            <div class="ft-head">
+              <div>
+                <div class="ft-code">${f.code}</div>
+                <div class="ft-name">${f.name}</div>
+              </div>
+            </div>
+            ${sparkSvg(f.spark, f.color)}
+            <div class="ft-stats">
+              <div>
+                <div class="ft-stat-label">YTD</div>
+                <div class="ft-stat-val ${f.ytd>=0?'pos':'neg'}">${fmtPct(f.ytd)}</div>
+              </div>
+              <div>
+                <div class="ft-stat-label">vs ${f.benchName}</div>
+                <div class="ft-stat-val ${rel>=0?'pos':'neg'}">${fmtPct(rel)}</div>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+    renderTeasers();
+  </script>
+</body>
+</html>
