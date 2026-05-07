@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Methodology — The Market Brief Daily</title>
+  <meta name="description" content="How we build model portfolios, what data sources we use, and our analytical framework. Read the methodology before drawing conclusions." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <style>
+    .method-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .method-block {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: clamp(20px, 3vw, 56px);
+      padding: 36px 0;
+      border-top: 1px solid var(--tbp-line);
+    }
+    .method-block:last-child { border-bottom: 1px solid var(--tbp-line); }
+    @media (max-width: 720px) {
+      .method-block { grid-template-columns: 1fr; gap: 14px; }
+    }
+    .method-num {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      color: var(--tbp-muted);
+    }
+    .method-content h3 {
+      font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin: 0 0 16px;
+    }
+    .method-content p {
+      font-size: 1rem; line-height: 1.7;
+      color: var(--tbp-ink-2);
+      margin: 0 0 14px;
+      max-width: 70ch;
+    }
+    .method-content ul {
+      list-style: none; padding: 0; margin: 14px 0 0;
+      max-width: 70ch;
+    }
+    .method-content li {
+      font-size: 14.5px;
+      color: var(--tbp-ink-2);
+      line-height: 1.65;
+      padding: 10px 0 10px 22px;
+      position: relative;
+      border-bottom: 1px solid var(--tbp-line-soft);
+    }
+    .method-content li:last-child { border-bottom: 0; }
+    .method-content li::before {
+      content: "→";
+      position: absolute;
+      left: 0; top: 10px;
+      color: var(--tbp-muted);
+    }
+    .method-content strong { color: var(--tbp-ink); font-weight: 700; }
+    .method-content code {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 13px;
+      background: var(--tbp-bg-alt);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .method-content a { color: var(--tbp-ink); border-bottom: 1px solid var(--tbp-ink); padding-bottom: 1px; }
+    .method-content a:hover { color: var(--tbp-blue); border-color: var(--tbp-blue); }
+    .method-meta {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--tbp-muted);
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="tbp-header">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav">
+        <a href="/">Home</a><a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a class="is-active" href="/methodology.html">Methodology</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu">
+    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="margin-bottom: 36px;">Methodology</div>
+        <h1 class="tbp-h1" style="max-width: 18ch;">
+          How the model portfolios are <em>constructed.</em>
+        </h1>
+        <p class="tbp-lead" style="margin-top: 28px;">
+          Everything published here is documented openly. Below is how each fund is built,
+          what benchmarks it's compared to, and where the data comes from.
+          Read this before drawing conclusions from any return figure on this site.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="method-stack" style="max-width: 1080px;">
+        <div class="method-block">
+          <div class="method-num">01</div>
+          <div class="method-content">
+            <div class="method-meta">Purpose &amp; status</div>
+            <h3>Educational research project.</h3>
+            <p>The Market Brief Daily is an <strong>educational research project</strong>. The model portfolios are illustrative — they do not represent any live fund, trading account, or advisory product. No client capital is allocated to them. Returns are simulated.</p>
+            <p>Nothing on this site constitutes investment advice. The site exists to make analytical frameworks visible — not to recommend trades or solicit subscriptions to financial products.</p>
+          </div>
+        </div>
+
+        <div class="method-block" id="structure">
+          <div class="method-num">M1</div>
+          <div class="method-content">
+            <div class="method-meta">Frame · Market structure</div>
+            <h3>Where the marginal trade clears.</h3>
+            <p>Order-flow telemetry, dealer positioning, futures–physical linkage, settlement incentives, and the microstructure effects that drive short-window price formation.</p>
+            <p style="font-size: 14px; color: var(--tbp-muted);">Common failure modes: confusing flow with edge; over-fitting to a single venue's tape; ignoring funding constraints that govern when a structure trade actually pays off.</p>
+          </div>
+        </div>
+
+        <div class="method-block" id="supply">
+          <div class="method-num">M2</div>
+          <div class="method-content">
+            <div class="method-meta">Frame · Physical tightness</div>
+            <h3>When paper and physical diverge.</h3>
+            <p>Inventory buffers, lease and funding regimes, delivery windows, and conditions where the futures curve mis-prices the cash market.</p>
+            <p style="font-size: 14px; color: var(--tbp-muted);">Common failure modes: extrapolating one squeeze cycle to all commodities; forgetting that warehousing arbitrage caps how tight things can get; underestimating how fast a tight market loosens.</p>
+          </div>
+        </div>
+
+        <div class="method-block" id="macro">
+          <div class="method-num">M3</div>
+          <div class="method-content">
+            <div class="method-meta">Frame · Macro transmission</div>
+            <h3>From rates to risk assets.</h3>
+            <p>How policy, real yields, dollar liquidity, and credit spreads propagate into commodity, equity, and FX pricing — with attention to lags and non-linearities.</p>
+            <p style="font-size: 14px; color: var(--tbp-muted);">Common failure modes: linear-thinking in regime-changing environments; assuming the first-order rate effect is the dominant one; reading the curve as forecast rather than as positioning.</p>
+          </div>
+        </div>
+
+        <div class="method-block" id="construction">
+          <div class="method-num">02</div>
+          <div class="method-content">
+            <div class="method-meta">Portfolio construction</div>
+            <h3>Each portfolio follows a documented mandate.</h3>
+            <ul>
+              <li><strong>Macro Transmission Sleeve</strong> — multi-asset overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts.</li>
+              <li><strong>Market Structure Alpha</strong> — equity-focused exposure capturing dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure.</li>
+              <li><strong>Physical Supply Premia</strong> — long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals.</li>
+              <li><strong>Regime-Aware Factor</strong> — rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-num">03</div>
+          <div class="method-content">
+            <div class="method-meta">Benchmarks</div>
+            <h3>Compared to closest passive alternative.</h3>
+            <p>Each fund is compared to a benchmark that reflects its closest passive alternative — never cherry-picked to flatter returns. Benchmarks are stated alongside each fund: <code>60/40</code>, <code>S&amp;P 500</code>, <code>Bloomberg Commodity</code>, and <code>MSCI World</code>.</p>
+            <p>Outperformance figures shown are <strong>YTD return minus benchmark YTD return</strong>, net of estimated transaction costs but gross of any fees a real fund would charge.</p>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-num">04</div>
+          <div class="method-content">
+            <div class="method-meta">Data sources</div>
+            <h3>Public-by-default.</h3>
+            <ul>
+              <li><strong>Price &amp; market data</strong> — public exchange feeds (LME, CME, ICE), official central-bank statistical releases, and Bloomberg/Refinitiv where licensed.</li>
+              <li><strong>Inventory &amp; supply</strong> — official warehouse stocks (LME, COMEX), USDA/EIA reports, customs &amp; shipping data.</li>
+              <li><strong>Macro &amp; rates</strong> — FRED, ECB SDW, BIS, central-bank minutes, sovereign issuance calendars.</li>
+              <li><strong>Microstructure</strong> — published academic literature, exchange disclosures, and aggregated public order-book snapshots.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-num">05</div>
+          <div class="method-content">
+            <div class="method-meta">Scope</div>
+            <h3>What the brief is — and isn't.</h3>
+            <p>The brief is a <strong>working analyst's notebook</strong>. It's where I document what I'm modelling, what changed my mind this week, and where I think consensus is wrong.</p>
+            <p>It is <strong>not</strong> a trade-recommendation service, a signal feed, or a substitute for your own due diligence. If a piece on this site changes how you allocate capital, you should be running the underlying model yourself.</p>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-num">06</div>
+          <div class="method-content">
+            <div class="method-meta">Errors &amp; corrections</div>
+            <h3>Public, marked, and dated.</h3>
+            <p>When I get something wrong, I correct it in the next brief, mark the original post with an erratum, and link back from the correction. The published archive is not silently edited.</p>
+            <p>Spotted an error? Email <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a> with the source and what changed.</p>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-num">07</div>
+          <div class="method-content">
+            <div class="method-meta">Independence</div>
+            <h3>No paid promotions, no allocation kickbacks.</h3>
+            <p>If a piece references a specific instrument or strategy, it's because the analysis pointed there — not because anyone paid for the mention.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbp-disclaimer" style="margin-top: 56px; max-width: 1080px;">
+        <div>
+          <strong>Reminder.</strong> Model portfolio returns shown elsewhere on this site are simulated for educational comparison and do not reflect any live fund or trading account. See the <a href="/disclaimer.html">full disclaimer</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tbp-footer">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/methodology.html">Methodology</a><a href="/education.html">Learn</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="#">Privacy</a><a href="#">Terms</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+</body>
+</html>
