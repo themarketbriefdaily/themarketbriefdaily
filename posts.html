@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research — The Market Brief Daily</title>
+  <meta name="description" content="Independent macro and market structure research. Briefs on physical supply, microstructure, rates, FX, and factor premia." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <style>
+    /* Page-specific filter bar adapted to TBP look */
+    .tbp-filter-bar {
+      display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+      padding: 18px 22px;
+      border: 1px solid var(--tbp-line);
+      border-radius: 999px;
+      background: var(--tbp-bg);
+      margin-bottom: 56px;
+    }
+    .tbp-filter-bar .search-wrap { flex: 1; min-width: 240px; position: relative; }
+    .tbp-filter-bar input[type="search"] {
+      width: 100%; padding: 8px 14px 8px 30px;
+      border: 0; outline: 0;
+      font: inherit; font-size: 14.5px;
+      background: transparent; color: var(--tbp-ink);
+    }
+    .tbp-filter-bar .search-wrap::before {
+      content: "";
+      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 16px;
+      background: no-repeat center/contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>");
+    }
+    .tbp-tag-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tbp-tag-filters button {
+      padding: 8px 14px;
+      font: inherit; font-size: 12.5px; font-weight: 500;
+      letter-spacing: .02em;
+      border: 1px solid var(--tbp-line);
+      background: transparent; color: var(--tbp-ink);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .25s var(--tbp-ease), color .25s var(--tbp-ease);
+    }
+    .tbp-tag-filters button:hover { background: var(--tbp-line-soft); }
+    .tbp-tag-filters button.active { background: var(--tbp-ink); color: var(--tbp-bg); border-color: var(--tbp-ink); }
+  </style>
+</head>
+
+<body>
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a class="is-active" href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu">
+    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="margin-bottom: 36px;">Research archive</div>
+        <h1 class="tbp-h1" style="max-width: 16ch;">
+          Independent briefs on what's <em>actually</em> moving markets.
+        </h1>
+        <p class="tbp-lead" style="margin-top: 28px;">
+          Macro transmission, physical-supply mechanics, and order-flow microstructure —
+          auto-loaded from our Substack feed. Filter by topic, search the archive,
+          subscribe for direct delivery.
+        </p>
+        <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS feed <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-filter-bar" role="search" data-tbp-reveal>
+        <div class="search-wrap">
+          <input type="search" id="searchInput" placeholder="Search briefs by title, topic, or term…" autocomplete="off" />
+        </div>
+        <div class="tbp-tag-filters" id="tagFilters" role="tablist">
+          <button type="button" class="active" data-tag="all">All</button>
+          <button type="button" data-tag="Macro">Macro</button>
+          <button type="button" data-tag="Market Structure">Market Structure</button>
+          <button type="button" data-tag="Supply">Supply</button>
+          <button type="button" data-tag="Strategy">Strategy</button>
+          <button type="button" data-tag="Rates">Rates</button>
+          <button type="button" data-tag="FX">FX</button>
+          <button type="button" data-tag="Metals">Metals</button>
+        </div>
+      </div>
+
+      <div id="newsGrid" class="tbp-card-grid three">
+        <div style="grid-column: 1/-1; padding: 60px 0; text-align:center; color:var(--tbp-muted);">
+          Loading latest research…
+        </div>
+      </div>
+
+      <div class="tbp-disclaimer" style="margin-top: 56px;">
+        <div>
+          <strong>Disclosure.</strong> All content is informational only and does not constitute investment advice.
+          Past performance is not indicative of future results. See the <a href="/disclaimer.html">full disclaimer</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tbp-footer">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/methodology.html">Methodology</a><a href="/education.html">Learn</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="#">Privacy</a><a href="#">Terms</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script>
+    const SUBSTACK_FEED = "https://marketbriefdaily.substack.com/feed";
+    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+    const CACHE_KEY = "mbd_substack_feed_posts_tbp_v1";
+    const CACHE_TTL_MS = 30 * 60 * 1000;
+
+    function stripHtml(html){ const t=document.createElement('div'); t.innerHTML=html||''; return (t.textContent||'').trim(); }
+    function fmtDate(d){ try{return new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'});}catch{return '';} }
+    function pickImage(it){
+      if (it.thumbnail) return it.thumbnail;
+      if (it.enclosure && it.enclosure.link) return it.enclosure.link;
+      const m = (it.content||'').match(/<img[^>]+src="([^">]+)"/i);
+      return m ? m[1] : null;
+    }
+    function readTime(t){ const w=(t||'').trim().split(/\s+/).filter(Boolean).length; return Math.max(2, Math.round(w/220))+' min'; }
+    function guessTag(it){
+      const c=(stripHtml(it.categories&&it.categories[0])||'').toLowerCase();
+      if(c.includes('metal'))return 'Metals'; if(c.includes('macro'))return 'Macro';
+      if(c.includes('fx')||c.includes('currency'))return 'FX';
+      if(c.includes('rates')||c.includes('bond'))return 'Rates';
+      if(c.includes('supply'))return 'Supply';
+      const t=(stripHtml(it.title)+' '+stripHtml(it.description)).toLowerCase();
+      if(/silver|gold|comex|copper/.test(t))return 'Metals';
+      if(/japan|treasury|fed|ecb/.test(t))return 'Macro';
+      if(/supply|inventory|delivery/.test(t))return 'Supply';
+      if(/microstructure|flow|order/.test(t))return 'Market Structure';
+      if(/factor|value|momentum/.test(t))return 'Strategy';
+      return 'Research';
+    }
+
+    let allItems=[], activeTag='all', activeQuery='';
+
+    function renderFeed(items){
+      const grid = document.getElementById('newsGrid');
+      if (!items || !items.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 0;text-align:center;color:var(--tbp-muted);">No articles found. <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="color:var(--tbp-ink);border-bottom:1px solid var(--tbp-ink);">Visit Substack</a>.</div>';
+        return;
+      }
+      allItems = items.slice(0,30).map((it,i) => {
+        const raw = stripHtml(it.description||it.content);
+        const excerpt = raw.length > 140 ? raw.slice(0,140)+'…' : raw;
+        return {
+          title: stripHtml(it.title), link: it.link,
+          date: fmtDate(it.pubDate), img: pickImage(it),
+          tag: guessTag(it), excerpt,
+          read: readTime(raw + ' ' + it.title),
+          haystack: (stripHtml(it.title)+' '+raw).toLowerCase()
+        };
+      });
+      applyFilters();
+    }
+
+    function applyFilters(){
+      const grid = document.getElementById('newsGrid');
+      const q = activeQuery.trim().toLowerCase();
+      const filtered = allItems.filter(it =>
+        (activeTag==='all' || it.tag===activeTag) &&
+        (!q || it.haystack.includes(q))
+      );
+      if (!filtered.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1;padding:60px 0;text-align:center;color:var(--tbp-muted);">No briefs match this filter. <button type="button" onclick="window.__resetFilters()" style="background:none;border:0;color:var(--tbp-ink);font-weight:600;cursor:pointer;border-bottom:1px solid var(--tbp-ink);padding:0;">Clear filters</button>.</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(it => {
+        const visual = it.img
+          ? `<img src="${it.img}" alt="" loading="lazy" />`
+          : `<div class="placeholder">RESEARCH</div>`;
+        return `
+          <a class="tbp-card" href="${it.link}" target="_blank" rel="noopener">
+            <div class="visual">${visual}<div class="arrow">↗</div></div>
+            <div class="meta"><span>${it.tag}</span><span>${it.date}</span><span>${it.read}</span></div>
+            <h3>${it.title}</h3>
+            <p>${it.excerpt}</p>
+            <span class="read-more">Read on Substack</span>
+          </a>`;
+      }).join('');
+    }
+
+    window.__resetFilters = function(){
+      activeTag='all'; activeQuery='';
+      document.getElementById('searchInput').value='';
+      document.querySelectorAll('.tbp-tag-filters button').forEach(b => b.classList.toggle('active', b.dataset.tag==='all'));
+      applyFilters();
+    };
+
+    document.addEventListener('input', e => {
+      if (e.target && e.target.id==='searchInput'){ activeQuery=e.target.value; applyFilters(); }
+    });
+    document.addEventListener('click', e => {
+      const btn = e.target.closest && e.target.closest('.tbp-tag-filters button');
+      if (!btn) return;
+      activeTag = btn.dataset.tag;
+      document.querySelectorAll('.tbp-tag-filters button').forEach(b => b.classList.toggle('active', b===btn));
+      applyFilters();
+    });
+
+    async function loadFeed(){
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached){ try { const c=JSON.parse(cached); if (Date.now()-c.time<CACHE_TTL_MS && c.items){ renderFeed(c.items); return; } } catch{} }
+      try {
+        const res = await fetch(RSS2JSON+encodeURIComponent(SUBSTACK_FEED), {cache:'no-store'});
+        if (!res.ok) throw new Error('feed');
+        const data = await res.json();
+        if (!data.items || !data.items.length) throw new Error('empty');
+        renderFeed(data.items);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({time:Date.now(), items:data.items}));
+      } catch (err) {
+        const grid = document.getElementById('newsGrid');
+        grid.innerHTML = `<div style="grid-column:1/-1;padding:60px 0;text-align:center;color:var(--tbp-muted);">Feed unavailable. <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="color:var(--tbp-ink);border-bottom:1px solid var(--tbp-ink);">Read on Substack</a></div>`;
+      }
+    }
+    loadFeed();
+  </script>
+</body>
+</html>
