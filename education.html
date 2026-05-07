@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learn — The Market Brief Daily</title>
+  <meta name="description" content="Plain-English working notes on financial markets, asset classes, UK personal finance, pensions, and the CFA syllabus. Educational only — not investment advice." />
+  <meta name="theme-color" content="#0a0f1c" />
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/cinema-hero.css" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-001.jpg" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-060.jpg" />
+
+  <style>
+    .hero .hero-bg, .hero .hero-overlay, .hero .hero-fade { display: none !important; }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
+    }
+    @media (max-width: 1100px) { .topic-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px)  { .topic-grid { grid-template-columns: 1fr; } }
+
+    .topic-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all .3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .topic-card:hover {
+      border-color: rgba(122,166,255,.45);
+      transform: translateY(-4px);
+      background: rgba(255,255,255,.06);
+      text-decoration: none;
+    }
+    .topic-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      background: rgba(122,166,255,.14);
+      border: 1px solid rgba(122,166,255,.3);
+      color: #c2d4ff;
+      border-radius: 10px;
+      font-weight: 900; font-size: 14px;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    .topic-card h3 {
+      font-size: 1.15rem; font-weight: 850;
+      color: #fff; margin: 0;
+      letter-spacing: -.01em; line-height: 1.25;
+    }
+    .topic-card p {
+      color: rgba(255,255,255,.72);
+      font-size: 14px; line-height: 1.65;
+      margin: 0;
+    }
+    .topic-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: auto;
+    }
+    .topic-tag {
+      font-size: 11px; font-weight: 700;
+      padding: 5px 10px; border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.65);
+    }
+    .topic-card .open-arrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: #7aa6ff;
+      font-weight: 700; font-size: 14px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+    @media (max-width: 800px) { .quick-links { grid-template-columns: 1fr; } }
+    .quick-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 12px;
+      color: #fff;
+      text-decoration: none;
+      transition: all .2s ease;
+    }
+    .quick-link:hover {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(122,166,255,.4);
+      text-decoration: none;
+    }
+    .quick-link .ql-label { font-weight: 800; font-size: 14.5px; }
+    .quick-link .ql-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
+    .quick-link .ql-arrow { color: #7aa6ff; font-weight: 800; }
+  </style>
+</head>
+
+<body class="cinema-mode">
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" aria-label="The Market Brief Daily Home">
+        <img class="brand-logo" src="/assets/images/logo.png" alt="The Market Brief Daily logo" />
+        <span class="brand-stack">
+          <span class="brand-title">The Market Brief Daily</span>
+          <span class="brand-sub">Market structure • Physical supply • Macro transmission</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a class="is-active" href="/education.html">Learn</a>
+        <a href="/about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero cinema-hero" aria-label="Hero" style="min-height: 60vh;">
+    <div class="cinema-stage">
+      <canvas class="cinema-canvas" id="cinemaCanvas" aria-hidden="true"></canvas>
+      <div class="cinema-grade" aria-hidden="true"></div>
+      <div class="cinema-letterbox top" aria-hidden="true"></div>
+      <div class="cinema-letterbox bottom" aria-hidden="true"></div>
+      <div class="cinema-progress" aria-hidden="true"></div>
+    </div>
+
+    <div class="container hero-inner" style="min-height: 60vh;">
+      <div class="hero-panel">
+        <div class="hero-eyebrow">Working notes for serious learners</div>
+        <h1>Build the foundations.<br>Skip the noise.</h1>
+        <p>
+          Plain-English chapters on financial markets, asset classes, UK personal finance, pensions,
+          and the CFA syllabus — written to actually be referred back to when it matters.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cinema-section" id="content" aria-label="Topics">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Topics</div>
+        <h2>The seven core chapters</h2>
+        <p class="lead">Each chapter is self-contained. Start anywhere. Together they cover everything from how a stock exchange clears a trade to how to actually structure a UK ISA-and-SIPP stack for after-tax compounding.</p>
+      </div>
+
+      <div class="topic-grid">
+
+        <a href="/education-financial-markets.html" class="topic-card" id="markets">
+          <div class="topic-num">01</div>
+          <h3>Financial markets</h3>
+          <p>How exchanges, brokers, market makers, and clearing actually fit together. Order types, liquidity, and where the price you see comes from.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Microstructure</span>
+            <span class="topic-tag">Foundations</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-asset-classes-types.html" class="topic-card" id="assets">
+          <div class="topic-num">02</div>
+          <h3>Asset classes &amp; types</h3>
+          <p>Equities, fixed income, commodities, real estate, cash, and alternatives. What drives each, what risks they carry, and how they behave in regimes.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Multi-asset</span>
+            <span class="topic-tag">Risk</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-investing.html" class="topic-card">
+          <div class="topic-num">03</div>
+          <h3>Investing principles</h3>
+          <p>Time horizons, diversification, the cost of being wrong, and the difference between investing and speculation. Mental models, not stock tips.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Frameworks</span>
+            <span class="topic-tag">Strategy</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-personal-finance.html" class="topic-card">
+          <div class="topic-num">04</div>
+          <h3>Personal finance</h3>
+          <p>Saving rates, debt prioritisation, emergency funds, mortgages, and how to build a financial life that doesn't fall apart at the first shock.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Cash flow</span>
+            <span class="topic-tag">Risk</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-uk-investing-tax.html" class="topic-card" id="uk">
+          <div class="topic-num">05</div>
+          <h3>UK investing &amp; tax</h3>
+          <p>ISA, SIPP, GIA, capital gains allowances, dividend tax bands, and how to actually structure a portfolio for after-tax compounding in the UK.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">UK</span>
+            <span class="topic-tag">Tax-efficient</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-pensions.html" class="topic-card">
+          <div class="topic-num">06</div>
+          <h3>Pensions</h3>
+          <p>Workplace pensions, SIPPs, lifetime allowance, contribution caps, and how to think about pension contributions vs ISA contributions through your career.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Long-horizon</span>
+            <span class="topic-tag">UK</span>
+          </div>
+          <span class="open-arrow">Open chapter →</span>
+        </a>
+
+        <a href="/education-library.html" class="topic-card">
+          <div class="topic-num">07</div>
+          <h3>Reading library</h3>
+          <p>The books, papers, and primary sources that genuinely changed how I think about markets — with notes on what to read first and why.</p>
+          <div class="topic-tags">
+            <span class="topic-tag">Resources</span>
+            <span class="topic-tag">Curated</span>
+          </div>
+          <span class="open-arrow">Open library →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cinema-section bleed" aria-label="Quick links">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Tools</div>
+        <h2>Reference material</h2>
+        <p class="lead">Quick access to glossary entries, methodology notes, and the latest research feed.</p>
+      </div>
+
+      <div class="quick-links">
+        <a class="quick-link" href="/glossary.html">
+          <div>
+            <div class="ql-label">Glossary</div>
+            <div class="ql-sub">Plain-English definitions of every term used on this site</div>
+          </div>
+          <div class="ql-arrow">→</div>
+        </a>
+        <a class="quick-link" href="/methodology.html">
+          <div>
+            <div class="ql-label">Methodology</div>
+            <div class="ql-sub">How the model portfolios are built and benchmarked</div>
+          </div>
+          <div class="ql-arrow">→</div>
+        </a>
+        <a class="quick-link" href="/posts.html">
+          <div>
+            <div class="ql-label">Latest research</div>
+            <div class="ql-sub">All published briefings — most recent first</div>
+          </div>
+          <div class="ql-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">The Market Brief Daily</div>
+        <div class="footer-sub">Independent macro &amp; market structure research. Educational only — not investment advice.</div>
+      </div>
+      <div class="footer-links">
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/education.html">Learn</a>
+        <a href="/about.html">About</a>
+        <a href="/glossary.html">Glossary</a>
+        <a href="/disclaimer.html">Disclaimer</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/cinema-hero.js" defer></script>
+</body>
+</html>
