@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Market Brief Daily — Independent macro &amp; market structure research</title>
+  <meta name="description" content="Macro and market structure analysis, written without the sell-side spin. Briefings on physical supply, transmission, and factor premia, with transparent illustrative model portfolios." />
+  <meta name="theme-color" content="#faf9f6" />
+
+  <!-- Editorial display + body pairing. Swap font hrefs if you license differently. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-cinema.css" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-001.jpg" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-048.jpg" />
+  <link rel="preload" as="image" href="/assets/hero-frames/frame-096.jpg" />
+</head>
+
+<body>
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <!-- ── HERO — scroll-driven 96-frame cinema ─────────────────── -->
+  <section class="tbp-cine-hero" aria-label="Hero">
+    <div class="stage">
+      <canvas id="tbpCineCanvas" aria-hidden="true"></canvas>
+      <div class="grade" aria-hidden="true"></div>
+
+      <div class="tbp-container stage-inner">
+        <div class="hero-grid">
+          <div>
+            <div class="tbp-eyebrow" style="margin-bottom: 36px;">Independent research, est. 2024</div>
+            <h1>
+              Reading <em>markets</em><br>
+              without the<br>
+              sell-side spin.
+            </h1>
+          </div>
+          <div class="lead-block" style="display:flex; flex-direction:column; gap:24px; padding-bottom:6px;">
+            <p>
+              Daily briefings on physical supply, market microstructure, and macro
+              transmission — written for analysts and allocators who need signal,
+              not narrative.
+            </p>
+            <div class="tbp-hero-meta">
+              <span><strong>80+</strong> briefings published</span>
+              <span><strong>2,400+</strong> subscribers</span>
+              <span>Updated every market open</span>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+              <a class="tbp-btn primary" href="/posts.html">Read latest brief <span class="arrow">→</span></a>
+              <a class="tbp-btn" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tbp-cine-progress" aria-hidden="true">
+          <span class="label">Scroll</span>
+          <span class="bar"></span>
+          <span class="frame-num">001 / 96</span>
+        </div>
+      </div>
+
+      <div class="tbp-cine-loader" aria-hidden="true"></div>
+      <div class="tbp-cine-cue" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ── MARQUEE strip — covered topics ──────────────────────── -->
+  <div class="tbp-marquee" aria-hidden="true">
+    <div class="tbp-marquee-track">
+      <span>Macro transmission</span><span class="dot"></span>
+      <span>Physical supply</span><span class="dot"></span>
+      <span>Microstructure</span><span class="dot"></span>
+      <span>Rates &amp; FX</span><span class="dot"></span>
+      <span>Factor premia</span><span class="dot"></span>
+      <span>Order flow</span><span class="dot"></span>
+      <span>Term structure</span><span class="dot"></span>
+      <span>Real yields</span><span class="dot"></span>
+      <span>Dollar liquidity</span><span class="dot"></span>
+    </div>
+  </div>
+
+  <!-- ── STATS BAND ──────────────────────────────────────────── -->
+  <section class="tbp-section tight" aria-label="At a glance">
+    <div class="tbp-container">
+      <div class="tbp-stats" data-tbp-reveal>
+        <div class="tbp-stat">
+          <div class="num">04</div>
+          <div class="label">Illustrative model portfolios — macro, structure, supply, factor</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">07</div>
+          <div class="label">Education chapters covering markets, instruments, and UK tax</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">80<span class="unit">+</span></div>
+          <div class="label">Research briefs in the public archive</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">£0</div>
+          <div class="label">Cost — the newsletter is the product</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LATEST RESEARCH ─────────────────────────────────────── -->
+  <section class="tbp-section" aria-label="Latest research">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">Latest briefings</div>
+          <h2 class="tbp-h2">Recent <em>research.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">A working archive — every brief notes its mechanics, what to watch, and what would change the call. No paywall, no upsell.</p>
+        </div>
+      </div>
+
+      <div class="tbp-card-grid three" id="latestGrid" data-tbp-reveal>
+        <!-- Placeholder cards while feed loads -->
+        <article class="tbp-card">
+          <div class="visual"><div class="placeholder">LOADING</div><div class="arrow">↗</div></div>
+          <div class="meta"><span>Loading</span></div>
+          <h3>Pulling latest posts from Substack</h3>
+          <p>If the feed is unavailable, you can still browse the full research archive.</p>
+          <span class="read-more">View archive</span>
+        </article>
+      </div>
+
+      <div style="margin-top: 56px;">
+        <a class="tbp-btn" href="/posts.html">Browse all research <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FUNDS ROTATOR ───────────────────────────────────────── -->
+  <section class="tbp-section alt" aria-label="Model funds">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">Illustrative portfolios</div>
+          <h2 class="tbp-h2">Four strategies,<br><em>transparently</em> modelled.</h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Macro overlay, market-structure alpha, physical supply premia, and a regime-aware factor sleeve. All returns are simulated for educational comparison — never a live trading account.</p>
+        </div>
+      </div>
+
+      <div class="tbp-rotator" data-tbp-rotator>
+        <div>
+          <div class="tbp-rotator-counter">
+            <span class="counter-current">01</span>
+            <span class="total">/ 04</span>
+          </div>
+          <div class="tbp-rotator-controls">
+            <button data-rotator-prev aria-label="Previous strategy">←</button>
+            <button data-rotator-next aria-label="Next strategy">→</button>
+          </div>
+          <p class="tbp-small" style="margin-top: 24px; max-width: 32ch;">
+            Hover to pause. Read the <a href="/methodology.html" style="color:var(--tbp-ink); border-bottom:1px solid var(--tbp-ink);">methodology</a> before drawing conclusions.
+          </p>
+        </div>
+
+        <div class="tbp-rotator-stage">
+          <article class="tbp-rotator-slide active">
+            <div class="tbp-eyebrow" style="margin-bottom:14px;">MBD-MACRO</div>
+            <h3>Macro Transmission Sleeve</h3>
+            <p>Multi-asset overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts.</p>
+            <ul>
+              <li><span>Benchmark</span><span>60/40</span></li>
+              <li><span>YTD return</span><span style="color:var(--tbp-pos)">+8.40%</span></li>
+              <li><span>vs benchmark</span><span style="color:var(--tbp-pos)">+3.30%</span></li>
+              <li><span>Style</span><span>Tactical · multi-asset</span></li>
+            </ul>
+          </article>
+
+          <article class="tbp-rotator-slide">
+            <div class="tbp-eyebrow" style="margin-bottom:14px;">MBD-STRUCT</div>
+            <h3>Market Structure Alpha</h3>
+            <p>Equity-focused exposure capturing dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure.</p>
+            <ul>
+              <li><span>Benchmark</span><span>S&amp;P 500</span></li>
+              <li><span>YTD return</span><span style="color:var(--tbp-pos)">+6.20%</span></li>
+              <li><span>vs benchmark</span><span style="color:var(--tbp-pos)">+1.80%</span></li>
+              <li><span>Style</span><span>Microstructure · quant</span></li>
+            </ul>
+          </article>
+
+          <article class="tbp-rotator-slide">
+            <div class="tbp-eyebrow" style="margin-bottom:14px;">MBD-SUPPLY</div>
+            <h3>Physical Supply Premia</h3>
+            <p>Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals.</p>
+            <ul>
+              <li><span>Benchmark</span><span>Bloomberg Cmdty</span></li>
+              <li><span>YTD return</span><span style="color:var(--tbp-pos)">+11.70%</span></li>
+              <li><span>vs benchmark</span><span style="color:var(--tbp-pos)">+4.90%</span></li>
+              <li><span>Style</span><span>Commodities · physical</span></li>
+            </ul>
+          </article>
+
+          <article class="tbp-rotator-slide">
+            <div class="tbp-eyebrow" style="margin-bottom:14px;">MBD-FACT</div>
+            <h3>Regime-Aware Factor</h3>
+            <p>Rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions.</p>
+            <ul>
+              <li><span>Benchmark</span><span>MSCI World</span></li>
+              <li><span>YTD return</span><span style="color:var(--tbp-pos)">+7.10%</span></li>
+              <li><span>vs benchmark</span><span style="color:var(--tbp-pos)">+1.70%</span></li>
+              <li><span>Style</span><span>Factor · long-only</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div style="margin-top: 56px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="tbp-btn primary" href="/investments.html">Open fund dashboards <span class="arrow">→</span></a>
+        <a class="tbp-btn" href="/methodology.html">How they're built <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── METHOD CARDS ────────────────────────────────────────── -->
+  <section class="tbp-section" aria-label="Method">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">Method</div>
+          <h2 class="tbp-h2">Three frames<br>for reading <em>markets.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Every brief on this site ladders up to one of three analytical frames. Each has its own discipline — and its own failure modes, which we publish openly.</p>
+        </div>
+      </div>
+
+      <div class="tbp-card-grid three">
+        <a class="tbp-card" href="/methodology.html#structure" data-tbp-reveal>
+          <div class="visual">
+            <img src="/assets/images/method-structure.jpg" alt="Order book and market depth chart" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>Frame 01</span><span>Microstructure</span></div>
+          <h3>Where the marginal trade clears</h3>
+          <p>Order-flow telemetry, dealer positioning, settlement incentives, and the microstructure effects that drive short-window price formation.</p>
+          <span class="read-more">Read</span>
+        </a>
+
+        <a class="tbp-card" href="/methodology.html#supply" data-tbp-reveal class="delay-1">
+          <div class="visual">
+            <img src="/assets/images/method-supply.jpg" alt="Silver bullion vault" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>Frame 02</span><span>Commodities</span></div>
+          <h3>When paper and physical diverge</h3>
+          <p>Lease and funding regimes, inventory buffers, delivery windows, and conditions where the futures curve mis-prices the cash market.</p>
+          <span class="read-more">Read</span>
+        </a>
+
+        <a class="tbp-card" href="/methodology.html#macro" data-tbp-reveal class="delay-2">
+          <div class="visual">
+            <img src="/assets/images/london-skyline.jpg" alt="City of London skyline at sunset" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>Frame 03</span><span>Macro &amp; rates</span></div>
+          <h3>From rates to risk assets</h3>
+          <p>How real yields, dollar liquidity, and credit spreads propagate into commodity, equity, and FX pricing — with attention to lags and non-linearities.</p>
+          <span class="read-more">Read</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LEARN preview ───────────────────────────────────────── -->
+  <section class="tbp-section alt" aria-label="Learn">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">Learning library</div>
+          <h2 class="tbp-h2">Build the <em>foundations.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Plain-English working notes on financial markets, asset classes, UK personal finance, and the CFA syllabus — written to actually be referred back to.</p>
+        </div>
+      </div>
+
+      <div class="tbp-card-grid three">
+        <a class="tbp-card" href="/education.html#markets" data-tbp-reveal>
+          <div class="visual">
+            <img src="/assets/images/ny-skyline.jpg" alt="Lower Manhattan skyline" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>01</span><span>Foundations</span></div>
+          <h3>Financial markets &amp; instruments</h3>
+          <p>Equity, fixed income, derivatives, FX — what each instrument actually does and why it exists.</p>
+          <span class="read-more">Open chapter</span>
+        </a>
+        <a class="tbp-card" href="/education.html#assets" data-tbp-reveal class="delay-1">
+          <div class="visual">
+            <img src="/assets/images/global-clusters.jpg" alt="Globe with industry clusters" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>02</span><span>Multi-asset</span></div>
+          <h3>Risk, return, and what drives each one</h3>
+          <p>From stocks and bonds to commodities, real estate, and alternatives — with the mechanics, not just the labels.</p>
+          <span class="read-more">Open chapter</span>
+        </a>
+        <a class="tbp-card" href="/education.html#uk" data-tbp-reveal class="delay-2">
+          <div class="visual">
+            <img src="/assets/images/uk-investing.jpg" alt="UK investing illustration with Big Ben" loading="lazy" />
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>05</span><span>UK · Tax</span></div>
+          <h3>ISA, SIPP &amp; tax-efficient investing</h3>
+          <p>Wrappers, allowances, capital gains, and how to actually structure a UK portfolio for after-tax returns.</p>
+          <span class="read-more">Open chapter</span>
+        </a>
+      </div>
+
+      <div style="margin-top: 56px;">
+        <a class="tbp-btn" href="/education.html">Open the learning library <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA STRIP ───────────────────────────────────────────── -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-cta-strip" data-tbp-reveal>
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Subscribe</div>
+          <h2>Get every brief<br>before the open.</h2>
+        </div>
+        <div class="actions">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="/about.html">About <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────── -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/methodology.html">Methodology</a>
+            <a href="/education.html">Learn</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="mailto:hello@marketbriefdaily.com">Contact</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+            <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+          </div>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <div class="tbp-footer-links">
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script src="/assets/tbp-cinema.js" defer></script>
+
+  <!-- Substack feed loader: fills the latest research grid -->
+  <script>
+    const SUBSTACK_FEED = "https://marketbriefdaily.substack.com/feed";
+    const RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+    const CACHE_KEY = "mbd_substack_feed_tbp_v1";
+    const CACHE_TTL_MS = 30 * 60 * 1000;
+
+    function stripHtml(html){
+      const tmp = document.createElement("div"); tmp.innerHTML = html || "";
+      return (tmp.textContent || tmp.innerText || "").trim();
+    }
+    function fmtDate(d){
+      try { return new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"}); }
+      catch { return ""; }
+    }
+
+    function pickImage(item){
+      if (item.thumbnail) return item.thumbnail;
+      if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+      const m = (item.content || "").match(/<img[^>]+src="([^">]+)"/i);
+      return (m && m[1]) || null;
+    }
+
+    function renderLatest(items){
+      const grid = document.getElementById("latestGrid");
+      if (!grid || !items || !items.length) return;
+      grid.innerHTML = items.slice(0, 3).map(it => {
+        const title = stripHtml(it.title);
+        const date = fmtDate(it.pubDate);
+        const excerpt = stripHtml(it.description || "").slice(0, 140);
+        const img = pickImage(it);
+        const visual = img
+          ? `<img src="${img}" alt="" loading="lazy" />`
+          : `<div class="placeholder">RESEARCH BRIEF</div>`;
+        return `
+          <a class="tbp-card" href="${it.link}" target="_blank" rel="noopener">
+            <div class="visual">${visual}<div class="arrow">↗</div></div>
+            <div class="meta"><span>${date}</span><span>Research</span></div>
+            <h3>${title}</h3>
+            <p>${excerpt}${excerpt.length === 140 ? '…' : ''}</p>
+            <span class="read-more">Read on Substack</span>
+          </a>`;
+      }).join('');
+    }
+
+    async function loadFeed(){
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached){
+        try {
+          const c = JSON.parse(cached);
+          if (Date.now() - c.time < CACHE_TTL_MS && c.items){ renderLatest(c.items); return; }
+        } catch {}
+      }
+      try {
+        const res = await fetch(RSS2JSON + encodeURIComponent(SUBSTACK_FEED), { cache:"no-store" });
+        if (!res.ok) throw new Error("Feed failed");
+        const data = await res.json();
+        if (!data.items || !data.items.length) throw new Error("No items");
+        const items = data.items.map(it => ({
+          title: it.title, link: it.link, pubDate: it.pubDate,
+          description: it.description, content: it.content,
+          thumbnail: it.thumbnail, enclosure: it.enclosure
+        }));
+        renderLatest(items);
+        localStorage.setItem(CACHE_KEY, JSON.stringify({ time: Date.now(), items }));
+      } catch (err) {
+        const grid = document.getElementById("latestGrid");
+        if (grid) grid.innerHTML = `
+          <a class="tbp-card" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+            <div class="visual"><div class="placeholder">VIEW ON SUBSTACK</div><div class="arrow">↗</div></div>
+            <div class="meta"><span>External</span></div>
+            <h3>Read all briefs on Substack</h3>
+            <p>Live feed temporarily unavailable. Open the publication to see the latest archive.</p>
+            <span class="read-more">Open Substack</span>
+          </a>`;
+        console.error(err);
+      }
+    }
+    loadFeed();
+  </script>
+</body>
+</html>
