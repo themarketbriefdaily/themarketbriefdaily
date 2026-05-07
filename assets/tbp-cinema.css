@@ -1,0 +1,198 @@
+/* ================================================================
+   TBP-Cinema — scroll-driven 96-frame hero, integrated with TBP theme.
+   The hero section becomes a tall scroll-runway containing a sticky
+   stage that fills 100vh. As the user scrolls through the section,
+   the canvas advances through 96 frames. Content (headline + lead +
+   CTAs + meta) overlays the canvas with a soft top-fade for legibility.
+   ================================================================ */
+
+.tbp-cine-hero {
+  position: relative;
+  height: 480vh;          /* total scroll runway — longer = each frame gets more scroll distance */
+  background: var(--tbp-bg);
+  /* No overflow: clip here — it kills position: sticky on the .stage child in some browsers. */
+  isolation: isolate;
+}
+.tbp-cine-hero .stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--tbp-bg);
+}
+.tbp-cine-hero canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .8s var(--tbp-ease-slow);
+}
+.tbp-cine-hero canvas.ready { opacity: 1; }
+
+/* Soft top fade so the headline reads cleanly */
+.tbp-cine-hero .grade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--tbp-bg) 0%,
+      rgba(250, 249, 246, .85) 18%,
+      rgba(250, 249, 246, .55) 30%,
+      rgba(250, 249, 246, 0) 45%,
+      rgba(250, 249, 246, 0) 70%,
+      rgba(250, 249, 246, .85) 100%
+    );
+}
+
+.tbp-cine-hero .stage-inner {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: calc(var(--tbp-headerH) + 36px);
+  padding-bottom: 0;
+}
+
+.tbp-cine-hero .hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 80px);
+  align-items: end;
+  flex: 1;
+  padding-bottom: 80px;
+}
+@media (max-width: 980px) {
+  .tbp-cine-hero .hero-grid { grid-template-columns: 1fr; align-items: start; padding-bottom: 40px; }
+}
+
+.tbp-cine-hero h1 {
+  font-size: clamp(2.6rem, 8.2vw, 7.6rem);
+  font-weight: 850;
+  letter-spacing: -.045em;
+  line-height: .92;
+  color: var(--tbp-ink);
+  margin: 0;
+}
+.tbp-cine-hero h1 em {
+  display: inline-block;
+}
+.tbp-cine-hero p {
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--tbp-ink-2);
+  max-width: 38ch;
+}
+
+/* Bottom progress + counter */
+.tbp-cine-progress {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 4;
+  pointer-events: none;
+  padding: 18px var(--tbp-pad-x);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tbp-muted);
+}
+.tbp-cine-progress .label { font-weight: 600; }
+.tbp-cine-progress .bar {
+  flex: 1;
+  height: 1px;
+  background: var(--tbp-line);
+  margin: 0 24px;
+  position: relative;
+  overflow: hidden;
+}
+.tbp-cine-progress .bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--scrollp, 0%);
+  background: var(--tbp-ink);
+  transition: width .15s linear;
+}
+.tbp-cine-progress .frame-num {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--tbp-ink);
+}
+
+/* Loader bar visible until enough frames have decoded */
+.tbp-cine-loader {
+  position: absolute;
+  left: 50%; bottom: 56px;
+  transform: translateX(-50%);
+  width: 200px; height: 1px;
+  background: rgba(10,10,10,.10);
+  z-index: 5;
+  overflow: hidden;
+  transition: opacity .5s ease;
+}
+.tbp-cine-loader.done { opacity: 0; }
+.tbp-cine-loader::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  background: var(--tbp-ink);
+  transition: width .25s linear;
+}
+
+/* Scroll cue (small chevron, fades out after first scroll) */
+.tbp-cine-cue {
+  position: absolute;
+  left: 50%; bottom: 38px;
+  transform: translateX(-50%);
+  width: 24px; height: 38px;
+  border: 1px solid var(--tbp-muted);
+  border-radius: 12px;
+  z-index: 5;
+  opacity: .6;
+  transition: opacity .35s var(--tbp-ease);
+}
+.tbp-cine-hero.scrolled .tbp-cine-cue { opacity: 0; }
+.tbp-cine-cue::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 7px;
+  width: 2px; height: 7px;
+  border-radius: 1px;
+  background: var(--tbp-muted);
+  transform: translateX(-50%);
+  animation: tbpCineScroll 1.8s var(--tbp-ease) infinite;
+}
+@keyframes tbpCineScroll {
+  0%   { transform: translate(-50%, 0);    opacity: 1; }
+  60%  { transform: translate(-50%, 14px); opacity: 0; }
+  61%  { transform: translate(-50%, 0);    opacity: 0; }
+  100% { transform: translate(-50%, 0);    opacity: 1; }
+}
+
+/* Mobile — shorter scroll runway, simpler layout */
+@media (max-width: 768px) {
+  .tbp-cine-hero { height: 320vh; }
+  .tbp-cine-hero h1 { font-size: clamp(2rem, 9vw, 3rem) !important; }
+  .tbp-cine-progress { display: none; }
+  .tbp-cine-cue { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Scroll-driven motion is user-initiated, so the cinema layout is kept.
+     Just disable auto-playing transitions and the pulsing scroll cue. */
+  .tbp-cine-hero canvas { transition: none; }
+  .tbp-cine-cue::after { animation: none; }
+}
