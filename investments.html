@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Funds — The Market Brief Daily</title>
+  <meta name="description" content="Four illustrative model portfolios spanning macro, factor, structural, and supply themes. Educational research only — not investment advice." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <script src="/assets/chart.umd.min.js" defer></script>
+  <style>
+    /* Performance chart inline on each fund card */
+    .fund-chart-block {
+      margin-top: 22px;
+      padding: 18px 0 0;
+      border-top: 1px solid var(--tbp-line);
+    }
+    .fund-chart-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      flex-wrap: wrap; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .fund-chart-head .title {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--tbp-muted);
+    }
+    .fund-chart-head .bench-pill {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 10.5px; font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--tbp-line);
+      color: var(--tbp-muted);
+      letter-spacing: .04em;
+    }
+    .fund-chart-canvas-wrap {
+      position: relative;
+      height: 160px;
+      width: 100%;
+    }
+    .fund-chart-legend {
+      display: flex; gap: 18px; flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 11px; font-weight: 600;
+      color: var(--tbp-muted);
+      letter-spacing: .04em;
+    }
+    .fund-chart-legend i {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    /* Fund detail card variant for this page */
+    .fund-card-detailed {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 0;
+      border: 1px solid var(--tbp-line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--tbp-bg);
+      margin-bottom: 28px;
+    }
+    @media (max-width: 880px) { .fund-card-detailed { grid-template-columns: 1fr; } }
+    .fund-card-detailed .visual {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #0a0a0a, #1a1a1a 60%, #2a2a2a);
+      overflow: hidden;
+    }
+    .fund-card-detailed .visual .placeholder {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.35);
+      font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    }
+    .fund-card-detailed .visual .code-pill {
+      position: absolute;
+      top: 18px; left: 18px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(8px);
+      border-radius: 6px;
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,.92);
+      letter-spacing: .12em;
+    }
+    .fund-card-detailed .body { padding: clamp(28px, 3vw, 44px); }
+    .fund-card-detailed h3 {
+      font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin: 0 0 12px;
+    }
+    .fund-card-detailed p {
+      font-size: 15px; line-height: 1.65;
+      color: var(--tbp-muted);
+      margin: 0 0 24px;
+    }
+    .fund-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 18px 0;
+      border-top: 1px solid var(--tbp-line);
+      border-bottom: 1px solid var(--tbp-line);
+      margin-bottom: 22px;
+    }
+    .fund-stats-row .lab {
+      font-size: 11px; letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--tbp-muted);
+      margin-bottom: 6px;
+    }
+    .fund-stats-row .val {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 1.4rem; font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--tbp-ink);
+    }
+    .fund-stats-row .val.pos { color: var(--tbp-pos); }
+    .fund-stats-row .val.neg { color: var(--tbp-neg); }
+    .fund-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom: 22px; }
+    .fund-pills span {
+      font-size: 11.5px; font-weight: 500;
+      padding: 5px 12px;
+      border: 1px solid var(--tbp-line);
+      border-radius: 999px;
+      color: var(--tbp-muted);
+      background: var(--tbp-bg);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="tbp-header">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav">
+        <a href="/">Home</a><a href="/posts.html">Research</a>
+        <a class="is-active" href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu">
+    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="margin-bottom: 36px;">Model portfolios</div>
+        <h1 class="tbp-h1" style="max-width: 18ch;">
+          Four illustrative strategies, <em>transparently</em> modelled.
+        </h1>
+        <p class="tbp-lead" style="margin-top: 28px;">
+          Macro overlay, market-structure alpha, physical-supply premia, and a
+          regime-aware factor sleeve. Each portfolio is built and benchmarked
+          openly — read the methodology, not marketing.
+        </p>
+        <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="tbp-btn primary" href="/methodology.html">View methodology <span class="arrow">→</span></a>
+          <a class="tbp-btn" href="/posts.html">Latest research <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-disclaimer" data-tbp-reveal>
+        <div>
+          <strong>Illustrative portfolios for research purposes — not investment advice.</strong>
+          Returns are simulated for educational comparison and do not reflect any live fund or trading account.
+          Read the <a href="/methodology.html">full methodology</a> before drawing any conclusions.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <article class="fund-card-detailed" data-tbp-reveal>
+        <div class="visual">
+          <span class="code-pill">MBD-MACRO</span>
+          <img src="/assets/images/london-skyline.jpg" alt="City of London skyline" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="body">
+          <div class="tbp-eyebrow" style="margin-bottom: 14px;">Macro overlay</div>
+          <h3>Macro Transmission Sleeve</h3>
+          <p>Multi-asset macro overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts. Designed to add or subtract risk based on transmission state, not consensus narrative.</p>
+          <div class="fund-stats-row">
+            <div><div class="lab">YTD return</div><div class="val pos">+8.40%</div></div>
+            <div><div class="lab">vs 60/40</div><div class="val pos">+3.30%</div></div>
+          </div>
+          <div class="fund-pills">
+            <span>Macro</span><span>Multi-asset</span><span>Tactical</span>
+          </div>
+          <div class="fund-chart-block">
+            <div class="fund-chart-head">
+              <span class="title">12-month performance, indexed to 100</span>
+              <span class="bench-pill">vs 60/40</span>
+            </div>
+            <div class="fund-chart-canvas-wrap"><canvas data-fund-chart="macro"></canvas></div>
+            <div class="fund-chart-legend">
+              <span><i style="background:#0066ff"></i>MBD-MACRO</span>
+              <span><i style="background:#8a8a85"></i>60/40 benchmark</span>
+            </div>
+          </div>
+          <a class="tbp-btn primary" href="/methodology.html#construction" style="height:46px;padding:0 22px;font-size:13px;margin-top:22px;">Methodology <span class="arrow">→</span></a>
+        </div>
+      </article>
+
+      <article class="fund-card-detailed" data-tbp-reveal>
+        <div class="visual">
+          <span class="code-pill">MBD-STRUCT</span>
+          <img src="/assets/images/ny-skyline.jpg" alt="Lower Manhattan skyline" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="body">
+          <div class="tbp-eyebrow" style="margin-bottom: 14px;">Microstructure alpha</div>
+          <h3>Market Structure Alpha</h3>
+          <p>Captures dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure effects. A short-window equity strategy keyed off how price formation actually clears, not how the headlines describe it.</p>
+          <div class="fund-stats-row">
+            <div><div class="lab">YTD return</div><div class="val pos">+6.20%</div></div>
+            <div><div class="lab">vs S&amp;P 500</div><div class="val pos">+1.80%</div></div>
+          </div>
+          <div class="fund-pills">
+            <span>Microstructure</span><span>Equity</span><span>Quant</span>
+          </div>
+          <div class="fund-chart-block">
+            <div class="fund-chart-head">
+              <span class="title">12-month performance, indexed to 100</span>
+              <span class="bench-pill">vs S&amp;P 500</span>
+            </div>
+            <div class="fund-chart-canvas-wrap"><canvas data-fund-chart="struct"></canvas></div>
+            <div class="fund-chart-legend">
+              <span><i style="background:#0a0a0a"></i>MBD-STRUCT</span>
+              <span><i style="background:#8a8a85"></i>S&amp;P 500 benchmark</span>
+            </div>
+          </div>
+          <a class="tbp-btn primary" href="/methodology.html#construction" style="height:46px;padding:0 22px;font-size:13px;margin-top:22px;">Methodology <span class="arrow">→</span></a>
+        </div>
+      </article>
+
+      <article class="fund-card-detailed" data-tbp-reveal>
+        <div class="visual">
+          <span class="code-pill">MBD-SUPPLY</span>
+          <img src="/assets/images/oil-tankers.jpg" alt="Crude oil tankers at sea" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="body">
+          <div class="tbp-eyebrow" style="margin-bottom: 14px;">Physical premia</div>
+          <h3>Physical Supply Premia</h3>
+          <p>Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals. Compensates the futures curve for the cost of physical scarcity at points where paper and physical markets diverge.</p>
+          <div class="fund-stats-row">
+            <div><div class="lab">YTD return</div><div class="val pos">+11.70%</div></div>
+            <div><div class="lab">vs Bloomberg Cmdty</div><div class="val pos">+4.90%</div></div>
+          </div>
+          <div class="fund-pills">
+            <span>Commodities</span><span>Physical</span><span>Cycle</span>
+          </div>
+          <div class="fund-chart-block">
+            <div class="fund-chart-head">
+              <span class="title">12-month performance, indexed to 100</span>
+              <span class="bench-pill">vs Bloomberg Cmdty</span>
+            </div>
+            <div class="fund-chart-canvas-wrap"><canvas data-fund-chart="supply"></canvas></div>
+            <div class="fund-chart-legend">
+              <span><i style="background:#1a8a4a"></i>MBD-SUPPLY</span>
+              <span><i style="background:#8a8a85"></i>Bloomberg Cmdty benchmark</span>
+            </div>
+          </div>
+          <a class="tbp-btn primary" href="/methodology.html#construction" style="height:46px;padding:0 22px;font-size:13px;margin-top:22px;">Methodology <span class="arrow">→</span></a>
+        </div>
+      </article>
+
+      <article class="fund-card-detailed" data-tbp-reveal>
+        <div class="visual">
+          <span class="code-pill">MBD-FACT</span>
+          <img src="/assets/images/wind-turbines.jpg" alt="Coastal wind turbine farm" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+        </div>
+        <div class="body">
+          <div class="tbp-eyebrow" style="margin-bottom: 14px;">Factor rotation</div>
+          <h3>Regime-Aware Factor</h3>
+          <p>Rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions. The factor stack treated as state-dependent — not a permanent allocation.</p>
+          <div class="fund-stats-row">
+            <div><div class="lab">YTD return</div><div class="val pos">+7.10%</div></div>
+            <div><div class="lab">vs MSCI World</div><div class="val pos">+1.70%</div></div>
+          </div>
+          <div class="fund-pills">
+            <span>Factor</span><span>Equity</span><span>Long-only</span>
+          </div>
+          <div class="fund-chart-block">
+            <div class="fund-chart-head">
+              <span class="title">12-month performance, indexed to 100</span>
+              <span class="bench-pill">vs MSCI World</span>
+            </div>
+            <div class="fund-chart-canvas-wrap"><canvas data-fund-chart="fact"></canvas></div>
+            <div class="fund-chart-legend">
+              <span><i style="background:#c8a35a"></i>MBD-FACT</span>
+              <span><i style="background:#8a8a85"></i>MSCI World benchmark</span>
+            </div>
+          </div>
+          <a class="tbp-btn primary" href="/methodology.html#construction" style="height:46px;padding:0 22px;font-size:13px;margin-top:22px;">Methodology <span class="arrow">→</span></a>
+        </div>
+      </article>
+
+      <p class="tbp-small" style="text-align:center; margin-top: 36px;">
+        All figures last refreshed
+        <time datetime="2026-05-07">May 7, 2026</time>.
+        Benchmarks are illustrative.
+      </p>
+    </div>
+  </section>
+
+  <section class="tbp-section">
+    <div class="tbp-container">
+      <div class="tbp-cta-strip">
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Read the methodology</div>
+          <h2>Read it <em>before</em><br>drawing conclusions.</h2>
+        </div>
+        <div class="actions">
+          <a class="tbp-btn primary" href="/methodology.html">Open methodology <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tbp-footer">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/methodology.html">Methodology</a><a href="/education.html">Learn</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="#">Privacy</a><a href="#">Terms</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script>
+    // Fund vs benchmark performance charts (Chart.js).
+    // Series are deterministic per-fund (seeded RNG) so the line shape is
+    // stable across reloads but still varies between funds.
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js not loaded — fund charts will not render');
+        return;
+      }
+
+      // Mulberry32 — small deterministic seeded RNG
+      function rng(seed) {
+        return function () {
+          seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function makeSeries(annualReturn, vol, seed, months) {
+        const r = rng(seed);
+        const out = [];
+        let v = 100;
+        const monthly = annualReturn / 100 / months;
+        const monthlyVol = vol / 100 / Math.sqrt(months);
+        for (let i = 0; i < months; i++) {
+          const shock = (r() - 0.5) * 2;
+          v *= 1 + monthly + shock * monthlyVol;
+          out.push(Math.round(v * 100) / 100);
+        }
+        return out;
+      }
+
+      const FUNDS = {
+        macro:  { color: '#0066ff', ytd: 8.4,  bench: 5.1, vol: 11, benchVol: 9,  benchName: '60/40',           seed: 11 },
+        struct: { color: '#0a0a0a', ytd: 6.2,  bench: 4.4, vol: 13, benchVol: 12, benchName: 'S&P 500',          seed: 23 },
+        supply: { color: '#1a8a4a', ytd: 11.7, bench: 6.8, vol: 16, benchVol: 13, benchName: 'Bloomberg Cmdty',  seed: 37 },
+        fact:   { color: '#c8a35a', ytd: 7.1,  bench: 5.4, vol: 12, benchVol: 11, benchName: 'MSCI World',       seed: 47 }
+      };
+
+      const labels = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+
+      Object.keys(FUNDS).forEach(function (key) {
+        const f = FUNDS[key];
+        const canvas = document.querySelector('canvas[data-fund-chart="' + key + '"]');
+        if (!canvas) return;
+
+        const fundSeries  = makeSeries(f.ytd,   f.vol,     f.seed,        12);
+        const benchSeries = makeSeries(f.bench, f.benchVol, f.seed + 100, 12);
+
+        const allValues = fundSeries.concat(benchSeries);
+        const min = Math.min.apply(null, allValues);
+        const max = Math.max.apply(null, allValues);
+        const padding = (max - min) * 0.12 || 1;
+
+        new Chart(canvas, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Fund',
+                data: fundSeries,
+                borderColor: f.color,
+                backgroundColor: f.color + '14',
+                borderWidth: 2.4,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHoverBackgroundColor: f.color,
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 2,
+                tension: 0.32,
+                fill: true
+              },
+              {
+                label: 'Benchmark',
+                data: benchSeries,
+                borderColor: '#8a8a85',
+                borderDash: [5, 5],
+                borderWidth: 1.6,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHoverBackgroundColor: '#8a8a85',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 2,
+                tension: 0.32,
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(10,10,10,0.92)',
+                titleColor: '#fff',
+                bodyColor: 'rgba(255,255,255,0.85)',
+                padding: 10,
+                borderRadius: 6,
+                titleFont: { weight: '700', size: 11 },
+                bodyFont: { size: 11 },
+                displayColors: true,
+                callbacks: {
+                  label: function (ctx) {
+                    return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1);
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: { font: { size: 10, weight: '600' }, color: '#8a8a85' }
+              },
+              y: {
+                grid: { color: 'rgba(10,10,10,.05)' },
+                ticks: { font: { size: 10, weight: '600' }, color: '#8a8a85' },
+                min: min - padding,
+                max: max + padding
+              }
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
