@@ -4,9 +4,9 @@
    Gran-Turismo-style: dark scene, white edge lines, blue-glow landmarks,
    slow auto-rotate camera, HTML markers projected to 3D positions.
    ================================================================ */
-import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js';
-import { mergeGeometries } from 'https://unpkg.com/three@0.165.0/examples/jsm/utils/BufferGeometryUtils.js';
+import * as THREE from '/assets/three/three.module.min.js';
+import { OrbitControls } from '/assets/three/OrbitControls.js';
+import { mergeGeometries } from '/assets/three/BufferGeometryUtils.js';
 
 const container   = document.getElementById('londonStage');
 const labelsLayer = document.getElementById('londonLabels');
