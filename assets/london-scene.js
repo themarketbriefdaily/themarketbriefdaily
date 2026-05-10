@@ -126,21 +126,22 @@ async function loadCity() {
         console.log('[london] size x=' + size.x.toFixed(1)    + ' y=' + size.y.toFixed(1)    + ' z=' + size.z.toFixed(1));
 
         // Fog tuned to model scale
-        scene.fog = new THREE.Fog(0x06080f, maxSpan * 0.9, maxSpan * 3.5);
+        scene.fog = new THREE.Fog(0x06080f, size.x * 0.8, size.x * 2.8);
 
-        // Position camera above + south of centre, looking down at city
+        // Camera: centred on city, angled 50° down from south
+        // target at ground level (Y=0), not mid-building height
         const fovRad  = (42 / 2) * Math.PI / 180;
-        const camDist = (maxSpan / 2) / Math.tan(fovRad) * 1.3;
+        const camDist = (size.x / 2) / Math.tan(fovRad) * 1.15; // fit X span
 
-        controls.target.set(center.x, center.y, center.z);
+        controls.target.set(center.x, 0, center.z);
         camera.position.set(
-          center.x,
-          center.y + camDist * 0.55,
-          center.z + camDist * 0.85
+          center.x,                           // directly above centre X
+          camDist * 0.72,                     // elevation
+          center.z + camDist * 0.72           // same distance south
         );
-        camera.lookAt(center);
-        controls.minDistance = maxSpan * 0.05;
-        controls.maxDistance = maxSpan * 3.0;
+        camera.lookAt(new THREE.Vector3(center.x, 0, center.z));
+        controls.minDistance = size.x * 0.05;
+        controls.maxDistance = size.x * 2.5;
         controls.update();
 
         resolve({ center, size, box });
@@ -172,27 +173,23 @@ const LANDMARKS = [
   { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
 ];
 
-// These offsets (in model units) from the model centre will be replaced
-// once we know the actual coordinate scale from the console output.
-// Format: [offsetX, offsetY_above_ground, offsetZ]
-const LANDMARK_OFFSETS = [
-  [ 3200,  300, -200],   // Canary Wharf  — far east
-  [ -800,  350,  100],   // The Shard     — south bank
-  [-2800,  180,  200],   // London Eye    — far west
-  [-2600,  100, -600],   // LSE           — north west
-  [-700,   230, -700],   // Tower 42      — north of river
+/* Absolute world positions calibrated from console bounds:
+   centre (1544, 0, -545) | X west=-3078 east=6166 | Z north=-2738 south=1648
+   Thames runs at approximately Z = +200
+   North of river = negative Z, South = positive Z                          */
+const LANDMARK_WORLD = [
+  new THREE.Vector3( 5200,  280,   100),  // Canary Wharf  — far east, near Thames
+  new THREE.Vector3( 1100,  355,   350),  // The Shard     — east, south bank
+  new THREE.Vector3( -600,  180,   350),  // London Eye    — west, south bank
+  new THREE.Vector3( -400,  105,  -600),  // LSE           — west, north of river
+  new THREE.Vector3( 1500,  228,  -700),  // Tower 42      — east, north of river
 ];
 
 const markerEls = [];
 
 function buildMarkers(center) {
   LANDMARKS.forEach((lm, i) => {
-    const [ox, oy, oz] = LANDMARK_OFFSETS[i];
-    const world = new THREE.Vector3(
-      center.x + ox,
-      center.y + oy,
-      center.z + oz
-    );
+    const world = LANDMARK_WORLD[i];
 
     const a = document.createElement('a');
     a.className = 'london-marker';
