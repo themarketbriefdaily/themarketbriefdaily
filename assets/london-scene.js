@@ -16,12 +16,14 @@ if (!container) { console.warn('[london] no #londonStage'); }
 const scene = new THREE.Scene();
 scene.background = null;
 
-const camera = new THREE.PerspectiveCamera(42, 1, 1, 200000);
-camera.position.set(0, 5000, 8000);   // adjusted once model loads
+// Near=50 far=80000 gives ratio 1600:1 — good depth precision, no flicker
+const camera = new THREE.PerspectiveCamera(42, 1, 50, 80000);
+camera.position.set(0, 5000, 8000);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance', logarithmicDepthBuffer: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
+renderer.setClearColor(0x000000, 0);
 container.appendChild(renderer.domElement);
 
 // ── Controls ─────────────────────────────────────────────────────
@@ -173,16 +175,19 @@ const LANDMARKS = [
   { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
 ];
 
-/* Absolute world positions calibrated from console bounds:
-   centre (1544, 0, -545) | X west=-3078 east=6166 | Z north=-2738 south=1648
-   Thames runs at approximately Z = +200
-   North of river = negative Z, South = positive Z                          */
+/* ── MARKER POSITIONS ───────────────────────────────────────────────
+   Edit these X/Y/Z values to move each pin.
+   To find the right position: click anywhere on the model in the browser
+   and the console will print "[click] x=... y=... z=..."
+   Paste those numbers here, add the landmark height to Y.
+   Model bounds: X west=-3078  east=6166 | Z north=-2738  south=1648
+   ─────────────────────────────────────────────────────────────────── */
 const LANDMARK_WORLD = [
-  new THREE.Vector3( 5200,  280,   100),  // Canary Wharf  — far east, near Thames
-  new THREE.Vector3( 1100,  355,   350),  // The Shard     — east, south bank
-  new THREE.Vector3( -600,  180,   350),  // London Eye    — west, south bank
-  new THREE.Vector3( -400,  105,  -600),  // LSE           — west, north of river
-  new THREE.Vector3( 1500,  228,  -700),  // Tower 42      — east, north of river
+  new THREE.Vector3( 4800,  280,  -800),  // 0 Canary Wharf  — far east
+  new THREE.Vector3(  800,  355,   300),  // 1 The Shard     — south bank
+  new THREE.Vector3( -900,  180,   350),  // 2 London Eye    — south bank, west
+  new THREE.Vector3( -700,  105,  -300),  // 3 LSE           — north bank, west
+  new THREE.Vector3( 1400,  228,  -400),  // 4 Tower 42      — City, north bank
 ];
 
 const markerEls = [];
@@ -225,6 +230,23 @@ function projectMarkers() {
 }
 
 controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+// ── Click-to-position debug tool ─────────────────────────────────
+// Click anywhere on the model → console prints the world coordinates.
+// Use those numbers to update LANDMARK_WORLD above.
+const _ray   = new THREE.Raycaster();
+const _mouse = new THREE.Vector2();
+renderer.domElement.addEventListener('click', (e) => {
+  const r    = container.getBoundingClientRect();
+  _mouse.x   = ((e.clientX - r.left)  / r.width)  *  2 - 1;
+  _mouse.y   = ((e.clientY - r.top)   / r.height) * -2 + 1;
+  _ray.setFromCamera(_mouse, camera);
+  const hits = _ray.intersectObjects(scene.children, true);
+  if (hits.length) {
+    const p = hits[0].point;
+    console.log('[click] x=' + p.x.toFixed(0) + '  y=' + p.y.toFixed(0) + '  z=' + p.z.toFixed(0));
+  }
+});
 
 // ── Render loop ───────────────────────────────────────────────────
 function tick() {
