@@ -8,7 +8,7 @@
 
 .tbp-cine-hero {
   position: relative;
-  height: 280vh;          /* total scroll runway */
+  height: 480vh;          /* total scroll runway — longer = each frame gets more scroll distance */
   background: var(--tbp-bg);
   /* No overflow: clip here — it kills position: sticky on the .stage child in some browsers. */
   isolation: isolate;
@@ -184,15 +184,15 @@
 
 /* Mobile — shorter scroll runway, simpler layout */
 @media (max-width: 768px) {
-  .tbp-cine-hero { height: 200vh; }
+  .tbp-cine-hero { height: 320vh; }
   .tbp-cine-hero h1 { font-size: clamp(2rem, 9vw, 3rem) !important; }
   .tbp-cine-progress { display: none; }
   .tbp-cine-cue { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tbp-cine-hero { height: auto; }
-  .tbp-cine-hero .stage { position: relative; height: auto; min-height: 100vh; }
+  /* Scroll-driven motion is user-initiated, so the cinema layout is kept.
+     Just disable auto-playing transitions and the pulsing scroll cue. */
   .tbp-cine-hero canvas { transition: none; }
   .tbp-cine-cue::after { animation: none; }
 }

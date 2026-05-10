@@ -18,7 +18,20 @@
   const loader  = document.querySelector('.tbp-cine-loader');
   const progBar = document.querySelector('.tbp-cine-progress .bar');
   const frameEl = document.querySelector('.tbp-cine-progress .frame-num');
-  if (!hero || !stage || !canvas) return;
+
+  // Diagnostic — visible in DevTools Console, helps if cinema isn't advancing.
+  console.log('[tbp-cinema] script loaded; hero:', !!hero, 'stage:', !!stage, 'canvas:', !!canvas);
+  if (!hero || !stage || !canvas) {
+    console.warn('[tbp-cinema] Required DOM nodes missing — aborting init.');
+    return;
+  }
+  // Surface the sticky state once layout settles, so we can confirm it's working.
+  setTimeout(() => {
+    const cs = getComputedStyle(stage);
+    console.log('[tbp-cinema] stage.position =', cs.position,
+                '| hero.height =', getComputedStyle(hero).height,
+                '| stage.height =', cs.height);
+  }, 1000);
 
   const ctx = canvas.getContext('2d');
   const images = new Array(FRAME_COUNT);
@@ -75,15 +88,47 @@
     return Math.max(0, Math.min(1, scrolled / total));
   }
 
-  function update() {
+  let targetIdx = 0;       // where scroll says we are (set by scroll handler)
+  let displayIdx = 0;      // what the canvas is currently rendering (eased toward target)
+  let easingActive = false;
+  let lastLoggedIdx = -1;
+
+  function updateProgress() {
     const p = progress();
-    const idx = Math.min(FRAME_COUNT - 1, Math.floor(p * FRAME_COUNT));
-    drawFrame(idx);
+    targetIdx = Math.min(FRAME_COUNT - 1, Math.floor(p * FRAME_COUNT));
     if (progBar) progBar.style.setProperty('--scrollp', `${(p * 100).toFixed(1)}%`);
-    if (frameEl) frameEl.textContent = String(idx + 1).padStart(3, '0') + ' / ' + FRAME_COUNT;
-    if (p > 0.02) hero.classList.add('scrolled');
-    else hero.classList.remove('scrolled');
+    if (p > 0.02) hero.classList.add('scrolled'); else hero.classList.remove('scrolled');
+    if (!easingActive) {
+      easingActive = true;
+      requestAnimationFrame(easeTick);
+    }
   }
+
+  function easeTick() {
+    const diff = targetIdx - displayIdx;
+    if (Math.abs(diff) < 0.05) {
+      // Snap to target and stop the loop
+      displayIdx = targetIdx;
+      const idx = Math.round(displayIdx);
+      drawFrame(idx);
+      if (frameEl) frameEl.textContent = String(idx + 1).padStart(3, '0') + ' / ' + FRAME_COUNT;
+      easingActive = false;
+      return;
+    }
+    // Lerp toward target — 0.18 is the smoothing factor (higher = snappier, lower = smoother)
+    displayIdx += diff * 0.18;
+    const idx = Math.round(displayIdx);
+    drawFrame(idx);
+    if (frameEl) frameEl.textContent = String(idx + 1).padStart(3, '0') + ' / ' + FRAME_COUNT;
+    if (idx !== lastLoggedIdx && idx % 10 === 0) {
+      console.log('[tbp-cinema] frame=', idx + 1, 'target=', targetIdx + 1);
+      lastLoggedIdx = idx;
+    }
+    requestAnimationFrame(easeTick);
+  }
+
+  // Public update entrypoint — called on scroll/resize
+  function update() { updateProgress(); }
 
   let rafPending = false;
   function onScroll() {

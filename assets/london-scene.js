@@ -1,0 +1,275 @@
+/* ================================================================
+   London 3D scene — GLTF model with Gran Turismo dark styling.
+   Dark navy fill, blue-glow edge lines on tall buildings,
+   slow auto-rotate, HTML landmark markers.
+   ================================================================ */
+import * as THREE               from '/assets/three/three.module.min.js';
+import { OrbitControls }        from '/assets/three/OrbitControls.js';
+import { GLTFLoader }           from '/assets/three/GLTFLoader.js';
+
+const container   = document.getElementById('londonStage');
+const labelsLayer = document.getElementById('londonLabels');
+const loaderEl    = document.getElementById('londonLoader');
+if (!container) { console.warn('[london] no #londonStage'); }
+
+// ── Renderer ─────────────────────────────────────────────────────
+const scene = new THREE.Scene();
+scene.background = null;
+
+const camera = new THREE.PerspectiveCamera(42, 1, 1, 200000);
+camera.position.set(0, 5000, 8000);   // adjusted once model loads
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = false;
+container.appendChild(renderer.domElement);
+
+// ── Controls ─────────────────────────────────────────────────────
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping   = true;
+controls.dampingFactor   = 0.06;
+controls.minDistance     = 500;
+controls.maxDistance     = 40000;
+controls.maxPolarAngle   = Math.PI * 0.48;
+controls.minPolarAngle   = Math.PI * 0.05;
+controls.autoRotate      = true;
+controls.autoRotateSpeed = 0.25;
+controls.enablePan       = false;
+controls.update();
+
+// ── Lighting ─────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x8899cc, 0.6));
+const sun = new THREE.DirectionalLight(0xa8c0ff, 0.8);
+sun.position.set(1, 2, 1.5);
+scene.add(sun);
+
+// ── Ground ───────────────────────────────────────────────────────
+const groundMat = new THREE.MeshBasicMaterial({ color: 0x06090f });
+const groundGeo = new THREE.PlaneGeometry(120000, 120000);
+groundGeo.rotateX(-Math.PI / 2);
+scene.add(new THREE.Mesh(groundGeo, groundMat));
+
+// ── Resize ───────────────────────────────────────────────────────
+function resize() {
+  const w = container.clientWidth, h = container.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h, false);
+}
+resize();
+window.addEventListener('resize', resize, { passive: true });
+
+// ── Materials ────────────────────────────────────────────────────
+const matBuilding = new THREE.MeshLambertMaterial({
+  color: 0x0d1525,
+  transparent: true,
+  opacity: 0.95,
+});
+const matWater = new THREE.MeshLambertMaterial({
+  color: 0x0a1a3a,
+  transparent: true,
+  opacity: 0.85,
+});
+const matGreen = new THREE.MeshLambertMaterial({
+  color: 0x0a1f10,
+  transparent: true,
+  opacity: 0.9,
+});
+const matRoad = new THREE.MeshBasicMaterial({
+  color: 0x080c18,
+  transparent: true,
+  opacity: 0.7,
+});
+
+// Edge glow material for tall / landmark buildings
+const matEdgeGlow = new THREE.LineBasicMaterial({
+  color: 0x5599ff,
+  transparent: true,
+  opacity: 0.75,
+});
+const matEdgeFaint = new THREE.LineBasicMaterial({
+  color: 0x8ab0e0,
+  transparent: true,
+  opacity: 0.18,
+});
+
+// ── Classify mesh by name ─────────────────────────────────────────
+function materialForMesh(name) {
+  const n = (name || '').toLowerCase();
+  if (n.includes('water') || n.includes('river') || n.includes('thame')) return matWater;
+  if (n.includes('green') || n.includes('park')  || n.includes('grass') || n.includes('garden')) return matGreen;
+  if (n.includes('road')  || n.includes('street') || n.includes('path') || n.includes('highway')) return matRoad;
+  return matBuilding;
+}
+
+// ── Load GLTF model ───────────────────────────────────────────────
+const TALL_THRESHOLD = 80; // metres — add edge glow above this height
+
+async function loadCity() {
+  return new Promise((resolve, reject) => {
+    const loader = new GLTFLoader();
+    loader.load(
+      '/assets/frontentlondon.glb',
+      (gltf) => {
+        const model = gltf.scene;
+
+        // Apply dark materials + optional edge glow
+        model.traverse((child) => {
+          if (!child.isMesh) return;
+          child.material = materialForMesh(child.name);
+          child.receiveShadow = false;
+          child.castShadow    = false;
+
+          // Add edge glow to tall buildings
+          const box = new THREE.Box3().setFromObject(child);
+          const height = box.max.y - box.min.y;
+          if (height > TALL_THRESHOLD) {
+            const edges = new THREE.EdgesGeometry(child.geometry, 20);
+            child.parent.add(new THREE.LineSegments(edges, matEdgeGlow));
+          } else if (child.name.toLowerCase().includes('building')) {
+            const edges = new THREE.EdgesGeometry(child.geometry, 30);
+            child.parent.add(new THREE.LineSegments(edges, matEdgeFaint));
+          }
+        });
+
+        scene.add(model);
+
+        // ── Auto-fit camera to model bounds ──────────────────────
+        const box     = new THREE.Box3().setFromObject(model);
+        const center  = box.getCenter(new THREE.Vector3());
+        const size    = box.getSize(new THREE.Vector3());
+        const maxSpan = Math.max(size.x, size.y, size.z);
+
+        // Log coords so we can calibrate landmark markers
+        console.log('[london] model bounds:', {
+          min:    { x: box.min.x.toFixed(0), y: box.min.y.toFixed(0), z: box.min.z.toFixed(0) },
+          max:    { x: box.max.x.toFixed(0), y: box.max.y.toFixed(0), z: box.max.z.toFixed(0) },
+          center: { x: center.x.toFixed(0),  y: center.y.toFixed(0),  z: center.z.toFixed(0) },
+          size:   { x: size.x.toFixed(0),    y: size.y.toFixed(0),    z: size.z.toFixed(0) },
+        });
+
+        // Fog tuned to model scale
+        scene.fog = new THREE.Fog(0x06080f, maxSpan * 0.9, maxSpan * 3.5);
+
+        // Position camera above + south of centre, looking down at city
+        const fovRad  = (42 / 2) * Math.PI / 180;
+        const camDist = (maxSpan / 2) / Math.tan(fovRad) * 1.3;
+
+        controls.target.set(center.x, center.y, center.z);
+        camera.position.set(
+          center.x,
+          center.y + camDist * 0.55,
+          center.z + camDist * 0.85
+        );
+        camera.lookAt(center);
+        controls.minDistance = maxSpan * 0.05;
+        controls.maxDistance = maxSpan * 3.0;
+        controls.update();
+
+        resolve({ center, size, box });
+      },
+      (xhr) => {
+        // progress (optional)
+        if (xhr.total) {
+          const pct = (xhr.loaded / xhr.total * 100).toFixed(0);
+          const label = loaderEl?.querySelector('.lon-load-label');
+          if (label) label.textContent = `Loading London… ${pct}%`;
+        }
+      },
+      reject
+    );
+  });
+}
+
+// ── Landmark markers ─────────────────────────────────────────────
+/* World positions are set after the model loads — we use the console
+   output from '[london] model bounds' to calibrate these.
+   For now they are positioned relative to the model centre.
+   ⚠ Replace markerPositions below once you see the console output. */
+
+const LANDMARKS = [
+  { name: 'Canary Wharf',  sub: 'Funds',            href: '/investments.html' },
+  { name: 'The Shard',     sub: 'Market briefs',     href: '/posts.html'       },
+  { name: 'London Eye',    sub: 'Investment thesis', href: '/methodology.html' },
+  { name: 'LSE',           sub: 'Learn — IMC',       href: '/education.html'   },
+  { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
+];
+
+// These offsets (in model units) from the model centre will be replaced
+// once we know the actual coordinate scale from the console output.
+// Format: [offsetX, offsetY_above_ground, offsetZ]
+const LANDMARK_OFFSETS = [
+  [ 3200,  300, -200],   // Canary Wharf  — far east
+  [ -800,  350,  100],   // The Shard     — south bank
+  [-2800,  180,  200],   // London Eye    — far west
+  [-2600,  100, -600],   // LSE           — north west
+  [-700,   230, -700],   // Tower 42      — north of river
+];
+
+const markerEls = [];
+
+function buildMarkers(center) {
+  LANDMARKS.forEach((lm, i) => {
+    const [ox, oy, oz] = LANDMARK_OFFSETS[i];
+    const world = new THREE.Vector3(
+      center.x + ox,
+      center.y + oy,
+      center.z + oz
+    );
+
+    const a = document.createElement('a');
+    a.className = 'london-marker';
+    a.href      = lm.href;
+    a.innerHTML = `
+      <span class="lm-pin"><span class="lm-dot"></span></span>
+      <span class="lm-card">
+        <span class="lm-eyebrow">${lm.name}</span>
+        <span class="lm-title">${lm.sub}</span>
+        <span class="lm-arrow">Open →</span>
+      </span>`;
+    labelsLayer.appendChild(a);
+    markerEls.push({ el: a, world });
+  });
+}
+
+// ── Project markers every frame ───────────────────────────────────
+const _proj = new THREE.Vector3();
+function projectMarkers() {
+  const w = container.clientWidth, h = container.clientHeight;
+  for (const m of markerEls) {
+    _proj.copy(m.world).project(camera);
+    if (_proj.z >= 1) { m.el.style.opacity = '0'; m.el.style.pointerEvents = 'none'; continue; }
+    const dist = camera.position.distanceTo(m.world);
+    const span = controls.maxDistance;
+    const fade = Math.max(0, Math.min(1, 1 - (dist - span * 0.15) / (span * 0.7)));
+    const sx = (_proj.x *  0.5 + 0.5) * w;
+    const sy = (_proj.y * -0.5 + 0.5) * h;
+    m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
+    m.el.style.opacity       = String(fade);
+    m.el.style.pointerEvents = fade > 0.35 ? 'auto' : 'none';
+  }
+}
+
+controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+// ── Render loop ───────────────────────────────────────────────────
+function tick() {
+  controls.update();
+  projectMarkers();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+
+// ── Boot ──────────────────────────────────────────────────────────
+loadCity()
+  .then(({ center }) => {
+    buildMarkers(center);
+    if (loaderEl) loaderEl.classList.add('done');
+    resize();
+    requestAnimationFrame(tick);
+  })
+  .catch(err => {
+    console.error('[london]', err);
+    const label = loaderEl?.querySelector('.lon-load-label');
+    if (label) label.textContent = 'Map unavailable — ' + err.message;
+  });
