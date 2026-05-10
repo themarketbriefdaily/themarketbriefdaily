@@ -37,14 +37,17 @@ controls.autoRotateSpeed = 0.25;
 controls.enablePan       = false;
 controls.update();
 
-// ── Lighting ─────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0x8899cc, 0.6));
-const sun = new THREE.DirectionalLight(0xa8c0ff, 0.8);
-sun.position.set(1, 2, 1.5);
+// ── Lighting — neutral white for clean solid look ─────────────────
+scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+const sun = new THREE.DirectionalLight(0xffffff, 0.65);
+sun.position.set(2, 5, 3);
 scene.add(sun);
+const fill = new THREE.DirectionalLight(0xdde8ff, 0.25);
+fill.position.set(-2, 1, -2);
+scene.add(fill);
 
 // ── Ground ───────────────────────────────────────────────────────
-const groundMat = new THREE.MeshBasicMaterial({ color: 0x06090f });
+const groundMat = new THREE.MeshBasicMaterial({ color: 0x0a0c10 });
 const groundGeo = new THREE.PlaneGeometry(120000, 120000);
 groundGeo.rotateX(-Math.PI / 2);
 scene.add(new THREE.Mesh(groundGeo, groundMat));
@@ -59,39 +62,15 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Materials ────────────────────────────────────────────────────
-const matBuilding = new THREE.MeshLambertMaterial({
-  color: 0x0d1525,
-  transparent: true,
-  opacity: 0.95,
-});
-const matWater = new THREE.MeshLambertMaterial({
-  color: 0x0a1a3a,
-  transparent: true,
-  opacity: 0.85,
-});
-const matGreen = new THREE.MeshLambertMaterial({
-  color: 0x0a1f10,
-  transparent: true,
-  opacity: 0.9,
-});
-const matRoad = new THREE.MeshBasicMaterial({
-  color: 0x080c18,
-  transparent: true,
-  opacity: 0.7,
-});
+// ── Materials — clean white/grey like Blender Solid view ─────────
+const matBuilding = new THREE.MeshLambertMaterial({ color: 0xc8cdd6 });
+const matWater    = new THREE.MeshLambertMaterial({ color: 0x7a9ab8 });
+const matGreen    = new THREE.MeshLambertMaterial({ color: 0x8aaa7a });
+const matRoad     = new THREE.MeshLambertMaterial({ color: 0x888e99 });
 
-// Edge glow material for tall / landmark buildings
-const matEdgeGlow = new THREE.LineBasicMaterial({
-  color: 0x5599ff,
-  transparent: true,
-  opacity: 0.75,
-});
-const matEdgeFaint = new THREE.LineBasicMaterial({
-  color: 0x8ab0e0,
-  transparent: true,
-  opacity: 0.18,
-});
+// Subtle white edge lines — very faint, just define the geometry
+const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
+const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.10 });
 
 // ── Classify mesh by name ─────────────────────────────────────────
 function materialForMesh(name) {
@@ -140,13 +119,11 @@ async function loadCity() {
         const size    = box.getSize(new THREE.Vector3());
         const maxSpan = Math.max(size.x, size.y, size.z);
 
-        // Log coords so we can calibrate landmark markers
-        console.log('[london] model bounds:', {
-          min:    { x: box.min.x.toFixed(0), y: box.min.y.toFixed(0), z: box.min.z.toFixed(0) },
-          max:    { x: box.max.x.toFixed(0), y: box.max.y.toFixed(0), z: box.max.z.toFixed(0) },
-          center: { x: center.x.toFixed(0),  y: center.y.toFixed(0),  z: center.z.toFixed(0) },
-          size:   { x: size.x.toFixed(0),    y: size.y.toFixed(0),    z: size.z.toFixed(0) },
-        });
+        // Log coords for landmark calibration — paste these to Claude
+        console.log('[london] min  x=' + box.min.x.toFixed(1) + ' y=' + box.min.y.toFixed(1) + ' z=' + box.min.z.toFixed(1));
+        console.log('[london] max  x=' + box.max.x.toFixed(1) + ' y=' + box.max.y.toFixed(1) + ' z=' + box.max.z.toFixed(1));
+        console.log('[london] ctr  x=' + center.x.toFixed(1)  + ' y=' + center.y.toFixed(1)  + ' z=' + center.z.toFixed(1));
+        console.log('[london] size x=' + size.x.toFixed(1)    + ' y=' + size.y.toFixed(1)    + ' z=' + size.z.toFixed(1));
 
         // Fog tuned to model scale
         scene.fog = new THREE.Fog(0x06080f, maxSpan * 0.9, maxSpan * 3.5);
