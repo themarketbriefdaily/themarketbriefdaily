@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI day-trader — The Market Brief Daily</title>
+  <meta name="description" content="An experimental AI day-trading bot running in a public paper account. Live trade log, reasoning posts, and a transparent record of wins and losses." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+</head>
+
+<body>
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu">
+    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div data-tbp-reveal style="max-width: 940px;">
+        <div class="tbp-eyebrow" style="margin-bottom: 36px;">Experimental · Tower 42</div>
+        <h1 class="tbp-h1">An AI agent <em>trading</em><br>in public, every day.</h1>
+        <p class="tbp-lead" style="margin-top: 28px;">
+          A live experiment. The bot runs an intraday strategy in a paper account,
+          posts every trade to a public log, and writes a one-paragraph explanation
+          of its reasoning. No client capital, no real money, no upsell.
+        </p>
+        <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="tbp-btn primary" href="#log">View live trade log <span class="arrow">↓</span></a>
+          <a class="tbp-btn" href="/methodology.html#construction">Strategy methodology <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-disclaimer" data-tbp-reveal>
+        <div>
+          <strong>Paper-trading experiment, not investment advice.</strong>
+          The bot trades a simulated account on public market data. Returns shown
+          do not include slippage or financing costs that would apply to a live
+          account. Read the <a href="/methodology.html">methodology</a> before
+          drawing any conclusions, and the <a href="/disclaimer.html">full disclaimer</a> before everything else.
+        </div>
+      </div>
+
+      <div class="tbp-stats" style="margin-top: 56px;" data-tbp-reveal>
+        <div class="tbp-stat">
+          <div class="num" style="color: #1a8a4a;">+0.00<span class="unit">%</span></div>
+          <div class="label">YTD return (paper)</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">000</div>
+          <div class="label">Trades placed</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">00<span class="unit">%</span></div>
+          <div class="label">Win rate (rolling 30 trades)</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">00<span class="unit">d</span></div>
+          <div class="label">Days live</div>
+        </div>
+      </div>
+
+      <p style="text-align:center; color: var(--tbp-muted-2); font-size: 13px; margin-top: 20px;">
+        Stats placeholder — wired to the live ledger when the bot starts publishing.
+      </p>
+    </div>
+  </section>
+
+  <section class="tbp-section alt">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">How it works</div>
+          <h2 class="tbp-h2">Open mandate.<br>Open trade log.</h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            Three rules govern the experiment. They're public so you can hold the
+            bot to them — and so it doesn't quietly become an undisclosed
+            recommendation service.
+          </p>
+        </div>
+      </div>
+
+      <div class="tbp-card-grid three">
+        <div class="tbp-card" style="cursor:default;" data-tbp-reveal>
+          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #1a1a1a); display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">01</span>
+          </div>
+          <div class="meta"><span>Rule</span><span>Mandate</span></div>
+          <h3>Paper account, intraday only</h3>
+          <p>The bot trades a simulated $100k account using real-time market data. No overnight positions. No leverage above 2×. No real money is allocated.</p>
+        </div>
+        <div class="tbp-card" style="cursor:default;" data-tbp-reveal class="delay-1">
+          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #14264a); display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">02</span>
+          </div>
+          <div class="meta"><span>Rule</span><span>Logging</span></div>
+          <h3>Every trade, every reason</h3>
+          <p>Each fill is published with timestamp, instrument, size, P&amp;L, and a one-paragraph reasoning trace from the agent. Wins and losses both. Edits get an erratum.</p>
+        </div>
+        <div class="tbp-card" style="cursor:default;" data-tbp-reveal class="delay-2">
+          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #c8a35a); display:flex; align-items:center; justify-content:center;">
+            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">03</span>
+          </div>
+          <div class="meta"><span>Rule</span><span>Honesty</span></div>
+          <h3>If it underperforms, we say so</h3>
+          <p>The point isn't to demo a winner. The point is to document what an LLM-driven agent actually does in a live market — including the boring losses and the spectacular ones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section" id="log">
+    <div class="tbp-container">
+      <div class="tbp-section-head">
+        <div class="left">
+          <div class="tbp-eyebrow">Trade log</div>
+          <h2 class="tbp-h2">Live ledger.</h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            Every fill the bot has placed since launch. Filterable by instrument,
+            P&amp;L, and reasoning tag. Updates within a few seconds of execution.
+          </p>
+        </div>
+      </div>
+
+      <div style="border: 1px solid var(--tbp-line); border-radius: 14px; padding: 64px 32px; text-align: center; background: var(--tbp-bg-alt);" data-tbp-reveal>
+        <div class="tbp-eyebrow" style="justify-content: center; margin-bottom: 14px;">Coming online</div>
+        <h3 class="tbp-h3" style="margin-bottom: 12px;">The bot isn't live yet.</h3>
+        <p class="tbp-body" style="max-width: 50ch; margin: 0 auto;">
+          The agent loop, broker connector, and ledger schema are in development.
+          When the first paper trade clears, this panel auto-fills.
+        </p>
+        <div style="margin-top: 28px;">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Get notified at launch <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tbp-footer">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/methodology.html">Methodology</a><a href="/education.html">Learn</a>
+          <a href="/bot.html">AI day-trader</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="#">Privacy</a><a href="#">Terms</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+</body>
+</html>
