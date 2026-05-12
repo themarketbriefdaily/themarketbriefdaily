@@ -1,7 +1,7 @@
 /* ================================================================
-   London 3D scene — GLTF model with Gran Turismo dark styling.
-   Dark navy fill, blue-glow edge lines on tall buildings,
-   slow auto-rotate, HTML landmark markers.
+   London 3D scene — GLTF model with white background, edges,
+   slow auto-rotate, HTML landmark markers, free panning,
+   and a closer starting view.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
 import { OrbitControls }        from '/assets/three/OrbitControls.js';
@@ -14,19 +14,18 @@ if (!container) { console.warn('[london] no #londonStage'); }
 
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
-scene.background = null;
+scene.background = new THREE.Color(0xffffff);   // white background
 
-// Near=50 far=80000 gives ratio 1600:1 — good depth precision, no flicker
 const camera = new THREE.PerspectiveCamera(42, 1, 50, 80000);
 camera.position.set(0, 5000, 8000);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance', logarithmicDepthBuffer: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
-renderer.setClearColor(0x000000, 0);
+renderer.setClearColor(0xffffff, 1);            // solid white
 container.appendChild(renderer.domElement);
 
-// ── Controls ─────────────────────────────────────────────────────
+// ── Controls (with panning enabled) ──────────────────────────────
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping   = true;
 controls.dampingFactor   = 0.06;
@@ -36,10 +35,11 @@ controls.maxPolarAngle   = Math.PI * 0.48;
 controls.minPolarAngle   = Math.PI * 0.05;
 controls.autoRotate      = true;
 controls.autoRotateSpeed = 0.25;
-controls.enablePan       = false;
+controls.enablePan       = true;                // 🆕 allow panning
+controls.panSpeed        = 0.8;
 controls.update();
 
-// ── Lighting — neutral white for clean solid look ─────────────────
+// ── Lighting (neutral, works well on white background) ──────────
 scene.add(new THREE.AmbientLight(0xffffff, 0.75));
 const sun = new THREE.DirectionalLight(0xffffff, 0.65);
 sun.position.set(2, 5, 3);
@@ -48,8 +48,8 @@ const fill = new THREE.DirectionalLight(0xdde8ff, 0.25);
 fill.position.set(-2, 1, -2);
 scene.add(fill);
 
-// ── Ground ───────────────────────────────────────────────────────
-const groundMat = new THREE.MeshBasicMaterial({ color: 0x0a0c10 });
+// ── Ground (light grey, almost white) ────────────────────────────
+const groundMat = new THREE.MeshBasicMaterial({ color: 0xeeeeee });
 const groundGeo = new THREE.PlaneGeometry(120000, 120000);
 groundGeo.rotateX(-Math.PI / 2);
 scene.add(new THREE.Mesh(groundGeo, groundMat));
@@ -64,15 +64,15 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Materials — clean white/grey like Blender Solid view ─────────
-const matBuilding = new THREE.MeshLambertMaterial({ color: 0xc8cdd6 });
-const matWater    = new THREE.MeshLambertMaterial({ color: 0x7a9ab8 });
-const matGreen    = new THREE.MeshLambertMaterial({ color: 0x8aaa7a });
-const matRoad     = new THREE.MeshLambertMaterial({ color: 0x888e99 });
+// ── Materials — elegant grey tones for a clean white backdrop ────
+const matBuilding = new THREE.MeshLambertMaterial({ color: 0xa8b0b8 });
+const matWater    = new THREE.MeshLambertMaterial({ color: 0x8ca6b5 });
+const matGreen    = new THREE.MeshLambertMaterial({ color: 0x7a9c5e });
+const matRoad     = new THREE.MeshLambertMaterial({ color: 0x93989e });
 
-// Subtle white edge lines — very faint, just define the geometry
-const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
-const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.10 });
+// Subtle edge lines (still visible against white)
+const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.3 });
+const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0x999999, transparent: true, opacity: 0.12 });
 
 // ── Classify mesh by name ─────────────────────────────────────────
 function materialForMesh(name) {
@@ -94,14 +94,13 @@ async function loadCity() {
       (gltf) => {
         const model = gltf.scene;
 
-        // Apply dark materials + optional edge glow
+        // Apply materials + optional edge glow
         model.traverse((child) => {
           if (!child.isMesh) return;
           child.material = materialForMesh(child.name);
           child.receiveShadow = false;
           child.castShadow    = false;
 
-          // Add edge glow to tall buildings
           const box = new THREE.Box3().setFromObject(child);
           const height = box.max.y - box.min.y;
           if (height > TALL_THRESHOLD) {
@@ -119,37 +118,33 @@ async function loadCity() {
         const box     = new THREE.Box3().setFromObject(model);
         const center  = box.getCenter(new THREE.Vector3());
         const size    = box.getSize(new THREE.Vector3());
-        const maxSpan = Math.max(size.x, size.y, size.z);
 
-        // Log coords for landmark calibration — paste these to Claude
         console.log('[london] min  x=' + box.min.x.toFixed(1) + ' y=' + box.min.y.toFixed(1) + ' z=' + box.min.z.toFixed(1));
         console.log('[london] max  x=' + box.max.x.toFixed(1) + ' y=' + box.max.y.toFixed(1) + ' z=' + box.max.z.toFixed(1));
         console.log('[london] ctr  x=' + center.x.toFixed(1)  + ' y=' + center.y.toFixed(1)  + ' z=' + center.z.toFixed(1));
         console.log('[london] size x=' + size.x.toFixed(1)    + ' y=' + size.y.toFixed(1)    + ' z=' + size.z.toFixed(1));
 
-        // Fog tuned to model scale
-        scene.fog = new THREE.Fog(0x06080f, size.x * 0.8, size.x * 2.8);
+        // White fog tuned to model scale
+        scene.fog = new THREE.Fog(0xffffff, size.x * 0.8, size.x * 2.8);
 
-        // Camera: centred on city, angled 50° down from south
-        // target at ground level (Y=0), not mid-building height
+        // Closer, more zoomed‑in start position
         const fovRad  = (42 / 2) * Math.PI / 180;
-        const camDist = (size.x / 2) / Math.tan(fovRad) * 1.15; // fit X span
+        const camDist = (size.x / 2) / Math.tan(fovRad) * 0.65;   // tighter fit
 
         controls.target.set(center.x, 0, center.z);
         camera.position.set(
-          center.x,                           // directly above centre X
-          camDist * 0.72,                     // elevation
-          center.z + camDist * 0.72           // same distance south
+          center.x,
+          camDist * 0.45,                     // lower angle
+          center.z + camDist * 0.7            // south of centre
         );
         camera.lookAt(new THREE.Vector3(center.x, 0, center.z));
-        controls.minDistance = size.x * 0.05;
+        controls.minDistance = size.x * 0.02;
         controls.maxDistance = size.x * 2.5;
         controls.update();
 
         resolve({ center, size, box });
       },
       (xhr) => {
-        // progress (optional)
         if (xhr.total) {
           const pct = (xhr.loaded / xhr.total * 100).toFixed(0);
           const label = loaderEl?.querySelector('.lon-load-label');
@@ -162,11 +157,6 @@ async function loadCity() {
 }
 
 // ── Landmark markers ─────────────────────────────────────────────
-/* World positions are set after the model loads — we use the console
-   output from '[london] model bounds' to calibrate these.
-   For now they are positioned relative to the model centre.
-   ⚠ Replace markerPositions below once you see the console output. */
-
 const LANDMARKS = [
   { name: 'Canary Wharf',  sub: 'Funds',            href: '/investments.html' },
   { name: 'The Shard',     sub: 'Market briefs',     href: '/posts.html'       },
@@ -175,19 +165,13 @@ const LANDMARKS = [
   { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
 ];
 
-/* ── MARKER POSITIONS ───────────────────────────────────────────────
-   Edit these X/Y/Z values to move each pin.
-   To find the right position: click anywhere on the model in the browser
-   and the console will print "[click] x=... y=... z=..."
-   Paste those numbers here, add the landmark height to Y.
-   Model bounds: X west=-3078  east=6166 | Z north=-2738  south=1648
-   ─────────────────────────────────────────────────────────────────── */
+// World positions (adjust after seeing console output)
 const LANDMARK_WORLD = [
-  new THREE.Vector3( 4800,  280,  -800),  // 0 Canary Wharf  — far east
-  new THREE.Vector3(  800,  355,   300),  // 1 The Shard     — south bank
-  new THREE.Vector3( -900,  180,   350),  // 2 London Eye    — south bank, west
-  new THREE.Vector3( -700,  105,  -300),  // 3 LSE           — north bank, west
-  new THREE.Vector3( 1400,  228,  -400),  // 4 Tower 42      — City, north bank
+  new THREE.Vector3( 4800,  280,  -800),  // Canary Wharf
+  new THREE.Vector3(  800,  355,   300),  // The Shard
+  new THREE.Vector3( -900,  180,   350),  // London Eye
+  new THREE.Vector3( -700,  105,  -300),  // LSE
+  new THREE.Vector3( 1400,  228,  -400),  // Tower 42
 ];
 
 const markerEls = [];
@@ -232,8 +216,6 @@ function projectMarkers() {
 controls.addEventListener('start', () => { controls.autoRotate = false; });
 
 // ── Click-to-position debug tool ─────────────────────────────────
-// Click anywhere on the model → console prints the world coordinates.
-// Use those numbers to update LANDMARK_WORLD above.
 const _ray   = new THREE.Raycaster();
 const _mouse = new THREE.Vector2();
 renderer.domElement.addEventListener('click', (e) => {
