@@ -14,16 +14,16 @@
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
 
   <style>
-    /* ── Dark header — floats over the 3D hero ─────────────────── */
+    /* ── Dark header — floats over the white hero ─────────────────── */
     body.tbp .tbp-header {
-      background: rgba(6,8,15,.55);
+      background: rgba(6,8,15,.75);
       backdrop-filter: blur(14px) saturate(140%);
       -webkit-backdrop-filter: blur(14px) saturate(140%);
-      border-bottom-color: rgba(255,255,255,.06);
+      border-bottom-color: rgba(255,255,255,.08);
     }
     body.tbp .tbp-header.scrolled {
-      background: rgba(6,8,15,.85);
-      border-bottom-color: rgba(255,255,255,.08);
+      background: rgba(6,8,15,.92);
+      border-bottom-color: rgba(255,255,255,.12);
     }
     body.tbp .tbp-brand,
     body.tbp .tbp-brand .mark + span,
@@ -39,7 +39,7 @@
     body.tbp .tbp-burger span::before,
     body.tbp .tbp-burger span::after { background: #fff; }
 
-    /* Reset header to default colours once user scrolls below hero */
+    /* Header turns light when user scrolls below hero */
     body.tbp .tbp-header.below-hero {
       background: rgba(250,249,246,.92);
       backdrop-filter: blur(14px) saturate(160%);
@@ -56,15 +56,14 @@
     body.tbp .tbp-header.below-hero .tbp-burger span::before,
     body.tbp .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
 
-    /* ── Hero stage ────────────────────────────────────────────── */
+    /* ── Hero stage — white background ────────────────────────────── */
     .london-hero {
       position: relative;
       width: 100%;
       height: 100vh;
       min-height: 640px;
       overflow: hidden;
-      background:
-        radial-gradient(ellipse at 50% 60%, #0a1124 0%, #06080f 60%, #04050b 100%);
+      background: #ffffff;               /* <-- white hero */
     }
     #londonStage {
       position: absolute;
@@ -75,19 +74,17 @@
     }
     #londonStage:active { cursor: grabbing; }
 
-    /* Soft vignette + bottom fade for text legibility */
+    /* Light vignette (bottom text legibility) */
     .london-hero::after {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
       z-index: 4;
-      background:
-        radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(4,5,11,.5) 100%),
-        linear-gradient(to bottom, rgba(6,8,15,.65) 0%, transparent 22%, transparent 75%, rgba(6,8,15,.85) 100%);
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 70%, rgba(255,255,255,0.7) 100%);
     }
 
-    /* ── HUD overlay ──────────────────────────────────────────── */
+    /* ── HUD overlay — dark text ──────────────────────────────────── */
     .london-hud {
       position: absolute;
       left: 0; right: 0; bottom: 0;
@@ -105,7 +102,7 @@
       font-weight: 600;
       letter-spacing: .14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.7);
+      color: rgba(0,0,0,0.7);
       margin-bottom: 18px;
     }
     .london-hud-eyebrow::before {
@@ -119,10 +116,10 @@
       font-weight: 850;
       letter-spacing: -.035em;
       line-height: 1;
-      color: #fff;
+      color: #111;
       margin: 0 0 18px;
       max-width: 18ch;
-      text-shadow: 0 2px 24px rgba(0,0,0,.55);
+      text-shadow: 0 2px 24px rgba(0,0,0,0.15);
     }
     .london-hud h1 em {
       font-family: 'Fraunces', serif;
@@ -133,12 +130,12 @@
       max-width: 48ch;
       font-size: clamp(.95rem, 1.15vw, 1.08rem);
       line-height: 1.55;
-      color: rgba(255,255,255,.78);
+      color: rgba(0,0,0,0.75);
       margin: 0 0 22px;
-      text-shadow: 0 1px 8px rgba(0,0,0,.5);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.1);
     }
 
-    /* Hint to drag/zoom — top right corner */
+    /* Drag hint — top right */
     .london-hud-hint {
       position: absolute;
       top: clamp(80px, 10vh, 120px);
@@ -148,27 +145,27 @@
       align-items: center;
       gap: 10px;
       padding: 10px 16px;
-      border: 1px solid rgba(255,255,255,.14);
+      border: 1px solid rgba(0,0,0,0.12);
       border-radius: 999px;
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,0.8);
       backdrop-filter: blur(10px);
       font-size: 11.5px;
       font-weight: 600;
       letter-spacing: .08em;
-      color: rgba(255,255,255,.78);
+      color: rgba(0,0,0,0.78);
       pointer-events: auto;
     }
     .london-hud-hint::before {
       content: "↻";
       display: inline-block;
       font-size: 16px;
-      color: #7aa6ff;
+      color: #555;
       animation: hudSpin 8s linear infinite;
     }
     @keyframes hudSpin { to { transform: rotate(360deg); } }
     @media (max-width: 720px) { .london-hud-hint { display: none; } }
 
-    /* ── Markers (HTML overlays projected by Three.js) ────────── */
+    /* ── Markers (keep dark glass pop-ups) ────────────────────────── */
     #londonLabels {
       position: absolute;
       inset: 0;
@@ -258,7 +255,7 @@
       letter-spacing: .04em;
     }
 
-    /* ── Video Loader ──────────────────────────────────────────── */
+    /* ── Video Loader (unchanged) ──────────────────────────────────── */
     #londonLoader {
       position: absolute;
       inset: 0;
@@ -282,7 +279,6 @@
       object-fit: cover;
       opacity: 0.72;
     }
-    /* Dark gradient over video so text reads clearly */
     #londonLoader::after {
       content: "";
       position: absolute;
@@ -328,7 +324,7 @@
       color: rgba(255,255,255,.35);
     }
 
-    /* ── Card images ───────────────────────────────────────────── */
+    /* Rest of page styles unchanged (cards, etc.) */
     .tbp-card .visual img {
       width: 100%;
       height: 100%;
@@ -373,10 +369,10 @@
 
   <!-- ── HERO: 3D London ─────────────────────────────────────── -->
   <section class="london-hero" aria-label="3D map of London">
-    <div id="londonStage" role="application" aria-label="Drag to look around. Scroll to zoom."></div>
+    <div id="londonStage" role="application" aria-label="Drag to look around. Scroll to zoom. Right‑click or two‑finger drag to pan."></div>
     <div id="londonLabels" aria-hidden="false"></div>
 
-    <!-- Video loading screen — fades out once Three.js finishes -->
+    <!-- Video loading screen — forced 10‑second minimum display -->
     <div id="londonLoader">
       <video id="loaderVideo" autoplay muted loop playsinline>
         <source src="/assets/loading-video.mp4" type="video/mp4">
@@ -388,7 +384,7 @@
       </div>
     </div>
 
-    <div class="london-hud-hint">Drag · Scroll to zoom</div>
+    <div class="london-hud-hint">Drag · Scroll to zoom · Pan</div>
 
     <div class="london-hud">
       <div class="london-hud-eyebrow">Independent macro &amp; market structure research</div>
@@ -398,7 +394,7 @@
         face of the publication — from physical-supply analysis to a working
         AI day-trader. Click any pin.
       </p>
-      <p style="font-size:11px; color: rgba(255,255,255,.4); margin: 0; letter-spacing:.04em;">
+      <p style="font-size:11px; color: rgba(0,0,0,0.45); margin: 0; letter-spacing:.04em;">
         Geometry from OpenStreetMap (ODbL). Educational research only — not investment advice.
       </p>
     </div>
@@ -575,7 +571,7 @@
     </div>
   </footer>
 
-  <!-- Header colour-switch: go light once user scrolls below the 3D hero -->
+  <!-- Header colour‑switch: go light once user scrolls below the 3D hero -->
   <script>
     (function () {
       const header = document.querySelector('.tbp-header');
@@ -586,6 +582,27 @@
         { threshold: 0 }
       );
       obs.observe(hero);
+    })();
+  </script>
+
+  <!-- 10‑second minimum loading screen (intercepts the 'done' class) -->
+  <script>
+    (function() {
+      const loader = document.getElementById('londonLoader');
+      if (!loader) return;
+      const start = Date.now();
+      const MIN_TIME = 10000; // 10 seconds
+
+      const originalAdd = loader.classList.add.bind(loader.classList);
+      loader.classList.add = function(...args) {
+        if (args.includes('done')) {
+          const elapsed = Date.now() - start;
+          const remaining = Math.max(0, MIN_TIME - elapsed);
+          setTimeout(() => originalAdd('done'), remaining);
+        } else {
+          originalAdd(...args);
+        }
+      };
     })();
   </script>
 
