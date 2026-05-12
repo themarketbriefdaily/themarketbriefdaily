@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="assets/tbp-theme.css" />
 
   <style>
     /* ── Dark header — floats over the 3D hero ─────────────────── */
@@ -344,16 +344,16 @@
 <body>
   <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+      <a class="tbp-brand" href="" aria-label="The Market Brief Daily">
         <span class="mark">M</span>
         <span>The Market Brief Daily</span>
       </a>
       <nav class="tbp-nav" aria-label="Primary">
-        <a class="is-active" href="/">Home</a>
-        <a href="/posts.html">Research</a>
-        <a href="/investments.html">Funds</a>
-        <a href="/methodology.html">Methodology</a>
-        <a href="/about.html">About</a>
+        <a class="is-active" href="">Home</a>
+        <a href="posts.html">Research</a>
+        <a href="investments.html">Funds</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
         Subscribe <span class="arrow">↗</span>
@@ -363,11 +363,11 @@
   </header>
 
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a>
-    <a href="/posts.html">Research</a>
-    <a href="/investments.html">Funds</a>
-    <a href="/methodology.html">Methodology</a>
-    <a href="/about.html">About</a>
+    <a href="">Home</a>
+    <a href="posts.html">Research</a>
+    <a href="investments.html">Funds</a>
+    <a href="methodology.html">Methodology</a>
+    <a href="about.html">About</a>
     <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
 
@@ -379,7 +379,7 @@
     <!-- Video loading screen — fades out once Three.js finishes -->
     <div id="londonLoader">
       <video id="loaderVideo" autoplay muted loop playsinline>
-        <source src="/assets/loading-video.mp4" type="video/mp4">
+        <source src="assets/loading-video.mp4" type="video/mp4">
       </video>
       <div class="lon-load-ui">
         <div class="lon-load-label">Building London…</div>
@@ -422,9 +422,9 @@
       </div>
 
       <div class="tbp-card-grid four">
-        <a class="tbp-card" href="/investments.html" data-tbp-reveal>
+        <a class="tbp-card" href="investments.html" data-tbp-reveal>
           <div class="visual">
-            <img src="/assets/images/ny-skyline.jpg" alt="Canary Wharf financial district" loading="lazy">
+            <img src="assets/images/canary-wharf.jpg" alt="Canary Wharf financial district" loading="lazy" onerror="this.onerror=null;this.src='assets/images/london-skyline.jpg'">
             <div class="arrow">↗</div>
           </div>
           <div class="meta"><span>01</span><span>Funds</span></div>
@@ -432,9 +432,9 @@
           <p>Four illustrative model portfolios — macro, microstructure, supply, and factor. Transparent benchmarks, simulated returns.</p>
           <span class="read-more">Open Funds</span>
         </a>
-        <a class="tbp-card" href="/posts.html" data-tbp-reveal>
+        <a class="tbp-card" href="posts.html" data-tbp-reveal>
           <div class="visual">
-            <img src="/assets/images/london-skyline.jpg" alt="The Shard and London skyline" loading="lazy">
+            <img src="assets/images/the-shard.jpg" alt="The Shard and London skyline" loading="lazy" onerror="this.onerror=null;this.src='assets/images/london-skyline.jpg'" style="object-fit: cover">
             <div class="arrow">↗</div>
           </div>
           <div class="meta"><span>02</span><span>Research</span></div>
@@ -442,9 +442,9 @@
           <p>Daily briefings on physical supply, macro transmission, and microstructure — auto-loaded from the Substack archive.</p>
           <span class="read-more">Read the briefs</span>
         </a>
-        <a class="tbp-card" href="/methodology.html" data-tbp-reveal>
+        <a class="tbp-card" href="methodology.html" data-tbp-reveal>
           <div class="visual">
-            <img src="/assets/images/uk-investing.jpg" alt="Westminster — methodology" loading="lazy">
+            <img src="assets/images/london-eye.jpg" alt="London Eye — methodology" loading="lazy" onerror="this.onerror=null;this.src='assets/images/uk-investing.jpg'">
             <div class="arrow">↗</div>
           </div>
           <div class="meta"><span>03</span><span>Methodology</span></div>
@@ -452,28 +452,28 @@
           <p>How the model portfolios are built. Three analytical frames — market structure, physical tightness, macro transmission.</p>
           <span class="read-more">Read the methodology</span>
         </a>
-        <a class="tbp-card" href="/education.html" data-tbp-reveal>
+        <a class="tbp-card" href="education.html" data-tbp-reveal>
           <div class="visual">
-            <img src="/assets/images/global-clusters.jpg" alt="Global market clusters — education" loading="lazy">
+            <img src="assets/images/london-bridge.jpg" alt="London Bridge — education" loading="lazy" onerror="this.onerror=null;this.src='assets/images/global-clusters.jpg'">
             <div class="arrow">↗</div>
           </div>
           <div class="meta"><span>04</span><span>Learn</span></div>
-          <h3>LSE / Houghton St</h3>
+          <h3>London Bridge</h3>
           <p>Plain-English notes on financial markets, asset classes, UK personal finance, and the IMC syllabus.</p>
           <span class="read-more">Open the library</span>
         </a>
       </div>
 
-      <!-- Tower 42 / bot card — full-width feature -->
-      <a class="tbp-card" href="/bot.html" style="margin-top: 56px; display:grid; grid-template-columns: 1fr 1.4fr; gap: 0; max-width:none; border-radius:14px; overflow:hidden;" data-tbp-reveal>
+      <!-- Houses of Parliament / bot card — full-width feature -->
+      <a class="tbp-card" href="bot.html" style="margin-top: 56px; display:grid; grid-template-columns: 1fr 1.4fr; gap: 0; max-width:none; border-radius:14px; overflow:hidden;" data-tbp-reveal>
         <div class="visual" style="aspect-ratio: auto; height: 100%; min-height: 240px; margin: 0; border-radius: 0; overflow:hidden;">
-          <img src="/assets/images/method-structure.jpg" alt="Tower 42 — AI day-trading bot" loading="lazy" style="border-radius:0;">
+          <img src="assets/images/houses-of-parliament.jpg" alt="Houses of Parliament — AI day-trading bot" loading="lazy" style="border-radius:0;" onerror="this.onerror=null;this.src='assets/images/method-structure.jpg'">
           <div class="arrow">↗</div>
         </div>
         <div style="padding: clamp(28px, 4vw, 48px); display:flex; flex-direction:column; justify-content:center;">
           <div class="tbp-eyebrow" style="margin-bottom:14px;">Experimental</div>
           <h3 style="font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight: 800; letter-spacing: -.02em; margin: 0 0 14px;">
-            Tower 42 — an AI day-trading bot.
+            Houses of Parliament — an AI day-trading bot.
           </h3>
           <p style="font-size: 15px; line-height: 1.65; margin: 0 0 18px; max-width: 60ch;">
             A live experiment: an AI agent runs an intraday strategy in a paper
@@ -520,7 +520,7 @@
         </div>
         <div class="actions">
           <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
-          <a class="tbp-btn" href="/about.html">About <span class="arrow">→</span></a>
+          <a class="tbp-btn" href="about.html">About <span class="arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -537,18 +537,18 @@
         <div>
           <h4>Content</h4>
           <div class="tbp-footer-links">
-            <a href="/posts.html">Research</a>
-            <a href="/investments.html">Funds</a>
-            <a href="/methodology.html">Methodology</a>
-            <a href="/education.html">Learn</a>
-            <a href="/bot.html">AI day-trader</a>
+            <a href="posts.html">Research</a>
+            <a href="investments.html">Funds</a>
+            <a href="methodology.html">Methodology</a>
+            <a href="education.html">Learn</a>
+            <a href="bot.html">AI day-trader</a>
           </div>
         </div>
         <div>
           <h4>Company</h4>
           <div class="tbp-footer-links">
-            <a href="/about.html">About</a>
-            <a href="mailto:hello@marketbriefdaily.com">Contact</a>
+            <a href="about.html">About</a>
+            <a href="/cdn-cgi/l/email-protection#59313c3535361934382b323c2d3b2b303c3f3d38303520773a3634">Contact</a>
             <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
             <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
           </div>
@@ -556,27 +556,27 @@
         <div>
           <h4>Legal</h4>
           <div class="tbp-footer-links">
-            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="disclaimer.html">Disclaimer</a>
             <a href="#">Privacy</a>
             <a href="#">Terms</a>
           </div>
         </div>
       </div>
 
-      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-massive" aria-hidden="true" style="font-size: 1.68px; line-height: 1.2">MarketBriefDaily.</div>
 
       <div class="tbp-footer-bottom">
         <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
         <div class="legal">
-          <a href="/disclaimer.html">Full disclaimer</a>
-          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+          <a href="disclaimer.html">Full disclaimer</a>
+          <a href="/cdn-cgi/l/email-protection#660e030a0a09260b07140d031204140f030002070f0a1f4805090b"><span class="__cf_email__" data-cfemail="e68e838a8a89a68b87948d839284948f838082878f8a9fc885898b">[email&#160;protected]</span></a>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- Header colour-switch: go light once user scrolls below the 3D hero -->
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     (function () {
       const header = document.querySelector('.tbp-header');
       const hero   = document.querySelector('.london-hero');
@@ -589,7 +589,7 @@
     })();
   </script>
 
-  <script src="/assets/tbp.js" defer></script>
-  <script type="module" src="/assets/london-scene.js"></script>
+  <script src="assets/tbp.js" defer></script>
+  <script type="module" src="assets/london-scene-v2.js"></script>
 </body>
 </html>
