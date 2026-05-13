@@ -1,6 +1,6 @@
 /* ================================================================
-   London 3D scene — white buildings, grey ground, blue sky sphere.
-   No black flickering.  Pan enabled.  Closer starting view.
+   London 3D scene — floating white city on a blue sky sphere.
+   No ground plane.  Pan enabled.  Closer starting view.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
 import { OrbitControls }        from '/assets/three/OrbitControls.js';
@@ -19,15 +19,15 @@ camera.position.set(0, 5000, 8000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
+  alpha: false,                         // no transparency – never shows page background
   powerPreference: 'high-performance'
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
 
-// ── Prevent black flicker ────────────────────────────────────────
-scene.background = new THREE.Color(0xf0f0f0);      // fallback light grey
-renderer.setClearColor(0xf0f0f0, 1);               // matching clear colour
-renderer.domElement.style.backgroundColor = '#f0f0f0';
+// Prevent any black/white flashing
+renderer.setClearColor(0xd0dce6, 1);    // gentle sky‑like light blue (fallback, won’t be seen once sphere loads)
+renderer.domElement.style.backgroundColor = '#d0dce6';
 renderer.domElement.style.display = 'block';
 
 container.appendChild(renderer.domElement);
@@ -55,13 +55,7 @@ const fill = new THREE.DirectionalLight(0xdde8ff, 0.3);
 fill.position.set(-2, 1, -2);
 scene.add(fill);
 
-// ── Ground (mid‑grey, like pavement) ─────────────────────────────
-const groundMat = new THREE.MeshBasicMaterial({ color: 0xcccccc });
-const groundGeo = new THREE.PlaneGeometry(120000, 120000);
-groundGeo.rotateX(-Math.PI / 2);
-scene.add(new THREE.Mesh(groundGeo, groundMat));
-
-// ── Resize (forces full‑bleed) ───────────────────────────────────
+// ── Resize ───────────────────────────────────────────────────────
 function resize() {
   const w = container.clientWidth, h = container.clientHeight;
   camera.aspect = w / h;
@@ -73,7 +67,7 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Sky sphere (blue sky with clouds) ────────────────────────────
+// ── Sky sphere (blue sky with clouds, no ground) ─────────────────
 async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
@@ -95,7 +89,7 @@ async function createSky() {
   });
 }
 
-// ── Materials – crisp white city, soft grey ground ───────────────
+// ── Materials – crisp white city ─────────────────────────────────
 const matBuilding = new THREE.MeshLambertMaterial({ color: 0xffffff });  // pure white
 const matWater    = new THREE.MeshLambertMaterial({ color: 0xaaccdd });  // pale steel blue
 const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });  // muted green
@@ -148,13 +142,12 @@ async function loadCity() {
         console.log('[london] ctr  x=' + center.x.toFixed(1)  + ' y=' + center.y.toFixed(1)  + ' z=' + center.z.toFixed(1));
         console.log('[london] size x=' + size.x.toFixed(1)    + ' y=' + size.y.toFixed(1)    + ' z=' + size.z.toFixed(1));
 
-        // White fog tuned to model scale
-        scene.fog = new THREE.Fog(0xffffff, size.x * 0.8, size.x * 2.8);
+        // Light fog – blends to sky colour
+        scene.fog = new THREE.Fog(0xd0dce6, size.x * 0.8, size.x * 2.8);
 
-        // Closer, more zoomed‑in start
+        // Closer start
         const fovRad  = (42 / 2) * Math.PI / 180;
         const camDist = (size.x / 2) / Math.tan(fovRad) * 0.65;
-
         controls.target.set(center.x, 0, center.z);
         camera.position.set(
           center.x,
@@ -262,9 +255,9 @@ function tick() {
 // ── Boot ──────────────────────────────────────────────────────────
 (async () => {
   try {
-    await createSky();                // sky appears even before the city
+    await createSky();                // sky sphere loads first – no ground needed
   } catch (e) {
-    console.warn('[london] sky texture not found, using light grey background', e);
+    console.warn('[london] sky texture not found – using fallback colour', e);
   }
   try {
     const { center } = await loadCity();
