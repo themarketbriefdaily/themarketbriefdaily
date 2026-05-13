@@ -1,5 +1,6 @@
 /* ================================================================
-   London 3D scene — white buildings, blue sky, smooth controls.
+   London 3D scene — white buildings, grey ground, blue sky sphere.
+   No black flickering.  Pan enabled.  Closer starting view.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
 import { OrbitControls }        from '/assets/three/OrbitControls.js';
@@ -12,22 +13,23 @@ if (!container) { console.warn('[london] no #londonStage'); }
 
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
-// No explicit background colour – sky sphere does the job
 
 const camera = new THREE.PerspectiveCamera(42, 1, 50, 80000);
 camera.position.set(0, 5000, 8000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: false,
-  powerPreference: 'high-performance',
-  logarithmicDepthBuffer: true
+  powerPreference: 'high-performance'
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
-renderer.setClearColor(0xffffff, 1);
-renderer.domElement.style.backgroundColor = '#ffffff';
+
+// ── Prevent black flicker ────────────────────────────────────────
+scene.background = new THREE.Color(0xf0f0f0);      // fallback light grey
+renderer.setClearColor(0xf0f0f0, 1);               // matching clear colour
+renderer.domElement.style.backgroundColor = '#f0f0f0';
 renderer.domElement.style.display = 'block';
+
 container.appendChild(renderer.domElement);
 
 // ── Controls (pan enabled, closer start) ─────────────────────────
@@ -53,13 +55,13 @@ const fill = new THREE.DirectionalLight(0xdde8ff, 0.3);
 fill.position.set(-2, 1, -2);
 scene.add(fill);
 
-// ── Ground (light, almost white) ──────────────────────────────────
-const groundMat = new THREE.MeshBasicMaterial({ color: 0xf5f5f5 });
+// ── Ground (mid‑grey, like pavement) ─────────────────────────────
+const groundMat = new THREE.MeshBasicMaterial({ color: 0xcccccc });
 const groundGeo = new THREE.PlaneGeometry(120000, 120000);
 groundGeo.rotateX(-Math.PI / 2);
 scene.add(new THREE.Mesh(groundGeo, groundMat));
 
-// ── Resize (forces full-bleed) ────────────────────────────────────
+// ── Resize (forces full‑bleed) ───────────────────────────────────
 function resize() {
   const w = container.clientWidth, h = container.clientHeight;
   camera.aspect = w / h;
@@ -71,7 +73,7 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Sky sphere ────────────────────────────────────────────────────
+// ── Sky sphere (blue sky with clouds) ────────────────────────────
 async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
@@ -93,13 +95,14 @@ async function createSky() {
   });
 }
 
-// ── Materials — lighter, airy palette ────────────────────────────
-const matBuilding = new THREE.MeshLambertMaterial({ color: 0xe8e8e8 });
-const matWater    = new THREE.MeshLambertMaterial({ color: 0xa3c4d3 });
-const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });
-const matRoad     = new THREE.MeshLambertMaterial({ color: 0xd0d0d0 });
-const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0x999999, transparent: true, opacity: 0.3 });
-const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.15 });
+// ── Materials – crisp white city, soft grey ground ───────────────
+const matBuilding = new THREE.MeshLambertMaterial({ color: 0xffffff });  // pure white
+const matWater    = new THREE.MeshLambertMaterial({ color: 0xaaccdd });  // pale steel blue
+const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });  // muted green
+const matRoad     = new THREE.MeshLambertMaterial({ color: 0xdddddd });  // off‑white for roads
+
+const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 });
+const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.18 });
 
 function materialForMesh(name) {
   const n = (name || '').toLowerCase();
@@ -139,7 +142,6 @@ async function loadCity() {
         const box     = new THREE.Box3().setFromObject(model);
         const center  = box.getCenter(new THREE.Vector3());
         const size    = box.getSize(new THREE.Vector3());
-        const maxSpan = Math.max(size.x, size.y, size.z);
 
         console.log('[london] min  x=' + box.min.x.toFixed(1) + ' y=' + box.min.y.toFixed(1) + ' z=' + box.min.z.toFixed(1));
         console.log('[london] max  x=' + box.max.x.toFixed(1) + ' y=' + box.max.y.toFixed(1) + ' z=' + box.max.z.toFixed(1));
@@ -178,7 +180,7 @@ async function loadCity() {
   });
 }
 
-// ── Markers (unchanged) ──────────────────────────────────────────
+// ── Markers ──────────────────────────────────────────────────────
 const LANDMARKS = [
   { name: 'Canary Wharf',  sub: 'Funds',            href: '/investments.html' },
   { name: 'The Shard',     sub: 'Market briefs',     href: '/posts.html'       },
@@ -234,7 +236,7 @@ function projectMarkers() {
 
 controls.addEventListener('start', () => { controls.autoRotate = false; });
 
-// Click‑to‑position debug
+// ── Click‑to‑position debug tool ─────────────────────────────────
 const _ray   = new THREE.Raycaster();
 const _mouse = new THREE.Vector2();
 renderer.domElement.addEventListener('click', (e) => {
@@ -249,6 +251,7 @@ renderer.domElement.addEventListener('click', (e) => {
   }
 });
 
+// ── Render loop ───────────────────────────────────────────────────
 function tick() {
   controls.update();
   projectMarkers();
@@ -259,9 +262,9 @@ function tick() {
 // ── Boot ──────────────────────────────────────────────────────────
 (async () => {
   try {
-    await createSky();                // sky sphere loads first
+    await createSky();                // sky appears even before the city
   } catch (e) {
-    console.warn('[london] sky texture not found, using white background', e);
+    console.warn('[london] sky texture not found, using light grey background', e);
   }
   try {
     const { center } = await loadCity();
