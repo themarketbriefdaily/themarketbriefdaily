@@ -175,19 +175,19 @@ async function loadCity() {
 
 // ── Markers ──────────────────────────────────────────────────────
 const LANDMARKS = [
-  { name: 'Canary Wharf',  sub: 'Funds',            href: '/investments.html' },
-  { name: 'The Shard',     sub: 'Market briefs',     href: '/posts.html'       },
-  { name: 'London Eye',    sub: 'Investment thesis', href: '/methodology.html' },
-  { name: 'LSE',           sub: 'Learn — IMC',       href: '/education.html'   },
-  { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
+  { name: 'Canary Wharf',      sub: 'Funds',            href: '/investments.html' },
+  { name: 'The Shard',         sub: 'Market briefs',    href: '/posts.html'       },
+  { name: 'London Eye',        sub: 'Investment thesis', href: '/methodology.html' },
+  { name: 'London Bridge',     sub: 'Learn — IMC',      href: '/education.html'   },
+  { name: 'Houses of Parliament', sub: 'AI day-trader', href: '/bot.html'         },
 ];
 
 const LANDMARK_WORLD = [
-  new THREE.Vector3( 4800,  280,  -800),
-  new THREE.Vector3(  800,  355,   300),
-  new THREE.Vector3( -900,  180,   350),
-  new THREE.Vector3( -700,  105,  -300),
-  new THREE.Vector3( 1400,  228,  -400),
+  new THREE.Vector3( 5303,  173,  -761 ),   // Canary Wharf (+20)
+  new THREE.Vector3(  758,  323,  -929 ),   // The Shard (+20)
+  new THREE.Vector3(-1474,   90,  -859 ),   // London Eye (+20)
+  new THREE.Vector3(  600,   80, -1000 ),   // London Bridge — PLACEHOLDER — adjust using click debugger!
+  new THREE.Vector3(-1913,   56,  -369 ),   // Houses of Parliament (+20)
 ];
 
 const markerEls = [];
