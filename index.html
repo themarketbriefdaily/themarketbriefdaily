@@ -13,7 +13,622 @@
 
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
 
+  <style><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Market Brief Daily — Independent macro &amp; market structure research</title>
+  <meta name="description" content="Independent macro and market structure research, mapped to London. Five gateways: funds, briefs, methodology, learning, and an experimental day-trading bot." />
+  <meta name="theme-color" content="#faf9f6" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+
   <style>
+    /* ── Header — consistent light style matching all other pages ─── */
+    /* No dark override — same look as research, methodology, about    */
+
+    /* ── Hero stage — white background, blends with page ──────────── */
+    .london-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 640px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.07);
+    }
+    #londonStage {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      background: transparent;
+    }
+    #londonStage:active { cursor: grabbing; }
+
+    /* Light vignette (bottom text legibility) */
+    .london-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 70%, rgba(255,255,255,0.7) 100%);
+    }
+
+    /* ── HUD overlay — dark text ──────────────────────────────────── */
+    .london-hud {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      z-index: 6;
+      pointer-events: none;
+      padding: 0 var(--tbp-pad-x) clamp(28px, 5vw, 64px);
+    }
+    .london-hud > * { pointer-events: auto; }
+
+    .london-hud-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.7);
+      margin-bottom: 18px;
+    }
+    .london-hud-eyebrow::before {
+      content: "";
+      width: 28px; height: 1px;
+      background: currentColor;
+    }
+    .london-hud h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(2rem, 5.4vw, 4.4rem);
+      font-weight: 850;
+      letter-spacing: -.035em;
+      line-height: 1;
+      color: #111;
+      margin: 0 0 18px;
+      max-width: 18ch;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.15);
+    }
+    .london-hud h1 em {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .london-hud .lead {
+      max-width: 48ch;
+      font-size: clamp(.95rem, 1.15vw, 1.08rem);
+      line-height: 1.55;
+      color: rgba(0,0,0,0.75);
+      margin: 0 0 22px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Drag hint — top right */
+    .london-hud-hint {
+      position: absolute;
+      top: clamp(80px, 10vh, 120px);
+      right: var(--tbp-pad-x);
+      z-index: 6;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: rgba(0,0,0,0.78);
+      pointer-events: auto;
+    }
+    .london-hud-hint::before {
+      content: "↻";
+      display: inline-block;
+      font-size: 16px;
+      color: #555;
+      animation: hudSpin 8s linear infinite;
+    }
+    @keyframes hudSpin { to { transform: rotate(360deg); } }
+    @media (max-width: 720px) { .london-hud-hint { display: none; } }
+
+    /* ── Markers (keep dark glass pop-ups) ────────────────────────── */
+    #londonLabels {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .london-marker {
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: auto;
+      text-decoration: none;
+      color: inherit;
+      will-change: transform;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .london-marker .lm-pin {
+      position: relative;
+      width: 14px; height: 14px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .london-marker .lm-dot {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #66a3ff;
+      box-shadow:
+        0 0 0 3px rgba(102,163,255,.25),
+        0 0 14px rgba(102,163,255,.65);
+    }
+    .london-marker .lm-pin::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(122,166,255,.8);
+      animation: lmPulse 2.4s cubic-bezier(.22,.6,.32,1) infinite;
+    }
+    @keyframes lmPulse {
+      0%   { transform: scale(.7); opacity: 1; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .london-marker .lm-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 12px 16px;
+      background: rgba(6,8,15,.92);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      backdrop-filter: blur(14px);
+      min-width: 180px;
+      transform: translateY(6px);
+      opacity: 0;
+      transition: transform .35s cubic-bezier(.16,.84,.32,1), opacity .35s, border-color .35s;
+      box-shadow: 0 18px 44px rgba(0,0,0,.4);
+    }
+    .london-marker:hover .lm-card,
+    .london-marker:focus-visible .lm-card {
+      transform: translateY(0);
+      opacity: 1;
+      border-color: rgba(122,166,255,.45);
+    }
+    .london-marker .lm-eyebrow {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #7aa6ff;
+      margin-bottom: 4px;
+    }
+    .london-marker .lm-title {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: #fff;
+    }
+    .london-marker .lm-arrow {
+      margin-top: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,.72);
+      letter-spacing: .04em;
+    }
+
+    /* ── Video Loader (unchanged) ──────────────────────────────────── */
+    #londonLoader {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      background: #06080f;
+      transition: opacity 1.2s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    #londonLoader.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #loaderVideo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.72;
+    }
+    #londonLoader::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(6,8,15,.9) 0%, rgba(6,8,15,.3) 50%, rgba(6,8,15,.5) 100%);
+      pointer-events: none;
+    }
+    .lon-load-ui {
+      position: relative;
+      z-index: 2;
+      padding: 0 var(--tbp-pad-x) clamp(28px, 5vw, 56px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .lon-load-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+    .lon-load-bar {
+      width: 220px; height: 1px;
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+      position: relative;
+    }
+    .lon-load-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 35%;
+      background: linear-gradient(90deg, transparent, #7aa6ff, transparent);
+      animation: lonScan 1.6s linear infinite;
+    }
+    @keyframes lonScan { to { transform: translateX(285%); } }
+    .lon-load-sub {
+      font-size: 10px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+    }
+
+    /* Rest of page styles unchanged (cards, etc.) */
+    .tbp-card .visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: inherit;
+      transition: transform .6s cubic-bezier(.16,.84,.32,1);
+    }
+    .tbp-card:hover .visual img { transform: scale(1.04); }
+  </style>
+</head>
+
+<body>
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/education.html">Education</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <!-- ── HERO: 3D London ─────────────────────────────────────── -->
+  <section class="london-hero" aria-label="3D map of London">
+    <div id="londonStage" role="application" aria-label="Drag to look around. Scroll to zoom. Right‑click or two‑finger drag to pan."></div>
+    <div id="londonLabels" aria-hidden="false"></div>
+
+    <!-- Video loading screen — forced 10‑second minimum display -->
+    <div id="londonLoader">
+      <video id="loaderVideo" autoplay muted loop playsinline>
+        <source src="/assets/loading-video.mp4" type="video/mp4">
+      </video>
+      <div class="lon-load-ui">
+        <div class="lon-load-label">Building London…</div>
+        <div class="lon-load-bar"></div>
+        <div class="lon-load-sub">4,255 buildings · OpenStreetMap</div>
+      </div>
+    </div>
+
+    <div class="london-hud-hint">Drag · Scroll to zoom · Pan</div>
+
+    <div class="london-hud">
+      <div class="london-hud-eyebrow">Independent macro &amp; market structure research</div>
+      <h1>London, <em>read</em><br>through the markets.</h1>
+      <p class="lead">
+        Five gateways across the City and Westminster. Each landmark maps to one
+        face of the publication — from physical-supply analysis to a working
+        AI day-trader. Click any pin.
+      </p>
+      <p style="font-size:11px; color: rgba(0,0,0,0.45); margin: 0; letter-spacing:.04em;">
+        Geometry from OpenStreetMap (ODbL). Educational research only — not investment advice.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── SITE SHOWCASE ─────────────────────────────────────────── -->
+  <section class="tbp-section">
+    <div class="tbp-container">
+      <div class="tbp-section-head" data-tbp-reveal>
+        <div class="left">
+          <div class="tbp-eyebrow">What we publish</div>
+          <h2 class="tbp-h2">Research, tools<br>&amp; <em>education.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            Independent macro research, model portfolios, AI-powered trading tools,
+            and a comprehensive finance education library — all free to read.
+            The paid tier unlocks deeper analysis and PDF exports.
+          </p>
+        </div>
+      </div>
+
+      <div class="tbp-card-grid" style="grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px;" data-tbp-reveal>
+        <a class="tbp-card" href="/posts.html">
+          <div class="visual">
+            <img src="/assets/images/the-shard.jpg" alt="Research briefs" loading="lazy">
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>01</span><span>Research</span></div>
+          <h3>Macro Research Briefs</h3>
+          <p>Daily and weekly briefings on macro transmission, credit spreads, central bank policy, commodity supply chains, and market microstructure. CFA-level analysis written for independent investors and IFA practices.</p>
+          <span class="read-more">Read the briefs</span>
+        </a>
+        <a class="tbp-card" href="/investments.html">
+          <div class="visual">
+            <img src="/assets/images/canary-wharf.jpg" alt="Model portfolios" loading="lazy">
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>02</span><span>Funds</span></div>
+          <h3>Model Portfolios</h3>
+          <p>Four transparent model portfolios — macro regime, market microstructure, physical supply, and multi-factor. Tracked publicly with full methodology, benchmark comparisons, and monthly updates.</p>
+          <span class="read-more">View portfolios</span>
+        </a>
+      </div>
+
+      <div class="tbp-card-grid three" style="margin-top: 24px;" data-tbp-reveal>
+        <a class="tbp-card" href="/methodology.html">
+          <div class="visual">
+            <img src="/assets/images/london-eye.jpg" alt="Methodology" loading="lazy">
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>03</span><span>Methodology</span></div>
+          <h3>Investment Methodology</h3>
+          <p>How we build the portfolios. Three analytical frameworks — macro regime detection, physical supply tightness, and market microstructure signals.</p>
+          <span class="read-more">Read methodology</span>
+        </a>
+        <a class="tbp-card" href="/education.html">
+          <div class="visual">
+            <img src="/assets/images/london-bridge.jpg" alt="Education library" loading="lazy">
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>04</span><span>Education</span></div>
+          <h3>Finance Education Library</h3>
+          <p>Plain-English guides covering financial markets, asset classes, UK investing and tax, pensions, ISAs, SIPPs, and CFA Level 1 concepts. Completely free.</p>
+          <span class="read-more">Open the library</span>
+        </a>
+        <a class="tbp-card" href="/glossary.html">
+          <div class="visual">
+            <img src="/assets/images/london-skyline.jpg" alt="Glossary" loading="lazy">
+            <div class="arrow">↗</div>
+          </div>
+          <div class="meta"><span>05</span><span>Reference</span></div>
+          <h3>Finance Glossary</h3>
+          <p>Comprehensive definitions of financial terms, market structure concepts, and macroeconomic indicators — searchable and cross-referenced.</p>
+          <span class="read-more">Browse glossary</span>
+        </a>
+      </div>
+
+      <a class="tbp-card" href="/bot.html" style="margin-top: 24px; display:grid; grid-template-columns: 1fr 1.4fr; gap: 0; max-width:none; border-radius:14px; overflow:hidden;" data-tbp-reveal>
+        <div class="visual" style="aspect-ratio: auto; height: 100%; min-height: 260px; margin: 0; border-radius: 0; overflow:hidden;">
+          <img src="/assets/images/houses-of-parliament.jpg" alt="AI day-trading bot" loading="lazy" style="border-radius:0;">
+          <div class="arrow">↗</div>
+        </div>
+        <div style="padding: clamp(28px, 4vw, 52px); display:flex; flex-direction:column; justify-content:center;">
+          <div class="tbp-eyebrow" style="margin-bottom:16px;">Experimental · Live now</div>
+          <h3 style="font-size: clamp(1.5rem, 2.8vw, 2.2rem); font-weight: 800; letter-spacing: -.025em; margin: 0 0 16px; line-height: 1.1;">
+            AI Day-Trader — algorithmic<br>trading in public.
+          </h3>
+          <p style="font-size: 15.5px; line-height: 1.65; margin: 0 0 10px; max-width: 58ch; color: var(--tbp-ink-2);">
+            A live experiment: an AI agent runs an intraday macro strategy in a paper account,
+            logging every trade publicly with its full reasoning. Powered by quantitative signals
+            from our macro dashboard and market microstructure data.
+          </p>
+          <p style="font-size: 13px; color: var(--tbp-muted); margin: 0 0 22px;">Paper trading only — not allocated capital. Educational use.</p>
+          <span class="read-more">View the live trade log →</span>
+        </div>
+      </a>
+
+      <div style="margin-top: 56px;" data-tbp-reveal>
+        <div class="tbp-eyebrow" style="margin-bottom: 24px;">Free tools</div>
+        <div class="tbp-card-grid three">
+          <a class="tbp-card" href="/tools/dcf.html" style="background: var(--tbp-bg-alt);">
+            <div class="meta"><span>⟳</span><span>Calculator</span></div>
+            <h3>DCF Valuation Tool</h3>
+            <p>Input revenue growth, EBIT margin, WACC, and terminal growth rate. Get intrinsic value per share and margin of safety instantly. Free — no sign-up.</p>
+            <span class="read-more">Open calculator</span>
+          </a>
+          <a class="tbp-card" href="/tools/macro-dashboard.html" style="background: var(--tbp-bg-alt);">
+            <div class="meta"><span>◉</span><span>Dashboard</span></div>
+            <h3>Macro Signal Dashboard</h3>
+            <p>Live yield curves, credit spreads, PMI data, FX rates, and commodity prices — with AI-interpreted daily macro briefing updated each trading day.</p>
+            <span class="read-more">Open dashboard</span>
+          </a>
+          <a class="tbp-card" href="/tools/cfa.html" style="background: var(--tbp-bg-alt);">
+            <div class="meta"><span>✦</span><span>CFA Prep</span></div>
+            <h3>CFA Level 1 Study Tool</h3>
+            <p>AI-generated practice questions across all 10 CFA Level 1 topic areas. Adaptive difficulty, worked explanations with real macro examples, progress tracking.</p>
+            <span class="read-more">Start studying</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS BAND ─────────────────────────────────────────── -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-stats" data-tbp-reveal>
+        <div class="tbp-stat">
+          <div class="num">04</div>
+          <div class="label">Illustrative model portfolios — macro, structure, supply, factor</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">07</div>
+          <div class="label">Education chapters covering markets, instruments, and UK tax</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">80<span class="unit">+</span></div>
+          <div class="label">Research briefs in the public archive</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">£0</div>
+          <div class="label">Cost — the newsletter is the product</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-cta-strip" data-tbp-reveal>
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Subscribe</div>
+          <h2>Get every brief<br>before the open.</h2>
+        </div>
+        <div class="actions">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="/about.html">About <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/methodology.html">Methodology</a>
+            <a href="/education.html">Learn</a>
+            <a href="/bot.html">AI day-trader</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="mailto:hello@marketbriefdaily.com">Contact</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+            <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
+          </div>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <div class="tbp-footer-links">
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Header colour‑switch: go light once user scrolls below the 3D hero -->
+  <script>
+    (function () {
+      const header = document.querySelector('.tbp-header');
+      const hero   = document.querySelector('.london-hero');
+      if (!header || !hero) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => header.classList.toggle('below-hero', !entry.isIntersecting),
+        { threshold: 0 }
+      );
+      obs.observe(hero);
+    })();
+  </script>
+
+  <!-- 10‑second minimum loading screen (intercepts the 'done' class) -->
+  <script>
+    (function() {
+      const loader = document.getElementById('londonLoader');
+      if (!loader) return;
+      const start = Date.now();
+      const MIN_TIME = 10000; // 10 seconds
+
+      const originalAdd = loader.classList.add.bind(loader.classList);
+      loader.classList.add = function(...args) {
+        if (args.includes('done')) {
+          const elapsed = Date.now() - start;
+          const remaining = Math.max(0, MIN_TIME - elapsed);
+          setTimeout(() => originalAdd('done'), remaining);
+        } else {
+          originalAdd(...args);
+        }
+      };
+    })();
+  </script>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script type="module" src="/assets/london-scene.js"></script>
+</body>
+</html>
     /* ── Dark header — floats over the white hero ─────────────────── */
     body.tbp .tbp-header {
       background: rgba(6,8,15,.75);
