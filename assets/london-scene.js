@@ -1,10 +1,13 @@
 /* ================================================================
    London 3D scene — Google Earth style controls.
-   Left drag = rotate · Right drag = pan · Scroll = zoom.
+   Left drag = rotate · Right drag / two-finger = pan · Scroll = zoom
+   Starting position: x=-2274  y=80  z=-384
+   FOV: 58°  ·  No ground clipping  ·  Tight zoom limits
+   Curated colours: Portland stone · Thames teal · London sage
    ================================================================ */
-import * as THREE               from '/assets/three/three.module.min.js';
-import { OrbitControls }        from '/assets/three/OrbitControls.js';
-import { GLTFLoader }           from '/assets/three/GLTFLoader.js';
+import * as THREE        from '/assets/three/three.module.min.js';
+import { OrbitControls } from '/assets/three/OrbitControls.js';
+import { GLTFLoader }    from '/assets/three/GLTFLoader.js';
 
 const container   = document.getElementById('londonStage');
 const labelsLayer = document.getElementById('londonLabels');
@@ -14,7 +17,8 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, 1, 10, 50000);
+// FOV 58° — wider than before (was 45°), gives a stronger sense of depth
+const camera = new THREE.PerspectiveCamera(58, 1, 5, 30000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -23,18 +27,20 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
-renderer.setClearColor(0xd0dce6, 1);
-renderer.domElement.style.backgroundColor = '#d0dce6';
+
+// Fallback colour — matches sky horizon, prevents any flash
+renderer.setClearColor(0x8ab4c8, 1);
+renderer.domElement.style.backgroundColor = '#8ab4c8';
 renderer.domElement.style.display = 'block';
 container.appendChild(renderer.domElement);
 
-// ── Lighting ─────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0xffffff, 0.85));
-const sun = new THREE.DirectionalLight(0xffffff, 0.7);
-sun.position.set(2, 5, 3);
+// ── Lighting — warm golden-hour ───────────────────────────────────
+scene.add(new THREE.AmbientLight(0xfff4e0, 1.0));       // warm white fill
+const sun = new THREE.DirectionalLight(0xffe8b0, 0.9);  // golden sunlight
+sun.position.set(3, 6, 2);
 scene.add(sun);
-const fill = new THREE.DirectionalLight(0xdde8ff, 0.3);
-fill.position.set(-2, 1, -2);
+const fill = new THREE.DirectionalLight(0xc8deff, 0.35); // cool sky bounce
+fill.position.set(-3, 2, -3);
 scene.add(fill);
 
 // ── Resize ───────────────────────────────────────────────────────
@@ -49,13 +55,17 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Sky sphere ───────────────────────────────────────────────────
+// ── Sky sphere ────────────────────────────────────────────────────
 async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
       (texture) => {
-        const skyGeo = new THREE.SphereGeometry(40000, 64, 64);
-        const skyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide, fog: true });
+        const skyGeo = new THREE.SphereGeometry(25000, 64, 64);
+        const skyMat = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.BackSide,
+          fog: false
+        });
         scene.add(new THREE.Mesh(skyGeo, skyMat));
         resolve();
       }, undefined, reject
@@ -63,13 +73,23 @@ async function createSky() {
   });
 }
 
-// ── Materials ─────────────────────────────────────────────────────
-const matBuilding = new THREE.MeshLambertMaterial({ color: 0xffffff });
-const matWater    = new THREE.MeshLambertMaterial({ color: 0xaaccdd });
-const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });
-const matRoad     = new THREE.MeshLambertMaterial({ color: 0xdddddd });
-const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 });
-const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.18 });
+// ── Curated colour palette ────────────────────────────────────────
+//
+//  Buildings : Portland stone — warm cream, the real colour of London architecture
+//  Water     : Thames deep teal — rich and distinctly river-like
+//  Green     : London sage — parks under overcast sky, muted and natural
+//  Roads     : warm stone — slightly cream, not cold grey
+//  Edges     : warm sand tones — complement the building colour
+//  Fog       : horizon haze matching the sky base colour
+
+const matBuilding  = new THREE.MeshLambertMaterial({ color: 0xf0e8d8 }); // Portland stone
+const matWater     = new THREE.MeshLambertMaterial({ color: 0x3d6e8a }); // Thames deep teal
+const matGreen     = new THREE.MeshLambertMaterial({ color: 0x7a9e6e }); // London park sage
+const matRoad      = new THREE.MeshLambertMaterial({ color: 0xd8d0c0 }); // warm stone road
+const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xc8b89a, transparent: true, opacity: 0.40 });
+const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xd4c8b0, transparent: true, opacity: 0.20 });
+
+const FOG_COLOUR = 0x8ab4c8; // soft blue-grey horizon haze
 
 function materialForMesh(name) {
   const n = (name || '').toLowerCase();
@@ -92,7 +112,7 @@ async function loadCity() {
         const model = gltf.scene;
         model.traverse((child) => {
           if (!child.isMesh) return;
-          child.material = materialForMesh(child.name);
+          child.material      = materialForMesh(child.name);
           child.receiveShadow = false;
           child.castShadow    = false;
           const box    = new THREE.Box3().setFromObject(child);
@@ -110,12 +130,16 @@ async function loadCity() {
         const box    = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         const size   = box.getSize(new THREE.Vector3());
+        modelCenter.copy(center);
 
         console.log('[london] center x=' + center.x.toFixed(1) + ' y=' + center.y.toFixed(1) + ' z=' + center.z.toFixed(1));
         console.log('[london] size   x=' + size.x.toFixed(1)   + ' y=' + size.y.toFixed(1)   + ' z=' + size.z.toFixed(1));
 
-        scene.fog = new THREE.Fog(0xd0dce6, size.x * 0.8, size.x * 2.8);
-        modelCenter = center;
+        // Fog — starts at 50% of city width, fully opaque at 180%
+        // Colour exactly matches the sky horizon for seamless blending
+        scene.fog = new THREE.Fog(FOG_COLOUR, size.x * 0.5, size.x * 1.8);
+        renderer.setClearColor(FOG_COLOUR, 1);
+
         resolve({ center, size, box });
       },
       (xhr) => {
@@ -130,43 +154,92 @@ async function loadCity() {
   });
 }
 
-// ── Google Earth style controls (OrbitControls) ───────────────────
+// ── Google Earth Controls ─────────────────────────────────────────
+//
+//  Left drag         = orbit (rotate around target)
+//  Right drag        = pan (slide the ground, target moves)
+//  Two-finger drag   = pan on touch
+//  Scroll / pinch    = zoom
+//  Double-click      = zoom in and re-centre on that point
+//
+//  maxPolarAngle = 84.6° — camera stays above ground.
+//  minDistance   = 150   — can't fly into buildings.
+//  maxDistance   = 6000  — world feels large, not infinite.
+
 let controls;
+const _ray = new THREE.Raycaster();
 
 function initControls(center) {
   controls = new OrbitControls(camera, renderer.domElement);
-  // Google Earth standard behaviour
-  controls.enableDamping = true;          // smooth inertia
-  controls.dampingFactor = 0.05;
-  controls.rotateSpeed   = 0.8;
-  controls.zoomSpeed     = 1.2;
-  controls.panSpeed      = 0.8;
-  controls.screenSpacePanning = true;     // pan stays flat, doesn't tilt
-  controls.maxPolarAngle = Math.PI / 2.2;  // prevent going under ground
-  controls.minDistance    = 200;
-  controls.maxDistance    = 15000;
-  controls.target.copy(center);
 
-  // Start position: elevated view looking at centre
-  camera.position.set(center.x + 4000, 2000, center.z + 4000);
+  controls.enableDamping      = true;
+  controls.dampingFactor      = 0.08;
+  controls.rotateSpeed        = 0.65;
+  controls.zoomSpeed          = 1.1;
+  controls.panSpeed           = 0.7;
+  controls.screenSpacePanning = false;  // pan slides along the ground plane
+
+  // ── Zoom limits ─────────────────────────────────────────────────
+  controls.minDistance = 150;    // ~2 storeys — can get close to buildings
+  controls.maxDistance = 6000;   // tight ceiling — city stays prominent
+
+  // ── Angle limits — NO underground clipping ──────────────────────
+  controls.minPolarAngle = 0.04;              // nearly top-down
+  controls.maxPolarAngle = Math.PI * 0.47;    // ≈84.6° — nearly flat, never below horizon
+
+  // ── Start position (exact coords) ──────────────────────────────
+  camera.position.set(-2274, 80, -384);
+  // Target: a point in the city slightly ahead so the view looks inward
+  controls.target.set(-1600, 0, -600);
   controls.update();
+
+  // ── Double-click zoom to point ──────────────────────────────────
+  renderer.domElement.addEventListener('dblclick', (e) => {
+    const r  = container.getBoundingClientRect();
+    const mx = ((e.clientX - r.left) / r.width)  *  2 - 1;
+    const my = ((e.clientY - r.top)  / r.height) * -2 + 1;
+    _ray.setFromCamera(new THREE.Vector2(mx, my), camera);
+    const hits = _ray.intersectObjects(scene.children, true);
+    if (hits.length) {
+      const p      = hits[0].point;
+      const dir    = camera.position.clone().sub(p).normalize();
+      const newDist = Math.max(controls.minDistance, camera.position.distanceTo(p) * 0.45);
+      controls.target.copy(p);
+      camera.position.copy(p).addScaledVector(dir, newDist);
+      controls.update();
+    }
+  });
 }
 
-// ── Tether lines (from markers to ground) ────────────────────────
-function buildTethers(landmarks) {
-  const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
-  for (const lm of landmarks) {
-    const points = [
-      lm.world.clone(),
-      new THREE.Vector3(lm.world.x, 0, lm.world.z),
-    ];
-    const geo  = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(geo, mat);
-    scene.add(line);
+// ── Ground clamp — prevents camera going below y=20 ──────────────
+// Called every frame after controls.update()
+function clampCameraToGround() {
+  const MIN_Y = 20;
+  if (camera.position.y < MIN_Y) {
+    camera.position.y = MIN_Y;
+  }
+  if (controls && controls.target.y < 0) {
+    controls.target.y = 0;
   }
 }
 
-// ── Landmark definitions (UPDATED London Eye coordinates) ─────────
+// ── Tether lines (landmark → ground) ─────────────────────────────
+function buildTethers(landmarks) {
+  const mat = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.6
+  });
+  for (const lm of landmarks) {
+    const pts = [
+      lm.world.clone(),
+      new THREE.Vector3(lm.world.x, 0, lm.world.z),
+    ];
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat));
+  }
+}
+
+// ── Landmark definitions ──────────────────────────────────────────
 const LANDMARKS = [
   {
     name:  'Canary Wharf',
@@ -190,7 +263,7 @@ const LANDMARKS = [
     desc:  'Our investment thesis and analytical framework.',
     href:  '/methodology.html',
     img:   '/assets/images/london-eye.jpg',
-    world: new THREE.Vector3(-1473, 280, -860),   // ← updated coordinates
+    world: new THREE.Vector3(-1473, 280, -860),
   },
   {
     name:  'London Bridge',
@@ -205,7 +278,7 @@ const LANDMARKS = [
     sub:   'AI Day-Trader',
     desc:  'Autonomous algorithmic trading — live signals.',
     href:  '/bot.html',
-    img:   '/assets/images/the-shard.jpg',
+    img:   '/assets/images/houses-of-parliament.jpg',
     world: new THREE.Vector3(-1913, 280, -369),
   },
 ];
@@ -215,10 +288,10 @@ const markerEls = [];
 
 function buildMarkers() {
   LANDMARKS.forEach((lm) => {
-    const a = document.createElement('a');
-    a.className = 'london-marker';
-    a.href      = lm.href;
-    a.innerHTML = `
+    const a      = document.createElement('a');
+    a.className  = 'london-marker';
+    a.href       = lm.href;
+    a.innerHTML  = `
       <div class="lm-card">
         <div class="lm-card-img" style="background-image:url('${lm.img}')"></div>
         <div class="lm-card-body">
@@ -234,38 +307,36 @@ function buildMarkers() {
 }
 
 // ── Project markers to screen ─────────────────────────────────────
-const _proj = new THREE.Vector3();
-const FAR_FADE_START = 3000;
-const FAR_FADE_END   = 8000;
+const _proj         = new THREE.Vector3();
+const FAR_FADE_START = 2500;
+const FAR_FADE_END   = 5500;
 
 function projectMarkers() {
   const w = container.clientWidth, h = container.clientHeight;
   for (const m of markerEls) {
     _proj.copy(m.world).project(camera);
     if (_proj.z >= 1) {
-      m.el.style.opacity = '0';
+      m.el.style.opacity       = '0';
       m.el.style.pointerEvents = 'none';
       continue;
     }
     const dist = camera.position.distanceTo(m.world);
     const fade = 1 - Math.max(0, Math.min(1, (dist - FAR_FADE_START) / (FAR_FADE_END - FAR_FADE_START)));
-    const sx = (_proj.x *  0.5 + 0.5) * w;
-    const sy = (_proj.y * -0.5 + 0.5) * h;
+    const sx   = (_proj.x *  0.5 + 0.5) * w;
+    const sy   = (_proj.y * -0.5 + 0.5) * h;
     m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
     m.el.style.opacity       = String(fade);
     m.el.style.pointerEvents = fade > 0.2 ? 'auto' : 'none';
   }
 }
 
-// ── Right‑click debug tool (prints world coordinates) ────────────
-const _ray   = new THREE.Raycaster();
-const _mouse = new THREE.Vector2();
+// ── Right-click: world coordinate logger (dev tool) ───────────────
 renderer.domElement.addEventListener('contextmenu', (e) => {
   e.preventDefault();
-  const r   = container.getBoundingClientRect();
-  _mouse.x  = ((e.clientX - r.left)  / r.width)  *  2 - 1;
-  _mouse.y  = ((e.clientY - r.top)   / r.height) * -2 + 1;
-  _ray.setFromCamera(_mouse, camera);
+  const r  = container.getBoundingClientRect();
+  const mx = ((e.clientX - r.left) / r.width)  *  2 - 1;
+  const my = ((e.clientY - r.top)  / r.height) * -2 + 1;
+  _ray.setFromCamera(new THREE.Vector2(mx, my), camera);
   const hits = _ray.intersectObjects(scene.children, true);
   if (hits.length) {
     const p = hits[0].point;
@@ -275,7 +346,10 @@ renderer.domElement.addEventListener('contextmenu', (e) => {
 
 // ── Render loop ───────────────────────────────────────────────────
 function tick() {
-  if (controls) controls.update();
+  if (controls) {
+    controls.update();
+    clampCameraToGround();
+  }
   projectMarkers();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
@@ -286,7 +360,7 @@ function tick() {
   try {
     await createSky();
   } catch (e) {
-    console.warn('[london] sky texture failed', e);
+    console.warn('[london] sky texture failed — using fallback colour', e);
   }
   try {
     const { center } = await loadCity();
