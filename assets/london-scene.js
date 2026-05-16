@@ -14,7 +14,7 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, 1, 10, 8000);
+const camera = new THREE.PerspectiveCamera(45, 1, 10, 4000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -54,7 +54,7 @@ async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
       (texture) => {
-        const skyGeo = new THREE.SphereGeometry(10000, 64, 32);
+        const skyGeo = new THREE.SphereGeometry(20000, -650, 0);
         const skyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide, fog: false });
         scene.add(new THREE.Mesh(skyGeo, skyMat));
         resolve();
