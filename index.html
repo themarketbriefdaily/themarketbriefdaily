@@ -135,7 +135,7 @@
       text-shadow: 0 1px 8px rgba(0,0,0,0.1);
     }
 
-    /* Drag hint — top right */
+    /* Updated HUD hint – now reflects pointer lock + WASD */
     .london-hud-hint {
       position: absolute;
       top: clamp(80px, 10vh, 120px);
@@ -147,31 +147,27 @@
       padding: 10px 16px;
       border: 1px solid rgba(0,0,0,0.12);
       border-radius: 999px;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.88);
       backdrop-filter: blur(10px);
       font-size: 11.5px;
       font-weight: 600;
-      letter-spacing: .08em;
+      letter-spacing: .06em;
       color: rgba(0,0,0,0.78);
       pointer-events: auto;
+      cursor: pointer;
+      transition: background .2s;
     }
-    .london-hud-hint::before {
-      content: "↻";
-      display: inline-block;
-      font-size: 16px;
-      color: #555;
-      animation: hudSpin 8s linear infinite;
-    }
-    @keyframes hudSpin { to { transform: rotate(360deg); } }
+    .london-hud-hint:hover { background: rgba(255,255,255,0.98); }
     @media (max-width: 720px) { .london-hud-hint { display: none; } }
 
-    /* ── Markers (keep dark glass pop-ups) ────────────────────────── */
+    /* ── New marker styles (white cards, no dots) ───────────────── */
     #londonLabels {
       position: absolute;
       inset: 0;
       z-index: 5;
       pointer-events: none;
     }
+
     .london-marker {
       position: absolute;
       top: 0; left: 0;
@@ -182,77 +178,87 @@
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-    }
-    .london-marker .lm-pin {
-      position: relative;
-      width: 14px; height: 14px;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .london-marker .lm-dot {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: #66a3ff;
-      box-shadow:
-        0 0 0 3px rgba(102,163,255,.25),
-        0 0 14px rgba(102,163,255,.65);
-    }
-    .london-marker .lm-pin::after {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1px solid rgba(122,166,255,.8);
-      animation: lmPulse 2.4s cubic-bezier(.22,.6,.32,1) infinite;
-    }
-    @keyframes lmPulse {
-      0%   { transform: scale(.7); opacity: 1; }
-      100% { transform: scale(2.6); opacity: 0; }
+      transition: opacity .3s ease;
     }
 
-    .london-marker .lm-card {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 12px 16px;
-      background: rgba(6,8,15,.92);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 10px;
-      backdrop-filter: blur(14px);
-      min-width: 180px;
-      transform: translateY(6px);
-      opacity: 0;
-      transition: transform .35s cubic-bezier(.16,.84,.32,1), opacity .35s, border-color .35s;
-      box-shadow: 0 18px 44px rgba(0,0,0,.4);
+    /* Pokemon‑style white card */
+    .lm-card {
+      width: 160px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      box-shadow:
+        0 4px 24px rgba(0,0,0,0.18),
+        0 1px 4px rgba(0,0,0,0.10),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      overflow: hidden;
+      transform: translateY(0) scale(0.95);
+      transition:
+        transform .3s cubic-bezier(.16,.84,.32,1),
+        box-shadow .3s ease;
+      cursor: pointer;
     }
-    .london-marker:hover .lm-card,
-    .london-marker:focus-visible .lm-card {
-      transform: translateY(0);
-      opacity: 1;
-      border-color: rgba(122,166,255,.45);
+
+    .london-marker:hover .lm-card {
+      transform: translateY(-4px) scale(1);
+      box-shadow:
+        0 12px 40px rgba(0,0,0,0.22),
+        0 2px 8px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
     }
-    .london-marker .lm-eyebrow {
-      font-size: 10.5px;
-      font-weight: 600;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: #7aa6ff;
-      margin-bottom: 4px;
+
+    .lm-card-img {
+      width: 100%;
+      height: 80px;
+      background-size: cover;
+      background-position: center;
+      background-color: #e8e6e0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
     }
-    .london-marker .lm-title {
+
+    .lm-card-body {
+      padding: 10px 12px 10px;
+    }
+
+    .lm-card-name {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 1rem;
+      font-size: 12px;
       font-weight: 700;
       letter-spacing: -.01em;
-      color: #fff;
+      color: #0a0a0a;
+      margin-bottom: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .london-marker .lm-arrow {
-      margin-top: 8px;
-      font-size: 11.5px;
+
+    .lm-card-section {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 10px;
       font-weight: 600;
-      color: rgba(255,255,255,.72);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #0066ff;
+      margin-bottom: 5px;
+    }
+
+    .lm-card-desc {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 10.5px;
+      font-weight: 400;
+      color: #555;
+      line-height: 1.45;
+      margin-bottom: 7px;
+    }
+
+    .lm-card-cta {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #0a0a0a;
       letter-spacing: .04em;
+      padding: 5px 0 0;
+      border-top: 1px solid rgba(0,0,0,0.07);
     }
 
     /* ── Video Loader (unchanged) ──────────────────────────────────── */
@@ -384,7 +390,8 @@
       </div>
     </div>
 
-    <div class="london-hud-hint">Drag · Scroll to zoom · Pan</div>
+    <!-- Updated HUD hint text -->
+    <div class="london-hud-hint">Click to enter · WASD + Mouse look</div>
 
     <div class="london-hud">
       <div class="london-hud-eyebrow">Independent macro &amp; market structure research</div>
