@@ -190,7 +190,7 @@ const LANDMARKS = [
     desc:  'Our investment thesis and analytical framework.',
     href:  '/methodology.html',
     img:   '/assets/images/london-eye.jpg',
-    world: new THREE.Vector3(-1473, 1, -860),   // ← updated coordinates
+    world: new THREE.Vector3(-1473, 280, -860),   // ← updated coordinates
   },
   {
     name:  'London Bridge',
@@ -198,7 +198,7 @@ const LANDMARKS = [
     desc:  'Learn markets, investing & financial concepts.',
     href:  '/education.html',
     img:   '/assets/images/london-skyline.jpg',
-    world: new THREE.Vector3( 1526, 62, -1046),
+    world: new THREE.Vector3( 1526, 280, -1046),
   },
   {
     name:  'Houses of Parliament',
@@ -206,7 +206,7 @@ const LANDMARKS = [
     desc:  'Autonomous algorithmic trading — live signals.',
     href:  '/bot.html',
     img:   '/assets/images/the-shard.jpg',
-    world: new THREE.Vector3(-1913, 56, -369),
+    world: new THREE.Vector3(-1913, 280, -369),
   },
 ];
 
