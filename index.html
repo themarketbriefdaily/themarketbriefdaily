@@ -606,27 +606,6 @@
     })();
   </script>
 
-  <!-- 10‑second minimum loading screen (intercepts the 'done' class) -->
-  <script>
-    (function() {
-      const loader = document.getElementById('londonLoader');
-      if (!loader) return;
-      const start = Date.now();
-      const MIN_TIME = 10000; // 10 seconds
-
-      const originalAdd = loader.classList.add.bind(loader.classList);
-      loader.classList.add = function(...args) {
-        if (args.includes('done')) {
-          const elapsed = Date.now() - start;
-          const remaining = Math.max(0, MIN_TIME - elapsed);
-          setTimeout(() => originalAdd('done'), remaining);
-        } else {
-          originalAdd(...args);
-        }
-      };
-    })();
-  </script>
-
   <script src="/assets/tbp.js" defer></script>
   <script type="module" src="/assets/london-scene.js"></script>
 </body>
