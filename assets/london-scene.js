@@ -14,7 +14,7 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, 1, 10, 4000);
+const camera = new THREE.PerspectiveCamera(45, 1, 10, 50000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
