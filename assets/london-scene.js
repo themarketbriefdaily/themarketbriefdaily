@@ -54,7 +54,7 @@ async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
       (texture) => {
-        const skyGeo = new THREE.SphereGeometry(10000, 64, 32);
+        const skyGeo = new THREE.SphereGeometry(5000, 64, 32);
         const skyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide, fog: false });
         scene.add(new THREE.Mesh(skyGeo, skyMat));
         resolve();
