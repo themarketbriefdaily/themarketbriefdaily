@@ -320,26 +320,28 @@ function buildMarkers() {
 }
 
 // ── Project markers to screen ─────────────────────────────────────
-const _proj         = new THREE.Vector3();
-const FAR_FADE_START = 2500;
-const FAR_FADE_END   = 5500;
+// Cards are ALWAYS visible — no distance fading.
+// They only disappear when the landmark is behind the camera (_proj.z >= 1).
+const _proj = new THREE.Vector3();
 
 function projectMarkers() {
   const w = container.clientWidth, h = container.clientHeight;
   for (const m of markerEls) {
     _proj.copy(m.world).project(camera);
+
+    // Behind the camera — hide completely
     if (_proj.z >= 1) {
       m.el.style.opacity       = '0';
       m.el.style.pointerEvents = 'none';
       continue;
     }
-    const dist = camera.position.distanceTo(m.world);
-    const fade = 1 - Math.max(0, Math.min(1, (dist - FAR_FADE_START) / (FAR_FADE_END - FAR_FADE_START)));
-    const sx   = (_proj.x *  0.5 + 0.5) * w;
-    const sy   = (_proj.y * -0.5 + 0.5) * h;
+
+    // On screen — always fully visible
+    const sx = (_proj.x *  0.5 + 0.5) * w;
+    const sy = (_proj.y * -0.5 + 0.5) * h;
     m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
-    m.el.style.opacity       = String(fade);
-    m.el.style.pointerEvents = fade > 0.2 ? 'auto' : 'none';
+    m.el.style.opacity       = '1';
+    m.el.style.pointerEvents = 'auto';
   }
 }
 
