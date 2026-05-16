@@ -1,7 +1,6 @@
 /* ================================================================
-   London 3D scene — floating white city on a blue sky sphere.
-   Google Earth style controls: rotate (LMB), pan (RMB), zoom (scroll).
-   Initial heading: -100 degrees.
+   London 3D scene — Google Earth style controls.
+   Left drag = rotate · Right drag = pan · Scroll = zoom.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
 import { OrbitControls }        from '/assets/three/OrbitControls.js';
@@ -82,7 +81,7 @@ function materialForMesh(name) {
 
 // ── Load GLTF ─────────────────────────────────────────────────────
 const TALL_THRESHOLD = 80;
-let modelCenter = new THREE.Vector3();  // will be set after model loads
+let modelCenter = new THREE.Vector3();
 
 async function loadCity() {
   return new Promise((resolve, reject) => {
@@ -131,37 +130,29 @@ async function loadCity() {
   });
 }
 
-// ── OrbitControls (Google Earth style) ───────────────────────────
+// ── Google Earth style controls (OrbitControls) ───────────────────
 let controls;
 
 function initControls(center) {
   controls = new OrbitControls(camera, renderer.domElement);
+  // Google Earth standard behaviour
   controls.enableDamping = true;          // smooth inertia
   controls.dampingFactor = 0.05;
   controls.rotateSpeed   = 0.8;
   controls.zoomSpeed     = 1.2;
   controls.panSpeed      = 0.8;
-  controls.screenSpacePanning = true;    // avoid panning below ground
-  controls.maxPolarAngle = Math.PI / 2.2; // prevent going under horizon
+  controls.screenSpacePanning = true;     // pan stays flat, doesn't tilt
+  controls.maxPolarAngle = Math.PI / 2.2;  // prevent going under ground
   controls.minDistance    = 200;
   controls.maxDistance    = 15000;
   controls.target.copy(center);
 
-  // ── Set initial camera position for heading -100 degrees ──────
-  // heading -100° = -100 * PI/180 rad, with an oblique pitch of ~30°
-  const headingRad = -100 * Math.PI / 180;
-  const pitchRad   = 30 * Math.PI / 180;
-  const distance   = 6000;               // comfortable viewing distance
-
-  const x = center.x + distance * Math.sin(headingRad) * Math.cos(pitchRad);
-  const y = center.y + distance * Math.sin(pitchRad);
-  const z = center.z + distance * Math.cos(headingRad) * Math.cos(pitchRad);
-
-  camera.position.set(x, y, z);
+  // Start position: elevated view looking at centre
+  camera.position.set(center.x + 4000, 2000, center.z + 4000);
   controls.update();
 }
 
-// ── Tether lines (3D lines from landmark down to y=0) ─────────────
+// ── Tether lines (from markers to ground) ────────────────────────
 function buildTethers(landmarks) {
   const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
   for (const lm of landmarks) {
@@ -175,7 +166,7 @@ function buildTethers(landmarks) {
   }
 }
 
-// ── Landmark definitions (Pokemon-style cards) ────────────────────
+// ── Landmark definitions (UPDATED London Eye coordinates) ─────────
 const LANDMARKS = [
   {
     name:  'Canary Wharf',
@@ -199,7 +190,7 @@ const LANDMARKS = [
     desc:  'Our investment thesis and analytical framework.',
     href:  '/methodology.html',
     img:   '/assets/images/london-eye.jpg',
-    world: new THREE.Vector3( -900, 180,   350),
+    world: new THREE.Vector3(-1473, 1, -860),   // ← updated coordinates
   },
   {
     name:  'London Bridge',
@@ -223,7 +214,7 @@ const LANDMARKS = [
 const markerEls = [];
 
 function buildMarkers() {
-  LANDMARKS.forEach((lm, i) => {
+  LANDMARKS.forEach((lm) => {
     const a = document.createElement('a');
     a.className = 'london-marker';
     a.href      = lm.href;
@@ -266,7 +257,7 @@ function projectMarkers() {
   }
 }
 
-// ── Click-to-position debug (right‑click prints coordinates) ──────
+// ── Right‑click debug tool (prints world coordinates) ────────────
 const _ray   = new THREE.Raycaster();
 const _mouse = new THREE.Vector2();
 renderer.domElement.addEventListener('contextmenu', (e) => {
@@ -284,7 +275,7 @@ renderer.domElement.addEventListener('contextmenu', (e) => {
 
 // ── Render loop ───────────────────────────────────────────────────
 function tick() {
-  if (controls) controls.update();  // updates camera, applies damping
+  if (controls) controls.update();
   projectMarkers();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
