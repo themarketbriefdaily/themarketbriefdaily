@@ -1,9 +1,10 @@
 /* ================================================================
    London 3D scene — floating white city on a blue sky sphere.
-   WASD + mouse look first-person controls.
-   Pokemon-style card markers with tether lines to ground.
+   Google Earth style controls: rotate (LMB), pan (RMB), zoom (scroll).
+   Initial heading: -100 degrees.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
+import { OrbitControls }        from '/assets/three/OrbitControls.js';
 import { GLTFLoader }           from '/assets/three/GLTFLoader.js';
 
 const container   = document.getElementById('londonStage');
@@ -14,8 +15,7 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(75, 1, 10, 80000);
-camera.position.set(-1998, 100, -500);
+const camera = new THREE.PerspectiveCamera(45, 1, 10, 80000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -55,7 +55,7 @@ async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
       (texture) => {
-        const skyGeo = new THREE.SphereGeometry(40000, 64, 32);
+        const skyGeo = new THREE.SphereGeometry(10000, 64, 32);
         const skyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide, fog: false });
         scene.add(new THREE.Mesh(skyGeo, skyMat));
         resolve();
@@ -82,6 +82,7 @@ function materialForMesh(name) {
 
 // ── Load GLTF ─────────────────────────────────────────────────────
 const TALL_THRESHOLD = 80;
+let modelCenter = new THREE.Vector3();  // will be set after model loads
 
 async function loadCity() {
   return new Promise((resolve, reject) => {
@@ -115,6 +116,7 @@ async function loadCity() {
         console.log('[london] size   x=' + size.x.toFixed(1)   + ' y=' + size.y.toFixed(1)   + ' z=' + size.z.toFixed(1));
 
         scene.fog = new THREE.Fog(0xd0dce6, size.x * 0.8, size.x * 2.8);
+        modelCenter = center;
         resolve({ center, size, box });
       },
       (xhr) => {
@@ -129,72 +131,51 @@ async function loadCity() {
   });
 }
 
-// ── WASD First-Person Controls ────────────────────────────────────
-const keys   = {};
-const euler  = new THREE.Euler(0, 0, 0, 'YXZ');
-const moveDir = new THREE.Vector3();
-let isPointerLocked = false;
-let yaw   = Math.PI; // face inward by default
-let pitch = -0.1;
+// ── OrbitControls (Google Earth style) ───────────────────────────
+let controls;
 
-// Apply initial orientation
-euler.set(pitch, yaw, 0, 'YXZ');
-camera.quaternion.setFromEuler(euler);
+function initControls(center) {
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;          // smooth inertia
+  controls.dampingFactor = 0.05;
+  controls.rotateSpeed   = 0.8;
+  controls.zoomSpeed     = 1.2;
+  controls.panSpeed      = 0.8;
+  controls.screenSpacePanning = true;    // avoid panning below ground
+  controls.maxPolarAngle = Math.PI / 2.2; // prevent going under horizon
+  controls.minDistance    = 200;
+  controls.maxDistance    = 15000;
+  controls.target.copy(center);
 
-// Pointer lock for mouse look
-renderer.domElement.addEventListener('click', () => {
-  if (!isPointerLocked) renderer.domElement.requestPointerLock();
-});
+  // ── Set initial camera position for heading -100 degrees ──────
+  // heading -100° = -100 * PI/180 rad, with an oblique pitch of ~30°
+  const headingRad = -100 * Math.PI / 180;
+  const pitchRad   = 30 * Math.PI / 180;
+  const distance   = 6000;               // comfortable viewing distance
 
-document.addEventListener('pointerlockchange', () => {
-  isPointerLocked = document.pointerLockElement === renderer.domElement;
-  const hint = document.querySelector('.london-hud-hint');
-  if (hint) hint.textContent = isPointerLocked ? 'WASD · Mouse look · Shift to sprint · ESC to release' : 'Click to enter · WASD + Mouse look';
-});
+  const x = center.x + distance * Math.sin(headingRad) * Math.cos(pitchRad);
+  const y = center.y + distance * Math.sin(pitchRad);
+  const z = center.z + distance * Math.cos(headingRad) * Math.cos(pitchRad);
 
-document.addEventListener('mousemove', (e) => {
-  if (!isPointerLocked) return;
-  const sens = 0.0018;
-  yaw   -= e.movementX * sens;
-  pitch -= e.movementY * sens;
-  pitch  = Math.max(-Math.PI * 0.45, Math.min(Math.PI * 0.45, pitch));
-  euler.set(pitch, yaw, 0, 'YXZ');
-  camera.quaternion.setFromEuler(euler);
-});
-
-document.addEventListener('keydown', (e) => { keys[e.code] = true;  });
-document.addEventListener('keyup',   (e) => { keys[e.code] = false; });
-
-const _forward  = new THREE.Vector3();
-const _right    = new THREE.Vector3();
-const _worldUp  = new THREE.Vector3(0, 1, 0);
-
-function updateMovement(dt) {
-  const speed   = keys['ShiftLeft'] || keys['ShiftRight'] ? 1800 : 500;
-  const dist     = speed * dt;
-  const moved    = keys['KeyW'] || keys['KeyS'] || keys['KeyA'] || keys['KeyD'];
-  if (!moved) return;
-
-  // forward = where camera faces projected onto XZ (no flying)
-  camera.getWorldDirection(_forward);
-  _forward.y = 0;
-  _forward.normalize();
-
-  _right.crossVectors(_forward, _worldUp).negate().normalize();
-
-  moveDir.set(0, 0, 0);
-  if (keys['KeyW']) moveDir.add(_forward);
-  if (keys['KeyS']) moveDir.sub(_forward);
-  if (keys['KeyA']) moveDir.add(_right);
-  if (keys['KeyD']) moveDir.sub(_right);
-  moveDir.normalize().multiplyScalar(dist);
-
-  camera.position.add(moveDir);
-  // clamp Y so user stays near ground level
-  camera.position.y = Math.max(60, Math.min(800, camera.position.y));
+  camera.position.set(x, y, z);
+  controls.update();
 }
 
-// ── Landmark definitions ──────────────────────────────────────────
+// ── Tether lines (3D lines from landmark down to y=0) ─────────────
+function buildTethers(landmarks) {
+  const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+  for (const lm of landmarks) {
+    const points = [
+      lm.world.clone(),
+      new THREE.Vector3(lm.world.x, 0, lm.world.z),
+    ];
+    const geo  = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geo, mat);
+    scene.add(line);
+  }
+}
+
+// ── Landmark definitions (Pokemon-style cards) ────────────────────
 const LANDMARKS = [
   {
     name:  'Canary Wharf',
@@ -221,41 +202,24 @@ const LANDMARKS = [
     world: new THREE.Vector3( -900, 180,   350),
   },
   {
-    name:  'London Bridge',         // ← replaced LSE
+    name:  'London Bridge',
     sub:   'Education',
     desc:  'Learn markets, investing & financial concepts.',
     href:  '/education.html',
     img:   '/assets/images/london-skyline.jpg',
-    world: new THREE.Vector3( 1526, 62, -1046),   // Tower Bridge coords (+20 Y)
+    world: new THREE.Vector3( 1526, 62, -1046),
   },
   {
-    name:  'Houses of Parliament',  // ← replaced Tower 42
+    name:  'Houses of Parliament',
     sub:   'AI Day-Trader',
     desc:  'Autonomous algorithmic trading — live signals.',
     href:  '/bot.html',
     img:   '/assets/images/the-shard.jpg',
-    world: new THREE.Vector3(-1913, 56, -369),    // +20 Y from given 36
+    world: new THREE.Vector3(-1913, 56, -369),
   },
 ];
 
-// ── Tether lines (3D lines from landmark down to y=0) ─────────────
-const tetherLines = [];
-
-function buildTethers() {
-  const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
-  for (const lm of LANDMARKS) {
-    const points = [
-      lm.world.clone(),
-      new THREE.Vector3(lm.world.x, 0, lm.world.z),
-    ];
-    const geo  = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(geo, mat);
-    scene.add(line);
-    tetherLines.push(line);
-  }
-}
-
-// ── Pokemon-style card markers (HTML overlay) ─────────────────────
+// ── HTML card markers ─────────────────────────────────────────────
 const markerEls = [];
 
 function buildMarkers() {
@@ -287,28 +251,22 @@ function projectMarkers() {
   const w = container.clientWidth, h = container.clientHeight;
   for (const m of markerEls) {
     _proj.copy(m.world).project(camera);
-
-    // behind camera
     if (_proj.z >= 1) {
       m.el.style.opacity = '0';
       m.el.style.pointerEvents = 'none';
       continue;
     }
-
     const dist = camera.position.distanceTo(m.world);
     const fade = 1 - Math.max(0, Math.min(1, (dist - FAR_FADE_START) / (FAR_FADE_END - FAR_FADE_START)));
-
     const sx = (_proj.x *  0.5 + 0.5) * w;
     const sy = (_proj.y * -0.5 + 0.5) * h;
-
-    // card floats above projected point
     m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
     m.el.style.opacity       = String(fade);
     m.el.style.pointerEvents = fade > 0.2 ? 'auto' : 'none';
   }
 }
 
-// ── Click-to-position debug (console only) ────────────────────────
+// ── Click-to-position debug (right‑click prints coordinates) ──────
 const _ray   = new THREE.Raycaster();
 const _mouse = new THREE.Vector2();
 renderer.domElement.addEventListener('contextmenu', (e) => {
@@ -325,14 +283,8 @@ renderer.domElement.addEventListener('contextmenu', (e) => {
 });
 
 // ── Render loop ───────────────────────────────────────────────────
-let lastTime = performance.now();
-
 function tick() {
-  const now = performance.now();
-  const dt  = Math.min((now - lastTime) / 1000, 0.05); // cap at 50ms
-  lastTime  = now;
-
-  if (isPointerLocked) updateMovement(dt);
+  if (controls) controls.update();  // updates camera, applies damping
   projectMarkers();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
@@ -346,8 +298,9 @@ function tick() {
     console.warn('[london] sky texture failed', e);
   }
   try {
-    await loadCity();
-    buildTethers();
+    const { center } = await loadCity();
+    initControls(center);
+    buildTethers(LANDMARKS);
     buildMarkers();
     if (loaderEl) loaderEl.classList.add('done');
     resize();
