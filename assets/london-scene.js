@@ -1,6 +1,7 @@
 /* ================================================================
    London 3D scene — floating white city on a blue sky sphere.
-   No ground plane.  Pan enabled.  Closer starting view.
+   Google Earth style controls: rotate (LMB), pan (RMB), zoom (scroll).
+   Initial heading: -100 degrees.
    ================================================================ */
 import * as THREE               from '/assets/three/three.module.min.js';
 import { OrbitControls }        from '/assets/three/OrbitControls.js';
@@ -14,37 +15,19 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(42, 1, 50, 80000);
-camera.position.set(0, 5000, 8000);
+const camera = new THREE.PerspectiveCamera(45, 1, 10, 80000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: false,                         // no transparency – never shows page background
+  alpha: false,
   powerPreference: 'high-performance'
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = false;
-
-// Prevent any black/white flashing
-renderer.setClearColor(0xd0dce6, 1);    // gentle sky‑like light blue (fallback, won’t be seen once sphere loads)
+renderer.setClearColor(0xd0dce6, 1);
 renderer.domElement.style.backgroundColor = '#d0dce6';
 renderer.domElement.style.display = 'block';
-
 container.appendChild(renderer.domElement);
-
-// ── Controls (pan enabled, closer start) ─────────────────────────
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping   = true;
-controls.dampingFactor   = 0.06;
-controls.minDistance     = 500;
-controls.maxDistance     = 40000;
-controls.maxPolarAngle   = Math.PI * 0.48;
-controls.minPolarAngle   = Math.PI * 0.05;
-controls.autoRotate      = true;
-controls.autoRotateSpeed = 0.25;
-controls.enablePan       = true;
-controls.panSpeed        = 0.8;
-controls.update();
 
 // ── Lighting ─────────────────────────────────────────────────────
 scene.add(new THREE.AmbientLight(0xffffff, 0.85));
@@ -61,40 +44,31 @@ function resize() {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h, false);
-  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.width  = '100%';
   renderer.domElement.style.height = '100%';
 }
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Sky sphere (blue sky with clouds, no ground) ─────────────────
+// ── Sky sphere ───────────────────────────────────────────────────
 async function createSky() {
   return new Promise((resolve, reject) => {
     new THREE.TextureLoader().load('/assets/sky.jpg',
       (texture) => {
-        const skyGeo = new THREE.SphereGeometry(40000, 64, 32);
-        const skyMat = new THREE.MeshBasicMaterial({
-          map: texture,
-          side: THREE.BackSide,
-          fog: false
-        });
-        const sky = new THREE.Mesh(skyGeo, skyMat);
-        sky.name = 'sky';
-        scene.add(sky);
+        const skyGeo = new THREE.SphereGeometry(10000, 64, 32);
+        const skyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide, fog: false });
+        scene.add(new THREE.Mesh(skyGeo, skyMat));
         resolve();
-      },
-      undefined,
-      reject
+      }, undefined, reject
     );
   });
 }
 
-// ── Materials – crisp white city ─────────────────────────────────
-const matBuilding = new THREE.MeshLambertMaterial({ color: 0xffffff });  // pure white
-const matWater    = new THREE.MeshLambertMaterial({ color: 0xaaccdd });  // pale steel blue
-const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });  // muted green
-const matRoad     = new THREE.MeshLambertMaterial({ color: 0xdddddd });  // off‑white for roads
-
+// ── Materials ─────────────────────────────────────────────────────
+const matBuilding = new THREE.MeshLambertMaterial({ color: 0xffffff });
+const matWater    = new THREE.MeshLambertMaterial({ color: 0xaaccdd });
+const matGreen    = new THREE.MeshLambertMaterial({ color: 0x9ab87a });
+const matRoad     = new THREE.MeshLambertMaterial({ color: 0xdddddd });
 const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xbbbbbb, transparent: true, opacity: 0.35 });
 const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.18 });
 
@@ -106,8 +80,9 @@ function materialForMesh(name) {
   return matBuilding;
 }
 
-// ── Load GLTF model ───────────────────────────────────────────────
+// ── Load GLTF ─────────────────────────────────────────────────────
 const TALL_THRESHOLD = 80;
+let modelCenter = new THREE.Vector3();  // will be set after model loads
 
 async function loadCity() {
   return new Promise((resolve, reject) => {
@@ -120,8 +95,8 @@ async function loadCity() {
           if (!child.isMesh) return;
           child.material = materialForMesh(child.name);
           child.receiveShadow = false;
-          child.castShadow = false;
-          const box = new THREE.Box3().setFromObject(child);
+          child.castShadow    = false;
+          const box    = new THREE.Box3().setFromObject(child);
           const height = box.max.y - box.min.y;
           if (height > TALL_THRESHOLD) {
             const edges = new THREE.EdgesGeometry(child.geometry, 20);
@@ -133,37 +108,20 @@ async function loadCity() {
         });
         scene.add(model);
 
-        const box     = new THREE.Box3().setFromObject(model);
-        const center  = box.getCenter(new THREE.Vector3());
-        const size    = box.getSize(new THREE.Vector3());
+        const box    = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size   = box.getSize(new THREE.Vector3());
 
-        console.log('[london] min  x=' + box.min.x.toFixed(1) + ' y=' + box.min.y.toFixed(1) + ' z=' + box.min.z.toFixed(1));
-        console.log('[london] max  x=' + box.max.x.toFixed(1) + ' y=' + box.max.y.toFixed(1) + ' z=' + box.max.z.toFixed(1));
-        console.log('[london] ctr  x=' + center.x.toFixed(1)  + ' y=' + center.y.toFixed(1)  + ' z=' + center.z.toFixed(1));
-        console.log('[london] size x=' + size.x.toFixed(1)    + ' y=' + size.y.toFixed(1)    + ' z=' + size.z.toFixed(1));
+        console.log('[london] center x=' + center.x.toFixed(1) + ' y=' + center.y.toFixed(1) + ' z=' + center.z.toFixed(1));
+        console.log('[london] size   x=' + size.x.toFixed(1)   + ' y=' + size.y.toFixed(1)   + ' z=' + size.z.toFixed(1));
 
-        // Light fog – blends to sky colour
         scene.fog = new THREE.Fog(0xd0dce6, size.x * 0.8, size.x * 2.8);
-
-        // Closer start
-        const fovRad  = (42 / 2) * Math.PI / 180;
-        const camDist = (size.x / 2) / Math.tan(fovRad) * 0.65;
-        controls.target.set(center.x, 0, center.z);
-        camera.position.set(
-          center.x,
-          camDist * 0.45,
-          center.z + camDist * 0.7
-        );
-        camera.lookAt(new THREE.Vector3(center.x, 0, center.z));
-        controls.minDistance = size.x * 0.02;
-        controls.maxDistance = size.x * 2.5;
-        controls.update();
-
+        modelCenter = center;
         resolve({ center, size, box });
       },
       (xhr) => {
         if (xhr.total) {
-          const pct = (xhr.loaded / xhr.total * 100).toFixed(0);
+          const pct   = (xhr.loaded / xhr.total * 100).toFixed(0);
           const label = loaderEl?.querySelector('.lon-load-label');
           if (label) label.textContent = `Loading London… ${pct}%`;
         }
@@ -173,69 +131,149 @@ async function loadCity() {
   });
 }
 
-// ── Markers ──────────────────────────────────────────────────────
+// ── OrbitControls (Google Earth style) ───────────────────────────
+let controls;
+
+function initControls(center) {
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;          // smooth inertia
+  controls.dampingFactor = 0.05;
+  controls.rotateSpeed   = 0.8;
+  controls.zoomSpeed     = 1.2;
+  controls.panSpeed      = 0.8;
+  controls.screenSpacePanning = true;    // avoid panning below ground
+  controls.maxPolarAngle = Math.PI / 2.2; // prevent going under horizon
+  controls.minDistance    = 200;
+  controls.maxDistance    = 15000;
+  controls.target.copy(center);
+
+  // ── Set initial camera position for heading -100 degrees ──────
+  // heading -100° = -100 * PI/180 rad, with an oblique pitch of ~30°
+  const headingRad = -100 * Math.PI / 180;
+  const pitchRad   = 30 * Math.PI / 180;
+  const distance   = 6000;               // comfortable viewing distance
+
+  const x = center.x + distance * Math.sin(headingRad) * Math.cos(pitchRad);
+  const y = center.y + distance * Math.sin(pitchRad);
+  const z = center.z + distance * Math.cos(headingRad) * Math.cos(pitchRad);
+
+  camera.position.set(x, y, z);
+  controls.update();
+}
+
+// ── Tether lines (3D lines from landmark down to y=0) ─────────────
+function buildTethers(landmarks) {
+  const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55 });
+  for (const lm of landmarks) {
+    const points = [
+      lm.world.clone(),
+      new THREE.Vector3(lm.world.x, 0, lm.world.z),
+    ];
+    const geo  = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(geo, mat);
+    scene.add(line);
+  }
+}
+
+// ── Landmark definitions (Pokemon-style cards) ────────────────────
 const LANDMARKS = [
-  { name: 'Canary Wharf',  sub: 'Funds',            href: '/investments.html' },
-  { name: 'The Shard',     sub: 'Market briefs',     href: '/posts.html'       },
-  { name: 'London Eye',    sub: 'Investment thesis', href: '/methodology.html' },
-  { name: 'LSE',           sub: 'Learn — IMC',       href: '/education.html'   },
-  { name: 'Tower 42',      sub: 'AI day-trader',     href: '/bot.html'         },
+  {
+    name:  'Canary Wharf',
+    sub:   'Funds',
+    desc:  'Model portfolios & live fund performance.',
+    href:  '/investments.html',
+    img:   '/assets/images/canary-wharf.jpg',
+    world: new THREE.Vector3( 4800, 280,  -800),
+  },
+  {
+    name:  'The Shard',
+    sub:   'Market Briefs',
+    desc:  'Independent macro & market structure research.',
+    href:  '/posts.html',
+    img:   '/assets/images/the-shard.jpg',
+    world: new THREE.Vector3(  800, 355,   300),
+  },
+  {
+    name:  'London Eye',
+    sub:   'Methodology',
+    desc:  'Our investment thesis and analytical framework.',
+    href:  '/methodology.html',
+    img:   '/assets/images/london-eye.jpg',
+    world: new THREE.Vector3( -900, 180,   350),
+  },
+  {
+    name:  'London Bridge',
+    sub:   'Education',
+    desc:  'Learn markets, investing & financial concepts.',
+    href:  '/education.html',
+    img:   '/assets/images/london-skyline.jpg',
+    world: new THREE.Vector3( 1526, 62, -1046),
+  },
+  {
+    name:  'Houses of Parliament',
+    sub:   'AI Day-Trader',
+    desc:  'Autonomous algorithmic trading — live signals.',
+    href:  '/bot.html',
+    img:   '/assets/images/the-shard.jpg',
+    world: new THREE.Vector3(-1913, 56, -369),
+  },
 ];
 
-const LANDMARK_WORLD = [
-  new THREE.Vector3( 4800,  280,  -800),
-  new THREE.Vector3(  800,  355,   300),
-  new THREE.Vector3( -900,  180,   350),
-  new THREE.Vector3( -700,  105,  -300),
-  new THREE.Vector3( 1400,  228,  -400),
-];
-
+// ── HTML card markers ─────────────────────────────────────────────
 const markerEls = [];
 
-function buildMarkers(center) {
+function buildMarkers() {
   LANDMARKS.forEach((lm, i) => {
-    const world = LANDMARK_WORLD[i];
     const a = document.createElement('a');
     a.className = 'london-marker';
     a.href      = lm.href;
     a.innerHTML = `
-      <span class="lm-pin"><span class="lm-dot"></span></span>
-      <span class="lm-card">
-        <span class="lm-eyebrow">${lm.name}</span>
-        <span class="lm-title">${lm.sub}</span>
-        <span class="lm-arrow">Open →</span>
-      </span>`;
+      <div class="lm-card">
+        <div class="lm-card-img" style="background-image:url('${lm.img}')"></div>
+        <div class="lm-card-body">
+          <div class="lm-card-name">${lm.name}</div>
+          <div class="lm-card-section">${lm.sub}</div>
+          <div class="lm-card-desc">${lm.desc}</div>
+          <div class="lm-card-cta">Open →</div>
+        </div>
+      </div>`;
     labelsLayer.appendChild(a);
-    markerEls.push({ el: a, world });
+    markerEls.push({ el: a, world: lm.world });
   });
 }
 
+// ── Project markers to screen ─────────────────────────────────────
 const _proj = new THREE.Vector3();
+const FAR_FADE_START = 3000;
+const FAR_FADE_END   = 8000;
+
 function projectMarkers() {
   const w = container.clientWidth, h = container.clientHeight;
   for (const m of markerEls) {
     _proj.copy(m.world).project(camera);
-    if (_proj.z >= 1) { m.el.style.opacity = '0'; m.el.style.pointerEvents = 'none'; continue; }
+    if (_proj.z >= 1) {
+      m.el.style.opacity = '0';
+      m.el.style.pointerEvents = 'none';
+      continue;
+    }
     const dist = camera.position.distanceTo(m.world);
-    const span = controls.maxDistance;
-    const fade = Math.max(0, Math.min(1, 1 - (dist - span * 0.15) / (span * 0.7)));
+    const fade = 1 - Math.max(0, Math.min(1, (dist - FAR_FADE_START) / (FAR_FADE_END - FAR_FADE_START)));
     const sx = (_proj.x *  0.5 + 0.5) * w;
     const sy = (_proj.y * -0.5 + 0.5) * h;
     m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
     m.el.style.opacity       = String(fade);
-    m.el.style.pointerEvents = fade > 0.35 ? 'auto' : 'none';
+    m.el.style.pointerEvents = fade > 0.2 ? 'auto' : 'none';
   }
 }
 
-controls.addEventListener('start', () => { controls.autoRotate = false; });
-
-// ── Click‑to‑position debug tool ─────────────────────────────────
+// ── Click-to-position debug (right‑click prints coordinates) ──────
 const _ray   = new THREE.Raycaster();
 const _mouse = new THREE.Vector2();
-renderer.domElement.addEventListener('click', (e) => {
-  const r    = container.getBoundingClientRect();
-  _mouse.x   = ((e.clientX - r.left)  / r.width)  *  2 - 1;
-  _mouse.y   = ((e.clientY - r.top)   / r.height) * -2 + 1;
+renderer.domElement.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  const r   = container.getBoundingClientRect();
+  _mouse.x  = ((e.clientX - r.left)  / r.width)  *  2 - 1;
+  _mouse.y  = ((e.clientY - r.top)   / r.height) * -2 + 1;
   _ray.setFromCamera(_mouse, camera);
   const hits = _ray.intersectObjects(scene.children, true);
   if (hits.length) {
@@ -246,7 +284,7 @@ renderer.domElement.addEventListener('click', (e) => {
 
 // ── Render loop ───────────────────────────────────────────────────
 function tick() {
-  controls.update();
+  if (controls) controls.update();  // updates camera, applies damping
   projectMarkers();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
@@ -255,13 +293,15 @@ function tick() {
 // ── Boot ──────────────────────────────────────────────────────────
 (async () => {
   try {
-    await createSky();                // sky sphere loads first – no ground needed
+    await createSky();
   } catch (e) {
-    console.warn('[london] sky texture not found – using fallback colour', e);
+    console.warn('[london] sky texture failed', e);
   }
   try {
     const { center } = await loadCity();
-    buildMarkers(center);
+    initControls(center);
+    buildTethers(LANDMARKS);
+    buildMarkers();
     if (loaderEl) loaderEl.classList.add('done');
     resize();
     requestAnimationFrame(tick);
