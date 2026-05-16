@@ -221,20 +221,20 @@ const LANDMARKS = [
     world: new THREE.Vector3( -900, 180,   350),
   },
   {
-    name:  'LSE',
+    name:  'London Bridge',         // ← replaced LSE
     sub:   'Education',
     desc:  'Learn markets, investing & financial concepts.',
     href:  '/education.html',
     img:   '/assets/images/london-skyline.jpg',
-    world: new THREE.Vector3( -700, 105,  -300),
+    world: new THREE.Vector3( 1526, 62, -1046),   // Tower Bridge coords (+20 Y)
   },
   {
-    name:  'Tower 42',
+    name:  'Houses of Parliament',  // ← replaced Tower 42
     sub:   'AI Day-Trader',
     desc:  'Autonomous algorithmic trading — live signals.',
     href:  '/bot.html',
     img:   '/assets/images/the-shard.jpg',
-    world: new THREE.Vector3( 1400, 228,  -400),
+    world: new THREE.Vector3(-1913, 56, -369),    // +20 Y from given 36
   },
 ];
 
