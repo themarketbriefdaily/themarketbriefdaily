@@ -3,13 +3,14 @@
    First‑person WASD + mouse‑look controls.
    Custom card markers with billboard sprites and ground lines.
    ================================================================ */
-import * as THREE               from '/assets/three/three.module.min.js';
-import { GLTFLoader }           from '/assets/three/GLTFLoader.js';
+import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://unpkg.com/three@0.165.0/examples/jsm/renderers/CSS2DRenderer.js';
 
-const container   = document.getElementById('londonStage');
-const labelsLayer = document.getElementById('londonLabels');
-const loaderEl    = document.getElementById('londonLoader');
-if (!container) { console.warn('[london] no #londonStage'); }
+const container = document.getElementById('londonStage');
+const labelsLayer = document.getElementById('londonLabels'); // kept for compatibility, not used directly
+const loaderEl = document.getElementById('londonLoader');
+if (!container) console.warn('[london] no #londonStage');
 
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
@@ -26,6 +27,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0xd0dce6, 1);
 renderer.domElement.style.backgroundColor = '#d0dce6';
 container.appendChild(renderer.domElement);
+
+// CSS2 renderer for HTML cards
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(container.clientWidth, container.clientHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
+labelRenderer.domElement.style.left = '0px';
+labelRenderer.domElement.style.pointerEvents = 'auto';
+labelRenderer.domElement.style.zIndex = '5';
+container.appendChild(labelRenderer.domElement);
 
 // ── Lighting ─────────────────────────────────────────────────────
 scene.add(new THREE.AmbientLight(0xffffff, 0.85));
@@ -110,7 +121,6 @@ async function loadCity() {
 }
 
 // ── Marker definitions (landmarks) ──────────────────────────────
-// Each entry: name, description, href (webpage), position (x,y,z), image filename
 const LANDMARKS = [
   {
     name: 'Canary Wharf',
@@ -149,20 +159,7 @@ const LANDMARKS = [
   }
 ];
 
-// ── Helper: Create a card (CSS2DRenderer would be easier, but we use CSS2D for HTML content)
-// We'll use CSS2DRenderer to have HTML cards that always face the camera.
-import { CSS2DRenderer, CSS2DObject } from '/assets/three/CSS2DRenderer.js';
-
-const labelRenderer = new CSS2DRenderer();
-labelRenderer.setSize(container.clientWidth, container.clientHeight);
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0px';
-labelRenderer.domElement.style.left = '0px';
-labelRenderer.domElement.style.pointerEvents = 'auto';
-labelRenderer.domElement.style.zIndex = '5';
-container.appendChild(labelRenderer.domElement);
-
-// Also keep a group for the lines (3D)
+// Group for the lines
 const lineGroup = new THREE.Group();
 scene.add(lineGroup);
 
@@ -203,9 +200,10 @@ function createCardMarker(lm) {
   scene.add(cardObj);
 
   // Draw a line from the card position down to ground (y = 0)
-  const points = [];
-  points.push(new THREE.Vector3(lm.pos.x, lm.pos.y + 40, lm.pos.z));
-  points.push(new THREE.Vector3(lm.pos.x, 0, lm.pos.z));
+  const points = [
+    new THREE.Vector3(lm.pos.x, lm.pos.y + 40, lm.pos.z),
+    new THREE.Vector3(lm.pos.x, 0, lm.pos.z)
+  ];
   const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
   const lineMat = new THREE.LineBasicMaterial({ color: 0x888888 });
   const line = new THREE.Line(lineGeo, lineMat);
@@ -302,7 +300,6 @@ function animate() {
   let delta = Math.min(0.033, (now - lastTime) / 1000);
   lastTime = now;
   updateMovement(delta);
-  // Update CSS2D objects to face camera (CSS2DRenderer does this automatically)
   labelRenderer.render(scene, camera);
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
@@ -321,7 +318,7 @@ function animate() {
     LANDMARKS.forEach(lm => createCardMarker(lm));
     if (loaderEl) loaderEl.classList.add('done');
     resize();
-    // Set initial camera orientation (look towards city center, roughly origin)
+    // Set initial camera orientation to look towards city center (0,0,0)
     const center = new THREE.Vector3(0, 0, 0);
     const direction = new THREE.Vector3().subVectors(center, camera.position).normalize();
     yaw = Math.atan2(direction.x, direction.z);
