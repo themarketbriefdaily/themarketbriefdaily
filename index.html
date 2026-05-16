@@ -160,7 +160,13 @@
     .london-hud-hint:hover { background: rgba(255,255,255,0.98); }
     @media (max-width: 720px) { .london-hud-hint { display: none; } }
 
-    /* ── New marker styles (white cards, no dots) ───────────────── */
+/* ── PASTE THIS INTO index.html <style> TAG ──────────────────────
+   Replace everything from .london-marker { ... }
+   down to and including .london-marker .lm-arrow { }
+   with the block below.
+   ─────────────────────────────────────────────────────────────── */
+
+    /* ── Labels layer ──────────────────────────────────────────────── */
     #londonLabels {
       position: absolute;
       inset: 0;
@@ -168,6 +174,7 @@
       pointer-events: none;
     }
 
+    /* ── Marker anchor ─────────────────────────────────────────────── */
     .london-marker {
       position: absolute;
       top: 0; left: 0;
@@ -181,18 +188,18 @@
       transition: opacity .3s ease;
     }
 
-    /* Pokemon‑style white card */
+    /* ── Card — always visible, no hover-to-reveal ─────────────────── */
     .lm-card {
-      width: 160px;
+      width: 210px;                         /* was 160px */
       background: #ffffff;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1.5px solid rgba(0,0,0,0.10);
       box-shadow:
-        0 4px 24px rgba(0,0,0,0.18),
+        0 6px 28px rgba(0,0,0,0.20),
         0 1px 4px rgba(0,0,0,0.10),
         inset 0 1px 0 rgba(255,255,255,0.9);
       overflow: hidden;
-      transform: translateY(0) scale(0.95);
+      transform: translateY(0) scale(1);
       transition:
         transform .3s cubic-bezier(.16,.84,.32,1),
         box-shadow .3s ease;
@@ -200,66 +207,73 @@
     }
 
     .london-marker:hover .lm-card {
-      transform: translateY(-4px) scale(1);
+      transform: translateY(-5px) scale(1.03);
       box-shadow:
-        0 12px 40px rgba(0,0,0,0.22),
+        0 16px 48px rgba(0,0,0,0.26),
         0 2px 8px rgba(0,0,0,0.12),
         inset 0 1px 0 rgba(255,255,255,0.9);
     }
 
+    /* Card image strip */
     .lm-card-img {
       width: 100%;
-      height: 80px;
+      height: 100px;                        /* was 80px */
       background-size: cover;
       background-position: center;
       background-color: #e8e6e0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
 
+    /* Card body */
     .lm-card-body {
-      padding: 10px 12px 10px;
+      padding: 12px 14px 12px;             /* was 10px 12px */
     }
 
+    /* Landmark name — prominent */
     .lm-card-name {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 12px;
+      font-size: 15px;                      /* was 12px */
       font-weight: 700;
       letter-spacing: -.01em;
       color: #0a0a0a;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
+    /* Section label — e.g. "Market Briefs" */
     .lm-card-section {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 10px;
+      font-size: 11px;                      /* was 10px */
       font-weight: 600;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: #0066ff;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
+    /* Description — readable body text */
     .lm-card-desc {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 10.5px;
+      font-size: 12.5px;                    /* was 10.5px */
       font-weight: 400;
-      color: #555;
-      line-height: 1.45;
-      margin-bottom: 7px;
+      color: #444;
+      line-height: 1.5;
+      margin-bottom: 9px;
     }
 
+    /* CTA row */
     .lm-card-cta {
       font-family: 'Inter Tight', sans-serif;
-      font-size: 10.5px;
+      font-size: 12px;                      /* was 10.5px */
       font-weight: 600;
       color: #0a0a0a;
       letter-spacing: .04em;
-      padding: 5px 0 0;
+      padding: 6px 0 0;
       border-top: 1px solid rgba(0,0,0,0.07);
     }
+
 
     /* ── Video Loader (unchanged) ──────────────────────────────────── */
     #londonLoader {
