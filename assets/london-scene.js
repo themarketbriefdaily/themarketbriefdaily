@@ -178,7 +178,7 @@ const LANDMARKS = [
   { name: 'Canary Wharf',      sub: 'Funds',            href: '/investments.html' },
   { name: 'The Shard',         sub: 'Market briefs',    href: '/posts.html'       },
   { name: 'London Eye',        sub: 'Investment thesis', href: '/methodology.html' },
-  { name: 'London Bridge',     sub: 'Learn — IMC',      href: '/education.html'   },
+  { name: 'London Bridge',     sub: 'Learn',      href: '/education.html'   },
   { name: 'Houses of Parliament', sub: 'AI day-trader', href: '/bot.html'         },
 ];
 
@@ -186,7 +186,7 @@ const LANDMARK_WORLD = [
   new THREE.Vector3( 5303,  173,  -761 ),   // Canary Wharf (+20)
   new THREE.Vector3(  758,  323,  -929 ),   // The Shard (+20)
   new THREE.Vector3(-1474,   90,  -859 ),   // London Eye (+20)
-  new THREE.Vector3(  1495,   44, -1020 ),   // London Bridge — PLACEHOLDER — adjust using click debugger!
+  new THREE.Vector3(  1515,   44, -1054 ),   // London Bridge — PLACEHOLDER — adjust using click debugger!
   new THREE.Vector3(-1913,   56,  -369 ),   // Houses of Parliament (+20)
 ];
 
