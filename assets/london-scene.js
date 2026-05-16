@@ -22,24 +22,39 @@ const camera = new THREE.PerspectiveCamera(58, 1, 5, 30000);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
-  alpha: false,
+  alpha: true,             // transparent canvas so CSS gradient sky shows through
   powerPreference: 'high-performance'
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = false;
 
-// Fallback colour — matches sky horizon, prevents any flash
-renderer.setClearColor(0x8ab4c8, 1);
-renderer.domElement.style.backgroundColor = '#8ab4c8';
-renderer.domElement.style.display = 'block';
+// Enable shadows
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // soft shadow edges
+
+// Canvas is transparent — CSS gradient on container is the sky
+renderer.setClearColor(0x000000, 0);
+renderer.domElement.style.background = 'transparent';
+renderer.domElement.style.display    = 'block';
 container.appendChild(renderer.domElement);
 
 // ── Lighting — warm golden-hour ───────────────────────────────────
-scene.add(new THREE.AmbientLight(0xfff4e0, 1.0));       // warm white fill
-const sun = new THREE.DirectionalLight(0xffe8b0, 0.9);  // golden sunlight
-sun.position.set(3, 6, 2);
+scene.add(new THREE.AmbientLight(0xfff4e0, 0.75));      // slightly reduced ambient so shadows are visible
+
+const sun = new THREE.DirectionalLight(0xffe8c0, 1.1);  // warm golden sun, slightly brighter
+sun.position.set(3000, 4000, 2000);                     // world-space position (not normalised) for shadow coverage
+sun.castShadow              = true;
+sun.shadow.mapSize.width    = 2048;                     // shadow map resolution
+sun.shadow.mapSize.height   = 2048;
+sun.shadow.camera.near      = 100;
+sun.shadow.camera.far       = 20000;
+sun.shadow.camera.left      = -8000;                    // cover the full city footprint
+sun.shadow.camera.right     =  8000;
+sun.shadow.camera.top       =  8000;
+sun.shadow.camera.bottom    = -8000;
+sun.shadow.bias             = -0.0005;                  // prevents shadow acne on flat surfaces
 scene.add(sun);
-const fill = new THREE.DirectionalLight(0xc8deff, 0.35); // cool sky bounce
+
+const fill = new THREE.DirectionalLight(0xc8deff, 0.30); // cool sky bounce — no shadows needed
 fill.position.set(-3, 2, -3);
 scene.add(fill);
 
@@ -55,39 +70,39 @@ function resize() {
 resize();
 window.addEventListener('resize', resize, { passive: true });
 
-// ── Sky sphere ────────────────────────────────────────────────────
-async function createSky() {
-  return new Promise((resolve, reject) => {
-    new THREE.TextureLoader().load('/assets/sky.jpg',
-      (texture) => {
-        const skyGeo = new THREE.SphereGeometry(25000, 64, 64);
-        const skyMat = new THREE.MeshBasicMaterial({
-          map: texture,
-          side: THREE.BackSide,
-          fog: false
-        });
-        scene.add(new THREE.Mesh(skyGeo, skyMat));
-        resolve();
-      }, undefined, reject
-    );
-  });
+// ── Sky background ────────────────────────────────────────────────
+// We use a CSS gradient on the container instead of a 3D sphere.
+// A sphere always clips when you orbit low — the gradient never does.
+// The renderer clear colour (set after city loads) matches the horizon.
+function createSky() {
+  // Soft blue-sky gradient — lighter at top, matches fog colour at horizon
+  container.style.background =
+    'linear-gradient(to bottom, #b8d4e8 0%, #cce0ee 35%, #d8e8f0 65%, #8ab4c8 100%)';
+  // Tell Three.js to use alpha:false clear — gradient shows through
+  renderer.setClearColor(0x000000, 0);
+  renderer.domElement.style.background = 'transparent';
+  return Promise.resolve();
 }
 
 // ── Curated colour palette ────────────────────────────────────────
 //
-//  Buildings : Portland stone — warm cream, the real colour of London architecture
+//  Buildings : eggshell — soft warm off-white, classic London stock brick look
 //  Water     : Thames deep teal — rich and distinctly river-like
 //  Green     : London sage — parks under overcast sky, muted and natural
 //  Roads     : warm stone — slightly cream, not cold grey
-//  Edges     : warm sand tones — complement the building colour
-//  Fog       : horizon haze matching the sky base colour
+//  Shadows   : enabled via renderer + MeshPhongMaterial
 
-const matBuilding  = new THREE.MeshLambertMaterial({ color: 0xf0e8d8 }); // Portland stone
-const matWater     = new THREE.MeshLambertMaterial({ color: 0x3d6e8a }); // Thames deep teal
-const matGreen     = new THREE.MeshLambertMaterial({ color: 0x7a9e6e }); // London park sage
-const matRoad      = new THREE.MeshLambertMaterial({ color: 0xd8d0c0 }); // warm stone road
-const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xc8b89a, transparent: true, opacity: 0.40 });
-const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xd4c8b0, transparent: true, opacity: 0.20 });
+// MeshPhongMaterial lets us receive shadows and add subtle specularity
+const matBuilding  = new THREE.MeshPhongMaterial({
+  color:     0xf5f0e8,   // eggshell — warm off-white
+  shininess: 8,          // very subtle sheen, not plastic
+  specular:  0xd4cfc8,   // warm specular tint
+});
+const matWater     = new THREE.MeshPhongMaterial({ color: 0x3d6e8a, shininess: 40, specular: 0x6aaabb }); // Thames teal, slight water sheen
+const matGreen     = new THREE.MeshPhongMaterial({ color: 0x7a9e6e, shininess: 4  }); // London park sage, matte
+const matRoad      = new THREE.MeshPhongMaterial({ color: 0xd8d0c0, shininess: 2  }); // warm stone road, very matte
+const matEdgeGlow  = new THREE.LineBasicMaterial({ color: 0xc8c0b0, transparent: true, opacity: 0.35 });
+const matEdgeFaint = new THREE.LineBasicMaterial({ color: 0xd4cec8, transparent: true, opacity: 0.18 });
 
 const FOG_COLOUR = 0x8ab4c8; // soft blue-grey horizon haze
 
@@ -113,8 +128,8 @@ async function loadCity() {
         model.traverse((child) => {
           if (!child.isMesh) return;
           child.material      = materialForMesh(child.name);
-          child.receiveShadow = false;
-          child.castShadow    = false;
+          child.castShadow    = true;   // buildings cast shadows on each other
+          child.receiveShadow = true;   // ground/roofs receive shadows
           const box    = new THREE.Box3().setFromObject(child);
           const height = box.max.y - box.min.y;
           if (height > TALL_THRESHOLD) {
@@ -135,10 +150,8 @@ async function loadCity() {
         console.log('[london] center x=' + center.x.toFixed(1) + ' y=' + center.y.toFixed(1) + ' z=' + center.z.toFixed(1));
         console.log('[london] size   x=' + size.x.toFixed(1)   + ' y=' + size.y.toFixed(1)   + ' z=' + size.z.toFixed(1));
 
-        // Fog — starts at 50% of city width, fully opaque at 180%
-        // Colour exactly matches the sky horizon for seamless blending
-        scene.fog = new THREE.Fog(FOG_COLOUR, size.x * 0.5, size.x * 1.8);
-        renderer.setClearColor(FOG_COLOUR, 1);
+        // Fog — gradient sky colour at the horizon for seamless blending
+        scene.fog = new THREE.Fog(0x8ab4c8, size.x * 0.5, size.x * 1.8);
 
         resolve({ center, size, box });
       },
