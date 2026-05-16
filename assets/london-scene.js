@@ -268,7 +268,7 @@ const LANDMARKS = [
     desc:  'Independent macro & market structure research.',
     href:  '/posts.html',
     img:   '/assets/images/the-shard.jpg',
-    world: new THREE.Vector3(  800, 355,   300),
+    world: new THREE.Vector3(  758, 323,  -929),
   },
   {
     name:  'London Eye',
