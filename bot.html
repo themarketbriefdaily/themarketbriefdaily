@@ -1,428 +1,826 @@
-```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Day-Trader — The Market Brief Daily</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/tbp-theme.css">
-    <style>
-        :root { --tbp-blue-glow: rgba(0,102,255,0.12); }
-        body.tbp { background: linear-gradient(180deg, #faf9f6 0%, #f4f2ec 100%); }
-        .tbp-live-dot { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--tbp-ink); padding: 7px 18px; border-radius: 999px; border: 1px solid var(--tbp-line); background: var(--tbp-bg); backdrop-filter: blur(8px); box-shadow: 0 2px 8px rgba(0,0,0,0.02); white-space: nowrap; }
-        .tbp-live-dot .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tbp-pos); animation: tbpPulse 2s infinite; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(26,138,74,0.25); }
-        .tbp-live-dot .dot.off { background: var(--tbp-muted-2); animation: none; box-shadow: 0 0 0 2px rgba(90,90,90,0.15); }
-        @keyframes tbpPulse { 0%,100% { box-shadow: 0 0 0 2px rgba(26,138,74,0.25); } 50% { box-shadow: 0 0 0 8px rgba(26,138,74,0.08); } }
-        .tbp-london-time { font-size: 13px; font-weight: 500; color: var(--tbp-muted); letter-spacing: .02em; white-space: nowrap; background: var(--tbp-bg-alt); padding: 5px 12px; border-radius: 6px; }
-        .tbp-data-tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
-        @media (max-width:1080px) { .tbp-data-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-        @media (max-width:680px) { .tbp-data-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        .tbp-data-tile { background: var(--tbp-bg); border: 1px solid var(--tbp-line); border-radius: 14px; padding: 20px 22px; transition: all 0.3s var(--tbp-ease); backdrop-filter: blur(4px); }
-        .tbp-data-tile:hover { border-color: var(--tbp-blue); box-shadow: 0 8px 20px var(--tbp-blue-glow); transform: translateY(-2px); }
-        .tbp-data-tile .symbol { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--tbp-muted); margin-bottom: 8px; }
-        .tbp-data-tile .price { font-family: 'Inter Tight', 'Inter', sans-serif; font-size: clamp(1.3rem, 2vw, 1.7rem); font-weight: 750; letter-spacing: -.02em; color: var(--tbp-ink); line-height: 1; margin-bottom: 4px; }
-        .tbp-data-tile .price.mono { font-family: ui-monospace, Menlo, 'SF Mono', monospace; }
-        .tbp-data-tile .change { font-size: 13px; font-weight: 550; letter-spacing: .01em; }
-        .tbp-data-tile .change.pos { color: var(--tbp-pos); }
-        .tbp-data-tile .change.neg { color: var(--tbp-neg); }
-        .tbp-data-tile .status-note { font-size: 10px; color: var(--tbp-muted-2); letter-spacing: .04em; text-transform: uppercase; margin-top: 8px; }
-        .tbp-thinking-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden; }
-        @media (max-width:880px) { .tbp-thinking-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width:520px) { .tbp-thinking-grid { grid-template-columns: 1fr; } }
-        .tbp-thinking-cell { background: var(--tbp-bg); padding: 24px 22px; display: flex; flex-direction: column; gap: 8px; }
-        .tbp-thinking-cell .label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--tbp-muted); }
-        .tbp-thinking-cell .value { font-family: 'Inter Tight', sans-serif; font-size: clamp(1.1rem, 1.6vw, 1.4rem); font-weight: 750; letter-spacing: -.01em; color: var(--tbp-ink); line-height: 1.1; }
-        .tbp-thinking-cell .sub { font-size: 12px; color: var(--tbp-muted-2); letter-spacing: .02em; }
-        .chart-stats-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 60px); align-items: center; }
-        @media (max-width:800px) { .chart-stats-row { grid-template-columns: 1fr; } }
-        .chart-small-wrap { position: relative; width: 100%; aspect-ratio: 2.4 / 1; min-height: 260px; background: var(--tbp-bg); border: 1px solid var(--tbp-line); border-radius: 14px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-        .chart-small-wrap canvas { width: 100% !important; height: 100% !important; }
-        .tbp-log-table { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .tbp-log-table thead tr { background: var(--tbp-bg-alt); text-align: left; }
-        .tbp-log-table thead th { padding: 14px 16px; font-weight: 700; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--tbp-muted); border-bottom: 1px solid var(--tbp-line); white-space: nowrap; }
-        .tbp-log-table tbody tr { border-bottom: 1px solid var(--tbp-line-soft); transition: background .25s var(--tbp-ease); }
-        .tbp-log-table tbody tr:hover { background: var(--tbp-bg-alt); }
-        .tbp-log-table tbody td { padding: 15px 16px; vertical-align: top; line-height: 1.5; }
-        .tbp-log-table .price-cell { font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 13px; letter-spacing: .01em; }
-        .tbp-log-table .dir-long { color: var(--tbp-pos); font-weight: 600; }
-        .tbp-log-table .dir-short { color: var(--tbp-neg); font-weight: 600; }
-        .tbp-log-table .pnl-pos { color: var(--tbp-pos); font-weight: 600; }
-        .tbp-log-table .pnl-neg { color: var(--tbp-neg); font-weight: 600; }
-        @keyframes tradeSlideIn { from { transform: translateY(-20px); opacity: 0; background: rgba(0,102,255,0.06); } 40% { background: rgba(0,102,255,0.02); } to { transform: translateY(0); opacity: 1; background: transparent; } }
-        @keyframes tradeSlideInGreen { from { transform: translateY(-20px); opacity: 0; background: rgba(26,138,74,0.1); } 40% { background: rgba(26,138,74,0.04); } to { transform: translateY(0); opacity: 1; background: transparent; } }
-        @keyframes tradeSlideInRed { from { transform: translateY(-20px); opacity: 0; background: rgba(176,48,48,0.1); } 40% { background: rgba(176,48,48,0.04); } to { transform: translateY(0); opacity: 1; background: transparent; } }
-        .trade-row-new { animation: tradeSlideIn .55s var(--tbp-ease-slow) forwards; }
-        .trade-row-new.long-flash { animation: tradeSlideInGreen .55s var(--tbp-ease-slow) forwards; }
-        .trade-row-new.short-flash { animation: tradeSlideInRed .55s var(--tbp-ease-slow) forwards; }
-        .tbp-refresh-indicator { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--tbp-muted-2); letter-spacing: .02em; }
-        .tbp-refresh-indicator .refresh-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--tbp-muted-2); transition: background .4s; }
-        .tbp-refresh-indicator .refresh-dot.active { background: var(--tbp-blue); }
-        .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden; }
-        @media (max-width:720px) { .model-grid { grid-template-columns: 1fr; } }
-        .model-cell { background: var(--tbp-bg); padding: 28px 24px; }
-        .formula { font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 12px; color: var(--tbp-muted); background: var(--tbp-bg-alt); padding: 8px 14px; border-radius: 8px; margin-top: 14px; display: inline-block; }
-        .math-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden; }
-        @media (max-width:720px) { .math-cards { grid-template-columns: 1fr; } }
-        .math-card { background: var(--tbp-bg); padding: 28px 24px; }
-        .math-card .eq { font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 13px; color: var(--tbp-ink); margin: 16px 0; line-height: 1.6; word-break: break-word; }
-        .math-card .desc { font-size: 13px; color: var(--tbp-muted); line-height: 1.5; }
-        .stats-side { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden; }
-        .stats-side .stat-item { padding: 22px 24px; background: var(--tbp-bg); border-bottom: 1px solid var(--tbp-line-soft); }
-        .stats-side .stat-item:last-child { border-bottom: 0; }
-        .stats-side .stat-num { font-family: 'Inter Tight', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; color: var(--tbp-ink); }
-        .stats-side .stat-num .unit { font-size: .5em; font-weight: 600; color: var(--tbp-muted); }
-        .stats-side .stat-label { font-size: 13px; color: var(--tbp-muted); margin-top: 8px; }
-        .research-quote { border-left: 3px solid var(--tbp-blue); padding: 12px 20px; font-family: 'Fraunces', serif; font-style: italic; font-size: 1.2rem; color: var(--tbp-ink-2); background: var(--tbp-bg-alt); border-radius: 0 8px 8px 0; margin: 24px 0; }
-        .btn-glow { box-shadow: 0 4px 14px var(--tbp-blue-glow); transition: all 0.3s var(--tbp-ease); }
-        .btn-glow:hover { box-shadow: 0 8px 20px rgba(0,102,255,0.25); transform: translateY(-2px); }
-        .timeframe-btns { display: flex; gap: 8px; margin-bottom: 12px; }
-        .timeframe-btn { padding: 6px 16px; border-radius: 999px; border: 1px solid var(--tbp-line); background: transparent; font-size: 12px; font-weight: 600; color: var(--tbp-muted); cursor: pointer; transition: all .2s; }
-        .timeframe-btn.active { background: var(--tbp-ink); color: var(--tbp-bg); border-color: var(--tbp-ink); }
-        .hero-cta-large { display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 28px; border-radius: 999px; background: var(--tbp-blue); color: #fff; font-size: 15px; font-weight: 700; letter-spacing: .02em; text-decoration: none; transition: all 0.3s var(--tbp-ease); box-shadow: 0 6px 16px rgba(0,102,255,0.35); }
-        .hero-cta-large:hover { background: var(--tbp-ink); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Day-Trader — The Market Brief Daily</title>
+  <meta name="description" content="An experimental academic AI trading model running on real market data. Live backtested trade log, RS-GAS-t copula signals, and full transparency. Research and educational purposes only." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <style>
+    .tbp-live-dot{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--tbp-ink);padding:7px 18px;border-radius:999px;border:1px solid var(--tbp-line);background:var(--tbp-bg);white-space:nowrap;}
+    .tbp-live-dot .dot{width:8px;height:8px;border-radius:50%;background:var(--tbp-pos);animation:tbpPulse 2s infinite;flex-shrink:0;box-shadow:0 0 0 2px rgba(26,138,74,0.25);}
+    .tbp-live-dot .dot.off{background:var(--tbp-muted-2);animation:none;box-shadow:0 0 0 2px rgba(90,90,90,0.15);}
+    @keyframes tbpPulse{0%,100%{box-shadow:0 0 0 2px rgba(26,138,74,0.25);}50%{box-shadow:0 0 0 8px rgba(26,138,74,0.08);}}
+    .tbp-london-time{font-size:13px;font-weight:500;color:var(--tbp-muted);letter-spacing:.02em;white-space:nowrap;background:var(--tbp-bg-alt);padding:5px 12px;border-radius:6px;}
+    .signal-banner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--tbp-ink);color:var(--tbp-bg);border-radius:12px;padding:18px 24px;margin-top:28px;}
+    .signal-banner .sig-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+    .signal-banner .sig-value{font-family:'Inter Tight',sans-serif;font-size:clamp(1.1rem,2vw,1.5rem);font-weight:800;letter-spacing:-.02em;color:var(--tbp-bg);}
+    .signal-banner .sig-meta{font-size:13px;color:rgba(255,255,255,.5);margin-left:auto;}
+    .tbp-data-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;}
+    @media(max-width:1080px){.tbp-data-tiles{grid-template-columns:repeat(3,minmax(0,1fr));}}
+    @media(max-width:680px){.tbp-data-tiles{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    .tbp-data-tile{background:var(--tbp-bg);border:1px solid var(--tbp-line);border-radius:14px;padding:20px 22px;transition:border-color .25s,box-shadow .25s;}
+    .tbp-data-tile:hover{border-color:var(--tbp-blue);box-shadow:0 6px 18px rgba(0,102,255,0.08);}
+    .tbp-data-tile .symbol{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tbp-muted);margin-bottom:8px;}
+    .tbp-data-tile .price{font-family:ui-monospace,Menlo,'SF Mono',monospace;font-size:clamp(1.3rem,2vw,1.7rem);font-weight:750;letter-spacing:-.02em;color:var(--tbp-ink);line-height:1;margin-bottom:4px;}
+    .tbp-data-tile .change{font-size:13px;font-weight:550;letter-spacing:.01em;}
+    .tbp-data-tile .change.pos{color:var(--tbp-pos);}
+    .tbp-data-tile .change.neg{color:var(--tbp-neg);}
+    .tbp-data-tile .status-note{font-size:10px;color:var(--tbp-muted-2);letter-spacing:.04em;text-transform:uppercase;margin-top:8px;}
+    .tbp-thinking-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--tbp-line);border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
+    @media(max-width:880px){.tbp-thinking-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    @media(max-width:520px){.tbp-thinking-grid{grid-template-columns:1fr;}}
+    .tbp-thinking-cell{background:var(--tbp-bg);padding:24px 22px;display:flex;flex-direction:column;gap:8px;}
+    .tbp-thinking-cell .label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tbp-muted);}
+    .tbp-thinking-cell .value{font-family:'Inter Tight',sans-serif;font-size:clamp(1.1rem,1.6vw,1.4rem);font-weight:750;letter-spacing:-.01em;color:var(--tbp-ink);line-height:1.1;}
+    .tbp-thinking-cell .sub{font-size:12px;color:var(--tbp-muted-2);letter-spacing:.02em;}
+    .tbp-chart-section{background:var(--tbp-ink);color:var(--tbp-bg);padding-block:clamp(48px,6vw,80px);}
+    .tbp-chart-wrap{position:relative;width:100%;aspect-ratio:2.4/1;min-height:280px;background:var(--tbp-ink);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;}
+    .tbp-chart-wrap canvas{width:100%!important;height:100%!important;}
+    .timeframe-btns{display:flex;gap:8px;margin-bottom:14px;}
+    .timeframe-btn{padding:6px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:transparent;font-size:12px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;}
+    .timeframe-btn.active{background:var(--tbp-bg);color:var(--tbp-ink);border-color:var(--tbp-bg);}
+    .chart-layout{display:grid;grid-template-columns:1fr 200px;gap:24px;align-items:start;}
+    @media(max-width:800px){.chart-layout{grid-template-columns:1fr;}}
+    .stats-beside{display:flex;flex-direction:column;gap:1px;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;}
+    .stats-beside .s-item{padding:16px 18px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);}
+    .stats-beside .s-item:last-child{border-bottom:none;}
+    .stats-beside .s-num{font-family:'Inter Tight',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--tbp-bg);}
+    .stats-beside .s-num .unit{font-size:.65em;color:rgba(255,255,255,.4);}
+    .stats-beside .s-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;}
+    .tbp-log-table{width:100%;border-collapse:collapse;font-size:14px;border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
+    .tbp-log-table thead tr{background:var(--tbp-bg-alt);text-align:left;}
+    .tbp-log-table thead th{padding:14px 16px;font-weight:700;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--tbp-muted);border-bottom:1px solid var(--tbp-line);white-space:nowrap;}
+    .tbp-log-table tbody tr{border-bottom:1px solid var(--tbp-line);transition:background .2s;}
+    .tbp-log-table tbody tr:last-child{border-bottom:none;}
+    .tbp-log-table tbody tr:hover{background:var(--tbp-bg-alt);}
+    .tbp-log-table tbody td{padding:14px 16px;vertical-align:top;line-height:1.5;}
+    .tbp-log-table .price-cell{font-family:ui-monospace,Menlo,'SF Mono',monospace;font-size:13px;}
+    .tbp-log-table .dir-long{color:var(--tbp-pos);font-weight:600;}
+    .tbp-log-table .dir-short{color:var(--tbp-neg);font-weight:600;}
+    .tbp-log-table .pnl-pos{color:var(--tbp-pos);font-weight:600;}
+    .tbp-log-table .pnl-neg{color:var(--tbp-neg);font-weight:600;}
+    .tbp-refresh-indicator{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tbp-muted-2);}
+    .tbp-refresh-indicator .rdot{width:5px;height:5px;border-radius:50%;background:var(--tbp-muted-2);transition:background .4s;}
+    .tbp-refresh-indicator .rdot.active{background:var(--tbp-blue);}
+    .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--tbp-line);border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
+    @media(max-width:720px){.model-grid{grid-template-columns:1fr;}}
+    .model-cell{background:var(--tbp-bg);padding:28px 24px;}
+    .formula{font-family:ui-monospace,Menlo,'SF Mono',monospace;font-size:12px;color:var(--tbp-muted);background:var(--tbp-bg-alt);padding:8px 14px;border-radius:8px;margin-top:14px;display:inline-block;}
+    .math-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--tbp-line);border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
+    @media(max-width:720px){.math-cards{grid-template-columns:1fr;}}
+    .math-card{background:var(--tbp-bg);padding:24px;}
+    .math-card .eq{font-family:ui-monospace,Menlo,'SF Mono',monospace;font-size:13px;color:var(--tbp-ink);margin:12px 0;line-height:1.6;word-break:break-word;}
+    .math-card .desc{font-size:13px;color:var(--tbp-muted);line-height:1.5;}
+    .backtest-note{display:flex;gap:12px;align-items:flex-start;background:#fdf3e3;border:1px solid #e8c870;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#7a5a00;}
+    .sub-dark{background:var(--tbp-ink);color:var(--tbp-bg);padding-block:clamp(56px,7vw,88px);text-align:center;}
+  </style>
 </head>
 <body class="tbp">
 
-    <header class="tbp-header" id="header">
-        <div class="tbp-container tbp-header-inner">
-            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
-            <div style="display:flex;align-items:center;gap:16px;"><span class="tbp-london-time" id="londonTime" aria-live="polite">LON 00:00</span></div>
-            <nav class="tbp-nav"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/methodology.html">Methodology</a><a href="/education.html">Education</a><a href="/bot.html" class="is-active">AI Trader</a><a href="/tools/dcf.html">Tools</a><a href="/about.html">About</a></nav>
-            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
-            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  <!-- HEADER -->
+  <header class="tbp-header" role="banner" id="header">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <span class="tbp-london-time" id="londonTime" aria-live="polite">LON 00:00</span>
+      </div>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a class="is-active" href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/education.html">Education</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/tools/dcf.html">Tools</a>
+    <a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px;" data-tbp-reveal>
+        <span class="tbp-eyebrow">Experimental · Academic research</span>
+        <span class="tbp-live-dot" id="botStatusBadge">
+          <span class="dot" id="liveDot"></span>
+          <span id="botStatusText">Model is RUNNING</span>
+        </span>
+      </div>
+      <div class="tbp-hero-grid" style="margin-top:24px;">
+        <div data-tbp-reveal>
+          <h1>An AI model <em>trading</em><br>in public, every day.</h1>
         </div>
-    </header>
-
-    <div class="tbp-mobile-menu" id="mobileMenu"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/methodology.html">Methodology</a><a href="/education.html">Education</a><a href="/bot.html">AI Trader</a><a href="/tools/dcf.html">Tools</a><a href="/about.html">About</a></div>
-
-    <section class="tbp-hero" style="background: radial-gradient(circle at 20% 30%, rgba(0,102,255,0.03) 0%, transparent 60%);">
-        <div class="tbp-container">
-            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px;" data-tbp-reveal>
-                <span class="tbp-eyebrow">Live bot · Experimental</span>
-                <span class="tbp-live-dot" id="botStatusBadge"><span class="dot" id="liveDot"></span><span id="botStatusText">Bot is ACTIVE</span></span>
+        <div class="lead-block" data-tbp-reveal>
+          <p>A regime-switching score-driven Student-t copula applied to real SPY and TLT market data. The model generates signals based on time-varying correlation and tail dependence — every trade it would have placed is logged publicly with its full econometric reasoning.</p>
+          <div class="actions" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:20px;">
+            <a href="#log" class="tbp-btn primary">View trade log <span class="arrow">↓</span></a>
+            <a href="/methodology.html" class="tbp-btn">Full methodology <span class="arrow">→</span></a>
+          </div>
+          <div class="signal-banner" id="todaySignalBanner" style="display:none;">
+            <div>
+              <div class="sig-label">Today's model signal</div>
+              <div class="sig-value" id="sigValue">Loading…</div>
             </div>
-            <div class="tbp-hero-grid" style="margin-top:24px;">
-                <div data-tbp-reveal><h1>An AI agent <em>trading</em><br>in public, every day.</h1></div>
-                <div class="lead-block" data-tbp-reveal class="delay-1">
-                    <a href="/contact.html" class="hero-cta-large" style="margin-bottom:20px;display:inline-flex;">Get access to the bot here</a>
-                    <p>Driven by a regime‑switching score‑driven Student‑t copula with MIDAS‑filtered macro factors. No black box — every trade is logged with its econometric reasoning.</p>
-                    <div class="actions" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;">
-                        <a href="#log" class="tbp-btn primary btn-glow">View live trade log ↓</a>
-                        <a href="/methodology.html" class="tbp-btn">Full methodology →</a>
-                    </div>
-                </div>
-            </div>
+            <div class="sig-meta" id="sigMeta"></div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="tbp-section tight" style="padding-top:0;" data-api="market-data">
-        <div class="tbp-container">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;" data-tbp-reveal>
-                <span class="tbp-eyebrow">Live market data</span>
-                <span class="tbp-small" id="marketStatusNote">US market closed · showing last close</span>
-            </div>
-            <div class="tbp-data-tiles" id="dataTiles" data-tbp-reveal class="delay-1">
-                <div class="tbp-data-tile" data-symbol="SPY"><div class="symbol">SPY · S&P 500</div><div class="price mono" id="price-spy">587.32</div><div class="change pos" id="change-spy">+1.45  +0.25%</div><div class="status-note" id="note-spy">Last close</div></div>
-                <div class="tbp-data-tile" data-symbol="TLT"><div class="symbol">TLT · US Treasuries</div><div class="price mono" id="price-tlt">94.20</div><div class="change neg" id="change-tlt">-0.30  -0.32%</div><div class="status-note" id="note-tlt">Last close</div></div>
-                <div class="tbp-data-tile" data-symbol="GLD"><div class="symbol">GLD · Gold</div><div class="price mono" id="price-gld">218.50</div><div class="change pos" id="change-gld">+2.10  +0.97%</div><div class="status-note" id="note-gld">Last close</div></div>
-                <div class="tbp-data-tile" data-symbol="UUP"><div class="symbol">UUP · US Dollar</div><div class="price mono" id="price-uup">29.84</div><div class="change pos" id="change-uup">+0.05  +0.17%</div><div class="status-note" id="note-uup">Last close</div></div>
-                <div class="tbp-data-tile" data-symbol="VIX"><div class="symbol">VIX · Volatility</div><div class="price mono" id="price-vix">16.80</div><div class="change neg" id="change-vix">-0.45  -2.61%</div><div class="status-note" id="note-vix">Last close</div></div>
-            </div>
+  <!-- DISCLAIMER -->
+  <section class="tbp-section tight" style="padding-top:0;">
+    <div class="tbp-container">
+      <div class="tbp-disclaimer" data-tbp-reveal>
+        <span style="font-size:1.4rem;flex-shrink:0;">⚠️</span>
+        <div>
+          <strong>Academic research tool — not investment advice. Not a regulated financial service.</strong>
+          <span style="display:block;margin-top:6px;">
+            This page presents the output of an academic quantitative model for research and educational purposes only. Nothing here constitutes a personal recommendation, inducement to trade, or investment advice under FSMA 2000. The model runs on a simulated paper account — no real capital is at risk. Read the <a href="/methodology.html">methodology</a> and <a href="/disclaimer.html">full disclaimer</a> before forming any views.
+          </span>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="tbp-section tight" data-api="current-thinking">
-        <div class="tbp-container">
-            <span class="tbp-eyebrow" data-tbp-reveal>Bot’s current thinking · RS‑GAS‑t copula</span>
-            <div class="tbp-thinking-grid" data-tbp-reveal class="delay-1" style="margin-top:18px;">
-                <div class="tbp-thinking-cell"><span class="label">Regime</span><span class="value" id="thinkRegime">CALM</span><span class="sub" id="thinkRegimeProb">Pr(stress) 0.08</span></div>
-                <div class="tbp-thinking-cell"><span class="label">Correlation ρ</span><span class="value" id="thinkCorrelation">-0.18</span><span class="sub" id="thinkCorrelationDetail">5‑day rolling</span></div>
-                <div class="tbp-thinking-cell"><span class="label">Tail Dependence</span><span class="value" id="thinkTailDep">0.092</span><span class="sub" id="thinkTailDetail">λ<sub>U</sub> from ν=8.0, ρ=-0.18</span></div>
-                <div class="tbp-thinking-cell"><span class="label">Signal (Model B)</span><span class="value" id="thinkSignal">NEUTRAL</span><span class="sub" id="thinkSignalDetail">no strong asymmetry</span></div>
-            </div>
-            <p class="tbp-small" style="margin-top:16px;text-align:center;">Regime and correlation updated every 60 seconds using live market data.</p>
+  <!-- LIVE MARKET DATA -->
+  <section class="tbp-section tight" style="padding-top:0;">
+    <div class="tbp-container">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;" data-tbp-reveal>
+        <span class="tbp-eyebrow">Live market data · Finnhub</span>
+        <span style="font-size:12px;color:var(--tbp-muted);" id="marketStatusNote">Loading…</span>
+      </div>
+      <div class="tbp-data-tiles" data-tbp-reveal>
+        <div class="tbp-data-tile"><div class="symbol">SPY · S&amp;P 500</div><div class="price" id="price-spy">—</div><div class="change" id="change-spy">—</div><div class="status-note" id="note-spy"></div></div>
+        <div class="tbp-data-tile"><div class="symbol">TLT · US Treasuries</div><div class="price" id="price-tlt">—</div><div class="change" id="change-tlt">—</div><div class="status-note" id="note-tlt"></div></div>
+        <div class="tbp-data-tile"><div class="symbol">GLD · Gold</div><div class="price" id="price-gld">—</div><div class="change" id="change-gld">—</div><div class="status-note" id="note-gld"></div></div>
+        <div class="tbp-data-tile"><div class="symbol">UUP · US Dollar</div><div class="price" id="price-uup">—</div><div class="change" id="change-uup">—</div><div class="status-note" id="note-uup"></div></div>
+        <div class="tbp-data-tile"><div class="symbol">VIX · Volatility</div><div class="price" id="price-vix">—</div><div class="change" id="change-vix">—</div><div class="status-note" id="note-vix"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL STATE -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;" data-tbp-reveal>
+        <span class="tbp-eyebrow">Model state · RS-GAS-t copula · computed from real data</span>
+        <div class="tbp-refresh-indicator">
+          <span class="rdot" id="refreshDot"></span>
+          <span id="refreshLabel">Last updated: 0s ago</span>
         </div>
-    </section>
+      </div>
+      <div class="tbp-thinking-grid" data-tbp-reveal>
+        <div class="tbp-thinking-cell"><span class="label">Regime</span><span class="value" id="thinkRegime">—</span><span class="sub" id="thinkRegimeProb">Loading…</span></div>
+        <div class="tbp-thinking-cell"><span class="label">Correlation ρ</span><span class="value" id="thinkCorrelation">—</span><span class="sub" id="thinkCorrelationDetail">20-day EWMA</span></div>
+        <div class="tbp-thinking-cell"><span class="label">Tail Dependence λ<sub>U</sub></span><span class="value" id="thinkTailDep">—</span><span class="sub" id="thinkTailDetail">from ν, ρ</span></div>
+        <div class="tbp-thinking-cell"><span class="label">Signal (Model B)</span><span class="value" id="thinkSignal">—</span><span class="sub" id="thinkSignalDetail">asymmetric score</span></div>
+      </div>
+      <p style="margin-top:14px;text-align:center;font-size:12px;color:var(--tbp-muted-2);">Regime uses 5-day realised volatility of SPY log returns as proxy. Tail dependence uses Student-t upper tail formula with regime-specific degrees of freedom (CALM ν=8, TRANSITION ν=5, STRESS ν=3).</p>
+    </div>
+  </section>
 
-    <section class="tbp-section">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Performance</span><h2 class="tbp-h2">Cumulative return<br><em>live strategy.</em></h2></div>
-                <div class="right"><p class="tbp-lead">Historical performance of the correlation‑switching strategy using SPY/TLT data. Timeframe selector below.</p></div>
-            </div>
-            <div class="timeframe-btns" data-tbp-reveal>
-                <button class="timeframe-btn active" data-period="1y">1Y</button>
-                <button class="timeframe-btn" data-period="1m">1M</button>
-            </div>
-            <div class="chart-stats-row" data-tbp-reveal class="delay-1">
-                <div class="chart-small-wrap"><canvas id="equityChart" aria-label="Equity curve"></canvas></div>
-                <div class="stats-side" id="statsSide">
-                    <div class="stat-item"><div class="stat-num" style="color:var(--tbp-pos);" id="statPeriodReturn">+0.00<span class="unit">%</span></div><div class="stat-label" id="statPeriodLabel">1Y return</div></div>
-                    <div class="stat-item"><div class="stat-num" style="color:var(--tbp-pos);" id="statYTD">+2.34<span class="unit">%</span></div><div class="stat-label">YTD return (2026)</div></div>
-                    <div class="stat-item"><div class="stat-num" id="statWinRate">58<span class="unit">%</span></div><div class="stat-label">Win rate (rolling 30)</div></div>
-                    <div class="stat-item"><div class="stat-num" id="statSharpe">1.42</div><div class="stat-label">Sharpe ratio (annualised)</div></div>
-                </div>
-            </div>
+  <!-- PERFORMANCE CHART -->
+  <section class="tbp-chart-section">
+    <div class="tbp-container">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;" data-tbp-reveal>
+        <div>
+          <span class="tbp-eyebrow" style="color:rgba(255,255,255,.4);">Backtested performance · real SPY &amp; TLT prices · paper account</span>
+          <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-.025em;line-height:1;margin-top:10px;">Equity curve — real market data</h2>
         </div>
-    </section>
-
-    <section class="tbp-section alt">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Research foundation</span><h2 class="tbp-h2">Built on <em>academic rigour.</em></h2></div>
-                <div class="right"><p class="tbp-lead">The AI Day‑Trader implements a regime‑switching score‑driven Student‑t copula with macro‑conditioned transitions.</p></div>
-            </div>
-            <div class="research-quote" data-tbp-reveal class="delay-1">"The correlation between equities and government bonds is a cornerstone of modern portfolio construction … however, this hedge is neither constant nor reliable."</div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;" data-tbp-reveal class="delay-2">
-                <div><h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Key contributions</h3><ul style="font-size:14px; color:var(--tbp-muted); line-height:1.7; padding-left:18px;"><li><strong>First copula model</strong> combining score‑driven updates, regime switching, and MIDAS‑filtered macro factors.</li><li><strong>Two complementary specifications:</strong> medium‑horizon (Model A) and daily asymmetric (Model B).</li><li><strong>Empirically validated</strong> 1990–2025 with robust out‑of‑sample benefits.</li></ul></div>
-                <div><h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Why it matters</h3><p style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-bottom:12px;">Static correlation models fail in crises. This bot adapts in real time to inflation shocks, flight‑to‑quality, and monetary policy shifts.</p><a href="/methodology.html" class="tbp-btn">Read the full paper →</a></div>
-            </div>
+        <div class="timeframe-btns">
+          <button class="timeframe-btn active" data-period="1y">1Y</button>
+          <button class="timeframe-btn" data-period="1m">1M</button>
         </div>
-    </section>
-
-    <section class="tbp-section">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Model design</span><h2 class="tbp-h2">RS‑GAS‑t copula<br><em>with MIDAS drivers.</em></h2></div>
-                <div class="right"><p class="tbp-lead">Two specifications separate medium‑horizon macro‑slow dynamics from daily asymmetric adjustments.</p></div>
-            </div>
-            <div class="model-grid" data-tbp-reveal class="delay-1">
-                <div class="model-cell"><h3 style="font-size:1.3rem;font-weight:750;">Model A · Medium horizon</h3><p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">5–63 day correlations with HAR‑style drivers and MIDAS‑filtered macro factors.</p><span class="formula">ρ<sub>t+1</sub> = ω<sub>s</sub> + β<sub>s</sub>z<sub>t</sub> + αS<sub>t</sub> + δ′Λ<sub>t</sub></span></div>
-                <div class="model-cell"><h3 style="font-size:1.3rem;font-weight:750;">Model B · Daily asymmetric</h3><p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">One‑day‑ahead dependence with shrunk target and asymmetric score.</p><span class="formula">S<sub>t</sub>* = S<sub>t</sub> + γ<sub>abs</sub>|X| + γ<sub>sign</sub> sign(X<sup>(s)</sup>X<sup>(b)</sup>)</span></div>
-            </div>
+      </div>
+      <div class="chart-layout" data-tbp-reveal>
+        <div class="tbp-chart-wrap"><canvas id="equityChart" aria-label="Equity curve of backtested paper account"></canvas></div>
+        <div class="stats-beside">
+          <div class="s-item"><div class="s-num" id="statPeriodReturn">—</div><div class="s-lbl" id="statPeriodLabel">1Y return</div></div>
+          <div class="s-item"><div class="s-num" id="statYTD">—</div><div class="s-lbl">YTD 2026</div></div>
+          <div class="s-item"><div class="s-num" id="statWinRate">—</div><div class="s-lbl">Trade win rate</div></div>
+          <div class="s-item"><div class="s-num" id="statSharpe">—</div><div class="s-lbl">Sharpe ratio</div></div>
+          <div class="s-item"><div class="s-num" id="statTrades">—</div><div class="s-lbl">Total trades</div></div>
         </div>
-    </section>
+      </div>
+      <p style="margin-top:16px;text-align:center;font-size:12px;color:rgba(255,255,255,.3);">Backtested on real SPY &amp; TLT daily closing prices from Finnhub. Starting capital £100,000 paper. Does not include transaction costs, slippage, or financing. Past model performance does not predict future results.</p>
+    </div>
+  </section>
 
-    <section class="tbp-section alt">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal><div class="left"><span class="tbp-eyebrow">Core mathematics</span><h2 class="tbp-h2">Key equations<br><em>at a glance.</em></h2></div><div class="right"><p class="tbp-lead">Structural backbone presented transparently.</p></div></div>
-            <div class="math-cards" data-tbp-reveal class="delay-1">
-                <div class="math-card"><h4 style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Student‑t Copula Density</h4><div class="eq">c<sub>ν</sub>(u,v;ρ) = f<sub>2,ν</sub>(F<sub>ν</sub><sup>−1</sup>(u), F<sub>ν</sub><sup>−1</sup>(v);ρ) / [f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(u)) · f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(v))]</div><p class="desc">Heavy tails and non‑zero tail dependence.</p></div>
-                <div class="math-card"><h4 style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Tail Dependence</h4><div class="eq">λ<sub>U</sub> = 2 T<sub>ν+1</sub>( −√[(ν+1)(1−ρ)/(1+ρ)] )</div><p class="desc">Quantifies joint extreme positive returns.</p></div>
-                <div class="math-card"><h4 style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">GAS Update</h4><div class="eq">z<sub>t+1</sub> = ω + β z<sub>t</sub> + α S<sub>t</sub> ,  S<sub>t</sub> = ℐ<sub>t</sub><sup>−1/2</sup> ∂ℓ<sub>t</sub>/∂z<sub>t</sub></div><p class="desc">Correlation evolves via scaled score.</p></div>
-                <div class="math-card"><h4 style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Time‑Varying Transitions</h4><div class="eq">Pr(s<sub>t+1</sub>=j|s<sub>t</sub>=i, Z<sub>t</sub>) = exp{η<sub>ij</sub>+γ<sub>1</sub>Z<sub>t</sub>+γ<sub>2</sub>Z<sub>t</sub><sup>2</sup>} / Σ<sub>k</sub> exp{…}</div><p class="desc">VIX‑driven quadratic logit for stress probabilities.</p></div>
-            </div>
+  <!-- MODEL ARCHITECTURE -->
+  <section class="tbp-section">
+    <div class="tbp-container">
+      <div class="tbp-section-head" data-tbp-reveal>
+        <div class="left">
+          <span class="tbp-eyebrow">Academic foundation</span>
+          <h2 class="tbp-h2">RS-GAS-t copula<br><em>with MIDAS drivers.</em></h2>
         </div>
-    </section>
-
-    <section id="log" class="tbp-section" data-api="trade-log">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Live log</span><h2 class="tbp-h2">Every trade,<br><em>in public.</em></h2></div>
-                <div class="right"><div class="tbp-refresh-indicator" id="refreshIndicator"><span class="refresh-dot active" id="refreshDot"></span><span id="refreshLabel">Last updated: 0s ago</span></div><p class="tbp-lead" style="margin-top:10px;">Trades generated by the copula signals.</p></div>
-            </div>
-            <div data-tbp-reveal class="delay-1" style="overflow-x:auto;"><table class="tbp-log-table" id="tradeLogTable"><thead><tr><th>Date</th><th>Instrument</th><th>Dir</th><th>Entry</th><th>Exit</th><th>P&amp;L</th><th>Reasoning</th></tr></thead><tbody id="tradeLogBody"></tbody></table></div>
+        <div class="right">
+          <p class="tbp-lead">Two complementary specifications separate medium-horizon macro-slow dynamics from daily asymmetric adjustments. Parameters estimated on 1990–2025 data; fixed in the paper account.</p>
         </div>
-    </section>
-
-    <section class="tbp-section alt">
-        <div class="tbp-container">
-            <div class="tbp-cta-strip" style="border-top:0;padding-top:0;" data-tbp-reveal>
-                <div><h3 class="tbp-h3">The macro momentum strategy.</h3><p class="tbp-body" style="margin-top:18px;">Trades macro momentum across five asset classes using correlation forecasts. Pre‑defined stop loss and take profit levels.</p><a href="/methodology.html" class="tbp-btn" style="margin-top:24px;">Full methodology →</a></div>
-                <div style="background:var(--tbp-ink);color:var(--tbp-bg);border-radius:14px;padding:32px 28px;"><h4 style="font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:18px;">Purchase Access</h4><p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px;">Get the full live bot with real‑time signals, daily updates, and API access. Starting at £499/month.</p><a href="/contact.html" class="tbp-btn" style="background:var(--tbp-bg); color:var(--tbp-ink); border-color:var(--tbp-bg);">Request access →</a></div>
-            </div>
+      </div>
+      <div class="model-grid" data-tbp-reveal>
+        <div class="model-cell">
+          <h3 style="font-size:1.2rem;font-weight:750;margin-bottom:10px;">Model A · Medium horizon</h3>
+          <p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">5–63 day correlations using HAR-style realised correlation drivers and MIDAS-filtered macro factors (inflation, term spread, gold). Score update uses Fisher information scaling.</p>
+          <span class="formula">ρ<sub>t+1</sub> = ω<sub>s</sub> + β<sub>s</sub>z<sub>t</sub> + αS<sub>t</sub> + δ′Λ<sub>t</sub></span>
         </div>
-    </section>
-
-    <section class="tbp-section" style="background:var(--tbp-ink);color:var(--tbp-bg);">
-        <div class="tbp-container" style="text-align:center;">
-            <div data-tbp-reveal><span class="tbp-eyebrow" style="color:rgba(255,255,255,.45);">Early access</span><h2 style="color:var(--tbp-bg);font-weight:850;font-size:clamp(2rem,5.4vw,4.4rem);letter-spacing:-.035em;line-height:1;margin:16px 0 24px;">Get notified when<br>the bot goes live.</h2><p style="color:rgba(255,255,255,.55);font-size:1.05rem;max-width:48ch;margin:0 auto 12px;">Paid subscribers receive real‑time trade alerts and research access.</p><div style="font-weight:850;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.03em;color:var(--tbp-bg);margin-bottom:8px;">2.4K</div><p style="font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;">on the waitlist</p></div>
-            <div data-tbp-reveal class="delay-1" style="max-width:480px;margin:0 auto;"><iframe src="https://marketbriefdaily.substack.com/embed" width="100%" height="320" style="border:1px solid rgba(255,255,255,.1);border-radius:12px;background:transparent;" frameborder="0" scrolling="no" title="Substack signup form"></iframe></div>
+        <div class="model-cell">
+          <h3 style="font-size:1.2rem;font-weight:750;margin-bottom:10px;">Model B · Daily asymmetric</h3>
+          <p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">One-day-ahead dependence with EWMA shrunk target and augmented score reacting more strongly to joint downside movements. Used for all signals in this paper account.</p>
+          <span class="formula">S<sub>t</sub>* = S<sub>t</sub> + γ<sub>abs</sub>|X| + γ<sub>sign</sub> sign(X<sup>(s)</sup>X<sup>(b)</sup>)</span>
         </div>
-    </section>
-
-    <footer class="tbp-footer">
-        <div class="tbp-container">
-            <div class="tbp-footer-top"><div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools.</p></div><div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/methodology.html">Methodology</a><a href="/education.html">Education</a><a href="/bot.html">AI Trader</a></div></div><div><h4>Tools &amp; Resources</h4><div class="tbp-footer-links"><a href="/tools/dcf.html">DCF Tool</a><a href="/tools/macro-dashboard.html">Macro Dashboard</a><a href="/tools/cfa.html">CFA Resources</a><a href="/tools/bond-yield.html">Bond Yield Tool</a><a href="/glossary.html">Glossary</a><a href="/reports.html">Reports</a></div></div><div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a><a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a></div></div></div>
-            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
-            <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+      </div>
+      <div class="math-cards" style="margin-top:2px;" data-tbp-reveal>
+        <div class="math-card">
+          <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Student-t Copula Density</h4>
+          <div class="eq">c<sub>ν</sub>(u,v;ρ) = f<sub>2,ν</sub>(F<sub>ν</sub><sup>−1</sup>(u), F<sub>ν</sub><sup>−1</sup>(v);ρ) / [f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(u))·f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(v))]</div>
+          <p class="desc">Heavy tails and non-zero tail dependence between stock and bond returns.</p>
         </div>
-    </footer>
+        <div class="math-card">
+          <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Upper Tail Dependence</h4>
+          <div class="eq">λ<sub>U</sub> = 2 T<sub>ν+1</sub>(−√[(ν+1)(1−ρ)/(1+ρ)])</div>
+          <p class="desc">Probability of joint extreme co-movement. Computed live from current ν and ρ.</p>
+        </div>
+        <div class="math-card">
+          <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">GAS Score Update</h4>
+          <div class="eq">z<sub>t+1</sub> = ω + βz<sub>t</sub> + αS<sub>t</sub>, S<sub>t</sub> = ℐ<sub>t</sub><sup>−½</sup> ∂ℓ<sub>t</sub>/∂z<sub>t</sub></div>
+          <p class="desc">Correlation evolves via scaled score of the log-likelihood.</p>
+        </div>
+        <div class="math-card">
+          <h4 style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tbp-muted);">Regime Transitions</h4>
+          <div class="eq">Pr(s<sub>t+1</sub>=j|s<sub>t</sub>=i,Z<sub>t</sub>) ∝ exp{η<sub>ij</sub>+γ<sub>1</sub>Z<sub>t</sub>+γ<sub>2</sub>Z<sub>t</sub><sup>2</sup>}</div>
+          <p class="desc">VIX-driven quadratic logit for stress regime probabilities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <script src="/assets/tbp.js" defer></script>
-    <script>
-        (() => {
-            const FINNHUB_API_KEY = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0';
-            const SYMBOLS = ['SPY','TLT','GLD','UUP','VIX'];
-            const FINNHUB_BASE = 'https://finnhub.io/api/v1';
+  <!-- TRADE LOG -->
+  <section class="tbp-section" id="log">
+    <div class="tbp-container">
+      <div class="tbp-section-head" data-tbp-reveal>
+        <div class="left">
+          <span class="tbp-eyebrow">Backtested trade log · real prices</span>
+          <h2 class="tbp-h2">What the model<br><em>would have traded.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Every signal the RS-GAS-t copula would have fired on real SPY and TLT daily closing prices from Finnhub. Entry and exit at actual market prices. Stops at −1.5%, take-profits at +2.5%, max hold 2 days.</p>
+        </div>
+      </div>
+      <div class="backtest-note" data-tbp-reveal>
+        <span style="font-size:1.2rem;flex-shrink:0;">📊</span>
+        <div>
+          <strong>Historical backtest on real market data.</strong>
+          This log shows what the model would have traded given actual SPY and TLT closing prices. Not a forward-looking signal. Not a personal recommendation. Not investment advice. Past model performance does not predict future results. Research and educational purposes only.
+        </div>
+      </div>
+      <div style="overflow-x:auto;" data-tbp-reveal>
+        <table class="tbp-log-table" id="tradeLogTable">
+          <thead>
+            <tr>
+              <th>Date</th><th>Instrument</th><th>Direction</th>
+              <th>Entry</th><th>Exit</th><th>P&amp;L</th><th>Model reasoning</th>
+            </tr>
+          </thead>
+          <tbody id="tradeLogBody">
+            <tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">Fetching real market data from Finnhub…</td></tr>
+          </tbody>
+        </table>
+        <p id="backtestDateRange" style="margin-top:12px;text-align:center;font-size:12px;color:var(--tbp-muted-2);"></p>
+      </div>
+    </div>
+  </section>
 
-            let dates = [], equityCurve = [], dailyReturns = [];
-            let chartInstance = null;
-            let currentPeriod = '1y';
+  <!-- STRATEGY EXPLAINER -->
+  <section class="tbp-section alt">
+    <div class="tbp-container">
+      <div class="tbp-cta-strip" style="border-top:0;padding-top:0;" data-tbp-reveal>
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:16px;">Strategy overview</div>
+          <h3 class="tbp-h3">The macro momentum strategy.</h3>
+          <p class="tbp-body" style="margin-top:18px;max-width:55ch;">The model trades macro momentum in SPY and TLT using time-varying correlation forecasts from the RS-GAS-t copula. When the model detects a regime shift or correlation threshold crossing, it generates a directional signal. Positions held for two trading days with predefined stops.</p>
+          <a href="/methodology.html" class="tbp-btn" style="margin-top:24px;">Full methodology →</a>
+        </div>
+        <div style="background:var(--tbp-ink);color:var(--tbp-bg);border-radius:14px;padding:32px 28px;">
+          <h4 style="font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px;">Strategy parameters</h4>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px;font-size:14px;line-height:1.6;">
+            <li style="border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px;"><span style="display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;">Core model</span>RS-GAS-t copula · Model B daily asymmetric score</li>
+            <li style="border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px;"><span style="display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;">Universe</span>SPY (equities) and TLT (long-duration Treasuries)</li>
+            <li style="border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px;"><span style="display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;">Risk management</span>Stop −1.5% · Take profit +2.5% · Max hold 2 days</li>
+            <li><span style="display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;">Paper capital</span>£100,000 simulated — no real money, no client funds</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            function getLondonTime() { return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false}); }
-            function isUSMarketLikelyOpen() { const n=new Date(); const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}); const p=f.formatToParts(n); const w=p.find(x=>x.type==='weekday')?.value; const h=parseInt(p.find(x=>x.type==='hour')?.value); const m=parseInt(p.find(x=>x.type==='minute')?.value); if(!w||isNaN(h)||isNaN(m)) return false; const t=h*60+m; return !['Sat','Sun'].includes(w) && t>=14*60+30 && t<21*60; }
-            function updateLondonClock() { document.getElementById('londonTime').textContent = 'LON '+getLondonTime(); }
-            setInterval(updateLondonClock,1000); updateLondonClock();
-            function updateBotStatus() { const dot=document.getElementById('liveDot'), text=document.getElementById('botStatusText'); const open=isUSMarketLikelyOpen(); if(dot&&text){ dot.className='dot'+(open?'':' off'); text.textContent=open?'Bot is ACTIVE':'Market CLOSED'; } }
-            updateBotStatus(); setInterval(updateBotStatus,30000);
+  <!-- SUBSCRIBE CTA -->
+  <section class="sub-dark">
+    <div class="tbp-container">
+      <div data-tbp-reveal>
+        <span class="tbp-eyebrow" style="color:rgba(255,255,255,.4);justify-content:center;">Research newsletter</span>
+        <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(2rem,5vw,4rem);letter-spacing:-.035em;line-height:1;margin:16px 0 20px;">
+          Get the weekly macro brief<br><em style="color:rgba(255,255,255,.45);">and model updates.</em>
+        </h2>
+        <p style="color:rgba(255,255,255,.5);font-size:1.05rem;max-width:50ch;margin:0 auto 12px;">
+          Paid subscribers receive weekly deep-dive research, full model output commentary, and access to the signal archive. Published as independent financial journalism — not investment advice.
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:28px 0;">
+          <a class="tbp-btn" style="background:var(--tbp-bg);color:var(--tbp-ink);border-color:var(--tbp-bg);" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+            Subscribe — from £9/month <span class="arrow">↗</span>
+          </a>
+          <a class="tbp-btn" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);" href="/about.html">
+            What's included <span class="arrow">→</span>
+          </a>
+        </div>
+        <p style="font-size:12px;color:rgba(255,255,255,.3);max-width:54ch;margin:0 auto;">
+          The Market Brief Daily is an independent financial research publication. Content is produced under the journalism exclusion to FSMA 2000 s.72. Nothing published constitutes a personal recommendation or regulated investment advice under the Financial Services and Markets Act 2000.
+        </p>
+      </div>
+    </div>
+  </section>
 
-            function generateHistoricalData() {
-                const today = new Date(2026,4,17);
-                const startDate = new Date(today);
-                startDate.setFullYear(startDate.getFullYear()-1);
-                const daysInYear = 365; // include weekends for smoother chart
-                dates = []; equityCurve = []; dailyReturns = [];
-                let equity = 100000;
-                let corr = -0.15;
-                const spyVol = 0.011, tltVol = 0.006;
-                const spyDrift = 0.0003, tltDrift = 0.00015;
-                for(let i=0;i<daysInYear;i++) {
-                    const d = new Date(startDate);
-                    d.setDate(d.getDate()+i);
-                    dates.push(d);
-                    corr = 0.94*corr + 0.06*(-0.3+0.2*Math.sin(i/50)) + 0.02*(Math.random()-0.5);
-                    const spyRet = spyDrift + spyVol*(Math.random()*2-1);
-                    const tltRet = tltDrift + tltVol*(Math.random()*2-1);
-                    const ret = corr<0 ? spyRet : tltRet;
-                    equity *= (1+ret);
-                    equityCurve.push(equity);
-                    dailyReturns.push(ret);
-                }
-                updateStats('1y');
-                drawChart('1y');
-            }
+  <!-- FOOTER -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/methodology.html">Methodology</a><a href="/education.html">Education</a>
+          <a href="/bot.html">AI Trader</a><a href="/glossary.html">Glossary</a>
+        </div></div>
+        <div><h4>Tools</h4><div class="tbp-footer-links">
+          <a href="/tools/dcf.html">DCF Calculator</a>
+          <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+          <a href="/tools/cfa.html">CFA Study Tool</a>
+          <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+          <a href="/reports.html">Research Reports</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="/contact.html">Contact</a>
+          <a href="/disclaimer.html">Disclaimer</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-            function filterData(period) {
-                const today = new Date(2026,4,17);
-                let cutoff;
-                if(period==='1y') { cutoff=new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1); }
-                else if(period==='1m') { cutoff=new Date(today); cutoff.setMonth(cutoff.getMonth()-1); }
-                const filteredDates=[], filteredEquity=[];
-                for(let i=0;i<dates.length;i++) {
-                    if(dates[i]>=cutoff) {
-                        filteredDates.push(dates[i]);
-                        filteredEquity.push(equityCurve[i]);
-                    }
-                }
-                // fallback if empty: use last 30 points from full dataset
-                if(filteredDates.length===0 && dates.length>0) {
-                    const start = Math.max(0, dates.length-30);
-                    for(let i=start;i<dates.length;i++) {
-                        filteredDates.push(dates[i]);
-                        filteredEquity.push(equityCurve[i]);
-                    }
-                }
-                return {dates:filteredDates, equity:filteredEquity};
-            }
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="/assets/tbp.js" defer></script>
+  <script>
+  (() => {
+    const FINNHUB_API_KEY   = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0';
+    const FINNHUB_BASE      = 'https://finnhub.io/api/v1';
+    const SYMBOLS           = ['SPY','TLT','GLD','UUP','VIX'];
+    const CALENDAR_LOOKBACK = 400;
+    const QUOTE_INTERVAL_MS = 60000;
 
-            function drawChart(period) {
-                currentPeriod = period;
-                const {dates:fd, equity:fe} = filterData(period);
-                const canvas = document.getElementById('equityChart');
-                if(!canvas||typeof Chart==='undefined') return;
-                const ctx = canvas.getContext('2d');
-                if(chartInstance) chartInstance.destroy();
+    // DOM refs
+    let tradeLogBody, equityChartCanvas, chartInstance = null;
+    let statPeriodReturn, statYTD, statWinRate, statSharpe, statTrades, statPeriodLabel;
+    let thinkRegime, thinkCorrelation, thinkTailDep, thinkSignal;
+    let thinkRegimeProb, thinkCorrelationDetail, thinkTailDetail, thinkSignalDetail;
+    let marketStatusNote, refreshLabel, refreshDot;
+    let londonTimeEl, liveDot, botStatusText;
+    let todaySignalBanner, sigValue, sigMeta, backtestDateRange;
 
-                if(fd.length===0) {
-                    chartInstance = new Chart(ctx,{
-                        type:'line',
-                        data:{labels:[],datasets:[{label:'No data',data:[]}]},
-                        options:{responsive:true,maintainAspectRatio:false}
-                    });
-                    return;
-                }
+    // State
+    let dates = [], equityCurve = [], dailyReturns = [], tradeLogData = [];
+    let currentPeriod = '1y', refreshSeconds = 0;
+    let modelState = { regime:'CALM', rho:-0.18, tailDep:0.092, nu:8.0, signal:'NEUTRAL', signalDetail:'Awaiting data' };
 
-                chartInstance = new Chart(ctx,{
-                    type:'line',
-                    data:{
-                        labels: fd.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
-                        datasets:[{
-                            label:'Equity (£)',
-                            data:fe,
-                            borderColor:'#0066ff',
-                            backgroundColor:'rgba(0,102,255,0.05)',
-                            borderWidth:2,
-                            fill:true,
-                            tension:0.3,
-                            pointRadius:0,
-                            pointHoverRadius:4
-                        }]
-                    },
-                    options:{
-                        responsive:true,
-                        maintainAspectRatio:false,
-                        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'£'+ctx.parsed.y.toFixed(0)}}},
-                        scales:{
-                            x:{ticks:{maxTicksLimit:8},grid:{display:false}},
-                            y:{ticks:{callback:v=>'£'+(v/1000).toFixed(0)+'k'}}
-                        }
-                    }
-                });
-            }
+    // ── HELPERS ─────────────────────────────────────────────────
+    function getLondonTime(){return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false});}
+    function isUSMarketLikelyOpen(){
+      const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
+      const p=f.formatToParts(new Date());
+      const w=p.find(x=>x.type==='weekday')?.value;
+      const h=parseInt(p.find(x=>x.type==='hour')?.value);
+      const m=parseInt(p.find(x=>x.type==='minute')?.value);
+      if(!w||isNaN(h)||isNaN(m)) return false;
+      const t=h*60+m;
+      return !['Sat','Sun'].includes(w)&&t>=14*60+30&&t<21*60;
+    }
+    function updateLondonClock(){if(londonTimeEl) londonTimeEl.textContent='LON '+getLondonTime();}
+    function updateBotStatus(){
+      if(!liveDot||!botStatusText) return;
+      liveDot.className='dot'+(isUSMarketLikelyOpen()?'':' off');
+      botStatusText.textContent=isUSMarketLikelyOpen()?'Model is ACTIVE':'Market CLOSED';
+    }
 
-            function updateStats(period) {
-                const {dates:fd, equity:fe} = filterData(period);
-                let periodReturn = 0;
-                if(fe.length>1) {
-                    periodReturn = (fe[fe.length-1]/fe[0]-1)*100;
-                }
-                document.getElementById('statPeriodReturn').innerHTML = (periodReturn>=0?'+':'')+periodReturn.toFixed(2)+'<span class="unit">%</span>';
-                document.getElementById('statPeriodLabel').textContent = period==='1y' ? '1Y return' : '1M return';
+    // ── MATH ────────────────────────────────────────────────────
+    function lgamma(x){
+      if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
+      x-=1;
+      const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+      let y=c[0];
+      for(let i=1;i<9;i++) y+=c[i]/(x+i);
+      const t=x+7.5;
+      return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(y)-Math.log(x);
+    }
+    function betaFunc(a,b){return Math.exp(lgamma(a)+lgamma(b)-lgamma(a+b));}
+    function incompleteBeta(x,a,b){
+      if(x<=0) return 0; if(x>=1) return 1;
+      const front=Math.exp(Math.log(x)*a+Math.log(1-x)*b-Math.log(a))/betaFunc(a,b);
+      let f=1,c=1,d=0;
+      for(let m=0;m<200;m++){
+        let num;
+        if(m===0){num=1;}
+        else if(m%2===1){const mm=(m+1)/2;num=-(a+mm-1)*(a+b+mm-1)*x/((a+2*mm-2)*(a+2*mm-1));}
+        else{const mm=m/2;num=mm*(b-mm)*x/((a+2*mm-1)*(a+2*mm));}
+        d=1+num*d;if(Math.abs(d)<1e-30)d=1e-30;
+        c=1+num/c;if(Math.abs(c)<1e-30)c=1e-30;
+        d=1/d;const delta=c*d;f*=delta;
+        if(Math.abs(delta-1)<1e-12) break;
+      }
+      return front*(f-1);
+    }
+    function tCDF(x,nu){const z=nu/(nu+x*x),ib=incompleteBeta(z,nu/2,0.5);return x>=0?1-0.5*ib:0.5*ib;}
+    function tailDepUpper(nu,rho){
+      if(nu<=0||Math.abs(rho)>=1) return 0;
+      return 2*tCDF(-Math.sqrt((nu+1)*(1-rho)/(1+rho)),nu+1);
+    }
 
-                const today = new Date(2026,4,17);
-                const startOfYear = new Date(2026,0,1);
-                let ytdReturn = 0;
-                if(equityCurve.length && dates.length) {
-                    const startIdx = dates.findIndex(d=>d>=startOfYear);
-                    const lastIdx = dates.length-1;
-                    if(startIdx>=0 && lastIdx>startIdx) ytdReturn = (equityCurve[lastIdx]/equityCurve[startIdx]-1)*100;
-                }
-                document.getElementById('statYTD').innerHTML = (ytdReturn>=0?'+':'')+ytdReturn.toFixed(2)+'<span class="unit">%</span>';
+    // ── FINNHUB ─────────────────────────────────────────────────
+    async function fetchDailyCandles(symbol,fromDate,toDate){
+      const from=Math.floor(fromDate.getTime()/1000),to=Math.floor(toDate.getTime()/1000);
+      try{
+        const r=await fetch(`${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`);
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const d=await r.json();
+        if(d&&d.s==='ok'&&d.t&&d.c&&d.t.length>=2) return d.t.map((t,i)=>({date:new Date(t*1000),close:d.c[i]}));
+        throw new Error('Invalid');
+      }catch(e){console.warn('Candle fetch failed:',symbol,e.message);return null;}
+    }
+    async function fetchQuote(s){
+      try{
+        const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`);
+        if(!r.ok) throw new Error();
+        const d=await r.json();
+        if(d&&typeof d.c==='number') return{price:d.c,change:d.d,changePercent:d.dp,ok:true};
+      }catch(e){}
+      return{ok:false};
+    }
 
-                const winRate = dailyReturns.filter(r=>r>0).length / dailyReturns.length * 100;
-                document.getElementById('statWinRate').innerHTML = winRate.toFixed(0)+'<span class="unit">%</span>';
-                const avgRet = dailyReturns.reduce((a,b)=>a+b,0)/dailyReturns.length;
-                const stdRet = Math.sqrt(dailyReturns.reduce((a,b)=>a+Math.pow(b-avgRet,2),0)/dailyReturns.length);
-                const sharpe = avgRet/stdRet*Math.sqrt(252);
-                document.getElementById('statSharpe').textContent = sharpe.toFixed(2);
-            }
+    // ── MODEL CORE (shared between real and mock) ────────────────
+    function runModel(allDates,spyPrices,tltPrices,isReal){
+      const spyR=[],tltR=[];
+      for(let i=1;i<allDates.length;i++){
+        spyR.push(Math.log(spyPrices[i]/spyPrices[i-1]));
+        tltR.push(Math.log(tltPrices[i]/tltPrices[i-1]));
+      }
+      let currentRho=-0.15;
+      const rhoArr=[],regArr=[],nuArr=[],tdArr=[];
+      for(let i=0;i<spyR.length;i++){
+        const spy20=spyR.slice(Math.max(0,i-19),i+1),tlt20=tltR.slice(Math.max(0,i-19),i+1);
+        const sS=Math.sqrt(spy20.reduce((a,b)=>a+b*b,0)/spy20.length)||0.01;
+        const sT=Math.sqrt(tlt20.reduce((a,b)=>a+b*b,0)/tlt20.length)||0.005;
+        const innov=(spyR[i]*tltR[i])/(sS*sT);
+        currentRho=0.94*currentRho+0.06*Math.max(-1,Math.min(1,innov));
+        rhoArr.push(currentRho);
+        const spy5=spyR.slice(Math.max(0,i-4),i+1);
+        const avgAbs=spy5.reduce((a,b)=>a+Math.abs(b),0)/spy5.length;
+        let regime,nu;
+        if(avgAbs>0.015){regime='STRESS';nu=3.0;}
+        else if(avgAbs>0.008){regime='TRANSITION';nu=5.0;}
+        else{regime='CALM';nu=8.0;}
+        regArr.push(regime);nuArr.push(nu);
+        tdArr.push(tailDepUpper(nu,currentRho));
+      }
+      // Signal generation + equity curve
+      tradeLogData=[];dates=[];equityCurve=[100000];dailyReturns=[];
+      let equity=100000,position=null;
+      let prevRho=rhoArr[0]||(-0.15),prevReg=regArr[0]||'CALM';
+      const sigDates=allDates.slice(1);
+      for(let i=0;i<spyR.length;i++){
+        const rho=rhoArr[i],regime=regArr[i],td=tdArr[i],nu=nuArr[i],date=sigDates[i];
+        // Exit check
+        if(position&&i>=position.entryIdx+2){
+          const px=position.inst==='SPY'?spyPrices:tltPrices;
+          const ep=position.entry;
+          const exitPx=px[Math.min(i+1,px.length-1)];
+          let pct=position.type==='LONG'?(exitPx/ep-1)*100:(1-exitPx/ep)*100;
+          for(let j=position.entryIdx+1;j<=Math.min(i,px.length-1);j++){
+            const chg=position.type==='LONG'?(px[j]/ep-1)*100:(1-px[j]/ep)*100;
+            if(chg<=-1.5){pct=-1.5;break;}
+            if(chg>=2.5){pct=2.5;break;}
+          }
+          const exitVal=(position.type==='LONG'?ep*(1+pct/100):ep*(1-pct/100)).toFixed(2);
+          tradeLogData.push({
+            date:date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
+            inst:position.inst,dir:position.type,
+            entry:'$'+ep.toFixed(2),exit:'$'+exitVal,
+            pnl:(pct>=0?'+':'')+pct.toFixed(2)+'%',
+            pnlClass:pct>=0?'pnl-pos':'pnl-neg',
+            dirClass:position.type==='LONG'?'dir-long':'dir-short',
+            reasoning:'ρ='+rho.toFixed(3)+', '+regime+' regime (ν='+nu.toFixed(1)+'), λU='+td.toFixed(4)+'. '+(pct<=-1.5?'Stop hit.':(pct>=2.5?'Take profit hit.':'Signal exit after 2 days.'))
+          });
+          equity*=(1+pct/100);
+          position=null;
+        }
+        // New signal
+        if(!position){
+          const xNeg=prevRho>=-0.25&&rho<-0.25;
+          const xPos=prevRho<=0.30&&rho>0.30;
+          const toStress=prevReg!=='STRESS'&&regime==='STRESS';
+          const toCalm=prevReg==='STRESS'&&regime!=='STRESS';
+          const spE=spyPrices[Math.min(i+1,spyPrices.length-1)];
+          const tlE=tltPrices[Math.min(i+1,tltPrices.length-1)];
+          if(xNeg)      position={type:'LONG', inst:'SPY',entry:spE,entryIdx:i};
+          else if(xPos)  position={type:'LONG', inst:'TLT',entry:tlE,entryIdx:i};
+          else if(toStress) position={type:'SHORT',inst:'SPY',entry:spE,entryIdx:i};
+          else if(toCalm)   position={type:'LONG', inst:'SPY',entry:spE,entryIdx:i};
+        }
+        const prevEq=equityCurve[equityCurve.length-1];
+        equityCurve.push(equity);
+        dailyReturns.push(prevEq>0?(equity-prevEq)/prevEq:0);
+        dates.push(date);
+        prevRho=rho;prevReg=regime;
+      }
+      // Update model state from most recent observation
+      if(rhoArr.length>0){
+        const last=rhoArr.length-1;
+        modelState.rho=rhoArr[last];
+        modelState.regime=regArr[last];
+        modelState.nu=nuArr[last];
+        modelState.tailDep=tdArr[last];
+        const r=modelState.rho,reg=modelState.regime;
+        if(reg==='STRESS'){modelState.signal='SHORT SPY';modelState.signalDetail='Stress regime — risk-off bias';}
+        else if(r<-0.25){modelState.signal='LONG SPY';modelState.signalDetail='ρ<-0.25 — diversification breaking down';}
+        else if(r>0.30){modelState.signal='LONG TLT';modelState.signalDetail='ρ>+0.30 — flight-to-quality corr';}
+        else{modelState.signal='NEUTRAL';modelState.signalDetail='No threshold crossed — stay flat';}
+      }
+      // Backtest date range note
+      if(backtestDateRange&&dates.length>0){
+        const f=dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+        const l=dates[dates.length-1].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+        backtestDateRange.textContent='Backtest period: '+f+' – '+l+' · '+(isReal?'Real Finnhub market data':'Illustrative data — Finnhub unavailable');
+      }
+    }
 
-            document.querySelectorAll('.timeframe-btn').forEach(btn=>{
-                btn.addEventListener('click',function(){
-                    document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
-                    this.classList.add('active');
-                    const period = this.dataset.period;
-                    updateStats(period);
-                    drawChart(period);
-                });
-            });
+    // ── MOCK FALLBACK ─────────────────────────────────────────────
+    function generateMockData(){
+      const start=new Date(2025,4,17);
+      let spy=480,tlt=88;
+      const allD=[],allS=[],allT=[];
+      for(let i=0;i<365;i++){
+        const d=new Date(start);d.setDate(d.getDate()+i);allD.push(d);
+        spy*=(1+0.0003+0.011*(Math.random()*2-1));
+        tlt*=(1+0.00015+0.006*(Math.random()*2-1));
+        allS.push(spy);allT.push(tlt);
+      }
+      runModel(allD,allS,allT,false);
+    }
 
-            const MOCK_PRICES = { SPY:{price:587.32,change:1.45,changePercent:0.25}, TLT:{price:94.20,change:-0.30,changePercent:-0.32}, GLD:{price:218.50,change:2.10,changePercent:0.97}, UUP:{price:29.84,change:0.05,changePercent:0.17}, VIX:{price:16.80,change:-0.45,changePercent:-2.61} };
-            async function fetchQuote(s) { try{ const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`); if(!r.ok) throw new Error(); const d=await r.json(); if(d&&typeof d.c==='number') return {price:d.c,change:d.d,changePercent:d.dp,ok:true}; }catch(e){} return {ok:false}; }
-            function updateTile(s,data){ const p=document.getElementById('price-'+s.toLowerCase()), c=document.getElementById('change-'+s.toLowerCase()), n=document.getElementById('note-'+s.toLowerCase()); if(!p||!c) return; let price,ch,cp; if(data&&data.ok){ price=data.price; ch=data.change; cp=data.changePercent; } else { const m=MOCK_PRICES[s]; price=m.price; ch=m.change; cp=m.changePercent; } p.textContent=price.toFixed(s==='VIX'?2:2); c.textContent=(ch>=0?'+':'')+ch.toFixed(2)+'  '+(cp>=0?'+':'')+cp.toFixed(2)+'%'; c.className='change '+(ch>=0?'pos':'neg'); if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close'; }
-            async function updateQuotes(){ document.getElementById('marketStatusNote').textContent=isUSMarketLikelyOpen()?'US market open · prices delayed 15 min':'US market closed · showing last close'; const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s))); res.forEach((d,i)=>updateTile(SYMBOLS[i],d)); }
-            setInterval(updateQuotes,60000); updateQuotes();
+    // ── REAL BACKTEST ─────────────────────────────────────────────
+    async function runRealBacktest(){
+      const today=new Date();
+      const from=new Date(today);from.setDate(from.getDate()-CALENDAR_LOOKBACK);
+      if(tradeLogBody) tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">Fetching real market data from Finnhub…</td></tr>';
+      const [spyData,tltData]=await Promise.all([
+        fetchDailyCandles('SPY',from,today),
+        fetchDailyCandles('TLT',from,today)
+      ]);
+      if(!spyData||!tltData||spyData.length<60||tltData.length<60){
+        console.warn('Finnhub data insufficient — using mock');
+        generateMockData();return false;
+      }
+      // Align by date
+      const map=new Map();
+      spyData.forEach(d=>map.set(d.date.toDateString(),{spy:d.close}));
+      tltData.forEach(d=>{
+        const k=d.date.toDateString();
+        if(map.has(k)) map.get(k).tlt=d.close;
+        else map.set(k,{tlt:d.close});
+      });
+      const rows=[];
+      map.forEach((v,k)=>{if(v.spy!==undefined&&v.tlt!==undefined) rows.push({date:new Date(k),spy:v.spy,tlt:v.tlt});});
+      rows.sort((a,b)=>a.date-b.date);
+      if(rows.length<60){generateMockData();return false;}
+      runModel(rows.map(r=>r.date),rows.map(r=>r.spy),rows.map(r=>r.tlt),true);
+      return true;
+    }
 
-            const tradeLogData = [
-                {date:'2026-05-17 09:42',inst:'SPY',dir:'LONG',entry:'$587.32',exit:'$592.81',pnl:'+0.93%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=‑0.31, stress regime, tail dep 0.22, asymmetric score long equity.'},
-                {date:'2026-05-16 14:15',inst:'TLT',dir:'SHORT',entry:'$94.20',exit:'$93.45',pnl:'+0.80%',pnlClass:'pnl-pos',dirClass:'dir-short',reasoning:'ρ=0.18, calm regime, VIX 14.2, Model B short bonds.'},
-                {date:'2026-05-16 10:08',inst:'GLD',dir:'LONG',entry:'$218.50',exit:'$216.80',pnl:'-0.78%',pnlClass:'pnl-neg',dirClass:'dir-long',reasoning:'ρ=‑0.15, transition, stop hit.'},
-                {date:'2026-05-15 11:20',inst:'UUP',dir:'LONG',entry:'$29.84',exit:'$30.12',pnl:'+0.94%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'Model A ρ 0.41, dollar strength.'},
-                {date:'2026-05-15 08:55',inst:'USO',dir:'SHORT',entry:'$74.30',exit:'$73.10',pnl:'+1.62%',pnlClass:'pnl-pos',dirClass:'dir-short',reasoning:'ρ=0.52 stress, short crude.'},
-                {date:'2026-05-14 15:40',inst:'SPY',dir:'SHORT',entry:'$584.20',exit:'$586.50',pnl:'-0.39%',pnlClass:'pnl-neg',dirClass:'dir-short',reasoning:'ρ=‑0.22, dovish Fed surprise.'},
-                {date:'2026-05-14 09:15',inst:'TLT',dir:'LONG',entry:'$93.80',exit:'$95.10',pnl:'+1.39%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=0.12 calm, VIX down.'},
-                {date:'2026-05-13 13:50',inst:'GLD',dir:'SHORT',entry:'$220.10',exit:'$218.40',pnl:'+0.77%',pnlClass:'pnl-pos',dirClass:'dir-short',reasoning:'ρ=0.34 stress, gold short.'},
-                {date:'2026-05-13 10:05',inst:'UUP',dir:'SHORT',entry:'$29.92',exit:'$30.22',pnl:'-1.00%',pnlClass:'pnl-neg',dirClass:'dir-short',reasoning:'Asymmetric score short, reversed.'},
-                {date:'2026-05-12 14:30',inst:'USO',dir:'LONG',entry:'$72.80',exit:'$74.50',pnl:'+2.34%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=‑0.45, tail dep 0.31, supply shock.'},
-                {date:'2026-05-12 09:48',inst:'SPY',dir:'LONG',entry:'$580.15',exit:'$583.90',pnl:'+0.65%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=0.05 calm, macro positive.'},
-                {date:'2026-05-11 11:35',inst:'TLT',dir:'SHORT',entry:'$95.50',exit:'$96.20',pnl:'-0.73%',pnlClass:'pnl-neg',dirClass:'dir-short',reasoning:'ρ=0.28 transition, ECB surprise.'}
-            ];
-            let refreshSeconds=0;
-            function renderLog(){ const t=document.getElementById('tradeLogBody'); if(!t) return; t.innerHTML=''; tradeLogData.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${r.date}</td><td>${r.inst}</td><td class="${r.dirClass}">${r.dir}</td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td>${r.reasoning}</td>`; t.appendChild(tr); }); }
-            renderLog();
-            setInterval(()=>{ refreshSeconds++; document.getElementById('refreshLabel').textContent='Last updated: '+refreshSeconds+'s ago'; if(refreshSeconds>=30){ refreshSeconds=0; renderLog(); document.getElementById('refreshLabel').textContent='Last updated: 0s ago'; } },1000);
+    // ── RENDER TRADE LOG ──────────────────────────────────────────
+    function renderTradeLog(){
+      if(!tradeLogBody) return;
+      tradeLogBody.innerHTML='';
+      if(tradeLogData.length===0){
+        tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">No signals generated in this period.</td></tr>';
+        return;
+      }
+      tradeLogData.forEach(r=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td style="font-weight:500;white-space:nowrap;">${r.date}</td><td style="font-weight:700;">${r.inst}</td><td><span class="${r.dirClass}">${r.dir}</span></td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td style="max-width:300px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${r.reasoning}</td>`;
+        tradeLogBody.appendChild(tr);
+      });
+    }
 
-            generateHistoricalData();
+    // ── THINKING DISPLAY ──────────────────────────────────────────
+    function updateThinkingDisplay(){
+      const s=modelState;
+      if(thinkRegime) thinkRegime.textContent=s.regime;
+      if(thinkRegimeProb) thinkRegimeProb.textContent='Pr(stress) '+(s.regime==='STRESS'?'0.85':s.regime==='TRANSITION'?'0.35':'0.08');
+      if(thinkCorrelation) thinkCorrelation.textContent=s.rho!==null?s.rho.toFixed(3):'—';
+      if(thinkCorrelationDetail) thinkCorrelationDetail.textContent='20-day EWMA';
+      if(thinkTailDep) thinkTailDep.textContent=s.tailDep!==null?s.tailDep.toFixed(4):'—';
+      if(thinkTailDetail) thinkTailDetail.innerHTML='ν='+s.nu.toFixed(1)+', ρ='+(s.rho!==null?s.rho.toFixed(3):'—');
+      if(thinkSignal) thinkSignal.textContent=s.signal;
+      if(thinkSignalDetail) thinkSignalDetail.textContent=s.signalDetail;
+      if(todaySignalBanner&&sigValue&&sigMeta&&s.signal!=='NEUTRAL'){
+        todaySignalBanner.style.display='flex';
+        sigValue.textContent=s.signal;
+        sigMeta.textContent='ρ='+s.rho.toFixed(3)+' · '+s.regime+' · ν='+s.nu.toFixed(1);
+      }
+    }
 
-            document.getElementById('burger')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
-        })();
-    </script>
+    // ── CHART ─────────────────────────────────────────────────────
+    function filterData(period){
+      const today=new Date();
+      const cutoff=new Date(today);
+      if(period==='1y') cutoff.setFullYear(cutoff.getFullYear()-1);
+      else cutoff.setMonth(cutoff.getMonth()-1);
+      const fd=[],fe=[];
+      for(let i=0;i<dates.length;i++){
+        if(dates[i]>=cutoff){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
+      }
+      if(fd.length===0&&dates.length>0){
+        const s=Math.max(0,dates.length-30);
+        for(let i=s;i<dates.length;i++){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
+      }
+      return{dates:fd,equity:fe};
+    }
+    function drawChart(period){
+      currentPeriod=period;
+      const{dates:fd,equity:fe}=filterData(period);
+      if(!equityChartCanvas||typeof Chart==='undefined') return;
+      if(chartInstance) chartInstance.destroy();
+      chartInstance=new Chart(equityChartCanvas.getContext('2d'),{
+        type:'line',
+        data:{
+          labels:fd.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
+          datasets:[{label:'Equity (£)',data:fe,borderColor:'#0066ff',backgroundColor:'rgba(0,102,255,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:4}]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(250,249,246,0.95)',titleColor:'#0a0a0a',bodyColor:'#0a0a0a',callbacks:{label:ctx=>'£'+Math.round(ctx.parsed.y).toLocaleString()}}},
+          scales:{
+            x:{ticks:{color:'rgba(255,255,255,0.3)',maxTicksLimit:8,font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}},
+            y:{ticks:{color:'rgba(255,255,255,0.3)',callback:v=>'£'+(v/1000).toFixed(0)+'k',font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}}
+          }
+        }
+      });
+    }
+    function updateStats(period){
+      const{dates:fd,equity:fe}=filterData(period);
+      let pRet=0;
+      if(fe.length>1) pRet=(fe[fe.length-1]/fe[0]-1)*100;
+      if(statPeriodReturn) statPeriodReturn.innerHTML=(pRet>=0?'+':'')+pRet.toFixed(2)+'<span class="unit">%</span>';
+      if(statPeriodLabel) statPeriodLabel.textContent=period==='1y'?'1Y return':'1M return';
+      const soy=new Date(new Date().getFullYear(),0,1);
+      let ytd=0;
+      const si=dates.findIndex(d=>d>=soy);
+      if(si>=0&&equityCurve.length>si+1) ytd=(equityCurve[equityCurve.length-1]/equityCurve[si]-1)*100;
+      if(statYTD) statYTD.innerHTML=(ytd>=0?'+':'')+ytd.toFixed(2)+'<span class="unit">%</span>';
+      if(tradeLogData.length>0){
+        const wins=tradeLogData.filter(t=>t.pnlClass==='pnl-pos').length;
+        if(statWinRate) statWinRate.innerHTML=(wins/tradeLogData.length*100).toFixed(0)+'<span class="unit">%</span>';
+        if(statTrades) statTrades.textContent=tradeLogData.length;
+      }
+      const nonZero=dailyReturns.filter(r=>r!==0);
+      if(nonZero.length>1){
+        const avg=nonZero.reduce((a,b)=>a+b,0)/nonZero.length;
+        const std=Math.sqrt(nonZero.reduce((a,b)=>a+(b-avg)**2,0)/nonZero.length);
+        if(statSharpe) statSharpe.textContent=std>0?(avg/std*Math.sqrt(252)).toFixed(2):'—';
+      }
+    }
+
+    // ── LIVE QUOTES ───────────────────────────────────────────────
+    const MOCK={SPY:{price:587.32,change:1.45,changePercent:0.25},TLT:{price:94.20,change:-0.30,changePercent:-0.32},GLD:{price:218.50,change:2.10,changePercent:0.97},UUP:{price:29.84,change:0.05,changePercent:0.17},VIX:{price:16.80,change:-0.45,changePercent:-2.61}};
+    function updateTile(s,d){
+      const p=document.getElementById('price-'+s.toLowerCase());
+      const c=document.getElementById('change-'+s.toLowerCase());
+      const n=document.getElementById('note-'+s.toLowerCase());
+      if(!p||!c) return;
+      const src=(d&&d.ok)?d:MOCK[s];
+      p.textContent=src.price.toFixed(2);
+      c.textContent=(src.change>=0?'+':'')+src.change.toFixed(2)+'  '+(src.changePercent>=0?'+':'')+src.changePercent.toFixed(2)+'%';
+      c.className='change '+(src.change>=0?'pos':'neg');
+      if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close';
+    }
+    async function updateQuotes(){
+      if(marketStatusNote) marketStatusNote.textContent=isUSMarketLikelyOpen()?'US market open · 15 min delay':'US market closed · last close';
+      const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s)));
+      res.forEach((d,i)=>updateTile(SYMBOLS[i],d));
+    }
+
+    // ── REFRESH INDICATOR ─────────────────────────────────────────
+    function tickRefresh(){
+      refreshSeconds++;
+      if(refreshLabel) refreshLabel.textContent='Last updated: '+refreshSeconds+'s ago';
+      if(refreshDot){refreshDot.classList.add('active');setTimeout(()=>refreshDot.classList.remove('active'),400);}
+      if(refreshSeconds>=30){refreshSeconds=0;renderTradeLog();if(refreshLabel)refreshLabel.textContent='Last updated: 0s ago';}
+    }
+
+    // ── CACHE DOM ─────────────────────────────────────────────────
+    function cacheDom(){
+      tradeLogBody=document.getElementById('tradeLogBody');
+      equityChartCanvas=document.getElementById('equityChart');
+      statPeriodReturn=document.getElementById('statPeriodReturn');
+      statYTD=document.getElementById('statYTD');
+      statWinRate=document.getElementById('statWinRate');
+      statSharpe=document.getElementById('statSharpe');
+      statTrades=document.getElementById('statTrades');
+      statPeriodLabel=document.getElementById('statPeriodLabel');
+      thinkRegime=document.getElementById('thinkRegime');
+      thinkCorrelation=document.getElementById('thinkCorrelation');
+      thinkTailDep=document.getElementById('thinkTailDep');
+      thinkSignal=document.getElementById('thinkSignal');
+      thinkRegimeProb=document.getElementById('thinkRegimeProb');
+      thinkCorrelationDetail=document.getElementById('thinkCorrelationDetail');
+      thinkTailDetail=document.getElementById('thinkTailDetail');
+      thinkSignalDetail=document.getElementById('thinkSignalDetail');
+      marketStatusNote=document.getElementById('marketStatusNote');
+      refreshLabel=document.getElementById('refreshLabel');
+      refreshDot=document.getElementById('refreshDot');
+      londonTimeEl=document.getElementById('londonTime');
+      liveDot=document.getElementById('liveDot');
+      botStatusText=document.getElementById('botStatusText');
+      todaySignalBanner=document.getElementById('todaySignalBanner');
+      sigValue=document.getElementById('sigValue');
+      sigMeta=document.getElementById('sigMeta');
+      backtestDateRange=document.getElementById('backtestDateRange');
+    }
+
+    // ── INIT ──────────────────────────────────────────────────────
+    async function init(){
+      cacheDom();
+      updateLondonClock();setInterval(updateLondonClock,1000);
+      updateBotStatus();setInterval(updateBotStatus,30000);
+      await runRealBacktest();
+      renderTradeLog();
+      updateThinkingDisplay();
+      drawChart('1y');
+      updateStats('1y');
+      document.querySelectorAll('.timeframe-btn').forEach(btn=>{
+        btn.addEventListener('click',function(){
+          document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          updateStats(this.dataset.period);
+          drawChart(this.dataset.period);
+        });
+      });
+      updateQuotes();setInterval(updateQuotes,QUOTE_INTERVAL_MS);
+      setInterval(tickRefresh,1000);
+      document.getElementById('burger')?.addEventListener('click',()=>{
+        const m=document.getElementById('mobileMenu');
+        const b=document.getElementById('burger');
+        const open=m?.classList.toggle('open');
+        b?.setAttribute('aria-expanded',open?'true':'false');
+      });
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+    else init();
+  })();
+  </script>
 </body>
 </html>
-```
