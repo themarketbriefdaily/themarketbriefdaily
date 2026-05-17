@@ -81,9 +81,13 @@
         .timeframe-btns { display: flex; gap: 8px; margin-bottom: 12px; }
         .timeframe-btn { padding: 6px 16px; border-radius: 999px; border: 1px solid var(--tbp-line); background: transparent; font-size: 12px; font-weight: 600; color: var(--tbp-muted); cursor: pointer; transition: all .2s; }
         .timeframe-btn.active { background: var(--tbp-ink); color: var(--tbp-bg); border-color: var(--tbp-ink); }
+        .hero-cta-large { display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 28px; border-radius: 999px; background: var(--tbp-blue); color: #fff; font-size: 15px; font-weight: 700; letter-spacing: .02em; text-decoration: none; transition: all 0.3s var(--tbp-ease); box-shadow: 0 6px 16px rgba(0,102,255,0.35); }
+        .hero-cta-large:hover { background: var(--tbp-ink); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body class="tbp">
+
+    <!-- HEADER -->
     <header class="tbp-header" id="header">
         <div class="tbp-container tbp-header-inner">
             <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
@@ -93,8 +97,10 @@
             <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
         </div>
     </header>
+
     <div class="tbp-mobile-menu" id="mobileMenu"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/methodology.html">Methodology</a><a href="/education.html">Education</a><a href="/bot.html">AI Trader</a><a href="/tools/dcf.html">Tools</a><a href="/about.html">About</a></div>
 
+    <!-- HERO -->
     <section class="tbp-hero" style="background: radial-gradient(circle at 20% 30%, rgba(0,102,255,0.03) 0%, transparent 60%);">
         <div class="tbp-container">
             <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px;" data-tbp-reveal>
@@ -102,22 +108,28 @@
                 <span class="tbp-live-dot" id="botStatusBadge"><span class="dot" id="liveDot"></span><span id="botStatusText">Bot is ACTIVE</span></span>
             </div>
             <div class="tbp-hero-grid" style="margin-top:24px;">
-                <div data-tbp-reveal><h1>An AI agent <em>trading</em><br>in public, every day.</h1></div>
+                <div data-tbp-reveal>
+                    <h1>An AI agent <em>trading</em><br>in public, every day.</h1>
+                </div>
                 <div class="lead-block" data-tbp-reveal class="delay-1">
-                    <p>Driven by a regime‑switching score‑driven Student‑t copula with MIDAS‑filtered macro factors. No black box — every trade is logged with its econometric reasoning. Live demo account.</p>
-                    <div class="actions" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;"><a href="#log" class="tbp-btn primary btn-glow">View live trade log ↓</a><a href="/methodology.html" class="tbp-btn">Full methodology →</a></div>
+                    <a href="/contact.html" class="hero-cta-large" style="margin-bottom:20px;display:inline-flex;">Get access to the bot here</a>
+                    <p>Driven by a regime‑switching score‑driven Student‑t copula with MIDAS‑filtered macro factors. No black box — every trade is logged with its econometric reasoning.</p>
+                    <div class="actions" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;">
+                        <a href="#log" class="tbp-btn primary btn-glow">View live trade log ↓</a>
+                        <a href="/methodology.html" class="tbp-btn">Full methodology →</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="tbp-section tight" style="padding-top:0;">
-        <div class="tbp-container"><div class="tbp-disclaimer" data-tbp-reveal><span style="font-size:1.4rem;flex-shrink:0;">⚠️</span><div><strong>Live bot running on a simulated account for educational purposes only. Not investment advice. Not a regulated financial service.</strong><span style="display:block;margin-top:6px;">The bot trades using public market data and a paper trading engine. No real capital is at risk. See full disclaimer.</span></div></div></div>
-    </section>
-
+    <!-- LIVE MARKET DATA TILES -->
     <section class="tbp-section tight" style="padding-top:0;" data-api="market-data">
         <div class="tbp-container">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;" data-tbp-reveal><span class="tbp-eyebrow">Live market data</span><span class="tbp-small" id="marketStatusNote">US market closed · showing last close</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;" data-tbp-reveal>
+                <span class="tbp-eyebrow">Live market data</span>
+                <span class="tbp-small" id="marketStatusNote">US market closed · showing last close</span>
+            </div>
             <div class="tbp-data-tiles" id="dataTiles" data-tbp-reveal class="delay-1">
                 <div class="tbp-data-tile" data-symbol="SPY"><div class="symbol">SPY · S&P 500</div><div class="price mono" id="price-spy">587.32</div><div class="change pos" id="change-spy">+1.45  +0.25%</div><div class="status-note" id="note-spy">Last close</div></div>
                 <div class="tbp-data-tile" data-symbol="TLT"><div class="symbol">TLT · US Treasuries</div><div class="price mono" id="price-tlt">94.20</div><div class="change neg" id="change-tlt">-0.30  -0.32%</div><div class="status-note" id="note-tlt">Last close</div></div>
@@ -128,6 +140,7 @@
         </div>
     </section>
 
+    <!-- BOT'S CURRENT THINKING -->
     <section class="tbp-section tight" data-api="current-thinking">
         <div class="tbp-container">
             <span class="tbp-eyebrow" data-tbp-reveal>Bot’s current thinking · RS‑GAS‑t copula</span>
@@ -137,19 +150,24 @@
                 <div class="tbp-thinking-cell"><span class="label">Tail Dependence</span><span class="value" id="thinkTailDep">0.092</span><span class="sub" id="thinkTailDetail">λ<sub>U</sub> from ν=8.0, ρ=-0.18</span></div>
                 <div class="tbp-thinking-cell"><span class="label">Signal (Model B)</span><span class="value" id="thinkSignal">NEUTRAL</span><span class="sub" id="thinkSignalDetail">no strong asymmetry</span></div>
             </div>
-            <p class="tbp-small" style="margin-top:16px;text-align:center;">Regime and correlation updated every 60 seconds using live data.</p>
+            <p class="tbp-small" style="margin-top:16px;text-align:center;">Regime and correlation updated every 60 seconds using live market data.</p>
         </div>
     </section>
 
+    <!-- PERFORMANCE CHART + STATS -->
     <section class="tbp-section">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Performance</span><h2 class="tbp-h2">Cumulative return<br><em>real‑time strategy.</em></h2></div>
-                <div class="right"><p class="tbp-lead">Historical equity curve of the correlation‑switching strategy based on actual SPY/TLT data.</p></div>
+                <div class="left"><span class="tbp-eyebrow">Performance</span><h2 class="tbp-h2">Historical equity curve<br><em>real‑time strategy.</em></h2></div>
+                <div class="right"><p class="tbp-lead">Correlation‑switching based on actual SPY/TLT data. Use the buttons to change the timeframe.</p></div>
             </div>
-            <div class="timeframe-btns" data-tbp-reveal><button class="timeframe-btn active" data-period="5y">5Y</button><button class="timeframe-btn" data-period="1y">1Y</button><button class="timeframe-btn" data-period="1m">1M</button></div>
+            <div class="timeframe-btns" data-tbp-reveal>
+                <button class="timeframe-btn active" data-period="5y">5Y</button>
+                <button class="timeframe-btn" data-period="1y">1Y</button>
+                <button class="timeframe-btn" data-period="1m">1M</button>
+            </div>
             <div class="chart-stats-row" data-tbp-reveal class="delay-1">
-                <div class="chart-small-wrap"><canvas id="equityChart" aria-label="Equity curve based on real historical data"></canvas></div>
+                <div class="chart-small-wrap"><canvas id="equityChart" aria-label="Equity curve"></canvas></div>
                 <div class="stats-side" id="statsSide">
                     <div class="stat-item"><div class="stat-num" style="color:var(--tbp-pos);" id="statReturn">+2.34<span class="unit">%</span></div><div class="stat-label">YTD live return (2026)</div></div>
                     <div class="stat-item"><div class="stat-num" id="statTrades">47</div><div class="stat-label">Total signals generated</div></div>
@@ -160,20 +178,22 @@
         </div>
     </section>
 
+    <!-- RESEARCH FOUNDATION -->
     <section class="tbp-section alt">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
                 <div class="left"><span class="tbp-eyebrow">Research foundation</span><h2 class="tbp-h2">Built on <em>academic rigour.</em></h2></div>
-                <div class="right"><p class="tbp-lead">The AI Day‑Trader is the practical implementation of a dissertation that models time‑varying equity‑bond dependence using a regime‑switching score‑driven Student‑t copula with macro‑conditioned transition probabilities.</p></div>
+                <div class="right"><p class="tbp-lead">The AI Day‑Trader implements a regime‑switching score‑driven Student‑t copula with macro‑conditioned transitions.</p></div>
             </div>
             <div class="research-quote" data-tbp-reveal class="delay-1">"The correlation between equities and government bonds is a cornerstone of modern portfolio construction … however, this hedge is neither constant nor reliable."</div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;" data-tbp-reveal class="delay-2">
-                <div><h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Key contributions</h3><ul style="font-size:14px; color:var(--tbp-muted); line-height:1.7; padding-left:18px;"><li style="margin-bottom:8px;"><strong>First copula model</strong> combining score‑driven updates, regime switching, and MIDAS‑filtered macro factors.</li><li style="margin-bottom:8px;"><strong>Two complementary specifications:</strong> medium‑horizon (Model A) and daily asymmetric (Model B).</li><li><strong>Empirically validated</strong> 1990–2025 with robust out‑of‑sample benefits.</li></ul></div>
+                <div><h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Key contributions</h3><ul style="font-size:14px; color:var(--tbp-muted); line-height:1.7; padding-left:18px;"><li><strong>First copula model</strong> combining score‑driven updates, regime switching, and MIDAS‑filtered macro factors.</li><li><strong>Two complementary specifications:</strong> medium‑horizon (Model A) and daily asymmetric (Model B).</li><li><strong>Empirically validated</strong> 1990–2025 with robust out‑of‑sample benefits.</li></ul></div>
                 <div><h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Why it matters</h3><p style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-bottom:12px;">Static correlation models fail in crises. This bot adapts in real time to inflation shocks, flight‑to‑quality, and monetary policy shifts.</p><a href="/methodology.html" class="tbp-btn">Read the full paper →</a></div>
             </div>
         </div>
     </section>
 
+    <!-- MODEL ARCHITECTURE -->
     <section class="tbp-section">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
@@ -187,6 +207,7 @@
         </div>
     </section>
 
+    <!-- MODEL MATHEMATICS -->
     <section class="tbp-section alt">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal><div class="left"><span class="tbp-eyebrow">Core mathematics</span><h2 class="tbp-h2">Key equations<br><em>at a glance.</em></h2></div><div class="right"><p class="tbp-lead">Structural backbone presented transparently.</p></div></div>
@@ -199,6 +220,7 @@
         </div>
     </section>
 
+    <!-- LIVE TRADE LOG -->
     <section id="log" class="tbp-section" data-api="trade-log">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
@@ -209,6 +231,7 @@
         </div>
     </section>
 
+    <!-- STRATEGY EXPLAINER + ACCESS -->
     <section class="tbp-section alt">
         <div class="tbp-container">
             <div class="tbp-cta-strip" style="border-top:0;padding-top:0;" data-tbp-reveal>
@@ -218,6 +241,7 @@
         </div>
     </section>
 
+    <!-- WAITLIST CTA -->
     <section class="tbp-section" style="background:var(--tbp-ink);color:var(--tbp-bg);">
         <div class="tbp-container" style="text-align:center;">
             <div data-tbp-reveal><span class="tbp-eyebrow" style="color:rgba(255,255,255,.45);">Early access</span><h2 style="color:var(--tbp-bg);font-weight:850;font-size:clamp(2rem,5.4vw,4.4rem);letter-spacing:-.035em;line-height:1;margin:16px 0 24px;">Get notified when<br>the bot goes live.</h2><p style="color:rgba(255,255,255,.55);font-size:1.05rem;max-width:48ch;margin:0 auto 12px;">Paid subscribers receive real‑time trade alerts and research access.</p><div style="font-weight:850;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.03em;color:var(--tbp-bg);margin-bottom:8px;">2.4K</div><p style="font-size:13px;color:rgba(255,255,255,.35);margin-bottom:32px;">on the waitlist</p></div>
@@ -267,7 +291,7 @@
 
             function computeStrategy(spyData, tltData) {
                 const minLen = Math.min(spyData.length, tltData.length);
-                if(minLen<21) return;
+                if(minLen<21) return null;
                 const spyCloses = spyData.slice(0,minLen).map(d=>d.close);
                 const tltCloses = tltData.slice(0,minLen).map(d=>d.close);
                 const datesArr = spyData.slice(0,minLen).map(d=>d.date);
@@ -286,7 +310,7 @@
                     signals.push({index:i+win, corr});
                 }
                 equityCurve = [100000]; dailyReturns = [0];
-                let pos = 0; // 0=SPY, 1=TLT
+                let pos = 0;
                 for(let i=win;i<retSpy.length;i++){
                     const corr = signals[i-win].corr;
                     const newPos = corr < 0 ? 0 : 1;
@@ -297,7 +321,6 @@
                     dailyReturns.push(ret);
                     pos = newPos;
                 }
-                // align dates with equity curve (skip first win+1 dates)
                 const eqDates = datesArr.slice(win+1);
                 return { dates: eqDates, equity: equityCurve.slice(1), returns: dailyReturns.slice(1) };
             }
@@ -317,9 +340,7 @@
                     if(!result) { generateFallbackData(today); return; }
                     dates = result.dates; equityCurve = result.equity; dailyReturns = result.returns;
                 }
-                // update stats
                 updateStats();
-                // draw chart with default 5y
                 drawChart('5y');
             }
 
@@ -338,9 +359,9 @@
             function filterData(period) {
                 const today = new Date(2026,4,17);
                 let cutoff;
-                if(period==='5y') cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-5);
-                else if(period==='1y') cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1);
-                else if(period==='1m') cutoff = new Date(today); cutoff.setMonth(cutoff.getMonth()-1);
+                if(period==='5y') { cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-5); }
+                else if(period==='1y') { cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1); }
+                else if(period==='1m') { cutoff = new Date(today); cutoff.setMonth(cutoff.getMonth()-1); }
                 const filteredDates=[], filteredEquity=[];
                 for(let i=0;i<dates.length;i++){
                     if(dates[i]>=cutoff){ filteredDates.push(dates[i]); filteredEquity.push(equityCurve[i]); }
@@ -395,7 +416,7 @@
                 const stdRet = Math.sqrt(dailyReturns.reduce((a,b)=>a+Math.pow(b-avgRet,2),0)/dailyReturns.length);
                 const sharpe = avgRet/stdRet * Math.sqrt(252);
                 document.getElementById('statSharpe').textContent = sharpe.toFixed(2);
-                document.getElementById('statTrades').textContent = dailyReturns.length; // total signals
+                document.getElementById('statTrades').textContent = dailyReturns.length;
             }
 
             document.querySelectorAll('.timeframe-btn').forEach(btn=>{
@@ -406,7 +427,7 @@
                 });
             });
 
-            // Live quotes & trade log (unchanged)
+            // Live quotes (unchanged)
             const MOCK_PRICES = { SPY:{price:587.32,change:1.45,changePercent:0.25}, TLT:{price:94.20,change:-0.30,changePercent:-0.32}, GLD:{price:218.50,change:2.10,changePercent:0.97}, UUP:{price:29.84,change:0.05,changePercent:0.17}, VIX:{price:16.80,change:-0.45,changePercent:-2.61} };
             async function fetchQuote(s) { try{ const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`); if(!r.ok) throw new Error(); const d=await r.json(); if(d&&typeof d.c==='number') return {price:d.c,change:d.d,changePercent:d.dp,ok:true}; }catch(e){} return {ok:false}; }
             function updateTile(s,data){ const p=document.getElementById('price-'+s.toLowerCase()), c=document.getElementById('change-'+s.toLowerCase()), n=document.getElementById('note-'+s.toLowerCase()); if(!p||!c) return; let price,ch,cp; if(data&&data.ok){ price=data.price; ch=data.change; cp=data.changePercent; } else { const m=MOCK_PRICES[s]; price=m.price; ch=m.change; cp=m.changePercent; } p.textContent=price.toFixed(s==='VIX'?2:2); c.textContent=(ch>=0?'+':'')+ch.toFixed(2)+'  '+(cp>=0?'+':'')+cp.toFixed(2)+'%'; c.className='change '+(ch>=0?'pos':'neg'); if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close'; }
@@ -432,7 +453,6 @@
             renderLog();
             setInterval(()=>{ refreshSeconds++; document.getElementById('refreshLabel').textContent='Last updated: '+refreshSeconds+'s ago'; if(refreshSeconds>=30){ refreshSeconds=0; renderLog(); document.getElementById('refreshLabel').textContent='Last updated: 0s ago'; } },1000);
 
-            // Init chart with real data
             loadHistoricalData();
 
             document.getElementById('burger')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
