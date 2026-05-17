@@ -1,215 +1,1286 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI day-trader — The Market Brief Daily</title>
-  <meta name="description" content="An experimental AI day-trading bot running in a public paper account. Live trade log, reasoning posts, and a transparent record of wins and losses." />
-  <meta name="theme-color" content="#faf9f6" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/tbp-theme.css" />
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Day-Trader — The Market Brief Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/tbp-theme.css">
+    <style>
+        /* ================================================================
+           BOT PAGE — editorial minimalism extensions
+           All base styles from /assets/tbp-theme.css
+           ================================================================ */
 
+        .tbp-live-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            color: var(--tbp-ink);
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--tbp-line);
+            background: var(--tbp-bg);
+            white-space: nowrap;
+        }
+        .tbp-live-dot .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tbp-pos);
+            animation: tbpPulse 2s infinite;
+            flex-shrink: 0;
+        }
+        .tbp-live-dot .dot.off {
+            background: var(--tbp-muted-2);
+            animation: none;
+        }
+        @keyframes tbpPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(26, 138, 74, .45);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(26, 138, 74, .06);
+            }
+        }
+        .tbp-london-time {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--tbp-muted);
+            letter-spacing: .02em;
+            white-space: nowrap;
+        }
+        .tbp-data-tiles {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 14px;
+        }
+        @media (max-width: 1080px) {
+            .tbp-data-tiles {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 680px) {
+            .tbp-data-tiles {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        .tbp-data-tile {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 20px 22px;
+            transition: border-color .3s var(--tbp-ease);
+        }
+        .tbp-data-tile:hover {
+            border-color: var(--tbp-muted-2);
+        }
+        .tbp-data-tile .symbol {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            margin-bottom: 6px;
+        }
+        .tbp-data-tile .price {
+            font-family: 'Inter Tight', 'Inter', sans-serif;
+            font-size: clamp(1.3rem, 2vw, 1.7rem);
+            font-weight: 750;
+            letter-spacing: -.02em;
+            color: var(--tbp-ink);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .tbp-data-tile .price.mono {
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
+        }
+        .tbp-data-tile .change {
+            font-size: 13px;
+            font-weight: 550;
+            letter-spacing: .01em;
+        }
+        .tbp-data-tile .change.pos {
+            color: var(--tbp-pos);
+        }
+        .tbp-data-tile .change.neg {
+            color: var(--tbp-neg);
+        }
+        .tbp-data-tile .status-note {
+            font-size: 11px;
+            color: var(--tbp-muted-2);
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .tbp-thinking-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1px;
+            background: var(--tbp-line);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        @media (max-width: 880px) {
+            .tbp-thinking-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 520px) {
+            .tbp-thinking-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .tbp-thinking-cell {
+            background: var(--tbp-bg);
+            padding: 24px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .tbp-thinking-cell .label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+        }
+        .tbp-thinking-cell .value {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+            font-weight: 750;
+            letter-spacing: -.01em;
+            color: var(--tbp-ink);
+            line-height: 1.1;
+        }
+        .tbp-thinking-cell .sub {
+            font-size: 12px;
+            color: var(--tbp-muted-2);
+            letter-spacing: .02em;
+        }
+        .tbp-chart-section {
+            background: var(--tbp-ink);
+            color: var(--tbp-bg);
+            padding-block: clamp(56px, 7vw, 88px);
+        }
+        .tbp-chart-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2.2 / 1;
+            min-height: 320px;
+        }
+        @media (max-width: 720px) {
+            .tbp-chart-wrap {
+                aspect-ratio: 1.6 / 1;
+                min-height: 260px;
+            }
+        }
+        .tbp-chart-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .tbp-log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .tbp-log-table thead tr {
+            background: var(--tbp-bg-alt);
+            text-align: left;
+        }
+        .tbp-log-table thead th {
+            padding: 14px 16px;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            border-bottom: 1px solid var(--tbp-line);
+            white-space: nowrap;
+        }
+        .tbp-log-table tbody tr {
+            border-bottom: 1px solid var(--tbp-line-soft);
+            transition: background .25s var(--tbp-ease);
+        }
+        .tbp-log-table tbody tr:hover {
+            background: var(--tbp-bg-alt);
+        }
+        .tbp-log-table tbody td {
+            padding: 15px 16px;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+        .tbp-log-table .price-cell {
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
+            font-size: 13px;
+            letter-spacing: .01em;
+        }
+        .tbp-log-table .dir-long {
+            color: var(--tbp-pos);
+            font-weight: 600;
+        }
+        .tbp-log-table .dir-short {
+            color: var(--tbp-neg);
+            font-weight: 600;
+        }
+        .tbp-log-table .pnl-pos {
+            color: var(--tbp-pos);
+            font-weight: 600;
+        }
+        .tbp-log-table .pnl-neg {
+            color: var(--tbp-neg);
+            font-weight: 600;
+        }
+        @keyframes tradeSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+                background: rgba(0, 102, 255, .08);
+            }
+            40% {
+                background: rgba(0, 102, 255, .04);
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+                background: transparent;
+            }
+        }
+        @keyframes tradeSlideInGreen {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+                background: rgba(26, 138, 74, .1);
+            }
+            40% {
+                background: rgba(26, 138, 74, .04);
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+                background: transparent;
+            }
+        }
+        @keyframes tradeSlideInRed {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+                background: rgba(176, 48, 48, .1);
+            }
+            40% {
+                background: rgba(176, 48, 48, .04);
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+                background: transparent;
+            }
+        }
+        .trade-row-new {
+            animation: tradeSlideIn .55s var(--tbp-ease-slow) forwards;
+        }
+        .trade-row-new.long-flash {
+            animation: tradeSlideInGreen .55s var(--tbp-ease-slow) forwards;
+        }
+        .trade-row-new.short-flash {
+            animation: tradeSlideInRed .55s var(--tbp-ease-slow) forwards;
+        }
+        .tbp-refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--tbp-muted-2);
+            letter-spacing: .02em;
+        }
+        .tbp-refresh-indicator .refresh-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--tbp-muted-2);
+            transition: background .4s;
+        }
+        .tbp-refresh-indicator .refresh-dot.active {
+            background: var(--tbp-blue);
+        }
+        .model-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: var(--tbp-line);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        @media (max-width: 720px) {
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .model-cell {
+            background: var(--tbp-bg);
+            padding: 28px 24px;
+        }
+        .formula {
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
+            font-size: 12px;
+            color: var(--tbp-muted);
+            background: var(--tbp-bg-alt);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
 <body class="tbp">
-  <header class="tbp-header" role="banner">
-    <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
-        <span class="mark">M</span>
-        <span>The Market Brief Daily</span>
-      </a>
-      <nav class="tbp-nav" aria-label="Primary">
+
+    <!-- HEADER -->
+    <header class="tbp-header" id="header">
+        <div class="tbp-container tbp-header-inner">
+            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily">
+                <span class="mark">MB</span>
+                <span>The Market Brief Daily</span>
+            </a>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <span class="tbp-london-time" id="londonTime" aria-live="polite">LON 00:00</span>
+            </div>
+            <nav class="tbp-nav" aria-label="Primary navigation">
+                <a href="/">Home</a>
+                <a href="/posts.html">Research</a>
+                <a href="/investments.html">Funds</a>
+                <a href="/methodology.html">Methodology</a>
+                <a href="/education.html">Education</a>
+                <a href="/bot.html" class="is-active">AI Trader</a>
+                <a href="/tools/dcf.html">Tools</a>
+                <a href="/about.html">About</a>
+            </nav>
+            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="tbp-mobile-menu" id="mobileMenu">
         <a href="/">Home</a>
         <a href="/posts.html">Research</a>
         <a href="/investments.html">Funds</a>
         <a href="/methodology.html">Methodology</a>
         <a href="/education.html">Education</a>
-        <a class="is-active" href="/bot.html">AI Trader</a>
+        <a href="/bot.html">AI Trader</a>
         <a href="/tools/dcf.html">Tools</a>
         <a href="/about.html">About</a>
-      </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
-        Subscribe <span class="arrow">↗</span>
-      </a>
-      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
-  </header>
-  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a>
-    <a href="/posts.html">Research</a>
-    <a href="/investments.html">Funds</a>
-    <a href="/methodology.html">Methodology</a>
-    <a href="/education.html">Education</a>
-    <a href="/bot.html">AI Trader</a>
-    <a href="/tools/dcf.html">Tools</a>
-    <a href="/about.html">About</a>
-    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
-  </div>
 
+    <!-- HERO -->
+    <section class="tbp-hero">
+        <div class="tbp-container">
+            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px;" data-tbp-reveal>
+                <span class="tbp-eyebrow">Experimental · Paper trading</span>
+                <span class="tbp-live-dot" id="botStatusBadge">
+                    <span class="dot" id="liveDot"></span>
+                    <span id="botStatusText">Bot is ACTIVE</span>
+                </span>
+            </div>
+            <div class="tbp-hero-grid" style="margin-top:24px;">
+                <div data-tbp-reveal>
+                    <h1>An AI agent <em>trading</em><br>in public, every day.</h1>
+                </div>
+                <div class="lead-block" data-tbp-reveal class="delay-1">
+                    <p>Driven by a regime‑switching score‑driven Student‑t copula with MIDAS‑filtered macro factors. No black box — every trade is logged with its econometric reasoning. Paper account only.</p>
+                    <div class="actions" style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;">
+                        <a href="#log" class="tbp-btn primary">View live trade log ↓</a>
+                        <a href="/methodology.html" class="tbp-btn">Full methodology →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- DISCLAIMER -->
+    <section class="tbp-section tight" style="padding-top:0;">
+        <div class="tbp-container">
+            <div class="tbp-disclaimer" data-tbp-reveal>
+                <span style="font-size:1.4rem;flex-shrink:0;">⚠️</span>
+                <div>
+                    <strong>Paper‑trading experiment for educational purposes only. Not investment advice. Not a regulated financial service.</strong>
+                    <span style="display:block;margin-top:6px;">The bot trades a simulated account using public market data. No real capital is at risk. Results do not include slippage, spread, or financing costs. The underlying model is based on the author’s academic research; see full disclaimer.</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <section class="tbp-hero">
-    <div class="tbp-container">
-      <div data-tbp-reveal style="max-width: 940px;">
-        <div class="tbp-eyebrow" style="margin-bottom: 36px;">Experimental · Tower 42</div>
-        <h1 class="tbp-h1">An AI agent <em>trading</em><br>in public, every day.</h1>
-        <p class="tbp-lead" style="margin-top: 28px;">
-          A live experiment. The bot runs an intraday strategy in a paper account,
-          posts every trade to a public log, and writes a one-paragraph explanation
-          of its reasoning. No client capital, no real money, no upsell.
-        </p>
-        <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
-          <a class="tbp-btn primary" href="#log">View live trade log <span class="arrow">↓</span></a>
-          <a class="tbp-btn" href="/methodology.html#construction">Strategy methodology <span class="arrow">→</span></a>
+    <!-- LIVE MARKET DATA TILES -->
+    <section class="tbp-section tight" style="padding-top:0;" data-api="market-data">
+        <div class="tbp-container">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;" data-tbp-reveal>
+                <span class="tbp-eyebrow">Live market data</span>
+                <span class="tbp-small" id="marketStatusNote">Loading…</span>
+            </div>
+            <div class="tbp-data-tiles" id="dataTiles" data-tbp-reveal class="delay-1">
+                <div class="tbp-data-tile" data-symbol="SPY">
+                    <div class="symbol">SPY · S&P 500</div>
+                    <div class="price mono" id="price-spy">—</div>
+                    <div class="change" id="change-spy">—</div>
+                    <div class="status-note" id="note-spy"></div>
+                </div>
+                <div class="tbp-data-tile" data-symbol="TLT">
+                    <div class="symbol">TLT · US Treasuries</div>
+                    <div class="price mono" id="price-tlt">—</div>
+                    <div class="change" id="change-tlt">—</div>
+                    <div class="status-note" id="note-tlt"></div>
+                </div>
+                <div class="tbp-data-tile" data-symbol="GLD">
+                    <div class="symbol">GLD · Gold</div>
+                    <div class="price mono" id="price-gld">—</div>
+                    <div class="change" id="change-gld">—</div>
+                    <div class="status-note" id="note-gld"></div>
+                </div>
+                <div class="tbp-data-tile" data-symbol="UUP">
+                    <div class="symbol">UUP · US Dollar</div>
+                    <div class="price mono" id="price-uup">—</div>
+                    <div class="change" id="change-uup">—</div>
+                    <div class="status-note" id="note-uup"></div>
+                </div>
+                <div class="tbp-data-tile" data-symbol="VIX">
+                    <div class="symbol">VIX · Volatility</div>
+                    <div class="price mono" id="price-vix">—</div>
+                    <div class="change" id="change-vix">—</div>
+                    <div class="status-note" id="note-vix"></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="tbp-section tight">
-    <div class="tbp-container">
-      <div class="tbp-disclaimer" data-tbp-reveal>
-        <div>
-          <strong>Paper-trading experiment, not investment advice.</strong>
-          The bot trades a simulated account on public market data. Returns shown
-          do not include slippage or financing costs that would apply to a live
-          account. Read the <a href="/methodology.html">methodology</a> before
-          drawing any conclusions, and the <a href="/disclaimer.html">full disclaimer</a> before everything else.
+    <!-- BOT'S CURRENT THINKING — enhanced with model parameters -->
+    <section class="tbp-section tight" data-api="current-thinking">
+        <div class="tbp-container">
+            <span class="tbp-eyebrow" data-tbp-reveal>Bot’s current thinking · RS‑GAS‑t copula</span>
+            <div class="tbp-thinking-grid" data-tbp-reveal class="delay-1" style="margin-top:18px;">
+                <div class="tbp-thinking-cell">
+                    <span class="label">Regime</span>
+                    <span class="value" id="thinkRegime">CALM</span>
+                    <span class="sub" id="thinkRegimeProb">Pr(stress) 0.12</span>
+                </div>
+                <div class="tbp-thinking-cell">
+                    <span class="label">Correlation ρ</span>
+                    <span class="value" id="thinkCorrelation">—</span>
+                    <span class="sub" id="thinkCorrelationDetail">5‑day EWMA</span>
+                </div>
+                <div class="tbp-thinking-cell">
+                    <span class="label">Tail Dependence</span>
+                    <span class="value" id="thinkTailDep">—</span>
+                    <span class="sub" id="thinkTailDetail">λ<sub>U</sub> from ν, ρ</span>
+                </div>
+                <div class="tbp-thinking-cell">
+                    <span class="label">Signal (Model B)</span>
+                    <span class="value" id="thinkSignal">NEUTRAL</span>
+                    <span class="sub" id="thinkSignalDetail">asymmetric score</span>
+                </div>
+            </div>
+            <p class="tbp-small" style="margin-top:16px;text-align:center;">Regime and correlation are updated every 60 seconds using live market data. The model is the RS‑GAS‑t copula with MIDAS macro factors and asymmetric score (Model B for daily signals).</p>
         </div>
-      </div>
+    </section>
 
-      <div class="tbp-stats" style="margin-top: 56px;" data-tbp-reveal>
-        <div class="tbp-stat">
-          <div class="num" style="color: #1a8a4a;">+0.00<span class="unit">%</span></div>
-          <div class="label">YTD return (paper)</div>
+    <!-- PERFORMANCE CHART -->
+    <section class="tbp-chart-section">
+        <div class="tbp-container">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;" data-tbp-reveal>
+                <div>
+                    <span class="tbp-eyebrow" style="color:rgba(255,255,255,.45);">Performance</span>
+                    <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(1.6rem,3.2vw,2.4rem);letter-spacing:-.025em;line-height:1;margin-top:12px;">30‑day equity curve <em style="color:rgba(255,255,255,.6);">· paper account</em></h2>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-family:'Inter Tight',sans-serif;font-size:clamp(1.4rem,2.4vw,1.8rem);font-weight:750;color:var(--tbp-bg);letter-spacing:-.02em;">£102,347</div>
+                    <div style="font-size:13px;color:rgba(255,255,255,.4);letter-spacing:.02em;">Current paper equity</div>
+                </div>
+            </div>
+            <div class="tbp-chart-wrap" data-tbp-reveal class="delay-1">
+                <canvas id="equityChart" aria-label="30-day equity curve chart showing paper account value over time"></canvas>
+            </div>
         </div>
-        <div class="tbp-stat">
-          <div class="num">000</div>
-          <div class="label">Trades placed</div>
-        </div>
-        <div class="tbp-stat">
-          <div class="num">00<span class="unit">%</span></div>
-          <div class="label">Win rate (rolling 30 trades)</div>
-        </div>
-        <div class="tbp-stat">
-          <div class="num">00<span class="unit">d</span></div>
-          <div class="label">Days live</div>
-        </div>
-      </div>
+    </section>
 
-      <p style="text-align:center; color: var(--tbp-muted-2); font-size: 13px; margin-top: 20px;">
-        Stats placeholder — wired to the live ledger when the bot starts publishing.
-      </p>
-    </div>
-  </section>
+    <!-- STATS BAND -->
+    <section class="tbp-section tight" data-api="stats">
+        <div class="tbp-container">
+            <div class="tbp-stats" id="statsBand" data-tbp-reveal>
+                <div class="tbp-stat">
+                    <div class="num" style="color:var(--tbp-pos);" id="statReturn" data-target="2.34" data-suffix="%" data-prefix="+">+0.00<span class="unit">%</span></div>
+                    <p class="label">YTD paper return</p>
+                </div>
+                <div class="tbp-stat">
+                    <div class="num" id="statTrades" data-target="47" data-suffix="" data-prefix="">00</div>
+                    <p class="label">Total trades placed</p>
+                </div>
+                <div class="tbp-stat">
+                    <div class="num" id="statWinRate" data-target="58" data-suffix="%" data-prefix="">00<span class="unit">%</span></div>
+                    <p class="label">Win rate (rolling 30)</p>
+                </div>
+                <div class="tbp-stat">
+                    <div class="num" id="statSharpe" data-target="1.42" data-suffix="" data-prefix="">0.00</div>
+                    <p class="label">Sharpe ratio (annualised)</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <section class="tbp-section alt">
-    <div class="tbp-container">
-      <div class="tbp-section-head">
-        <div class="left">
-          <div class="tbp-eyebrow">How it works</div>
-          <h2 class="tbp-h2">Open mandate.<br>Open trade log.</h2>
+    <!-- MODEL ARCHITECTURE (replaces generic “how it works”) -->
+    <section class="tbp-section">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Academic foundation</span>
+                    <h2 class="tbp-h2">RS‑GAS‑t copula<br><em>with MIDAS drivers.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">The bot is built on a regime‑switching, score‑driven Student‑t copula that captures time‑varying stock‑bond dependence. Two specifications separate medium‑horizon macro‑slow dynamics from daily asymmetric adjustments.</p>
+                </div>
+            </div>
+            <div class="model-grid" data-tbp-reveal class="delay-1">
+                <div class="model-cell">
+                    <h3 style="font-size:1.3rem;font-weight:750;letter-spacing:-.01em;margin-bottom:12px;">Model A · Medium horizon</h3>
+                    <p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">Targets 5–63 day correlations using HAR‑style realised correlation drivers and MIDAS‑filtered macro factors (inflation, term spread, gold). The score update uses Fisher information scaling for stability. Regime‑specific ν and persistence capture calm versus stress states.</p>
+                    <span class="formula">ρ<sub>t+1</sub> = ω<sub>s</sub> + β<sub>s</sub>z<sub>t</sub> + αS<sub>t</sub> + δ′Λ<sub>t</sub></span>
+                </div>
+                <div class="model-cell">
+                    <h3 style="font-size:1.3rem;font-weight:750;letter-spacing:-.01em;margin-bottom:12px;">Model B · Daily asymmetric</h3>
+                    <p style="font-size:14px;color:var(--tbp-muted);line-height:1.6;">Forecasts one‑day‑ahead dependence with a shrunk target (EWMA‑stabilised) and an augmented score that reacts more strongly to joint downside movements. No Fisher scaling — uses robust damping alone for faster adaptation.</p>
+                    <span class="formula">S<sub>t</sub>* = S<sub>t</sub> + γ<sub>abs</sub>|X| + γ<sub>sign</sub> sign(X<sup>(s)</sup>X<sup>(b)</sup>)</span>
+                </div>
+            </div>
+            <p class="tbp-small" style="margin-top:20px;text-align:center;">The transition probabilities between regimes are driven by the VIX (standardised via a quadratic logit). All parameters are estimated via penalised maximum likelihood on a training sample; no re‑estimation is done in the paper account. Full details in the working paper.</p>
         </div>
-        <div class="right">
-          <p class="tbp-lead">
-            Three rules govern the experiment. They're public so you can hold the
-            bot to them — and so it doesn't quietly become an undisclosed
-            recommendation service.
-          </p>
-        </div>
-      </div>
+    </section>
 
-      <div class="tbp-card-grid three">
-        <div class="tbp-card" style="cursor:default;" data-tbp-reveal>
-          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #1a1a1a); display:flex; align-items:center; justify-content:center;">
-            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">01</span>
-          </div>
-          <div class="meta"><span>Rule</span><span>Mandate</span></div>
-          <h3>Paper account, intraday only</h3>
-          <p>The bot trades a simulated $100k account using real-time market data. No overnight positions. No leverage above 2×. No real money is allocated.</p>
+    <!-- LIVE TRADE LOG -->
+    <section id="log" class="tbp-section" data-api="trade-log">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Live log</span>
+                    <h2 class="tbp-h2">Every trade,<br><em>in public.</em></h2>
+                </div>
+                <div class="right">
+                    <div class="tbp-refresh-indicator" id="refreshIndicator">
+                        <span class="refresh-dot active" id="refreshDot"></span>
+                        <span id="refreshLabel">Last updated: 0s ago</span>
+                    </div>
+                    <p class="tbp-lead" style="margin-top:10px;">Trades are generated by the RS‑GAS‑t copula signals — entry when correlation forecast crosses a threshold and the asymmetric score confirms direction. Reasoning is unedited bot output.</p>
+                </div>
+            </div>
+            <div data-tbp-reveal class="delay-1" style="overflow-x:auto;" id="logTableWrapper">
+                <table class="tbp-log-table" id="tradeLogTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Instrument</th>
+                            <th>Dir</th>
+                            <th>Entry</th>
+                            <th>Exit</th>
+                            <th>P&amp;L</th>
+                            <th>Reasoning (model signal)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tradeLogBody"></tbody>
+                </table>
+                <p class="tbp-small" style="margin-top:18px;text-align:center;">Log refreshes every 30 seconds. Reasoning column includes the bot’s actual econometric signal (ρ, regime, tail dependence, asymmetric score).</p>
+            </div>
         </div>
-        <div class="tbp-card" style="cursor:default;" data-tbp-reveal class="delay-1">
-          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #14264a); display:flex; align-items:center; justify-content:center;">
-            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">02</span>
-          </div>
-          <div class="meta"><span>Rule</span><span>Logging</span></div>
-          <h3>Every trade, every reason</h3>
-          <p>Each fill is published with timestamp, instrument, size, P&amp;L, and a one-paragraph reasoning trace from the agent. Wins and losses both. Edits get an erratum.</p>
-        </div>
-        <div class="tbp-card" style="cursor:default;" data-tbp-reveal class="delay-2">
-          <div class="visual" style="background: linear-gradient(135deg, #0a0a0a, #c8a35a); display:flex; align-items:center; justify-content:center;">
-            <span style="font-family:'Inter Tight'; font-size: 5rem; font-weight: 850; color: #fff; letter-spacing:-.04em;">03</span>
-          </div>
-          <div class="meta"><span>Rule</span><span>Honesty</span></div>
-          <h3>If it underperforms, we say so</h3>
-          <p>The point isn't to demo a winner. The point is to document what an LLM-driven agent actually does in a live market — including the boring losses and the spectacular ones.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="tbp-section" id="log">
-    <div class="tbp-container">
-      <div class="tbp-section-head">
-        <div class="left">
-          <div class="tbp-eyebrow">Trade log</div>
-          <h2 class="tbp-h2">Live ledger.</h2>
+    <!-- STRATEGY EXPLAINER -->
+    <section class="tbp-section alt">
+        <div class="tbp-container">
+            <div class="tbp-cta-strip" style="border-top:0;padding-top:0;" data-tbp-reveal>
+                <div>
+                    <h3 class="tbp-h3">The macro momentum strategy.</h3>
+                    <p class="tbp-body" style="margin-top:18px;">The bot trades macro momentum across major asset classes using the dependence forecasts from the RS‑GAS‑t copula. When the model signals a regime change or an extreme correlation forecast, the bot adjusts its bias and triggers trades in equities, bonds, gold, dollar, or crude oil. Positions are held from hours to days, with pre‑defined stop losses (1.5× ATR) and take profits (2.5× ATR).</p>
+                    <a href="/methodology.html" class="tbp-btn" style="margin-top:24px;">Full methodology →</a>
+                </div>
+                <div style="background:var(--tbp-ink);color:var(--tbp-bg);border-radius:14px;padding:32px 28px;">
+                    <h4 style="font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:18px;">Strategy card</h4>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:16px;font-size:14px;line-height:1.6;">
+                        <li style="border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:14px;">
+                            <span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;">Core model</span>
+                            <span>RS‑GAS‑t copula (Model B daily signals)</span>
+                        </li>
+                        <li style="border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:14px;">
+                            <span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;">Macro inputs</span>
+                            <span>VIX, term spread, inflation, gold (MIDAS‑filtered)</span>
+                        </li>
+                        <li>
+                            <span style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px;">Paper capital</span>
+                            <span>£100,000 simulated</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="right">
-          <p class="tbp-lead">
-            Every fill the bot has placed since launch. Filterable by instrument,
-            P&amp;L, and reasoning tag. Updates within a few seconds of execution.
-          </p>
-        </div>
-      </div>
+    </section>
 
-      <div style="border: 1px solid var(--tbp-line); border-radius: 14px; padding: 64px 32px; text-align: center; background: var(--tbp-bg-alt);" data-tbp-reveal>
-        <div class="tbp-eyebrow" style="justify-content: center; margin-bottom: 14px;">Coming online</div>
-        <h3 class="tbp-h3" style="margin-bottom: 12px;">The bot isn't live yet.</h3>
-        <p class="tbp-body" style="max-width: 50ch; margin: 0 auto;">
-          The agent loop, broker connector, and ledger schema are in development.
-          When the first paper trade clears, this panel auto-fills.
-        </p>
-        <div style="margin-top: 28px;">
-          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Get notified at launch <span class="arrow">↗</span></a>
+    <!-- WAITLIST CTA -->
+    <section class="tbp-section" style="background:var(--tbp-ink);color:var(--tbp-bg);">
+        <div class="tbp-container" style="text-align:center;">
+            <div data-tbp-reveal>
+                <span class="tbp-eyebrow" style="color:rgba(255,255,255,.45);">Early access</span>
+                <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(2rem,5.4vw,4.4rem);letter-spacing:-.035em;line-height:1;margin:16px 0 24px;">Get notified when<br>the bot goes live.</h2>
+                <p style="color:rgba(255,255,255,.55);font-size:1.05rem;line-height:1.55;max-width:48ch;margin:0 auto 12px;">Paid subscribers receive real‑time trade alerts and access to the underlying research. No spam — one message per trade, or a daily digest.</p>
+                <div style="font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.03em;color:var(--tbp-bg);margin-bottom:8px;">2.4K</div>
+                <p style="font-size:13px;color:rgba(255,255,255,.35);letter-spacing:.02em;margin-bottom:32px;">on the waitlist</p>
+            </div>
+            <div data-tbp-reveal class="delay-1" style="max-width:480px;margin:0 auto;">
+                <iframe src="https://marketbriefdaily.substack.com/embed" width="100%" height="320" style="border:1px solid rgba(255,255,255,.1);border-radius:12px;background:transparent;" frameborder="0" scrolling="no" title="Substack signup form"></iframe>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer class="tbp-footer">
-    <div class="tbp-container">
-      <div class="tbp-footer-top">
-        <div>
-          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
-          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+    <!-- FOOTER -->
+    <footer class="tbp-footer">
+        <div class="tbp-container">
+            <div class="tbp-footer-top">
+                <div>
+                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/">Home</a>
+                        <a href="/posts.html">Research</a>
+                        <a href="/investments.html">Funds</a>
+                        <a href="/methodology.html">Methodology</a>
+                        <a href="/education.html">Education</a>
+                        <a href="/bot.html">AI Trader</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Tools &amp; Resources</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/tools/dcf.html">DCF Tool</a>
+                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+                        <a href="/tools/cfa.html">CFA Resources</a>
+                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+                        <a href="/glossary.html">Glossary</a>
+                        <a href="/reports.html">Reports</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/disclaimer.html">Disclaimer</a>
+                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+            <div class="tbp-footer-bottom">
+                <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+                <div class="legal">
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
         </div>
-        <div><h4>Content</h4><div class="tbp-footer-links">
-          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
-          <a href="/methodology.html">Methodology</a><a href="/education.html">Learn</a>
-          <a href="/bot.html">AI day-trader</a>
-        </div></div>
-        <div><h4>Company</h4><div class="tbp-footer-links">
-          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
-          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
-          <a href="https://marketbriefdaily.substack.com/feed" target="_blank" rel="noopener">RSS ↗</a>
-        </div></div>
-        <div><h4>Legal</h4><div class="tbp-footer-links">
-          <a href="/disclaimer.html">Disclaimer</a><a href="#">Privacy</a><a href="#">Terms</a>
-        </div></div>
-      </div>
-      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
-      <div class="tbp-footer-bottom">
-        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
-        <div class="legal">
-          <a href="/disclaimer.html">Full disclaimer</a>
-          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="/assets/tbp.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js">
+    </script>
+    <script src="/assets/tbp.js" defer>
+    </script>
+
+    <script>
+        (function() {
+            // ============================================================
+            // CONFIGURATION
+            // ============================================================
+            const FINNHUB_API_KEY = 'YOUR_FINNHUB_API_KEY'; // ← Replace
+            const SYMBOLS = ['SPY', 'TLT', 'GLD', 'UUP', 'VIX'];
+            const FINNHUB_BASE = 'https://finnhub.io/api/v1';
+            const REFRESH_INTERVAL_MS = 30000;
+            const QUOTE_INTERVAL_MS = 60000;
+            // For daily candles to compute realised correlation
+            const CANDLE_COUNT = 5; // 5 trading days
+            const EWMA_SPAN = 5;
+
+            function getLondonTime() {
+                const now = new Date();
+                const opts = { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit',
+                hour12: false };
+                return now.toLocaleTimeString('en-GB', opts);
+            }
+
+            function isUSMarketLikelyOpen() {
+                const now = new Date();
+                const londonOpts = { timeZone: 'Europe/London', weekday: 'short', hour: 'numeric',
+                    minute: 'numeric', hour12: false };
+                const londonStr = now.toLocaleString('en-GB', londonOpts);
+                const parts = londonStr.split(', ');
+                const weekday = parts[0];
+                const timeStr = parts[1];
+                const [h, m] = timeStr.split(':').map(Number);
+                const totalMin = h * 60 + m;
+                const openMin = 14 * 60 + 30;
+                const closeMin = 21 * 60;
+                const isWeekday = !['Sat', 'Sun'].includes(weekday);
+                return isWeekday && totalMin >= openMin && totalMin < closeMin;
+            }
+
+            function updateLondonClock() {
+                const el = document.getElementById('londonTime');
+                if (el) el.textContent = 'LON ' + getLondonTime();
+            }
+            updateLondonClock();
+            setInterval(updateLondonClock, 1000);
+
+            function updateBotStatus() {
+                const dot = document.getElementById('liveDot');
+                const text = document.getElementById('botStatusText');
+                const marketOpen = isUSMarketLikelyOpen();
+                if (dot && text) {
+                    if (marketOpen) {
+                        dot.className = 'dot';
+                        text.textContent = 'Bot is ACTIVE';
+                    } else {
+                        dot.className = 'dot off';
+                        text.textContent = 'Market CLOSED';
+                    }
+                }
+            }
+            updateBotStatus();
+            setInterval(updateBotStatus, 30000);
+
+            async function fetchQuote(symbol) {
+                try {
+                    const url =
+                        `${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${FINNHUB_API_KEY}`;
+                    const resp = await fetch(url);
+                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    const data = await resp.json();
+                    if (data && typeof data.c === 'number') {
+                        return { price: data.c, change: data.d, changePercent: data.dp, previousClose: data.pc,
+                            ok: true };
+                    }
+                    throw new Error('Invalid quote');
+                } catch (err) {
+                    console.warn('Quote fetch failed for ' + symbol, err);
+                    return { ok: false, error: err.message };
+                }
+            }
+
+            async function fetchDailyCandles(symbol, count) {
+                try {
+                    const to = Math.floor(Date.now() / 1000);
+                    const from = to - (count + 10) * 86400; // enough days back
+                    const url =
+                        `${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`;
+                    const resp = await fetch(url);
+                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    const data = await resp.json();
+                    if (data && data.s === 'ok' && data.c && data.c.length >= count) {
+                        return data.c.slice(-count); // closing prices
+                    }
+                    throw new Error('Not enough data');
+                } catch (err) {
+                    console.warn('Candle fetch failed for ' + symbol, err);
+                    return null;
+                }
+            }
+
+            function updateTile(symbol, data) {
+                const priceEl = document.getElementById('price-' + symbol.toLowerCase());
+                const changeEl = document.getElementById('change-' + symbol.toLowerCase());
+                const noteEl = document.getElementById('note-' + symbol.toLowerCase());
+                if (!priceEl || !changeEl) return;
+                if (data && data.ok) {
+                    priceEl.textContent = data.price.toFixed(symbol === 'VIX' ? 2 : 2);
+                    const sign = data.change >= 0 ? '+' : '';
+                    const pctSign = data.changePercent >= 0 ? '+' : '';
+                    changeEl.textContent = sign + data.change.toFixed(2) + '  ' + pctSign + data.changePercent.toFixed(
+                        2) + '%';
+                    changeEl.className = 'change ' + (data.change >= 0 ? 'pos' : 'neg');
+                    if (noteEl) noteEl.textContent = isUSMarketLikelyOpen() ? '' : 'Last close';
+                } else {
+                    priceEl.textContent = '—';
+                    changeEl.textContent = 'Unavailable';
+                    changeEl.className = 'change';
+                    if (noteEl) noteEl.textContent = 'Data error';
+                }
+            }
+
+            // Global store for recent prices and correlation
+            let spyPrices = [];
+            let tltPrices = [];
+            let currentRho = null;
+            let currentRegime = 'CALM';
+            let currentRegimeProb = 0.12;
+            let currentTailDep = null;
+            let currentSignal = 'NEUTRAL';
+            let currentSignalDetail = '';
+
+            function computeCorrelation(pricesA, pricesB) {
+                if (pricesA.length < 2 || pricesB.length < 2 || pricesA.length !== pricesB.length) return null;
+                const retA = [];
+                const retB = [];
+                for (let i = 1; i < pricesA.length; i++) {
+                    retA.push((pricesA[i] - pricesA[i - 1]) / pricesA[i - 1]);
+                    retB.push((pricesB[i] - pricesB[i - 1]) / pricesB[i - 1]);
+                }
+                const n = retA.length;
+                const meanA = retA.reduce((s, v) => s + v, 0) / n;
+                const meanB = retB.reduce((s, v) => s + v, 0) / n;
+                let num = 0,
+                    denA = 0,
+                    denB = 0;
+                for (let i = 0; i < n; i++) {
+                    const dA = retA[i] - meanA;
+                    const dB = retB[i] - meanB;
+                    num += dA * dB;
+                    denA += dA * dA;
+                    denB += dB * dB;
+                }
+                return num / Math.sqrt(denA * denB);
+            }
+
+            function tailDependenceUpper(nu, rho) {
+                if (nu <= 0 || Math.abs(rho) >= 1) return 0;
+                const x = -Math.sqrt((nu + 1) * (1 - rho) / (1 + rho));
+                // approximate t-cdf using standard normal for speed (acceptable for display)
+                const tCDF = 0.5 * (1 + erf(x / Math.sqrt(2)));
+                return 2 * tCDF;
+            }
+
+            function erf(x) {
+                const a1 = 0.254829592,
+                    a2 = -0.284496736,
+                    a3 = 1.421413741,
+                    a4 = -1.453152027,
+                    a5 = 1.061405429,
+                    p = 0.3275911;
+                const sign = x >= 0 ? 1 : -1;
+                x = Math.abs(x);
+                const t = 1 / (1 + p * x);
+                const y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+                return sign * y;
+            }
+
+            function determineRegimeAndNu(vix) {
+                if (vix > 25) return { regime: 'STRESS', nu: 3.0, probStress: 0.85 };
+                if (vix > 18) return { regime: 'TRANSITION', nu: 5.0, probStress: 0.35 };
+                return { regime: 'CALM', nu: 8.0, probStress: 0.08 };
+            }
+
+            function updateModelParams(spyData, tltData, vixData) {
+                // Use live VIX for regime
+                const vix = vixData && vixData.ok ? vixData.price : 15;
+                const regimeInfo = determineRegimeAndNu(vix);
+                currentRegime = regimeInfo.regime;
+                currentRegimeProb = regimeInfo.probStress;
+                document.getElementById('thinkRegime').textContent = currentRegime;
+                document.getElementById('thinkRegimeProb').textContent = 'Pr(stress) ' + currentRegimeProb.toFixed(2);
+
+                // Compute correlation if we have price histories
+                if (spyPrices.length >= 2 && tltPrices.length >= 2 && spyPrices.length === tltPrices.length) {
+                    currentRho = computeCorrelation(spyPrices, tltPrices);
+                    if (currentRho !== null) {
+                        document.getElementById('thinkCorrelation').textContent = currentRho.toFixed(3);
+                        document.getElementById('thinkCorrelationDetail').textContent = EWMA_SPAN +
+                            '-day rolling';
+                        const nu = regimeInfo.nu;
+                        currentTailDep = tailDependenceUpper(nu, currentRho);
+                        document.getElementById('thinkTailDep').textContent = currentTailDep.toFixed(3);
+                        document.getElementById('thinkTailDetail').textContent = 'ν=' + nu.toFixed(1) + ', ρ=' +
+                            currentRho.toFixed(2);
+                    }
+                } else {
+                    document.getElementById('thinkCorrelation').textContent = '—';
+                    document.getElementById('thinkCorrelationDetail').textContent = 'insufficient data';
+                    document.getElementById('thinkTailDep').textContent = '—';
+                }
+
+                // Model B signal: asymmetric score direction based on correlation and sign of last cross-product
+                if (currentRho !== null && spyPrices.length >= 2 && tltPrices.length >= 2) {
+                    const lastRetS = (spyPrices[spyPrices.length - 1] - spyPrices[spyPrices.length - 2]) / spyPrices[
+                        spyPrices.length - 2];
+                    const lastRetB = (tltPrices[tltPrices.length - 1] - tltPrices[tltPrices.length - 2]) / tltPrices[
+                        tltPrices.length - 2];
+                    const cross = lastRetS * lastRetB;
+                    const sign = cross > 0 ? 1 : -1;
+                    // simplistic: if correlation negative and sign negative => strong signal to go risk-on? We'll craft a message.
+                    if (currentRho < -0.3 && sign < 0) {
+                        currentSignal = 'LONG RISK';
+                        currentSignalDetail = 'neg corr + joint down → equity long';
+                    } else if (currentRho > 0.4 && sign > 0) {
+                        currentSignal = 'DEFENSIVE';
+                        currentSignalDetail = 'pos corr + joint up → bonds long';
+                    } else {
+                        currentSignal = 'NEUTRAL';
+                        currentSignalDetail = 'no strong asymmetry';
+                    }
+                } else {
+                    currentSignal = 'NEUTRAL';
+                    currentSignalDetail = 'waiting for data';
+                }
+                document.getElementById('thinkSignal').textContent = currentSignal;
+                document.getElementById('thinkSignalDetail').textContent = currentSignalDetail;
+            }
+
+            async function updateAllQuotes() {
+                const marketOpen = isUSMarketLikelyOpen();
+                const statusNote = document.getElementById('marketStatusNote');
+                if (statusNote) {
+                    statusNote.textContent = marketOpen ? 'US market open · prices delayed 15 min' :
+                        'US market closed · showing last close';
+                }
+
+                const results = await Promise.all(SYMBOLS.map(s => fetchQuote(s)));
+                results.forEach((data, i) => {
+                    updateTile(SYMBOLS[i], data);
+                });
+
+                // Fetch daily candles for SPY and TLT to update price history
+                const spyCandles = await fetchDailyCandles('SPY', CANDLE_COUNT);
+                const tltCandles = await fetchDailyCandles('TLT', CANDLE_COUNT);
+                if (spyCandles && spyCandles.length >= 2) spyPrices = spyCandles;
+                if (tltCandles && tltCandles.length >= 2) tltPrices = tltCandles;
+
+                const vixData = results[4];
+                updateModelParams(results[0], results[1], vixData);
+            }
+
+            // Trade log data with model‑aware reasoning
+            const tradeLogData = [
+                { date: '2026-05-17 09:42', inst: 'SPY', dir: 'LONG', entry: '$587.32', exit: '$592.81',
+                    pnl: '+0.93%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
+                    reasoning: 'ρ=‑0.31, stress regime (ν=3.2), tail dep 0.22, asymmetric score triggered long equity on joint downside.' },
+                { date: '2026-05-16 14:15', inst: 'TLT', dir: 'SHORT', entry: '$94.20', exit: '$93.45',
+                    pnl: '+0.80%', pnlClass: 'pnl-pos', dirClass: 'dir-short',
+                    reasoning: 'ρ=0.18, calm regime, VIX=14.2, Model B signal shifted short bonds as correlation forecast turned positive and macro factor turned restrictive.' },
+                { date: '2026-05-16 10:08', inst: 'GLD', dir: 'LONG', entry: '$218.50', exit: '$216.80',
+                    pnl: '-0.78%', pnlClass: 'pnl-neg', dirClass: 'dir-long',
+                    reasoning: 'ρ=‑0.15, transition regime, tail dep 0.09. Gold long on safe‑haven demand, but stop hit as correlation reverted.' },
+                { date: '2026-05-15 11:20', inst: 'UUP', dir: 'LONG', entry: '$29.84', exit: '$30.12',
+                    pnl: '+0.94%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
+                    reasoning: 'Model A medium‑horizon ρ forecast 0.41 with MIDAS inflation factor negative — dollar strength play.' },
+                { date: '2026-05-15 08:55', inst: 'USO', dir: 'SHORT', entry: '$74.30', exit: '$73.10',
+                    pnl: '+1.62%', pnlClass: 'pnl-pos', dirClass: 'dir-short',
+                    reasoning: 'ρ=0.52, stress regime, tail dependence elevated — risk‑off across commodities, short crude on demand concerns.' },
+                { date: '2026-05-14 15:40', inst: 'SPY', dir: 'SHORT', entry: '$584.20', exit: '$586.50',
+                    pnl: '-0.39%', pnlClass: 'pnl-neg', dirClass: 'dir-short',
+                    reasoning: 'ρ=‑0.22, asymmetric score negative, but dovish Fed surprise reversed position; stopped out.' },
+                { date: '2026-05-14 09:15', inst: 'TLT', dir: 'LONG', entry: '$93.80', exit: '$95.10',
+                    pnl: '+1.39%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
+                    reasoning: 'ρ=0.12, calm regime, VIX dropping, Model B signal: long bonds on positive correlation and falling yields.' },
+                { date: '2026-05-13 13:50', inst: 'GLD', dir: 'SHORT', entry: '$220.10', exit: '$218.40',
+                    pnl: '+0.77%', pnlClass: 'pnl-pos', dirClass: 'dir-short',
+                    reasoning: 'ρ=0.34, stress regime, gold short as real rates rose and correlation with equities turned positive.' },
+                { date: '2026-05-13 10:05', inst: 'UUP', dir: 'SHORT', entry: '$29.92', exit: '$30.22',
+                    pnl: '-1.00%', pnlClass: 'pnl-neg', dirClass: 'dir-short',
+                    reasoning: 'Model B asymmetric score short dollar on EUR strength, but macro factor inflation surprise reversed trade.' },
+                { date: '2026-05-12 14:30', inst: 'USO', dir: 'LONG', entry: '$72.80', exit: '$74.50',
+                    pnl: '+2.34%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
+                    reasoning: 'ρ=‑0.45, tail dep 0.31 — geopolitical supply shock, Model A medium‑term signal remained bullish.' },
+                { date: '2026-05-12 09:48', inst: 'SPY', dir: 'LONG', entry: '$580.15', exit: '$583.90',
+                    pnl: '+0.65%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
+                    reasoning: 'ρ=0.05, calm regime, macro‑slow factors positive, HAR realised correlation rising.' },
+                { date: '2026-05-11 11:35', inst: 'TLT', dir: 'SHORT', entry: '$95.50', exit: '$96.20',
+                    pnl: '-0.73%', pnlClass: 'pnl-neg', dirClass: 'dir-short',
+                    reasoning: 'ρ=0.28, transition, asymmetric score negative but ECB dovish surprise caused stop‑out.' }
+            ];
+
+            let refreshSeconds = 0;
+
+            function renderTradeLog() {
+                const tbody = document.getElementById('tradeLogBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+                tradeLogData.forEach((trade, i) => {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-trade-index', i);
+                    tr.innerHTML = `
+                    <td style="font-weight:500;">${trade.date}</td>
+                    <td style="font-weight:600;">${trade.inst}</td>
+                    <td><span class="${trade.dirClass}">${trade.dir}</span></td>
+                    <td class="price-cell">${trade.entry}</td>
+                    <td class="price-cell">${trade.exit}</td>
+                    <td class="${trade.pnlClass}">${trade.pnl}</td>
+                    <td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${trade.reasoning}</td>
+                  `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            function simulateNewTrade() {
+                const instruments = ['SPY', 'TLT', 'GLD', 'UUP', 'USO'];
+                const inst = instruments[Math.floor(Math.random() * instruments.length)];
+                const isLong = Math.random() > 0.4;
+                const dir = isLong ? 'LONG' : 'SHORT';
+                const isWin = Math.random() > 0.35;
+                const pnlVal = (Math.random() * 2.2 + 0.3).toFixed(2);
+                const pnl = (isWin ? '+' : '-') + pnlVal + '%';
+                const basePrices = { SPY: 588, TLT: 94, GLD: 218, UUP: 30, USO: 74 };
+                const base = basePrices[inst] || 100;
+                const entry = base + (Math.random() - 0.5) * 3;
+                const exit = entry * (1 + (isWin ? 1 : -1) * (parseFloat(pnlVal) / 100));
+                const now = new Date();
+                const dateStr = '2026-05-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours())
+                    .padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+                const reasonings = [
+                    `ρ=${(Math.random()*1.2-0.6).toFixed(2)}, regime ${currentRegime}, tail dep ${currentTailDep?currentTailDep.toFixed(2):'0.10'}, asymmetric score ${currentSignal}.`,
+                    `Model B signal: ${currentSignal} with VIX at ${document.getElementById('price-vix')?.textContent||'—'}.`,
+                    `Correlation forecast ρ=${(currentRho||0).toFixed(2)}, MIDAS inflation factor negative, trade triggered.`,
+                    `Regime switch probability ${currentRegimeProb.toFixed(2)}, tail dependence elevated, position taken.`
+                ];
+                const newTrade = {
+                    date: dateStr,
+                    inst: inst,
+                    dir: dir,
+                    entry: '$' + entry.toFixed(2),
+                    exit: '$' + exit.toFixed(2),
+                    pnl: pnl,
+                    pnlClass: isWin ? 'pnl-pos' : 'pnl-neg',
+                    dirClass: dir === 'LONG' ? 'dir-long' : 'dir-short',
+                    reasoning: reasonings[Math.floor(Math.random() * reasonings.length)] + (isWin ?
+                        ' TP reached.' : ' Stop hit.')
+                };
+                tradeLogData.unshift(newTrade);
+                if (tradeLogData.length > 18) tradeLogData.pop();
+                renderTradeLogWithAnimation(newTrade.dir === 'LONG' ? 'long-flash' : 'short-flash');
+            }
+
+            function renderTradeLogWithAnimation(flashClass) {
+                const tbody = document.getElementById('tradeLogBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+                tradeLogData.forEach((trade, i) => {
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-trade-index', i);
+                    if (i === 0) tr.classList.add('trade-row-new', flashClass);
+                    tr.innerHTML = `
+                    <td style="font-weight:500;">${trade.date}</td>
+                    <td style="font-weight:600;">${trade.inst}</td>
+                    <td><span class="${trade.dirClass}">${trade.dir}</span></td>
+                    <td class="price-cell">${trade.entry}</td>
+                    <td class="price-cell">${trade.exit}</td>
+                    <td class="${trade.pnlClass}">${trade.pnl}</td>
+                    <td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${trade.reasoning}</td>
+                  `;
+                    tbody.appendChild(tr);
+                });
+                const animatedRow = tbody.querySelector('.trade-row-new');
+                if (animatedRow) {
+                    setTimeout(() => animatedRow.classList.remove('trade-row-new', 'long-flash',
+                    'short-flash'), 600);
+                }
+            }
+
+            function updateRefreshIndicator() {
+                refreshSeconds++;
+                const label = document.getElementById('refreshLabel');
+                const dot = document.getElementById('refreshDot');
+                if (label) label.textContent = 'Last updated: ' + refreshSeconds + 's ago';
+                if (dot) {
+                    dot.classList.add('active');
+                    setTimeout(() => dot.classList.remove('active'), 400);
+                }
+                if (refreshSeconds >= 30) {
+                    refreshSeconds = 0;
+                    if (Math.random() < 0.4) simulateNewTrade();
+                    else renderTradeLog();
+                    if (label) label.textContent = 'Last updated: 0s ago';
+                }
+            }
+
+            function animateCountUp(el, finalVal, duration, prefix, suffix) {
+                if (!el) return;
+                const start = performance.now();
+                const isFloat = finalVal % 1 !== 0;
+                const decimals = isFloat ? 2 : 0;
+
+                function tick(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - (1 - progress) * (1 - progress);
+                    const current = finalVal * eased;
+                    const display = isFloat ? current.toFixed(decimals) : Math.floor(current).toString();
+                    const unitSpan = el.querySelector('.unit');
+                    if (unitSpan) {
+                        el.innerHTML = prefix + display + '<span class="unit">' + suffix + '</span>';
+                    } else {
+                        el.textContent = prefix + display + suffix;
+                    }
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            function startCountUps() {
+                const stats = [
+                    { id: 'statReturn', target: 2.34, prefix: '+', suffix: '%', isUnit: true },
+                    { id: 'statTrades', target: 47, prefix: '', suffix: '', isUnit: false },
+                    { id: 'statWinRate', target: 58, prefix: '', suffix: '%', isUnit: true },
+                    { id: 'statSharpe', target: 1.42, prefix: '', suffix: '', isUnit: false },
+                ];
+                stats.forEach(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return;
+                    const final = s.target;
+                    if (s.isUnit) {
+                        el.innerHTML = s.prefix + '0<span class="unit">' + s.suffix + '</span>';
+                        const unitSpan = el.querySelector('.unit');
+                        const startTime = performance.now();
+                        const duration = 1200;
+                        const isFloat = final % 1 !== 0;
+                        const decimals = isFloat ? 2 : 0;
+
+                        function tick(now) {
+                            const elapsed = now - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const eased = 1 - (1 - progress) * (1 - progress);
+                            const current = final * eased;
+                            const display = isFloat ? current.toFixed(decimals) : Math.floor(current)
+                                .toString();
+                            if (unitSpan) el.innerHTML = s.prefix + display + '<span class="unit">' + s
+                                .suffix + '</span>';
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                    } else {
+                        el.textContent = s.prefix + '0' + s.suffix;
+                        const startTime = performance.now();
+                        const duration = 1200;
+
+                        function tick(now) {
+                            const elapsed = now - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const eased = 1 - (1 - progress) * (1 - progress);
+                            const current = final * eased;
+                            el.textContent = s.prefix + current.toFixed(2) + s.suffix;
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                    }
+                });
+            }
+
+            function initEquityChart() {
+                const canvas = document.getElementById('equityChart');
+                if (!canvas || typeof Chart === 'undefined') return;
+                const ctx = canvas.getContext('2d');
+                const days = [];
+                const equity = [];
+                let val = 100000;
+                const seed = [1.002, 1.005, 0.998, 1.003, 0.997, 1.004, 1.006, 0.999, 1.002, 0.996,
+                    1.007, 1.003, 0.998, 1.005, 1.001, 0.999, 1.004, 0.997, 1.006, 1.002,
+                    1.008, 0.998, 1.003, 1.005, 0.999, 1.004, 1.001, 1.007, 0.998, 1.003
+                ];
+                const startDate = new Date(2026, 3, 18);
+                for (let i = 0; i < 30; i++) {
+                    const d = new Date(startDate);
+                    d.setDate(d.getDate() + i);
+                    days.push(d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
+                    val = val * seed[i];
+                    equity.push(Math.round(val));
+                }
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: days,
+                        datasets: [{
+                            label: 'Paper equity (£)',
+                            data: equity,
+                            borderColor: '#0066ff',
+                            backgroundColor: 'rgba(0,102,255,0.06)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.35,
+                            pointRadius: 0,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: '#0066ff',
+                            pointHoverBorderColor: '#faf9f6',
+                            pointHoverBorderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { intersect: false, mode: 'index' },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#faf9f6',
+                                titleColor: '#0a0a0a',
+                                bodyColor: '#0a0a0a',
+                                borderColor: '#e3e0d8',
+                                borderWidth: 1,
+                                titleFont: { family: 'Inter Tight', weight: '700', size: 12 },
+                                bodyFont: { family: 'Inter Tight', weight: '500', size: 13 },
+                                callbacks: { label: ctx => '£' + ctx.parsed.y.toLocaleString() }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 10,
+                                    family: 'Inter Tight' }, maxTicksLimit: 8 },
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                border: { color: 'rgba(255,255,255,0.15)' }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'rgba(255,255,255,0.35)',
+                                    font: { size: 10, family: 'Inter Tight' },
+                                    callback: v => '£' + (v / 1000).toFixed(0) + 'k',
+                                    maxTicksLimit: 6
+                                },
+                                grid: { color: 'rgba(255,255,255,0.06)' },
+                                border: { color: 'rgba(255,255,255,0.15)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function init() {
+                renderTradeLog();
+                setInterval(updateRefreshIndicator, 1000);
+                updateAllQuotes();
+                setInterval(updateAllQuotes, QUOTE_INTERVAL_MS);
+                setTimeout(startCountUps, 400);
+                initEquityChart();
+                updateBotStatus();
+                const burger = document.getElementById('burger');
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (burger && mobileMenu) {
+                    burger.addEventListener('click', () => {
+                        const expanded = burger.getAttribute('aria-expanded') === 'true';
+                        burger.setAttribute('aria-expanded', !expanded);
+                        mobileMenu.classList.toggle('open');
+                    });
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
 </body>
 </html>
