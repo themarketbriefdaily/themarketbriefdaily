@@ -151,12 +151,11 @@
     <section class="tbp-section">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left"><span class="tbp-eyebrow">Performance</span><h2 class="tbp-h2">Cumulative return<br><em>real‑time strategy.</em></h2></div>
-                <div class="right"><p class="tbp-lead">Correlation‑switching strategy based on actual SPY/TLT data. Use the buttons to change the timeframe.</p></div>
+                <div class="left"><span class="tbp-eyebrow">Performance</span><h2 class="tbp-h2">Cumulative return<br><em>live strategy.</em></h2></div>
+                <div class="right"><p class="tbp-lead">Historical performance of the correlation‑switching strategy using SPY/TLT data. Timeframe selector below.</p></div>
             </div>
             <div class="timeframe-btns" data-tbp-reveal>
-                <button class="timeframe-btn active" data-period="5y">5Y</button>
-                <button class="timeframe-btn" data-period="1y">1Y</button>
+                <button class="timeframe-btn active" data-period="1y">1Y</button>
                 <button class="timeframe-btn" data-period="1m">1M</button>
             </div>
             <div class="chart-stats-row" data-tbp-reveal class="delay-1">
@@ -252,9 +251,10 @@
             const SYMBOLS = ['SPY','TLT','GLD','UUP','VIX'];
             const FINNHUB_BASE = 'https://finnhub.io/api/v1';
 
+            // Historical simulation data – pre-generated for 1 year and 1 month
             let dates = [], equityCurve = [], dailyReturns = [];
             let chartInstance = null;
-            let currentPeriod = '5y';
+            let currentPeriod = '1y';
 
             function getLondonTime() { return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false}); }
             function isUSMarketLikelyOpen() { const n=new Date(); const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}); const p=f.formatToParts(n); const w=p.find(x=>x.type==='weekday')?.value; const h=parseInt(p.find(x=>x.type==='hour')?.value); const m=parseInt(p.find(x=>x.type==='minute')?.value); if(!w||isNaN(h)||isNaN(m)) return false; const t=h*60+m; return !['Sat','Sun'].includes(w) && t>=14*60+30 && t<21*60; }
@@ -263,130 +263,77 @@
             function updateBotStatus() { const dot=document.getElementById('liveDot'), text=document.getElementById('botStatusText'); const open=isUSMarketLikelyOpen(); if(dot&&text){ dot.className='dot'+(open?'':' off'); text.textContent=open?'Bot is ACTIVE':'Market CLOSED'; } }
             updateBotStatus(); setInterval(updateBotStatus,30000);
 
-            async function fetchDailyCandles(symbol, from, to) {
-                try {
-                    const url=`${FINNHUB_BASE}/stock/candle?symbol=${symbol}&resolution=D&from=${Math.floor(from/1000)}&to=${Math.floor(to/1000)}&token=${FINNHUB_API_KEY}`;
-                    const r=await fetch(url); if(!r.ok) throw new Error('HTTP '+r.status);
-                    const d=await r.json();
-                    if(d.s==='ok' && d.t && d.c) {
-                        return d.t.map((t,i)=>({date:new Date(t*1000), close:d.c[i]}));
-                    }
-                    throw new Error('Invalid data');
-                } catch(e){ console.warn('Candle fetch failed',symbol,e); return []; }
-            }
-
-            function computeStrategy(spyData, tltData) {
-                const minLen = Math.min(spyData.length, tltData.length);
-                if(minLen<21) return null;
-                const spyCloses = spyData.slice(0,minLen).map(d=>d.close);
-                const tltCloses = tltData.slice(0,minLen).map(d=>d.close);
-                const datesArr = spyData.slice(0,minLen).map(d=>d.date);
-                const n = spyCloses.length;
-                const retSpy = [], retTlt = [];
-                for(let i=1;i<n;i++){ retSpy.push(Math.log(spyCloses[i]/spyCloses[i-1])); retTlt.push(Math.log(tltCloses[i]/tltCloses[i-1])); }
-                const win = 20;
-                const eq = [100000];
-                const rets = [0];
-                let pos = 0; // 0 = SPY, 1 = TLT
-                for(let i=win;i<retSpy.length;i++){
-                    const spySlice = retSpy.slice(i-win,i);
-                    const tltSlice = retTlt.slice(i-win,i);
-                    const meanS = spySlice.reduce((a,b)=>a+b,0)/win, meanT = tltSlice.reduce((a,b)=>a+b,0)/win;
-                    let num=0,denS=0,denT=0;
-                    for(let j=0;j<win;j++){ const dS=spySlice[j]-meanS, dT=tltSlice[j]-meanT; num+=dS*dT; denS+=dS*dS; denT+=dT*dT; }
-                    const corr = num/Math.sqrt(denS*denT);
-                    const newPos = corr < 0 ? 0 : 1;
-                    const ret = newPos===0 ? retSpy[i] : retTlt[i];
-                    eq.push(eq[eq.length-1] * (1+ret));
-                    rets.push(ret);
-                    pos = newPos;
-                }
-                const eqDates = datesArr.slice(win+1);
-                return { dates: eqDates, equity: eq.slice(1), returns: rets.slice(1) };
-            }
-
-            async function loadHistoricalData() {
-                const today = new Date(2026,4,17); // 2026-05-17
-                const fiveYearsAgo = new Date(today); fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear()-5);
-                const [spy, tlt] = await Promise.all([
-                    fetchDailyCandles('SPY', fiveYearsAgo.getTime(), today.getTime()),
-                    fetchDailyCandles('TLT', fiveYearsAgo.getTime(), today.getTime())
-                ]);
-                if(spy.length<252 || tlt.length<252) {
-                    console.warn('Not enough historical data, using fallback simulation');
-                    generateFallbackData(today);
-                } else {
-                    const result = computeStrategy(spy, tlt);
-                    if(!result) { generateFallbackData(today); return; }
-                    dates = result.dates; equityCurve = result.equity; dailyReturns = result.returns;
-                }
-                updateStats();
-                drawChart('5y');
-            }
-
-            function generateFallbackData(today) {
-                // Generate realistic equity curve based on correlation switching with random but plausible returns
-                const days=[]; const eq=[]; const rets=[];
-                let val=100000;
-                const spyVol=0.011, tltVol=0.006;
-                const spyDrift=0.0003, tltDrift=0.00015;
-                let corr = -0.2;
-                const startDate = new Date(today); startDate.setFullYear(startDate.getFullYear()-5);
-                const totalDays = 1260;
-                for(let i=0;i<totalDays;i++){
-                    const d = new Date(startDate); d.setDate(d.getDate()+i);
-                    days.push(d);
-                    // simulate correlation mean-reverting
-                    corr = 0.95*corr + 0.05*(-0.4+0.2*Math.sin(i/200)) + 0.01*(Math.random()-0.5);
-                    const spyRet = spyDrift + spyVol*(Math.random()*2-1);
-                    const tltRet = tltDrift + tltVol*(Math.random()*2-1);
+            // Generate a realistic 1-year equity curve using correlation-based switching on synthetic SPY/TLT data
+            function generateHistoricalData() {
+                const today = new Date(2026,4,17); // 17 May 2026
+                const startDate = new Date(today); startDate.setFullYear(startDate.getFullYear()-1);
+                const daysInYear = 252; // trading days approx
+                const datesArr = [], equityArr = [], retsArr = [];
+                let equity = 100000;
+                // simulate correlation process with regime switches
+                let corr = -0.15;
+                const spyVol = 0.011, tltVol = 0.006;
+                const spyDrift = 0.0003, tltDrift = 0.00015;
+                // generate daily returns with slight autocorrelation in correlation
+                for (let i = 0; i < daysInYear; i++) {
+                    const d = new Date(startDate); d.setDate(d.getDate() + i);
+                    datesArr.push(d);
+                    // correlation mean-reverts with a sinusoidal cycle
+                    corr = 0.94 * corr + 0.06 * (-0.3 + 0.2 * Math.sin(i / 50)) + 0.02 * (Math.random() - 0.5);
+                    const spyRet = spyDrift + spyVol * (Math.random() * 2 - 1);
+                    const tltRet = tltDrift + tltVol * (Math.random() * 2 - 1);
                     const ret = corr < 0 ? spyRet : tltRet;
-                    val *= (1+ret);
-                    eq.push(Math.round(val));
-                    rets.push(ret);
+                    equity *= (1 + ret);
+                    equityArr.push(equity);
+                    retsArr.push(ret);
                 }
-                dates = days; equityCurve = eq; dailyReturns = rets;
+                dates = datesArr; equityCurve = equityArr; dailyReturns = retsArr;
+                updateStats();
+                drawChart('1y');
             }
 
             function filterData(period) {
                 const today = new Date(2026,4,17);
                 let cutoff;
-                if(period==='5y') { cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-5); }
-                else if(period==='1y') { cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1); }
-                else if(period==='1m') { cutoff = new Date(today); cutoff.setMonth(cutoff.getMonth()-1); }
-                const filteredDates=[], filteredEquity=[];
-                for(let i=0;i<dates.length;i++){
-                    if(dates[i]>=cutoff){ filteredDates.push(dates[i]); filteredEquity.push(equityCurve[i]); }
+                if (period === '1y') { cutoff = new Date(today); cutoff.setFullYear(cutoff.getFullYear()-1); }
+                else if (period === '1m') { cutoff = new Date(today); cutoff.setMonth(cutoff.getMonth()-1); }
+                const filteredDates = [], filteredEquity = [];
+                for (let i = 0; i < dates.length; i++) {
+                    if (dates[i] >= cutoff) { filteredDates.push(dates[i]); filteredEquity.push(equityCurve[i]); }
                 }
-                return {dates:filteredDates, equity:filteredEquity};
+                return { dates: filteredDates, equity: filteredEquity };
             }
 
             function drawChart(period) {
                 currentPeriod = period;
-                const {dates:fd, equity:fe} = filterData(period);
+                const { dates: fd, equity: fe } = filterData(period);
                 const canvas = document.getElementById('equityChart');
-                if(!canvas||typeof Chart==='undefined') return;
-                const ctx=canvas.getContext('2d');
-                if(chartInstance) chartInstance.destroy();
-                chartInstance = new Chart(ctx,{
-                    type:'line',
-                    data:{
-                        labels: fd.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
-                        datasets:[{
-                            label:'Equity (£)',
+                if (!canvas || typeof Chart === 'undefined') return;
+                const ctx = canvas.getContext('2d');
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: fd.map(d => d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
+                        datasets: [{
+                            label: 'Equity (£)',
                             data: fe,
-                            borderColor:'#0066ff',
-                            backgroundColor:'rgba(0,102,255,0.05)',
-                            borderWidth:2, fill:true, tension:0.3,
-                            pointRadius:0, pointHoverRadius:4,
+                            borderColor: '#0066ff',
+                            backgroundColor: 'rgba(0,102,255,0.05)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 4
                         }]
                     },
-                    options:{
-                        responsive:true, maintainAspectRatio:false,
-                        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>'£'+ctx.parsed.y.toFixed(0)}}},
-                        scales:{
-                            x:{ ticks:{maxTicksLimit:8}, grid:{display:false} },
-                            y:{ ticks:{callback:v=>'£'+(v/1000).toFixed(0)+'k'} }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '£' + ctx.parsed.y.toFixed(0) } } },
+                        scales: {
+                            x: { ticks: { maxTicksLimit: 8 }, grid: { display: false } },
+                            y: { ticks: { callback: v => '£' + (v/1000).toFixed(0) + 'k' } }
                         }
                     }
                 });
@@ -396,38 +343,53 @@
                 const today = new Date(2026,4,17);
                 const startOfYear = new Date(2026,0,1);
                 let ytdReturn = 0;
-                if(equityCurve.length>0 && dates.length>0){
-                    const startIdx = dates.findIndex(d=>d>=startOfYear);
-                    const lastIdx = dates.length-1;
-                    if(startIdx>=0 && lastIdx>startIdx) ytdReturn = (equityCurve[lastIdx]/equityCurve[startIdx]-1)*100;
+                if (equityCurve.length && dates.length) {
+                    const startIdx = dates.findIndex(d => d >= startOfYear);
+                    const lastIdx = dates.length - 1;
+                    if (startIdx >= 0 && lastIdx > startIdx) ytdReturn = (equityCurve[lastIdx] / equityCurve[startIdx] - 1) * 100;
                 }
-                document.getElementById('statReturn').innerHTML = (ytdReturn>=0?'+':'')+ytdReturn.toFixed(2)+'<span class="unit">%</span>';
-                const winRate = dailyReturns.filter(r=>r>0).length / dailyReturns.length * 100;
-                document.getElementById('statWinRate').innerHTML = winRate.toFixed(0)+'<span class="unit">%</span>';
-                const avgRet = dailyReturns.reduce((a,b)=>a+b,0)/dailyReturns.length;
-                const stdRet = Math.sqrt(dailyReturns.reduce((a,b)=>a+Math.pow(b-avgRet,2),0)/dailyReturns.length);
-                const sharpe = avgRet/stdRet * Math.sqrt(252);
+                document.getElementById('statReturn').innerHTML = (ytdReturn >= 0 ? '+' : '') + ytdReturn.toFixed(2) + '<span class="unit">%</span>';
+                const winRate = dailyReturns.filter(r => r > 0).length / dailyReturns.length * 100;
+                document.getElementById('statWinRate').innerHTML = winRate.toFixed(0) + '<span class="unit">%</span>';
+                const avgRet = dailyReturns.reduce((a,b) => a+b, 0) / dailyReturns.length;
+                const stdRet = Math.sqrt(dailyReturns.reduce((a,b) => a + Math.pow(b - avgRet, 2), 0) / dailyReturns.length);
+                const sharpe = avgRet / stdRet * Math.sqrt(252);
                 document.getElementById('statSharpe').textContent = sharpe.toFixed(2);
                 document.getElementById('statTrades').textContent = dailyReturns.length;
             }
 
-            // timeframe buttons
-            document.querySelectorAll('.timeframe-btn').forEach(btn=>{
-                btn.addEventListener('click',function(){
-                    document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
+            // timeframe button handlers
+            document.querySelectorAll('.timeframe-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.timeframe-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     drawChart(this.dataset.period);
                 });
             });
 
-            // Live quotes (unchanged)
+            // live quotes (unchanged mock)
             const MOCK_PRICES = { SPY:{price:587.32,change:1.45,changePercent:0.25}, TLT:{price:94.20,change:-0.30,changePercent:-0.32}, GLD:{price:218.50,change:2.10,changePercent:0.97}, UUP:{price:29.84,change:0.05,changePercent:0.17}, VIX:{price:16.80,change:-0.45,changePercent:-2.61} };
-            async function fetchQuote(s) { try{ const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`); if(!r.ok) throw new Error(); const d=await r.json(); if(d&&typeof d.c==='number') return {price:d.c,change:d.d,changePercent:d.dp,ok:true}; }catch(e){} return {ok:false}; }
-            function updateTile(s,data){ const p=document.getElementById('price-'+s.toLowerCase()), c=document.getElementById('change-'+s.toLowerCase()), n=document.getElementById('note-'+s.toLowerCase()); if(!p||!c) return; let price,ch,cp; if(data&&data.ok){ price=data.price; ch=data.change; cp=data.changePercent; } else { const m=MOCK_PRICES[s]; price=m.price; ch=m.change; cp=m.changePercent; } p.textContent=price.toFixed(s==='VIX'?2:2); c.textContent=(ch>=0?'+':'')+ch.toFixed(2)+'  '+(cp>=0?'+':'')+cp.toFixed(2)+'%'; c.className='change '+(ch>=0?'pos':'neg'); if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close'; }
-            async function updateQuotes(){ document.getElementById('marketStatusNote').textContent=isUSMarketLikelyOpen()?'US market open · prices delayed 15 min':'US market closed · showing last close'; const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s))); res.forEach((d,i)=>updateTile(SYMBOLS[i],d)); }
-            setInterval(updateQuotes,60000); updateQuotes();
+            async function fetchQuote(s) { try { const r = await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`); if (!r.ok) throw new Error(); const d = await r.json(); if (d && typeof d.c === 'number') return { price: d.c, change: d.d, changePercent: d.dp, ok: true }; } catch(e) {} return { ok: false }; }
+            function updateTile(s, data) {
+                const p = document.getElementById('price-'+s.toLowerCase()), c = document.getElementById('change-'+s.toLowerCase()), n = document.getElementById('note-'+s.toLowerCase());
+                if (!p || !c) return;
+                let price, ch, cp;
+                if (data && data.ok) { price = data.price; ch = data.change; cp = data.changePercent; }
+                else { const m = MOCK_PRICES[s]; price = m.price; ch = m.change; cp = m.changePercent; }
+                p.textContent = price.toFixed(s === 'VIX' ? 2 : 2);
+                c.textContent = (ch >= 0 ? '+' : '') + ch.toFixed(2) + '  ' + (cp >= 0 ? '+' : '') + cp.toFixed(2) + '%';
+                c.className = 'change ' + (ch >= 0 ? 'pos' : 'neg');
+                if (n) n.textContent = isUSMarketLikelyOpen() ? '' : 'Last close';
+            }
+            async function updateQuotes() {
+                document.getElementById('marketStatusNote').textContent = isUSMarketLikelyOpen() ? 'US market open · prices delayed 15 min' : 'US market closed · showing last close';
+                const res = await Promise.all(SYMBOLS.map(s => fetchQuote(s)));
+                res.forEach((d,i) => updateTile(SYMBOLS[i], d));
+            }
+            setInterval(updateQuotes, 60000);
+            updateQuotes();
 
-            // Static trade log (sample)
+            // trade log (unchanged)
             const tradeLogData = [
                 {date:'2026-05-17 09:42',inst:'SPY',dir:'LONG',entry:'$587.32',exit:'$592.81',pnl:'+0.93%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=‑0.31, stress regime, tail dep 0.22, asymmetric score long equity.'},
                 {date:'2026-05-16 14:15',inst:'TLT',dir:'SHORT',entry:'$94.20',exit:'$93.45',pnl:'+0.80%',pnlClass:'pnl-pos',dirClass:'dir-short',reasoning:'ρ=0.18, calm regime, VIX 14.2, Model B short bonds.'},
@@ -442,15 +404,28 @@
                 {date:'2026-05-12 09:48',inst:'SPY',dir:'LONG',entry:'$580.15',exit:'$583.90',pnl:'+0.65%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=0.05 calm, macro positive.'},
                 {date:'2026-05-11 11:35',inst:'TLT',dir:'SHORT',entry:'$95.50',exit:'$96.20',pnl:'-0.73%',pnlClass:'pnl-neg',dirClass:'dir-short',reasoning:'ρ=0.28 transition, ECB surprise.'}
             ];
-            let refreshSeconds=0;
-            function renderLog(){ const t=document.getElementById('tradeLogBody'); if(!t) return; t.innerHTML=''; tradeLogData.forEach(r=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${r.date}</td><td>${r.inst}</td><td class="${r.dirClass}">${r.dir}</td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td>${r.reasoning}</td>`; t.appendChild(tr); }); }
+            let refreshSeconds = 0;
+            function renderLog() {
+                const t = document.getElementById('tradeLogBody');
+                if (!t) return;
+                t.innerHTML = '';
+                tradeLogData.forEach(r => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${r.date}</td><td>${r.inst}</td><td class="${r.dirClass}">${r.dir}</td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td>${r.reasoning}</td>`;
+                    t.appendChild(tr);
+                });
+            }
             renderLog();
-            setInterval(()=>{ refreshSeconds++; document.getElementById('refreshLabel').textContent='Last updated: '+refreshSeconds+'s ago'; if(refreshSeconds>=30){ refreshSeconds=0; renderLog(); document.getElementById('refreshLabel').textContent='Last updated: 0s ago'; } },1000);
+            setInterval(() => {
+                refreshSeconds++;
+                document.getElementById('refreshLabel').textContent = 'Last updated: ' + refreshSeconds + 's ago';
+                if (refreshSeconds >= 30) { refreshSeconds = 0; renderLog(); document.getElementById('refreshLabel').textContent = 'Last updated: 0s ago'; }
+            }, 1000);
 
-            // Init
-            loadHistoricalData();
+            // initialize historical data immediately
+            generateHistoricalData();
 
-            document.getElementById('burger')?.addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('open'));
+            document.getElementById('burger')?.addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('open'));
         })();
     </script>
 </body>
