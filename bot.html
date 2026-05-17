@@ -341,7 +341,6 @@
             margin-top: 10px;
             display: inline-block;
         }
-        /* math cards */
         .math-cards {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -795,16 +794,21 @@
 
             function isUSMarketLikelyOpen() {
                 const now = new Date();
-                const londonOpts = { timeZone: 'Europe/London', weekday: 'short', hour: 'numeric',
-                    minute: 'numeric', hour12: false };
-                const londonStr = now.toLocaleString('en-GB', londonOpts);
-                const parts = londonStr.split(', ');
-                const weekday = parts[0];
-                const timeStr = parts[1];
-                const [h, m] = timeStr.split(':').map(Number);
-                const totalMin = h * 60 + m;
-                const openMin = 14 * 60 + 30;
-                const closeMin = 21 * 60;
+                const formatter = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: 'Europe/London',
+                    weekday: 'short',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: false
+                });
+                const parts = formatter.formatToParts(now);
+                const weekday = parts.find(p => p.type === 'weekday')?.value;
+                const hour = parseInt(parts.find(p => p.type === 'hour')?.value);
+                const minute = parseInt(parts.find(p => p.type === 'minute')?.value);
+                if (!weekday || isNaN(hour) || isNaN(minute)) return false;
+                const totalMin = hour * 60 + minute;
+                const openMin = 14 * 60 + 30; // 14:30 London
+                const closeMin = 21 * 60; // 21:00 London
                 const isWeekday = !['Sat', 'Sun'].includes(weekday);
                 return isWeekday && totalMin >= openMin && totalMin < closeMin;
             }
