@@ -140,24 +140,42 @@
   </style>
 </head>
 
-<body>
-  <header class="tbp-header">
+<body class="tbp">
+  <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
-      <nav class="tbp-nav">
-        <a href="/">Home</a><a href="/posts.html">Research</a>
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
         <a class="is-active" href="/investments.html">Funds</a>
-        <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
-  <div class="tbp-mobile-menu">
-    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
-    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/education.html">Education</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/tools/dcf.html">Tools</a>
+    <a href="/about.html">About</a>
     <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
+
+
 
   <section class="tbp-hero">
     <div class="tbp-container">
