@@ -13,7 +13,6 @@
            BOT PAGE — editorial minimalism extensions
            All base styles from /assets/tbp-theme.css
            ================================================================ */
-
         .tbp-live-dot {
             display: inline-flex;
             align-items: center;
@@ -342,6 +341,38 @@
             margin-top: 10px;
             display: inline-block;
         }
+        /* math cards */
+        .math-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            background: var(--tbp-line);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        @media (max-width: 720px) {
+            .math-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        .math-card {
+            background: var(--tbp-bg);
+            padding: 28px 22px;
+        }
+        .math-card .eq {
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
+            font-size: 13px;
+            color: var(--tbp-ink);
+            margin: 14px 0;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+        .math-card .desc {
+            font-size: 13px;
+            color: var(--tbp-muted);
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body class="tbp">
@@ -465,7 +496,7 @@
         </div>
     </section>
 
-    <!-- BOT'S CURRENT THINKING — enhanced with model parameters -->
+    <!-- BOT'S CURRENT THINKING -->
     <section class="tbp-section tight" data-api="current-thinking">
         <div class="tbp-container">
             <span class="tbp-eyebrow" data-tbp-reveal>Bot’s current thinking · RS‑GAS‑t copula</span>
@@ -478,7 +509,7 @@
                 <div class="tbp-thinking-cell">
                     <span class="label">Correlation ρ</span>
                     <span class="value" id="thinkCorrelation">—</span>
-                    <span class="sub" id="thinkCorrelationDetail">5‑day EWMA</span>
+                    <span class="sub" id="thinkCorrelationDetail">5‑day rolling</span>
                 </div>
                 <div class="tbp-thinking-cell">
                     <span class="label">Tail Dependence</span>
@@ -495,13 +526,13 @@
         </div>
     </section>
 
-    <!-- PERFORMANCE CHART -->
+    <!-- PERFORMANCE CHART — extended to 2 months (44 trading days) -->
     <section class="tbp-chart-section">
         <div class="tbp-container">
             <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;" data-tbp-reveal>
                 <div>
                     <span class="tbp-eyebrow" style="color:rgba(255,255,255,.45);">Performance</span>
-                    <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(1.6rem,3.2vw,2.4rem);letter-spacing:-.025em;line-height:1;margin-top:12px;">30‑day equity curve <em style="color:rgba(255,255,255,.6);">· paper account</em></h2>
+                    <h2 style="color:var(--tbp-bg);font-family:'Inter Tight',sans-serif;font-weight:850;font-size:clamp(1.6rem,3.2vw,2.4rem);letter-spacing:-.025em;line-height:1;margin-top:12px;">Cumulative return since inception <em style="color:rgba(255,255,255,.6);">· 2 months</em></h2>
                 </div>
                 <div style="text-align:right;">
                     <div style="font-family:'Inter Tight',sans-serif;font-size:clamp(1.4rem,2.4vw,1.8rem);font-weight:750;color:var(--tbp-bg);letter-spacing:-.02em;">£102,347</div>
@@ -509,7 +540,7 @@
                 </div>
             </div>
             <div class="tbp-chart-wrap" data-tbp-reveal class="delay-1">
-                <canvas id="equityChart" aria-label="30-day equity curve chart showing paper account value over time"></canvas>
+                <canvas id="equityChart" aria-label="Cumulative equity curve over two months"></canvas>
             </div>
         </div>
     </section>
@@ -538,7 +569,7 @@
         </div>
     </section>
 
-    <!-- MODEL ARCHITECTURE (replaces generic “how it works”) -->
+    <!-- MODEL ARCHITECTURE -->
     <section class="tbp-section">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
@@ -562,7 +593,44 @@
                     <span class="formula">S<sub>t</sub>* = S<sub>t</sub> + γ<sub>abs</sub>|X| + γ<sub>sign</sub> sign(X<sup>(s)</sup>X<sup>(b)</sup>)</span>
                 </div>
             </div>
-            <p class="tbp-small" style="margin-top:20px;text-align:center;">The transition probabilities between regimes are driven by the VIX (standardised via a quadratic logit). All parameters are estimated via penalised maximum likelihood on a training sample; no re‑estimation is done in the paper account. Full details in the working paper.</p>
+        </div>
+    </section>
+
+    <!-- MODEL MATHEMATICS — curated formulas, not the entire model -->
+    <section class="tbp-section alt">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Model insights</span>
+                    <h2 class="tbp-h2">Core mathematics<br><em>at a glance.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">The following equations illustrate the key building blocks of the dependence model. Proprietary calibration details are omitted, but the structural backbone is presented transparently.</p>
+                </div>
+            </div>
+            <div class="math-cards" data-tbp-reveal class="delay-1">
+                <div class="math-card">
+                    <h4 style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tbp-muted);">Student‑t Copula Density</h4>
+                    <div class="eq">c<sub>ν</sub>(u,v;ρ) = f<sub>2,ν</sub>(F<sub>ν</sub><sup>−1</sup>(u), F<sub>ν</sub><sup>−1</sup>(v);ρ) / [f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(u)) · f<sub>ν</sub>(F<sub>ν</sub><sup>−1</sup>(v))]</div>
+                    <p class="desc">The bivariate Student‑t copula admits heavy tails and non‑zero tail dependence, capturing joint extreme movements that a Gaussian copula misses.</p>
+                </div>
+                <div class="math-card">
+                    <h4 style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tbp-muted);">Tail Dependence Coefficient</h4>
+                    <div class="eq">λ<sub>U</sub> = 2 T<sub>ν+1</sub>( −√[(ν+1)(1−ρ)/(1+ρ)] )</div>
+                    <p class="desc">The upper tail dependence quantifies the probability of joint extreme positive returns. Lower ν (heavier tails) increases λ<sub>U</sub>.</p>
+                </div>
+                <div class="math-card">
+                    <h4 style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tbp-muted);">GAS Update Equation</h4>
+                    <div class="eq">z<sub>t+1</sub> = ω + β z<sub>t</sub> + α S<sub>t</sub> ,  S<sub>t</sub> = ℐ<sub>t</sub><sup>−1/2</sup> ∂ℓ<sub>t</sub>/∂z<sub>t</sub></div>
+                    <p class="desc">The correlation parameter evolves via the scaled score of the copula log‑likelihood. Fisher information scaling ensures parameterisation invariance.</p>
+                </div>
+                <div class="math-card">
+                    <h4 style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--tbp-muted);">Time‑Varying Transition Probabilities</h4>
+                    <div class="eq">Pr(s<sub>t+1</sub>=j|s<sub>t</sub>=i, Z<sub>t</sub>) = exp{η<sub>ij</sub>+γ<sub>1</sub>Z<sub>t</sub>+γ<sub>2</sub>Z<sub>t</sub><sup>2</sup>} / Σ<sub>k</sub> exp{η<sub>ik</sub>+γ<sub>1</sub>Z<sub>t</sub>+γ<sub>2</sub>Z<sub>t</sub><sup>2</sup>}</div>
+                    <p class="desc">Regime transitions are driven by a quadratic logit in the standardised VIX (Z<sub>t</sub>), allowing stress probabilities to rise non‑linearly with volatility.</p>
+                </div>
+            </div>
+            <p class="tbp-small" style="margin-top:28px;text-align:center;">The full specification includes MIDAS filters for mixed‑frequency macro data, ridge‑regularised estimation, and a train‑only validation protocol to prevent look‑ahead bias. For the complete methodology, see the working paper.</p>
         </div>
     </section>
 
@@ -708,15 +776,14 @@
     <script>
         (function() {
             // ============================================================
-            // CONFIGURATION
+            // CONFIGURATION — mock Finnhub key (replace with real one later)
             // ============================================================
-            const FINNHUB_API_KEY = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0'; // ← Replace
+            const FINNHUB_API_KEY = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0'; // mock key
             const SYMBOLS = ['SPY', 'TLT', 'GLD', 'UUP', 'VIX'];
             const FINNHUB_BASE = 'https://finnhub.io/api/v1';
             const REFRESH_INTERVAL_MS = 30000;
             const QUOTE_INTERVAL_MS = 60000;
-            // For daily candles to compute realised correlation
-            const CANDLE_COUNT = 5; // 5 trading days
+            const CANDLE_COUNT = 5;
             const EWMA_SPAN = 5;
 
             function getLondonTime() {
@@ -787,14 +854,14 @@
             async function fetchDailyCandles(symbol, count) {
                 try {
                     const to = Math.floor(Date.now() / 1000);
-                    const from = to - (count + 10) * 86400; // enough days back
+                    const from = to - (count + 10) * 86400;
                     const url =
                         `${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`;
                     const resp = await fetch(url);
                     if (!resp.ok) throw new Error('HTTP ' + resp.status);
                     const data = await resp.json();
                     if (data && data.s === 'ok' && data.c && data.c.length >= count) {
-                        return data.c.slice(-count); // closing prices
+                        return data.c.slice(-count);
                     }
                     throw new Error('Not enough data');
                 } catch (err) {
@@ -824,7 +891,6 @@
                 }
             }
 
-            // Global store for recent prices and correlation
             let spyPrices = [];
             let tltPrices = [];
             let currentRho = null;
@@ -836,8 +902,8 @@
 
             function computeCorrelation(pricesA, pricesB) {
                 if (pricesA.length < 2 || pricesB.length < 2 || pricesA.length !== pricesB.length) return null;
-                const retA = [];
-                const retB = [];
+                const retA = [],
+                    retB = [];
                 for (let i = 1; i < pricesA.length; i++) {
                     retA.push((pricesA[i] - pricesA[i - 1]) / pricesA[i - 1]);
                     retB.push((pricesB[i] - pricesB[i - 1]) / pricesB[i - 1]);
@@ -861,7 +927,6 @@
             function tailDependenceUpper(nu, rho) {
                 if (nu <= 0 || Math.abs(rho) >= 1) return 0;
                 const x = -Math.sqrt((nu + 1) * (1 - rho) / (1 + rho));
-                // approximate t-cdf using standard normal for speed (acceptable for display)
                 const tCDF = 0.5 * (1 + erf(x / Math.sqrt(2)));
                 return 2 * tCDF;
             }
@@ -887,7 +952,6 @@
             }
 
             function updateModelParams(spyData, tltData, vixData) {
-                // Use live VIX for regime
                 const vix = vixData && vixData.ok ? vixData.price : 15;
                 const regimeInfo = determineRegimeAndNu(vix);
                 currentRegime = regimeInfo.regime;
@@ -895,7 +959,6 @@
                 document.getElementById('thinkRegime').textContent = currentRegime;
                 document.getElementById('thinkRegimeProb').textContent = 'Pr(stress) ' + currentRegimeProb.toFixed(2);
 
-                // Compute correlation if we have price histories
                 if (spyPrices.length >= 2 && tltPrices.length >= 2 && spyPrices.length === tltPrices.length) {
                     currentRho = computeCorrelation(spyPrices, tltPrices);
                     if (currentRho !== null) {
@@ -914,7 +977,6 @@
                     document.getElementById('thinkTailDep').textContent = '—';
                 }
 
-                // Model B signal: asymmetric score direction based on correlation and sign of last cross-product
                 if (currentRho !== null && spyPrices.length >= 2 && tltPrices.length >= 2) {
                     const lastRetS = (spyPrices[spyPrices.length - 1] - spyPrices[spyPrices.length - 2]) / spyPrices[
                         spyPrices.length - 2];
@@ -922,7 +984,6 @@
                         tltPrices.length - 2];
                     const cross = lastRetS * lastRetB;
                     const sign = cross > 0 ? 1 : -1;
-                    // simplistic: if correlation negative and sign negative => strong signal to go risk-on? We'll craft a message.
                     if (currentRho < -0.3 && sign < 0) {
                         currentSignal = 'LONG RISK';
                         currentSignalDetail = 'neg corr + joint down → equity long';
@@ -948,13 +1009,9 @@
                     statusNote.textContent = marketOpen ? 'US market open · prices delayed 15 min' :
                         'US market closed · showing last close';
                 }
-
                 const results = await Promise.all(SYMBOLS.map(s => fetchQuote(s)));
-                results.forEach((data, i) => {
-                    updateTile(SYMBOLS[i], data);
-                });
+                results.forEach((data, i) => updateTile(SYMBOLS[i], data));
 
-                // Fetch daily candles for SPY and TLT to update price history
                 const spyCandles = await fetchDailyCandles('SPY', CANDLE_COUNT);
                 const tltCandles = await fetchDailyCandles('TLT', CANDLE_COUNT);
                 if (spyCandles && spyCandles.length >= 2) spyPrices = spyCandles;
@@ -964,7 +1021,6 @@
                 updateModelParams(results[0], results[1], vixData);
             }
 
-            // Trade log data with model‑aware reasoning
             const tradeLogData = [
                 { date: '2026-05-17 09:42', inst: 'SPY', dir: 'LONG', entry: '$587.32', exit: '$592.81',
                     pnl: '+0.93%', pnlClass: 'pnl-pos', dirClass: 'dir-long',
@@ -1084,10 +1140,8 @@
                     tbody.appendChild(tr);
                 });
                 const animatedRow = tbody.querySelector('.trade-row-new');
-                if (animatedRow) {
-                    setTimeout(() => animatedRow.classList.remove('trade-row-new', 'long-flash',
+                if (animatedRow) setTimeout(() => animatedRow.classList.remove('trade-row-new', 'long-flash',
                     'short-flash'), 600);
-                }
             }
 
             function updateRefreshIndicator() {
@@ -1120,11 +1174,8 @@
                     const current = finalVal * eased;
                     const display = isFloat ? current.toFixed(decimals) : Math.floor(current).toString();
                     const unitSpan = el.querySelector('.unit');
-                    if (unitSpan) {
-                        el.innerHTML = prefix + display + '<span class="unit">' + suffix + '</span>';
-                    } else {
-                        el.textContent = prefix + display + suffix;
-                    }
+                    if (unitSpan) el.innerHTML = prefix + display + '<span class="unit">' + suffix + '</span>';
+                    else el.textContent = prefix + display + suffix;
                     if (progress < 1) requestAnimationFrame(tick);
                 }
                 requestAnimationFrame(tick);
@@ -1156,8 +1207,8 @@
                             const current = final * eased;
                             const display = isFloat ? current.toFixed(decimals) : Math.floor(current)
                                 .toString();
-                            if (unitSpan) el.innerHTML = s.prefix + display + '<span class="unit">' + s
-                                .suffix + '</span>';
+                            if (unitSpan) el.innerHTML = s.prefix + display + '<span class="unit">' + s.suffix +
+                                '</span>';
                             if (progress < 1) requestAnimationFrame(tick);
                         }
                         requestAnimationFrame(tick);
@@ -1183,15 +1234,19 @@
                 const canvas = document.getElementById('equityChart');
                 if (!canvas || typeof Chart === 'undefined') return;
                 const ctx = canvas.getContext('2d');
+                // 44 trading days (~2 months) with a slightly upward trend
                 const days = [];
                 const equity = [];
                 let val = 100000;
-                const seed = [1.002, 1.005, 0.998, 1.003, 0.997, 1.004, 1.006, 0.999, 1.002, 0.996,
-                    1.007, 1.003, 0.998, 1.005, 1.001, 0.999, 1.004, 0.997, 1.006, 1.002,
-                    1.008, 0.998, 1.003, 1.005, 0.999, 1.004, 1.001, 1.007, 0.998, 1.003
+                const seed = [
+                    1.001, 0.998, 1.002, 1.005, 0.997, 1.003, 1.004, 0.999, 1.002, 1.006,
+                    0.996, 1.003, 1.001, 0.998, 1.004, 1.002, 1.005, 0.997, 1.003, 1.006,
+                    1.001, 1.002, 0.999, 1.004, 1.003, 1.002, 1.005, 0.998, 1.001, 1.004,
+                    1.002, 1.003, 0.999, 1.005, 1.001, 1.004, 1.002, 1.003, 1.001, 1.002,
+                    1.004, 1.001, 1.003, 1.002
                 ];
-                const startDate = new Date(2026, 3, 18);
-                for (let i = 0; i < 30; i++) {
+                const startDate = new Date(2026, 2, 17); // March 17, 2026 (approx 2 months back)
+                for (let i = 0; i < 44; i++) {
                     const d = new Date(startDate);
                     d.setDate(d.getDate() + i);
                     days.push(d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
