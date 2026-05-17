@@ -12,26 +12,42 @@
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
 </head>
 
-<body>
+<body class="tbp">
   <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/"><span class="mark">M</span><span>The Market Brief Daily</span></a>
-      <nav class="tbp-nav">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/posts.html">Research</a>
         <a href="/investments.html">Funds</a>
         <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a class="is-active" href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
         <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
-  <div class="tbp-mobile-menu">
-    <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
-    <a href="/methodology.html">Methodology</a><a href="/about.html">About</a>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/education.html">Education</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/tools/dcf.html">Tools</a>
+    <a href="/about.html">About</a>
     <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
+
+
 
   <section class="tbp-hero">
     <div class="tbp-container">
@@ -63,17 +79,28 @@
         </div>
       </div>
 
-      <!-- REPLACED stats section with launch waitlist -->
-      <div class="tbp-waitlist" style="margin-top: 56px; text-align: center; background: var(--tbp-bg-alt); border: 1px solid var(--tbp-line); border-radius: 24px; padding: 48px 32px;" data-tbp-reveal>
-        <div class="tbp-eyebrow" style="justify-content: center; margin-bottom: 12px;">Launching Q3 2026</div>
-        <h2 class="tbp-h2" style="margin-bottom: 16px;">Join the waitlist.</h2>
-        <p style="max-width: 48ch; margin: 0 auto 28px auto; color: var(--tbp-muted-2);">
-          The bot is still in development. Get notified the day the first paper trade executes — no spam, just the launch.
-        </p>
-        <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
-          Sign up for launch alert <span class="arrow">↗</span>
-        </a>
+      <div class="tbp-stats" style="margin-top: 56px;" data-tbp-reveal>
+        <div class="tbp-stat">
+          <div class="num" style="color: #1a8a4a;">+0.00<span class="unit">%</span></div>
+          <div class="label">YTD return (paper)</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">000</div>
+          <div class="label">Trades placed</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">00<span class="unit">%</span></div>
+          <div class="label">Win rate (rolling 30 trades)</div>
+        </div>
+        <div class="tbp-stat">
+          <div class="num">00<span class="unit">d</span></div>
+          <div class="label">Days live</div>
+        </div>
       </div>
+
+      <p style="text-align:center; color: var(--tbp-muted-2); font-size: 13px; margin-top: 20px;">
+        Stats placeholder — wired to the live ledger when the bot starts publishing.
+      </p>
     </div>
   </section>
 
