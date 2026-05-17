@@ -15,210 +15,115 @@
            ================================================================ */
         :root {
             --tbp-blue-glow: rgba(0,102,255,0.12);
-            --tbp-card-hover-lift: translateY(-2px);
         }
         body.tbp {
             background: linear-gradient(180deg, #faf9f6 0%, #f4f2ec 100%);
         }
-        /* live dot */
         .tbp-live-dot {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .03em;
-            text-transform: uppercase;
-            color: var(--tbp-ink);
-            padding: 7px 18px;
-            border-radius: 999px;
-            border: 1px solid var(--tbp-line);
-            background: var(--tbp-bg);
-            white-space: nowrap;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            display: inline-flex; align-items: center; gap: 9px;
+            font-size: 13px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase;
+            color: var(--tbp-ink); padding: 7px 18px; border-radius: 999px;
+            border: 1px solid var(--tbp-line); background: var(--tbp-bg);
+            backdrop-filter: blur(8px); box-shadow: 0 2px 8px rgba(0,0,0,0.02); white-space: nowrap;
         }
         .tbp-live-dot .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--tbp-pos);
-            animation: tbpPulse 2s infinite;
-            flex-shrink: 0;
-            box-shadow: 0 0 0 2px rgba(26,138,74,0.25);
+            width: 8px; height: 8px; border-radius: 50%; background: var(--tbp-pos);
+            animation: tbpPulse 2s infinite; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(26,138,74,0.25);
         }
         .tbp-live-dot .dot.off {
-            background: var(--tbp-muted-2);
-            animation: none;
-            box-shadow: 0 0 0 2px rgba(90,90,90,0.15);
+            background: var(--tbp-muted-2); animation: none; box-shadow: 0 0 0 2px rgba(90,90,90,0.15);
         }
         @keyframes tbpPulse {
             0%,100% { box-shadow: 0 0 0 2px rgba(26,138,74,0.25); }
             50% { box-shadow: 0 0 0 8px rgba(26,138,74,0.08); }
         }
         .tbp-london-time {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--tbp-muted);
-            letter-spacing: .02em;
-            white-space: nowrap;
-            background: var(--tbp-bg-alt);
-            padding: 5px 12px;
-            border-radius: 6px;
-            transition: background 0.3s;
+            font-size: 13px; font-weight: 500; color: var(--tbp-muted); letter-spacing: .02em;
+            white-space: nowrap; background: var(--tbp-bg-alt); padding: 5px 12px;
+            border-radius: 6px; transition: background 0.3s;
         }
         .tbp-data-tiles {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 14px;
+            display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px;
         }
         @media (max-width:1080px) { .tbp-data-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
         @media (max-width:680px) { .tbp-data-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         .tbp-data-tile {
-            background: var(--tbp-bg);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            padding: 20px 22px;
-            transition: all 0.3s var(--tbp-ease);
-            backdrop-filter: blur(4px);
+            background: var(--tbp-bg); border: 1px solid var(--tbp-line); border-radius: 14px;
+            padding: 20px 22px; transition: all 0.3s var(--tbp-ease); backdrop-filter: blur(4px);
         }
         .tbp-data-tile:hover {
-            border-color: var(--tbp-blue);
-            box-shadow: 0 8px 20px var(--tbp-blue-glow);
-            transform: var(--tbp-card-hover-lift);
+            border-color: var(--tbp-blue); box-shadow: 0 8px 20px var(--tbp-blue-glow);
+            transform: translateY(-2px);
         }
         .tbp-data-tile .symbol {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--tbp-muted);
-            margin-bottom: 8px;
+            font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+            color: var(--tbp-muted); margin-bottom: 8px;
         }
         .tbp-data-tile .price {
             font-family: 'Inter Tight', 'Inter', sans-serif;
-            font-size: clamp(1.3rem, 2vw, 1.7rem);
-            font-weight: 750;
-            letter-spacing: -.02em;
-            color: var(--tbp-ink);
-            line-height: 1;
-            margin-bottom: 4px;
+            font-size: clamp(1.3rem, 2vw, 1.7rem); font-weight: 750; letter-spacing: -.02em;
+            color: var(--tbp-ink); line-height: 1; margin-bottom: 4px;
         }
         .tbp-data-tile .price.mono {
             font-family: ui-monospace, Menlo, 'SF Mono', monospace;
         }
         .tbp-data-tile .change {
-            font-size: 13px;
-            font-weight: 550;
-            letter-spacing: .01em;
+            font-size: 13px; font-weight: 550; letter-spacing: .01em;
         }
         .tbp-data-tile .change.pos { color: var(--tbp-pos); }
         .tbp-data-tile .change.neg { color: var(--tbp-neg); }
         .tbp-data-tile .status-note {
-            font-size: 10px;
-            color: var(--tbp-muted-2);
-            letter-spacing: .04em;
-            text-transform: uppercase;
-            margin-top: 8px;
+            font-size: 10px; color: var(--tbp-muted-2); letter-spacing: .04em;
+            text-transform: uppercase; margin-top: 8px;
         }
         .tbp-thinking-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1px;
-            background: var(--tbp-line);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            overflow: hidden;
+            display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px;
+            background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden;
         }
         @media (max-width:880px) { .tbp-thinking-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width:520px) { .tbp-thinking-grid { grid-template-columns: 1fr; } }
         .tbp-thinking-cell {
-            background: var(--tbp-bg);
-            padding: 24px 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            background: var(--tbp-bg); padding: 24px 22px; display: flex; flex-direction: column; gap: 8px;
         }
         .tbp-thinking-cell .label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: .1em;
-            text-transform: uppercase;
+            font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
             color: var(--tbp-muted);
         }
         .tbp-thinking-cell .value {
             font-family: 'Inter Tight', sans-serif;
-            font-size: clamp(1.1rem, 1.6vw, 1.4rem);
-            font-weight: 750;
-            letter-spacing: -.01em;
-            color: var(--tbp-ink);
-            line-height: 1.1;
+            font-size: clamp(1.1rem, 1.6vw, 1.4rem); font-weight: 750; letter-spacing: -.01em;
+            color: var(--tbp-ink); line-height: 1.1;
         }
         .tbp-thinking-cell .sub {
-            font-size: 12px;
-            color: var(--tbp-muted-2);
-            letter-spacing: .02em;
+            font-size: 12px; color: var(--tbp-muted-2); letter-spacing: .02em;
         }
         .chart-stats-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-            gap: clamp(24px, 4vw, 60px);
-            align-items: center;
+            display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+            gap: clamp(24px, 4vw, 60px); align-items: center;
         }
         @media (max-width:800px) { .chart-stats-row { grid-template-columns: 1fr; } }
         .chart-small-wrap {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 2.4 / 1;
-            min-height: 260px;
-            background: var(--tbp-bg);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            padding: 10px 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            position: relative; width: 100%; aspect-ratio: 2.4 / 1; min-height: 260px;
+            background: var(--tbp-bg); border: 1px solid var(--tbp-line); border-radius: 14px;
+            padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
-        .chart-small-wrap canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
+        .chart-small-wrap canvas { width: 100% !important; height: 100% !important; }
         .tbp-log-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            overflow: hidden;
+            width: 100%; border-collapse: collapse; font-size: 14px;
+            border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .tbp-log-table thead tr {
-            background: var(--tbp-bg-alt);
-            text-align: left;
-        }
+        .tbp-log-table thead tr { background: var(--tbp-bg-alt); text-align: left; }
         .tbp-log-table thead th {
-            padding: 14px 16px;
-            font-weight: 700;
-            font-size: 10px;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            color: var(--tbp-muted);
-            border-bottom: 1px solid var(--tbp-line);
-            white-space: nowrap;
+            padding: 14px 16px; font-weight: 700; font-size: 10px; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--tbp-muted); border-bottom: 1px solid var(--tbp-line); white-space: nowrap;
         }
         .tbp-log-table tbody tr {
-            border-bottom: 1px solid var(--tbp-line-soft);
-            transition: background .25s var(--tbp-ease);
+            border-bottom: 1px solid var(--tbp-line-soft); transition: background .25s var(--tbp-ease);
         }
         .tbp-log-table tbody tr:hover { background: var(--tbp-bg-alt); }
-        .tbp-log-table tbody td {
-            padding: 15px 16px;
-            vertical-align: top;
-            line-height: 1.5;
-        }
-        .tbp-log-table .price-cell {
-            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
-            font-size: 13px;
-            letter-spacing: .01em;
-        }
+        .tbp-log-table tbody td { padding: 15px 16px; vertical-align: top; line-height: 1.5; }
+        .tbp-log-table .price-cell { font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 13px; letter-spacing: .01em; }
         .tbp-log-table .dir-long { color: var(--tbp-pos); font-weight: 600; }
         .tbp-log-table .dir-short { color: var(--tbp-neg); font-weight: 600; }
         .tbp-log-table .pnl-pos { color: var(--tbp-pos); font-weight: 600; }
@@ -242,123 +147,56 @@
         .trade-row-new.long-flash { animation: tradeSlideInGreen .55s var(--tbp-ease-slow) forwards; }
         .trade-row-new.short-flash { animation: tradeSlideInRed .55s var(--tbp-ease-slow) forwards; }
         .tbp-refresh-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--tbp-muted-2);
-            letter-spacing: .02em;
+            display: flex; align-items: center; gap: 8px; font-size: 12px;
+            color: var(--tbp-muted-2); letter-spacing: .02em;
         }
         .tbp-refresh-indicator .refresh-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--tbp-muted-2);
-            transition: background .4s;
+            width: 5px; height: 5px; border-radius: 50%; background: var(--tbp-muted-2); transition: background .4s;
         }
         .tbp-refresh-indicator .refresh-dot.active { background: var(--tbp-blue); }
         .model-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            background: var(--tbp-line);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            overflow: hidden;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+            background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden;
         }
         @media (max-width:720px) { .model-grid { grid-template-columns: 1fr; } }
-        .model-cell {
-            background: var(--tbp-bg);
-            padding: 28px 24px;
-        }
+        .model-cell { background: var(--tbp-bg); padding: 28px 24px; }
         .formula {
-            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
-            font-size: 12px;
-            color: var(--tbp-muted);
-            background: var(--tbp-bg-alt);
-            padding: 8px 14px;
-            border-radius: 8px;
-            margin-top: 14px;
-            display: inline-block;
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 12px; color: var(--tbp-muted);
+            background: var(--tbp-bg-alt); padding: 8px 14px; border-radius: 8px; margin-top: 14px; display: inline-block;
         }
         .math-cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2px;
-            background: var(--tbp-line);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            overflow: hidden;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+            background: var(--tbp-line); border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden;
         }
         @media (max-width:720px) { .math-cards { grid-template-columns: 1fr; } }
-        .math-card {
-            background: var(--tbp-bg);
-            padding: 28px 24px;
-        }
+        .math-card { background: var(--tbp-bg); padding: 28px 24px; }
         .math-card .eq {
-            font-family: ui-monospace, Menlo, 'SF Mono', monospace;
-            font-size: 13px;
-            color: var(--tbp-ink);
-            margin: 16px 0;
-            line-height: 1.6;
-            word-break: break-word;
+            font-family: ui-monospace, Menlo, 'SF Mono', monospace; font-size: 13px; color: var(--tbp-ink);
+            margin: 16px 0; line-height: 1.6; word-break: break-word;
         }
-        .math-card .desc {
-            font-size: 13px;
-            color: var(--tbp-muted);
-            line-height: 1.5;
-        }
+        .math-card .desc { font-size: 13px; color: var(--tbp-muted); line-height: 1.5; }
         .stats-side {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            overflow: hidden;
+            display: flex; flex-direction: column; gap: 0;
+            border: 1px solid var(--tbp-line); border-radius: 14px; overflow: hidden;
         }
         .stats-side .stat-item {
-            padding: 22px 24px;
-            background: var(--tbp-bg);
-            border-bottom: 1px solid var(--tbp-line-soft);
+            padding: 22px 24px; background: var(--tbp-bg); border-bottom: 1px solid var(--tbp-line-soft);
         }
         .stats-side .stat-item:last-child { border-bottom: 0; }
         .stats-side .stat-num {
             font-family: 'Inter Tight', sans-serif;
-            font-size: clamp(1.8rem, 3vw, 2.4rem);
-            font-weight: 800;
-            letter-spacing: -.03em;
-            line-height: 1;
-            color: var(--tbp-ink);
+            font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.03em;
+            line-height: 1; color: var(--tbp-ink);
         }
-        .stats-side .stat-num .unit {
-            font-size: .5em;
-            font-weight: 600;
-            color: var(--tbp-muted);
-        }
-        .stats-side .stat-label {
-            font-size: 13px;
-            color: var(--tbp-muted);
-            margin-top: 8px;
-        }
+        .stats-side .stat-num .unit { font-size: .5em; font-weight: 600; color: var(--tbp-muted); }
+        .stats-side .stat-label { font-size: 13px; color: var(--tbp-muted); margin-top: 8px; }
         .research-quote {
-            border-left: 3px solid var(--tbp-blue);
-            padding: 12px 20px;
-            font-family: 'Fraunces', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--tbp-ink-2);
-            background: var(--tbp-bg-alt);
-            border-radius: 0 8px 8px 0;
-            margin: 24px 0;
+            border-left: 3px solid var(--tbp-blue); padding: 12px 20px;
+            font-family: 'Fraunces', serif; font-style: italic; font-size: 1.2rem; color: var(--tbp-ink-2);
+            background: var(--tbp-bg-alt); border-radius: 0 8px 8px 0; margin: 24px 0;
         }
-        .btn-glow {
-            box-shadow: 0 4px 14px var(--tbp-blue-glow);
-            transition: all 0.3s var(--tbp-ease);
-        }
-        .btn-glow:hover {
-            box-shadow: 0 8px 20px rgba(0,102,255,0.25);
-            transform: translateY(-2px);
-        }
+        .btn-glow { box-shadow: 0 4px 14px var(--tbp-blue-glow); transition: all 0.3s var(--tbp-ease); }
+        .btn-glow:hover { box-shadow: 0 8px 20px rgba(0,102,255,0.25); transform: translateY(-2px); }
     </style>
 </head>
 <body class="tbp">
@@ -482,7 +320,7 @@
         </div>
     </section>
 
-    <!-- BOT'S CURRENT THINKING -->
+    <!-- BOT'S CURRENT THINKING (hardcoded initial values from mock data) -->
     <section class="tbp-section tight" data-api="current-thinking">
         <div class="tbp-container">
             <span class="tbp-eyebrow" data-tbp-reveal>Bot’s current thinking · RS‑GAS‑t copula</span>
@@ -490,29 +328,29 @@
                 <div class="tbp-thinking-cell">
                     <span class="label">Regime</span>
                     <span class="value" id="thinkRegime">CALM</span>
-                    <span class="sub" id="thinkRegimeProb">Pr(stress) 0.12</span>
+                    <span class="sub" id="thinkRegimeProb">Pr(stress) 0.08</span>
                 </div>
                 <div class="tbp-thinking-cell">
                     <span class="label">Correlation ρ</span>
-                    <span class="value" id="thinkCorrelation">—</span>
+                    <span class="value" id="thinkCorrelation">-0.18</span>
                     <span class="sub" id="thinkCorrelationDetail">5‑day rolling</span>
                 </div>
                 <div class="tbp-thinking-cell">
                     <span class="label">Tail Dependence</span>
-                    <span class="value" id="thinkTailDep">—</span>
-                    <span class="sub" id="thinkTailDetail">λ<sub>U</sub> from ν, ρ</span>
+                    <span class="value" id="thinkTailDep">0.092</span>
+                    <span class="sub" id="thinkTailDetail">λ<sub>U</sub> from ν=8.0, ρ=-0.18</span>
                 </div>
                 <div class="tbp-thinking-cell">
                     <span class="label">Signal (Model B)</span>
                     <span class="value" id="thinkSignal">NEUTRAL</span>
-                    <span class="sub" id="thinkSignalDetail">asymmetric score</span>
+                    <span class="sub" id="thinkSignalDetail">no strong asymmetry</span>
                 </div>
             </div>
             <p class="tbp-small" style="margin-top:16px;text-align:center;">Regime and correlation are updated every 60 seconds using live market data. The model is the RS‑GAS‑t copula with MIDAS macro factors and asymmetric score (Model B for daily signals).</p>
         </div>
     </section>
 
-    <!-- PERFORMANCE CHART + STATS (1-year chart, white background) -->
+    <!-- PERFORMANCE CHART + STATS -->
     <section class="tbp-section">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
@@ -550,7 +388,7 @@
         </div>
     </section>
 
-    <!-- RESEARCH FOUNDATION (new section) -->
+    <!-- RESEARCH FOUNDATION (expanded) -->
     <section class="tbp-section alt">
         <div class="tbp-container">
             <div class="tbp-section-head" data-tbp-reveal>
@@ -559,25 +397,26 @@
                     <h2 class="tbp-h2">Built on <em>academic rigour.</em></h2>
                 </div>
                 <div class="right">
-                    <p class="tbp-lead">The trading bot is the practical implementation of a dissertation that models time‑varying equity‑bond dependence using a regime‑switching score‑driven Student‑t copula with macro‑conditioned transitions.</p>
+                    <p class="tbp-lead">The AI Day‑Trader is the practical implementation of a dissertation that models time‑varying equity‑bond dependence using a regime‑switching score‑driven Student‑t copula with macro‑conditioned transition probabilities. The original research spans over three decades of data and addresses the fundamental instability of stock‑bond correlations that challenges traditional portfolio construction.</p>
                 </div>
             </div>
             <div class="research-quote" data-tbp-reveal class="delay-1">
-                "The correlation between equities and government bonds is a cornerstone of modern portfolio construction … however, this hedge is neither constant nor reliable. The sign and magnitude of stock‑bond correlations have shifted markedly across macroeconomic regimes."
+                "The correlation between equities and government bonds is a cornerstone of modern portfolio construction … however, this hedge is neither constant nor reliable. The sign and magnitude of stock‑bond correlations have shifted markedly across macroeconomic regimes, being negative during the disinflationary era of the 1980s and 1990s but positive during inflationary tightening cycles such as 2021‑2022."
             </div>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;" data-tbp-reveal class="delay-2">
                 <div>
-                    <h3 style="font-size:1.1rem; font-weight:700;">Key contributions</h3>
-                    <ul style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-top:8px; padding-left:18px;">
-                        <li>First copula model to combine score‑driven updates, regime switching, and MIDAS‑filtered macro factors simultaneously.</li>
-                        <li>Two complementary specifications: medium‑horizon (Model A) for strategic allocation, and daily asymmetric (Model B) for tactical risk control.</li>
-                        <li>Empirically validated over 1990–2025 with robust out‑of‑sample portfolio benefits.</li>
+                    <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Key contributions</h3>
+                    <ul style="font-size:14px; color:var(--tbp-muted); line-height:1.7; padding-left:18px; margin:0;">
+                        <li style="margin-bottom:8px;"><strong>First copula model</strong> to combine score‑driven updates, regime switching, and MIDAS‑filtered macro factors simultaneously — no prior study integrates all three elements.</li>
+                        <li style="margin-bottom:8px;"><strong>Two complementary specifications</strong>: Model A targets medium‑horizon correlations (5–63 days) for strategic allocation, while Model B captures daily asymmetric dependence for tactical risk control.</li>
+                        <li><strong>Empirically validated</strong> over the period 1990–2025, with robust out‑of‑sample portfolio benefits demonstrated via minimum‑variance and volatility‑targeting strategies.</li>
                     </ul>
                 </div>
                 <div>
-                    <h3 style="font-size:1.1rem; font-weight:700;">Why it matters</h3>
-                    <p style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-top:8px;">Static correlation models fail during crises. This bot adapts in real time to inflation shocks, flight‑to‑quality, and monetary policy shifts — exactly when traditional 60/40 portfolios break down.</p>
-                    <a href="/methodology.html" class="tbp-btn" style="margin-top:16px;">Read the full paper →</a>
+                    <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Why it matters</h3>
+                    <p style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-bottom:12px;">Static correlation models — like those underlying traditional 60/40 portfolios — fail precisely when they are needed most. During the 2022 inflation shock, for example, equities and bonds fell together, inflicting losses on balanced investors who had relied on bonds as a hedge. This bot adapts in real time to regime changes, recognising when correlations are likely to flip and adjusting its positioning accordingly.</p>
+                    <p style="font-size:14px; color:var(--tbp-muted); line-height:1.7; margin-bottom:16px;">By embedding macro‑conditioned transition probabilities and asymmetric score reactions, the model captures the non‑linear, crisis‑intensifying nature of stock‑bond comovement that Gaussian or static copulas miss.</p>
+                    <a href="/methodology.html" class="tbp-btn">Read the full paper →</a>
                 </div>
             </div>
         </div>
@@ -675,7 +514,7 @@
         </div>
     </section>
 
-    <!-- STRATEGY EXPLAINER + ACCESS BUTTON -->
+    <!-- STRATEGY EXPLAINER + ACCESS -->
     <section class="tbp-section alt">
         <div class="tbp-container">
             <div class="tbp-cta-strip" style="border-top:0;padding-top:0;" data-tbp-reveal>
@@ -687,7 +526,7 @@
                 <div style="background:var(--tbp-ink);color:var(--tbp-bg);border-radius:14px;padding:32px 28px;">
                     <h4 style="font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:18px;">Access the bot</h4>
                     <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:20px;">License the AI Day‑Trader for your own paper account. Includes daily signal files, full model documentation, and API access. Starting at £499/month.</p>
-                    <a href="/contact.html" class="tbp-btn primary-white" style="background:var(--tbp-bg); color:var(--tbp-ink); border-color:var(--tbp-bg);">Request access →</a>
+                    <a href="/contact.html" class="tbp-btn" style="background:var(--tbp-bg); color:var(--tbp-ink); border-color:var(--tbp-bg);">Request access →</a>
                 </div>
             </div>
         </div>
@@ -729,71 +568,157 @@
     <script>
         (function() {
             const FINNHUB_API_KEY = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0';
-            const SYMBOLS = ['SPY', 'TLT', 'GLD', 'UUP', 'VIX'];
+            const SYMBOLS = ['SPY','TLT','GLD','UUP','VIX'];
             const FINNHUB_BASE = 'https://finnhub.io/api/v1';
             const REFRESH_INTERVAL_MS = 30000;
             const QUOTE_INTERVAL_MS = 60000;
             const CANDLE_COUNT = 5;
-            const MOCK_PRICES = { SPY:{price:587.32,change:1.45,changePercent:0.25},TLT:{price:94.20,change:-0.30,changePercent:-0.32},GLD:{price:218.50,change:2.10,changePercent:0.97},UUP:{price:29.84,change:0.05,changePercent:0.17},VIX:{price:16.80,change:-0.45,changePercent:-2.61} };
+
+            const MOCK_PRICES = {
+                SPY: {price:587.32, change:1.45, changePercent:0.25},
+                TLT: {price:94.20, change:-0.30, changePercent:-0.32},
+                GLD: {price:218.50, change:2.10, changePercent:0.97},
+                UUP: {price:29.84, change:0.05, changePercent:0.17},
+                VIX: {price:16.80, change:-0.45, changePercent:-2.61}
+            };
             const MOCK_SPY_CANDLES = [584.1,585.6,586.9,587.0,587.3];
             const MOCK_TLT_CANDLES = [93.8,94.1,93.7,94.2,94.0];
 
             function getLondonTime() { const now=new Date(); return now.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false}); }
-            function isUSMarketLikelyOpen() { const now=new Date(); const formatter=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}); const parts=formatter.formatToParts(now); const weekday=parts.find(p=>p.type==='weekday')?.value; const hour=parseInt(parts.find(p=>p.type==='hour')?.value); const minute=parseInt(parts.find(p=>p.type==='minute')?.value); if(!weekday||isNaN(hour)||isNaN(minute)) return false; const totalMin=hour*60+minute; return !['Sat','Sun'].includes(weekday) && totalMin>=14*60+30 && totalMin<21*60; }
+            function isUSMarketLikelyOpen() {
+                const now=new Date();
+                const formatter=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
+                const parts=formatter.formatToParts(now);
+                const weekday=parts.find(p=>p.type==='weekday')?.value;
+                const hour=parseInt(parts.find(p=>p.type==='hour')?.value);
+                const minute=parseInt(parts.find(p=>p.type==='minute')?.value);
+                if(!weekday||isNaN(hour)||isNaN(minute)) return false;
+                const totalMin = hour*60+minute;
+                return !['Sat','Sun'].includes(weekday) && totalMin>=14*60+30 && totalMin<21*60;
+            }
             function updateLondonClock() { document.getElementById('londonTime').textContent = 'LON ' + getLondonTime(); }
             updateLondonClock(); setInterval(updateLondonClock,1000);
-            function updateBotStatus() { const dot=document.getElementById('liveDot'); const text=document.getElementById('botStatusText'); const marketOpen=isUSMarketLikelyOpen(); if(dot&&text){ if(marketOpen){ dot.className='dot'; text.textContent='Bot is ACTIVE'; } else { dot.className='dot off'; text.textContent='Market CLOSED'; } } }
+
+            function updateBotStatus() {
+                const dot=document.getElementById('liveDot'), text=document.getElementById('botStatusText');
+                const marketOpen=isUSMarketLikelyOpen();
+                if(dot&&text){
+                    if(marketOpen){ dot.className='dot'; text.textContent='Bot is ACTIVE'; }
+                    else { dot.className='dot off'; text.textContent='Market CLOSED'; }
+                }
+            }
             updateBotStatus(); setInterval(updateBotStatus,30000);
 
-            async function fetchQuote(symbol) { try { const url=`${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${FINNHUB_API_KEY}`; const resp=await fetch(url); if(!resp.ok) throw new Error('HTTP '+resp.status); const data=await resp.json(); if(data&&typeof data.c==='number') return {price:data.c,change:data.d,changePercent:data.dp,ok:true}; throw new Error('Invalid'); } catch(e){ console.warn('Quote fetch failed',symbol,e); return {ok:false}; } }
-            async function fetchDailyCandles(symbol,count) { try { const to=Math.floor(Date.now()/1000); const from=to-(count+10)*86400; const url=`${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`; const resp=await fetch(url); if(!resp.ok) throw new Error('HTTP '+resp.status); const data=await resp.json(); if(data&&data.s==='ok'&&data.c&&data.c.length>=count) return data.c.slice(-count); throw new Error('Not enough data'); } catch(e){ console.warn('Candle fetch failed',symbol,e); return null; } }
+            async function fetchQuote(symbol) {
+                try {
+                    const url=`${FINNHUB_BASE}/quote?symbol=${encodeURIComponent(symbol)}&token=${FINNHUB_API_KEY}`;
+                    const resp=await fetch(url); if(!resp.ok) throw new Error('HTTP '+resp.status);
+                    const data=await resp.json();
+                    if(data&&typeof data.c==='number') return {price:data.c, change:data.d, changePercent:data.dp, ok:true};
+                    throw new Error('Invalid');
+                } catch(e){ console.warn('Quote fetch failed',symbol,e); return {ok:false}; }
+            }
+            async function fetchDailyCandles(symbol,count) {
+                try {
+                    const to=Math.floor(Date.now()/1000), from=to-(count+10)*86400;
+                    const url=`${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`;
+                    const resp=await fetch(url); if(!resp.ok) throw new Error('HTTP '+resp.status);
+                    const data=await resp.json();
+                    if(data&&data.s==='ok'&&data.c&&data.c.length>=count) return data.c.slice(-count);
+                    throw new Error('Not enough data');
+                } catch(e){ console.warn('Candle fetch failed',symbol,e); return null; }
+            }
 
-            function updateTile(symbol,data) { const priceEl=document.getElementById('price-'+symbol.toLowerCase()); const changeEl=document.getElementById('change-'+symbol.toLowerCase()); const noteEl=document.getElementById('note-'+symbol.toLowerCase()); if(!priceEl||!changeEl) return; if(data&&data.ok){ priceEl.textContent=data.price.toFixed(symbol==='VIX'?2:2); const sign=data.change>=0?'+':''; const pctSign=data.changePercent>=0?'+':''; changeEl.textContent=sign+data.change.toFixed(2)+'  '+pctSign+data.changePercent.toFixed(2)+'%'; changeEl.className='change '+(data.change>=0?'pos':'neg'); } else { const mock=MOCK_PRICES[symbol]; if(mock){ priceEl.textContent=mock.price.toFixed(symbol==='VIX'?2:2); const sign=mock.change>=0?'+':''; const pctSign=mock.changePercent>=0?'+':''; changeEl.textContent=sign+mock.change.toFixed(2)+'  '+pctSign+mock.changePercent.toFixed(2)+'%'; changeEl.className='change '+(mock.change>=0?'pos':'neg'); } } if(noteEl) noteEl.textContent=isUSMarketLikelyOpen()?'':'Last close'; }
+            function updateTile(symbol,data) {
+                const priceEl=document.getElementById('price-'+symbol.toLowerCase());
+                const changeEl=document.getElementById('change-'+symbol.toLowerCase());
+                const noteEl=document.getElementById('note-'+symbol.toLowerCase());
+                if(!priceEl||!changeEl) return;
+                if(data&&data.ok){
+                    priceEl.textContent=data.price.toFixed(symbol==='VIX'?2:2);
+                    const sign=data.change>=0?'+':'', pctSign=data.changePercent>=0?'+':'';
+                    changeEl.textContent=sign+data.change.toFixed(2)+'  '+pctSign+data.changePercent.toFixed(2)+'%';
+                    changeEl.className='change '+(data.change>=0?'pos':'neg');
+                } else {
+                    const mock=MOCK_PRICES[symbol];
+                    if(mock){
+                        priceEl.textContent=mock.price.toFixed(symbol==='VIX'?2:2);
+                        const sign=mock.change>=0?'+':'', pctSign=mock.changePercent>=0?'+':'';
+                        changeEl.textContent=sign+mock.change.toFixed(2)+'  '+pctSign+mock.changePercent.toFixed(2)+'%';
+                        changeEl.className='change '+(mock.change>=0?'pos':'neg');
+                    }
+                }
+                if(noteEl) noteEl.textContent=isUSMarketLikelyOpen()?'':'Last close';
+            }
 
             let spyPrices=MOCK_SPY_CANDLES, tltPrices=MOCK_TLT_CANDLES;
-            let currentRho=null, currentRegime='CALM', currentRegimeProb=0.12, currentTailDep=null, currentSignal='NEUTRAL', currentSignalDetail='';
+            let currentRho=null, currentRegime='CALM', currentRegimeProb=0.08, currentTailDep=null, currentSignal='NEUTRAL', currentSignalDetail='';
 
-            function computeCorrelation(a,b){ if(a.length<2||b.length<2||a.length!==b.length) return null; const retA=[],retB=[]; for(let i=1;i<a.length;i++){ retA.push((a[i]-a[i-1])/a[i-1]); retB.push((b[i]-b[i-1])/b[i-1]); } const n=retA.length; const mA=retA.reduce((s,v)=>s+v,0)/n, mB=retB.reduce((s,v)=>s+v,0)/n; let num=0,denA=0,denB=0; for(let i=0;i<n;i++){ const dA=retA[i]-mA,dB=retB[i]-mB; num+=dA*dB; denA+=dA*dA; denB+=dB*dB; } return num/Math.sqrt(denA*denB); }
-            function tailDepUpper(nu,rho){ if(nu<=0||Math.abs(rho)>=1) return 0; const x=-Math.sqrt((nu+1)*(1-rho)/(1+rho)); return 2*(0.5*(1+erf(x/Math.sqrt(2)))); }
-            function erf(x){ const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911; const sign=x>=0?1:-1; x=Math.abs(x); const t=1/(1+p*x); const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x); return sign*y; }
-            function determineRegime(vix){ if(vix>25) return {regime:'STRESS',nu:3.0,probStress:0.85}; if(vix>18) return {regime:'TRANSITION',nu:5.0,probStress:0.35}; return {regime:'CALM',nu:8.0,probStress:0.08}; }
+            function computeCorrelation(a,b){
+                if(a.length<2||b.length<2||a.length!==b.length) return null;
+                const retA=[],retB=[];
+                for(let i=1;i<a.length;i++){ retA.push((a[i]-a[i-1])/a[i-1]); retB.push((b[i]-b[i-1])/b[i-1]); }
+                const n=retA.length, mA=retA.reduce((s,v)=>s+v,0)/n, mB=retB.reduce((s,v)=>s+v,0)/n;
+                let num=0,denA=0,denB=0;
+                for(let i=0;i<n;i++){ const dA=retA[i]-mA, dB=retB[i]-mB; num+=dA*dB; denA+=dA*dA; denB+=dB*dB; }
+                return num/Math.sqrt(denA*denB);
+            }
+            function tailDepUpper(nu,rho){
+                if(nu<=0||Math.abs(rho)>=1) return 0;
+                const x=-Math.sqrt((nu+1)*(1-rho)/(1+rho));
+                return 2*(0.5*(1+erf(x/Math.sqrt(2))));
+            }
+            function erf(x){
+                const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911;
+                const sign=x>=0?1:-1; x=Math.abs(x); const t=1/(1+p*x);
+                const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x); return sign*y;
+            }
+            function determineRegime(vix){
+                if(vix>25) return {regime:'STRESS',nu:3.0,probStress:0.85};
+                if(vix>18) return {regime:'TRANSITION',nu:5.0,probStress:0.35};
+                return {regime:'CALM',nu:8.0,probStress:0.08};
+            }
 
             function updateModelParams(spyData,tltData,vixData){
                 const vix = vixData&&vixData.ok ? vixData.price : MOCK_PRICES.VIX.price;
                 const regimeInfo = determineRegime(vix);
                 currentRegime=regimeInfo.regime; currentRegimeProb=regimeInfo.probStress;
-                document.getElementById('thinkRegime').textContent=currentRegime;
-                document.getElementById('thinkRegimeProb').textContent='Pr(stress) '+currentRegimeProb.toFixed(2);
-                if(spyPrices.length>=2&&tltPrices.length>=2&&spyPrices.length===tltPrices.length){
-                    currentRho=computeCorrelation(spyPrices,tltPrices);
+                document.getElementById('thinkRegime').textContent = currentRegime;
+                document.getElementById('thinkRegimeProb').textContent = 'Pr(stress) ' + currentRegimeProb.toFixed(2);
+
+                if(spyPrices.length>=2 && tltPrices.length>=2 && spyPrices.length===tltPrices.length){
+                    currentRho = computeCorrelation(spyPrices,tltPrices);
                     if(currentRho!==null){
-                        document.getElementById('thinkCorrelation').textContent=currentRho.toFixed(3);
-                        document.getElementById('thinkCorrelationDetail').textContent=CANDLE_COUNT+'-day rolling';
-                        const nu=regimeInfo.nu;
-                        currentTailDep=tailDepUpper(nu,currentRho);
-                        document.getElementById('thinkTailDep').textContent=currentTailDep.toFixed(3);
-                        document.getElementById('thinkTailDetail').textContent='ν='+nu.toFixed(1)+', ρ='+currentRho.toFixed(2);
+                        document.getElementById('thinkCorrelation').textContent = currentRho.toFixed(2);
+                        document.getElementById('thinkCorrelationDetail').textContent = CANDLE_COUNT+'-day rolling';
+                        const nu = regimeInfo.nu;
+                        currentTailDep = tailDepUpper(nu,currentRho);
+                        document.getElementById('thinkTailDep').textContent = currentTailDep.toFixed(3);
+                        document.getElementById('thinkTailDetail').textContent = 'ν='+nu.toFixed(1)+', ρ='+currentRho.toFixed(2);
                     }
                 } else {
-                    document.getElementById('thinkCorrelation').textContent='—';
-                    document.getElementById('thinkCorrelationDetail').textContent='insufficient data';
-                    document.getElementById('thinkTailDep').textContent='—';
+                    document.getElementById('thinkCorrelation').textContent = '—';
+                    document.getElementById('thinkCorrelationDetail').textContent = 'insufficient data';
+                    document.getElementById('thinkTailDep').textContent = '—';
                 }
-                if(currentRho!==null&&spyPrices.length>=2&&tltPrices.length>=2){
+                if(currentRho!==null && spyPrices.length>=2 && tltPrices.length>=2){
                     const lrS=(spyPrices[spyPrices.length-1]-spyPrices[spyPrices.length-2])/spyPrices[spyPrices.length-2];
                     const lrB=(tltPrices[tltPrices.length-1]-tltPrices[tltPrices.length-2])/tltPrices[tltPrices.length-2];
-                    const cross=lrS*lrB; const sign=cross>0?1:-1;
-                    if(currentRho<-0.3&&sign<0){ currentSignal='LONG RISK'; currentSignalDetail='neg corr + joint down → equity long'; }
-                    else if(currentRho>0.4&&sign>0){ currentSignal='DEFENSIVE'; currentSignalDetail='pos corr + joint up → bonds long'; }
+                    const cross=lrS*lrB, sign=cross>0?1:-1;
+                    if(currentRho<-0.3 && sign<0){ currentSignal='LONG RISK'; currentSignalDetail='neg corr + joint down → equity long'; }
+                    else if(currentRho>0.4 && sign>0){ currentSignal='DEFENSIVE'; currentSignalDetail='pos corr + joint up → bonds long'; }
                     else { currentSignal='NEUTRAL'; currentSignalDetail='no strong asymmetry'; }
                 } else { currentSignal='NEUTRAL'; currentSignalDetail='waiting for data'; }
-                document.getElementById('thinkSignal').textContent=currentSignal;
-                document.getElementById('thinkSignalDetail').textContent=currentSignalDetail;
+                document.getElementById('thinkSignal').textContent = currentSignal;
+                document.getElementById('thinkSignalDetail').textContent = currentSignalDetail;
             }
+
+            // Set initial thinking values immediately
+            updateModelParams(null,null,MOCK_PRICES.VIX);
 
             async function updateAllQuotes(){
                 const marketOpen=isUSMarketLikelyOpen();
-                document.getElementById('marketStatusNote').textContent=marketOpen?'US market open · prices delayed 15 min':'US market closed · showing last close';
+                document.getElementById('marketStatusNote').textContent = marketOpen?'US market open · prices delayed 15 min':'US market closed · showing last close';
                 const results=await Promise.all(SYMBOLS.map(s=>fetchQuote(s)));
                 results.forEach((d,i)=>updateTile(SYMBOLS[i],d));
                 const spyC=await fetchDailyCandles('SPY',CANDLE_COUNT), tltC=await fetchDailyCandles('TLT',CANDLE_COUNT);
@@ -801,8 +726,6 @@
                 if(tltC&&tltC.length>=2) tltPrices=tltC; else tltPrices=MOCK_TLT_CANDLES;
                 updateModelParams(results[0],results[1],results[4]);
             }
-
-            updateModelParams(null,null,MOCK_PRICES.VIX);
 
             const tradeLogData = [
                 {date:'2026-05-17 09:42',inst:'SPY',dir:'LONG',entry:'$587.32',exit:'$592.81',pnl:'+0.93%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=‑0.31, stress regime, tail dep 0.22, asymmetric score long equity.'},
@@ -823,13 +746,22 @@
             function renderTradeLog(){
                 const tbody=document.getElementById('tradeLogBody'); if(!tbody) return;
                 tbody.innerHTML='';
-                tradeLogData.forEach((t,i)=>{ const tr=document.createElement('tr'); tr.setAttribute('data-trade-index',i); tr.innerHTML=`<td style="font-weight:500;">${t.date}</td><td style="font-weight:600;">${t.inst}</td><td><span class="${t.dirClass}">${t.dir}</span></td><td class="price-cell">${t.entry}</td><td class="price-cell">${t.exit}</td><td class="${t.pnlClass}">${t.pnl}</td><td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${t.reasoning}</td>`; tbody.appendChild(tr); });
+                tradeLogData.forEach((t,i)=>{
+                    const tr=document.createElement('tr'); tr.setAttribute('data-trade-index',i);
+                    tr.innerHTML=`<td style="font-weight:500;">${t.date}</td><td style="font-weight:600;">${t.inst}</td><td><span class="${t.dirClass}">${t.dir}</span></td><td class="price-cell">${t.entry}</td><td class="price-cell">${t.exit}</td><td class="${t.pnlClass}">${t.pnl}</td><td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${t.reasoning}</td>`;
+                    tbody.appendChild(tr);
+                });
             }
             function simulateNewTrade(){
                 const instruments=['SPY','TLT','GLD','UUP','USO'], inst=instruments[Math.floor(Math.random()*instruments.length)], isLong=Math.random()>0.4, dir=isLong?'LONG':'SHORT', isWin=Math.random()>0.35, pnlVal=(Math.random()*2.2+0.3).toFixed(2), pnl=(isWin?'+':'-')+pnlVal+'%';
                 const basePrices={SPY:588,TLT:94,GLD:218,UUP:30,USO:74}, base=basePrices[inst]||100, entry=base+(Math.random()-0.5)*3, exit=entry*(1+(isWin?1:-1)*(parseFloat(pnlVal)/100));
                 const now=new Date(), dateStr='2026-05-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-                const reasonings=[`ρ=${(Math.random()*1.2-0.6).toFixed(2)}, regime ${currentRegime}, tail dep ${currentTailDep?currentTailDep.toFixed(2):'0.10'}.`,`Model B signal: ${currentSignal}.`,`Correlation ρ=${(currentRho||0).toFixed(2)}, MIDAS factor triggered.`,`Regime switch prob ${currentRegimeProb.toFixed(2)}.`];
+                const reasonings=[
+                    `ρ=${(Math.random()*1.2-0.6).toFixed(2)}, regime ${currentRegime}, tail dep ${currentTailDep?currentTailDep.toFixed(2):'0.10'}.`,
+                    `Model B signal: ${currentSignal}.`,
+                    `Correlation ρ=${(currentRho||0).toFixed(2)}, MIDAS factor triggered.`,
+                    `Regime switch prob ${currentRegimeProb.toFixed(2)}.`
+                ];
                 const newTrade={date:dateStr,inst,dir,entry:'$'+entry.toFixed(2),exit:'$'+exit.toFixed(2),pnl,pnlClass:isWin?'pnl-pos':'pnl-neg',dirClass:dir==='LONG'?'dir-long':'dir-short',reasoning:reasonings[Math.floor(Math.random()*reasonings.length)]+(isWin?' TP reached.':' Stop hit.')};
                 tradeLogData.unshift(newTrade); if(tradeLogData.length>18) tradeLogData.pop();
                 renderTradeLogWithAnimation(newTrade.dir==='LONG'?'long-flash':'short-flash');
@@ -837,7 +769,12 @@
             function renderTradeLogWithAnimation(flashClass){
                 const tbody=document.getElementById('tradeLogBody'); if(!tbody) return;
                 tbody.innerHTML='';
-                tradeLogData.forEach((t,i)=>{ const tr=document.createElement('tr'); tr.setAttribute('data-trade-index',i); if(i===0) tr.classList.add('trade-row-new',flashClass); tr.innerHTML=`<td style="font-weight:500;">${t.date}</td><td style="font-weight:600;">${t.inst}</td><td><span class="${t.dirClass}">${t.dir}</span></td><td class="price-cell">${t.entry}</td><td class="price-cell">${t.exit}</td><td class="${t.pnlClass}">${t.pnl}</td><td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${t.reasoning}</td>`; tbody.appendChild(tr); });
+                tradeLogData.forEach((t,i)=>{
+                    const tr=document.createElement('tr'); tr.setAttribute('data-trade-index',i);
+                    if(i===0) tr.classList.add('trade-row-new',flashClass);
+                    tr.innerHTML=`<td style="font-weight:500;">${t.date}</td><td style="font-weight:600;">${t.inst}</td><td><span class="${t.dirClass}">${t.dir}</span></td><td class="price-cell">${t.entry}</td><td class="price-cell">${t.exit}</td><td class="${t.pnlClass}">${t.pnl}</td><td style="max-width:280px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${t.reasoning}</td>`;
+                    tbody.appendChild(tr);
+                });
                 const row=tbody.querySelector('.trade-row-new'); if(row) setTimeout(()=>row.classList.remove('trade-row-new','long-flash','short-flash'),600);
             }
             function updateRefreshIndicator(){
@@ -865,7 +802,6 @@
                 const ctx=canvas.getContext('2d');
                 const days=[]; const equity=[]; let val=100000;
                 const seeds = [];
-                // generate 252 trading days (~1 year) with upward drift + some volatility, ending around 115000 (15% return)
                 for(let i=0;i<252;i++){ const r=(Math.sin(i/20)*0.002)+(Math.random()*0.004-0.001)+0.0006; seeds.push(1+r); }
                 const startDate=new Date(2025,4,19);
                 for(let i=0;i<252;i++){
@@ -877,7 +813,8 @@
             }
 
             function init(){
-                renderTradeLog(); setInterval(updateRefreshIndicator,1000); updateAllQuotes(); setInterval(updateAllQuotes,QUOTE_INTERVAL_MS);
+                renderTradeLog(); setInterval(updateRefreshIndicator,1000);
+                updateAllQuotes(); setInterval(updateAllQuotes,QUOTE_INTERVAL_MS);
                 setTimeout(startCountUps,600); initEquityChart(); updateBotStatus();
                 document.getElementById('burger')?.addEventListener('click',()=>{ const m=document.getElementById('mobileMenu'); m.classList.toggle('open'); });
             }
