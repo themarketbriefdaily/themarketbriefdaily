@@ -262,12 +262,11 @@
             function updateBotStatus() { const dot=document.getElementById('liveDot'), text=document.getElementById('botStatusText'); const open=isUSMarketLikelyOpen(); if(dot&&text){ dot.className='dot'+(open?'':' off'); text.textContent=open?'Bot is ACTIVE':'Market CLOSED'; } }
             updateBotStatus(); setInterval(updateBotStatus,30000);
 
-            // ── generate realistic 1‑year data ──
             function generateHistoricalData() {
                 const today = new Date(2026,4,17);
                 const startDate = new Date(today);
                 startDate.setFullYear(startDate.getFullYear()-1);
-                const daysInYear = 252;
+                const daysInYear = 365; // include weekends for smoother chart
                 dates = []; equityCurve = []; dailyReturns = [];
                 let equity = 100000;
                 let corr = -0.15;
@@ -297,6 +296,14 @@
                 const filteredDates=[], filteredEquity=[];
                 for(let i=0;i<dates.length;i++) {
                     if(dates[i]>=cutoff) {
+                        filteredDates.push(dates[i]);
+                        filteredEquity.push(equityCurve[i]);
+                    }
+                }
+                // fallback if empty: use last 30 points from full dataset
+                if(filteredDates.length===0 && dates.length>0) {
+                    const start = Math.max(0, dates.length-30);
+                    for(let i=start;i<dates.length;i++) {
                         filteredDates.push(dates[i]);
                         filteredEquity.push(equityCurve[i]);
                     }
@@ -350,7 +357,6 @@
             }
 
             function updateStats(period) {
-                // period-specific return
                 const {dates:fd, equity:fe} = filterData(period);
                 let periodReturn = 0;
                 if(fe.length>1) {
@@ -359,7 +365,6 @@
                 document.getElementById('statPeriodReturn').innerHTML = (periodReturn>=0?'+':'')+periodReturn.toFixed(2)+'<span class="unit">%</span>';
                 document.getElementById('statPeriodLabel').textContent = period==='1y' ? '1Y return' : '1M return';
 
-                // YTD return
                 const today = new Date(2026,4,17);
                 const startOfYear = new Date(2026,0,1);
                 let ytdReturn = 0;
@@ -370,7 +375,6 @@
                 }
                 document.getElementById('statYTD').innerHTML = (ytdReturn>=0?'+':'')+ytdReturn.toFixed(2)+'<span class="unit">%</span>';
 
-                // overall win rate and Sharpe
                 const winRate = dailyReturns.filter(r=>r>0).length / dailyReturns.length * 100;
                 document.getElementById('statWinRate').innerHTML = winRate.toFixed(0)+'<span class="unit">%</span>';
                 const avgRet = dailyReturns.reduce((a,b)=>a+b,0)/dailyReturns.length;
@@ -379,7 +383,6 @@
                 document.getElementById('statSharpe').textContent = sharpe.toFixed(2);
             }
 
-            // timeframe button handlers
             document.querySelectorAll('.timeframe-btn').forEach(btn=>{
                 btn.addEventListener('click',function(){
                     document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
@@ -390,14 +393,12 @@
                 });
             });
 
-            // live quotes (mock)
             const MOCK_PRICES = { SPY:{price:587.32,change:1.45,changePercent:0.25}, TLT:{price:94.20,change:-0.30,changePercent:-0.32}, GLD:{price:218.50,change:2.10,changePercent:0.97}, UUP:{price:29.84,change:0.05,changePercent:0.17}, VIX:{price:16.80,change:-0.45,changePercent:-2.61} };
             async function fetchQuote(s) { try{ const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`); if(!r.ok) throw new Error(); const d=await r.json(); if(d&&typeof d.c==='number') return {price:d.c,change:d.d,changePercent:d.dp,ok:true}; }catch(e){} return {ok:false}; }
             function updateTile(s,data){ const p=document.getElementById('price-'+s.toLowerCase()), c=document.getElementById('change-'+s.toLowerCase()), n=document.getElementById('note-'+s.toLowerCase()); if(!p||!c) return; let price,ch,cp; if(data&&data.ok){ price=data.price; ch=data.change; cp=data.changePercent; } else { const m=MOCK_PRICES[s]; price=m.price; ch=m.change; cp=m.changePercent; } p.textContent=price.toFixed(s==='VIX'?2:2); c.textContent=(ch>=0?'+':'')+ch.toFixed(2)+'  '+(cp>=0?'+':'')+cp.toFixed(2)+'%'; c.className='change '+(ch>=0?'pos':'neg'); if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close'; }
             async function updateQuotes(){ document.getElementById('marketStatusNote').textContent=isUSMarketLikelyOpen()?'US market open · prices delayed 15 min':'US market closed · showing last close'; const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s))); res.forEach((d,i)=>updateTile(SYMBOLS[i],d)); }
             setInterval(updateQuotes,60000); updateQuotes();
 
-            // trade log (sample)
             const tradeLogData = [
                 {date:'2026-05-17 09:42',inst:'SPY',dir:'LONG',entry:'$587.32',exit:'$592.81',pnl:'+0.93%',pnlClass:'pnl-pos',dirClass:'dir-long',reasoning:'ρ=‑0.31, stress regime, tail dep 0.22, asymmetric score long equity.'},
                 {date:'2026-05-16 14:15',inst:'TLT',dir:'SHORT',entry:'$94.20',exit:'$93.45',pnl:'+0.80%',pnlClass:'pnl-pos',dirClass:'dir-short',reasoning:'ρ=0.18, calm regime, VIX 14.2, Model B short bonds.'},
