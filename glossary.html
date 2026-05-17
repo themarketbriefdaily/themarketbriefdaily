@@ -61,24 +61,42 @@
     @media (max-width:680px){.controls{grid-template-columns:1fr}}
   </style>
 </head>
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="/">The Market Brief Daily</a>
-      <nav class="topbar-nav">
-        <a href="/">Home</a><a class="nav-link" href="/investments.html">Funds</a><a class="nav-link" href="/posts.html">Research</a><a class="nav-link" href="/methodology.html">Roadmap</a>
-        <div class="nav-dropdown">
-          <button class="nav-link nav-drop-toggle active" aria-haspopup="true" aria-expanded="false">Learn <span class="drop-caret" aria-hidden="true"></span></button>
-          <div class="nav-drop-menu" role="menu">
-            <a class="active" href="/glossary.html" role="menuitem"><span class="drop-icon">📖</span> Glossary</a>
-            <div class="nav-drop-divider"></div>
-            <a href="/education.html" role="menuitem"><span class="drop-icon">🎓</span> Education</a>
-          </div>
-        </div>
-        <a class="nav-link" href="/about.html">About</a><a class="nav-link" href="/contact.html">Contact</a>
+<body class="tbp">
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
       </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/investments.html">Funds</a>
+    <a href="/methodology.html">Methodology</a>
+    <a href="/education.html">Education</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/tools/dcf.html">Tools</a>
+    <a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+
 
   <main class="page" id="root">
     <section class="hero">
