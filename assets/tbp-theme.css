@@ -22,6 +22,7 @@
   --tbp-warm:      #c8a35a;     /* gold, used very sparingly */
   --tbp-pos:       #1a8a4a;
   --tbp-neg:       #b03030;
+  --tbp-radius:    12px;        /* consistent corner radius site-wide */
   --tbp-headerH:   72px;
   --tbp-ease:      cubic-bezier(.2,.8,.2,1);
   --tbp-ease-slow: cubic-bezier(.16,.84,.32,1);
@@ -34,13 +35,17 @@ html { scroll-behavior: smooth; }
 body.tbp {
   background: var(--tbp-bg);
   color: var(--tbp-ink);
-  font-family: 'Inter Tight', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-feature-settings: 'ss01', 'ss02', 'cv11';
-  font-weight: 420;
-  line-height: 1.5;
+  font-weight: 400;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* No overflow on html/body — it breaks position: sticky on the cinema hero stage. */
+}
+body.tbp h1, body.tbp h2, body.tbp h3, body.tbp h4,
+body.tbp .tbp-nav, body.tbp .tbp-brand {
+  font-family: 'Inter Tight', system-ui, -apple-system, sans-serif;
 }
 body.tbp * { box-sizing: border-box; }
 body.tbp a { color: inherit; text-decoration: none; }
@@ -123,11 +128,17 @@ body.tbp em, body.tbp .tbp-it {
   gap: 32px;
 }
 .tbp-brand {
-  display: flex; align-items: center; gap: 12px;
-  font-weight: 750; letter-spacing: -.01em;
-  font-size: 17px;
-  color: var(--tbp-ink);
+  display: flex; align-items: center;
+  flex-shrink: 0;
 }
+.tbp-brand .brand-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  /* removes white background on the warm off-white header */
+  mix-blend-mode: multiply;
+}
+/* fallback mark kept for pages that haven't been updated yet */
 .tbp-brand .mark {
   width: 28px; height: 28px;
   border-radius: 50%;
@@ -151,7 +162,7 @@ body.tbp em, body.tbp .tbp-it {
 .tbp-nav a.is-active::after {
   content: ""; position: absolute;
   left: 0; right: 0; bottom: 0;
-  height: 1px; background: var(--tbp-ink);
+  height: 1.5px; background: var(--tbp-warm);
 }
 .tbp-cta-mini {
   display: inline-flex; align-items: center; gap: 8px;
@@ -383,7 +394,7 @@ body.tbp em, body.tbp .tbp-it {
 .tbp-card .visual {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: 12px;
+  border-radius: var(--tbp-radius);
   overflow: hidden;
   background: var(--tbp-bg-alt);
   margin-bottom: 18px;
@@ -772,6 +783,12 @@ body.tbp em, body.tbp .tbp-it {
   .tbp-marquee-track { animation: none; }
   [data-tbp-reveal] { opacity: 1 !important; transform: none !important; }
   .tbp-hero-carousel .frame { transition: none; }
+  .tbp-card .visual img,
+  .tbp-card .visual .placeholder,
+  .tbp-card:hover .visual img,
+  .tbp-card:hover .visual .placeholder { transform: none !important; transition: none; }
+  .tbp-card .arrow { transition: none; }
+  .tbp-btn { transition: none; }
 }
 
 /* ── Mobile breakpoints ───────────────────────────────────────── */

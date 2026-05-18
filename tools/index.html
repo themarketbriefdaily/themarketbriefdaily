@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Financial Tools — The Market Brief Daily</title>
+  <meta name="description" content="Free financial tools: DCF valuation calculator, macro signal dashboard, CFA Level 1 study tool, and bond yield calculator. No sign-up required." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/tools/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+
+  <style>
+    /* ── Tool card grid ───────────────────────────────────────── */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: clamp(16px, 2vw, 28px);
+      margin-top: 48px;
+    }
+    @media (max-width: 720px) { .tool-grid { grid-template-columns: 1fr; } }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--tbp-bg);
+      border: 1px solid var(--tbp-line);
+      border-radius: var(--tbp-radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .25s, box-shadow .3s, transform .3s var(--tbp-ease);
+    }
+    .tool-card:hover {
+      border-color: var(--tbp-ink);
+      box-shadow: 0 12px 40px rgba(0,0,0,.08);
+      transform: translateY(-4px);
+    }
+    .tool-card-visual {
+      position: relative;
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+      background: var(--tbp-ink);
+    }
+    .tool-card-visual img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; opacity: .7;
+      transition: transform .8s var(--tbp-ease-slow), opacity .4s;
+    }
+    .tool-card:hover .tool-card-visual img {
+      transform: scale(1.04);
+      opacity: .85;
+    }
+    .tool-card-visual-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(10,10,10,.6) 100%);
+    }
+    .tool-card-visual-label {
+      position: absolute;
+      bottom: 16px; left: 20px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 850;
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 2px 16px rgba(0,0,0,.3);
+    }
+    .tool-card-visual-badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(8px);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: rgba(255,255,255,.9);
+    }
+    .tool-card-body {
+      padding: clamp(22px, 3vw, 32px);
+      display: flex; flex-direction: column;
+      flex: 1;
+    }
+    .tool-card-eyebrow {
+      font-size: 10.5px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--tbp-muted); margin-bottom: 10px;
+    }
+    .tool-card h3 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(1.2rem, 2vw, 1.55rem);
+      font-weight: 800; letter-spacing: -.02em;
+      line-height: 1.15; margin: 0 0 12px;
+      color: var(--tbp-ink);
+    }
+    .tool-card p {
+      font-size: 14.5px; line-height: 1.65;
+      color: var(--tbp-muted); margin: 0 0 20px;
+      flex: 1;
+    }
+    .tool-card-features {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 22px;
+    }
+    .tool-card-features span {
+      font-size: 11.5px; font-weight: 500;
+      padding: 4px 12px;
+      border: 1px solid var(--tbp-line);
+      border-radius: 999px;
+      color: var(--tbp-muted);
+      background: var(--tbp-bg-alt);
+    }
+    .tool-card-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      height: 46px; padding: 0 22px;
+      background: var(--tbp-ink); color: var(--tbp-bg);
+      border-radius: 999px;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .02em; text-decoration: none;
+      align-self: flex-start;
+      transition: background .25s, transform .2s;
+    }
+    .tool-card:hover .tool-card-cta { background: var(--tbp-blue); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tool-card, .tool-card-visual img, .tool-card-cta { transition: none; }
+      .tool-card:hover { transform: none; }
+    }
+  </style>
+</head>
+
+<body class="tbp">
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/education.html">Education</a>
+        <a class="is-active" href="/tools/">Tools</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
+        Subscribe <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/education.html">Education</a>
+    <a href="/tools/">Tools</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/about.html">About</a>
+    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
+  </div>
+
+  <!-- ── HERO ───────────────────────────────────────────────────── -->
+  <section class="tbp-hero">
+    <div class="tbp-container">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="margin-bottom:28px;">Free financial tools</div>
+        <h1 class="tbp-h1" style="max-width:16ch;">
+          Build the analysis.<br><em>Do the maths.</em>
+        </h1>
+        <p class="tbp-lead" style="margin-top:24px; max-width:52ch;">
+          Four free tools for independent investors and finance students — no account
+          required for the core features. DCF modelling, macro dashboards, CFA prep,
+          and yield analysis in one place.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TOOLS GRID ─────────────────────────────────────────────── -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tool-grid" data-tbp-reveal>
+
+        <!-- DCF Calculator -->
+        <a class="tool-card" href="/tools/dcf.html">
+          <div class="tool-card-visual">
+            <img src="/assets/images/fund-fact.jpg" alt="DCF valuation" loading="lazy">
+            <div class="tool-card-visual-overlay"></div>
+            <div class="tool-card-visual-label">DCF</div>
+            <div class="tool-card-visual-badge">Free · No sign-up</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="tool-card-eyebrow">Valuation · Calculator</div>
+            <h3>DCF Valuation Tool</h3>
+            <p>
+              Enter revenue growth, EBIT margin, discount rate (WACC), and terminal growth.
+              Outputs intrinsic value per share, margin of safety, and a year-by-year free
+              cash flow waterfall — instantly. Export to PDF with a paid subscription.
+            </p>
+            <div class="tool-card-features">
+              <span>Revenue model</span>
+              <span>WACC input</span>
+              <span>Terminal value</span>
+              <span>Sensitivity table</span>
+            </div>
+            <span class="tool-card-cta">Open calculator →</span>
+          </div>
+        </a>
+
+        <!-- Macro Dashboard -->
+        <a class="tool-card" href="/tools/macro-dashboard.html">
+          <div class="tool-card-visual">
+            <img src="/assets/images/fund-struct.jpg" alt="Macro signals dashboard" loading="lazy">
+            <div class="tool-card-visual-overlay"></div>
+            <div class="tool-card-visual-label">Macro</div>
+            <div class="tool-card-visual-badge">Updated daily</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="tool-card-eyebrow">Rates · FX · Commodities</div>
+            <h3>Macro Signal Dashboard</h3>
+            <p>
+              Live yield curves (2s10s, 5s30s), credit spreads (IG/HY), PMI data, FX rates,
+              VIX, and commodity prices — updated each trading day with an AI-written macro
+              interpretation and regime classification.
+            </p>
+            <div class="tool-card-features">
+              <span>Yield curves</span>
+              <span>Credit spreads</span>
+              <span>PMI data</span>
+              <span>AI interpretation</span>
+            </div>
+            <span class="tool-card-cta">Open dashboard →</span>
+          </div>
+        </a>
+
+        <!-- CFA Study Tool -->
+        <a class="tool-card" href="/tools/cfa.html">
+          <div class="tool-card-visual">
+            <img src="/assets/images/pillar-3.jpg" alt="CFA study tool" loading="lazy">
+            <div class="tool-card-visual-overlay"></div>
+            <div class="tool-card-visual-label">CFA</div>
+            <div class="tool-card-visual-badge">Free tier available</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="tool-card-eyebrow">Exam prep · Study</div>
+            <h3>CFA Level 1 Study Tool</h3>
+            <p>
+              AI-generated practice questions across all 10 CFA Level 1 topic areas — ethics,
+              quant, economics, FI, equities, derivatives, and more. Adaptive difficulty,
+              worked explanations with real macro examples, and session progress tracking.
+            </p>
+            <div class="tool-card-features">
+              <span>10 topic areas</span>
+              <span>Adaptive difficulty</span>
+              <span>Worked answers</span>
+              <span>Progress tracking</span>
+            </div>
+            <span class="tool-card-cta">Start studying →</span>
+          </div>
+        </a>
+
+        <!-- Bond Yield Calculator -->
+        <a class="tool-card" href="/tools/bond-yield.html">
+          <div class="tool-card-visual">
+            <img src="/assets/images/fund-macro.jpg" alt="Bond yield calculator" loading="lazy">
+            <div class="tool-card-visual-overlay"></div>
+            <div class="tool-card-visual-label">Bonds</div>
+            <div class="tool-card-visual-badge">Free · No sign-up</div>
+          </div>
+          <div class="tool-card-body">
+            <div class="tool-card-eyebrow">Fixed income · Rates</div>
+            <h3>Bond Yield Calculator</h3>
+            <p>
+              Calculate yield-to-maturity, current yield, Macaulay duration, modified duration,
+              and DV01 for any fixed-rate bond. Input face value, coupon, maturity, and price
+              to get a full fixed-income analytics snapshot in seconds.
+            </p>
+            <div class="tool-card-features">
+              <span>Yield to maturity</span>
+              <span>Duration / DV01</span>
+              <span>Convexity</span>
+              <span>Price sensitivity</span>
+            </div>
+            <span class="tool-card-cta">Open calculator →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────────── -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-cta-strip" data-tbp-reveal>
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">More analysis</div>
+          <h2>Read the research<br>behind the <em>tools.</em></h2>
+        </div>
+        <div class="actions">
+          <a class="tbp-btn primary" href="/posts.html">Latest briefs <span class="arrow">→</span></a>
+          <a class="tbp-btn" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/methodology.html">Methodology</a>
+            <a href="/education.html">Education</a>
+            <a href="/bot.html">AI Trader</a>
+            <a href="/glossary.html">Glossary</a>
+          </div>
+        </div>
+        <div>
+          <h4>Tools</h4>
+          <div class="tbp-footer-links">
+            <a href="/tools/dcf.html">DCF Calculator</a>
+            <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+            <a href="/tools/cfa.html">CFA Study Tool</a>
+            <a href="/tools/bond-yield.html">Bond Yield Calculator</a>
+            <a href="/reports.html">Research Reports</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="/disclaimer.html#privacy">Privacy</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+</body>
+</html>

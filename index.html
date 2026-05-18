@@ -4,237 +4,266 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily — Independent macro &amp; market structure research</title>
-  <meta name="description" content="Independent macro and market structure research. Macro briefs, model portfolios, AI tools, and a finance education library." />
+  <meta name="description" content="Independent macro and market structure research. Daily briefings, model portfolios, AI tools, and a free finance education library." />
   <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Market Brief Daily" />
+  <meta property="og:url" content="https://www.marketbriefdaily.com/" />
+  <meta property="og:title" content="The Market Brief Daily — Independent macro &amp; market structure research" />
+  <meta property="og:description" content="Independent macro and market structure research. Daily briefings, model portfolios, AI day-trader, and a free finance education library." />
+  <meta property="og:image" content="https://www.marketbriefdaily.com/assets/images/og-default.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.marketbriefdaily.com/assets/images/og-default.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
+
   <style>
-    /* ── 3D Hero — white, seamless with page ─────────────────────── */
-    .london-hero {
-      position: relative; width: 100%; height: 100vh;
-      min-height: 640px; overflow: hidden;
-      background: #ffffff;
-      box-shadow: 0 12px 48px rgba(0,0,0,.07);
-    }
-    #londonStage {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      cursor: grab; background: transparent;
-    }
-    #londonStage:active { cursor: grabbing; }
-    .london-hero::after {
-      content: ""; position: absolute; inset: 0;
-      pointer-events: none; z-index: 4;
-      background: linear-gradient(to bottom, rgba(255,255,255,0) 65%, rgba(255,255,255,.75) 100%);
-    }
-    /* HUD */
-    .london-hud {
-      position: absolute; left: 0; right: 0; bottom: 0; z-index: 6;
-      pointer-events: none;
-      padding: 0 var(--tbp-pad-x) clamp(28px,5vw,64px);
-    }
-    .london-hud > * { pointer-events: auto; }
-    .london-hud-eyebrow {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 11px; font-weight: 600; letter-spacing: .14em;
-      text-transform: uppercase; color: rgba(0,0,0,.65); margin-bottom: 18px;
-    }
-    .london-hud-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-    .london-hud h1 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: clamp(2rem,5.4vw,4.4rem); font-weight: 850;
-      letter-spacing: -.035em; line-height: 1; color: #111;
-      margin: 0 0 18px; max-width: 18ch;
-      text-shadow: 0 2px 24px rgba(0,0,0,.12);
-    }
-    .london-hud h1 em { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; }
-    .london-hud .lead {
-      max-width: 48ch; font-size: clamp(.95rem,1.15vw,1.08rem);
-      line-height: 1.55; color: rgba(0,0,0,.72); margin: 0 0 22px;
-    }
-    /* Hint pill — visible text on white background */
-    .london-hud-hint {
-      position: absolute; top: clamp(80px,10vh,120px); right: var(--tbp-pad-x);
-      z-index: 6; display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 16px;
-      border: 1px solid rgba(0,0,0,.14); border-radius: 999px;
-      background: rgba(255,255,255,.88); backdrop-filter: blur(10px);
-      font-size: 11.5px; font-weight: 600; letter-spacing: .06em;
-      color: rgba(0,0,0,.80); pointer-events: auto;
-    }
-    .london-hud-hint::before {
-      content: "↻"; font-size: 15px; color: #444;
-      animation: hudSpin 8s linear infinite;
-    }
-    @keyframes hudSpin { to { transform: rotate(360deg); } }
-    @media (max-width: 720px) { .london-hud-hint { display: none; } }
-
-    /* ── London marker cards ─────────────────────────────────────── */
-    #londonLabels { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-    .london-marker {
-      position: absolute; top: 0; left: 0;
-      pointer-events: auto; text-decoration: none; color: inherit;
-      will-change: transform;
-      display: inline-flex; flex-direction: column; align-items: center;
-      transition: opacity .3s ease;
-    }
-    .lm-card {
-      width: 200px; background: #ffffff;
-      border-radius: 14px; border: 1.5px solid rgba(0,0,0,.10);
-      box-shadow: 0 6px 28px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.08);
+    /* ── Static editorial hero ─────────────────────────────────── */
+    .tbp-hero-home {
+      position: relative;
+      width: 100%;
+      min-height: clamp(560px, 88vh, 920px);
+      padding: clamp(130px, 17vh, 220px) var(--tbp-pad-x) clamp(64px, 9vh, 120px);
+      background:
+        radial-gradient(1400px 700px at 90% -5%, rgba(102,163,255,.09), transparent 55%),
+        radial-gradient(1000px 600px at -5% 110%, rgba(200,163,90,.07), transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, #faf9f6 100%);
+      border-bottom: 1px solid var(--tbp-line);
       overflow: hidden;
-      transform: translateY(0) scale(1);
-      transition: transform .3s cubic-bezier(.16,.84,.32,1), box-shadow .3s ease;
-      cursor: pointer;
     }
-    .london-marker:hover .lm-card {
-      transform: translateY(-5px) scale(1.03);
-      box-shadow: 0 16px 44px rgba(0,0,0,.22), 0 2px 8px rgba(0,0,0,.10);
+    /* Decorative rule top-right */
+    .tbp-hero-home::before {
+      content: "";
+      position: absolute;
+      top: var(--tbp-headerH);
+      right: 0;
+      width: 40vw;
+      height: 1px;
+      background: var(--tbp-line);
     }
-    .lm-card-img {
-      width: 100%; height: 90px;
-      background-size: cover; background-position: center;
-      background-color: #e8e6e0;
-      border-bottom: 1px solid rgba(0,0,0,.06);
+    .tbp-hero-home-inner {
+      position: relative;
+      max-width: var(--tbp-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: clamp(32px, 5vw, 80px);
+      align-items: end;
     }
-    .lm-card-body { padding: 11px 13px 12px; }
-    .lm-card-name {
-      font-family: 'Inter Tight', sans-serif; font-size: 14px; font-weight: 700;
-      letter-spacing: -.01em; color: #0a0a0a; margin-bottom: 2px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    @media (max-width: 920px) {
+      .tbp-hero-home-inner { grid-template-columns: 1fr; gap: 40px; }
+      .tbp-hero-home::before { display: none; }
     }
-    .lm-card-section {
-      font-family: 'Inter Tight', sans-serif; font-size: 10px; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase; color: #0066ff; margin-bottom: 5px;
+    .tbp-hero-home-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--tbp-muted); margin-bottom: 24px;
     }
-    .lm-card-desc {
-      font-family: 'Inter Tight', sans-serif; font-size: 12px; font-weight: 400;
-      color: #555; line-height: 1.45; margin-bottom: 8px;
+    .tbp-hero-home-eyebrow::before {
+      content: ""; width: 28px; height: 1px; background: currentColor;
     }
-    .lm-card-cta {
-      font-family: 'Inter Tight', sans-serif; font-size: 11.5px; font-weight: 600;
-      color: #0a0a0a; letter-spacing: .04em;
-      padding: 6px 0 0; border-top: 1px solid rgba(0,0,0,.07);
+    .tbp-hero-home h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(2.6rem, 7vw, 5.6rem);
+      font-weight: 850;
+      letter-spacing: -.04em;
+      line-height: .96;
+      color: var(--tbp-ink);
+      margin: 0 0 28px;
+      max-width: 14ch;
+    }
+    .tbp-hero-home h1 em {
+      font-family: 'Fraunces', serif;
+      font-style: italic; font-weight: 400;
+    }
+    .tbp-hero-home .lead {
+      max-width: 52ch;
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      line-height: 1.65;
+      color: var(--tbp-muted);
+      margin: 0 0 32px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .hero-meta {
+      border-left: 1px solid var(--tbp-line);
+      padding-left: clamp(20px, 3vw, 40px);
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .hero-meta .row { display: flex; flex-direction: column; gap: 5px; }
+    .hero-meta .k {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: var(--tbp-muted-2);
+    }
+    .hero-meta .v {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: -.01em; color: var(--tbp-ink);
+      line-height: 1.3;
+    }
+    .hero-meta .v em {
+      font-family: 'Fraunces', serif;
+      font-style: italic; font-weight: 400;
+      color: var(--tbp-muted);
     }
 
-    /* ── Loader ───────────────────────────────────────────────────── */
-    #londonLoader {
-      position: absolute; inset: 0; z-index: 7;
-      display: flex; align-items: flex-end; justify-content: flex-start;
-      background: #06080f;
-      transition: opacity 1.2s cubic-bezier(.4,0,.2,1); overflow: hidden;
-    }
-    #londonLoader.done { opacity: 0; pointer-events: none; }
-    #loaderVideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .72; }
-    #londonLoader::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(6,8,15,.9) 0%, rgba(6,8,15,.3) 50%, rgba(6,8,15,.5) 100%);
-      pointer-events: none;
-    }
-    .lon-load-ui { position: relative; z-index: 2; padding: 0 var(--tbp-pad-x) clamp(28px,5vw,56px); display: flex; flex-direction: column; gap: 12px; }
-    .lon-load-label { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); }
-    .lon-load-bar { width: 220px; height: 1px; background: rgba(255,255,255,.12); overflow: hidden; position: relative; }
-    .lon-load-bar::after { content: ""; position: absolute; inset: 0; width: 35%; background: linear-gradient(90deg, transparent, #7aa6ff, transparent); animation: lonScan 1.6s linear infinite; }
-    @keyframes lonScan { to { transform: translateX(285%); } }
-    .lon-load-sub { font-size: 10px; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.35); }
-
-    /* ── Showcase cards ───────────────────────────────────────────── */
-    .tbp-card .visual img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; transition: transform .6s cubic-bezier(.16,.84,.32,1); }
-    .tbp-card:hover .visual img { transform: scale(1.04); }
-
-    /* Investment-style showcase cards */
+    /* ── Showcase grid ─────────────────────────────────────────── */
     .showcase-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 20px;
+      gap: clamp(14px, 1.8vw, 22px);
       margin-top: 40px;
     }
     @media (max-width: 900px) { .showcase-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 600px) { .showcase-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .showcase-grid { grid-template-columns: 1fr; } }
 
     .showcase-card {
       display: flex; flex-direction: column;
       background: var(--tbp-bg);
       border: 1px solid var(--tbp-line);
-      border-radius: 16px;
-      padding: 28px 26px 24px;
+      border-radius: var(--tbp-radius);
+      padding: 26px 24px 22px;
       text-decoration: none;
       color: inherit;
-      transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+      transition: border-color .25s, box-shadow .25s, transform .3s var(--tbp-ease);
       position: relative;
       overflow: hidden;
     }
     .showcase-card::before {
       content: "";
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--tbp-ink);
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--tbp-warm);
       transform: scaleX(0); transform-origin: left;
       transition: transform .3s cubic-bezier(.16,.84,.32,1);
     }
     .showcase-card:hover {
-      border-color: var(--tbp-ink);
-      box-shadow: 0 8px 32px rgba(0,0,0,.08);
+      border-color: rgba(0,0,0,.25);
+      box-shadow: 0 8px 32px rgba(0,0,0,.07);
       transform: translateY(-3px);
     }
     .showcase-card:hover::before { transform: scaleX(1); }
     .showcase-card .sc-num {
-      font-size: 11px; font-weight: 700; letter-spacing: .12em;
+      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
       text-transform: uppercase; color: var(--tbp-muted);
       margin-bottom: 14px;
     }
-    .showcase-card .sc-icon {
-      font-size: 28px; margin-bottom: 14px; line-height: 1;
-    }
+    .showcase-card .sc-icon { font-size: 24px; margin-bottom: 12px; line-height: 1; }
     .showcase-card h3 {
-      font-size: 18px; font-weight: 700; letter-spacing: -.015em;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 17px; font-weight: 750; letter-spacing: -.015em;
       color: var(--tbp-ink); margin: 0 0 10px; line-height: 1.2;
     }
     .showcase-card p {
-      font-size: 14px; line-height: 1.6; color: var(--tbp-ink-2);
+      font-size: 13.5px; line-height: 1.6; color: var(--tbp-muted);
       margin: 0 0 20px; flex: 1;
     }
     .showcase-card .sc-cta {
-      font-size: 13px; font-weight: 600; color: var(--tbp-ink);
+      font-size: 12px; font-weight: 700; color: var(--tbp-ink);
+      letter-spacing: .04em; text-transform: uppercase;
       display: flex; align-items: center; gap: 6px;
-      margin-top: auto; padding-top: 16px;
+      margin-top: auto; padding-top: 14px;
       border-top: 1px solid var(--tbp-line);
+      transition: gap .2s;
     }
+    .showcase-card:hover .sc-cta { gap: 10px; }
     .showcase-card .sc-badge {
       display: inline-block; font-size: 10px; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
       padding: 3px 9px; border-radius: 999px;
-      background: #e8f0ff; color: #0044cc;
-      margin-bottom: 10px;
+      background: rgba(0,102,255,.08); color: #0044cc;
+      margin-bottom: 10px; border: 1px solid rgba(0,102,255,.15);
     }
+
+    /* Feature card — full-width AI trader */
     .showcase-card-feature {
       grid-column: 1 / -1;
-      display: grid; grid-template-columns: 1fr 1.6fr; gap: 0;
-      border-radius: 16px; overflow: hidden; border: 1px solid var(--tbp-line);
+      display: grid; grid-template-columns: 1fr 1.7fr; gap: 0;
+      border-radius: var(--tbp-radius); overflow: hidden;
+      border: 1px solid var(--tbp-line);
       text-decoration: none; color: inherit;
-      transition: box-shadow .25s ease, transform .25s ease;
+      transition: box-shadow .25s, transform .3s var(--tbp-ease);
     }
     .showcase-card-feature:hover {
-      box-shadow: 0 12px 40px rgba(0,0,0,.10); transform: translateY(-2px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.10);
+      transform: translateY(-2px);
     }
     .showcase-card-feature .sc-img {
-      background: #0a0a0a;
-      display: flex; align-items: center; justify-content: center;
-      padding: 48px 32px; min-height: 240px;
+      position: relative;
+      min-height: 280px;
+      overflow: hidden;
     }
-    .showcase-card-feature .sc-img-text {
-      font-family: 'Inter Tight', sans-serif; font-size: 5rem; font-weight: 850;
-      letter-spacing: -.04em; color: rgba(255,255,255,.12);
-      line-height: 1;
+    .showcase-card-feature .sc-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform .8s var(--tbp-ease-slow);
     }
+    .showcase-card-feature:hover .sc-img img { transform: scale(1.04); }
     .showcase-card-feature .sc-content {
-      padding: clamp(28px,4vw,48px);
+      padding: clamp(28px,4vw,52px);
       display: flex; flex-direction: column; justify-content: center;
       background: var(--tbp-bg);
     }
     @media (max-width: 700px) {
       .showcase-card-feature { grid-template-columns: 1fr; }
-      .showcase-card-feature .sc-img { min-height: 160px; }
+      .showcase-card-feature .sc-img { min-height: 180px; }
+    }
+
+    /* ── Latest briefs section ─────────────────────────────────── */
+    .brief-card {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 22px; border: 1px solid var(--tbp-line);
+      border-radius: var(--tbp-radius); background: var(--tbp-bg);
+      text-decoration: none; color: inherit;
+      transition: border-color .25s, box-shadow .25s;
+    }
+    .brief-card:hover {
+      border-color: var(--tbp-ink);
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .brief-card .bc-date {
+      font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--tbp-muted);
+    }
+    .brief-card h3 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.05rem; font-weight: 750;
+      letter-spacing: -.015em; line-height: 1.25; margin: 0;
+      color: var(--tbp-ink);
+    }
+    .brief-card p {
+      font-size: 13.5px; line-height: 1.55;
+      color: var(--tbp-muted); margin: 0;
+      flex: 1;
+    }
+    .brief-card .bc-cta {
+      font-size: 11.5px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--tbp-ink); margin-top: auto; padding-top: 8px;
+    }
+
+    /* ── Live pulsing dot ───────────────────────────────────────── */
+    @keyframes livePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(26,138,74,.55); }
+      70%  { box-shadow: 0 0 0 8px rgba(26,138,74,0); }
+      100% { box-shadow: 0 0 0 0 rgba(26,138,74,0); }
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #1a8a4a; display: inline-block; flex-shrink: 0;
+      animation: livePulse 2s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot { animation: none; }
+      .showcase-card, .showcase-card-feature, .brief-card { transition: none; }
+      .showcase-card:hover, .showcase-card-feature:hover { transform: none; }
     }
   </style>
 </head>
@@ -249,11 +278,9 @@
       <nav class="tbp-nav" aria-label="Primary">
         <a class="is-active" href="/">Home</a>
         <a href="/posts.html">Research</a>
-        <a href="/investments.html">Funds</a>
-        <a href="/methodology.html">Methodology</a>
         <a href="/education.html">Education</a>
+        <a href="/tools/">Tools</a>
         <a href="/bot.html">AI Trader</a>
-        <a href="/tools/dcf.html">Tools</a>
         <a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
@@ -262,50 +289,57 @@
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
+
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/posts.html">Research</a>
-    <a href="/investments.html">Funds</a>
-    <a href="/methodology.html">Methodology</a>
     <a href="/education.html">Education</a>
+    <a href="/tools/">Tools</a>
     <a href="/bot.html">AI Trader</a>
-    <a href="/tools/dcf.html">Tools</a>
     <a href="/about.html">About</a>
     <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
 
-  <!-- ── HERO: 3D London ─────────────────────────────────────── -->
-  <section class="london-hero" aria-label="3D map of London">
-    <div id="londonStage" role="application" aria-label="Drag to explore. Scroll to zoom. Double-click to zoom in."></div>
-    <div id="londonLabels" aria-hidden="false"></div>
-    <div id="londonLoader">
-      <video id="loaderVideo" autoplay muted loop playsinline>
-        <source src="/assets/loading-video.mp4" type="video/mp4">
-      </video>
-      <div class="lon-load-ui">
-        <div class="lon-load-label">Building London…</div>
-        <div class="lon-load-bar"></div>
-        <div class="lon-load-sub">4,255 buildings · OpenStreetMap</div>
+  <!-- ── HERO ───────────────────────────────────────────────────── -->
+  <section class="tbp-hero-home" aria-label="Introduction">
+    <div class="tbp-hero-home-inner">
+      <div>
+        <div class="tbp-hero-home-eyebrow">Independent macro &amp; market structure research</div>
+        <h1>Markets, <em>read</em><br>with discipline.</h1>
+        <p class="lead">
+          Daily briefings on macro transmission, credit spreads, commodity supply,
+          and market microstructure — paired with transparent model portfolios, a
+          free education library, AI tools, and a day-trader running in public.
+        </p>
+        <div class="hero-actions">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Read the latest brief <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="/about.html">About <span class="arrow">→</span></a>
+        </div>
       </div>
-    </div>
-    <div class="london-hud-hint">Drag · Scroll · Double-click to zoom</div>
-    <div class="london-hud">
-      <div class="london-hud-eyebrow">Independent macro &amp; market structure research</div>
-      <h1>London, <em>read</em><br>through the markets.</h1>
-      <p class="lead">
-        Five landmarks, five sections of the publication — from macro research
-        to an AI day-trader running live. Click any card to explore.
-      </p>
-      <p style="font-size:11px; color:rgba(0,0,0,.4); margin:0; letter-spacing:.04em;">
-        Geometry from OpenStreetMap (ODbL). Educational research only — not investment advice.
-      </p>
+      <aside class="hero-meta" aria-label="Publication details">
+        <div class="row">
+          <span class="k">Coverage</span>
+          <span class="v">Macro · Credit · Commodities · <em>Microstructure</em></span>
+        </div>
+        <div class="row">
+          <span class="k">Cadence</span>
+          <span class="v">Daily brief · weekly long-form</span>
+        </div>
+        <div class="row">
+          <span class="k">Access</span>
+          <span class="v">Free to read · paid tier for depth</span>
+        </div>
+        <div class="row">
+          <span class="k">Standard</span>
+          <span class="v"><em>Educational research — not investment advice</em></span>
+        </div>
+      </aside>
     </div>
   </section>
 
   <!-- ── SITE SHOWCASE ─────────────────────────────────────────── -->
   <section class="tbp-section">
     <div class="tbp-container">
-
       <div class="tbp-section-head" data-tbp-reveal>
         <div class="left">
           <div class="tbp-eyebrow">What we publish</div>
@@ -313,116 +347,140 @@
         </div>
         <div class="right">
           <p class="tbp-lead">
-            Independent macro research written at CFA level, transparent model portfolios,
-            AI-powered financial tools, and a comprehensive education library — all free.
-            The paid tier unlocks deeper reports and full tool access.
+            Independent macro research at CFA level, transparent model portfolios,
+            AI-powered financial tools, and a comprehensive education library —
+            all free to read. The paid tier unlocks deeper reports and full tool access.
           </p>
         </div>
       </div>
 
       <div class="showcase-grid" data-tbp-reveal>
 
-        <!-- Research -->
         <a class="showcase-card" href="/posts.html">
           <div class="sc-num">01 — Research</div>
           <div class="sc-icon">◎</div>
           <h3>Macro Research Briefs</h3>
-          <p>Weekly briefings on central bank policy, yield curves, credit spreads, commodity supply chains, and market microstructure — written at CFA analyst level for independent investors and IFA practices.</p>
+          <p>Weekly briefings on central bank policy, yield curves, credit spreads, commodity supply chains, and market microstructure — written at CFA analyst level.</p>
           <div class="sc-cta">Read the briefs <span>→</span></div>
         </a>
 
-        <!-- Funds -->
-        <a class="showcase-card" href="/investments.html">
-          <div class="sc-num">02 — Funds</div>
-          <div class="sc-icon">◈</div>
-          <h3>Model Portfolios</h3>
-          <p>Four fully transparent model portfolios — macro regime, market microstructure, physical supply, and multi-factor. Tracked publicly with benchmark comparisons, drawdown analysis, and monthly commentary.</p>
-          <div class="sc-cta">View portfolios <span>→</span></div>
-        </a>
-
-        <!-- Methodology -->
-        <a class="showcase-card" href="/methodology.html">
-          <div class="sc-num">03 — Framework</div>
-          <div class="sc-icon">⌥</div>
-          <h3>Investment Methodology</h3>
-          <p>The analytical framework behind every portfolio decision. Three interlocking lenses — macro regime detection, physical supply tightness, and market microstructure signals — explained in full.</p>
-          <div class="sc-cta">Read methodology <span>→</span></div>
-        </a>
-
-        <!-- Education -->
         <a class="showcase-card" href="/education.html">
-          <div class="sc-num">04 — Education</div>
+          <div class="sc-num">02 — Education</div>
           <div class="sc-icon">◻</div>
           <h3>Finance Education Library</h3>
-          <p>Seven plain-English chapters covering financial markets, asset classes, investing principles, UK tax wrappers (ISA, SIPP, LISA), pensions, and macroeconomics for investors. Completely free.</p>
+          <p>Seven plain-English chapters covering financial markets, asset classes, investing principles, UK tax wrappers (ISA, SIPP, LISA), pensions, and macroeconomics.</p>
           <div class="sc-cta">Open the library <span>→</span></div>
         </a>
 
-        <!-- CFA Tool -->
-        <a class="showcase-card" href="/tools/cfa.html">
-          <div class="sc-num">05 — Study tool</div>
-          <span class="sc-badge">Free tier available</span>
-          <h3>CFA Level 1 Study Tool</h3>
-          <p>AI-generated practice questions across all 10 CFA Level 1 topic areas. Adaptive difficulty, worked explanations with real macro examples, and session progress tracking. Built by a CFA candidate.</p>
-          <div class="sc-cta">Start studying <span>→</span></div>
+        <a class="showcase-card" href="/investments.html">
+          <div class="sc-num">03 — Portfolios</div>
+          <div class="sc-icon">◈</div>
+          <h3>Model Portfolios</h3>
+          <p>Four transparent model portfolios — macro regime, market microstructure, physical supply, and multi-factor. Tracked publicly with methodology and benchmark comparisons.</p>
+          <div class="sc-cta">View portfolios <span>→</span></div>
         </a>
 
-        <!-- DCF Tool -->
-        <a class="showcase-card" href="/tools/dcf.html">
-          <div class="sc-num">06 — Calculator</div>
+        <a class="showcase-card" href="/tools/">
+          <div class="sc-num">04 — Calculator</div>
           <span class="sc-badge">Free — no sign-up</span>
           <h3>DCF Valuation Tool</h3>
-          <p>Enter revenue growth, EBIT margin, WACC, and terminal growth rate. Outputs intrinsic value per share, margin of safety, and a year-by-year free cash flow model. Export to PDF with a paid subscription.</p>
+          <p>Enter revenue growth, EBIT margin, WACC, and terminal growth rate. Get intrinsic value per share, margin of safety, and a year-by-year free cash flow model instantly.</p>
           <div class="sc-cta">Open calculator <span>→</span></div>
         </a>
 
-        <!-- Macro Dashboard -->
-        <a class="showcase-card" href="/tools/macro-dashboard.html">
-          <div class="sc-num">07 — Dashboard</div>
+        <a class="showcase-card" href="/tools/">
+          <div class="sc-num">05 — Dashboard</div>
           <div class="sc-icon">◉</div>
           <h3>Macro Signal Dashboard</h3>
-          <p>Live yield curves, credit spreads, PMI data, FX rates, VIX, and commodity prices — updated each trading day with an AI-written macro interpretation and regime classification.</p>
+          <p>Live yield curves, credit spreads, PMI data, FX rates, and commodity prices — updated each trading day with an AI-written macro interpretation and regime signal.</p>
           <div class="sc-cta">Open dashboard <span>→</span></div>
         </a>
 
-        <!-- Glossary -->
+        <a class="showcase-card" href="/tools/">
+          <div class="sc-num">06 — Study tool</div>
+          <span class="sc-badge">Free tier available</span>
+          <h3>CFA Level 1 Study Tool</h3>
+          <p>AI-generated practice questions across all 10 CFA Level 1 topic areas. Adaptive difficulty, worked explanations with real macro examples, and session progress tracking.</p>
+          <div class="sc-cta">Start studying <span>→</span></div>
+        </a>
+
         <a class="showcase-card" href="/glossary.html">
-          <div class="sc-num">08 — Reference</div>
+          <div class="sc-num">07 — Reference</div>
           <div class="sc-icon">◇</div>
           <h3>Finance Glossary</h3>
-          <p>Comprehensive, searchable definitions of financial terms, market structure concepts, macro indicators, and instruments — cross-referenced with education chapters and research briefs.</p>
+          <p>Searchable definitions of financial terms, market structure concepts, macro indicators, and instruments — cross-referenced with education chapters and research briefs.</p>
           <div class="sc-cta">Browse glossary <span>→</span></div>
         </a>
 
-        <!-- Research Reports (Gumroad) -->
+        <a class="showcase-card" href="/methodology.html">
+          <div class="sc-num">08 — Framework</div>
+          <div class="sc-icon">⌥</div>
+          <h3>Investment Methodology</h3>
+          <p>The analytical framework behind every portfolio decision. Three interlocking lenses — macro regime detection, physical supply tightness, and market microstructure signals.</p>
+          <div class="sc-cta">Read methodology <span>→</span></div>
+        </a>
+
         <a class="showcase-card" href="/reports.html">
           <div class="sc-num">09 — Reports</div>
           <span class="sc-badge">From £99</span>
           <h3>Bespoke Research Reports</h3>
-          <p>In-depth macro and sector research reports — UK gilt outlook, commodity cycle positioning, central bank scenario analysis. Produced to institutional standard. Available as one-time PDF downloads.</p>
+          <p>In-depth macro and sector research reports — UK gilt outlook, commodity cycle positioning, central bank scenario analysis — produced to institutional standard as PDF downloads.</p>
           <div class="sc-cta">Browse reports <span>→</span></div>
         </a>
 
-        <!-- AI Trader — feature card -->
+        <!-- AI Trader feature card — full-width -->
         <a class="showcase-card-feature" href="/bot.html">
           <div class="sc-img">
-            <div class="sc-img-text">AI</div>
+            <img src="/assets/images/houses-of-parliament.jpg" alt="AI day-trader experiment" loading="lazy">
           </div>
           <div class="sc-content">
-            <div class="tbp-eyebrow" style="margin-bottom:14px;">Experimental · Live now</div>
-            <h3 style="font-size:clamp(1.4rem,2.5vw,2rem); font-weight:800; letter-spacing:-.025em; margin:0 0 14px; line-height:1.1;">
+            <div class="tbp-eyebrow" style="margin-bottom:14px; display:inline-flex; align-items:center; gap:8px;">
+              <span class="live-dot"></span>
+              Experimental · Live now
+            </div>
+            <h3 style="font-family:'Inter Tight',sans-serif; font-size:clamp(1.4rem,2.5vw,2.1rem); font-weight:800; letter-spacing:-.025em; margin:0 0 14px; line-height:1.1; color:var(--tbp-ink);">
               AI Day-Trader — algorithmic<br>trading in public.
             </h3>
-            <p style="font-size:15px; line-height:1.65; margin:0 0 8px; color:var(--tbp-ink-2); max-width:55ch;">
-              An AI agent runs an intraday macro strategy in a paper account, logging every trade
-              publicly with its full reasoning — entry, exit, size, and the macro signal that triggered it.
-              Powered by our macro dashboard signals and market microstructure data.
+            <p style="font-size:15px; line-height:1.65; margin:0 0 8px; color:var(--tbp-ink-2); max-width:56ch;">
+              An AI agent runs an intraday macro strategy in a paper account, logging every
+              trade publicly with its full reasoning — entry, exit, size, and the macro signal
+              that triggered it.
             </p>
-            <p style="font-size:12.5px; color:var(--tbp-muted); margin:0 0 20px;">Paper trading only — not allocated capital. Educational use.</p>
-            <span style="font-size:14px; font-weight:600; color:var(--tbp-ink);">View the live trade log →</span>
+            <p style="font-size:12.5px; color:var(--tbp-muted); margin:0 0 22px;">Paper trading only — not allocated capital. Educational use.</p>
+            <span class="read-more" style="font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--tbp-ink); display:inline-flex; align-items:center; gap:8px;">View the live trade log →</span>
           </div>
         </a>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LATEST BRIEFS ──────────────────────────────────────────── -->
+  <section class="tbp-section tight" style="background: var(--tbp-bg-alt); border-top: 1px solid var(--tbp-line);">
+    <div class="tbp-container">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:28px;" data-tbp-reveal>
+        <div class="tbp-eyebrow">Latest research</div>
+        <a href="/posts.html" style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--tbp-muted); text-decoration:none;">All briefs →</a>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(14px,1.8vw,22px);" data-tbp-reveal>
+        <a class="brief-card" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
+          <div class="bc-date">07 Feb 2026 · Commodities</div>
+          <h3>Silver Market Outlook: COMEX Inventory Squeeze</h3>
+          <p>Physical delivery pressure building on COMEX as registered inventory falls to multi-year lows — what it means for the basis and lease rates.</p>
+          <div class="bc-cta">Read brief →</div>
+        </a>
+        <a class="brief-card" href="/posts/2026-02-09-druckenmiller-shadow.html">
+          <div class="bc-date">09 Feb 2026 · Macro</div>
+          <h3>Druckenmiller's Shadow: Sizing Macro Bets Under Uncertainty</h3>
+          <p>How Druckenmiller sizes conviction positions — and why most macro tourists get the Kelly fraction catastrophically wrong.</p>
+          <div class="bc-cta">Read brief →</div>
+        </a>
+        <a class="brief-card" href="/posts/2026-02-11-japan-pm-us-stocks.html">
+          <div class="bc-date">11 Feb 2026 · Macro · Rates</div>
+          <h3>Japan's PM Moment and Its Shadow Over US Stocks</h3>
+          <p>JGB yield creep, BOJ normalisation and the overlooked transmission channel into US equity discount rates — a structural headwind most are ignoring.</p>
+          <div class="bc-cta">Read brief →</div>
+        </a>
       </div>
     </div>
   </section>
@@ -441,7 +499,7 @@
         </div>
         <div class="tbp-stat">
           <div class="num">10</div>
-          <div class="label">CFA Level 1 topic areas in the AI study tool</div>
+          <div class="label">CFA Level 1 topic areas covered in the study tool</div>
         </div>
         <div class="tbp-stat">
           <div class="num">£0</div>
@@ -502,6 +560,7 @@
             <a href="/about.html">About</a>
             <a href="/contact.html">Contact</a>
             <a href="/disclaimer.html">Disclaimer</a>
+            <a href="/disclaimer.html#privacy">Privacy</a>
             <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
           </div>
         </div>
@@ -518,6 +577,5 @@
   </footer>
 
   <script src="/assets/tbp.js" defer></script>
-  <script type="module" src="/assets/london-scene.js"></script>
 </body>
 </html>
