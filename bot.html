@@ -31,8 +31,9 @@
     .tbp-data-tile .change.pos{color:var(--tbp-pos);}
     .tbp-data-tile .change.neg{color:var(--tbp-neg);}
     .tbp-data-tile .status-note{font-size:10px;color:var(--tbp-muted-2);letter-spacing:.04em;text-transform:uppercase;margin-top:8px;}
-    .tbp-thinking-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--tbp-line);border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
-    @media(max-width:880px){.tbp-thinking-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+    .tbp-thinking-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--tbp-line);border:1px solid var(--tbp-line);border-radius:14px;overflow:hidden;}
+    @media(max-width:1100px){.tbp-thinking-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+    @media(max-width:700px){.tbp-thinking-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
     @media(max-width:520px){.tbp-thinking-grid{grid-template-columns:1fr;}}
     .tbp-thinking-cell{background:var(--tbp-bg);padding:24px 22px;display:flex;flex-direction:column;gap:8px;}
     .tbp-thinking-cell .label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tbp-muted);}
@@ -200,6 +201,7 @@
         <div class="tbp-thinking-cell"><span class="label">Correlation ρ</span><span class="value" id="thinkCorrelation">—</span><span class="sub" id="thinkCorrelationDetail">20-day EWMA</span></div>
         <div class="tbp-thinking-cell"><span class="label">Tail Dependence λ<sub>U</sub></span><span class="value" id="thinkTailDep">—</span><span class="sub" id="thinkTailDetail">from ν, ρ</span></div>
         <div class="tbp-thinking-cell"><span class="label">Signal (Model B)</span><span class="value" id="thinkSignal">—</span><span class="sub" id="thinkSignalDetail">asymmetric score</span></div>
+        <div class="tbp-thinking-cell"><span class="label">News Sentiment</span><span class="value" id="thinkSentimentValue">—</span><span class="sub" id="thinkSentimentSub">Loading…</span></div>
       </div>
       <p style="margin-top:14px;text-align:center;font-size:12px;color:var(--tbp-muted-2);">Regime uses 5-day realised volatility of SPY log returns as proxy. Tail dependence uses Student-t upper tail formula with regime-specific degrees of freedom (CALM ν=8, TRANSITION ν=5, STRESS ν=3).</p>
     </div>
@@ -407,420 +409,431 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="/assets/tbp.js" defer></script>
   <script>
-  (() => {
-    const FINNHUB_API_KEY   = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0';
-    const FINNHUB_BASE      = 'https://finnhub.io/api/v1';
-    const SYMBOLS           = ['SPY','TLT','GLD','UUP','VIX'];
-    const CALENDAR_LOOKBACK = 400;
-    const QUOTE_INTERVAL_MS = 60000;
+(() => {
+const FINNHUB_API_KEY   = 'd850qfhr01qrqbnnt0hgd850qfhr01qrqbnnt0i0';
+const FINNHUB_BASE      = 'https://finnhub.io/api/v1';
+const SYMBOLS           = ['SPY','TLT','GLD','UUP','VIX'];
+const CALENDAR_LOOKBACK = 400;
+const QUOTE_INTERVAL_MS = 60000;
 
-    // DOM refs
-    let tradeLogBody, equityChartCanvas, chartInstance = null;
-    let statPeriodReturn, statYTD, statWinRate, statSharpe, statTrades, statPeriodLabel;
-    let thinkRegime, thinkCorrelation, thinkTailDep, thinkSignal;
-    let thinkRegimeProb, thinkCorrelationDetail, thinkTailDetail, thinkSignalDetail;
-    let marketStatusNote, refreshLabel, refreshDot;
-    let londonTimeEl, liveDot, botStatusText;
-    let todaySignalBanner, sigValue, sigMeta, backtestDateRange;
+let tradeLogBody, equityChartCanvas, chartInstance = null;
+let statPeriodReturn, statYTD, statWinRate, statSharpe, statTrades, statPeriodLabel;
+let thinkRegime, thinkCorrelation, thinkTailDep, thinkSignal;
+let thinkRegimeProb, thinkCorrelationDetail, thinkTailDetail, thinkSignalDetail;
+let thinkSentimentValue, thinkSentimentSub;
+let marketStatusNote, refreshLabel, refreshDot;
+let londonTimeEl, liveDot, botStatusText;
+let todaySignalBanner, sigValue, sigMeta, backtestDateRange;
 
-    // State
-    let dates = [], equityCurve = [], dailyReturns = [], tradeLogData = [];
-    let currentPeriod = '1y', refreshSeconds = 0;
-    let modelState = { regime:'CALM', rho:-0.18, tailDep:0.092, nu:8.0, signal:'NEUTRAL', signalDetail:'Awaiting data' };
+let dates = [], equityCurve = [], dailyReturns = [], tradeLogData = [];
+let currentPeriod = '1y', refreshSeconds = 0;
+let modelState = { regime:'CALM', rho:-0.18, tailDep:0.092, nu:8.0, signal:'NEUTRAL', signalDetail:'Awaiting data' };
+let sentimentScore = 0;
+let sentimentBullish = 50;
+let sentimentBearish = 50;
 
-    // ── HELPERS ─────────────────────────────────────────────────
-    function getLondonTime(){return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false});}
-    function isUSMarketLikelyOpen(){
-      const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
-      const p=f.formatToParts(new Date());
-      const w=p.find(x=>x.type==='weekday')?.value;
-      const h=parseInt(p.find(x=>x.type==='hour')?.value);
-      const m=parseInt(p.find(x=>x.type==='minute')?.value);
-      if(!w||isNaN(h)||isNaN(m)) return false;
-      const t=h*60+m;
-      return !['Sat','Sun'].includes(w)&&t>=14*60+30&&t<21*60;
-    }
-    function updateLondonClock(){if(londonTimeEl) londonTimeEl.textContent='LON '+getLondonTime();}
-    function updateBotStatus(){
-      if(!liveDot||!botStatusText) return;
-      liveDot.className='dot'+(isUSMarketLikelyOpen()?'':' off');
-      botStatusText.textContent=isUSMarketLikelyOpen()?'Model is ACTIVE':'Market CLOSED';
-    }
+function getLondonTime(){return new Date().toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit',hour12:false});}
+function isUSMarketLikelyOpen(){
+  const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
+  const p=f.formatToParts(new Date());
+  const w=p.find(x=>x.type==='weekday')?.value;
+  const h=parseInt(p.find(x=>x.type==='hour')?.value);
+  const m=parseInt(p.find(x=>x.type==='minute')?.value);
+  if(!w||isNaN(h)||isNaN(m)) return false;
+  const t=h*60+m;
+  return !['Sat','Sun'].includes(w)&&t>=14*60+30&&t<21*60;
+}
+function updateLondonClock(){if(londonTimeEl) londonTimeEl.textContent='LON '+getLondonTime();}
+function updateBotStatus(){
+  if(!liveDot||!botStatusText) return;
+  liveDot.className='dot'+(isUSMarketLikelyOpen()?'':' off');
+  botStatusText.textContent=isUSMarketLikelyOpen()?'Model is ACTIVE':'Market CLOSED';
+}
 
-    // ── MATH ────────────────────────────────────────────────────
-    function lgamma(x){
-      if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
-      x-=1;
-      const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
-      let y=c[0];
-      for(let i=1;i<9;i++) y+=c[i]/(x+i);
-      const t=x+7.5;
-      return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(y)-Math.log(x);
-    }
-    function betaFunc(a,b){return Math.exp(lgamma(a)+lgamma(b)-lgamma(a+b));}
-    function incompleteBeta(x,a,b){
-      if(x<=0) return 0; if(x>=1) return 1;
-      const front=Math.exp(Math.log(x)*a+Math.log(1-x)*b-Math.log(a))/betaFunc(a,b);
-      let f=1,c=1,d=0;
-      for(let m=0;m<200;m++){
-        let num;
-        if(m===0){num=1;}
-        else if(m%2===1){const mm=(m+1)/2;num=-(a+mm-1)*(a+b+mm-1)*x/((a+2*mm-2)*(a+2*mm-1));}
-        else{const mm=m/2;num=mm*(b-mm)*x/((a+2*mm-1)*(a+2*mm));}
-        d=1+num*d;if(Math.abs(d)<1e-30)d=1e-30;
-        c=1+num/c;if(Math.abs(c)<1e-30)c=1e-30;
-        d=1/d;const delta=c*d;f*=delta;
-        if(Math.abs(delta-1)<1e-12) break;
-      }
-      return front*(f-1);
-    }
-    function tCDF(x,nu){const z=nu/(nu+x*x),ib=incompleteBeta(z,nu/2,0.5);return x>=0?1-0.5*ib:0.5*ib;}
-    function tailDepUpper(nu,rho){
-      if(nu<=0||Math.abs(rho)>=1) return 0;
-      return 2*tCDF(-Math.sqrt((nu+1)*(1-rho)/(1+rho)),nu+1);
-    }
+function lgamma(x){
+  if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
+  x-=1;
+  const c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
+  let y=c[0];
+  for(let i=1;i<9;i++) y+=c[i]/(x+i);
+  const t=x+7.5;
+  return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(y)-Math.log(x);
+}
+function betaFunc(a,b){return Math.exp(lgamma(a)+lgamma(b)-lgamma(a+b));}
+function incompleteBeta(x,a,b){
+  if(x<=0) return 0; if(x>=1) return 1;
+  const front=Math.exp(Math.log(x)*a+Math.log(1-x)*b-Math.log(a))/betaFunc(a,b);
+  let f=1,c=1,d=0;
+  for(let m=0;m<200;m++){
+    let num;
+    if(m===0){num=1;}
+    else if(m%2===1){const mm=(m+1)/2;num=-(a+mm-1)*(a+b+mm-1)*x/((a+2*mm-2)*(a+2*mm-1));}
+    else{const mm=m/2;num=mm*(b-mm)*x/((a+2*mm-1)*(a+2*mm));}
+    d=1+num*d;if(Math.abs(d)<1e-30)d=1e-30;
+    c=1+num/c;if(Math.abs(c)<1e-30)c=1e-30;
+    d=1/d;const delta=c*d;f*=delta;
+    if(Math.abs(delta-1)<1e-12) break;
+  }
+  return front*(f-1);
+}
+function tCDF(x,nu){const z=nu/(nu+x*x),ib=incompleteBeta(z,nu/2,0.5);return x>=0?1-0.5*ib:0.5*ib;}
+function tailDepUpper(nu,rho){
+  if(nu<=0||Math.abs(rho)>=1) return 0;
+  return 2*tCDF(-Math.sqrt((nu+1)*(1-rho)/(1+rho)),nu+1);
+}
 
-    // ── FINNHUB ─────────────────────────────────────────────────
-    async function fetchDailyCandles(symbol,fromDate,toDate){
-      const from=Math.floor(fromDate.getTime()/1000),to=Math.floor(toDate.getTime()/1000);
-      try{
-        const r=await fetch(`${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`);
-        if(!r.ok) throw new Error('HTTP '+r.status);
-        const d=await r.json();
-        if(d&&d.s==='ok'&&d.t&&d.c&&d.t.length>=2) return d.t.map((t,i)=>({date:new Date(t*1000),close:d.c[i]}));
-        throw new Error('Invalid');
-      }catch(e){console.warn('Candle fetch failed:',symbol,e.message);return null;}
+async function fetchDailyCandles(symbol,fromDate,toDate){
+  const from=Math.floor(fromDate.getTime()/1000),to=Math.floor(toDate.getTime()/1000);
+  try{
+    const r=await fetch(`${FINNHUB_BASE}/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=D&from=${from}&to=${to}&token=${FINNHUB_API_KEY}`);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    if(d&&d.s==='ok'&&d.t&&d.c&&d.t.length>=2) return d.t.map((t,i)=>({date:new Date(t*1000),close:d.c[i]}));
+    throw new Error('Invalid');
+  }catch(e){console.warn('Candle fetch failed:',symbol,e.message);return null;}
+}
+async function fetchQuote(s){
+  try{
+    const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`);
+    if(!r.ok) throw new Error();
+    const d=await r.json();
+    if(d&&typeof d.c==='number') return{price:d.c,change:d.d,changePercent:d.dp,ok:true};
+  }catch(e){}
+  return{ok:false};
+}
+async function fetchSentiment(){
+  try{
+    const r=await fetch(`${FINNHUB_BASE}/news-sentiment?symbol=SPY&token=${FINNHUB_API_KEY}`);
+    if(!r.ok) return;
+    const d=await r.json();
+    if(d&&d.sentiment){
+      sentimentBullish=Math.round((d.sentiment.bullishPercent??50)*100);
+      sentimentBearish=Math.round((d.sentiment.bearishPercent??50)*100);
+      sentimentScore=(sentimentBullish-sentimentBearish)/100;
     }
-    async function fetchQuote(s){
-      try{
-        const r=await fetch(`${FINNHUB_BASE}/quote?symbol=${s}&token=${FINNHUB_API_KEY}`);
-        if(!r.ok) throw new Error();
-        const d=await r.json();
-        if(d&&typeof d.c==='number') return{price:d.c,change:d.d,changePercent:d.dp,ok:true};
-      }catch(e){}
-      return{ok:false};
-    }
+  }catch(e){console.warn('Sentiment fetch failed',e);}
+}
 
-    // ── MODEL CORE (shared between real and mock) ────────────────
-    function runModel(allDates,spyPrices,tltPrices,isReal){
-      const spyR=[],tltR=[];
-      for(let i=1;i<allDates.length;i++){
-        spyR.push(Math.log(spyPrices[i]/spyPrices[i-1]));
-        tltR.push(Math.log(tltPrices[i]/tltPrices[i-1]));
-      }
-      let currentRho=-0.15;
-      const rhoArr=[],regArr=[],nuArr=[],tdArr=[];
-      for(let i=0;i<spyR.length;i++){
-        const spy20=spyR.slice(Math.max(0,i-19),i+1),tlt20=tltR.slice(Math.max(0,i-19),i+1);
-        const sS=Math.sqrt(spy20.reduce((a,b)=>a+b*b,0)/spy20.length)||0.01;
-        const sT=Math.sqrt(tlt20.reduce((a,b)=>a+b*b,0)/tlt20.length)||0.005;
-        const innov=(spyR[i]*tltR[i])/(sS*sT);
-        currentRho=0.94*currentRho+0.06*Math.max(-1,Math.min(1,innov));
-        rhoArr.push(currentRho);
-        const spy5=spyR.slice(Math.max(0,i-4),i+1);
-        const avgAbs=spy5.reduce((a,b)=>a+Math.abs(b),0)/spy5.length;
-        let regime,nu;
-        if(avgAbs>0.015){regime='STRESS';nu=3.0;}
-        else if(avgAbs>0.008){regime='TRANSITION';nu=5.0;}
-        else{regime='CALM';nu=8.0;}
-        regArr.push(regime);nuArr.push(nu);
-        tdArr.push(tailDepUpper(nu,currentRho));
-      }
-      // Signal generation + equity curve
-      tradeLogData=[];dates=[];equityCurve=[100000];dailyReturns=[];
-      let equity=100000,position=null;
-      let prevRho=rhoArr[0]||(-0.15),prevReg=regArr[0]||'CALM';
-      const sigDates=allDates.slice(1);
-      for(let i=0;i<spyR.length;i++){
-        const rho=rhoArr[i],regime=regArr[i],td=tdArr[i],nu=nuArr[i],date=sigDates[i];
-        // Exit check
-        if(position&&i>=position.entryIdx+2){
-          const px=position.inst==='SPY'?spyPrices:tltPrices;
-          const ep=position.entry;
-          const exitPx=px[Math.min(i+1,px.length-1)];
-          let pct=position.type==='LONG'?(exitPx/ep-1)*100:(1-exitPx/ep)*100;
-          for(let j=position.entryIdx+1;j<=Math.min(i,px.length-1);j++){
-            const chg=position.type==='LONG'?(px[j]/ep-1)*100:(1-px[j]/ep)*100;
-            if(chg<=-1.5){pct=-1.5;break;}
-            if(chg>=2.5){pct=2.5;break;}
-          }
-          const exitVal=(position.type==='LONG'?ep*(1+pct/100):ep*(1-pct/100)).toFixed(2);
-          tradeLogData.push({
-            date:date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
-            inst:position.inst,dir:position.type,
-            entry:'$'+ep.toFixed(2),exit:'$'+exitVal,
-            pnl:(pct>=0?'+':'')+pct.toFixed(2)+'%',
-            pnlClass:pct>=0?'pnl-pos':'pnl-neg',
-            dirClass:position.type==='LONG'?'dir-long':'dir-short',
-            reasoning:'ρ='+rho.toFixed(3)+', '+regime+' regime (ν='+nu.toFixed(1)+'), λU='+td.toFixed(4)+'. '+(pct<=-1.5?'Stop hit.':(pct>=2.5?'Take profit hit.':'Signal exit after 2 days.'))
-          });
-          equity*=(1+pct/100);
-          position=null;
-        }
-        // New signal
-        if(!position){
-          const xNeg=prevRho>=-0.25&&rho<-0.25;
-          const xPos=prevRho<=0.30&&rho>0.30;
-          const toStress=prevReg!=='STRESS'&&regime==='STRESS';
-          const toCalm=prevReg==='STRESS'&&regime!=='STRESS';
-          const spE=spyPrices[Math.min(i+1,spyPrices.length-1)];
-          const tlE=tltPrices[Math.min(i+1,tltPrices.length-1)];
-          if(xNeg)      position={type:'LONG', inst:'SPY',entry:spE,entryIdx:i};
-          else if(xPos)  position={type:'LONG', inst:'TLT',entry:tlE,entryIdx:i};
-          else if(toStress) position={type:'SHORT',inst:'SPY',entry:spE,entryIdx:i};
-          else if(toCalm)   position={type:'LONG', inst:'SPY',entry:spE,entryIdx:i};
-        }
-        const prevEq=equityCurve[equityCurve.length-1];
-        equityCurve.push(equity);
-        dailyReturns.push(prevEq>0?(equity-prevEq)/prevEq:0);
-        dates.push(date);
-        prevRho=rho;prevReg=regime;
-      }
-      // Update model state from most recent observation
-      if(rhoArr.length>0){
-        const last=rhoArr.length-1;
-        modelState.rho=rhoArr[last];
-        modelState.regime=regArr[last];
-        modelState.nu=nuArr[last];
-        modelState.tailDep=tdArr[last];
-        const r=modelState.rho,reg=modelState.regime;
-        if(reg==='STRESS'){modelState.signal='SHORT SPY';modelState.signalDetail='Stress regime — risk-off bias';}
-        else if(r<-0.25){modelState.signal='LONG SPY';modelState.signalDetail='ρ<-0.25 — diversification breaking down';}
-        else if(r>0.30){modelState.signal='LONG TLT';modelState.signalDetail='ρ>+0.30 — flight-to-quality corr';}
-        else{modelState.signal='NEUTRAL';modelState.signalDetail='No threshold crossed — stay flat';}
-      }
-      // Backtest date range note
-      if(backtestDateRange&&dates.length>0){
-        const f=dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-        const l=dates[dates.length-1].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-        backtestDateRange.textContent='Backtest period: '+f+' – '+l+' · '+(isReal?'Real Finnhub market data':'Illustrative data — Finnhub unavailable');
-      }
-    }
+function runModel(allDates,spyPrices,tltPrices,isReal,sentimentToday=0){
+  const spyR=[],tltR=[];
+  for(let i=1;i<allDates.length;i++){
+    spyR.push(Math.log(spyPrices[i]/spyPrices[i-1]));
+    tltR.push(Math.log(tltPrices[i]/tltPrices[i-1]));
+  }
+  let currentRho=-0.15;
+  const rhoArr=[],regArr=[],nuArr=[],tdArr=[];
+  for(let i=0;i<spyR.length;i++){
+    const spy20=spyR.slice(Math.max(0,i-19),i+1),tlt20=tltR.slice(Math.max(0,i-19),i+1);
+    const sS=Math.sqrt(spy20.reduce((a,b)=>a+b*b,0)/spy20.length)||0.01;
+    const sT=Math.sqrt(tlt20.reduce((a,b)=>a+b*b,0)/tlt20.length)||0.005;
+    const innov=(spyR[i]*tltR[i])/(sS*sT);
+    currentRho=0.94*currentRho+0.06*Math.max(-1,Math.min(1,innov));
+    rhoArr.push(currentRho);
+    const spy5=spyR.slice(Math.max(0,i-4),i+1);
+    const avgAbs=spy5.reduce((a,b)=>a+Math.abs(b),0)/spy5.length;
+    let regime,nu;
+    if(avgAbs>0.015){regime='STRESS';nu=3.0;}
+    else if(avgAbs>0.008){regime='TRANSITION';nu=5.0;}
+    else{regime='CALM';nu=8.0;}
+    regArr.push(regime);nuArr.push(nu);
+    tdArr.push(tailDepUpper(nu,currentRho));
+  }
 
-    // ── MOCK FALLBACK ─────────────────────────────────────────────
-    function generateMockData(){
-      const start=new Date(2025,4,17);
-      let spy=480,tlt=88;
-      const allD=[],allS=[],allT=[];
-      for(let i=0;i<365;i++){
-        const d=new Date(start);d.setDate(d.getDate()+i);allD.push(d);
-        spy*=(1+0.0003+0.011*(Math.random()*2-1));
-        tlt*=(1+0.00015+0.006*(Math.random()*2-1));
-        allS.push(spy);allT.push(tlt);
-      }
-      runModel(allD,allS,allT,false);
-    }
+  tradeLogData=[];dates=[];equityCurve=[100000];dailyReturns=[];
+  let equity=100000;
+  const sigDates=allDates.slice(1);
+  const todayStr=new Date().toDateString();
+  let openPos=null;
 
-    // ── REAL BACKTEST ─────────────────────────────────────────────
-    async function runRealBacktest(){
-      const today=new Date();
-      const from=new Date(today);from.setDate(from.getDate()-CALENDAR_LOOKBACK);
-      if(tradeLogBody) tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">Fetching real market data from Finnhub…</td></tr>';
-      const [spyData,tltData]=await Promise.all([
-        fetchDailyCandles('SPY',from,today),
-        fetchDailyCandles('TLT',from,today)
-      ]);
-      if(!spyData||!tltData||spyData.length<60||tltData.length<60){
-        console.warn('Finnhub data insufficient — using mock');
-        generateMockData();return false;
-      }
-      // Align by date
-      const map=new Map();
-      spyData.forEach(d=>map.set(d.date.toDateString(),{spy:d.close}));
-      tltData.forEach(d=>{
-        const k=d.date.toDateString();
-        if(map.has(k)) map.get(k).tlt=d.close;
-        else map.set(k,{tlt:d.close});
-      });
-      const rows=[];
-      map.forEach((v,k)=>{if(v.spy!==undefined&&v.tlt!==undefined) rows.push({date:new Date(k),spy:v.spy,tlt:v.tlt});});
-      rows.sort((a,b)=>a.date-b.date);
-      if(rows.length<60){generateMockData();return false;}
-      runModel(rows.map(r=>r.date),rows.map(r=>r.spy),rows.map(r=>r.tlt),true);
-      return true;
-    }
+  for(let i=0;i<spyR.length;i++){
+    const rho=rhoArr[i],regime=regArr[i],td=tdArr[i],nu=nuArr[i],date=sigDates[i];
+    const spyP=spyPrices[Math.min(i+1,spyPrices.length-1)];
+    const tltP=tltPrices[Math.min(i+1,tltPrices.length-1)];
 
-    // ── RENDER TRADE LOG ──────────────────────────────────────────
-    function renderTradeLog(){
-      if(!tradeLogBody) return;
-      tradeLogBody.innerHTML='';
-      if(tradeLogData.length===0){
-        tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">No signals generated in this period.</td></tr>';
-        return;
-      }
-      tradeLogData.forEach(r=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td style="font-weight:500;white-space:nowrap;">${r.date}</td><td style="font-weight:700;">${r.inst}</td><td><span class="${r.dirClass}">${r.dir}</span></td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td style="max-width:300px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${r.reasoning}</td>`;
-        tradeLogBody.appendChild(tr);
+    // 1. continuous sizing from rho
+    let posSPY=0,posTLT=0;
+    if(rho<0) posSPY=Math.min(-rho*2,1);
+    if(rho>0) posTLT=Math.min(rho*2,1);
+
+    // 2. sentiment overlay — only apply today's sentiment to the current day
+    const isToday=date.toDateString()===todayStr;
+    const sent=isToday?sentimentToday:0;
+    if(sent>0.2){posSPY=Math.min(1,posSPY*1.2);}
+    else if(sent<-0.2){posSPY=Math.min(1,posSPY*0.8);posTLT=Math.min(1,posTLT*1.2);}
+
+    // 3. regime confidence multiplier (from dissertation Table 5.3)
+    let mult=1.0;
+    if(regime==='STRESS') mult=1.2;
+    else if(regime==='TRANSITION') mult=0.6;
+    posSPY=Math.min(1,posSPY*mult);
+    posTLT=Math.min(1,posTLT*mult);
+
+    // daily P&L
+    const dayRet=posSPY*spyR[i]+posTLT*tltR[i];
+    equity*=(1+dayRet);
+    equityCurve.push(equity);
+    dailyReturns.push(dayRet);
+    dates.push(date);
+
+    // direction for trade logging
+    let dir='FLAT';
+    if(posSPY>0&&posTLT===0) dir='SPY';
+    else if(posTLT>0&&posSPY===0) dir='TLT';
+    else if(posSPY>posTLT) dir='SPY';
+    else if(posTLT>posSPY) dir='TLT';
+
+    // direction-change trade logging
+    if(openPos&&openPos.dir!==dir){
+      const exitPx=openPos.dir==='SPY'?spyP:tltP;
+      const pct=(exitPx/openPos.entryPrice-1)*100;
+      const sentLabel=openPos.entrySentiment>0.2?'BULLISH':openPos.entrySentiment<-0.2?'BEARISH':'NEUTRAL';
+      tradeLogData.push({
+        date:date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),
+        inst:openPos.dir,dir:'LONG',
+        entry:'$'+openPos.entryPrice.toFixed(2),
+        exit:'$'+exitPx.toFixed(2),
+        pnl:(pct>=0?'+':'')+pct.toFixed(2)+'%',
+        pnlClass:pct>=0?'pnl-pos':'pnl-neg',
+        dirClass:'dir-long',
+        reasoning:'ρ='+openPos.entryRho.toFixed(3)+' ('+openPos.entryRegime+'), sentiment '+sentLabel+'. Long '+openPos.dir+' — position held until direction changed.'
       });
     }
+    if(dir!=='FLAT'&&(!openPos||openPos.dir!==dir)){
+      openPos={dir,entryDate:date,entryPrice:dir==='SPY'?spyP:tltP,entryRho:rho,entryRegime:regime,entrySentiment:sent};
+    } else if(dir==='FLAT'){
+      openPos=null;
+    }
+  }
 
-    // ── THINKING DISPLAY ──────────────────────────────────────────
-    function updateThinkingDisplay(){
-      const s=modelState;
-      if(thinkRegime) thinkRegime.textContent=s.regime;
-      if(thinkRegimeProb) thinkRegimeProb.textContent='Pr(stress) '+(s.regime==='STRESS'?'0.85':s.regime==='TRANSITION'?'0.35':'0.08');
-      if(thinkCorrelation) thinkCorrelation.textContent=s.rho!==null?s.rho.toFixed(3):'—';
-      if(thinkCorrelationDetail) thinkCorrelationDetail.textContent='20-day EWMA';
-      if(thinkTailDep) thinkTailDep.textContent=s.tailDep!==null?s.tailDep.toFixed(4):'—';
-      if(thinkTailDetail) thinkTailDetail.innerHTML='ν='+s.nu.toFixed(1)+', ρ='+(s.rho!==null?s.rho.toFixed(3):'—');
-      if(thinkSignal) thinkSignal.textContent=s.signal;
-      if(thinkSignalDetail) thinkSignalDetail.textContent=s.signalDetail;
-      if(todaySignalBanner&&sigValue&&sigMeta&&s.signal!=='NEUTRAL'){
-        todaySignalBanner.style.display='flex';
-        sigValue.textContent=s.signal;
-        sigMeta.textContent='ρ='+s.rho.toFixed(3)+' · '+s.regime+' · ν='+s.nu.toFixed(1);
+  if(rhoArr.length>0){
+    const last=rhoArr.length-1;
+    modelState.rho=rhoArr[last];
+    modelState.regime=regArr[last];
+    modelState.nu=nuArr[last];
+    modelState.tailDep=tdArr[last];
+    const r=modelState.rho,reg=modelState.regime;
+    if(reg==='STRESS'){modelState.signal='SHORT SPY';modelState.signalDetail='Stress regime — risk-off bias';}
+    else if(r<-0.25){modelState.signal='LONG SPY';modelState.signalDetail='ρ<-0.25 — diversification breaking down';}
+    else if(r>0.30){modelState.signal='LONG TLT';modelState.signalDetail='ρ>+0.30 — flight-to-quality correlation';}
+    else{modelState.signal='NEUTRAL';modelState.signalDetail='Continuous sizing active — no strong threshold';}
+  }
+  if(backtestDateRange&&dates.length>0){
+    const f=dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    const l=dates[dates.length-1].toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    backtestDateRange.textContent='Continuous position sizing · '+tradeLogData.length+' direction changes logged · '+f+' – '+l+(isReal?' · Real Finnhub data':' · Illustrative data');
+  }
+}
+
+function generateMockData(){
+  const start=new Date(2025,4,17);
+  let spy=480,tlt=88;
+  const allD=[],allS=[],allT=[];
+  for(let i=0;i<365;i++){
+    const d=new Date(start);d.setDate(d.getDate()+i);allD.push(d);
+    spy*=(1+0.0003+0.011*(Math.random()*2-1));
+    tlt*=(1+0.00015+0.006*(Math.random()*2-1));
+    allS.push(spy);allT.push(tlt);
+  }
+  runModel(allD,allS,allT,false,0);
+}
+
+async function runRealBacktest(){
+  const today=new Date();
+  const from=new Date(today);from.setDate(from.getDate()-CALENDAR_LOOKBACK);
+  if(tradeLogBody) tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">Fetching real market data from Finnhub…</td></tr>';
+  const [spyData,tltData]=await Promise.all([fetchDailyCandles('SPY',from,today),fetchDailyCandles('TLT',from,today)]);
+  if(!spyData||!tltData||spyData.length<60||tltData.length<60){generateMockData();return false;}
+  const map=new Map();
+  spyData.forEach(d=>map.set(d.date.toDateString(),{spy:d.close}));
+  tltData.forEach(d=>{const k=d.date.toDateString();if(map.has(k)) map.get(k).tlt=d.close;else map.set(k,{tlt:d.close});});
+  const rows=[];
+  map.forEach((v,k)=>{if(v.spy!==undefined&&v.tlt!==undefined) rows.push({date:new Date(k),spy:v.spy,tlt:v.tlt});});
+  rows.sort((a,b)=>a.date-b.date);
+  if(rows.length<60){generateMockData();return false;}
+  runModel(rows.map(r=>r.date),rows.map(r=>r.spy),rows.map(r=>r.tlt),true,sentimentScore);
+  return true;
+}
+
+function renderTradeLog(){
+  if(!tradeLogBody) return;
+  tradeLogBody.innerHTML='';
+  if(tradeLogData.length===0){tradeLogBody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">No direction changes in this period.</td></tr>';return;}
+  tradeLogData.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="font-weight:500;white-space:nowrap;">${r.date}</td><td style="font-weight:700;">${r.inst}</td><td><span class="${r.dirClass}">${r.dir}</span></td><td class="price-cell">${r.entry}</td><td class="price-cell">${r.exit}</td><td class="${r.pnlClass}">${r.pnl}</td><td style="max-width:300px;font-size:13px;line-height:1.5;color:var(--tbp-ink-2);">${r.reasoning}</td>`;
+    tradeLogBody.appendChild(tr);
+  });
+}
+
+function updateThinkingDisplay(){
+  const s=modelState;
+  if(thinkRegime) thinkRegime.textContent=s.regime;
+  if(thinkRegimeProb) thinkRegimeProb.textContent='Pr(stress) '+(s.regime==='STRESS'?'0.85':s.regime==='TRANSITION'?'0.35':'0.08');
+  if(thinkCorrelation) thinkCorrelation.textContent=s.rho!==null?s.rho.toFixed(3):'—';
+  if(thinkCorrelationDetail) thinkCorrelationDetail.textContent='20-day EWMA';
+  if(thinkTailDep) thinkTailDep.textContent=s.tailDep!==null?s.tailDep.toFixed(4):'—';
+  if(thinkTailDetail) thinkTailDetail.innerHTML='ν='+s.nu.toFixed(1)+', ρ='+(s.rho!==null?s.rho.toFixed(3):'—');
+  if(thinkSignal) thinkSignal.textContent=s.signal;
+  if(thinkSignalDetail) thinkSignalDetail.textContent=s.signalDetail;
+  if(thinkSentimentValue){
+    const label=sentimentScore>0.2?'BULLISH':sentimentScore<-0.2?'BEARISH':'NEUTRAL';
+    thinkSentimentValue.textContent=label;
+    thinkSentimentValue.style.color=sentimentScore>0.2?'var(--tbp-pos)':sentimentScore<-0.2?'var(--tbp-neg)':'var(--tbp-ink)';
+  }
+  if(thinkSentimentSub) thinkSentimentSub.textContent=sentimentBullish+'% bull · '+sentimentBearish+'% bear';
+  if(todaySignalBanner&&sigValue&&sigMeta&&s.signal!=='NEUTRAL'){
+    todaySignalBanner.style.display='flex';
+    sigValue.textContent=s.signal;
+    sigMeta.textContent='ρ='+s.rho.toFixed(3)+' · '+s.regime+' · ν='+s.nu.toFixed(1);
+  }
+}
+
+function filterData(period){
+  const today=new Date();
+  const cutoff=new Date(today);
+  if(period==='1y') cutoff.setFullYear(cutoff.getFullYear()-1);
+  else cutoff.setMonth(cutoff.getMonth()-1);
+  const fd=[],fe=[];
+  for(let i=0;i<dates.length;i++){
+    if(dates[i]>=cutoff){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
+  }
+  if(fd.length===0&&dates.length>0){
+    const s=Math.max(0,dates.length-30);
+    for(let i=s;i<dates.length;i++){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
+  }
+  return{dates:fd,equity:fe};
+}
+function drawChart(period){
+  currentPeriod=period;
+  const{dates:fd,equity:fe}=filterData(period);
+  if(!equityChartCanvas||typeof Chart==='undefined') return;
+  if(chartInstance) chartInstance.destroy();
+  chartInstance=new Chart(equityChartCanvas.getContext('2d'),{
+    type:'line',
+    data:{
+      labels:fd.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
+      datasets:[{label:'Equity (£)',data:fe,borderColor:'#0066ff',backgroundColor:'rgba(0,102,255,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:4}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(250,249,246,0.95)',titleColor:'#0a0a0a',bodyColor:'#0a0a0a',callbacks:{label:ctx=>'£'+Math.round(ctx.parsed.y).toLocaleString()}}},
+      scales:{
+        x:{ticks:{color:'rgba(255,255,255,0.3)',maxTicksLimit:8,font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}},
+        y:{ticks:{color:'rgba(255,255,255,0.3)',callback:v=>'£'+(v/1000).toFixed(0)+'k',font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}}
       }
     }
+  });
+}
+function updateStats(period){
+  const{dates:fd,equity:fe}=filterData(period);
+  let pRet=0;
+  if(fe.length>1) pRet=(fe[fe.length-1]/fe[0]-1)*100;
+  if(statPeriodReturn) statPeriodReturn.innerHTML=(pRet>=0?'+':'')+pRet.toFixed(2)+'<span class="unit">%</span>';
+  if(statPeriodLabel) statPeriodLabel.textContent=period==='1y'?'1Y return':'1M return';
+  const soy=new Date(new Date().getFullYear(),0,1);
+  let ytd=0;
+  const si=dates.findIndex(d=>d>=soy);
+  if(si>=0&&equityCurve.length>si+1) ytd=(equityCurve[equityCurve.length-1]/equityCurve[si]-1)*100;
+  if(statYTD) statYTD.innerHTML=(ytd>=0?'+':'')+ytd.toFixed(2)+'<span class="unit">%</span>';
+  if(tradeLogData.length>0){
+    const wins=tradeLogData.filter(t=>t.pnlClass==='pnl-pos').length;
+    if(statWinRate) statWinRate.innerHTML=(wins/tradeLogData.length*100).toFixed(0)+'<span class="unit">%</span>';
+    if(statTrades) statTrades.textContent=tradeLogData.length;
+  }
+  const nonZero=dailyReturns.filter(r=>r!==0);
+  if(nonZero.length>1){
+    const avg=nonZero.reduce((a,b)=>a+b,0)/nonZero.length;
+    const std=Math.sqrt(nonZero.reduce((a,b)=>a+(b-avg)**2,0)/nonZero.length);
+    if(statSharpe) statSharpe.textContent=std>0?(avg/std*Math.sqrt(252)).toFixed(2):'—';
+  }
+}
 
-    // ── CHART ─────────────────────────────────────────────────────
-    function filterData(period){
-      const today=new Date();
-      const cutoff=new Date(today);
-      if(period==='1y') cutoff.setFullYear(cutoff.getFullYear()-1);
-      else cutoff.setMonth(cutoff.getMonth()-1);
-      const fd=[],fe=[];
-      for(let i=0;i<dates.length;i++){
-        if(dates[i]>=cutoff){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
-      }
-      if(fd.length===0&&dates.length>0){
-        const s=Math.max(0,dates.length-30);
-        for(let i=s;i<dates.length;i++){fd.push(dates[i]);fe.push(equityCurve[i+1]||equityCurve[i]);}
-      }
-      return{dates:fd,equity:fe};
-    }
-    function drawChart(period){
-      currentPeriod=period;
-      const{dates:fd,equity:fe}=filterData(period);
-      if(!equityChartCanvas||typeof Chart==='undefined') return;
-      if(chartInstance) chartInstance.destroy();
-      chartInstance=new Chart(equityChartCanvas.getContext('2d'),{
-        type:'line',
-        data:{
-          labels:fd.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'})),
-          datasets:[{label:'Equity (£)',data:fe,borderColor:'#0066ff',backgroundColor:'rgba(0,102,255,0.08)',borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointHoverRadius:4}]
-        },
-        options:{
-          responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(250,249,246,0.95)',titleColor:'#0a0a0a',bodyColor:'#0a0a0a',callbacks:{label:ctx=>'£'+Math.round(ctx.parsed.y).toLocaleString()}}},
-          scales:{
-            x:{ticks:{color:'rgba(255,255,255,0.3)',maxTicksLimit:8,font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}},
-            y:{ticks:{color:'rgba(255,255,255,0.3)',callback:v=>'£'+(v/1000).toFixed(0)+'k',font:{size:10,family:'Inter Tight'}},grid:{color:'rgba(255,255,255,0.04)'},border:{color:'rgba(255,255,255,0.1)'}}
-          }
-        }
-      });
-    }
-    function updateStats(period){
-      const{dates:fd,equity:fe}=filterData(period);
-      let pRet=0;
-      if(fe.length>1) pRet=(fe[fe.length-1]/fe[0]-1)*100;
-      if(statPeriodReturn) statPeriodReturn.innerHTML=(pRet>=0?'+':'')+pRet.toFixed(2)+'<span class="unit">%</span>';
-      if(statPeriodLabel) statPeriodLabel.textContent=period==='1y'?'1Y return':'1M return';
-      const soy=new Date(new Date().getFullYear(),0,1);
-      let ytd=0;
-      const si=dates.findIndex(d=>d>=soy);
-      if(si>=0&&equityCurve.length>si+1) ytd=(equityCurve[equityCurve.length-1]/equityCurve[si]-1)*100;
-      if(statYTD) statYTD.innerHTML=(ytd>=0?'+':'')+ytd.toFixed(2)+'<span class="unit">%</span>';
-      if(tradeLogData.length>0){
-        const wins=tradeLogData.filter(t=>t.pnlClass==='pnl-pos').length;
-        if(statWinRate) statWinRate.innerHTML=(wins/tradeLogData.length*100).toFixed(0)+'<span class="unit">%</span>';
-        if(statTrades) statTrades.textContent=tradeLogData.length;
-      }
-      const nonZero=dailyReturns.filter(r=>r!==0);
-      if(nonZero.length>1){
-        const avg=nonZero.reduce((a,b)=>a+b,0)/nonZero.length;
-        const std=Math.sqrt(nonZero.reduce((a,b)=>a+(b-avg)**2,0)/nonZero.length);
-        if(statSharpe) statSharpe.textContent=std>0?(avg/std*Math.sqrt(252)).toFixed(2):'—';
-      }
-    }
+const MOCK={SPY:{price:587.32,change:1.45,changePercent:0.25},TLT:{price:94.20,change:-0.30,changePercent:-0.32},GLD:{price:218.50,change:2.10,changePercent:0.97},UUP:{price:29.84,change:0.05,changePercent:0.17},VIX:{price:16.80,change:-0.45,changePercent:-2.61}};
+function updateTile(s,d){
+  const p=document.getElementById('price-'+s.toLowerCase());
+  const c=document.getElementById('change-'+s.toLowerCase());
+  const n=document.getElementById('note-'+s.toLowerCase());
+  if(!p||!c) return;
+  const src=(d&&d.ok)?d:MOCK[s];
+  p.textContent=src.price.toFixed(2);
+  c.textContent=(src.change>=0?'+':'')+src.change.toFixed(2)+'  '+(src.changePercent>=0?'+':'')+src.changePercent.toFixed(2)+'%';
+  c.className='change '+(src.change>=0?'pos':'neg');
+  if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close';
+}
+async function updateQuotes(){
+  if(marketStatusNote) marketStatusNote.textContent=isUSMarketLikelyOpen()?'US market open · 15 min delay':'US market closed · last close';
+  const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s)));
+  res.forEach((d,i)=>updateTile(SYMBOLS[i],d));
+}
 
-    // ── LIVE QUOTES ───────────────────────────────────────────────
-    const MOCK={SPY:{price:587.32,change:1.45,changePercent:0.25},TLT:{price:94.20,change:-0.30,changePercent:-0.32},GLD:{price:218.50,change:2.10,changePercent:0.97},UUP:{price:29.84,change:0.05,changePercent:0.17},VIX:{price:16.80,change:-0.45,changePercent:-2.61}};
-    function updateTile(s,d){
-      const p=document.getElementById('price-'+s.toLowerCase());
-      const c=document.getElementById('change-'+s.toLowerCase());
-      const n=document.getElementById('note-'+s.toLowerCase());
-      if(!p||!c) return;
-      const src=(d&&d.ok)?d:MOCK[s];
-      p.textContent=src.price.toFixed(2);
-      c.textContent=(src.change>=0?'+':'')+src.change.toFixed(2)+'  '+(src.changePercent>=0?'+':'')+src.changePercent.toFixed(2)+'%';
-      c.className='change '+(src.change>=0?'pos':'neg');
-      if(n) n.textContent=isUSMarketLikelyOpen()?'':'Last close';
-    }
-    async function updateQuotes(){
-      if(marketStatusNote) marketStatusNote.textContent=isUSMarketLikelyOpen()?'US market open · 15 min delay':'US market closed · last close';
-      const res=await Promise.all(SYMBOLS.map(s=>fetchQuote(s)));
-      res.forEach((d,i)=>updateTile(SYMBOLS[i],d));
-    }
+function tickRefresh(){
+  refreshSeconds++;
+  if(refreshLabel) refreshLabel.textContent='Last updated: '+refreshSeconds+'s ago';
+  if(refreshDot){refreshDot.classList.add('active');setTimeout(()=>refreshDot.classList.remove('active'),400);}
+  if(refreshSeconds>=30){refreshSeconds=0;renderTradeLog();if(refreshLabel)refreshLabel.textContent='Last updated: 0s ago';}
+}
 
-    // ── REFRESH INDICATOR ─────────────────────────────────────────
-    function tickRefresh(){
-      refreshSeconds++;
-      if(refreshLabel) refreshLabel.textContent='Last updated: '+refreshSeconds+'s ago';
-      if(refreshDot){refreshDot.classList.add('active');setTimeout(()=>refreshDot.classList.remove('active'),400);}
-      if(refreshSeconds>=30){refreshSeconds=0;renderTradeLog();if(refreshLabel)refreshLabel.textContent='Last updated: 0s ago';}
-    }
+function cacheDom(){
+  tradeLogBody=document.getElementById('tradeLogBody');
+  equityChartCanvas=document.getElementById('equityChart');
+  statPeriodReturn=document.getElementById('statPeriodReturn');
+  statYTD=document.getElementById('statYTD');
+  statWinRate=document.getElementById('statWinRate');
+  statSharpe=document.getElementById('statSharpe');
+  statTrades=document.getElementById('statTrades');
+  statPeriodLabel=document.getElementById('statPeriodLabel');
+  thinkRegime=document.getElementById('thinkRegime');
+  thinkCorrelation=document.getElementById('thinkCorrelation');
+  thinkTailDep=document.getElementById('thinkTailDep');
+  thinkSignal=document.getElementById('thinkSignal');
+  thinkRegimeProb=document.getElementById('thinkRegimeProb');
+  thinkCorrelationDetail=document.getElementById('thinkCorrelationDetail');
+  thinkTailDetail=document.getElementById('thinkTailDetail');
+  thinkSignalDetail=document.getElementById('thinkSignalDetail');
+  thinkSentimentValue=document.getElementById('thinkSentimentValue');
+  thinkSentimentSub=document.getElementById('thinkSentimentSub');
+  marketStatusNote=document.getElementById('marketStatusNote');
+  refreshLabel=document.getElementById('refreshLabel');
+  refreshDot=document.getElementById('refreshDot');
+  londonTimeEl=document.getElementById('londonTime');
+  liveDot=document.getElementById('liveDot');
+  botStatusText=document.getElementById('botStatusText');
+  todaySignalBanner=document.getElementById('todaySignalBanner');
+  sigValue=document.getElementById('sigValue');
+  sigMeta=document.getElementById('sigMeta');
+  backtestDateRange=document.getElementById('backtestDateRange');
+}
 
-    // ── CACHE DOM ─────────────────────────────────────────────────
-    function cacheDom(){
-      tradeLogBody=document.getElementById('tradeLogBody');
-      equityChartCanvas=document.getElementById('equityChart');
-      statPeriodReturn=document.getElementById('statPeriodReturn');
-      statYTD=document.getElementById('statYTD');
-      statWinRate=document.getElementById('statWinRate');
-      statSharpe=document.getElementById('statSharpe');
-      statTrades=document.getElementById('statTrades');
-      statPeriodLabel=document.getElementById('statPeriodLabel');
-      thinkRegime=document.getElementById('thinkRegime');
-      thinkCorrelation=document.getElementById('thinkCorrelation');
-      thinkTailDep=document.getElementById('thinkTailDep');
-      thinkSignal=document.getElementById('thinkSignal');
-      thinkRegimeProb=document.getElementById('thinkRegimeProb');
-      thinkCorrelationDetail=document.getElementById('thinkCorrelationDetail');
-      thinkTailDetail=document.getElementById('thinkTailDetail');
-      thinkSignalDetail=document.getElementById('thinkSignalDetail');
-      marketStatusNote=document.getElementById('marketStatusNote');
-      refreshLabel=document.getElementById('refreshLabel');
-      refreshDot=document.getElementById('refreshDot');
-      londonTimeEl=document.getElementById('londonTime');
-      liveDot=document.getElementById('liveDot');
-      botStatusText=document.getElementById('botStatusText');
-      todaySignalBanner=document.getElementById('todaySignalBanner');
-      sigValue=document.getElementById('sigValue');
-      sigMeta=document.getElementById('sigMeta');
-      backtestDateRange=document.getElementById('backtestDateRange');
-    }
-
-    // ── INIT ──────────────────────────────────────────────────────
-    async function init(){
-      cacheDom();
-      updateLondonClock();setInterval(updateLondonClock,1000);
-      updateBotStatus();setInterval(updateBotStatus,30000);
-      await runRealBacktest();
-      renderTradeLog();
-      updateThinkingDisplay();
-      drawChart('1y');
-      updateStats('1y');
-      document.querySelectorAll('.timeframe-btn').forEach(btn=>{
-        btn.addEventListener('click',function(){
-          document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
-          this.classList.add('active');
-          updateStats(this.dataset.period);
-          drawChart(this.dataset.period);
-        });
-      });
-      updateQuotes();setInterval(updateQuotes,QUOTE_INTERVAL_MS);
-      setInterval(tickRefresh,1000);
-      document.getElementById('burger')?.addEventListener('click',()=>{
-        const m=document.getElementById('mobileMenu');
-        const b=document.getElementById('burger');
-        const open=m?.classList.toggle('open');
-        b?.setAttribute('aria-expanded',open?'true':'false');
-      });
-    }
-    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
-    else init();
-  })();
+async function init(){
+  cacheDom();
+  updateLondonClock();setInterval(updateLondonClock,1000);
+  updateBotStatus();setInterval(updateBotStatus,30000);
+  await fetchSentiment();
+  await runRealBacktest();
+  renderTradeLog();
+  updateThinkingDisplay();
+  drawChart('1y');
+  updateStats('1y');
+  document.querySelectorAll('.timeframe-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.timeframe-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      updateStats(this.dataset.period);
+      drawChart(this.dataset.period);
+    });
+  });
+  updateQuotes();setInterval(updateQuotes,QUOTE_INTERVAL_MS);
+  setInterval(tickRefresh,1000);
+  document.getElementById('burger')?.addEventListener('click',()=>{
+    const m=document.getElementById('mobileMenu');
+    const b=document.getElementById('burger');
+    const open=m?.classList.toggle('open');
+    b?.setAttribute('aria-expanded',open?'true':'false');
+  });
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+else init();
+})();
   </script>
 </body>
 </html>
