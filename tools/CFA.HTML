@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFA Level 1 Study Tool — The Market Brief Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/tbp-theme.css">
+    <style>
+        /* CFA tool specific styles, building on tbp-theme */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 680px) { .topic-grid { grid-template-columns: 1fr; } }
+        .topic-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.25s var(--tbp-ease);
+            position: relative;
+            overflow: hidden;
+        }
+        .topic-card:hover {
+            border-color: var(--tbp-blue);
+            box-shadow: 0 6px 18px rgba(0,102,255,0.08);
+            transform: translateY(-2px);
+        }
+        .topic-card.locked {
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .topic-card.locked:hover {
+            opacity: 0.85;
+        }
+        .topic-card .topic-number {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            margin-bottom: 8px;
+        }
+        .topic-card .topic-name {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 750;
+            letter-spacing: -.01em;
+            color: var(--tbp-ink);
+            margin-bottom: 8px;
+        }
+        .topic-card .topic-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .badge-free { background: rgba(26,138,74,0.1); color: var(--tbp-pos); }
+        .badge-paid { background: rgba(0,102,255,0.08); color: var(--tbp-blue); }
+        .topic-card .topic-count {
+            font-size: 13px;
+            color: var(--tbp-muted);
+            margin-top: 10px;
+        }
+        .topic-progress-bar {
+            margin-top: 12px;
+            height: 4px;
+            background: var(--tbp-line-soft);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .topic-progress-fill {
+            height: 100%;
+            background: var(--tbp-blue);
+            border-radius: 2px;
+            transition: width 0.4s;
+        }
+        .lock-icon {
+            display: inline-block;
+            margin-right: 3px;
+            font-size: 11px;
+        }
+        .quiz-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: clamp(24px, 4vw, 48px);
+            align-items: start;
+        }
+        @media (max-width: 900px) { .quiz-layout { grid-template-columns: 1fr; } }
+        .question-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: clamp(24px, 4vw, 36px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .question-text {
+            font-size: 1.08rem;
+            line-height: 1.65;
+            color: var(--tbp-ink);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            border: 1px solid var(--tbp-line);
+            border-radius: 10px;
+            background: var(--tbp-bg);
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 14.5px;
+            color: var(--tbp-ink);
+            cursor: pointer;
+            transition: all 0.2s var(--tbp-ease);
+        }
+        .option-btn:hover {
+            border-color: var(--tbp-blue);
+            background: rgba(0,102,255,0.03);
+        }
+        .option-btn.selected { border-color: var(--tbp-blue); background: rgba(0,102,255,0.05); }
+        .option-btn.correct { border-color: var(--tbp-pos); background: rgba(26,138,74,0.06); color: var(--tbp-pos); }
+        .option-btn.incorrect { border-color: var(--tbp-neg); background: rgba(176,48,48,0.05); color: var(--tbp-neg); }
+        .option-btn:disabled { pointer-events: none; }
+        .explanation-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s var(--tbp-ease), margin 0.4s;
+            margin-top: 0;
+        }
+        .explanation-panel.open {
+            max-height: 800px;
+            margin-top: 20px;
+        }
+        .explanation-inner {
+            background: var(--tbp-bg-alt);
+            border-radius: 10px;
+            padding: 20px 24px;
+            border: 1px solid var(--tbp-line);
+        }
+        .explanation-inner .correct-label {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--tbp-pos);
+            margin-bottom: 12px;
+        }
+        .explanation-inner .explain-text {
+            font-size: 14px;
+            color: var(--tbp-ink-2);
+            line-height: 1.65;
+            margin-bottom: 12px;
+        }
+        .explanation-inner .real-world {
+            font-size: 13px;
+            color: var(--tbp-muted);
+            line-height: 1.55;
+            font-style: italic;
+        }
+        .difficulty-toggles {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .diff-btn {
+            padding: 6px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--tbp-line);
+            background: transparent;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--tbp-muted);
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Inter Tight', sans-serif;
+        }
+        .diff-btn.active {
+            background: var(--tbp-ink);
+            color: var(--tbp-bg);
+            border-color: var(--tbp-ink);
+        }
+        .session-sidebar {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: 24px;
+            position: sticky;
+            top: calc(var(--tbp-headerH) + 24px);
+        }
+        @media (max-width: 900px) { .session-sidebar { position: static; } }
+        .session-sidebar h4 {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            margin-bottom: 16px;
+        }
+        .session-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--tbp-line-soft);
+            font-size: 14px;
+        }
+        .session-stat:last-child { border-bottom: 0; }
+        .session-stat .stat-label { color: var(--tbp-muted); }
+        .session-stat .stat-value { font-weight: 600; color: var(--tbp-ink); }
+        .mini-progress {
+            margin-top: 12px;
+        }
+        .mini-progress .mini-label {
+            font-size: 12px;
+            color: var(--tbp-muted);
+            margin-bottom: 4px;
+        }
+        .mini-progress .mini-bar {
+            height: 4px;
+            background: var(--tbp-line-soft);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .mini-progress .mini-fill {
+            height: 100%;
+            background: var(--tbp-blue);
+            border-radius: 2px;
+        }
+        .progress-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--tbp-muted);
+        }
+        .progress-info .progress-fill-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--tbp-line-soft);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-info .progress-fill-bar .fill {
+            height: 100%;
+            background: var(--tbp-blue);
+            border-radius: 2px;
+            transition: width 0.4s;
+        }
+        .session-stats-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+        .session-stats-row span { color: var(--tbp-muted); }
+        .session-stats-row strong { color: var(--tbp-ink); }
+        .tip-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 800px) { .tip-cards { grid-template-columns: 1fr; } }
+        .tip-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .tip-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .tip-card p {
+            font-size: 14px;
+            color: var(--tbp-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="tbp">
+
+    <!-- HEADER -->
+    <header class="tbp-header" id="header">
+        <div class="tbp-container tbp-header-inner">
+            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily">
+                <span class="mark">MB</span>
+                <span>The Market Brief Daily</span>
+            </a>
+            <nav class="tbp-nav" aria-label="Primary navigation">
+                <a href="/">Home</a>
+                <a href="/posts.html">Research</a>
+                <a href="/investments.html">Funds</a>
+                <a href="/methodology.html">Methodology</a>
+                <a href="/education.html">Education</a>
+                <a href="/bot.html">AI Trader</a>
+                <a href="/tools/dcf.html" class="is-active">Tools</a>
+                <a href="/about.html">About</a>
+            </nav>
+            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="tbp-mobile-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
+    </div>
+
+    <!-- HERO (compact) -->
+    <section class="tbp-hero" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 40px;">
+        <div class="tbp-container">
+            <span class="tbp-eyebrow" data-tbp-reveal>Free · CFA Level 1</span>
+            <div style="margin-top: 16px;" data-tbp-reveal>
+                <h1 style="font-size: clamp(2.2rem, 6vw, 4rem);">Study smarter,<br><em>pass faster.</em></h1>
+            </div>
+            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">AI-generated practice questions across all 10 CFA Level 1 topic areas. Adaptive difficulty, worked explanations with real macro examples, and session progress tracking. Built by a CFA candidate.</p>
+        </div>
+    </section>
+
+    <!-- TOPIC SELECTOR SECTION -->
+    <section class="tbp-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Choose your topic</span>
+                    <h2 class="tbp-h2">10 topic areas.</h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">Three topics are free to try. Unlock all 10 with a paid subscription.</p>
+                </div>
+            </div>
+            <div class="topic-grid" data-tbp-reveal class="delay-1">
+                <!-- Topic 1: Ethics — FREE -->
+                <div class="topic-card" data-topic="ethics" onclick="startQuiz('ethics')">
+                    <div class="topic-number">Topic 1</div>
+                    <div class="topic-name">Ethics &amp; Professional Standards</div>
+                    <span class="topic-badge badge-free">FREE</span>
+                    <div class="topic-count">100+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" id="progress-ethics" style="width: 0%;"></div></div>
+                </div>
+                <!-- Topic 2: Quantitative Methods — FREE -->
+                <div class="topic-card" data-topic="quant" onclick="startQuiz('quant')">
+                    <div class="topic-number">Topic 2</div>
+                    <div class="topic-name">Quantitative Methods</div>
+                    <span class="topic-badge badge-free">FREE</span>
+                    <div class="topic-count">90+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" id="progress-quant" style="width: 0%;"></div></div>
+                </div>
+                <!-- Topic 3: FRA — FREE -->
+                <div class="topic-card" data-topic="fra" onclick="startQuiz('fra')">
+                    <div class="topic-number">Topic 3</div>
+                    <div class="topic-name">Financial Reporting &amp; Analysis</div>
+                    <span class="topic-badge badge-free">FREE</span>
+                    <div class="topic-count">120+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" id="progress-fra" style="width: 0%;"></div></div>
+                </div>
+                <!-- Topics 4-10: PAID -->
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 4</div>
+                    <div class="topic-name">Economics</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">85+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 5</div>
+                    <div class="topic-name">Corporate Finance</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">70+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 6</div>
+                    <div class="topic-name">Equity Investments</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">95+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 7</div>
+                    <div class="topic-name">Fixed Income</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">110+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 8</div>
+                    <div class="topic-name">Derivatives</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">60+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 9</div>
+                    <div class="topic-name">Alternative Investments</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">50+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+                <div class="topic-card locked" onclick="showPaidAlert()">
+                    <div class="topic-number">Topic 10</div>
+                    <div class="topic-name">Portfolio Management</div>
+                    <span class="topic-badge badge-paid"><span class="lock-icon">🔒</span> PAID</span>
+                    <div class="topic-count">80+ questions</div>
+                    <div class="topic-progress-bar"><div class="topic-progress-fill" style="width: 0%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUIZ INTERFACE SECTION -->
+    <section id="quiz" class="tbp-section alt" style="display: none;">
+        <div class="tbp-container">
+            <div class="quiz-layout">
+                <!-- Main quiz area -->
+                <div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                        <span class="tbp-eyebrow" id="currentTopicLabel">Ethics &amp; Professional Standards</span>
+                        <div class="difficulty-toggles" id="difficultyToggles">
+                            <button class="diff-btn active" data-diff="foundation" onclick="setDifficulty('foundation', this)">Foundation</button>
+                            <button class="diff-btn" data-diff="intermediate" onclick="setDifficulty('intermediate', this)">Intermediate</button>
+                            <button class="diff-btn" data-diff="advanced" onclick="setDifficulty('advanced', this)">Advanced</button>
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="questionProgress">Question 1 of 5</span>
+                        <div class="progress-fill-bar"><div class="fill" id="quizProgressFill" style="width: 0%;"></div></div>
+                    </div>
+                    <div class="session-stats-row">
+                        <span>Today: <strong id="statAnswered">0</strong> answered</span>
+                        <span>Correct: <strong id="statCorrect">0</strong></span>
+                        <span>Streak: <strong id="statStreak">0</strong> 🔥</span>
+                    </div>
+
+                    <!-- QUESTION CARD -->
+                    <div class="question-card" id="questionCard">
+                        <p class="question-text" id="questionText">Loading question…</p>
+                        <div id="optionsContainer"></div>
+                        <button class="tbp-btn primary" id="submitBtn" onclick="submitAnswer()" style="margin-top: 16px; width: 100%;">Submit Answer</button>
+                        <div class="explanation-panel" id="explanationPanel">
+                            <div class="explanation-inner">
+                                <p class="correct-label" id="correctLabel"></p>
+                                <p class="explain-text" id="explainText"></p>
+                                <p class="real-world" id="realWorldText"></p>
+                                <div style="display: flex; gap: 10px; margin-top: 16px;">
+                                    <button class="tbp-btn" onclick="nextQuestion()">Next Question →</button>
+                                    <button class="tbp-btn" onclick="switchTopic()" style="background: transparent;">Try a different topic</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SESSION SIDEBAR -->
+                <div class="session-sidebar">
+                    <h4>Session summary</h4>
+                    <div class="session-stat"><span class="stat-label">Started</span><span class="stat-value" id="sessionStarted">—</span></div>
+                    <div class="session-stat"><span class="stat-label">Questions answered</span><span class="stat-value" id="sessionAnswered">0</span></div>
+                    <div class="session-stat"><span class="stat-label">Correct</span><span class="stat-value" id="sessionCorrect">0</span></div>
+                    <div class="session-stat"><span class="stat-label">Time spent</span><span class="stat-value" id="sessionTime">0m</span></div>
+                    <div style="margin-top: 16px;">
+                        <p class="tbp-small" style="margin-bottom: 8px;">Topic breakdown</p>
+                        <div class="mini-progress">
+                            <div class="mini-label">Ethics</div>
+                            <div class="mini-bar"><div class="mini-fill" id="mini-ethics" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="mini-label">Quant Methods</div>
+                            <div class="mini-bar"><div class="mini-fill" id="mini-quant" style="width: 0%;"></div></div>
+                        </div>
+                        <div class="mini-progress">
+                            <div class="mini-label">FRA</div>
+                            <div class="mini-bar"><div class="mini-fill" id="mini-fra" style="width: 0%;"></div></div>
+                        </div>
+                    </div>
+                    <p class="tbp-small" style="margin-top: 12px; color: var(--tbp-muted-2);">Progress is saved locally in your browser.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXAM TIPS SECTION -->
+    <section class="tbp-section alt" id="tipsSection">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Insider tips</span>
+                    <h2 class="tbp-h2">Exam strategy from<br><em>a CFA candidate.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">Genuine, actionable advice for the Level 1 exam — from someone who's been through the curriculum.</p>
+                </div>
+            </div>
+            <div class="tip-cards" data-tbp-reveal class="delay-1">
+                <div class="tip-card">
+                    <h4>Ethics is the highest-weighted topic</h4>
+                    <p>At 15–20% of the exam, Ethics is the single most heavily weighted topic. Never guess on ethics — read every option carefully. The answer is almost always about disclosure, independence, or materiality. Flag ethical scenarios you're unsure about and return to them.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>FRA + Quant = ~30% of the exam</h4>
+                    <p>Financial Reporting &amp; Analysis combined with Quantitative Methods accounts for roughly 30% of the Level 1 exam. These are learnable with repetition — use this tool daily for 4 weeks and you will see the patterns emerge. Focus on ratio analysis, DCF mechanics, and probability concepts.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>Fixed Income is conceptually heavy</h4>
+                    <p>Fixed Income is conceptually heavy but formula-light relative to other topics. Focus on duration, convexity, and the yield curve relationships. These concepts appear in portfolio management too, so mastering them here pays dividends later in the curriculum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UNLOCK FULL ACCESS CTA -->
+    <section class="tbp-section" style="background: var(--tbp-ink); color: var(--tbp-bg);">
+        <div class="tbp-container" style="text-align: center;">
+            <div data-tbp-reveal>
+                <span class="tbp-eyebrow" style="color: rgba(255,255,255,0.45);">Unlock all 10 topics</span>
+                <h2 style="color: var(--tbp-bg); font-weight: 850; font-size: clamp(2rem, 5.4vw, 4rem); letter-spacing: -.035em; line-height: 1; margin: 16px 0 24px;">£9/month —<br><em>cancel any time.</em></h2>
+                <div style="text-align: left; max-width: 480px; margin: 0 auto 32px; color: rgba(255,255,255,0.6); font-size: 15px; line-height: 2;">
+                    <p>✓ All 10 CFA Level 1 topics</p>
+                    <p>✓ Unlimited practice questions</p>
+                    <p>✓ PDF study notes per topic</p>
+                    <p>✓ Progress tracking across sessions</p>
+                    <p>✓ Worked examples with real market data</p>
+                </div>
+                <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" class="tbp-btn primary" style="background: var(--tbp-bg); color: var(--tbp-ink); border-color: var(--tbp-bg);">Subscribe to unlock →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="tbp-footer">
+        <div class="tbp-container">
+            <div class="tbp-footer-top">
+                <div>
+                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/">Home</a>
+                        <a href="/posts.html">Research</a>
+                        <a href="/investments.html">Funds</a>
+                        <a href="/methodology.html">Methodology</a>
+                        <a href="/education.html">Education</a>
+                        <a href="/bot.html">AI Trader</a>
+                        <a href="/tools/dcf.html">Tools</a>
+                        <a href="/about.html">About</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Tools &amp; Resources</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/tools/dcf.html">DCF Tool</a>
+                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+                        <a href="/tools/cfa.html">CFA Resources</a>
+                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+                        <a href="/glossary.html">Glossary</a>
+                        <a href="/reports.html">Reports</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/disclaimer.html">Disclaimer</a>
+                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+            <div class="tbp-footer-bottom">
+                <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+                <div class="legal">
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/tbp.js" defer></script>
+    <script>
+        // ============================================================
+        // CFA STUDY TOOL — Quiz Engine
+        // ============================================================
+
+        // Sample question bank (3 topics × 5 questions each)
+        const questionBank = {
+            ethics: [
+                {
+                    q: 'According to the CFA Institute Standards of Professional Conduct, which of the following best describes a material nonpublic information violation?',
+                    options: [
+                        'A. Trading on information that is publicly available but not widely disseminated',
+                        'B. Trading on information that is likely to affect the price of a security and has not been made public',
+                        'C. Trading on information received from a competitor that is not yet verified',
+                        'D. Trading based on a rumour heard at an industry conference'
+                    ],
+                    correct: 1,
+                    explain: 'Material nonpublic information is defined as information that (a) is not available to the investing public, and (b) would likely affect the price of a security if it were disclosed. The key test is whether a reasonable investor would consider the information important in making an investment decision.',
+                    realWorld: 'Real-world example: In 2022, a Goldman Sachs analyst was charged for sharing nonpublic revenue forecasts with select clients before the information was released to the broader market. The SEC determined this constituted a material nonpublic information violation because the forecasts moved share prices when eventually disclosed.'
+                },
+                {
+                    q: 'Under the CFA Institute Code of Ethics, a member must do all of the following EXCEPT:',
+                    options: [
+                        'A. Act with integrity, competence, and diligence',
+                        'B. Place the interests of clients above their own',
+                        'C. Guarantee investment performance to clients',
+                        'D. Practice and encourage others to practice in a professional and ethical manner'
+                    ],
+                    correct: 2,
+                    explain: 'The CFA Institute Code of Ethics explicitly prohibits guaranteeing investment performance. Members cannot promise or guarantee returns on investments. All other listed options are core tenets of the Code.',
+                    realWorld: 'Real-world example: During the 2008 financial crisis, several fund managers were sanctioned for guaranteeing "safe" returns on mortgage-backed securities. Even verbal assurances of performance can constitute a violation if they mislead clients about risk.'
+                },
+                {
+                    q: 'A CFA charterholder leaves their current employer and joins a competitor. Which of the following is permitted under the CFA Standards?',
+                    options: [
+                        'A. Taking the client list from the previous employer without permission',
+                        'B. Contacting former clients using publicly available information after leaving',
+                        'C. Using proprietary models developed at the previous firm without disclosure',
+                        'D. Deleting all records of work performed at the previous employer'
+                    ],
+                    correct: 1,
+                    explain: 'Under Standard IV(A) — Loyalty to Employer, a member may not take client lists or proprietary models when leaving an employer. However, contacting former clients using information in the public domain (such as LinkedIn or public directories) is permitted, provided no non-solicitation agreement is in place.',
+                    realWorld: 'Real-world example: In 2019, Morgan Stanley prevailed in a lawsuit against a departing advisor who took a 200-page client list. The court ruled that client names alone, when compiled as a list, constitute confidential employer property.'
+                },
+                {
+                    q: 'What is the primary purpose of the CFA Institute Global Investment Performance Standards (GIPS)?',
+                    options: [
+                        'A. To guarantee that all investment managers achieve positive returns',
+                        'B. To establish a standardised methodology for calculating and presenting investment performance',
+                        'C. To regulate the fees that investment managers can charge',
+                        'D. To replace local regulatory requirements for performance reporting'
+                    ],
+                    correct: 1,
+                    explain: 'GIPS provides a standardised methodology for calculating and presenting investment performance so that investors can make fair comparisons across firms and jurisdictions. It is an ethical standard, not a legal requirement, though it complements regulation.',
+                    realWorld: 'Real-world example: A pension fund comparing two asset managers — one reporting time-weighted returns and another using money-weighted returns — would struggle without GIPS. The standards ensure both managers calculate performance the same way, enabling an apples-to-apples comparison.'
+                },
+                {
+                    q: 'Under Standard III(B) — Fair Dealing, which of the following is required when disseminating investment recommendations?',
+                    options: [
+                        'A. All clients must receive recommendations simultaneously',
+                        'B. Recommendations must be sent to institutional clients before retail clients',
+                        'C. Clients must acknowledge receipt before any trade is executed',
+                        'D. Material changes in recommendations must be communicated to all clients in a fair and timely manner'
+                    ],
+                    correct: 3,
+                    explain: 'Standard III(B) requires that all clients be treated fairly — not necessarily identically, but without favouring one group over another. Material changes must be communicated in a way that gives all clients a reasonable opportunity to act.',
+                    realWorld: 'Real-world example: When a major rating agency downgrades a sovereign bond, they must release the information to all subscribers simultaneously. Leaking the downgrade to select clients first would violate fair dealing principles and potentially constitute insider trading.'
+                }
+            ],
+            quant: [
+                {
+                    q: 'A portfolio has an expected return of 12% and a standard deviation of 18%. What is the probability that the return will be negative, assuming returns are normally distributed?',
+                    options: [
+                        'A. 25.14%',
+                        'B. 27.43%',
+                        'C. 32.87%',
+                        'D. 12.50%'
+                    ],
+                    correct: 0,
+                    explain: 'The z-score for a zero return is (0 − 0.12) / 0.18 = −0.667. Using the standard normal table, the probability of a return below −0.667 standard deviations is approximately 25.14%. This means there is roughly a 1 in 4 chance of a negative return.',
+                    realWorld: 'Real-world example: The S&P 500 has a long-run annual return of approximately 10% with a standard deviation of about 20%. This implies negative years occur roughly 31% of the time — which matches historical data: since 1928, the S&P 500 has posted a negative calendar-year return in 28 of 96 years (29%).'
+                },
+                {
+                    q: 'Which of the following best describes the central limit theorem?',
+                    options: [
+                        'A. The distribution of a sample mean approaches a normal distribution as the sample size increases, regardless of the underlying population distribution',
+                        'B. The mean of any population will always follow a normal distribution',
+                        'C. The variance of a sample is always equal to the population variance',
+                        'D. The median and mean of a distribution converge as the sample size grows'
+                    ],
+                    correct: 0,
+                    explain: 'The central limit theorem states that the sampling distribution of the sample mean approaches a normal distribution as the sample size n increases, provided the samples are independent and identically distributed, with finite mean and variance. This holds regardless of the shape of the underlying population distribution.',
+                    realWorld: 'Real-world example: When estimating average daily returns for the FTSE 100, even though daily returns themselves are not normally distributed (they exhibit fat tails), the average return over a large number of days will be approximately normally distributed. This is why parametric tests like t-tests are valid in finance despite non-normal return distributions.'
+                },
+                {
+                    q: 'What is the effective annual rate (EAR) of a loan with a stated annual rate of 8% compounded quarterly?',
+                    options: [
+                        'A. 8.00%',
+                        'B. 8.16%',
+                        'C. 8.24%',
+                        'D. 8.30%'
+                    ],
+                    correct: 2,
+                    explain: 'EAR = (1 + r/n)^n − 1 = (1 + 0.08/4)^4 − 1 = (1.02)^4 − 1 = 1.0824 − 1 = 0.0824, or 8.24%. The more frequently interest is compounded within the year, the higher the effective annual rate.',
+                    realWorld: 'Real-world example: UK mortgage lenders are required to quote the Annual Percentage Rate (APR), which is the effective annual rate. A mortgage with a headline rate of 4.5% compounded monthly actually costs 4.59% per year. This difference compounds significantly over a 25-year mortgage term.'
+                },
+                {
+                    q: 'A researcher wants to test whether the average return of a strategy is greater than zero. She collects 36 months of data. What is the critical t-value for a one-tailed test at the 5% significance level?',
+                    options: [
+                        'A. 1.645',
+                        'B. 1.690',
+                        'C. 1.960',
+                        'D. 2.030'
+                    ],
+                    correct: 1,
+                    explain: 'For a one-tailed t-test with n−1 = 35 degrees of freedom at the 5% significance level, the critical t-value is approximately 1.690. As the sample size increases, the t-distribution approaches the normal distribution, where the critical value would be 1.645.',
+                    realWorld: 'Real-world example: When backtesting a trading strategy with 3 years of monthly returns (36 observations), a t-statistic greater than 1.69 would indicate that the strategy\'s positive returns are statistically significant at the 5% level. Many academic papers report t-statistics alongside returns to distinguish genuine alpha from luck.'
+                },
+                {
+                    q: 'If the correlation between Stock A and Stock B is −0.30, what does this indicate?',
+                    options: [
+                        'A. Stock A and Stock B move in the same direction 30% of the time',
+                        'B. When Stock A rises, Stock B tends to fall, and the relationship explains 9% of the variance',
+                        'C. The covariance between the two stocks is −0.30',
+                        'D. An investor should short Stock A and go long Stock B'
+                    ],
+                    correct: 1,
+                    explain: 'A correlation of −0.30 indicates a moderate negative linear relationship. The R² value is (−0.30)² = 0.09, meaning 9% of the variation in Stock B\'s returns can be explained by variation in Stock A\'s returns. The remaining 91% is due to other factors.',
+                    realWorld: 'Real-world example: During the 2022 inflation shock, the correlation between the S&P 500 and long-dated US Treasuries turned positive (approximately +0.30), meaning bonds fell alongside equities. The R² of 0.09 meant that equity movements explained only 9% of bond movements — the other 91% was driven by inflation, Fed policy, and other macro factors.'
+                }
+            ],
+            fra: [
+                {
+                    q: 'Under IFRS, how should a company classify interest paid on a bank loan in its statement of cash flows?',
+                    options: [
+                        'A. Operating activities only',
+                        'B. Financing activities only',
+                        'C. Either operating or financing activities, with consistent classification',
+                        'D. Investing activities'
+                    ],
+                    correct: 2,
+                    explain: 'Under IFRS (IAS 7), interest paid may be classified as either operating activities (consistent with the income statement treatment) or financing activities (reflecting the source of the funding). However, the classification must be applied consistently from period to period. Under US GAAP, interest paid is classified as operating.',
+                    realWorld: 'Real-world example: In 2023, Vodafone reported interest paid of £1.2 billion as an operating cash outflow under IFRS, consistent with its treatment of interest as an operating cost. A US telecom like AT&T classifies interest payments as operating activities under US GAAP. This difference in classification can make cross-border comparisons challenging.'
+                },
+                {
+                    q: 'A company reports revenue of £500,000, cost of goods sold of £300,000, and operating expenses of £100,000. What is the gross profit margin?',
+                    options: [
+                        'A. 20%',
+                        'B. 40%',
+                        'C. 60%',
+                        'D. 25%'
+                    ],
+                    correct: 1,
+                    explain: 'Gross profit = Revenue − COGS = £500,000 − £300,000 = £200,000. Gross profit margin = Gross profit / Revenue = £200,000 / £500,000 = 40%. The gross profit margin measures how efficiently a company produces its goods before considering operating expenses.',
+                    realWorld: 'Real-world example: In the luxury sector, LVMH consistently reports gross margins around 65–68%, reflecting strong pricing power. By contrast, UK supermarket Tesco operates on gross margins of approximately 7–8%, reflecting the competitive, low-margin nature of grocery retail. This is why gross margin is the starting point for industry analysis.'
+                },
+                {
+                    q: 'Under the accrual basis of accounting, when is revenue typically recognised?',
+                    options: [
+                        'A. When cash is received from the customer',
+                        'B. When the earnings process is substantially complete and payment is reasonably assured',
+                        'C. When the invoice is issued',
+                        'D. At the end of the fiscal year'
+                    ],
+                    correct: 1,
+                    explain: 'Under both IFRS 15 and ASC 606, revenue is recognised when (or as) performance obligations are satisfied by transferring control of a good or service to the customer, and collection is probable. This is the core principle of the five-step revenue recognition model.',
+                    realWorld: 'Real-world example: When Apple sells an iPhone in its retail store, revenue is recognised at the point of sale. However, for AppleCare extended warranties, revenue is deferred and recognised over the warranty period (typically 2 years). This explains why Apple\'s balance sheet shows a substantial "deferred revenue" liability — cash received but not yet earned.'
+                },
+                {
+                    q: 'What is the effect of capitalising an expenditure (rather than expensing it) on the financial statements in the year of the expenditure?',
+                    options: [
+                        'A. Higher net income and higher total assets',
+                        'B. Lower net income and lower total assets',
+                        'C. Higher net income and lower total assets',
+                        'D. No effect on either net income or total assets'
+                    ],
+                    correct: 0,
+                    explain: 'Capitalising an expenditure means it is recorded as an asset on the balance sheet and depreciated over time, rather than being immediately expensed on the income statement. In the year of expenditure, this results in higher net income (because only a portion is expensed as depreciation) and higher total assets (because the asset is capitalised).',
+                    realWorld: 'Real-world example: In 2022, Amazon capitalised $58 billion in property and equipment, expensing only the depreciation for the year. Had Amazon expensed this entire amount, its operating income would have been negative by tens of billions. This capitalisation policy is entirely appropriate under GAAP, but it means Amazon\'s reported profitability is significantly influenced by its capital investment cycle.'
+                },
+                {
+                    q: 'A company has a current ratio of 2.0. If it uses cash to pay off accounts payable, what happens to the current ratio?',
+                    options: [
+                        'A. It increases',
+                        'B. It decreases',
+                        'C. It stays the same',
+                        'D. It depends on the amount paid'
+                    ],
+                    correct: 0,
+                    explain: 'The current ratio = Current Assets / Current Liabilities. If a company uses cash (a current asset) to pay off accounts payable (a current liability), both the numerator and denominator decrease by the same amount. Since the ratio is greater than 1, removing equal amounts from numerator and denominator increases the ratio.',
+                    realWorld: 'Real-world example: A company with £200 in current assets and £100 in current liabilities has a current ratio of 2.0. Paying off £50 of payables with cash reduces assets to £150 and liabilities to £50 — the ratio rises to 3.0. This is why rapid deleveraging can actually make liquidity ratios look better in the short term, even as the company shrinks its balance sheet.'
+                }
+            ]
+        };
+
+        // State
+        let currentTopic = 'ethics';
+        let currentQuestionIndex = 0;
+        let selectedAnswer = null;
+        let submitted = false;
+        let difficulty = 'foundation';
+        let sessionStats = {
+            answered: 0,
+            correct: 0,
+            streak: 0,
+            startTime: null,
+            topicsCompleted: { ethics: 0, quant: 0, fra: 0 }
+        };
+
+        // Load saved progress from localStorage
+        function loadProgress() {
+            try {
+                const saved = localStorage.getItem('tbp-cfa-progress');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.topicsCompleted) sessionStats.topicsCompleted = data.topicsCompleted;
+                    if (data.answered) sessionStats.answered = data.answered;
+                    if (data.correct) sessionStats.correct = data.correct;
+                }
+            } catch (e) { /* ignore */ }
+            updateAllProgressBars();
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem('tbp-cfa-progress', JSON.stringify({
+                    topicsCompleted: sessionStats.topicsCompleted,
+                    answered: sessionStats.answered,
+                    correct: sessionStats.correct,
+                    lastUpdated: new Date().toISOString()
+                }));
+            } catch (e) { /* ignore */ }
+        }
+
+        function updateAllProgressBars() {
+            const totalPerTopic = 5; // 5 questions per topic
+            ['ethics', 'quant', 'fra'].forEach(topic => {
+                const pct = Math.min(100, (sessionStats.topicsCompleted[topic] / totalPerTopic) * 100);
+                const bar = document.getElementById('progress-' + topic);
+                const mini = document.getElementById('mini-' + topic);
+                if (bar) bar.style.width = pct + '%';
+                if (mini) mini.style.width = pct + '%';
+            });
+        }
+
+        function updateSessionSidebar() {
+            document.getElementById('sessionAnswered').textContent = sessionStats.answered;
+            document.getElementById('sessionCorrect').textContent = sessionStats.correct;
+            if (sessionStats.startTime) {
+                const mins = Math.floor((Date.now() - sessionStats.startTime) / 60000);
+                document.getElementById('sessionTime').textContent = mins + 'm';
+                document.getElementById('sessionStarted').textContent = new Date(sessionStats.startTime).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            }
+            document.getElementById('statAnswered').textContent = sessionStats.answered;
+            document.getElementById('statCorrect').textContent = sessionStats.correct;
+            document.getElementById('statStreak').textContent = sessionStats.streak;
+            updateAllProgressBars();
+        }
+
+        function showPaidAlert() {
+            alert('This topic is available with a paid subscription (£9/month). Subscribe at marketbriefdaily.substack.com');
+        }
+
+        function startQuiz(topic) {
+            currentTopic = topic;
+            currentQuestionIndex = 0;
+            selectedAnswer = null;
+            submitted = false;
+            if (!sessionStats.startTime) sessionStats.startTime = Date.now();
+
+            const topicNames = { ethics: 'Ethics & Professional Standards', quant: 'Quantitative Methods', fra: 'Financial Reporting & Analysis' };
+            document.getElementById('currentTopicLabel').textContent = topicNames[topic];
+
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('tipsSection').style.display = 'none';
+
+            updateSessionSidebar();
+            renderQuestion();
+        }
+
+        function switchTopic() {
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('tipsSection').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('quiz').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function setDifficulty(diff, btn) {
+            difficulty = diff;
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            if (document.getElementById('quiz').style.display !== 'none') {
+                currentQuestionIndex = 0;
+                submitted = false;
+                renderQuestion();
+            }
+        }
+
+        function renderQuestion() {
+            const questions = questionBank[currentTopic];
+            if (!questions || questions.length === 0) return;
+            const qData = questions[currentQuestionIndex % questions.length];
+
+            document.getElementById('questionText').textContent = qData.q;
+            document.getElementById('questionProgress').textContent = 'Question ' + (currentQuestionIndex + 1) + ' of ' + questions.length;
+            document.getElementById('quizProgressFill').style.width = ((currentQuestionIndex + 1) / questions.length * 100) + '%';
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            qData.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = function() { selectAnswer(i, this); };
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('submitBtn').textContent = 'Submit Answer';
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('explanationPanel').classList.remove('open');
+            selectedAnswer = null;
+            submitted = false;
+        }
+
+        function selectAnswer(index, btn) {
+            if (submitted) return;
+            selectedAnswer = index;
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function submitAnswer() {
+            if (selectedAnswer === null) return;
+            if (submitted) return;
+            submitted = true;
+
+            const questions = questionBank[currentTopic];
+            const qData = questions[currentQuestionIndex % questions.length];
+            const isCorrect = (selectedAnswer === qData.correct);
+
+            // Highlight options
+            const optionBtns = document.querySelectorAll('.option-btn');
+            optionBtns.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === qData.correct) btn.classList.add('correct');
+                if (i === selectedAnswer && !isCorrect) btn.classList.add('incorrect');
+            });
+
+            // Update stats
+            sessionStats.answered++;
+            if (isCorrect) {
+                sessionStats.correct++;
+                sessionStats.streak++;
+            } else {
+                sessionStats.streak = 0;
+            }
+            sessionStats.topicsCompleted[currentTopic] = Math.max(sessionStats.topicsCompleted[currentTopic], currentQuestionIndex + 1);
+            saveProgress();
+            updateSessionSidebar();
+
+            // Show explanation
+            document.getElementById('correctLabel').textContent = 'Correct answer: ' + String.fromCharCode(65 + qData.correct);
+            document.getElementById('explainText').textContent = qData.explain;
+            document.getElementById('realWorldText').textContent = qData.realWorld;
+            document.getElementById('explanationPanel').classList.add('open');
+            document.getElementById('submitBtn').style.display = 'none';
+        }
+
+        function nextQuestion() {
+            const questions = questionBank[currentTopic];
+            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+            submitted = false;
+            selectedAnswer = null;
+            renderQuestion();
+        }
+
+        // Init
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            updateSessionSidebar();
+            document.getElementById('burger')?.addEventListener('click', function() {
+                document.getElementById('mobileMenu')?.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
