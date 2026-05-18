@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro Dashboard — The Market Brief Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/tbp-theme.css">
+    <style>
+        /* Dashboard-specific extensions, building on tbp-theme */
+        :root {
+            --tbp-dash-bg: #f4f2ee;
+        }
+        .tbp-dashboard-section {
+            padding-block: clamp(56px, 6vw, 88px);
+        }
+        .tbp-regime-banner {
+            background: var(--tbp-ink);
+            color: var(--tbp-bg);
+            padding: clamp(48px, 7vw, 80px) 0;
+            text-align: center;
+        }
+        .tbp-regime-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+        }
+        .tbp-regime-display {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 850;
+            letter-spacing: -.04em;
+            line-height: .92;
+            margin-bottom: 24px;
+        }
+        .tbp-regime-sub {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.55);
+            max-width: 56ch;
+            margin: 0 auto 32px;
+        }
+        .tbp-regime-note {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: .02em;
+        }
+        .macro-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 1080px) { .macro-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 800px) { .macro-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 520px) { .macro-grid { grid-template-columns: 1fr; } }
+        .macro-tile {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 20px;
+            transition: border-color 0.3s;
+        }
+        .macro-tile:hover {
+            border-color: var(--tbp-muted-2);
+        }
+        .macro-tile .metric-name {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            margin-bottom: 10px;
+        }
+        .macro-tile .metric-value {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            font-weight: 750;
+            letter-spacing: -.02em;
+            color: var(--tbp-ink);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .macro-tile .metric-change {
+            font-size: 13px;
+            font-weight: 550;
+            letter-spacing: .01em;
+        }
+        .metric-change.pos { color: var(--tbp-pos); }
+        .metric-change.neg { color: var(--tbp-neg); }
+        .macro-tile .sparkline-placeholder {
+            margin-top: 12px;
+            height: 30px;
+            background: var(--tbp-bg-alt);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--tbp-muted-2);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--tbp-line);
+            margin: clamp(40px, 5vw, 64px) 0;
+        }
+        .yield-curve-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .yield-curve-container svg {
+            width: 100%;
+            height: auto;
+        }
+        .pmi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 720px) { .pmi-grid { grid-template-columns: 1fr; } }
+        .pmi-tile {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .pmi-value {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .pmi-label {
+            font-size: 13px;
+            color: var(--tbp-muted);
+            margin-bottom: 4px;
+        }
+        .pmi-status {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+        .briefing-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--tbp-ink-2);
+        }
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 800px) { .signal-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 520px) { .signal-grid { grid-template-columns: 1fr; } }
+        .signal-tile {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 22px;
+        }
+        .signal-tile .signal-name {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--tbp-muted);
+            margin-bottom: 10px;
+        }
+        .signal-tile .signal-reading {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 750;
+            letter-spacing: -.01em;
+            margin-bottom: 8px;
+        }
+        .signal-tile .signal-explain {
+            font-size: 13px;
+            color: var(--tbp-muted);
+            line-height: 1.5;
+        }
+        .signal-bullish { color: var(--tbp-pos); }
+        .signal-neutral { color: var(--tbp-muted); }
+        .signal-bearish { color: var(--tbp-neg); }
+    </style>
+</head>
+<body class="tbp">
+
+    <!-- HEADER -->
+    <header class="tbp-header" id="header">
+        <div class="tbp-container tbp-header-inner">
+            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily">
+                <span class="mark">MB</span>
+                <span>The Market Brief Daily</span>
+            </a>
+            <nav class="tbp-nav" aria-label="Primary navigation">
+                <a href="/">Home</a>
+                <a href="/posts.html">Research</a>
+                <a href="/investments.html">Funds</a>
+                <a href="/methodology.html">Methodology</a>
+                <a href="/education.html">Education</a>
+                <a href="/bot.html">AI Trader</a>
+                <a href="/tools/dcf.html" class="is-active">Tools</a>
+                <a href="/about.html">About</a>
+            </nav>
+            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="tbp-mobile-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
+    </div>
+
+    <!-- HERO (Compact) -->
+    <section class="tbp-hero" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 40px;">
+        <div class="tbp-container">
+            <span class="tbp-eyebrow" data-tbp-reveal>Live data · Updated daily</span>
+            <div style="margin-top: 16px;" data-tbp-reveal>
+                <h1 style="font-size: clamp(2.2rem, 6vw, 4rem);">Macro Signal<br><em>Dashboard.</em></h1>
+            </div>
+            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">Live yield curves, credit spreads, PMI data, FX rates, and commodity prices — with AI-interpreted daily briefing and macro regime classification.</p>
+        </div>
+    </section>
+
+    <!-- REGIME BANNER -->
+    <section class="tbp-regime-banner" data-tbp-reveal>
+        <div class="tbp-container">
+            <p class="tbp-regime-label">Current Macro Regime</p>
+            <h2 class="tbp-regime-display">LATE CYCLE —<br>CAUTIOUS</h2>
+            <p class="tbp-regime-sub">Yield curve flattening. Credit spreads widening. PMI below 50. Positioning: reduce risk assets, increase duration.</p>
+            <p class="tbp-regime-note">Regime updated daily. Powered by the TBD macro framework. Illustrative data · Live feed coming soon.</p>
+        </div>
+    </section>
+
+    <!-- MARKET DATA GRID -->
+    <div class="tbp-container">
+        <hr class="section-divider">
+    </div>
+
+    <section class="tbp-dashboard-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <!-- ROW 1: Rates -->
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left"><span class="tbp-eyebrow">Rates</span></div>
+                <div class="right"><p class="tbp-small">Illustrative data · Live feed coming soon</p></div>
+            </div>
+            <div class="macro-grid" data-tbp-reveal class="delay-1">
+                <div class="macro-tile">
+                    <div class="metric-name">US 10Y Treasury Yield</div>
+                    <div class="metric-value">4.42%</div>
+                    <div class="metric-change neg">▼ 0.04%</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">UK 10Y Gilt Yield</div>
+                    <div class="metric-value">4.18%</div>
+                    <div class="metric-change neg">▼ 0.02%</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">2s10s Spread (US)</div>
+                    <div class="metric-value" style="color: var(--tbp-neg);">-0.12%</div>
+                    <div class="metric-change neg" style="color: var(--tbp-neg);">INVERTED</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">Fed Funds Rate</div>
+                    <div class="metric-value">5.25-5.50%</div>
+                    <div class="metric-change pos">▲ 0.00%</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+            </div>
+
+            <!-- ROW 2: Credit -->
+            <div class="tbp-section-head" style="margin-top: 48px;" data-tbp-reveal>
+                <div class="left"><span class="tbp-eyebrow">Credit</span></div>
+                <div class="right"><p class="tbp-small">Illustrative data · Live feed coming soon</p></div>
+            </div>
+            <div class="macro-grid" data-tbp-reveal class="delay-1">
+                <div class="macro-tile">
+                    <div class="metric-name">US IG Spread (OAS)</div>
+                    <div class="metric-value">112 bps</div>
+                    <div class="metric-change neg">▼ 2 bps</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">US HY Spread (OAS)</div>
+                    <div class="metric-value">387 bps</div>
+                    <div class="metric-change pos">▲ 8 bps</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">EUR IG Spread</div>
+                    <div class="metric-value">128 bps</div>
+                    <div class="metric-change neg">▼ 1 bps</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">EM Sovereign Spread</div>
+                    <div class="metric-value">445 bps</div>
+                    <div class="metric-change pos">▲ 12 bps</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+            </div>
+
+            <!-- ROW 3: Equity & Vol -->
+            <div class="tbp-section-head" style="margin-top: 48px;" data-tbp-reveal>
+                <div class="left"><span class="tbp-eyebrow">Equity &amp; Vol</span></div>
+                <div class="right"><p class="tbp-small">Illustrative data · Live feed coming soon</p></div>
+            </div>
+            <div class="macro-grid" data-tbp-reveal class="delay-1">
+                <div class="macro-tile">
+                    <div class="metric-name">S&P 500</div>
+                    <div class="metric-value">5,248</div>
+                    <div class="metric-change pos">▲ 0.8%</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">FTSE 100</div>
+                    <div class="metric-value">8,320</div>
+                    <div class="metric-change neg">▼ 0.3%</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">VIX</div>
+                    <div class="metric-value">18.4</div>
+                    <div class="metric-change neg">▼ 2.1</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">MOVE Index</div>
+                    <div class="metric-value">112</div>
+                    <div class="metric-change pos">▲ 3</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+            </div>
+
+            <!-- ROW 4: FX -->
+            <div class="tbp-section-head" style="margin-top: 48px;" data-tbp-reveal>
+                <div class="left"><span class="tbp-eyebrow">FX</span></div>
+                <div class="right"><p class="tbp-small">Illustrative data · Live feed coming soon</p></div>
+            </div>
+            <div class="macro-grid" data-tbp-reveal class="delay-1">
+                <div class="macro-tile">
+                    <div class="metric-name">GBP/USD</div>
+                    <div class="metric-value">1.2680</div>
+                    <div class="metric-change pos">▲ 0.0015</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">EUR/USD</div>
+                    <div class="metric-value">1.0840</div>
+                    <div class="metric-change neg">▼ 0.0008</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">USD/JPY</div>
+                    <div class="metric-value">149.80</div>
+                    <div class="metric-change pos">▲ 0.40</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">DXY</div>
+                    <div class="metric-value">104.2</div>
+                    <div class="metric-change pos">▲ 0.3</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+            </div>
+
+            <!-- ROW 5: Commodities -->
+            <div class="tbp-section-head" style="margin-top: 48px;" data-tbp-reveal>
+                <div class="left"><span class="tbp-eyebrow">Commodities</span></div>
+                <div class="right"><p class="tbp-small">Illustrative data · Live feed coming soon</p></div>
+            </div>
+            <div class="macro-grid" data-tbp-reveal class="delay-1">
+                <div class="macro-tile">
+                    <div class="metric-name">WTI Crude</div>
+                    <div class="metric-value">$82.40</div>
+                    <div class="metric-change pos">▲ $1.20</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">Gold</div>
+                    <div class="metric-value">$2,340</div>
+                    <div class="metric-change pos">▲ $28</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">Copper</div>
+                    <div class="metric-value">$9,850</div>
+                    <div class="metric-change neg">▼ $120</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+                <div class="macro-tile">
+                    <div class="metric-name">Natural Gas</div>
+                    <div class="metric-value">$2.18</div>
+                    <div class="metric-change neg">▼ $0.06</div>
+                    <div class="sparkline-placeholder">——/——</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YIELD CURVE SECTION -->
+    <div class="tbp-container">
+        <hr class="section-divider">
+    </div>
+    <section class="tbp-dashboard-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Chart</span>
+                    <h2 class="tbp-h2">US Yield Curve</h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-small">Live curve data coming soon via FRED API. Illustrative data.</p>
+                </div>
+            </div>
+            <div class="yield-curve-container" data-tbp-reveal class="delay-1">
+                <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+                    <style>
+                        .axis-line { stroke: var(--tbp-line, #e3e0d8); stroke-width: 1; fill: none; }
+                        .curve-line { stroke: #0066ff; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+                        .label { font-family: 'Inter Tight', sans-serif; font-size: 11px; fill: #5a5a5a; }
+                        .dot { fill: #0066ff; }
+                    </style>
+                    <!-- Axes -->
+                    <line x1="40" y1="260" x2="560" y2="260" class="axis-line" />
+                    <line x1="40" y1="20" x2="40" y2="260" class="axis-line" />
+                    <!-- Y-axis labels -->
+                    <text x="30" y="260" class="label" text-anchor="end">0%</text>
+                    <text x="30" y="200" class="label" text-anchor="end">1%</text>
+                    <text x="30" y="140" class="label" text-anchor="end">2%</text>
+                    <text x="30" y="80" class="label" text-anchor="end">3%</text>
+                    <text x="30" y="20" class="label" text-anchor="end">4%</text>
+                    <!-- X-axis labels -->
+                    <text x="90" y="280" class="label" text-anchor="middle">1m</text>
+                    <text x="155" y="280" class="label" text-anchor="middle">3m</text>
+                    <text x="220" y="280" class="label" text-anchor="middle">6m</text>
+                    <text x="285" y="280" class="label" text-anchor="middle">1y</text>
+                    <text x="350" y="280" class="label" text-anchor="middle">2y</text>
+                    <text x="415" y="280" class="label" text-anchor="middle">5y</text>
+                    <text x="480" y="280" class="label" text-anchor="middle">10y</text>
+                    <text x="545" y="280" class="label" text-anchor="middle">30y</text>
+                    <!-- Yield curve (slightly inverted) -->
+                    <polyline points="90,140 155,136 220,132 285,128 350,124 415,132 480,148 545,160" class="curve-line" />
+                    <!-- Dots on the curve -->
+                    <circle cx="90" cy="140" r="3.5" class="dot" />
+                    <circle cx="155" cy="136" r="3.5" class="dot" />
+                    <circle cx="220" cy="132" r="3.5" class="dot" />
+                    <circle cx="285" cy="128" r="3.5" class="dot" />
+                    <circle cx="350" cy="124" r="3.5" class="dot" />
+                    <circle cx="415" cy="132" r="3.5" class="dot" />
+                    <circle cx="480" cy="148" r="3.5" class="dot" />
+                    <circle cx="545" cy="160" r="3.5" class="dot" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- PMI SECTION -->
+    <div class="tbp-container">
+        <hr class="section-divider">
+    </div>
+    <section class="tbp-dashboard-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">PMI</span>
+                    <h2 class="tbp-h2">Purchasing Manager<br><em>Indices.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-small">Illustrative data · Live feed coming soon</p>
+                </div>
+            </div>
+            <div class="pmi-grid" data-tbp-reveal class="delay-1">
+                <div class="pmi-tile">
+                    <p class="pmi-value" style="color: var(--tbp-neg);">49.2</p>
+                    <p class="pmi-label">US Manufacturing PMI</p>
+                    <p class="pmi-status" style="color: var(--tbp-neg);">BELOW 50 · CONTRACTION</p>
+                </div>
+                <div class="pmi-tile">
+                    <p class="pmi-value" style="color: var(--tbp-pos);">53.1</p>
+                    <p class="pmi-label">UK Services PMI</p>
+                    <p class="pmi-status" style="color: var(--tbp-pos);">ABOVE 50 · EXPANSION</p>
+                </div>
+                <div class="pmi-tile">
+                    <p class="pmi-value" style="color: var(--tbp-neg);">47.8</p>
+                    <p class="pmi-label">Eurozone Composite PMI</p>
+                    <p class="pmi-status" style="color: var(--tbp-neg);">BELOW 50 · CONTRACTION</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI MACRO BRIEFING SECTION -->
+    <div class="tbp-container">
+        <hr class="section-divider">
+    </div>
+    <section class="tbp-dashboard-section" style="padding-top: 0;">
+        <div class="tbp-container" style="text-align: center;">
+            <span class="tbp-eyebrow" data-tbp-reveal>Daily briefing · AI-interpreted</span>
+            <h2 class="tbp-h2" style="margin-top: 12px;" data-tbp-reveal>Today's macro reading.</h2>
+            <div class="briefing-card" data-tbp-reveal class="delay-1" style="margin-top: 28px;">
+                <p>Equities rallied modestly in the US session while bonds sold off at the front end, steepening the 2s10s curve slightly from deeply inverted levels. The US 10-year yield held above 4.40%, with the UK gilt yield tracking 5bps lower on dovish BoE rhetoric.</p>
+                <p style="margin-top: 16px;">Credit markets remained bifurcated: investment grade spreads tightened 2bps, but high yield widened sharply — the HY OAS jumped 8bps, driven by concerns around consumer credit and leverage. The VIX fell back below 19, signalling complacency in equity vol, but the MOVE index in rates vol edged higher to 112.</p>
+                <p style="margin-top: 16px;">PMI data painted a mixed picture. US Manufacturing PMI slipped to 49.2, entering contraction territory for the first time in four months, while UK Services PMI held above 53. Eurozone Composite PMI remained weak at 47.8. Commodities saw a risk-off bid, with gold pushing towards $2,340 and WTI crude stabilising at $82.40.</p>
+                <p style="margin-top: 16px;">Overall, the macro regime remains LATE CYCLE. The yield curve is inverted, credit spreads are widening at the margin, and PMI data is deteriorating. The signal dashboard reflects a cautious posture: bearish on rates duration, neutral on credit, and bullish on safe-haven assets.</p>
+            </div>
+            <div style="max-width: 480px; margin: 40px auto 0;" data-tbp-reveal class="delay-2">
+                <p class="tbp-small" style="margin-bottom: 12px;">Sign up for the daily macro briefing by email</p>
+                <iframe src="https://marketbriefdaily.substack.com/embed" width="100%" height="320" style="border:1px solid rgba(0,0,0,0.1); border-radius:12px; background:transparent;" frameborder="0" scrolling="no" title="Substack signup form"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- SIGNAL INDICATORS SECTION -->
+    <div class="tbp-container">
+        <hr class="section-divider">
+    </div>
+    <section class="tbp-dashboard-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Signals</span>
+                    <h2 class="tbp-h2">Macro Signal<br><em>Indicators.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-small">Illustrative data · Live feed coming soon</p>
+                </div>
+            </div>
+            <div class="signal-grid" data-tbp-reveal class="delay-1">
+                <div class="signal-tile">
+                    <div class="signal-name">Yield Curve Signal</div>
+                    <div class="signal-reading signal-bearish">BEARISH</div>
+                    <div class="signal-explain">Curve remains deeply inverted, signalling recession risk. Duration stance is cautious.</div>
+                </div>
+                <div class="signal-tile">
+                    <div class="signal-name">Credit Signal</div>
+                    <div class="signal-reading signal-neutral">NEUTRAL</div>
+                    <div class="signal-explain">IG spreads stable but HY widening. Cautious on low-quality credit exposure.</div>
+                </div>
+                <div class="signal-tile">
+                    <div class="signal-name">Momentum Signal</div>
+                    <div class="signal-reading signal-bullish">BULLISH</div>
+                    <div class="signal-explain">Equity momentum positive across major indices. Trend-following signals favour risk assets.</div>
+                </div>
+                <div class="signal-tile">
+                    <div class="signal-name">PMI Signal</div>
+                    <div class="signal-reading signal-bearish">BEARISH</div>
+                    <div class="signal-explain">Global manufacturing PMI contracting. Services stable. Mixed outlook for cyclicals.</div>
+                </div>
+                <div class="signal-tile">
+                    <div class="signal-name">FX Signal</div>
+                    <div class="signal-reading signal-neutral">NEUTRAL</div>
+                    <div class="signal-explain">DXY steady around 104. No clear directional bias across major pairs.</div>
+                </div>
+                <div class="signal-tile">
+                    <div class="signal-name">Volatility Signal</div>
+                    <div class="signal-reading signal-bullish">BULLISH</div>
+                    <div class="signal-explain">VIX falling but MOVE rising. Divergence favours long vol hedges in rates space.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAID TIER CTA -->
+    <section class="tbp-section" style="background: var(--tbp-ink); color: var(--tbp-bg);">
+        <div class="tbp-container" style="text-align: center;">
+            <div data-tbp-reveal>
+                <span class="tbp-eyebrow" style="color: rgba(255,255,255,0.45);">Premium access</span>
+                <h2 style="color: var(--tbp-bg); font-weight: 850; font-size: clamp(2rem, 5.4vw, 4rem); letter-spacing: -.035em; line-height: 1; margin: 16px 0 24px;">Unlock the full<br><em>dashboard.</em></h2>
+                <p style="color: rgba(255,255,255,0.55); font-size: 1.1rem; line-height: 1.6; max-width: 56ch; margin: 0 auto 32px;">Paid subscribers get real-time data, email alerts when signals change, and the complete macro regime history going back to 2020.</p>
+                <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" class="tbp-btn primary" style="background: var(--tbp-bg); color: var(--tbp-ink); border-color: var(--tbp-bg);">Subscribe to unlock →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="tbp-footer">
+        <div class="tbp-container">
+            <div class="tbp-footer-top">
+                <div>
+                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/">Home</a>
+                        <a href="/posts.html">Research</a>
+                        <a href="/investments.html">Funds</a>
+                        <a href="/methodology.html">Methodology</a>
+                        <a href="/education.html">Education</a>
+                        <a href="/bot.html">AI Trader</a>
+                        <a href="/tools/dcf.html">Tools</a>
+                        <a href="/about.html">About</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Tools &amp; Resources</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/tools/dcf.html">DCF Tool</a>
+                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+                        <a href="/tools/cfa.html">CFA Resources</a>
+                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+                        <a href="/glossary.html">Glossary</a>
+                        <a href="/reports.html">Reports</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/disclaimer.html">Disclaimer</a>
+                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+            <div class="tbp-footer-bottom">
+                <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+                <div class="legal">
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/tbp.js" defer></script>
+</body>
+</html>
