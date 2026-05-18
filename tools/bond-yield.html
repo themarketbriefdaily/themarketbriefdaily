@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bond Yield Calculator — The Market Brief Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/tbp-theme.css">
+    <style>
+        /* Bond yield calculator specific styles */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.2fr);
+            gap: clamp(24px, 4vw, 56px);
+            align-items: start;
+        }
+        @media (max-width: 800px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .calc-input-card, .calc-result-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: clamp(24px, 4vw, 36px);
+        }
+        .calc-result-card {
+            background: var(--tbp-ink);
+            color: var(--tbp-bg);
+        }
+        .calc-result-card .muted {
+            color: rgba(255,255,255,0.5);
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: var(--tbp-ink);
+            margin-bottom: 6px;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--tbp-line);
+            border-radius: 10px;
+            background: var(--tbp-bg);
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 15px;
+            color: var(--tbp-ink);
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--tbp-blue);
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.06);
+        }
+        .result-row {
+            margin-bottom: 18px;
+        }
+        .result-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: .02em;
+        }
+        .result-value {
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 750;
+            letter-spacing: -.01em;
+            color: var(--tbp-bg);
+            line-height: 1.1;
+            margin-top: 4px;
+        }
+        .result-large {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+        }
+        .yield-curve-container {
+            margin-top: 48px;
+        }
+        .accordion-item {
+            border-bottom: 1px solid var(--tbp-line);
+        }
+        .accordion-header {
+            padding: 18px 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+        .accordion-header .arrow {
+            transition: transform 0.3s;
+        }
+        .accordion-header.open .arrow {
+            transform: rotate(180deg);
+        }
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            padding: 0;
+        }
+        .accordion-body.open {
+            max-height: 500px;
+            padding-bottom: 18px;
+        }
+        .accordion-body p {
+            font-size: 14px;
+            color: var(--tbp-muted);
+            line-height: 1.6;
+        }
+        .related-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 600px) { .related-cards { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body class="tbp">
+
+    <!-- HEADER -->
+    <header class="tbp-header" id="header">
+        <div class="tbp-container tbp-header-inner">
+            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily">
+                <span class="mark">MB</span>
+                <span>The Market Brief Daily</span>
+            </a>
+            <nav class="tbp-nav" aria-label="Primary navigation">
+                <a href="/">Home</a>
+                <a href="/posts.html">Research</a>
+                <a href="/investments.html">Funds</a>
+                <a href="/methodology.html">Methodology</a>
+                <a href="/education.html">Education</a>
+                <a href="/bot.html">AI Trader</a>
+                <a href="/tools/dcf.html" class="is-active">Tools</a>
+                <a href="/about.html">About</a>
+            </nav>
+            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="tbp-mobile-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
+    </div>
+
+    <!-- HERO (compact) -->
+    <section class="tbp-hero" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 40px;">
+        <div class="tbp-container">
+            <span class="tbp-eyebrow" data-tbp-reveal>Free tool · Fixed income</span>
+            <div style="margin-top: 16px;" data-tbp-reveal>
+                <h1 style="font-size: clamp(2.2rem, 6vw, 4rem);">Bond Yield<br><em>Calculator.</em></h1>
+            </div>
+            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">Calculate yield to maturity, duration, convexity, current yield, and real yield. The Fisher equation is used for real yield calculation. Free — no sign-up.</p>
+        </div>
+    </section>
+
+    <!-- CALCULATOR SECTION -->
+    <section class="tbp-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="calc-grid">
+                <!-- LEFT INPUTS -->
+                <div class="calc-input-card" data-tbp-reveal>
+                    <h3 style="font-size:1.3rem; font-weight:750; margin-bottom: 24px;">Bond details</h3>
+                    <div class="input-group">
+                        <label for="faceValue">Face value (£)</label>
+                        <input type="number" id="faceValue" value="1000" min="0.01" step="any" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="couponRate">Annual coupon rate (%)</label>
+                        <input type="number" id="couponRate" value="5" min="0" max="100" step="0.01" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="marketPrice">Current market price (£)</label>
+                        <input type="number" id="marketPrice" value="950" min="0.01" step="any" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="yearsToMaturity">Years to maturity</label>
+                        <input type="number" id="yearsToMaturity" value="10" min="0.5" max="30" step="0.5" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="couponFrequency">Coupon frequency</label>
+                        <select id="couponFrequency" onchange="calculate()">
+                            <option value="1">Annual</option>
+                            <option value="2" selected>Semi-annual</option>
+                            <option value="4">Quarterly</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="inflationRate">Expected inflation rate (%)</label>
+                        <input type="number" id="inflationRate" value="2.5" min="0" max="30" step="0.01" oninput="calculate()">
+                    </div>
+                    <div class="input-group">
+                        <label for="settlementDate">Settlement date (optional)</label>
+                        <input type="date" id="settlementDate" oninput="calculate()">
+                    </div>
+                </div>
+
+                <!-- RIGHT RESULTS -->
+                <div class="calc-result-card" data-tbp-reveal class="delay-1">
+                    <h3 style="font-size:1.1rem; font-weight:700; color:rgba(255,255,255,0.5); margin-bottom: 12px;">Results</h3>
+                    <div class="result-row">
+                        <div class="result-label">Current Yield</div>
+                        <div class="result-value" id="currentYield">—</div>
+                    </div>
+                    <div class="result-row">
+                        <div class="result-label">Yield to Maturity (YTM)</div>
+                        <div class="result-value result-large" id="ytm">—</div>
+                    </div>
+                    <div class="result-row">
+                        <div class="result-label">Real Yield (Fisher)</div>
+                        <div class="result-value" id="realYield">—</div>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 24px;">
+                        <div>
+                            <div class="result-label">Macaulay Duration</div>
+                            <div class="result-value" id="macaulay">—</div>
+                        </div>
+                        <div>
+                            <div class="result-label">Modified Duration</div>
+                            <div class="result-value" id="modified">—</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 18px;">
+                        <div class="result-label">Convexity</div>
+                        <div class="result-value" id="convexity">—</div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <div class="result-label">Price change if YTM ↑ 1%</div>
+                        <div class="result-value" id="priceChange">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YIELD CURVE SECTION -->
+    <div class="tbp-container">
+        <hr style="border: none; border-top: 1px solid var(--tbp-line); margin: clamp(40px, 5vw, 64px) 0;">
+    </div>
+    <section class="tbp-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Yield curve</span>
+                    <h2 class="tbp-h2">Where does your bond<br><em>fit in?</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">The dot shows the calculated YTM relative to benchmark government bond yields (illustrative).</p>
+                </div>
+            </div>
+            <div class="yield-curve-container" data-tbp-reveal class="delay-1">
+                <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 700px;">
+                    <style>
+                        .axis-line { stroke: var(--tbp-line); stroke-width: 1; fill: none; }
+                        .curve-line { stroke: #0066ff; stroke-width: 2; fill: none; }
+                        .benchmark-dot { fill: #0066ff; }
+                        .ytm-dot { fill: var(--tbp-pos); stroke: #fff; stroke-width: 2; }
+                        .label-text { font-family: 'Inter Tight', sans-serif; font-size: 11px; fill: var(--tbp-muted); }
+                    </style>
+                    <!-- axes -->
+                    <line x1="50" y1="210" x2="560" y2="210" class="axis-line" />
+                    <line x1="50" y1="20" x2="50" y2="210" class="axis-line" />
+                    <!-- labels -->
+                    <text x="40" y="210" class="label-text" text-anchor="end">0%</text>
+                    <text x="40" y="160" class="label-text" text-anchor="end">2%</text>
+                    <text x="40" y="110" class="label-text" text-anchor="end">4%</text>
+                    <text x="40" y="60" class="label-text" text-anchor="end">6%</text>
+                    <text x="120" y="230" class="label-text" text-anchor="middle">1Y</text>
+                    <text x="205" y="230" class="label-text" text-anchor="middle">2Y</text>
+                    <text x="290" y="230" class="label-text" text-anchor="middle">5Y</text>
+                    <text x="375" y="230" class="label-text" text-anchor="middle">10Y</text>
+                    <text x="460" y="230" class="label-text" text-anchor="middle">30Y</text>
+                    <!-- yield curve placeholder -->
+                    <polyline points="120,190 205,182 290,168 375,150 460,130" class="curve-line" />
+                    <circle cx="120" cy="190" r="3" class="benchmark-dot"/>
+                    <circle cx="205" cy="182" r="3" class="benchmark-dot"/>
+                    <circle cx="290" cy="168" r="3" class="benchmark-dot"/>
+                    <circle cx="375" cy="150" r="3" class="benchmark-dot"/>
+                    <circle cx="460" cy="130" r="3" class="benchmark-dot"/>
+                    <!-- YTM marker will be dynamically positioned via JS -->
+                    <circle id="ytmMarker" cx="375" cy="150" r="6" class="ytm-dot" style="display: none;"/>
+                    <text id="ytmLabel" x="375" y="140" class="label-text" style="display: none; text-anchor: middle; font-weight: 700; fill: var(--tbp-pos);" text-anchor="middle">YTM</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONCEPTS EXPLAINER -->
+    <div class="tbp-container">
+        <hr style="border: none; border-top: 1px solid var(--tbp-line); margin: clamp(40px, 5vw, 64px) 0;">
+    </div>
+    <section class="tbp-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Learn</span>
+                    <h2 class="tbp-h2">Key bond concepts<br><em>explained.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">Quick definitions to help you understand the calculations.</p>
+                </div>
+            </div>
+            <div data-tbp-reveal class="delay-1">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">What is YTM? <span class="arrow">▾</span></div>
+                    <div class="accordion-body">
+                        <p>Yield to Maturity (YTM) is the total return expected on a bond if held until it matures. It's the internal rate of return (IRR) of all future cash flows (coupons and face value) discounted back to the current market price. YTM assumes coupons are reinvested at the same rate.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">What is Duration? <span class="arrow">▾</span></div>
+                    <div class="accordion-body">
+                        <p>Macaulay Duration is the weighted average time to receive the bond's cash flows, in years. Modified Duration measures the price sensitivity of a bond to changes in yield: approximately, for a 1% change in yield, the bond price will change by (Modified Duration)%. Duration is higher for bonds with lower coupons and longer maturities.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">What is Convexity? <span class="arrow">▾</span></div>
+                    <div class="accordion-body">
+                        <p>Convexity measures the curvature of the price-yield relationship. Duration provides a linear approximation, but convexity captures the fact that bond prices rise more for a yield decrease than they fall for an equivalent yield increase. Positive convexity benefits bondholders. The higher the convexity, the more the bond price will gain when yields fall, and lose less when yields rise.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Real vs Nominal yield <span class="arrow">▾</span></div>
+                    <div class="accordion-body">
+                        <p>Nominal yield is the yield without adjusting for inflation. Real yield reflects the purchasing power return and is calculated using the Fisher equation: (1 + nominal yield) / (1 + inflation rate) − 1. For example, a nominal YTM of 6% with 2.5% inflation gives a real yield of approximately 3.41%.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED TOOLS -->
+    <section class="tbp-section alt">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Related tools</span>
+                    <h2 class="tbp-h2">More calculators<br><em>for investors.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">Explore other free resources from The Market Brief Daily.</p>
+                </div>
+            </div>
+            <div class="related-cards" data-tbp-reveal class="delay-1">
+                <a href="/tools/dcf.html" class="tbp-card" style="text-decoration: none; color: inherit;">
+                    <div class="visual" style="aspect-ratio: 3/2;">
+                        <div class="placeholder" style="background:linear-gradient(135deg, #1a1a2e, #2a1a3a); display:flex; align-items:center; justify-content:center; font-size:12px; letter-spacing:.1em; color:rgba(255,255,255,.35);">DCF CALCULATOR</div>
+                    </div>
+                    <div class="meta">Calculator</div>
+                    <h3 style="font-size:1.2rem;">DCF Valuation Tool</h3>
+                    <p style="font-size:14px; color:var(--tbp-muted);">Discounted cash flow valuation for stocks.</p>
+                </a>
+                <a href="/tools/macro-dashboard.html" class="tbp-card" style="text-decoration: none; color: inherit;">
+                    <div class="visual" style="aspect-ratio: 3/2;">
+                        <div class="placeholder" style="background:linear-gradient(135deg, #1a2a2e, #2a1a1a); display:flex; align-items:center; justify-content:center; font-size:12px; letter-spacing:.1em; color:rgba(255,255,255,.35);">MACRO DASHBOARD</div>
+                    </div>
+                    <div class="meta">Dashboard</div>
+                    <h3 style="font-size:1.2rem;">Macro Dashboard</h3>
+                    <p style="font-size:14px; color:var(--tbp-muted);">Live macro indicators and yield curves.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="tbp-footer">
+        <div class="tbp-container">
+            <div class="tbp-footer-top">
+                <div>
+                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/">Home</a>
+                        <a href="/posts.html">Research</a>
+                        <a href="/investments.html">Funds</a>
+                        <a href="/methodology.html">Methodology</a>
+                        <a href="/education.html">Education</a>
+                        <a href="/bot.html">AI Trader</a>
+                        <a href="/tools/dcf.html">Tools</a>
+                        <a href="/about.html">About</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Tools &amp; Resources</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/tools/dcf.html">DCF Tool</a>
+                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+                        <a href="/tools/cfa.html">CFA Resources</a>
+                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+                        <a href="/glossary.html">Glossary</a>
+                        <a href="/reports.html">Reports</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/disclaimer.html">Disclaimer</a>
+                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+            <div class="tbp-footer-bottom">
+                <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+                <div class="legal">
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/tbp.js" defer></script>
+    <script>
+        // Bond price for a given YTM (annualised)
+        function bondPrice(face, couponRate, ytm, years, frequency) {
+            const periods = years * frequency;
+            const coupon = face * couponRate / frequency;
+            const yieldPer = ytm / frequency;
+            if (yieldPer === 0) return face + coupon * periods;
+            let pvCoupons = coupon * (1 - Math.pow(1 + yieldPer, -periods)) / yieldPer;
+            let pvFace = face / Math.pow(1 + yieldPer, periods);
+            return pvCoupons + pvFace;
+        }
+
+        // Derivative of price w.r.t. ytm for Newton-Raphson (approximate)
+        function bondPriceDerivative(face, couponRate, ytm, years, frequency) {
+            const h = 0.0001; // small change
+            const p1 = bondPrice(face, couponRate, ytm + h, years, frequency);
+            const p2 = bondPrice(face, couponRate, ytm - h, years, frequency);
+            return (p1 - p2) / (2 * h);
+        }
+
+        // Newton-Raphson to find YTM
+        function calculateYTM(face, couponRate, marketPrice, years, frequency) {
+            let guess = couponRate; // initial guess
+            const maxIter = 100;
+            const tol = 1e-8;
+            for (let i = 0; i < maxIter; i++) {
+                const price = bondPrice(face, couponRate, guess, years, frequency);
+                const diff = price - marketPrice;
+                if (Math.abs(diff) < tol) return guess;
+                const derivative = bondPriceDerivative(face, couponRate, guess, years, frequency);
+                if (Math.abs(derivative) < 1e-12) break;
+                guess = guess - diff / derivative;
+                if (guess < -0.5) guess = -0.4; // prevent negative yields too far
+                if (guess > 5) guess = 5; // cap at 500%
+            }
+            return guess;
+        }
+
+        function calculate() {
+            // Read inputs
+            const face = parseFloat(document.getElementById('faceValue').value) || 1000;
+            const couponRate = parseFloat(document.getElementById('couponRate').value) / 100 || 0.05;
+            const marketPrice = parseFloat(document.getElementById('marketPrice').value) || 950;
+            const years = parseFloat(document.getElementById('yearsToMaturity').value) || 10;
+            const frequency = parseInt(document.getElementById('couponFrequency').value) || 2;
+            const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100 || 0.025;
+
+            if (face <= 0 || marketPrice <= 0 || years <= 0) {
+                clearResults();
+                return;
+            }
+
+            // Current yield
+            const annualCoupon = face * couponRate;
+            const currentYield = (annualCoupon / marketPrice) * 100;
+
+            // YTM (annualised)
+            const ytm = calculateYTM(face, couponRate, marketPrice, years, frequency);
+            const ytmPct = ytm * 100;
+
+            // Real yield (Fisher)
+            const realYield = ((1 + ytm) / (1 + inflationRate) - 1) * 100;
+
+            // Duration & Convexity
+            const periods = years * frequency;
+            const coupon = face * couponRate / frequency;
+            const yieldPer = ytm / frequency;
+
+            let macaulay = 0;
+            let convexity = 0;
+            let pvTotal = 0;
+            for (let t = 1; t <= periods; t++) {
+                const cf = t === periods ? coupon + face : coupon;
+                const pv = cf / Math.pow(1 + yieldPer, t);
+                macaulay += t * pv;
+                convexity += t * (t + 1) * pv; // for convexity calculation
+                pvTotal += pv;
+            }
+            macaulay /= pvTotal;
+            macaulay /= frequency; // in years
+            convexity = convexity / (Math.pow(1 + yieldPer, 2) * pvTotal * frequency * frequency); // annualised convexity
+
+            const modifiedDuration = macaulay / (1 + ytm / frequency);
+
+            // Price change for +1% YTM
+            const priceUp1 = bondPrice(face, couponRate, ytm + 0.01, years, frequency);
+            const priceChange = ((priceUp1 - marketPrice) / marketPrice) * 100;
+
+            // Update DOM
+            document.getElementById('currentYield').textContent = currentYield.toFixed(2) + '%';
+            document.getElementById('ytm').textContent = ytmPct.toFixed(3) + '%';
+            document.getElementById('realYield').textContent = realYield.toFixed(3) + '%';
+            document.getElementById('macaulay').textContent = macaulay.toFixed(2) + ' yrs';
+            document.getElementById('modified').textContent = modifiedDuration.toFixed(2);
+            document.getElementById('convexity').textContent = convexity.toFixed(2);
+            document.getElementById('priceChange').textContent = priceChange.toFixed(2) + '%';
+
+            // Update yield curve marker
+            updateYieldCurveMarker(ytmPct);
+        }
+
+        function clearResults() {
+            const ids = ['currentYield', 'ytm', 'realYield', 'macaulay', 'modified', 'convexity', 'priceChange'];
+            ids.forEach(id => document.getElementById(id).textContent = '—');
+            document.getElementById('ytmMarker').style.display = 'none';
+            document.getElementById('ytmLabel').style.display = 'none';
+        }
+
+        function updateYieldCurveMarker(ytmPct) {
+            const marker = document.getElementById('ytmMarker');
+            const label = document.getElementById('ytmLabel');
+            if (!marker || !label) return;
+            // Map YTM to y coordinate in SVG: 0% at y=210, 6% at y=30 (linear scale)
+            const yMin = 30, yMax = 210;
+            const ytmClamped = Math.min(6, Math.max(0, ytmPct));
+            const yPos = yMax - (ytmClamped / 6) * (yMax - yMin);
+            // X position: we can place it at 10-year maturity position (x=375)
+            const xPos = 375;
+            marker.setAttribute('cx', xPos);
+            marker.setAttribute('cy', yPos);
+            marker.style.display = 'block';
+            label.setAttribute('x', xPos);
+            label.setAttribute('y', yPos - 12);
+            label.style.display = 'block';
+            label.textContent = 'YTM ' + ytmPct.toFixed(2) + '%';
+        }
+
+        function toggleAccordion(header) {
+            header.classList.toggle('open');
+            const body = header.nextElementSibling;
+            body.classList.toggle('open');
+        }
+
+        // Initial calculation
+        window.addEventListener('DOMContentLoaded', function() {
+            calculate();
+            // Mobile menu
+            document.getElementById('burger')?.addEventListener('click', function() {
+                document.getElementById('mobileMenu')?.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
