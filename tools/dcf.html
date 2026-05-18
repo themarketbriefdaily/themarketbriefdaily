@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCF Calculator — The Market Brief Daily</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/tbp-theme.css">
+    <style>
+        /* Calculator-specific styles, extending tbp-theme */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: minmax(320px, 1fr) minmax(360px, 1.2fr);
+            gap: clamp(24px, 4vw, 56px);
+            align-items: start;
+        }
+        @media (max-width: 800px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .calc-input-card, .calc-result-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 14px;
+            padding: clamp(24px, 4vw, 36px);
+        }
+        .calc-result-card {
+            background: var(--tbp-ink);
+            color: var(--tbp-bg);
+        }
+        .calc-result-card .muted {
+            color: rgba(255,255,255,0.5);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: var(--tbp-ink);
+            margin-bottom: 6px;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--tbp-line);
+            border-radius: 10px;
+            background: var(--tbp-bg);
+            font-family: 'Inter Tight', sans-serif;
+            font-size: 15px;
+            color: var(--tbp-ink);
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--tbp-blue);
+            box-shadow: 0 0 0 3px rgba(0,102,255,0.06);
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+            accent-color: var(--tbp-blue);
+            height: 6px;
+        }
+        .slider-value {
+            font-weight: 700;
+            font-size: 16px;
+            min-width: 28px;
+            text-align: center;
+        }
+        .result-large {
+            font-family: 'Inter Tight', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2.4rem, 6vw, 3.6rem);
+            letter-spacing: -.03em;
+            line-height: 1;
+            color: var(--tbp-bg);
+            margin: 8px 0 4px;
+        }
+        .result-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: .02em;
+        }
+        .margin-of-safety {
+            font-weight: 750;
+            font-size: 1.2rem;
+            letter-spacing: -.01em;
+        }
+        .bar-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 18px 0;
+        }
+        .bar {
+            flex: 1;
+            height: 10px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: var(--tbp-blue);
+            transition: width 0.5s var(--tbp-ease);
+        }
+        .collapsible-header {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--tbp-line);
+            font-weight: 600;
+            font-size: 15px;
+            user-select: none;
+        }
+        .collapsible-header .arrow-icon {
+            transition: transform 0.3s;
+            font-size: 14px;
+        }
+        .collapsible-header.open .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .collapsible-body {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.5s ease;
+        }
+        .collapsible-body.open {
+            max-height: 2000px;
+        }
+        .projection-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        .projection-table th,
+        .projection-table td {
+            text-align: right;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--tbp-line-soft);
+        }
+        .projection-table th {
+            font-weight: 600;
+            color: var(--tbp-muted);
+            font-size: 11px;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .projection-table td:first-child,
+        .projection-table th:first-child {
+            text-align: left;
+        }
+        .assumption-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 800px) {
+            .assumption-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        .assumption-card {
+            background: var(--tbp-bg);
+            border: 1px solid var(--tbp-line);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .assumption-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .assumption-card p {
+            font-size: 14px;
+            color: var(--tbp-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="tbp">
+
+    <!-- HEADER -->
+    <header class="tbp-header" id="header">
+        <div class="tbp-container tbp-header-inner">
+            <a href="/" class="tbp-brand" aria-label="The Market Brief Daily">
+                <span class="mark">MB</span>
+                <span>The Market Brief Daily</span>
+            </a>
+            <nav class="tbp-nav" aria-label="Primary navigation">
+                <a href="/">Home</a>
+                <a href="/posts.html">Research</a>
+                <a href="/investments.html">Funds</a>
+                <a href="/methodology.html">Methodology</a>
+                <a href="/education.html">Education</a>
+                <a href="/bot.html">AI Trader</a>
+                <a href="/tools/dcf.html" class="is-active">Tools</a>
+                <a href="/about.html">About</a>
+            </nav>
+            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+            <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="tbp-mobile-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/investments.html">Funds</a>
+        <a href="/methodology.html">Methodology</a>
+        <a href="/education.html">Education</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/tools/dcf.html">Tools</a>
+        <a href="/about.html">About</a>
+    </div>
+
+    <!-- HERO (compact) -->
+    <section class="tbp-hero" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 40px;">
+        <div class="tbp-container">
+            <span class="tbp-eyebrow" data-tbp-reveal>Free tool</span>
+            <div style="margin-top: 16px;" data-tbp-reveal>
+                <h1 style="font-size: clamp(2.2rem, 6vw, 4rem);">DCF Valuation<br><em>Calculator.</em></h1>
+            </div>
+            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">Enter your assumptions, get an intrinsic value estimate instantly. Free to use — no sign-up required. PDF export available with a paid subscription.</p>
+        </div>
+    </section>
+
+    <!-- CALCULATOR SECTION -->
+    <section class="tbp-section" style="padding-top: 0;">
+        <div class="tbp-container">
+            <div class="calc-grid">
+                <!-- LEFT: INPUT PANEL -->
+                <div class="calc-input-card" data-tbp-reveal>
+                    <h3 style="font-size:1.3rem; font-weight:750; margin-bottom: 24px;">Your assumptions</h3>
+
+                    <div class="input-group">
+                        <label for="companyName">Company name (optional)</label>
+                        <input type="text" id="companyName" placeholder="e.g. Acme Corp" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="revenue">Starting revenue (£ millions)</label>
+                        <input type="number" id="revenue" value="1000" min="0" step="1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="cagr">Revenue CAGR (%)</label>
+                        <input type="number" id="cagr" value="8" min="0" max="100" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="ebitMargin">EBIT margin (%)</label>
+                        <input type="number" id="ebitMargin" value="15" min="0" max="100" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="taxRate">Tax rate (%)</label>
+                        <input type="number" id="taxRate" value="25" min="0" max="60" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="capexPct">Capex (% of revenue)</label>
+                        <input type="number" id="capexPct" value="5" min="0" max="50" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="wacc">WACC (%)</label>
+                        <input type="number" id="wacc" value="10" min="1" max="30" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="terminalGrowth">Terminal growth rate (%)</label>
+                        <input type="number" id="terminalGrowth" value="2.5" min="0" max="6" step="0.1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label>Projection years: <span id="yearsDisplay">10</span></label>
+                        <div class="slider-row">
+                            <input type="range" id="years" min="5" max="15" value="10" step="1" oninput="document.getElementById('yearsDisplay').textContent=this.value; calculateDCF();">
+                            <span class="slider-value" id="yearsDisplay">10</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="sharesOutstanding">Shares outstanding (millions)</label>
+                        <input type="number" id="sharesOutstanding" value="100" min="0.01" step="1" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="currentPrice">Current share price (£) — optional</label>
+                        <input type="number" id="currentPrice" value="" placeholder="e.g. 50" min="0" step="0.01" oninput="calculateDCF()">
+                    </div>
+                    <div class="input-group">
+                        <label for="netDebt">Net debt (£ millions)</label>
+                        <input type="number" id="netDebt" value="0" step="1" oninput="calculateDCF()">
+                    </div>
+                </div>
+
+                <!-- RIGHT: RESULTS PANEL -->
+                <div class="calc-result-card" data-tbp-reveal class="delay-1">
+                    <h3 style="font-size:1.1rem; font-weight:700; color:rgba(255,255,255,0.5); margin-bottom: 12px;">Results</h3>
+                    <p class="result-label">Intrinsic value per share</p>
+                    <div class="result-large" id="intrinsicValue">£—</div>
+                    <div id="marginSafetyBlock" style="margin-top:12px; display:none;">
+                        <span class="margin-of-safety" id="marginSafety"></span>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px;">
+                        <div>
+                            <p class="result-label">Enterprise Value</p>
+                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="enterpriseValue">£—</p>
+                        </div>
+                        <div>
+                            <p class="result-label">Equity Value</p>
+                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="equityValue">£—</p>
+                        </div>
+                    </div>
+                    <div class="bar-wrapper" id="barWrapper" style="display:none;">
+                        <span style="font-size:13px; white-space:nowrap;">Current</span>
+                        <div class="bar">
+                            <div class="bar-fill" id="barFill" style="width: 0%;"></div>
+                        </div>
+                        <span style="font-size:13px; white-space:nowrap;">Intrinsic</span>
+                    </div>
+                    <button class="tbp-btn" style="background:var(--tbp-bg); color:var(--tbp-ink); border-color:var(--tbp-bg); margin-top: 20px;" onclick="alert('PDF export is available with a paid subscription at marketbriefdaily.substack.com')">Download PDF Report</button>
+                </div>
+            </div>
+
+            <!-- COLLAPSIBLE PROJECTION TABLE -->
+            <div style="margin-top: 36px;" data-tbp-reveal>
+                <div class="collapsible-header" id="collapsibleHeader" onclick="toggleCollapsible()">
+                    <span>Year-by-year projection table</span>
+                    <span class="arrow-icon" id="arrowIcon">▾</span>
+                </div>
+                <div class="collapsible-body" id="collapsibleBody">
+                    <div style="overflow-x: auto;">
+                        <table class="projection-table" id="projectionTable">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Revenue (£m)</th>
+                                    <th>EBIT (£m)</th>
+                                    <th>NOPAT (£m)</th>
+                                    <th>Capex (£m)</th>
+                                    <th>FCF (£m)</th>
+                                    <th>Discounted FCF (£m)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projectionBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASSUMPTIONS EXPLAINER -->
+    <section class="tbp-section alt">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Learn</span>
+                    <h2 class="tbp-h2">Understanding the<br><em>key inputs.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">A quick guide to the main DCF assumptions and what they mean for your valuation.</p>
+                </div>
+            </div>
+            <div class="assumption-cards" data-tbp-reveal class="delay-1">
+                <div class="assumption-card">
+                    <h4>WACC (Weighted Average Cost of Capital)</h4>
+                    <p>The discount rate that reflects the risk of the company's cash flows. It's the blended return required by both equity and debt holders. For stable, mature companies, WACC typically ranges 6–9%. Riskier, high-growth firms may have WACC of 12–15% or more.</p>
+                </div>
+                <div class="assumption-card">
+                    <h4>Terminal growth rate</h4>
+                    <p>The rate at which free cash flows are assumed to grow beyond the projection period, in perpetuity. It should not exceed the long-term GDP growth rate of the economy. Typical range: 2–3.5% for mature companies. Setting it too high can dramatically overstate value.</p>
+                </div>
+                <div class="assumption-card">
+                    <h4>EBIT margin</h4>
+                    <p>Earnings Before Interest and Tax as a percentage of revenue. This is a measure of operating profitability. Stable, defensive industries often have 20–40% margins. Cyclical or capital-intensive businesses may have 5–15% margins.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED TOOLS -->
+    <section class="tbp-section">
+        <div class="tbp-container">
+            <div class="tbp-section-head" data-tbp-reveal>
+                <div class="left">
+                    <span class="tbp-eyebrow">Related tools</span>
+                    <h2 class="tbp-h2">More calculators<br><em>for investors.</em></h2>
+                </div>
+                <div class="right">
+                    <p class="tbp-lead">Explore other free resources from The Market Brief Daily.</p>
+                </div>
+            </div>
+            <div class="tbp-card-grid" data-tbp-reveal class="delay-1">
+                <a href="/tools/bond-yield.html" class="tbp-card">
+                    <div class="visual">
+                        <div class="placeholder" style="background:linear-gradient(135deg, #1a1a2e, #2a1a3a); display:flex; align-items:center; justify-content:center; font-size:12px; letter-spacing:.1em; color:rgba(255,255,255,.35);">BOND YIELD</div>
+                    </div>
+                    <div class="meta">Calculator</div>
+                    <h3>Bond Yield Tool</h3>
+                    <p>Calculate yield to maturity, duration, and convexity for government and corporate bonds.</p>
+                </a>
+                <a href="/tools/macro-dashboard.html" class="tbp-card">
+                    <div class="visual">
+                        <div class="placeholder" style="background:linear-gradient(135deg, #1a2a2e, #2a1a1a); display:flex; align-items:center; justify-content:center; font-size:12px; letter-spacing:.1em; color:rgba(255,255,255,.35);">MACRO DASHBOARD</div>
+                    </div>
+                    <div class="meta">Dashboard</div>
+                    <h3>Macro Dashboard</h3>
+                    <p>Live macro indicators including yield curves, PMI, inflation, and credit spreads in one view.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="tbp-footer">
+        <div class="tbp-container">
+            <div class="tbp-footer-top">
+                <div>
+                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                </div>
+                <div>
+                    <h4>Navigate</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/">Home</a>
+                        <a href="/posts.html">Research</a>
+                        <a href="/investments.html">Funds</a>
+                        <a href="/methodology.html">Methodology</a>
+                        <a href="/education.html">Education</a>
+                        <a href="/bot.html">AI Trader</a>
+                        <a href="/tools/dcf.html">Tools</a>
+                        <a href="/about.html">About</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Tools &amp; Resources</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/tools/dcf.html">DCF Tool</a>
+                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+                        <a href="/tools/cfa.html">CFA Resources</a>
+                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
+                        <a href="/glossary.html">Glossary</a>
+                        <a href="/reports.html">Reports</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Company</h4>
+                    <div class="tbp-footer-links">
+                        <a href="/about.html">About</a>
+                        <a href="/contact.html">Contact</a>
+                        <a href="/disclaimer.html">Disclaimer</a>
+                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+            <div class="tbp-footer-bottom">
+                <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+                <div class="legal">
+                    <a href="/disclaimer.html">Disclaimer</a>
+                    <a href="/privacy.html">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/tbp.js" defer></script>
+    <script>
+        // Collapsible toggle
+        function toggleCollapsible() {
+            const header = document.getElementById('collapsibleHeader');
+            const body = document.getElementById('collapsibleBody');
+            const icon = document.getElementById('arrowIcon');
+            if (body.classList.contains('open')) {
+                body.classList.remove('open');
+                header.classList.remove('open');
+            } else {
+                body.classList.add('open');
+                header.classList.add('open');
+            }
+        }
+
+        // DCF Calculation engine
+        function calculateDCF() {
+            // Read inputs
+            const revenueInput = parseFloat(document.getElementById('revenue').value) || 0;
+            const cagr = parseFloat(document.getElementById('cagr').value) || 0;
+            const ebitMargin = parseFloat(document.getElementById('ebitMargin').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const capexPct = parseFloat(document.getElementById('capexPct').value) || 0;
+            const wacc = parseFloat(document.getElementById('wacc').value) || 10;
+            const terminalGrowth = parseFloat(document.getElementById('terminalGrowth').value) || 2.5;
+            const years = parseInt(document.getElementById('years').value) || 10;
+            const sharesOutstanding = parseFloat(document.getElementById('sharesOutstanding').value) || 1;
+            const netDebt = parseFloat(document.getElementById('netDebt').value) || 0;
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+
+            if (revenueInput <= 0 || sharesOutstanding <= 0) {
+                document.getElementById('intrinsicValue').textContent = '£—';
+                document.getElementById('enterpriseValue').textContent = '£—';
+                document.getElementById('equityValue').textContent = '£—';
+                document.getElementById('marginSafetyBlock').style.display = 'none';
+                document.getElementById('barWrapper').style.display = 'none';
+                return;
+            }
+
+            const revCagr = cagr / 100;
+            const ebMargin = ebitMargin / 100;
+            const taxR = taxRate / 100;
+            const capexRatio = capexPct / 100;
+            const waccRate = wacc / 100;
+            const termG = terminalGrowth / 100;
+
+            let revenues = [];
+            let fcf = [];
+            let discountedFCF = [];
+
+            // Project revenues and FCFs
+            for (let i = 0; i < years; i++) {
+                const rev = revenueInput * Math.pow(1 + revCagr, i + 1);
+                revenues.push(rev);
+                const ebit = rev * ebMargin;
+                const nopat = ebit * (1 - taxR);
+                const capex = rev * capexRatio;
+                const fcfVal = nopat - capex;
+                fcf.push(fcfVal);
+                const discFactor = Math.pow(1 + waccRate, i + 1);
+                discountedFCF.push(fcfVal / discFactor);
+            }
+
+            // Terminal value: FCF_final * (1 + g) / (WACC - g), then discounted back from final year
+            const finalFCF = fcf[fcf.length - 1];
+            let terminalValue = 0;
+            if (waccRate !== termG) {
+                terminalValue = finalFCF * (1 + termG) / (waccRate - termG);
+            }
+            const pvTerminal = terminalValue / Math.pow(1 + waccRate, years);
+
+            const sumDiscountedFCF = discountedFCF.reduce((a, b) => a + b, 0);
+            const enterpriseValue = sumDiscountedFCF + pvTerminal;
+            const equityValue = enterpriseValue - netDebt;
+            const intrinsicPerShare = equityValue / sharesOutstanding;
+
+            // Update results panel
+            document.getElementById('intrinsicValue').textContent = '£' + intrinsicPerShare.toFixed(2);
+            document.getElementById('enterpriseValue').textContent = '£' + (enterpriseValue / 1).toFixed(1) + 'm';
+            document.getElementById('equityValue').textContent = '£' + (equityValue / 1).toFixed(1) + 'm';
+
+            // Margin of safety
+            if (!isNaN(currentPrice) && currentPrice > 0 && intrinsicPerShare > 0) {
+                const marginOfSafety = ((intrinsicPerShare - currentPrice) / intrinsicPerShare) * 100;
+                document.getElementById('marginSafety').textContent = 'Margin of safety: ' + marginOfSafety.toFixed(1) + '%';
+                document.getElementById('marginSafety').style.color = marginOfSafety >= 0 ? '#1a8a4a' : '#b03030';
+                document.getElementById('marginSafetyBlock').style.display = 'block';
+
+                // Bar comparison
+                document.getElementById('barWrapper').style.display = 'flex';
+                const maxVal = Math.max(currentPrice, intrinsicPerShare);
+                const currentWidth = (currentPrice / maxVal) * 100;
+                const intrinsicWidth = (intrinsicPerShare / maxVal) * 100;
+                document.getElementById('barFill').style.width = Math.min(currentWidth, intrinsicWidth) + '%';
+                // Update bar labels with values
+                const barWrapper = document.getElementById('barWrapper');
+                barWrapper.querySelector('span:first-child').textContent = '£' + currentPrice.toFixed(2);
+                barWrapper.querySelector('span:last-child').textContent = '£' + intrinsicPerShare.toFixed(2);
+            } else {
+                document.getElementById('marginSafetyBlock').style.display = 'none';
+                document.getElementById('barWrapper').style.display = 'none';
+            }
+
+            // Build projection table
+            let tableHtml = '';
+            for (let i = 0; i < years; i++) {
+                tableHtml += `
+                    <tr>
+                        <td>Year ${i + 1}</td>
+                        <td>£${revenues[i].toFixed(1)}m</td>
+                        <td>£${(revenues[i] * ebMargin).toFixed(1)}m</td>
+                        <td>£${(revenues[i] * ebMargin * (1 - taxR)).toFixed(1)}m</td>
+                        <td>£${(revenues[i] * capexRatio).toFixed(1)}m</td>
+                        <td>£${fcf[i].toFixed(1)}m</td>
+                        <td>£${discountedFCF[i].toFixed(1)}m</td>
+                    </tr>
+                `;
+            }
+            // Add terminal value row
+            tableHtml += `
+                <tr style="font-weight: 600; border-top: 2px solid var(--tbp-line);">
+                    <td>Terminal value</td>
+                    <td colspan="5" style="text-align:right;">PV of terminal value (discounted from year ${years})</td>
+                    <td>£${pvTerminal.toFixed(1)}m</td>
+                </tr>
+            `;
+            // Sum row
+            tableHtml += `
+                <tr style="font-weight: 700; border-top: 2px solid var(--tbp-ink);">
+                    <td>Total</td>
+                    <td colspan="5" style="text-align:right;">Enterprise value</td>
+                    <td>£${enterpriseValue.toFixed(1)}m</td>
+                </tr>
+            `;
+            document.getElementById('projectionBody').innerHTML = tableHtml;
+
+            // Open collapsible automatically if closed (first calculation)
+            const body = document.getElementById('collapsibleBody');
+            if (!body.classList.contains('open') && years > 0) {
+                body.classList.add('open');
+                document.getElementById('collapsibleHeader').classList.add('open');
+            }
+        }
+
+        // Initialize calculation on load
+        window.addEventListener('DOMContentLoaded', function() {
+            calculateDCF();
+            // Also ensure mobile menu toggle works
+            document.getElementById('burger')?.addEventListener('click', function() {
+                document.getElementById('mobileMenu')?.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
