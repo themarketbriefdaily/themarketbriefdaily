@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Market Brief Daily — Independent macro &amp; market structure research</title>
   <meta name="description" content="Independent macro and market structure research. Daily briefings, model portfolios, AI tools, and a free finance education library." />
-  <meta name="theme-color" content="#faf9f6" />
+  <meta name="theme-color" content="#0a0f1c" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://www.marketbriefdaily.com/" />
   <meta property="og:type" content="website" />
@@ -21,249 +21,62 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
 
   <style>
-    /* ── Static editorial hero ─────────────────────────────────── */
-    .tbp-hero-home {
-      position: relative;
-      width: 100%;
-      min-height: clamp(560px, 88vh, 920px);
-      padding: clamp(130px, 17vh, 220px) var(--tbp-pad-x) clamp(64px, 9vh, 120px);
-      background:
-        radial-gradient(1400px 700px at 90% -5%, rgba(102,163,255,.09), transparent 55%),
-        radial-gradient(1000px 600px at -5% 110%, rgba(200,163,90,.07), transparent 55%),
-        linear-gradient(180deg, #ffffff 0%, #faf9f6 100%);
-      border-bottom: 1px solid var(--tbp-line);
-      overflow: hidden;
+    /* Make the header readable over the cinematic hero */
+    .tbp-header {
+      background: linear-gradient(180deg, rgba(8,12,22,.85), rgba(8,12,22,.4) 70%, transparent);
+      border-bottom-color: transparent;
+      backdrop-filter: none;
     }
-    /* Decorative rule top-right */
-    .tbp-hero-home::before {
-      content: "";
-      position: absolute;
-      top: var(--tbp-headerH);
-      right: 0;
-      width: 40vw;
-      height: 1px;
-      background: var(--tbp-line);
+    .tbp-header .tbp-brand,
+    .tbp-header .tbp-nav a { color: rgba(255,255,255,.92); }
+    .tbp-header .tbp-brand .mark { background: #fff; color: #0a0f1c; }
+    .tbp-header .tbp-nav a.is-active::after { background: var(--tbp-warm); }
+    .tbp-header .tbp-cta-mini { background: #fff; color: #0a0f1c; }
+    .tbp-header .tbp-cta-mini:hover { background: var(--tbp-warm); color: #0a0f1c; }
+    .tbp-header .tbp-burger { border-color: rgba(255,255,255,.3); }
+    .tbp-header .tbp-burger span,
+    .tbp-header .tbp-burger span::before,
+    .tbp-header .tbp-burger span::after { background: #fff; }
+    .tbp-header.below-hero {
+      background: rgba(250,249,246,.92);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--tbp-line);
     }
-    .tbp-hero-home-inner {
-      position: relative;
-      max-width: var(--tbp-max);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: clamp(32px, 5vw, 80px);
-      align-items: end;
-    }
-    @media (max-width: 920px) {
-      .tbp-hero-home-inner { grid-template-columns: 1fr; gap: 40px; }
-      .tbp-hero-home::before { display: none; }
-    }
-    .tbp-hero-home-eyebrow {
+    .tbp-header.below-hero .tbp-brand,
+    .tbp-header.below-hero .tbp-nav a { color: var(--tbp-ink); }
+    .tbp-header.below-hero .tbp-brand .mark { background: var(--tbp-ink); color: var(--tbp-bg); }
+    .tbp-header.below-hero .tbp-cta-mini { background: var(--tbp-ink); color: var(--tbp-bg); }
+    .tbp-header.below-hero .tbp-burger { border-color: var(--tbp-line); }
+    .tbp-header.below-hero .tbp-burger span,
+    .tbp-header.below-hero .tbp-burger span::before,
+    .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
+
+    /* Live status indicator inside hero */
+    .hero-live {
       display: inline-flex; align-items: center; gap: 10px;
-      font-size: 11px; font-weight: 600;
+      padding: 7px 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      font-size: 11.5px; font-weight: 600;
       letter-spacing: .14em; text-transform: uppercase;
-      color: var(--tbp-muted); margin-bottom: 24px;
+      color: rgba(255,255,255,.92);
+      margin-bottom: 24px;
     }
-    .tbp-hero-home-eyebrow::before {
-      content: ""; width: 28px; height: 1px; background: currentColor;
-    }
-    .tbp-hero-home h1 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: clamp(2.6rem, 7vw, 5.6rem);
-      font-weight: 850;
-      letter-spacing: -.04em;
-      line-height: .96;
-      color: var(--tbp-ink);
-      margin: 0 0 28px;
-      max-width: 14ch;
-    }
-    .tbp-hero-home h1 em {
-      font-family: 'Fraunces', serif;
-      font-style: italic; font-weight: 400;
-    }
-    .tbp-hero-home .lead {
-      max-width: 52ch;
-      font-size: clamp(1rem, 1.2vw, 1.15rem);
-      line-height: 1.65;
-      color: var(--tbp-muted);
-      margin: 0 0 32px;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-
-    .hero-meta {
-      border-left: 1px solid var(--tbp-line);
-      padding-left: clamp(20px, 3vw, 40px);
-      display: flex; flex-direction: column; gap: 24px;
-    }
-    .hero-meta .row { display: flex; flex-direction: column; gap: 5px; }
-    .hero-meta .k {
-      font-size: 10px; font-weight: 600;
-      letter-spacing: .16em; text-transform: uppercase;
-      color: var(--tbp-muted-2);
-    }
-    .hero-meta .v {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1rem; font-weight: 600;
-      letter-spacing: -.01em; color: var(--tbp-ink);
-      line-height: 1.3;
-    }
-    .hero-meta .v em {
-      font-family: 'Fraunces', serif;
-      font-style: italic; font-weight: 400;
-      color: var(--tbp-muted);
-    }
-
-    /* ── Showcase grid ─────────────────────────────────────────── */
-    .showcase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: clamp(14px, 1.8vw, 22px);
-      margin-top: 40px;
-    }
-    @media (max-width: 900px) { .showcase-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 560px) { .showcase-grid { grid-template-columns: 1fr; } }
-
-    .showcase-card {
-      display: flex; flex-direction: column;
-      background: var(--tbp-bg);
-      border: 1px solid var(--tbp-line);
-      border-radius: var(--tbp-radius);
-      padding: 26px 24px 22px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color .25s, box-shadow .25s, transform .3s var(--tbp-ease);
-      position: relative;
-      overflow: hidden;
-    }
-    .showcase-card::before {
-      content: "";
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--tbp-warm);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform .3s cubic-bezier(.16,.84,.32,1);
-    }
-    .showcase-card:hover {
-      border-color: rgba(0,0,0,.25);
-      box-shadow: 0 8px 32px rgba(0,0,0,.07);
-      transform: translateY(-3px);
-    }
-    .showcase-card:hover::before { transform: scaleX(1); }
-    .showcase-card .sc-num {
-      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--tbp-muted);
-      margin-bottom: 14px;
-    }
-    .showcase-card .sc-icon { font-size: 24px; margin-bottom: 12px; line-height: 1; }
-    .showcase-card h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 17px; font-weight: 750; letter-spacing: -.015em;
-      color: var(--tbp-ink); margin: 0 0 10px; line-height: 1.2;
-    }
-    .showcase-card p {
-      font-size: 13.5px; line-height: 1.6; color: var(--tbp-muted);
-      margin: 0 0 20px; flex: 1;
-    }
-    .showcase-card .sc-cta {
-      font-size: 12px; font-weight: 700; color: var(--tbp-ink);
-      letter-spacing: .04em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 6px;
-      margin-top: auto; padding-top: 14px;
-      border-top: 1px solid var(--tbp-line);
-      transition: gap .2s;
-    }
-    .showcase-card:hover .sc-cta { gap: 10px; }
-    .showcase-card .sc-badge {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      letter-spacing: .08em; text-transform: uppercase;
-      padding: 3px 9px; border-radius: 999px;
-      background: rgba(0,102,255,.08); color: #0044cc;
-      margin-bottom: 10px; border: 1px solid rgba(0,102,255,.15);
-    }
-
-    /* Feature card — full-width AI trader */
-    .showcase-card-feature {
-      grid-column: 1 / -1;
-      display: grid; grid-template-columns: 1fr 1.7fr; gap: 0;
-      border-radius: var(--tbp-radius); overflow: hidden;
-      border: 1px solid var(--tbp-line);
-      text-decoration: none; color: inherit;
-      transition: box-shadow .25s, transform .3s var(--tbp-ease);
-    }
-    .showcase-card-feature:hover {
-      box-shadow: 0 16px 48px rgba(0,0,0,.10);
-      transform: translateY(-2px);
-    }
-    .showcase-card-feature .sc-img {
-      position: relative;
-      min-height: 280px;
-      overflow: hidden;
-    }
-    .showcase-card-feature .sc-img img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform .8s var(--tbp-ease-slow);
-    }
-    .showcase-card-feature:hover .sc-img img { transform: scale(1.04); }
-    .showcase-card-feature .sc-content {
-      padding: clamp(28px,4vw,52px);
-      display: flex; flex-direction: column; justify-content: center;
-      background: var(--tbp-bg);
-    }
-    @media (max-width: 700px) {
-      .showcase-card-feature { grid-template-columns: 1fr; }
-      .showcase-card-feature .sc-img { min-height: 180px; }
-    }
-
-    /* ── Latest briefs section ─────────────────────────────────── */
-    .brief-card {
-      display: flex; flex-direction: column; gap: 10px;
-      padding: 22px; border: 1px solid var(--tbp-line);
-      border-radius: var(--tbp-radius); background: var(--tbp-bg);
-      text-decoration: none; color: inherit;
-      transition: border-color .25s, box-shadow .25s;
-    }
-    .brief-card:hover {
-      border-color: var(--tbp-ink);
-      box-shadow: 0 4px 20px rgba(0,0,0,.06);
-    }
-    .brief-card .bc-date {
-      font-size: 10.5px; font-weight: 600; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--tbp-muted);
-    }
-    .brief-card h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1.05rem; font-weight: 750;
-      letter-spacing: -.015em; line-height: 1.25; margin: 0;
-      color: var(--tbp-ink);
-    }
-    .brief-card p {
-      font-size: 13.5px; line-height: 1.55;
-      color: var(--tbp-muted); margin: 0;
-      flex: 1;
-    }
-    .brief-card .bc-cta {
-      font-size: 11.5px; font-weight: 700;
-      letter-spacing: .06em; text-transform: uppercase;
-      color: var(--tbp-ink); margin-top: auto; padding-top: 8px;
-    }
-
-    /* ── Live pulsing dot ───────────────────────────────────────── */
-    @keyframes livePulse {
-      0%   { box-shadow: 0 0 0 0 rgba(26,138,74,.55); }
-      70%  { box-shadow: 0 0 0 8px rgba(26,138,74,0); }
-      100% { box-shadow: 0 0 0 0 rgba(26,138,74,0); }
-    }
-    .live-dot {
+    .hero-live .dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: #1a8a4a; display: inline-block; flex-shrink: 0;
-      animation: livePulse 2s ease-in-out infinite;
+      background: #4ade80; display: inline-block;
+      animation: heroDotPulse 2s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(74,222,128,.5);
     }
-    @media (prefers-reduced-motion: reduce) {
-      .live-dot { animation: none; }
-      .showcase-card, .showcase-card-feature, .brief-card { transition: none; }
-      .showcase-card:hover, .showcase-card-feature:hover { transform: none; }
+    @keyframes heroDotPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.5); }
+      70%  { box-shadow: 0 0 0 10px rgba(74,222,128,0); }
+      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
     }
   </style>
 </head>
@@ -281,10 +94,11 @@
         <a href="/education.html">Education</a>
         <a href="/tools/">Tools</a>
         <a href="/bot.html">AI Trader</a>
+        <a href="/subscription.html">Subscribe</a>
         <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
-        Subscribe <span class="arrow">↗</span>
+      <a class="tbp-cta-mini" href="/subscription.html">
+        Get access <span class="arrow">↗</span>
       </a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
@@ -296,27 +110,31 @@
     <a href="/education.html">Education</a>
     <a href="/tools/">Tools</a>
     <a href="/bot.html">AI Trader</a>
+    <a href="/subscription.html">Subscribe</a>
     <a href="/about.html">About</a>
-    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
 
-  <!-- ── HERO ───────────────────────────────────────────────────── -->
-  <section class="tbp-hero-home" aria-label="Introduction">
-    <div class="tbp-hero-home-inner">
+  <!-- ════════════════════════════════════════════════════════════
+       CINEMATIC HERO
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-hero-cinematic" aria-label="Introduction">
+    <div class="tbp-hero-cinematic-bg" style="background-image: url('/assets/images/hero-london-night.jpg');"></div>
+    <div class="tbp-hero-cinematic-inner">
       <div>
-        <div class="tbp-hero-home-eyebrow">Independent macro &amp; market structure research</div>
+        <div class="hero-live"><span class="dot"></span>Live · Daily macro brief</div>
+        <div class="tbp-eyebrow">Independent macro &amp; market structure research</div>
         <h1>Markets, <em>read</em><br>with discipline.</h1>
         <p class="lead">
-          Daily briefings on macro transmission, credit spreads, commodity supply,
-          and market microstructure — paired with transparent model portfolios, a
-          free education library, AI tools, and a day-trader running in public.
+          Institutional-grade research on macro transmission, credit spreads, commodity
+          supply, and microstructure — written daily for serious investors.
+          Transparent model portfolios, AI tools, and an experimental day-trader, all from London.
         </p>
-        <div class="hero-actions">
-          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Read the latest brief <span class="arrow">↗</span></a>
-          <a class="tbp-btn" href="/about.html">About <span class="arrow">→</span></a>
+        <div class="hero-actions" style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="tbp-btn primary" href="/subscription.html">Get full access <span class="arrow">→</span></a>
+          <a class="tbp-btn" href="/posts.html">Read today&apos;s brief <span class="arrow">↗</span></a>
         </div>
       </div>
-      <aside class="hero-meta" aria-label="Publication details">
+      <aside class="tbp-hero-meta-card" aria-label="Publication details">
         <div class="row">
           <span class="k">Coverage</span>
           <span class="v">Macro · Credit · Commodities · <em>Microstructure</em></span>
@@ -326,8 +144,8 @@
           <span class="v">Daily brief · weekly long-form</span>
         </div>
         <div class="row">
-          <span class="k">Access</span>
-          <span class="v">Free to read · paid tier for depth</span>
+          <span class="k">Distribution</span>
+          <span class="v">London · Substack · marketbriefdaily.com</span>
         </div>
         <div class="row">
           <span class="k">Standard</span>
@@ -337,195 +155,370 @@
     </div>
   </section>
 
-  <!-- ── SITE SHOWCASE ─────────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════════════════════════
+       LIVE TICKER
+       ════════════════════════════════════════════════════════════ -->
+  <div class="tbp-ticker" aria-label="Market overview">
+    <div class="tbp-ticker-track">
+      <span class="tbp-ticker-item"><span class="sym">FTSE 100</span><span>8,432.1</span><span class="pos">+0.42%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">S&amp;P 500</span><span>5,287.6</span><span class="pos">+0.28%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">UST 10Y</span><span>4.24%</span><span class="neg">−4.2 bp</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GILT 10Y</span><span>4.13%</span><span class="neg">−2.8 bp</span></span>
+      <span class="tbp-ticker-item"><span class="sym">DXY</span><span>104.86</span><span class="neg">−0.18%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GBP/USD</span><span>1.2814</span><span class="pos">+0.21%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">BRENT</span><span>$83.42</span><span class="pos">+1.18%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GOLD</span><span>$2,378.10</span><span class="pos">+0.62%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">SILVER</span><span>$30.84</span><span class="pos">+1.92%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">VIX</span><span>13.42</span><span class="neg">−2.1%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">IG SPREAD</span><span>92 bp</span><span class="neut">flat</span></span>
+      <span class="tbp-ticker-item"><span class="sym">HY SPREAD</span><span>318 bp</span><span class="neg">+4 bp</span></span>
+      <!-- Repeat for seamless loop -->
+      <span class="tbp-ticker-item"><span class="sym">FTSE 100</span><span>8,432.1</span><span class="pos">+0.42%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">S&amp;P 500</span><span>5,287.6</span><span class="pos">+0.28%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">UST 10Y</span><span>4.24%</span><span class="neg">−4.2 bp</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GILT 10Y</span><span>4.13%</span><span class="neg">−2.8 bp</span></span>
+      <span class="tbp-ticker-item"><span class="sym">DXY</span><span>104.86</span><span class="neg">−0.18%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GBP/USD</span><span>1.2814</span><span class="pos">+0.21%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">BRENT</span><span>$83.42</span><span class="pos">+1.18%</span></span>
+      <span class="tbp-ticker-item"><span class="sym">GOLD</span><span>$2,378.10</span><span class="pos">+0.62%</span></span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       CREDENTIALS / "TRUSTED BY" STRIP
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section" style="padding-block: clamp(40px,5vw,72px);">
+    <div class="tbp-container">
+      <div class="tbp-credentials">
+        <span class="tbp-credentials-label">Coverage drawn from</span>
+        <div class="tbp-credentials-items">
+          <span class="item"><em>Bloomberg</em>Terminal</span>
+          <span class="item"><em>Refinitiv</em>Eikon</span>
+          <span class="item"><em>FRED</em>St. Louis Fed</span>
+          <span class="item"><em>BoE</em>Statistical Database</span>
+          <span class="item"><em>LSEG</em>Workspace</span>
+          <span class="item"><em>FT</em>Editorial Archive</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FEATURED RESEARCH (premium card grid)
+       ════════════════════════════════════════════════════════════ -->
   <section class="tbp-section">
     <div class="tbp-container">
-      <div class="tbp-section-head" data-tbp-reveal>
+      <div class="tbp-section-heading" data-tbp-reveal>
         <div class="left">
-          <div class="tbp-eyebrow">What we publish</div>
-          <h2 class="tbp-h2">Research, tools<br>&amp; <em>education.</em></h2>
+          <div class="number">01 / Research</div>
+          <h2>This week&apos;s<br><em>analysis.</em></h2>
         </div>
         <div class="right">
           <p class="tbp-lead">
-            Independent macro research at CFA level, transparent model portfolios,
-            AI-powered financial tools, and a comprehensive education library —
-            all free to read. The paid tier unlocks deeper reports and full tool access.
+            Three frames, one publication: macro transmission, market microstructure, and physical
+            supply tightness. Read the latest long-form briefs and the live commentary that sits
+            behind every model portfolio decision.
           </p>
         </div>
       </div>
 
-      <div class="showcase-grid" data-tbp-reveal>
-
-        <a class="showcase-card" href="/posts.html">
-          <div class="sc-num">01 — Research</div>
-          <div class="sc-icon">◎</div>
-          <h3>Macro Research Briefs</h3>
-          <p>Weekly briefings on central bank policy, yield curves, credit spreads, commodity supply chains, and market microstructure — written at CFA analyst level.</p>
-          <div class="sc-cta">Read the briefs <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/education.html">
-          <div class="sc-num">02 — Education</div>
-          <div class="sc-icon">◻</div>
-          <h3>Finance Education Library</h3>
-          <p>Seven plain-English chapters covering financial markets, asset classes, investing principles, UK tax wrappers (ISA, SIPP, LISA), pensions, and macroeconomics.</p>
-          <div class="sc-cta">Open the library <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/investments.html">
-          <div class="sc-num">03 — Portfolios</div>
-          <div class="sc-icon">◈</div>
-          <h3>Model Portfolios</h3>
-          <p>Four transparent model portfolios — macro regime, market microstructure, physical supply, and multi-factor. Tracked publicly with methodology and benchmark comparisons.</p>
-          <div class="sc-cta">View portfolios <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/tools/">
-          <div class="sc-num">04 — Calculator</div>
-          <span class="sc-badge">Free — no sign-up</span>
-          <h3>DCF Valuation Tool</h3>
-          <p>Enter revenue growth, EBIT margin, WACC, and terminal growth rate. Get intrinsic value per share, margin of safety, and a year-by-year free cash flow model instantly.</p>
-          <div class="sc-cta">Open calculator <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/tools/">
-          <div class="sc-num">05 — Dashboard</div>
-          <div class="sc-icon">◉</div>
-          <h3>Macro Signal Dashboard</h3>
-          <p>Live yield curves, credit spreads, PMI data, FX rates, and commodity prices — updated each trading day with an AI-written macro interpretation and regime signal.</p>
-          <div class="sc-cta">Open dashboard <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/tools/">
-          <div class="sc-num">06 — Study tool</div>
-          <span class="sc-badge">Free tier available</span>
-          <h3>CFA Level 1 Study Tool</h3>
-          <p>AI-generated practice questions across all 10 CFA Level 1 topic areas. Adaptive difficulty, worked explanations with real macro examples, and session progress tracking.</p>
-          <div class="sc-cta">Start studying <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/glossary.html">
-          <div class="sc-num">07 — Reference</div>
-          <div class="sc-icon">◇</div>
-          <h3>Finance Glossary</h3>
-          <p>Searchable definitions of financial terms, market structure concepts, macro indicators, and instruments — cross-referenced with education chapters and research briefs.</p>
-          <div class="sc-cta">Browse glossary <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/methodology.html">
-          <div class="sc-num">08 — Framework</div>
-          <div class="sc-icon">⌥</div>
-          <h3>Investment Methodology</h3>
-          <p>The analytical framework behind every portfolio decision. Three interlocking lenses — macro regime detection, physical supply tightness, and market microstructure signals.</p>
-          <div class="sc-cta">Read methodology <span>→</span></div>
-        </a>
-
-        <a class="showcase-card" href="/reports.html">
-          <div class="sc-num">09 — Reports</div>
-          <span class="sc-badge">From £99</span>
-          <h3>Bespoke Research Reports</h3>
-          <p>In-depth macro and sector research reports — UK gilt outlook, commodity cycle positioning, central bank scenario analysis — produced to institutional standard as PDF downloads.</p>
-          <div class="sc-cta">Browse reports <span>→</span></div>
-        </a>
-
-        <!-- AI Trader feature card — full-width -->
-        <a class="showcase-card-feature" href="/bot.html">
-          <div class="sc-img">
-            <img src="/assets/images/houses-of-parliament.jpg" alt="AI day-trader experiment" loading="lazy">
+      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(16px,2vw,28px);" data-tbp-reveal>
+        <a class="tbp-premium-card" href="/posts/2026-02-11-japan-pm-us-stocks.html">
+          <div class="visual">
+            <img src="/assets/images/fund-macro.jpg" alt="Japan macro" loading="lazy">
+            <span class="label">Macro · Rates</span>
           </div>
-          <div class="sc-content">
-            <div class="tbp-eyebrow" style="margin-bottom:14px; display:inline-flex; align-items:center; gap:8px;">
-              <span class="live-dot"></span>
-              Experimental · Live now
-            </div>
-            <h3 style="font-family:'Inter Tight',sans-serif; font-size:clamp(1.4rem,2.5vw,2.1rem); font-weight:800; letter-spacing:-.025em; margin:0 0 14px; line-height:1.1; color:var(--tbp-ink);">
-              AI Day-Trader — algorithmic<br>trading in public.
-            </h3>
-            <p style="font-size:15px; line-height:1.65; margin:0 0 8px; color:var(--tbp-ink-2); max-width:56ch;">
-              An AI agent runs an intraday macro strategy in a paper account, logging every
-              trade publicly with its full reasoning — entry, exit, size, and the macro signal
-              that triggered it.
-            </p>
-            <p style="font-size:12.5px; color:var(--tbp-muted); margin:0 0 22px;">Paper trading only — not allocated capital. Educational use.</p>
-            <span class="read-more" style="font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--tbp-ink); display:inline-flex; align-items:center; gap:8px;">View the live trade log →</span>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px;">11 Feb 2026 · 9-min read</div>
+            <h3>Japan&apos;s PM Moment and Its Shadow Over US Stocks</h3>
+            <p>JGB yield creep, BOJ normalisation and the overlooked transmission channel into US equity discount rates — a structural headwind most are ignoring.</p>
+            <span class="read-more">Read brief →</span>
           </div>
         </a>
+        <a class="tbp-premium-card" href="/posts/2026-02-09-druckenmiller-shadow.html">
+          <div class="visual">
+            <img src="/assets/images/trading-desk.jpg" alt="Macro positioning" loading="lazy">
+            <span class="label">Risk · Sizing</span>
+          </div>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px;">09 Feb 2026 · 12-min read</div>
+            <h3>Druckenmiller&apos;s Shadow: Sizing Macro Bets Under Uncertainty</h3>
+            <p>How Druckenmiller sizes conviction positions — and why most macro tourists get the Kelly fraction catastrophically wrong.</p>
+            <span class="read-more">Read brief →</span>
+          </div>
+        </a>
+        <a class="tbp-premium-card" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
+          <div class="visual">
+            <img src="/assets/images/fund-supply.jpg" alt="Silver market" loading="lazy">
+            <span class="label">Commodities</span>
+          </div>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px;">07 Feb 2026 · 14-min read</div>
+            <h3>Silver Market Outlook: COMEX Inventory Squeeze</h3>
+            <p>Physical delivery pressure building on COMEX as registered inventory falls to multi-year lows — what it means for the basis and lease rates.</p>
+            <span class="read-more">Read brief →</span>
+          </div>
+        </a>
+      </div>
 
+      <div style="text-align:center; margin-top:48px;" data-tbp-reveal>
+        <a class="tbp-btn" href="/posts.html">All research briefs <span class="arrow">→</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ── LATEST BRIEFS ──────────────────────────────────────────── -->
-  <section class="tbp-section tight" style="background: var(--tbp-bg-alt); border-top: 1px solid var(--tbp-line);">
-    <div class="tbp-container">
-      <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:28px;" data-tbp-reveal>
-        <div class="tbp-eyebrow">Latest research</div>
-        <a href="/posts.html" style="font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--tbp-muted); text-decoration:none;">All briefs →</a>
-      </div>
-      <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(14px,1.8vw,22px);" data-tbp-reveal>
-        <a class="brief-card" href="/posts/2026-02-07-silver-market-outlook-comex-inventory.html">
-          <div class="bc-date">07 Feb 2026 · Commodities</div>
-          <h3>Silver Market Outlook: COMEX Inventory Squeeze</h3>
-          <p>Physical delivery pressure building on COMEX as registered inventory falls to multi-year lows — what it means for the basis and lease rates.</p>
-          <div class="bc-cta">Read brief →</div>
-        </a>
-        <a class="brief-card" href="/posts/2026-02-09-druckenmiller-shadow.html">
-          <div class="bc-date">09 Feb 2026 · Macro</div>
-          <h3>Druckenmiller's Shadow: Sizing Macro Bets Under Uncertainty</h3>
-          <p>How Druckenmiller sizes conviction positions — and why most macro tourists get the Kelly fraction catastrophically wrong.</p>
-          <div class="bc-cta">Read brief →</div>
-        </a>
-        <a class="brief-card" href="/posts/2026-02-11-japan-pm-us-stocks.html">
-          <div class="bc-date">11 Feb 2026 · Macro · Rates</div>
-          <h3>Japan's PM Moment and Its Shadow Over US Stocks</h3>
-          <p>JGB yield creep, BOJ normalisation and the overlooked transmission channel into US equity discount rates — a structural headwind most are ignoring.</p>
-          <div class="bc-cta">Read brief →</div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── STATS ─────────────────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════════════════════════
+       EDITORIAL PULL QUOTE
+       ════════════════════════════════════════════════════════════ -->
   <section class="tbp-section tight">
     <div class="tbp-container">
-      <div class="tbp-stats" data-tbp-reveal>
-        <div class="tbp-stat">
-          <div class="num">04</div>
-          <div class="label">Model portfolios — macro, structure, supply, factor</div>
-        </div>
-        <div class="tbp-stat">
-          <div class="num">07</div>
-          <div class="label">Education chapters — markets to UK tax wrappers</div>
-        </div>
-        <div class="tbp-stat">
-          <div class="num">10</div>
-          <div class="label">CFA Level 1 topic areas covered in the study tool</div>
-        </div>
-        <div class="tbp-stat">
-          <div class="num">£0</div>
-          <div class="label">Cost — free tier covers research, education, and tools</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CTA ────────────────────────────────────────────────── -->
-  <section class="tbp-section tight">
-    <div class="tbp-container">
-      <div class="tbp-cta-strip" data-tbp-reveal>
+      <div class="tbp-pull-quote" data-tbp-reveal>
         <div>
-          <div class="tbp-eyebrow" style="margin-bottom:18px;">Free newsletter</div>
-          <h2>Get every brief<br>before the open.</h2>
+          <div class="tbp-pull-quote-eyebrow">Editor&apos;s note</div>
         </div>
-        <div class="actions">
-          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe on Substack <span class="arrow">↗</span></a>
-          <a class="tbp-btn" href="/about.html">About us <span class="arrow">→</span></a>
+        <div>
+          <blockquote>
+            We don&apos;t publish narratives. We publish frameworks — the kind a portfolio
+            manager would test before sizing a position, and the kind a student should
+            be able to defend in an interview.
+          </blockquote>
+          <div class="tbp-pull-quote-attr">— The Market Brief Daily</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <!-- ════════════════════════════════════════════════════════════
+       MODEL PORTFOLIOS / FUNDS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section midnight">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal style="border-bottom-color: rgba(255,255,255,.1);">
+        <div class="left">
+          <div class="number">02 / Portfolios</div>
+          <h2>Four model<br><em>portfolios.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            Macro regime, market microstructure, physical supply tightness, and a regime-aware factor
+            sleeve. Tracked publicly with benchmark comparisons, monthly attribution, and full
+            methodology — not marketing.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.1); border-radius:14px; overflow:hidden;" data-tbp-reveal>
+        <a href="/investments.html" style="background:#0a0f1c; padding:32px 28px; text-decoration:none; color:#fff; display:flex; flex-direction:column; gap:14px; transition:background .25s;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--tbp-warm);">MBD-MACRO</div>
+          <div style="font-family:'Inter Tight',sans-serif; font-size:2.4rem; font-weight:850; letter-spacing:-.04em; color:#4ade80;">+8.4%</div>
+          <div style="font-size:13px; color:rgba(255,255,255,.6);">YTD · vs 60/40 +3.3pp</div>
+          <div style="font-size:14px; color:rgba(255,255,255,.85); margin-top:auto;">Macro Transmission Sleeve</div>
+        </a>
+        <a href="/investments.html" style="background:#0a0f1c; padding:32px 28px; text-decoration:none; color:#fff; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--tbp-warm);">MBD-STRUCT</div>
+          <div style="font-family:'Inter Tight',sans-serif; font-size:2.4rem; font-weight:850; letter-spacing:-.04em; color:#4ade80;">+6.2%</div>
+          <div style="font-size:13px; color:rgba(255,255,255,.6);">YTD · vs S&amp;P +1.8pp</div>
+          <div style="font-size:14px; color:rgba(255,255,255,.85); margin-top:auto;">Market Structure Alpha</div>
+        </a>
+        <a href="/investments.html" style="background:#0a0f1c; padding:32px 28px; text-decoration:none; color:#fff; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--tbp-warm);">MBD-SUPPLY</div>
+          <div style="font-family:'Inter Tight',sans-serif; font-size:2.4rem; font-weight:850; letter-spacing:-.04em; color:#4ade80;">+11.7%</div>
+          <div style="font-size:13px; color:rgba(255,255,255,.6);">YTD · vs BCOM +4.9pp</div>
+          <div style="font-size:14px; color:rgba(255,255,255,.85); margin-top:auto;">Physical Supply Premia</div>
+        </a>
+        <a href="/investments.html" style="background:#0a0f1c; padding:32px 28px; text-decoration:none; color:#fff; display:flex; flex-direction:column; gap:14px;">
+          <div style="font-size:11px; font-weight:700; letter-spacing:.12em; color:var(--tbp-warm);">MBD-FACT</div>
+          <div style="font-family:'Inter Tight',sans-serif; font-size:2.4rem; font-weight:850; letter-spacing:-.04em; color:#4ade80;">+7.1%</div>
+          <div style="font-size:13px; color:rgba(255,255,255,.6);">YTD · vs MSCI W +1.7pp</div>
+          <div style="font-size:14px; color:rgba(255,255,255,.85); margin-top:auto;">Regime-Aware Factor</div>
+        </a>
+      </div>
+
+      <div style="text-align:center; margin-top:40px;" data-tbp-reveal>
+        <a class="tbp-btn primary" href="/investments.html">View all portfolios <span class="arrow">→</span></a>
+        <a class="tbp-btn" href="/methodology.html" style="margin-left:8px;">Methodology <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       AI DAY-TRADER — feature card
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section">
+    <div class="tbp-container">
+      <a href="/bot.html" style="display:grid; grid-template-columns:1fr 1.4fr; gap:0; border:1px solid var(--tbp-line); border-radius:16px; overflow:hidden; text-decoration:none; color:inherit; transition:box-shadow .3s, transform .3s;" onmouseover="this.style.boxShadow='0 24px 60px -16px rgba(0,0,0,.14)';this.style.transform='translateY(-3px)';" onmouseout="this.style.boxShadow='none';this.style.transform='none';">
+        <div style="position:relative; min-height:340px; background:#0a0f1c; overflow:hidden;">
+          <img src="/assets/images/bot-tradingfloor.jpg" alt="AI day-trading dashboard" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.75;">
+          <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(10,15,28,.6), rgba(10,15,28,.2) 50%, rgba(10,15,28,.7));"></div>
+          <div style="position:absolute; top:24px; left:24px; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(10px); border-radius:999px; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#fff;">
+            <span style="width:7px; height:7px; border-radius:50%; background:#4ade80; box-shadow:0 0 0 0 rgba(74,222,128,.5); animation:heroDotPulse 2s ease-in-out infinite;"></span>
+            Live experiment
+          </div>
+          <div style="position:absolute; bottom:28px; left:28px; right:28px;">
+            <div style="font-family:'Inter Tight',sans-serif; font-size:clamp(3rem,5vw,4.5rem); font-weight:850; color:#fff; letter-spacing:-.04em; line-height:.95;">AI</div>
+            <div style="font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.65); margin-top:4px;">Day-trader · paper account</div>
+          </div>
+        </div>
+        <div style="padding:clamp(36px,5vw,64px); display:flex; flex-direction:column; justify-content:center; background:var(--tbp-bg);">
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Experimental · Open-book</div>
+          <h2 class="tbp-h2" style="font-size:clamp(1.8rem,3.4vw,2.6rem); margin:0 0 16px; line-height:1.05;">An <em>AI agent</em> running an<br>intraday macro strategy.</h2>
+          <p style="font-size:15px; line-height:1.65; color:var(--tbp-muted); margin:0 0 18px; max-width:54ch;">
+            Every trade logged in public with full reasoning — entry, exit, position size, and the
+            macro signal that triggered it. Backtested on 18 months of historical data; running
+            live since Jan 2026 in a paper account.
+          </p>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px; padding:18px 0; border-top:1px solid var(--tbp-line); border-bottom:1px solid var(--tbp-line); margin-bottom:24px;">
+            <div>
+              <div style="font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted);">Sharpe</div>
+              <div style="font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:800; color:var(--tbp-ink);">1.42</div>
+            </div>
+            <div>
+              <div style="font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted);">YTD</div>
+              <div style="font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:800; color:var(--tbp-pos);">+9.4%</div>
+            </div>
+            <div>
+              <div style="font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted);">Win rate</div>
+              <div style="font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:800; color:var(--tbp-ink);">58%</div>
+            </div>
+          </div>
+          <span style="font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--tbp-ink); display:inline-flex; align-items:center; gap:8px;">View the live trade log →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       BY THE NUMBERS — premium stats
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div style="margin-bottom:40px;">
+        <div class="tbp-eyebrow">By the numbers</div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border-top:1px solid var(--tbp-line); border-bottom:1px solid var(--tbp-line);" data-tbp-reveal>
+        <div class="tbp-stat-premium">
+          <div class="label-top">Coverage</div>
+          <div class="num"><span class="tbp-counter">04</span></div>
+          <div class="label-bot">Model portfolios across macro, structure, supply, and factor</div>
+        </div>
+        <div class="tbp-stat-premium">
+          <div class="label-top">Education</div>
+          <div class="num"><span class="tbp-counter">07</span></div>
+          <div class="label-bot">Chapters covering markets, instruments, UK tax, and CFA syllabus</div>
+        </div>
+        <div class="tbp-stat-premium">
+          <div class="label-top">Archive</div>
+          <div class="num"><span class="tbp-counter">80</span><span class="unit">+</span></div>
+          <div class="label-bot">Research briefs in the public archive — read free</div>
+        </div>
+        <div class="tbp-stat-premium">
+          <div class="label-top">Sharpe</div>
+          <div class="num">1.4<span style="font-size:.6em;">2</span></div>
+          <div class="label-bot">AI day-trader since launch — gross of fees, paper account</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       EDUCATION + TOOLS — premium card row
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">03 / Learn &amp; Build</div>
+          <h2>Education<br>and <em>tools.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            A free finance education library covering UK investing, tax wrappers, pensions, and CFA / IMC
+            material. Plus four institutional-grade calculators — DCF, macro dashboard, CFA prep, and
+            bond yield analytics.
+          </p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(16px,2vw,28px);" data-tbp-reveal>
+        <a class="tbp-premium-card" href="/education.html">
+          <div class="visual">
+            <img src="/assets/images/library-research.jpg" alt="Education library" loading="lazy">
+            <span class="label">Free · No sign-up</span>
+          </div>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px;">Education</div>
+            <h3>Finance Education Library</h3>
+            <p>Seven chapters covering financial markets, asset classes, investing principles, UK tax wrappers (ISA, SIPP, LISA), pensions, and CFA / IMC syllabus material — written in plain English.</p>
+            <span class="read-more">Open the library →</span>
+          </div>
+        </a>
+        <a class="tbp-premium-card" href="/tools/">
+          <div class="visual">
+            <img src="/assets/images/trading-screens.jpg" alt="Free financial tools" loading="lazy">
+            <span class="label">Four tools</span>
+          </div>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px;">Tools</div>
+            <h3>DCF, Macro Dashboard, CFA Prep, Bond Yield</h3>
+            <p>Four free institutional-grade calculators. Build a discounted cash-flow model in one screen. Track yield curves and credit spreads. Run CFA Level 1 practice questions across all 10 topic areas.</p>
+            <span class="read-more">Open the tools →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SUBSCRIPTION CTA — dark
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section dark" style="padding-block: clamp(72px,8vw,120px);">
+    <div class="tbp-container">
+      <div style="display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:clamp(32px,5vw,80px); align-items:center;" data-tbp-reveal>
+        <div>
+          <div class="tbp-eyebrow" style="margin-bottom:24px;">Subscribe</div>
+          <h2 class="tbp-h2" style="color:#fff; font-size:clamp(2rem,5vw,3.6rem); margin:0 0 18px;">Read every brief.<br>Run every <em>portfolio.</em></h2>
+          <p style="font-size:1.05rem; line-height:1.6; color:rgba(255,255,255,.75); margin:0 0 32px; max-width:52ch;">
+            Three tiers: Free for the daily brief and core education, Professional for full archives
+            and portfolio access, Institutional for direct analyst access and custom research.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="tbp-btn primary" href="/subscription.html">View subscription tiers <span class="arrow">→</span></a>
+            <a class="tbp-btn" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Free Substack <span class="arrow">↗</span></a>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 22px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:12px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); font-weight:700; font-size:14px;">F</div>
+            <div>
+              <div style="font-weight:700; color:#fff;">Free</div>
+              <div style="font-size:12px; color:rgba(255,255,255,.55);">Daily brief · core library</div>
+            </div>
+            <div style="font-family:'Inter Tight',sans-serif; font-weight:800; color:#fff;">£0</div>
+          </div>
+          <div style="display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 22px; background:rgba(200,163,90,.08); border:1px solid rgba(200,163,90,.3); border-radius:12px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:var(--tbp-warm); display:flex; align-items:center; justify-content:center; color:#0a0f1c; font-weight:800; font-size:14px;">P</div>
+            <div>
+              <div style="font-weight:700; color:#fff;">Professional</div>
+              <div style="font-size:12px; color:rgba(255,255,255,.65);">Full archive · portfolios · tools</div>
+            </div>
+            <div style="font-family:'Inter Tight',sans-serif; font-weight:800; color:var(--tbp-warm);">£24<span style="font-size:11px;">/mo</span></div>
+          </div>
+          <div style="display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 22px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:12px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); font-weight:700; font-size:14px;">I</div>
+            <div>
+              <div style="font-weight:700; color:#fff;">Institutional</div>
+              <div style="font-size:12px; color:rgba(255,255,255,.55);">Bespoke research · API · seats</div>
+            </div>
+            <div style="font-family:'Inter Tight',sans-serif; font-weight:800; color:#fff;">£499<span style="font-size:11px;">/mo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
   <footer class="tbp-footer" role="contentinfo">
     <div class="tbp-container">
       <div class="tbp-footer-top">
@@ -545,13 +538,14 @@
           </div>
         </div>
         <div>
-          <h4>Tools</h4>
+          <h4>Tools &amp; Reports</h4>
           <div class="tbp-footer-links">
             <a href="/tools/dcf.html">DCF Calculator</a>
             <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
             <a href="/tools/cfa.html">CFA Study Tool</a>
-            <a href="/tools/bond-yield.html">Bond Yield Calculator</a>
+            <a href="/tools/bond-yield.html">Bond Yield</a>
             <a href="/reports.html">Research Reports</a>
+            <a href="/subscription.html">Subscription</a>
           </div>
         </div>
         <div>
@@ -576,6 +570,19 @@
     </div>
   </footer>
 
+  <script>
+    // Header colour-switch when scrolling past hero
+    (function () {
+      const header = document.querySelector('.tbp-header');
+      const hero   = document.querySelector('.tbp-hero-cinematic');
+      if (!header || !hero) return;
+      const obs = new IntersectionObserver(
+        function (entries) { header.classList.toggle('below-hero', !entries[0].isIntersecting); },
+        { threshold: 0 }
+      );
+      obs.observe(hero);
+    })();
+  </script>
   <script src="/assets/tbp.js" defer></script>
 </body>
 </html>

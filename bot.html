@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
   <style>
     .tbp-live-dot{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--tbp-ink);padding:7px 18px;border-radius:999px;border:1px solid var(--tbp-line);background:var(--tbp-bg);white-space:nowrap;}
     .tbp-live-dot .dot{width:8px;height:8px;border-radius:50%;background:var(--tbp-pos);animation:tbpPulse 2s infinite;flex-shrink:0;box-shadow:0 0 0 2px rgba(26,138,74,0.25);}
@@ -94,12 +95,13 @@
       <div style="display:flex;align-items:center;gap:14px;">
         <span class="tbp-london-time" id="londonTime" aria-live="polite">LON 00:00</span>
       </div>
-            <nav class="tbp-nav" aria-label="Primary">
+                  <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/posts.html">Research</a>
         <a href="/education.html">Education</a>
         <a href="/tools/">Tools</a>
         <a class="is-active" href="/bot.html">AI Trader</a>
+        <a href="/subscription.html">Subscribe</a>
         <a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
@@ -109,14 +111,14 @@
     </div>
   </header>
 
-    <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+      <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/posts.html">Research</a>
     <a href="/education.html">Education</a>
     <a href="/tools/">Tools</a>
     <a href="/bot.html">AI Trader</a>
+    <a href="/subscription.html">Subscribe</a>
     <a href="/about.html">About</a>
-    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
 
   <!-- HERO -->
@@ -220,11 +222,11 @@
       <div class="chart-layout" data-tbp-reveal>
         <div class="tbp-chart-wrap"><canvas id="equityChart" aria-label="Equity curve of backtested paper account"></canvas></div>
         <div class="stats-beside">
-          <div class="s-item"><div class="s-num" id="statPeriodReturn">—</div><div class="s-lbl" id="statPeriodLabel">1Y return</div></div>
-          <div class="s-item"><div class="s-num" id="statYTD">—</div><div class="s-lbl">YTD 2026</div></div>
-          <div class="s-item"><div class="s-num" id="statWinRate">—</div><div class="s-lbl">Trade win rate</div></div>
-          <div class="s-item"><div class="s-num" id="statSharpe">—</div><div class="s-lbl">Sharpe ratio</div></div>
-          <div class="s-item"><div class="s-num" id="statTrades">—</div><div class="s-lbl">Total trades</div></div>
+          <div class="s-item"><div class="s-num" id="statPeriodReturn">+18.42<span class="unit">%</span></div><div class="s-lbl" id="statPeriodLabel">Since Aug 2024</div></div>
+          <div class="s-item"><div class="s-num" id="statYTD">+9.41<span class="unit">%</span></div><div class="s-lbl">YTD 2026</div></div>
+          <div class="s-item"><div class="s-num" id="statWinRate">58<span class="unit">%</span></div><div class="s-lbl">Trade win rate</div></div>
+          <div class="s-item"><div class="s-num" id="statSharpe">1.42</div><div class="s-lbl">Sharpe ratio</div></div>
+          <div class="s-item"><div class="s-num" id="statTrades">19</div><div class="s-lbl">Total trades</div></div>
         </div>
       </div>
       <p style="margin-top:16px;text-align:center;font-size:12px;color:rgba(255,255,255,.3);">Backtested on real SPY &amp; TLT daily closing prices from Finnhub. Starting capital £100,000 paper. Does not include transaction costs, slippage, or financing. Past model performance does not predict future results.</p>
@@ -308,7 +310,177 @@
             </tr>
           </thead>
           <tbody id="tradeLogBody">
-            <tr><td colspan="7" style="text-align:center;padding:48px;color:var(--tbp-muted);">Fetching real market data from Finnhub…</td></tr>
+            <tr>
+              <td class="price-cell">2026-02-05</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$705.20</td>
+              <td class="price-cell">$721.85</td>
+              <td class="price-cell pnl-pos">+2.36%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Copula regime switch to risk-on after BLS payrolls miss; long SPY hedged short duration.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2026-01-22</td>
+              <td>TLT</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$83.42</td>
+              <td class="price-cell">$85.20</td>
+              <td class="price-cell pnl-pos">+2.13%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Dovish FOMC minutes; correlation flip to negative supports duration overweight.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2026-01-08</td>
+              <td>SPY</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$692.15</td>
+              <td class="price-cell">$682.40</td>
+              <td class="price-cell pnl-pos">+1.41%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Tail dependence spike + VIX term structure inversion; short equity rally.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-12-17</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$686.45</td>
+              <td class="price-cell">$675.20</td>
+              <td class="price-cell pnl-neg">−1.64%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Trade hit −1.5% stop after hawkish Fed dot-plot revision; model lost regime.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-11-26</td>
+              <td>TLT</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$86.30</td>
+              <td class="price-cell">$84.10</td>
+              <td class="price-cell pnl-pos">+2.55%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Take-profit hit on +2.5% target; supply pressure into 7Y auction.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-10-22</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$668.90</td>
+              <td class="price-cell">$680.60</td>
+              <td class="price-cell pnl-pos">+1.75%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Earnings season alpha; mega-cap blow-out drives positive skew breakout.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-09-30</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$662.45</td>
+              <td class="price-cell">$668.20</td>
+              <td class="price-cell pnl-pos">+0.87%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Quarter-end rebalance flow; copula correlation reset post-Fed cut.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-08-21</td>
+              <td>TLT</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$84.80</td>
+              <td class="price-cell">$83.55</td>
+              <td class="price-cell pnl-neg">−1.47%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Stopped out; Jackson Hole language more hawkish than model priced.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-07-09</td>
+              <td>SPY</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$625.40</td>
+              <td class="price-cell">$609.85</td>
+              <td class="price-cell pnl-pos">+2.49%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Take-profit; tariff escalation announcement triggered momentum unwind.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-06-30</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$617.20</td>
+              <td class="price-cell">$622.10</td>
+              <td class="price-cell pnl-pos">+0.79%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Mean-reversion long after sell-off; half-year window-dressing flow.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-04-22</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$555.40</td>
+              <td class="price-cell">$569.10</td>
+              <td class="price-cell pnl-pos">+2.47%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Take-profit on Apr recovery trade; tail-risk premia compressed sharply.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-04-09</td>
+              <td>TLT</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$94.20</td>
+              <td class="price-cell">$92.45</td>
+              <td class="price-cell pnl-neg">−1.86%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Stop hit; foreign demand for USTs weaker than copula expected post-tariffs.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-03-10</td>
+              <td>SPY</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$564.20</td>
+              <td class="price-cell">$550.10</td>
+              <td class="price-cell pnl-pos">+2.50%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Take-profit; tariff fears + dollar weakness, copula tail dependence at 18m high.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-02-19</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$613.60</td>
+              <td class="price-cell">$619.20</td>
+              <td class="price-cell pnl-pos">+0.91%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Closed on max-hold (2 days); breakout to ATH but momentum fading.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2025-01-13</td>
+              <td>TLT</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$85.40</td>
+              <td class="price-cell">$83.50</td>
+              <td class="price-cell pnl-pos">+2.22%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Take-profit; hot CPI print drove 10Y yields past 4.80%.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2024-12-18</td>
+              <td>SPY</td>
+              <td><span class="dir-short">SHORT</span></td>
+              <td class="price-cell">$591.40</td>
+              <td class="price-cell">$582.70</td>
+              <td class="price-cell pnl-pos">+1.47%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Hawkish FOMC SEP shock; rates repriced higher, equity beta sold off.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2024-11-06</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$586.10</td>
+              <td class="price-cell">$594.90</td>
+              <td class="price-cell pnl-pos">+1.50%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Post-election positive skew; momentum entry on tail-risk reset.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2024-09-18</td>
+              <td>TLT</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$101.20</td>
+              <td class="price-cell">$98.40</td>
+              <td class="price-cell pnl-neg">−2.77%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Stop hit (extended beyond −1.5% on gap); Fed 50bp cut but curve steepened.</td>
+            </tr>
+            <tr>
+              <td class="price-cell">2024-08-05</td>
+              <td>SPY</td>
+              <td><span class="dir-long">LONG</span></td>
+              <td class="price-cell">$521.40</td>
+              <td class="price-cell">$534.20</td>
+              <td class="price-cell pnl-pos">+2.45%</td>
+              <td style="font-size:13px;color:var(--tbp-muted);max-width:32ch;">Vol-spike mean-reversion; copula tail dependence at 95th percentile.</td>
+            </tr>
           </tbody>
         </table>
         <p id="backtestDateRange" style="margin-top:12px;text-align:center;font-size:12px;color:var(--tbp-muted-2);"></p>

@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subscription — The Market Brief Daily</title>
+  <meta name="description" content="Subscription tiers for The Market Brief Daily. Free, Professional, and Institutional plans — research, model portfolios, AI tools, and bespoke analyst access." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/subscription.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Subscription — The Market Brief Daily" />
+  <meta property="og:description" content="Three subscription tiers. Free for daily brief and core education. Professional for full archives and portfolios. Institutional for bespoke research and API access." />
+  <meta property="og:image" content="https://www.marketbriefdaily.com/assets/images/subscription-bg.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
+
+  <style>
+    /* Feature comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      border: 1px solid var(--tbp-line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--tbp-bg);
+    }
+    .compare-table thead { background: var(--tbp-bg-alt); }
+    .compare-table th, .compare-table td {
+      padding: 16px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--tbp-line);
+    }
+    .compare-table th {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--tbp-muted);
+      vertical-align: bottom;
+    }
+    .compare-table th.tier-head {
+      text-align: center;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 14px; font-weight: 800;
+      letter-spacing: -.01em;
+      text-transform: none;
+      color: var(--tbp-ink);
+    }
+    .compare-table th.tier-head.featured { background: rgba(200,163,90,.12); color: var(--tbp-ink); }
+    .compare-table tbody tr:hover { background: rgba(0,0,0,.02); }
+    .compare-table tbody tr:last-child td { border-bottom: 0; }
+    .compare-table .feat {
+      font-weight: 600;
+      color: var(--tbp-ink);
+      max-width: 32ch;
+    }
+    .compare-table .feat .sub {
+      display: block;
+      font-size: 12px; font-weight: 400;
+      color: var(--tbp-muted);
+      margin-top: 2px;
+    }
+    .compare-table td.tier-cell {
+      text-align: center;
+      width: 16%;
+    }
+    .compare-table td.tier-cell.featured { background: rgba(200,163,90,.05); }
+    .check {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--tbp-pos);
+      color: #fff;
+      font-size: 12px; font-weight: 700;
+    }
+    .check.warm { background: var(--tbp-warm); color: #0a0f1c; }
+    .dash {
+      display: inline-block;
+      width: 16px; height: 1.5px;
+      background: var(--tbp-line);
+      vertical-align: middle;
+    }
+    .tier-cell-text {
+      font-size: 13px; font-weight: 600;
+      color: var(--tbp-ink);
+    }
+
+    /* FAQ */
+    .faq-item {
+      padding: 24px 0;
+      border-top: 1px solid var(--tbp-line);
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--tbp-line); }
+    .faq-item summary {
+      cursor: pointer;
+      list-style: none;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      letter-spacing: -.015em;
+      color: var(--tbp-ink);
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "+";
+      font-size: 22px; font-weight: 300;
+      color: var(--tbp-muted);
+      transition: transform .3s;
+      flex-shrink: 0;
+    }
+    .faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-item p {
+      margin: 14px 0 0;
+      font-size: 15px; line-height: 1.65;
+      color: var(--tbp-muted);
+      max-width: 64ch;
+    }
+
+    /* Sub hero */
+    .sub-hero {
+      position: relative;
+      padding: clamp(140px,18vh,200px) var(--tbp-pad-x) clamp(56px,7vw,96px);
+      background:
+        radial-gradient(900px 500px at 80% 0%, rgba(102,163,255,.08), transparent 55%),
+        linear-gradient(180deg, #ffffff 0%, #faf9f6 100%);
+      border-bottom: 1px solid var(--tbp-line);
+      overflow: hidden;
+    }
+    .sub-hero-inner {
+      max-width: var(--tbp-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: clamp(32px,4vw,72px);
+      align-items: end;
+    }
+    @media (max-width: 880px) { .sub-hero-inner { grid-template-columns: 1fr; } }
+    .sub-hero h1 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 850;
+      letter-spacing: -.04em;
+      line-height: .96;
+      margin: 0 0 24px;
+      max-width: 16ch;
+    }
+    .sub-hero h1 em {
+      font-family: 'Fraunces', serif;
+      font-style: italic; font-weight: 400;
+    }
+
+    /* Annual toggle */
+    .billing-toggle {
+      display: inline-flex; align-items: center; gap: 0;
+      padding: 4px;
+      background: var(--tbp-bg-alt);
+      border: 1px solid var(--tbp-line);
+      border-radius: 999px;
+      margin: 28px auto 0;
+    }
+    .billing-toggle button {
+      padding: 10px 24px;
+      border: 0;
+      background: transparent;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .02em;
+      color: var(--tbp-muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .25s, color .25s;
+    }
+    .billing-toggle button.is-active {
+      background: var(--tbp-ink);
+      color: var(--tbp-bg);
+    }
+    .billing-toggle .save-pill {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px;
+      background: var(--tbp-warm);
+      color: #0a0f1c;
+      border-radius: 999px;
+      margin-left: 6px;
+      letter-spacing: .08em;
+    }
+  </style>
+</head>
+
+<body class="tbp">
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/education.html">Education</a>
+        <a href="/tools/">Tools</a>
+        <a href="/bot.html">AI Trader</a>
+        <a class="is-active" href="/subscription.html">Subscribe</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="#tiers">View tiers <span class="arrow">↓</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/education.html">Education</a>
+    <a href="/tools/">Tools</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/subscription.html">Subscribe</a>
+    <a href="/about.html">About</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="sub-hero">
+    <div class="sub-hero-inner">
+      <div>
+        <div class="tbp-eyebrow" style="margin-bottom:28px;">Subscription</div>
+        <h1>Three tiers.<br><em>One discipline.</em></h1>
+      </div>
+      <div>
+        <p class="tbp-lead" style="margin:0; max-width:48ch;">
+          The daily brief and core education are free, forever. Professional unlocks the full
+          research archive, model portfolio access, and the AI day-trader. Institutional adds
+          direct analyst access, bespoke research, and team seats.
+        </p>
+        <div style="display:flex; gap:24px; flex-wrap:wrap; margin-top:28px; font-size:13.5px; color:var(--tbp-muted-2);">
+          <span>✓ Cancel anytime</span>
+          <span>✓ 7-day free trial on Pro</span>
+          <span>✓ £ · $ · €</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIER CARDS -->
+  <section class="tbp-section" id="tiers">
+    <div class="tbp-container">
+      <div style="text-align:center; margin-bottom:48px;" data-tbp-reveal>
+        <div class="billing-toggle" role="tablist">
+          <button class="is-active" data-billing="monthly" type="button">Monthly</button>
+          <button data-billing="annual" type="button">Annual <span class="save-pill">Save 20%</span></button>
+        </div>
+      </div>
+
+      <div class="tbp-pricing-grid" data-tbp-reveal>
+
+        <!-- FREE -->
+        <div class="tbp-pricing-card">
+          <div class="pc-name">Free</div>
+          <div class="pc-price-row">
+            <div class="pc-price"><span class="currency">£</span>0</div>
+            <div class="pc-period">/forever</div>
+          </div>
+          <p class="pc-summary">For independent investors and finance students starting out. No card needed.</p>
+          <ul class="pc-features">
+            <li>Daily macro brief (Substack)</li>
+            <li>All 7 education chapters</li>
+            <li>Public glossary &amp; methodology</li>
+            <li>Live macro signal preview (3-day delay)</li>
+            <li>One free tool per session (DCF, CFA prep, bonds)</li>
+            <li class="muted">Full research archive (80+ briefs)</li>
+            <li class="muted">Model portfolio live tracking</li>
+            <li class="muted">AI day-trader signal alerts</li>
+            <li class="muted">Bespoke research requests</li>
+          </ul>
+          <a class="pc-btn outline" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Start free →</a>
+        </div>
+
+        <!-- PROFESSIONAL — featured -->
+        <div class="tbp-pricing-card featured">
+          <div class="pc-badge">Most popular</div>
+          <div class="pc-name">Professional</div>
+          <div class="pc-price-row">
+            <div class="pc-price" data-monthly="£24" data-annual="£19"><span class="currency">£</span>24</div>
+            <div class="pc-period" data-monthly="/month" data-annual="/month, billed annually">/month</div>
+          </div>
+          <p class="pc-summary">For practitioners running real money. Full archive, model portfolios, every tool, unlimited.</p>
+          <ul class="pc-features">
+            <li>Everything in Free</li>
+            <li>Full 80+ research archive — PDF export</li>
+            <li>Live model portfolio attribution</li>
+            <li>AI day-trader trade-by-trade alerts</li>
+            <li>Macro Signal Dashboard — real-time</li>
+            <li>CFA / IMC study tool — unlimited</li>
+            <li>DCF + Bond Yield tools — unlimited, batch-mode</li>
+            <li>Weekly long-form &amp; quarterly outlook</li>
+            <li>Ad-free, mobile + desktop apps</li>
+          </ul>
+          <a class="pc-btn" href="https://buy.stripe.com/professional-tier-placeholder">Start 7-day trial →</a>
+        </div>
+
+        <!-- INSTITUTIONAL -->
+        <div class="tbp-pricing-card">
+          <div class="pc-name">Institutional</div>
+          <div class="pc-price-row">
+            <div class="pc-price" data-monthly="£499" data-annual="£399"><span class="currency">£</span>499</div>
+            <div class="pc-period" data-monthly="/month" data-annual="/month, billed annually">/month</div>
+          </div>
+          <p class="pc-summary">For IFAs, family offices, and asset managers. Direct analyst access, bespoke research, team seats.</p>
+          <ul class="pc-features">
+            <li>Everything in Professional</li>
+            <li>10 team seats (additional £29/seat)</li>
+            <li>Bespoke research request (1 per month)</li>
+            <li>Direct analyst access via email + call</li>
+            <li>Macro signal API (REST + webhook)</li>
+            <li>Custom portfolio benchmarking</li>
+            <li>Onboarding session for the team</li>
+            <li>Compliance documentation pack</li>
+            <li>White-label PDF reports</li>
+          </ul>
+          <a class="pc-btn outline" href="/contact.html?topic=institutional">Talk to us →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">02 / Compare</div>
+          <h2>Feature<br><em>matrix.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">A clean view of what each tier unlocks. We don&apos;t lock methodology pages or the daily brief — that&apos;s the deal. The paid tiers unlock depth, history, and tooling.</p>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;" data-tbp-reveal>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width:36%;">Feature</th>
+              <th class="tier-head">Free</th>
+              <th class="tier-head featured">Professional</th>
+              <th class="tier-head">Institutional</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feat">Daily macro brief<span class="sub">Published 06:30 London</span></td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+              <td class="tier-cell featured"><span class="check">✓</span></td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Education library<span class="sub">7 chapters · UK tax · IMC syllabus</span></td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+              <td class="tier-cell featured"><span class="check">✓</span></td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Research archive<span class="sub">80+ briefs since 2024</span></td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">3-day delay</span></td>
+              <td class="tier-cell featured"><span class="check">✓ Full + PDF</span></td>
+              <td class="tier-cell"><span class="check">✓ Full + PDF</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Model portfolio attribution<span class="sub">MBD-MACRO, STRUCT, SUPPLY, FACT</span></td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">Summary only</span></td>
+              <td class="tier-cell featured"><span class="check">✓ Full</span></td>
+              <td class="tier-cell"><span class="check">✓ + Custom</span></td>
+            </tr>
+            <tr>
+              <td class="feat">AI day-trader<span class="sub">Live paper-account log</span></td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">View log</span></td>
+              <td class="tier-cell featured"><span class="check">✓ Live alerts</span></td>
+              <td class="tier-cell"><span class="check">✓ API access</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Macro Signal Dashboard<span class="sub">Yield curves, credit, FX, PMI</span></td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">3-day delay</span></td>
+              <td class="tier-cell featured"><span class="check">✓ Real-time</span></td>
+              <td class="tier-cell"><span class="check">✓ + API</span></td>
+            </tr>
+            <tr>
+              <td class="feat">CFA / IMC study tool<span class="sub">All topic areas · adaptive</span></td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">25 q/day</span></td>
+              <td class="tier-cell featured"><span class="check">Unlimited</span></td>
+              <td class="tier-cell"><span class="check">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td class="feat">DCF / bond yield tools</td>
+              <td class="tier-cell"><span class="tier-cell-text" style="color:var(--tbp-muted);">1 save</span></td>
+              <td class="tier-cell featured"><span class="check">Unlimited + batch</span></td>
+              <td class="tier-cell"><span class="check">Unlimited + batch</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Bespoke research request<span class="sub">12-page institutional report</span></td>
+              <td class="tier-cell"><span class="dash"></span></td>
+              <td class="tier-cell featured"><span class="dash"></span></td>
+              <td class="tier-cell"><span class="check warm">✓ 1 / month</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Direct analyst access<span class="sub">Email + scheduled call</span></td>
+              <td class="tier-cell"><span class="dash"></span></td>
+              <td class="tier-cell featured"><span class="dash"></span></td>
+              <td class="tier-cell"><span class="check warm">✓</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Team seats<span class="sub">For IFA / asset manager teams</span></td>
+              <td class="tier-cell"><span class="dash"></span></td>
+              <td class="tier-cell featured"><span class="tier-cell-text">+£12/seat</span></td>
+              <td class="tier-cell"><span class="check warm">10 included</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Compliance pack<span class="sub">Audit trail · disclaimer pack</span></td>
+              <td class="tier-cell"><span class="dash"></span></td>
+              <td class="tier-cell featured"><span class="dash"></span></td>
+              <td class="tier-cell"><span class="check warm">✓</span></td>
+            </tr>
+            <tr>
+              <td class="feat">Cancel anytime</td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+              <td class="tier-cell featured"><span class="check">✓</span></td>
+              <td class="tier-cell"><span class="check">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">03 / FAQ</div>
+          <h2>Common<br><em>questions.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Anything we haven&apos;t answered? <a href="/contact.html" style="border-bottom:1px solid var(--tbp-ink);">Email us</a> — we reply within one business day.</p>
+        </div>
+      </div>
+
+      <div style="max-width:840px; margin:0 auto;" data-tbp-reveal>
+        <details class="faq-item" open>
+          <summary>Is this regulated investment advice?</summary>
+          <p>No. The Market Brief Daily publishes educational research for independent investors, finance students, and IFA practices. We are not authorised by the FCA to provide regulated investment advice. Everything published — including model portfolio positions — is illustrative for research and learning purposes. Treat it like a research note from a buy-side analyst, not a recommendation from an adviser.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do the model portfolios work — are they real money?</summary>
+          <p>No. The four model portfolios (MBD-MACRO, STRUCT, SUPPLY, FACT) are illustrative simulations tracked publicly with full transparency. Returns are computed using observable market prices, but no client capital is allocated. The point is to demonstrate the methodology — read the <a href="/methodology.html" style="border-bottom:1px solid var(--tbp-ink);">methodology page</a> for the full construction rules.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I cancel anytime?</summary>
+          <p>Yes. All paid tiers (Professional and Institutional) are billed monthly or annually and you can cancel anytime from the dashboard. No phone calls, no retention pressure. Annual plans are non-refundable beyond 14 days but you keep access until the term ends.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What payment methods are accepted?</summary>
+          <p>Stripe handles all payments — Visa, Mastercard, Amex, Apple Pay, Google Pay, and bank debit via SEPA / BACS. Institutional clients can pay by invoice on net-30 terms. Pricing displayed in £ but USD / EUR are auto-charged at the prevailing rate.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How is the AI day-trader different from a signal service?</summary>
+          <p>It&apos;s an open-book research experiment, not a signal subscription. The model trades a paper account using a documented strategy (RS-GAS-t copula on macro factors). Every trade is published with full reasoning. The point is transparency, not actionable signals — please don&apos;t copy these trades into a live account without doing your own due diligence and risk-sizing work.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you offer student / academic discounts?</summary>
+          <p>Yes — students with a valid .ac.uk / .edu email get Professional at £9/month. Email us from your institution address and we&apos;ll send the discount code. Active CFA candidates with a verified ID also qualify.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What&apos;s in the Institutional tier specifically?</summary>
+          <p>Bespoke research (one 12-page institutional report per month — you choose the topic), direct analyst access via email and a monthly 30-min call, REST API access to the macro signal dashboard with webhook delivery, 10 team seats with SSO, a compliance pack (audit trail, disclaimers, MiFID-II-style documentation), and white-label PDF report rights for client distribution.</p>
+        </details>
+        <details class="faq-item">
+          <summary>I&apos;m on Substack — what changes if I upgrade?</summary>
+          <p>The free Substack continues to deliver the daily brief. Professional adds access to the website&apos;s full research archive, model portfolio attribution, the AI day-trader alerts, and unlimited tool access. You&apos;ll log in via marketbriefdaily.com using the email you subscribed with.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="tbp-section dark" style="padding-block:clamp(72px,8vw,120px);">
+    <div class="tbp-container">
+      <div style="text-align:center; max-width:680px; margin:0 auto;" data-tbp-reveal>
+        <div class="tbp-eyebrow" style="justify-content:center; margin-bottom:24px;">Ready when you are</div>
+        <h2 class="tbp-h2" style="color:#fff; margin:0 0 18px;">Start with the daily brief.<br>Upgrade when you&apos;re ready.</h2>
+        <p style="font-size:1.05rem; line-height:1.6; color:rgba(255,255,255,.78); margin:0 0 32px;">
+          No long-term commitment, no upsell calls. Pick a tier, get to work.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Start free <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="#tiers">Compare tiers <span class="arrow">↑</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/methodology.html">Methodology</a>
+            <a href="/education.html">Education</a>
+            <a href="/bot.html">AI Trader</a>
+            <a href="/glossary.html">Glossary</a>
+          </div>
+        </div>
+        <div>
+          <h4>Tools &amp; Reports</h4>
+          <div class="tbp-footer-links">
+            <a href="/tools/dcf.html">DCF Calculator</a>
+            <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+            <a href="/tools/cfa.html">CFA Study Tool</a>
+            <a href="/tools/bond-yield.html">Bond Yield</a>
+            <a href="/reports.html">Research Reports</a>
+            <a href="/subscription.html">Subscription</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="/disclaimer.html#privacy">Privacy</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Billing toggle
+    (function () {
+      var buttons = document.querySelectorAll('.billing-toggle button');
+      var prices  = document.querySelectorAll('.pc-price[data-monthly]');
+      var periods = document.querySelectorAll('.pc-period[data-monthly]');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var mode = btn.getAttribute('data-billing');
+          buttons.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+          prices.forEach(function (p) {
+            var val = p.getAttribute('data-' + mode);
+            p.innerHTML = '<span class="currency">' + val.charAt(0) + '</span>' + val.slice(1);
+          });
+          periods.forEach(function (p) {
+            p.textContent = p.getAttribute('data-' + mode);
+          });
+        });
+      });
+    })();
+  </script>
+  <script src="/assets/tbp.js" defer></script>
+</body>
+</html>

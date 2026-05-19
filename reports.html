@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/tbp-theme.css">
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
     <style>
         /* Reports page specific styles */
         .reports-grid {
@@ -186,16 +187,15 @@
                 <span class="mark">MB</span>
                 <span>The Market Brief Daily</span>
             </a>
-            <nav class="tbp-nav" aria-label="Primary navigation">
-                <a href="/">Home</a>
-                <a href="/posts.html">Research</a>
-                <a href="/investments.html">Funds</a>
-                <a href="/methodology.html">Methodology</a>
-                <a href="/education.html">Education</a>
-                <a href="/bot.html">AI Trader</a>
-                <a href="/tools/dcf.html">Tools</a>
-                <a href="/about.html">About</a>
-            </nav>
+                  <nav class="tbp-nav" aria-label="Primary">
+        <a class="is-active" href="/">Home</a>
+        <a href="/posts.html">Research</a>
+        <a href="/education.html">Education</a>
+        <a href="/tools/">Tools</a>
+        <a href="/bot.html">AI Trader</a>
+        <a href="/subscription.html">Subscribe</a>
+        <a href="/about.html">About</a>
+      </nav>
             <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
             <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false">
                 <span></span>
@@ -204,19 +204,39 @@
     </header>
 
     <!-- MOBILE MENU -->
-    <div class="tbp-mobile-menu" id="mobileMenu">
-        <a href="/">Home</a>
-        <a href="/posts.html">Research</a>
-        <a href="/investments.html">Funds</a>
-        <a href="/methodology.html">Methodology</a>
-        <a href="/education.html">Education</a>
-        <a href="/bot.html">AI Trader</a>
-        <a href="/tools/dcf.html">Tools</a>
-        <a href="/about.html">About</a>
-    </div>
+      <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/posts.html">Research</a>
+    <a href="/education.html">Education</a>
+    <a href="/tools/">Tools</a>
+    <a href="/bot.html">AI Trader</a>
+    <a href="/subscription.html">Subscribe</a>
+    <a href="/about.html">About</a>
+  </div>
+
+    <!-- PAYWALL CTA STRIP -->
+    <section class="tbp-section tight" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 0;">
+      <div class="tbp-container">
+        <div class="tbp-paywall" data-tbp-reveal>
+          <div class="lock" aria-hidden="true">⏿</div>
+          <div class="label-top">Premium · Institutional reports</div>
+          <h3>One-off PDFs or unlimited via Professional / Institutional.</h3>
+          <p>Individual reports are priced from £99. Professional and Institutional subscribers receive all current reports plus the monthly bespoke research at no extra cost.</p>
+          <div class="pw-bullets">
+            <div><strong>One-off</strong>£99–£249 PDF · instant access · 12–20 pages</div>
+            <div><strong>Professional</strong>All current reports included · £24/mo</div>
+            <div><strong>Institutional</strong>1 bespoke report per month · £499/mo</div>
+          </div>
+          <div class="pw-actions">
+            <a class="tbp-btn primary" href="/subscription.html">View subscription tiers <span class="arrow">→</span></a>
+            <a class="tbp-btn" href="#available-reports">Browse reports <span class="arrow">↓</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- HERO -->
-    <section class="tbp-hero" style="padding-top: calc(var(--tbp-headerH) + 40px); padding-bottom: 40px;">
+    <section class="tbp-hero" id="available-reports" style="padding-top: 40px; padding-bottom: 40px;">
         <div class="tbp-container">
             <span class="tbp-eyebrow" data-tbp-reveal>Bespoke research</span>
             <div style="margin-top: 16px;" data-tbp-reveal>

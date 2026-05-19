@@ -1,282 +1,469 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Learn — The Market Brief Daily</title>
-  <meta name="description" content="Plain-English working notes on financial markets, asset classes, UK personal finance, pensions, and the CFA syllabus. Educational only — not investment advice." />
-  <meta name="theme-color" content="#0a0f1c" />
+  <title>Education — The Market Brief Daily</title>
+  <meta name="description" content="Free finance education library: financial markets, asset classes, UK investing &amp; tax, personal finance, pensions, and the CFA / IMC syllabus. Plain-English working notes." />
+  <meta name="theme-color" content="#faf9f6" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/style.css" />
-  <link rel="stylesheet" href="/assets/cinema-hero.css" />
-  <link rel="preload" as="image" href="/assets/hero-frames/frame-001.jpg" />
-  <link rel="preload" as="image" href="/assets/hero-frames/frame-060.jpg" />
+  <link rel="canonical" href="https://www.marketbriefdaily.com/education.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Education — The Market Brief Daily" />
+  <meta property="og:description" content="Free finance education library covering financial markets, asset classes, UK tax, pensions, and CFA / IMC syllabus." />
+  <meta property="og:image" content="https://www.marketbriefdaily.com/assets/images/library-research.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
 
   <style>
-    .hero .hero-bg, .hero .hero-overlay, .hero .hero-fade { display: none !important; }
-
-    .topic-grid {
+    .chap-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 22px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(16px, 2vw, 28px);
     }
-    @media (max-width: 1100px) { .topic-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px)  { .topic-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 980px) { .chap-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .chap-grid { grid-template-columns: 1fr; } }
 
-    .topic-card {
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all .3s ease;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .chap-card {
+      display: flex; flex-direction: column;
+      padding: clamp(24px, 3vw, 36px);
+      background: var(--tbp-bg);
+      border: 1px solid var(--tbp-line);
+      border-radius: var(--tbp-radius);
       text-decoration: none;
       color: inherit;
+      transition: border-color .25s, box-shadow .3s, transform .3s var(--tbp-ease);
+      position: relative;
+      overflow: hidden;
     }
-    .topic-card:hover {
-      border-color: rgba(122,166,255,.45);
+    .chap-card::before {
+      content: "";
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--tbp-warm);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s var(--tbp-ease);
+    }
+    .chap-card:hover {
+      border-color: rgba(0,0,0,.18);
+      box-shadow: 0 16px 40px -12px rgba(0,0,0,.12);
       transform: translateY(-4px);
-      background: rgba(255,255,255,.06);
-      text-decoration: none;
     }
-    .topic-num {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px;
-      background: rgba(122,166,255,.14);
-      border: 1px solid rgba(122,166,255,.3);
-      color: #c2d4ff;
-      border-radius: 10px;
-      font-weight: 900; font-size: 14px;
-      font-family: ui-monospace, Menlo, monospace;
+    .chap-card:hover::before { transform: scaleX(1); }
+    .chap-num {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--tbp-warm);
+      margin-bottom: 18px;
     }
-    .topic-card h3 {
-      font-size: 1.15rem; font-weight: 850;
-      color: #fff; margin: 0;
-      letter-spacing: -.01em; line-height: 1.25;
+    .chap-card h3 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1.3rem; font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      color: var(--tbp-ink);
+      margin: 0 0 12px;
     }
-    .topic-card p {
-      color: rgba(255,255,255,.72);
-      font-size: 14px; line-height: 1.65;
-      margin: 0;
+    .chap-card p {
+      font-size: 14.5px; line-height: 1.65;
+      color: var(--tbp-muted);
+      margin: 0 0 22px;
+      flex: 1;
     }
-    .topic-tags {
+    .chap-tags {
       display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 18px;
+    }
+    .chap-tags span {
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px;
+      border: 1px solid var(--tbp-line);
+      border-radius: 999px;
+      color: var(--tbp-muted);
+      background: var(--tbp-bg-alt);
+    }
+    .chap-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--tbp-ink);
+      transition: gap .2s;
       margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--tbp-line);
     }
-    .topic-tag {
-      font-size: 11px; font-weight: 700;
-      padding: 5px 10px; border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.65);
-    }
-    .topic-card .open-arrow {
-      display: inline-flex; align-items: center; gap: 6px;
-      color: #7aa6ff;
-      font-weight: 700; font-size: 14px;
-    }
+    .chap-card:hover .chap-cta { gap: 12px; }
 
-    .quick-links {
+    /* IMC / CFA highlight card */
+    .imc-card {
+      grid-column: span 3;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 24px;
-    }
-    @media (max-width: 800px) { .quick-links { grid-template-columns: 1fr; } }
-    .quick-link {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 18px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 12px;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 0;
+      background: #0a0f1c;
       color: #fff;
+      border: 1px solid #0a0f1c;
+      border-radius: 16px;
+      overflow: hidden;
       text-decoration: none;
-      transition: all .2s ease;
+      transition: box-shadow .3s, transform .3s;
     }
-    .quick-link:hover {
-      background: rgba(255,255,255,.08);
-      border-color: rgba(122,166,255,.4);
+    @media (max-width: 980px) {
+      .imc-card { grid-column: span 2; grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) { .imc-card { grid-column: span 1; } }
+    .imc-card:hover { transform: translateY(-3px); box-shadow: 0 24px 60px -16px rgba(0,0,0,.25); }
+    .imc-card .visual {
+      position: relative;
+      min-height: 280px;
+      overflow: hidden;
+    }
+    .imc-card .visual img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: .55;
+    }
+    .imc-card .visual::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(10,15,28,.5), rgba(10,15,28,.2) 50%, rgba(10,15,28,.7));
+    }
+    .imc-card .visual-label {
+      position: absolute;
+      bottom: 24px; left: 28px;
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 850;
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: #fff;
+      z-index: 1;
+    }
+    .imc-card .visual-badge {
+      position: absolute;
+      top: 24px; left: 28px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--tbp-warm);
+      color: #0a0f1c;
+      font-size: 10.5px; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      z-index: 1;
+    }
+    .imc-card .body {
+      padding: clamp(28px, 4vw, 52px);
+      display: flex; flex-direction: column;
+      justify-content: center;
+    }
+    .imc-card h3 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.15;
+      color: #fff;
+      margin: 0 0 14px;
+    }
+    .imc-card h3 em {
+      font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    }
+    .imc-card p {
+      font-size: 15px; line-height: 1.65;
+      color: rgba(255,255,255,.75);
+      margin: 0 0 24px;
+      max-width: 56ch;
+    }
+    .imc-features {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-bottom: 22px;
+    }
+    .imc-features span {
+      font-size: 11.5px; font-weight: 600;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      color: rgba(255,255,255,.85);
+    }
+    .imc-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      background: var(--tbp-warm);
+      color: #0a0f1c;
+      border-radius: 999px;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .04em;
       text-decoration: none;
+      align-self: flex-start;
+      transition: background .25s;
     }
-    .quick-link .ql-label { font-weight: 800; font-size: 14.5px; }
-    .quick-link .ql-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 2px; }
-    .quick-link .ql-arrow { color: #7aa6ff; font-weight: 800; }
+    .imc-cta:hover { background: #fff; }
+
+    /* Reading-list quick-link */
+    .ql {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px;
+      padding: 22px 26px;
+      background: var(--tbp-bg);
+      border: 1px solid var(--tbp-line);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .25s, background .25s;
+    }
+    .ql:hover {
+      border-color: var(--tbp-ink);
+      background: var(--tbp-bg-alt);
+    }
+    .ql .ql-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 16px; font-weight: 750;
+      color: var(--tbp-ink);
+    }
+    .ql .ql-sub {
+      font-size: 13.5px; color: var(--tbp-muted);
+      margin-top: 4px;
+    }
+    .ql .ql-arrow {
+      font-size: 20px;
+      color: var(--tbp-warm);
+      transition: transform .25s;
+      flex-shrink: 0;
+    }
+    .ql:hover .ql-arrow { transform: translateX(4px); }
   </style>
 </head>
 
 <body class="tbp">
-  <a class="skip-link" href="#content">Skip to content</a>
-
   <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
       <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
         <span class="mark">M</span>
         <span>The Market Brief Daily</span>
       </a>
-            <nav class="tbp-nav" aria-label="Primary">
+      <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/posts.html">Research</a>
         <a class="is-active" href="/education.html">Education</a>
         <a href="/tools/">Tools</a>
         <a href="/bot.html">AI Trader</a>
+        <a href="/subscription.html">Subscribe</a>
         <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
-        Subscribe <span class="arrow">↗</span>
+      <a class="tbp-cta-mini" href="/subscription.html">
+        Get access <span class="arrow">↗</span>
       </a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
-    <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/posts.html">Research</a>
     <a href="/education.html">Education</a>
     <a href="/tools/">Tools</a>
     <a href="/bot.html">AI Trader</a>
+    <a href="/subscription.html">Subscribe</a>
     <a href="/about.html">About</a>
-    <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe ↗</a>
   </div>
 
-
-
-  <section class="hero cinema-hero" aria-label="Hero" style="min-height: 60vh;">
-    <div class="cinema-stage">
-      <canvas class="cinema-canvas" id="cinemaCanvas" aria-hidden="true"></canvas>
-      <div class="cinema-grade" aria-hidden="true"></div>
-      <div class="cinema-letterbox top" aria-hidden="true"></div>
-      <div class="cinema-letterbox bottom" aria-hidden="true"></div>
-      <div class="cinema-progress" aria-hidden="true"></div>
-    </div>
-
-    <div class="container hero-inner" style="min-height: 60vh;">
-      <div class="hero-panel">
-        <div class="hero-eyebrow">Working notes for serious learners</div>
-        <h1>Build the foundations.<br>Skip the noise.</h1>
-        <p>
-          Plain-English chapters on financial markets, asset classes, UK personal finance, pensions,
-          and the CFA syllabus — written to actually be referred back to when it matters.
+  <!-- ════════════════════════════════════════════════════════════
+       CINEMATIC HERO
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-hero-cinematic" aria-label="Education hero">
+    <div class="tbp-hero-cinematic-bg" style="background-image: url('/assets/images/library-research.jpg');"></div>
+    <div class="tbp-hero-cinematic-inner">
+      <div>
+        <div class="tbp-eyebrow">Free education library</div>
+        <h1>Build the<br><em>foundations.</em><br>Skip the noise.</h1>
+        <p class="lead">
+          Plain-English chapters on financial markets, asset classes, UK personal finance,
+          pensions, and the full IMC / CFA syllabus — written to be referred back to when it matters.
         </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="tbp-btn primary" href="#chapters">Browse chapters <span class="arrow">↓</span></a>
+          <a class="tbp-btn" href="#imc">IMC track <span class="arrow">→</span></a>
+        </div>
       </div>
+      <aside class="tbp-hero-meta-card" aria-label="Library overview">
+        <div class="row">
+          <span class="k">Scope</span>
+          <span class="v">7 chapters · ~400 pages of reading</span>
+        </div>
+        <div class="row">
+          <span class="k">Level</span>
+          <span class="v">Foundations through <em>CFA L1</em> / IMC</span>
+        </div>
+        <div class="row">
+          <span class="k">Format</span>
+          <span class="v">Web · printable PDF (Pro)</span>
+        </div>
+        <div class="row">
+          <span class="k">Access</span>
+          <span class="v"><em>Free, no sign-up</em></span>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <section class="cinema-section" id="content" aria-label="Topics">
-    <div class="container">
-      <div class="section-head">
-        <div class="kicker">Topics</div>
-        <h2>The seven core chapters</h2>
-        <p class="lead">Each chapter is self-contained. Start anywhere. Together they cover everything from how a stock exchange clears a trade to how to actually structure a UK ISA-and-SIPP stack for after-tax compounding.</p>
+  <!-- CHAPTERS -->
+  <section class="tbp-section" id="chapters">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">01 / Library</div>
+          <h2>The seven<br><em>core chapters.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            Each chapter is self-contained — start anywhere. Together they cover everything from how
+            an exchange clears a trade through to how to structure a UK ISA-and-SIPP stack for
+            after-tax compounding.
+          </p>
+        </div>
       </div>
 
-      <div class="topic-grid">
+      <div class="chap-grid" data-tbp-reveal>
 
-        <a href="/education-financial-markets.html" class="topic-card" id="markets">
-          <div class="topic-num">01</div>
+        <a href="/education-financial-markets.html" class="chap-card">
+          <div class="chap-num">01 — Markets</div>
           <h3>Financial markets</h3>
           <p>How exchanges, brokers, market makers, and clearing actually fit together. Order types, liquidity, and where the price you see comes from.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Microstructure</span>
-            <span class="topic-tag">Foundations</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <div class="chap-tags"><span>Microstructure</span><span>Foundations</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-asset-classes-types.html" class="topic-card" id="assets">
-          <div class="topic-num">02</div>
+        <a href="/education-asset-classes-types.html" class="chap-card">
+          <div class="chap-num">02 — Instruments</div>
           <h3>Asset classes &amp; types</h3>
           <p>Equities, fixed income, commodities, real estate, cash, and alternatives. What drives each, what risks they carry, and how they behave in regimes.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Multi-asset</span>
-            <span class="topic-tag">Risk</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <div class="chap-tags"><span>Multi-asset</span><span>Risk</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-investing.html" class="topic-card">
-          <div class="topic-num">03</div>
+        <a href="/education-investing.html" class="chap-card">
+          <div class="chap-num">03 — Principles</div>
           <h3>Investing principles</h3>
           <p>Time horizons, diversification, the cost of being wrong, and the difference between investing and speculation. Mental models, not stock tips.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Frameworks</span>
-            <span class="topic-tag">Strategy</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <div class="chap-tags"><span>Frameworks</span><span>Strategy</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-personal-finance.html" class="topic-card">
-          <div class="topic-num">04</div>
+        <a href="/education-personal-finance.html" class="chap-card">
+          <div class="chap-num">04 — Personal</div>
           <h3>Personal finance</h3>
-          <p>Saving rates, debt prioritisation, emergency funds, mortgages, and how to build a financial life that doesn't fall apart at the first shock.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Cash flow</span>
-            <span class="topic-tag">Risk</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <p>Saving rates, debt prioritisation, emergency funds, mortgages, and how to build a financial life that doesn&apos;t fall apart at the first shock.</p>
+          <div class="chap-tags"><span>Cash flow</span><span>Risk</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-uk-investing-tax.html" class="topic-card" id="uk">
-          <div class="topic-num">05</div>
+        <a href="/education-uk-investing-tax.html" class="chap-card">
+          <div class="chap-num">05 — UK tax</div>
           <h3>UK investing &amp; tax</h3>
           <p>ISA, SIPP, GIA, capital gains allowances, dividend tax bands, and how to actually structure a portfolio for after-tax compounding in the UK.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">UK</span>
-            <span class="topic-tag">Tax-efficient</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <div class="chap-tags"><span>UK</span><span>Tax-efficient</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-pensions.html" class="topic-card">
-          <div class="topic-num">06</div>
+        <a href="/education-pensions.html" class="chap-card">
+          <div class="chap-num">06 — Pensions</div>
           <h3>Pensions</h3>
-          <p>Workplace pensions, SIPPs, lifetime allowance, contribution caps, and how to think about pension contributions vs ISA contributions through your career.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Long-horizon</span>
-            <span class="topic-tag">UK</span>
-          </div>
-          <span class="open-arrow">Open chapter →</span>
+          <p>Workplace pensions, SIPPs, annual allowance, contribution caps, and how to think about pension contributions vs ISA contributions through your career.</p>
+          <div class="chap-tags"><span>Long-horizon</span><span>UK</span></div>
+          <span class="chap-cta">Open chapter →</span>
         </a>
 
-        <a href="/education-library.html" class="topic-card">
-          <div class="topic-num">07</div>
+        <a href="/education-library.html" class="chap-card">
+          <div class="chap-num">07 — Reading</div>
           <h3>Reading library</h3>
           <p>The books, papers, and primary sources that genuinely changed how I think about markets — with notes on what to read first and why.</p>
-          <div class="topic-tags">
-            <span class="topic-tag">Resources</span>
-            <span class="topic-tag">Curated</span>
-          </div>
-          <span class="open-arrow">Open library →</span>
+          <div class="chap-tags"><span>Resources</span><span>Curated</span></div>
+          <span class="chap-cta">Open library →</span>
         </a>
 
       </div>
     </div>
   </section>
 
-  <section class="cinema-section bleed" aria-label="Quick links">
-    <div class="container">
-      <div class="section-head">
-        <div class="kicker">Tools</div>
-        <h2>Reference material</h2>
-        <p class="lead">Quick access to glossary entries, methodology notes, and the latest research feed.</p>
+  <!-- IMC TRACK -->
+  <section class="tbp-section tight" id="imc">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">02 / Certification</div>
+          <h2>IMC &amp; CFA<br><em>track.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">
+            The CFA UK Investment Management Certificate (IMC) is the entry-level UK qualification
+            for the asset management industry. Our purpose-built track covers both Unit 1
+            (Investment Environment) and Unit 2 (Investment Practice) — including the AI-graded
+            practice question bank.
+          </p>
+        </div>
       </div>
 
-      <div class="quick-links">
-        <a class="quick-link" href="/glossary.html">
+      <div data-tbp-reveal>
+        <a class="imc-card" href="/tools/cfa.html">
+          <div class="visual">
+            <img src="/assets/images/pillar-3.jpg" alt="IMC study materials">
+            <span class="visual-badge">Pro · IMC Pass Track</span>
+            <span class="visual-label">IMC</span>
+          </div>
+          <div class="body">
+            <div style="font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--tbp-warm); margin-bottom:14px;">Investment Management Certificate</div>
+            <h3>Pass the IMC<br><em>without buying</em> a textbook.</h3>
+            <p>
+              Full Unit 1 + Unit 2 syllabus coverage with worked examples, formula sheets,
+              mock papers, and an adaptive question bank. The same material we'd give a
+              graduate analyst on day one — written to be passed first time.
+            </p>
+            <div class="imc-features">
+              <span>Unit 1 · Investment Environment</span>
+              <span>Unit 2 · Investment Practice</span>
+              <span>Adaptive Q-bank</span>
+              <span>2 mock papers</span>
+              <span>Formula sheet</span>
+            </div>
+            <span class="imc-cta">Start studying →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERENCE / QUICK LINKS -->
+  <section class="tbp-section tight">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">03 / Reference</div>
+          <h2>Quick<br><em>links.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Glossary, methodology, and the live research feed — reference material you&apos;ll come back to.</p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;" data-tbp-reveal>
+        <a class="ql" href="/glossary.html">
           <div>
             <div class="ql-label">Glossary</div>
             <div class="ql-sub">Plain-English definitions of every term used on this site</div>
           </div>
           <div class="ql-arrow">→</div>
         </a>
-        <a class="quick-link" href="/methodology.html">
+        <a class="ql" href="/methodology.html">
           <div>
             <div class="ql-label">Methodology</div>
             <div class="ql-sub">How the model portfolios are built and benchmarked</div>
           </div>
           <div class="ql-arrow">→</div>
         </a>
-        <a class="quick-link" href="/posts.html">
+        <a class="ql" href="/posts.html">
           <div>
             <div class="ql-label">Latest research</div>
             <div class="ql-sub">All published briefings — most recent first</div>
@@ -287,23 +474,76 @@
     </div>
   </section>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
-        <div class="footer-brand">The Market Brief Daily</div>
-        <div class="footer-sub">Independent macro &amp; market structure research. Educational only — not investment advice.</div>
+  <!-- CTA -->
+  <section class="tbp-section dark" style="padding-block:clamp(72px,8vw,120px);">
+    <div class="tbp-container">
+      <div style="text-align:center; max-width:680px; margin:0 auto;" data-tbp-reveal>
+        <div class="tbp-eyebrow" style="justify-content:center; margin-bottom:24px;">Free forever</div>
+        <h2 class="tbp-h2" style="color:#fff; margin:0 0 18px;">The education stack<br>is on the house.</h2>
+        <p style="font-size:1.05rem; line-height:1.6; color:rgba(255,255,255,.78); margin:0 0 32px;">
+          Sign up to the free newsletter and we&apos;ll send you the new chapters as we publish them.
+          No upsell, no email sequence — just the brief.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe free <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="/subscription.html">All tiers <span class="arrow">→</span></a>
+        </div>
       </div>
-      <div class="footer-links">
-        <a href="/posts.html">Research</a>
-        <a href="/investments.html">Funds</a>
-        <a href="/education.html">Learn</a>
-        <a href="/about.html">About</a>
-        <a href="/glossary.html">Glossary</a>
-        <a href="/disclaimer.html">Disclaimer</a>
+    </div>
+  </section>
+
+  <!-- FOOTER (shared) -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/methodology.html">Methodology</a>
+            <a href="/education.html">Education</a>
+            <a href="/bot.html">AI Trader</a>
+            <a href="/glossary.html">Glossary</a>
+          </div>
+        </div>
+        <div>
+          <h4>Tools &amp; Reports</h4>
+          <div class="tbp-footer-links">
+            <a href="/tools/dcf.html">DCF Calculator</a>
+            <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+            <a href="/tools/cfa.html">CFA / IMC Study Tool</a>
+            <a href="/tools/bond-yield.html">Bond Yield</a>
+            <a href="/reports.html">Research Reports</a>
+            <a href="/subscription.html">Subscription</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="/disclaimer.html#privacy">Privacy</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script src="/assets/cinema-hero.js" defer></script>
+  <script src="/assets/tbp.js" defer></script>
 </body>
 </html>
