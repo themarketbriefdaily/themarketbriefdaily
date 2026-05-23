@@ -24,37 +24,42 @@
   <link rel="stylesheet" href="/assets/tbp-premium.css" />
 
   <style>
-    /* Make the header readable over the cinematic hero */
-    .tbp-header {
-      background: linear-gradient(180deg, rgba(8,12,22,.85), rgba(8,12,22,.4) 70%, transparent);
-      border-bottom-color: transparent;
-      backdrop-filter: none;
+    /* Full-viewport video hero — no overlay, no text */
+    .tbp-video-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 520px;
+      overflow: hidden;
+      background: #0a0f1c;
     }
-    .tbp-header .tbp-brand,
-    .tbp-header .tbp-nav a { color: rgba(255,255,255,.92); }
-    .tbp-header .tbp-brand .mark { background: #fff; color: #0a0f1c; }
-    .tbp-header .tbp-nav a.is-active::after { background: var(--tbp-warm); }
-    .tbp-header .tbp-cta-mini { background: #fff; color: #0a0f1c; }
-    .tbp-header .tbp-cta-mini:hover { background: var(--tbp-warm); color: #0a0f1c; }
-    .tbp-header .tbp-burger { border-color: rgba(255,255,255,.3); }
-    .tbp-header .tbp-burger span,
-    .tbp-header .tbp-burger span::before,
-    .tbp-header .tbp-burger span::after { background: #fff; }
-    .tbp-header.below-hero {
-      background: rgba(250,249,246,.92);
-      backdrop-filter: blur(14px);
-      border-bottom-color: var(--tbp-line);
+    .tbp-video-hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-    .tbp-header.below-hero .tbp-brand,
-    .tbp-header.below-hero .tbp-nav a { color: var(--tbp-ink); }
-    .tbp-header.below-hero .tbp-brand .mark { background: var(--tbp-ink); color: var(--tbp-bg); }
-    .tbp-header.below-hero .tbp-cta-mini { background: var(--tbp-ink); color: var(--tbp-bg); }
-    .tbp-header.below-hero .tbp-burger { border-color: var(--tbp-line); }
-    .tbp-header.below-hero .tbp-burger span,
-    .tbp-header.below-hero .tbp-burger span::before,
-    .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
 
-    /* Live status indicator inside hero */
+    /* Editorial section — light background, overrides meta card for legibility */
+    .tbp-editorial .tbp-hero-meta-card {
+      border-left: 1px solid var(--tbp-line);
+    }
+    .tbp-editorial .tbp-hero-meta-card .k {
+      color: var(--tbp-muted);
+    }
+    .tbp-editorial .tbp-hero-meta-card .v {
+      color: var(--tbp-ink);
+    }
+    .tbp-editorial .tbp-hero-meta-card .v em {
+      color: var(--tbp-muted);
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* Live status indicator */
     .hero-live {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 7px 16px;
@@ -88,11 +93,13 @@
         <span class="mark">M</span>
         <span>The Market Brief Daily</span>
       </a>
-            <nav class="tbp-nav" aria-label="Primary">
+                  <nav class="tbp-nav" aria-label="Primary">
         <a class="is-active" href="/">Home</a>
         <a href="/investments.html">Investments</a>
         <a href="/posts.html">Research Posts</a>
         <a href="/tools/">Tools</a>
+        <a href="/education.html">Education</a>
+        <a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="/subscription.html">
         Get access <span class="arrow">↗</span>
@@ -101,61 +108,65 @@
     </div>
   </header>
 
-    <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+      <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/investments.html">Investments</a>
     <a href="/posts.html">Research Posts</a>
-    <a href="/tools/">Tools &amp; Resources</a>
-    <a href="/bot.html">AI Trader</a>
+    <a href="/tools/">Tools</a>
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
     <a href="/subscription.html">Subscribe ↗</a>
   </div>
 
   <!-- ════════════════════════════════════════════════════════════
-       CINEMATIC HERO
+       FULL-VIEWPORT VIDEO — no text overlay
        ════════════════════════════════════════════════════════════ -->
-  <section class="tbp-hero-cinematic" aria-label="Introduction">
-    <div class="tbp-hero-cinematic-bg" style="background-image:url('/assets/images/hero-london-night.jpg');">
-      <video autoplay muted loop playsinline
-             poster="/assets/images/hero-london-night.jpg"
-             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
-        <source src="/assets/loading-video.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div class="tbp-hero-cinematic-inner">
-      <div>
-        <div class="hero-live"><span class="dot"></span>Live · Daily macro brief</div>
-        <div class="tbp-eyebrow">Independent macro &amp; market structure research</div>
-        <h1>Markets, <em>read</em><br>with discipline.</h1>
-        <p class="lead">
-          Institutional-grade research on macro transmission, credit spreads, commodity
-          supply, and microstructure — written daily for serious investors.
-          Transparent model portfolios, AI tools, and an experimental day-trader, all from London.
-        </p>
-        <div class="hero-actions" style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a class="tbp-btn primary" href="/subscription.html">Get full access <span class="arrow">→</span></a>
-          <a class="tbp-btn" href="/posts.html">Read today&apos;s brief <span class="arrow">↗</span></a>
+  <section class="tbp-video-hero" aria-label="Market Brief Daily introduction video">
+    <video autoplay muted loop playsinline
+           poster="/assets/images/hero-london-night.jpg">
+      <source src="/assets/loading-video.mp4" type="video/mp4">
+    </video>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       EDITORIAL — headline + lead copy below the video
+       ════════════════════════════════════════════════════════════ -->
+  <section class="tbp-section tbp-editorial" style="padding-block: clamp(72px,8vw,120px);">
+    <div class="tbp-container">
+      <div style="display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr); gap:clamp(40px,6vw,100px); align-items:center;" data-tbp-reveal>
+        <div>
+          <div class="hero-live" style="margin-bottom:24px;"><span class="dot"></span>Live · Daily macro brief</div>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Independent macro &amp; market structure research</div>
+          <h1 style="font-size:clamp(2.8rem,5.5vw,5rem); font-weight:850; letter-spacing:-.04em; line-height:1.0; margin:0 0 22px;">Markets, <em>read</em><br>with discipline.</h1>
+          <p style="font-size:clamp(1rem,1.4vw,1.13rem); line-height:1.7; color:var(--tbp-muted); max-width:52ch; margin:0 0 36px;">
+            Institutional-grade research on macro transmission, credit spreads, commodity
+            supply, and microstructure — written daily for serious investors.
+            Transparent model portfolios, AI tools, and an experimental day-trader, all from London.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="tbp-btn primary" href="/subscription.html">Get full access <span class="arrow">→</span></a>
+            <a class="tbp-btn" href="/posts.html">Read today&apos;s brief <span class="arrow">↗</span></a>
+          </div>
         </div>
+        <aside class="tbp-hero-meta-card" aria-label="Publication details">
+          <div class="row">
+            <span class="k">Coverage</span>
+            <span class="v">Macro · Credit · Commodities · <em>Microstructure</em></span>
+          </div>
+          <div class="row">
+            <span class="k">Cadence</span>
+            <span class="v">Daily brief · weekly long-form</span>
+          </div>
+          <div class="row">
+            <span class="k">Distribution</span>
+            <span class="v">London · Substack · marketbriefdaily.com</span>
+          </div>
+          <div class="row">
+            <span class="k">Standard</span>
+            <span class="v"><em>Educational research — not investment advice</em></span>
+          </div>
+        </aside>
       </div>
-      <aside class="tbp-hero-meta-card" aria-label="Publication details">
-        <div class="row">
-          <span class="k">Coverage</span>
-          <span class="v">Macro · Credit · Commodities · <em>Microstructure</em></span>
-        </div>
-        <div class="row">
-          <span class="k">Cadence</span>
-          <span class="v">Daily brief · weekly long-form</span>
-        </div>
-        <div class="row">
-          <span class="k">Distribution</span>
-          <span class="v">London · Substack · marketbriefdaily.com</span>
-        </div>
-        <div class="row">
-          <span class="k">Standard</span>
-          <span class="v"><em>Educational research — not investment advice</em></span>
-        </div>
-      </aside>
     </div>
   </section>
 
@@ -574,19 +585,6 @@
     </div>
   </footer>
 
-  <script>
-    // Header colour-switch when scrolling past hero
-    (function () {
-      const header = document.querySelector('.tbp-header');
-      const hero   = document.querySelector('.tbp-hero-cinematic');
-      if (!header || !hero) return;
-      const obs = new IntersectionObserver(
-        function (entries) { header.classList.toggle('below-hero', !entries[0].isIntersecting); },
-        { threshold: 0 }
-      );
-      obs.observe(hero);
-    })();
-  </script>
   <script src="/assets/tbp.js" defer></script>
 </body>
 </html>
