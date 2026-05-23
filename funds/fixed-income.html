@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixed Income Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–FXI · Fixed Income</div>
+    <h1>Fixed <em>Income</em></h1>
+    <p class="tagline">A duration-managed multi-sector bond portfolio targeting consistent income across the yield curve — from investment-grade sovereigns to high-yield corporate credit and emerging market debt.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Multi-Sector Credit</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">Bloomberg Global Agg</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2022</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Current Yield</span>
+        <span class="value positive">5.2%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Duration</span>
+        <span class="value">5.8 yrs</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy &amp; Academic Basis</h2>
+      <div class="academic-tag">📐 Ilmanen (2011) · Term Premium · Credit Spread Decomposition</div>
+      <p>The Fixed Income Fund applies a systematic approach to multi-sector credit allocation drawing on Antti Ilmanen's framework in <em>Expected Returns</em>: decomposing bond returns into their constituent premia — duration risk premium, credit spread premium, and liquidity premium. The portfolio actively manages duration and credit quality in response to the yield curve shape and macro regime.</p>
+      <p>Core positioning spans four credit layers: sovereign investment-grade (safe haven, duration), corporate investment-grade (spread income), high-yield credit (enhanced carry), and emerging market debt (diversification, yield pickup). Duration is managed dynamically — shortening when the yield curve is flat or inverted, extending when the term premium is attractive.</p>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> Investment Pillars</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">Duration Management</span>
+          <span class="p-desc">Modified duration actively managed between 3–8 years based on yield curve regime and term premium estimate.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Credit Quality Tilt</span>
+          <span class="p-desc">Tactical rotation between IG and HY credit as the credit cycle evolves, monitoring credit spreads vs historical percentiles.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">Geographic Diversification</span>
+          <span class="p-desc">USD, EUR, and EM local currency bonds to capture global rate differentials and reduce concentration risk.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Yield Curve Positioning</span>
+          <span class="p-desc">Barbell or bullet structures applied based on yield curve slope, targeting optimal carry-to-duration ratio.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Total Return</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Total Return (Price + Income)</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">3Y</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Sector Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Yield</span>
+            <span class="dc-value">5.2%</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Holdings</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr><th>Security</th><th>Sector</th><th>Duration</th><th>Weight</th></tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–FXI</span></div>
+        <div class="sc-row"><span class="sc-key">Asset Class</span><span class="sc-val">Fixed Income</span></div>
+        <div class="sc-row"><span class="sc-key">Current Yield</span><span class="sc-val" style="color:var(--green)">5.2%</span></div>
+        <div class="sc-row"><span class="sc-key">Modified Duration</span><span class="sc-val">5.8 yrs</span></div>
+        <div class="sc-row"><span class="sc-key">Avg. Credit Rating</span><span class="sc-val">BBB+</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD (Hedged)</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$10,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">6.4%</span>
+            <span class="m-note">vs 7.1% benchmark</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">0.81</span>
+            <span class="m-note">Since inception</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−9.2%</span>
+            <span class="m-note">Oct 2022 rate shock</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Credit Spread</span>
+            <span class="m-value">+182bp</span>
+            <span class="m-note">Over US Treasury</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Yield Curve Regime</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">2Y–10Y Spread</span><span class="sc-val" style="color:var(--gold)">+42bp</span></div>
+        <div class="sc-row"><span class="sc-key">Duration Stance</span><span class="sc-val">Moderate (5.8yr)</span></div>
+        <div class="sc-row"><span class="sc-key">HY Allocation</span><span class="sc-val">20% (Tactical)</span></div>
+        <div class="sc-row"><span class="sc-key">EM Allocation</span><span class="sc-val">15% (Strategic)</span></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. Yield figures are estimated and not guaranteed. Fixed income investments carry interest rate risk, credit risk, and inflation risk. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#4a90d9','#c9a84c','#e05252','#3dba7e','#9b6dd4'];
+
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 22','Apr 22','Jul 22','Oct 22','Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Jan 25'],
+    datasets: [
+      { label: 'Fixed Income Fund', data: [100,94,91,90,95,98,100,97,103,106,109,107,113],
+        borderColor: '#4a90d9', backgroundColor: 'rgba(74,144,217,0.07)',
+        fill: true, tension: 0.4, pointRadius: 2, pointBackgroundColor: '#4a90d9', borderWidth: 2 },
+      { label: 'Bloomberg Global Agg', data: [100,92,88,86,90,93,94,91,96,98,100,98,103],
+        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
+        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+const allocs = [
+  { name: 'Sovereign / Govt IG',  pct: 30 },
+  { name: 'Corporate IG',         pct: 25 },
+  { name: 'High Yield Credit',    pct: 20 },
+  { name: 'EM Debt (Hard/Local)', pct: 15 },
+  { name: 'TIPS / Inflation',     pct: 10 },
+];
+
+new Chart(document.getElementById('donutChart').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: allocs.map(a=>a.name), datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0 }] },
+  options: { cutout: '68%', plugins: { legend: { display: false } } }
+});
+
+document.getElementById('allocLegend').innerHTML = allocs.map((a,i) =>
+  `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`
+).join('');
+
+const holdings = [
+  { ticker:'AGG',  name:'iShares Core US Aggregate Bond ETF',  sector:'Multi-Sector IG',   dur:'6.2yr', w:20 },
+  { ticker:'TLT',  name:'iShares 20+ Year Treasury Bond ETF',  sector:'Sovereign',         dur:'16.1yr', w:12 },
+  { ticker:'LQD',  name:'iShares iBoxx $ Inv Grade Corp ETF',  sector:'Corporate IG',      dur:'8.3yr', w:12 },
+  { ticker:'HYG',  name:'iShares iBoxx $ High Yield Corp ETF', sector:'High Yield',        dur:'3.6yr', w:12 },
+  { ticker:'EMB',  name:'iShares JP Morgan USD EM Bond ETF',   sector:'EM Sovereign',      dur:'7.2yr', w:10 },
+  { ticker:'BNDX', name:'Vanguard Total Intl Bond ETF',        sector:'Intl Sovereign',    dur:'7.8yr', w:10 },
+  { ticker:'TIP',  name:'iShares TIPS Bond ETF',               sector:'Inflation-Linked',  dur:'7.4yr', w:8  },
+  { ticker:'SJNK', name:'SPDR Blmbrg S/T HY Bond ETF',        sector:'Short HY',          dur:'1.8yr', w:8  },
+  { ticker:'EMLC', name:'VanEck EM Local Currency Bond ETF',   sector:'EM Local',          dur:'5.1yr', w:8  },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+holdings.forEach(h => {
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td>${h.sector}</td><td style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--text)">${h.dur}</td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%;background:#4a90d9"></div></div></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

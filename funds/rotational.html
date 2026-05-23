@@ -1,341 +1,267 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MBD-Rotational — Thematic Rotation Fund · The Market Brief Daily</title>
-  <meta name="description" content="MBD-Rotational: a high-conviction thematic portfolio across precious metals, clean energy transition, defensive consumer staples, quantum computing and AI / cybersecurity infrastructure." />
-  <meta name="theme-color" content="#faf9f6" />
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://www.marketbriefdaily.com/funds/rotational.html" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/tbp-theme.css" />
-  <link rel="stylesheet" href="/assets/tbp-premium.css" />
-  <link rel="stylesheet" href="/assets/fund-detail.css" />
-  <script src="/assets/chart.umd.min.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotational Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
-<body class="tbp">
+<body>
 
-  <header class="tbp-header" role="banner">
-    <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
-        <span class="mark">M</span><span>The Market Brief Daily</span>
-      </a>
-      <nav class="tbp-nav" aria-label="Primary">
-        <a href="/">Home</a>
-        <a class="is-active" href="/investments.html">Investments</a>
-        <a href="/posts.html">Research Posts</a>
-        <a href="/tools/">Tools</a>
-        <a href="/education.html">Education</a>
-        <a href="/about.html">About</a>
-      </nav>
-      <a class="tbp-cta-mini" href="/subscription.html">Get access <span class="arrow">↗</span></a>
-      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–ROT · Multi-Theme</div>
+    <h1>Rotational <em>Fund</em></h1>
+    <p class="tagline">A conviction-led, multi-thematic strategy rotating across structural growth themes — energy transition, AI infrastructure, cybersecurity, quantum computing, and real-asset stores of value.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Thematic Rotation</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">MSCI World</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2023</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+14.2%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Sharpe Ratio</span>
+        <span class="value">1.31</span>
+      </div>
     </div>
-  </header>
-  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
-    <a href="/tools/">Tools</a><a href="/education.html">Education</a><a href="/about.html">About</a>
-    <a href="/subscription.html">Subscribe ↗</a>
   </div>
+</header>
 
-  <section class="fund-hero">
-    <div class="tbp-container">
-      <nav class="fund-breadcrumb" aria-label="Breadcrumb">
-        <a href="/investments.html">Investments</a><span class="sep">/</span>
-        <a href="/investments.html#fund-range">Fund Families</a><span class="sep">/</span>
-        <span class="current">Rotational</span>
-      </nav>
-      <div class="fund-hero-grid">
-        <div>
-          <span class="fund-code">MBD-ROTATE</span>
-          <h1 class="fund-title">Rotational<br><em>flagship.</em></h1>
-          <p class="fund-tagline">
-            A high-conviction thematic portfolio expressing four structural views simultaneously:
-            real-asset protection via precious metals, the global clean-energy transition, defensive
-            European consumer-staples cash flows, and structural growth in quantum computing,
-            AI infrastructure, and cybersecurity.
-          </p>
-          <div class="fund-hero-stats">
-            <div class="fhs-item"><div class="k">YTD 2026</div><div class="v pos">+18.6%</div></div>
-            <div class="fhs-item"><div class="k">Sharpe (1Y)</div><div class="v">1.12</div></div>
-            <div class="fhs-item"><div class="k">OCF</div><div class="v">0.34%</div></div>
-            <div class="fhs-item"><div class="k">Holdings</div><div class="v">12</div></div>
-          </div>
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy Overview</h2>
+      <p>The Rotational Fund is a proprietary thematic strategy that allocates across five structural mega-trends, dynamically adjusting weights based on momentum, macro regime signals, and relative valuation. Unlike passive multi-asset strategies, it makes active, high-conviction rotational calls between themes as economic cycles evolve.</p>
+      <p>The portfolio balances secular growth themes (AI infrastructure, quantum computing, cybersecurity) with defensive real-asset exposure (precious metals) and ESG transition plays (clean energy, European consumer staples). Theme weights are reviewed monthly using a quantitative scoring model incorporating price momentum, earnings revisions, and macro sensitivity.</p>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> The Five Themes</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">AI Infrastructure</span>
+          <span class="p-desc">Cybersecurity fabric, cloud computing backbone, and enterprise AI platforms benefiting from the secular capex cycle in artificial intelligence. Core holdings: Fortinet, CrowdStrike, Cloudflare, MKS Instruments.</span>
         </div>
-        <aside class="academic-card">
-          <div class="eyebrow">Conceptual basis</div>
-          <blockquote>
-            "Factor premia are time-varying and regime-dependent. Investors who rotate exposure across structural themes — rather than committing permanently to a single factor — can harvest different return streams as conditions change."
-          </blockquote>
-          <cite>Asness, Frazzini, Israel, Moskowitz (2015)</cite>
-          <span class="doi">"Fact, Fiction, and Value Investing." <em>Journal of Portfolio Management, 42(1).</em></span>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <section class="fund-section">
-    <div class="tbp-container">
-      <div class="section-number">01 / Performance</div>
-      <h2>The strongest performer<br><em>in the family.</em></h2>
-      <p class="section-intro">Rotational has outperformed every Classic / Tracker variant on both absolute return and Sharpe ratio since inception, driven by concentrated exposure to themes that benefited from the 2025 commodity rally and the AI infrastructure build-out.</p>
-
-      <div class="perf-grid">
-        <div class="perf-chart-card"><canvas id="perfChart"></canvas></div>
-        <div>
-          <table class="perf-table">
-            <thead><tr><th>Period</th><th>MBD-Rotate</th><th>MSCI World</th><th>Diff.</th></tr></thead>
-            <tbody>
-              <tr><td class="label">YTD 2026</td><td class="pos">+18.6%</td><td>+10.5%</td><td class="pos">+8.1pp</td></tr>
-              <tr><td class="label">1 Year</td><td class="pos">+27.4%</td><td>+14.8%</td><td class="pos">+12.6pp</td></tr>
-              <tr><td class="label">Since Jan 2025</td><td class="pos">+34.2%</td><td>+12.9%</td><td class="pos">+21.3pp</td></tr>
-              <tr><td class="label">Worst quarter</td><td class="neg">−6.8%</td><td>−3.8%</td><td class="neg">−3.0pp</td></tr>
-              <tr><td class="label">Best quarter</td><td class="pos">+14.1%</td><td>+7.4%</td><td class="pos">+6.7pp</td></tr>
-              <tr><td class="label">Hit rate (months)</td><td>67%</td><td>61%</td><td class="pos">+6pp</td></tr>
-            </tbody>
-          </table>
-          <div class="fund-disclosure">
-            <strong>Concentration risk.</strong> Rotational holds 12 positions across 4 themes. The fund is materially more concentrated than the Classic or Tracker portfolios and carries higher idiosyncratic risk. Drawdowns may be deeper and more sustained.
-          </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Quantum Computing</span>
+          <span class="p-desc">Early-stage but rapidly developing exposure to quantum hardware and algorithms — positioned ahead of the anticipated inflection in error-corrected quantum advantage.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">Energy Transition</span>
+          <span class="p-desc">Global clean energy transition via iShares Global Clean Energy ETF (ICLN) — capturing solar, wind, and grid infrastructure amid the decarbonisation supercycle.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Precious Metals</span>
+          <span class="p-desc">Gold and silver as monetary reserves and inflation hedges. Structural tailwind from de-dollarisation trends and central bank accumulation cycles.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">05</span>
+          <span class="p-title">EU Consumer Staples</span>
+          <span class="p-desc">iShares MSCI Europe Consumer Staples — a defensive anchor with attractive valuations relative to US peers and resilient earnings in recessionary environments.</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="fund-section alt">
-    <div class="tbp-container">
-      <div class="section-number">02 / Holdings</div>
-      <h2>Four themes,<br><em>twelve positions.</em></h2>
-      <p class="section-intro">All weights are reviewed monthly and rebalanced quarterly. Theme weights are the primary control; individual stock weights within a theme may drift between rebalances.</p>
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs MSCI World</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">Since Inception</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
 
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Theme Allocation (Current)</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Active</span>
+            <span class="dc-value">5 Themes</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Current Holdings</h2>
       <table class="holdings-table">
-        <thead><tr><th>Holding</th><th>Ticker</th><th>Theme</th><th class="num">Weight</th></tr></thead>
-        <tbody>
-          <tr><td class="name">Nvidia Corp.</td><td class="ticker">NVDA</td><td class="asset">AI infrastructure</td><td class="weight" style="--w:60%;">12.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">SPDR Gold Shares</td><td class="ticker">GLD</td><td class="asset">Precious metals</td><td class="weight" style="--w:60%;">12.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">iShares Global Clean Energy</td><td class="ticker">ICLN</td><td class="asset">Clean energy transition</td><td class="weight" style="--w:55%;">11.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">iShares MSCI Europe Cons. Staples</td><td class="ticker">IECS</td><td class="asset">Defensive equities</td><td class="weight" style="--w:50%;">10.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">CrowdStrike Holdings</td><td class="ticker">CRWD</td><td class="asset">Cybersecurity</td><td class="weight" style="--w:45%;">9.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">Fortinet, Inc.</td><td class="ticker">FTNT</td><td class="asset">Cybersecurity</td><td class="weight" style="--w:40%;">8.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">Cloudflare, Inc.</td><td class="ticker">NET</td><td class="asset">AI infrastructure</td><td class="weight" style="--w:40%;">8.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">Defiance Quantum ETF</td><td class="ticker">QTUM</td><td class="asset">Quantum computing</td><td class="weight" style="--w:40%;">8.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">iShares Silver Trust</td><td class="ticker">SLV</td><td class="asset">Precious metals</td><td class="weight" style="--w:35%;">7.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">MKS Instruments</td><td class="ticker">MKSI</td><td class="asset">Semi capital equipment</td><td class="weight" style="--w:30%;">6.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">Palo Alto Networks</td><td class="ticker">PANW</td><td class="asset">Cybersecurity</td><td class="weight" style="--w:25%;">5.0%<span class="weight-bar"></span></td></tr>
-          <tr><td class="name">Cash / settlement</td><td class="ticker">USD</td><td class="asset">Cash</td><td class="weight" style="--w:20%;">4.0%<span class="weight-bar"></span></td></tr>
-          <tr class="holdings-total"><td colspan="3">Total</td><td style="text-align:right;">100.0%</td></tr>
-        </tbody>
+        <thead>
+          <tr><th>Security</th><th>Theme</th><th>Type</th><th>Weight</th></tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
       </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–ROT</span></div>
+        <div class="sc-row"><span class="sc-key">Strategy Type</span><span class="sc-val">Thematic Rotation</span></div>
+        <div class="sc-row"><span class="sc-key">Themes</span><span class="sc-val">5 Active</span></div>
+        <div class="sc-row"><span class="sc-key">Review Cycle</span><span class="sc-val">Monthly</span></div>
+        <div class="sc-row"><span class="sc-key">Benchmark</span><span class="sc-val">MSCI World</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$25,000</span></div>
+      </div>
     </div>
-  </section>
 
-  <section class="fund-section">
-    <div class="tbp-container">
-      <div class="section-number">03 / Theme allocation</div>
-      <h2>Four structural <em>views.</em></h2>
-      <p class="section-intro">The portfolio is built thematically. Each theme is sized to express a specific macro / structural conviction rather than to fit any factor model.</p>
-
-      <div class="allocation-grid">
-        <div class="alloc-card">
-          <h3>By theme</h3>
-          <div class="alloc-bars">
-            <div class="alloc-bar"><span class="name">Cybersecurity</span><div class="bar"><div class="bar-fill red" style="width:22%;"></div></div><span class="pct">22.0%</span></div>
-            <div class="alloc-bar"><span class="name">AI infrastructure</span><div class="bar"><div class="bar-fill blue" style="width:20%;"></div></div><span class="pct">20.0%</span></div>
-            <div class="alloc-bar"><span class="name">Precious metals</span><div class="bar"><div class="bar-fill warm" style="width:19%;"></div></div><span class="pct">19.0%</span></div>
-            <div class="alloc-bar"><span class="name">Clean energy transition</span><div class="bar"><div class="bar-fill green" style="width:11%;"></div></div><span class="pct">11.0%</span></div>
-            <div class="alloc-bar"><span class="name">Defensive staples</span><div class="bar"><div class="bar-fill" style="width:10%;"></div></div><span class="pct">10.0%</span></div>
-            <div class="alloc-bar"><span class="name">Quantum computing</span><div class="bar"><div class="bar-fill purple" style="width:8%;"></div></div><span class="pct">8.0%</span></div>
-            <div class="alloc-bar"><span class="name">Semi cap equipment</span><div class="bar"><div class="bar-fill" style="width:6%;"></div></div><span class="pct">6.0%</span></div>
-            <div class="alloc-bar"><span class="name">Cash</span><div class="bar"><div class="bar-fill" style="width:4%; background:#8a8a85;"></div></div><span class="pct">4.0%</span></div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">18.4%</span>
+            <span class="m-note">Higher — growth tilt</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">1.31</span>
+            <span class="m-note">Since inception</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−22.1%</span>
+            <span class="m-note">Oct 2023</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Active Return</span>
+            <span class="m-value">+4.8%</span>
+            <span class="m-note">vs MSCI World</span>
           </div>
         </div>
-        <div class="alloc-card">
-          <h3>By geography</h3>
-          <div class="alloc-bars">
-            <div class="alloc-bar"><span class="name">United States</span><div class="bar"><div class="bar-fill warm" style="width:58%;"></div></div><span class="pct">58.0%</span></div>
-            <div class="alloc-bar"><span class="name">Europe (developed)</span><div class="bar"><div class="bar-fill" style="width:14%;"></div></div><span class="pct">14.0%</span></div>
-            <div class="alloc-bar"><span class="name">Global (multi-region ETFs)</span><div class="bar"><div class="bar-fill" style="width:11%;"></div></div><span class="pct">11.0%</span></div>
-            <div class="alloc-bar"><span class="name">Commodity (vaulted)</span><div class="bar"><div class="bar-fill warm" style="width:9%;"></div></div><span class="pct">9.0%</span></div>
-            <div class="alloc-bar"><span class="name">Asia-Pacific</span><div class="bar"><div class="bar-fill" style="width:4%;"></div></div><span class="pct">4.0%</span></div>
-            <div class="alloc-bar"><span class="name">Cash (USD)</span><div class="bar"><div class="bar-fill" style="width:4%; background:#8a8a85;"></div></div><span class="pct">4.0%</span></div>
-          </div>
-        </div>
       </div>
     </div>
-  </section>
 
-  <section class="fund-section alt">
-    <div class="tbp-container">
-      <div class="section-number">04 / Risk characteristics</div>
-      <h2>Risk profile.</h2>
-      <p class="section-intro">Higher conviction means higher risk. Rotational runs ~50% more volatility than the Classic portfolio in exchange for a materially higher expected return.</p>
-
-      <div class="risk-grid">
-        <div class="risk-cell"><div class="label">Volatility (1Y)</div><div class="value">19.6%</div><div class="meta">Annualised, daily returns</div></div>
-        <div class="risk-cell"><div class="label">Sharpe ratio</div><div class="value">1.12</div><div class="meta">Best in family</div></div>
-        <div class="risk-cell"><div class="label">Sortino ratio</div><div class="value">1.68</div><div class="meta">Downside deviation</div></div>
-        <div class="risk-cell"><div class="label">Max drawdown</div><div class="value neg">−13.4%</div><div class="meta">Peak-to-trough, 1Y</div></div>
-        <div class="risk-cell"><div class="label">Beta vs MSCI World</div><div class="value">1.24</div><div class="meta">Higher than market</div></div>
-        <div class="risk-cell"><div class="label">Correlation w/ gold</div><div class="value">+0.41</div><div class="meta">From PM sleeve</div></div>
-        <div class="risk-cell"><div class="label">Single-name conc.</div><div class="value">12%</div><div class="meta">Largest position (NVDA)</div></div>
-        <div class="risk-cell"><div class="label">Top-3 weight</div><div class="value">35%</div><div class="meta">NVDA + GLD + ICLN</div></div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Rotation Model Signals</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">AI Infrastructure</span><span class="sc-val" style="color:var(--green)">↑ Overweight</span></div>
+        <div class="sc-row"><span class="sc-key">Quantum Computing</span><span class="sc-val" style="color:var(--green)">↑ Overweight</span></div>
+        <div class="sc-row"><span class="sc-key">Energy Transition</span><span class="sc-val">→ Neutral</span></div>
+        <div class="sc-row"><span class="sc-key">Precious Metals</span><span class="sc-val" style="color:var(--gold)">→ Neutral</span></div>
+        <div class="sc-row"><span class="sc-key">EU Consumer Staples</span><span class="sc-val">→ Neutral</span></div>
       </div>
     </div>
-  </section>
+  </aside>
+</div>
 
-  <section class="fund-section">
-    <div class="tbp-container">
-      <div class="section-number">05 / Strategy</div>
-      <h2>Four theses.</h2>
-      <div class="fund-prose">
-        <p><strong>Theme 1 — Precious metals (19%).</strong>
-          A structural hedge against fiscal indiscipline, currency debasement, and a regime of higher trend inflation than the 2010s. Gold and silver have historically delivered <em>positive</em> real returns during periods of negative real rates — exactly the regime central banks are signalling they will tolerate. Sizing reflects the asymmetric tail-risk hedge value rather than expected total return.
-        </p>
-        <p><strong>Theme 2 — Clean energy transition (11%).</strong>
-          The single largest capital-formation cycle in industrial history, mandated by policy and increasingly economic without subsidy. ICLN provides diversified exposure across solar, wind, energy storage, and grid infrastructure. Position size is moderate to reflect the cyclicality of the sub-sector and historical drawdown profile (~50% peak-to-trough in 2021–23).
-        </p>
-        <p><strong>Theme 3 — European defensive staples (10%).</strong>
-          A counterweight to the growth-heavy AI / cyber exposure. European consumer-staples companies (Nestlé, Unilever, Diageo, Pernod, L'Oréal) trade at structurally lower multiples than US peers, generate stable cash flows, and benefit from cyclical EUR weakness. IECS provides the cleanest passive expression of that view.
-        </p>
-        <p><strong>Theme 4 — AI / cyber / quantum (42%).</strong>
-          The largest single theme, expressed through six positions. The thesis is that compute, security, and edge networking are the four picks-and-shovels of the AI build-out. NVDA is the dominant compute hardware. CRWD / FTNT / PANW are the three structurally dominant cyber platforms. NET is the edge / serverless infrastructure. QTUM provides early-stage exposure to quantum without single-name concentration risk. MKSI provides exposure to the semiconductor capital-equipment cycle.
-        </p>
-      </div>
-    </div>
-  </section>
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice or a solicitation to buy or sell securities. Simulated performance figures do not represent real trading results. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
 
-  <section class="fund-section alt">
-    <div class="tbp-container">
-      <div class="section-number">06 / Methodology</div>
-      <h2>How it is <em>managed.</em></h2>
+<script>
+const COLORS = ['#c9a84c','#4a90d9','#3dba7e','#9b6dd4','#e07a38'];
 
-      <div class="method-rule">
-        <div class="rn">01</div>
-        <div>
-          <h4>Theme weights are the primary lever</h4>
-          <p>Theme allocations are set quarterly. Within each theme, position weights are allowed to drift up to <strong>±200 bps</strong> from target before triggering a rebalance.</p>
-        </div>
-      </div>
-      <div class="method-rule">
-        <div class="rn">02</div>
-        <div>
-          <h4>Rotation rules</h4>
-          <p>Theme weights are reviewed against three macro signals: <strong>real-rate regime</strong> (TIPS yield), <strong>USD trend</strong> (DXY 200-day), and <strong>credit conditions</strong> (HY OAS). A material shift in any two of three triggers a theme-level re-weighting at the next quarter-end.</p>
-        </div>
-      </div>
-      <div class="method-rule">
-        <div class="rn">03</div>
-        <div>
-          <h4>Single-name caps</h4>
-          <p>No single stock may exceed <strong>15%</strong> of the portfolio. Theme caps: cybersecurity ≤ 25%, AI infrastructure ≤ 25%, precious metals ≤ 25%, all other themes ≤ 20%. Concentration limits are checked at every rebalance.</p>
-        </div>
-      </div>
-      <div class="method-rule">
-        <div class="rn">04</div>
-        <div>
-          <h4>Quality screen</h4>
-          <p>Single-name positions must meet liquidity (ADV &gt; USD 200M), profitability (positive trailing FCF), and balance-sheet (net debt / EBITDA &lt; 4x) thresholds. ETFs must have AUM &gt; USD 200M and tracking error &lt; 150 bps vs index.</p>
-        </div>
-      </div>
-      <div class="method-rule">
-        <div class="rn">05</div>
-        <div>
-          <h4>Drawdown protocol</h4>
-          <p>At a portfolio drawdown of <strong>−10%</strong> from peak, the cash buffer is increased from 4% to 8% and rebalancing is deferred to the next scheduled date. At <strong>−15%</strong> drawdown, theme weights are reset to neutral and the rotation framework is reviewed.</p>
-        </div>
-      </div>
-      <div class="method-rule">
-        <div class="rn">06</div>
-        <div>
-          <h4>Benchmark</h4>
-          <p>MSCI World Net Total Return (USD). The fund's tracking error is intentionally high (~12%) reflecting the concentrated thematic nature. Benchmark comparison is informational; the fund is not managed to outperform any single index on any single quarter.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="fund-section">
-    <div class="tbp-container">
-      <div class="section-number">07 / Explore</div>
-      <h2>Other funds in the<br><em>family.</em></h2>
-      <div class="related-funds">
-        <a class="related-card" href="/funds/classic.html"><span class="code">MBD-CLASSIC</span><span class="name">Classic</span><span class="arr">Fama-French three-factor →</span></a>
-        <a class="related-card" href="/funds/tracker.html"><span class="code">MBD-TRACK</span><span class="name">Tracker</span><span class="arr">Pure market portfolio →</span></a>
-        <a class="related-card" href="/funds/equities.html"><span class="code">MBD-EQ</span><span class="name">Equities</span><span class="arr">Multi-factor specialist →</span></a>
-      </div>
-      <div style="margin-top:48px; text-align:center;">
-        <a class="tbp-btn" href="/investments.html">← Back to investments</a>
-        <a class="tbp-btn primary" href="/subscription.html" style="margin-left:8px;">Get Pro access <span class="arrow">→</span></a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="tbp-footer" role="contentinfo">
-    <div class="tbp-container">
-      <div class="tbp-footer-top">
-        <div>
-          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
-          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
-        </div>
-        <div><h4>Content</h4><div class="tbp-footer-links">
-          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
-          <a href="/education.html">Education</a><a href="/bot.html">AI Trader</a>
-          <a href="/glossary.html">Glossary</a>
-        </div></div>
-        <div><h4>Tools &amp; Reports</h4><div class="tbp-footer-links">
-          <a href="/tools/dcf.html">DCF Calculator</a><a href="/tools/macro-dashboard.html">Macro Dashboard</a>
-          <a href="/tools/cfa.html">CFA Study Tool</a><a href="/tools/bond-yield.html">Bond Yield</a>
-          <a href="/reports.html">Reports</a><a href="/subscription.html">Subscription</a>
-        </div></div>
-        <div><h4>Company</h4><div class="tbp-footer-links">
-          <a href="/about.html">About</a><a href="/contact.html">Contact</a>
-          <a href="/disclaimer.html">Disclaimer</a>
-          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
-        </div></div>
-      </div>
-      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
-      <div class="tbp-footer-bottom">
-        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
-        <div class="legal">
-          <a href="/disclaimer.html">Full disclaimer</a>
-          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/assets/tbp.js" defer></script>
-  <script>
-  (function () {
-    function draw() {
-      if (typeof Chart === 'undefined') { setTimeout(draw, 200); return; }
-      var el = document.getElementById('perfChart'); if (!el) return;
-      var LABELS = ['Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar','Apr','May'];
-      new Chart(el, {
-        type: 'line',
-        data: {
-          labels: LABELS,
-          datasets: [
-            { label: 'MBD-Rotate', data: [103.4,106.8,104.2,108.7,112.6,111.4,115.2,113.6,111.0,116.4,114.7,117.1,121.5,126.3,124.8,129.4,134.2], borderColor: '#9333ea', backgroundColor: 'rgba(147,51,234,.07)', borderWidth: 2.5, fill: true, pointRadius: 0, tension: 0.3 },
-            { label: 'MSCI World', data: [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0,109.2,110.7,109.9,111.5,112.9], borderColor: '#8a8a85', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.3 }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: true, labels: { font: { size: 12 }, color: '#0a0a0a', boxWidth: 18, boxHeight: 3, padding: 16 } },
-                     tooltip: { callbacks: { label: function(ctx){ var v = ctx.parsed.y; return ctx.dataset.label + ': ' + (v - 100 >= 0 ? '+' : '') + (v - 100).toFixed(1) + '%'; } } } },
-          scales: {
-            x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#8a8a85', maxTicksLimit: 9 } },
-            y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 11 }, color: '#8a8a85', callback: function(v){ return (v >= 100 ? '+' : '') + (v - 100).toFixed(0) + '%'; } } }
-          }
-        }
-      });
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Oct 24','Jan 25','Apr 25'],
+    datasets: [
+      { label: 'Rotational Fund', data: [100,112,124,102,131,148,162,157,178,196],
+        borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.08)',
+        fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#c9a84c', borderWidth: 2 },
+      { label: 'MSCI World', data: [100,106,112,102,116,124,132,128,140,150],
+        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
+        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
     }
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', draw); else draw();
-  })();
-  </script>
+  }
+});
+
+const allocs = [
+  { name: 'AI Infrastructure',    pct: 32 },
+  { name: 'Quantum Computing',    pct: 15 },
+  { name: 'Energy Transition',    pct: 20 },
+  { name: 'Precious Metals',      pct: 18 },
+  { name: 'EU Consumer Staples',  pct: 15 },
+];
+
+new Chart(document.getElementById('donutChart').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: allocs.map(a=>a.name), datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0 }] },
+  options: { cutout: '68%', plugins: { legend: { display: false } } }
+});
+
+document.getElementById('allocLegend').innerHTML = allocs.map((a,i) =>
+  `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`
+).join('');
+
+const holdings = [
+  { ticker:'CRWD',  name:'CrowdStrike Holdings',              theme:'AI Infrastructure',   type:'Single Stock', w:9  },
+  { ticker:'FTNT',  name:'Fortinet Inc.',                     theme:'AI Infrastructure',   type:'Single Stock', w:8  },
+  { ticker:'NET',   name:'Cloudflare Inc.',                   theme:'AI Infrastructure',   type:'Single Stock', w:8  },
+  { ticker:'MKSI',  name:'MKS Instruments',                   theme:'AI Infrastructure',   type:'Single Stock', w:7  },
+  { ticker:'ICLN',  name:'iShares Global Clean Energy ETF',   theme:'Energy Transition',   type:'ETF',          w:20 },
+  { ticker:'GLD',   name:'SPDR Gold Shares',                  theme:'Precious Metals',     type:'ETF',          w:11 },
+  { ticker:'SLV',   name:'iShares Silver Trust',              theme:'Precious Metals',     type:'ETF',          w:7  },
+  { ticker:'IEUS',  name:'iShares MSCI Europe Con. Staples',  theme:'EU Consumer Staples', type:'ETF',          w:15 },
+  { ticker:'QTUM',  name:'Defiance Quantum ETF',              theme:'Quantum Computing',   type:'ETF',          w:15 },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+const themeColors = {
+  'AI Infrastructure': '#c9a84c',
+  'Quantum Computing': '#4a90d9',
+  'Energy Transition': '#3dba7e',
+  'Precious Metals': '#9b6dd4',
+  'EU Consumer Staples': '#e07a38'
+};
+holdings.forEach(h => {
+  const col = themeColors[h.theme] || '#9a9690';
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td><span style="color:${col};font-size:0.78rem">${h.theme}</span></td>
+    <td>${h.type}</td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%;background:${col}"></div></div></td>
+  </tr>`;
+});
+</script>
 </body>
 </html>

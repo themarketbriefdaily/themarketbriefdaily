@@ -1,535 +1,612 @@
-/* ═══════════════════════════════════════════════════════════════
-   Fund Factsheet — shared styles for /funds/*.html
-   Used in conjunction with tbp-theme.css + tbp-premium.css
-   ═══════════════════════════════════════════════════════════════ */
+/* ============================================================
+   FUND DETAIL PAGES — THE MARKET BRIEF DAILY
+   Premium asset management aesthetic
+   ============================================================ */
 
-/* ── Breadcrumb ─────────────────────────────────────────────── */
-.fund-breadcrumb {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  color: var(--tbp-muted);
-  margin-bottom: 24px;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap');
+
+:root {
+  --ink:        #0a0c0f;
+  --ink-2:      #13161c;
+  --ink-3:      #1c2030;
+  --surface:    #111418;
+  --border:     rgba(255,255,255,0.07);
+  --border-h:   rgba(255,255,255,0.14);
+  --gold:       #c9a84c;
+  --gold-dim:   rgba(201,168,76,0.15);
+  --gold-glow:  rgba(201,168,76,0.06);
+  --text:       #e8e4dc;
+  --text-2:     #9a9690;
+  --text-3:     #5c5a56;
+  --green:      #3dba7e;
+  --red:        #e05252;
+  --blue:       #4a90d9;
+  --radius:     4px;
+  --radius-lg:  10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── BACK NAV ── */
+.fund-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,12,15,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  height: 60px;
   display: flex;
-  gap: 8px;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 1.5rem;
 }
-.fund-breadcrumb a {
-  color: var(--tbp-muted);
-  text-decoration: none;
-  transition: color .2s;
-}
-.fund-breadcrumb a:hover { color: var(--tbp-ink); }
-.fund-breadcrumb .sep { color: var(--tbp-line); }
-.fund-breadcrumb .current { color: var(--tbp-ink); }
 
-/* ── Fund hero ──────────────────────────────────────────────── */
+.fund-nav a.back {
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s;
+}
+.fund-nav a.back:hover { color: var(--gold); }
+.fund-nav a.back svg { width: 14px; height: 14px; }
+
+.fund-nav .site-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  margin-left: auto;
+}
+
+/* ── HERO ── */
 .fund-hero {
-  padding: clamp(120px, 14vw, 180px) 0 clamp(56px, 7vw, 96px);
-  background: var(--tbp-bg);
-  border-bottom: 1px solid var(--tbp-line);
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem) clamp(2.5rem, 5vw, 4rem);
+  border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
 }
+
 .fund-hero::before {
-  content: "";
+  content: '';
   position: absolute;
-  top: 0; right: -10%;
-  width: 50%; height: 100%;
-  background: radial-gradient(ellipse at center, rgba(200,163,90,.06), transparent 70%);
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 50%, var(--gold-glow), transparent);
   pointer-events: none;
 }
-.fund-hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(40px, 6vw, 96px);
-  align-items: start;
+
+.fund-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
   position: relative;
 }
-@media (max-width: 880px) {
-  .fund-hero-grid { grid-template-columns: 1fr; }
-}
-.fund-code {
-  display: inline-block;
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: .14em;
-  padding: 6px 14px;
-  background: var(--tbp-ink);
-  color: var(--tbp-bg);
-  border-radius: 6px;
-  margin-bottom: 18px;
-}
-.fund-title {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(2.6rem, 5.5vw, 4.8rem);
-  font-weight: 850;
-  letter-spacing: -.04em;
-  line-height: 1;
-  margin: 0 0 14px;
-  color: var(--tbp-ink);
-}
-.fund-title em {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 350;
-  color: var(--tbp-muted);
-}
-.fund-tagline {
-  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
-  line-height: 1.6;
-  color: var(--tbp-muted);
-  max-width: 56ch;
-  margin: 0 0 32px;
-}
-.fund-hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
-  gap: 0;
-  border-top: 1px solid var(--tbp-line);
-  border-bottom: 1px solid var(--tbp-line);
-  padding: 20px 0;
-}
-@media (max-width: 640px) {
-  .fund-hero-stats { grid-template-columns: repeat(2,1fr); gap: 16px 0; }
-}
-.fhs-item { text-align: left; }
-.fhs-item + .fhs-item { border-left: 1px solid var(--tbp-line); padding-left: 16px; }
-@media (max-width: 640px) {
-  .fhs-item + .fhs-item { border-left: 0; padding-left: 0; }
-}
-.fhs-item .k {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--tbp-muted);
-  margin-bottom: 6px;
-}
-.fhs-item .v {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
-  font-weight: 800;
-  letter-spacing: -.025em;
-  color: var(--tbp-ink);
-  line-height: 1;
-}
-.fhs-item .v.pos { color: var(--tbp-pos); }
-.fhs-item .v.neg { color: var(--tbp-neg); }
 
-/* ── Academic citation block ────────────────────────────────── */
-.academic-card {
-  background: var(--tbp-bg-alt, #f5f3ec);
-  border: 1px solid var(--tbp-line);
-  border-left: 3px solid var(--tbp-warm);
-  border-radius: 10px;
-  padding: clamp(24px, 3vw, 32px);
-}
-.academic-card .eyebrow {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--tbp-warm);
-  margin-bottom: 12px;
-}
-.academic-card blockquote {
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-weight: 350;
-  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-  line-height: 1.45;
-  color: var(--tbp-ink);
-  margin: 0 0 14px;
-  border: 0;
-  padding: 0;
-}
-.academic-card cite {
-  font-style: normal;
-  font-size: 13px;
+.fund-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  font-size: 0.7rem;
   font-weight: 600;
-  color: var(--tbp-muted);
-}
-.academic-card .doi {
-  display: block;
-  font-size: 11px;
-  margin-top: 4px;
-  color: var(--tbp-muted);
-  font-family: ui-monospace, Menlo, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
 }
 
-/* ── Fund detail section ────────────────────────────────────── */
-.fund-section {
-  padding-block: clamp(56px, 7vw, 96px);
+.fund-badge .dot {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
 }
-.fund-section.alt { background: var(--tbp-bg-alt, #f5f3ec); }
-.fund-section.dark { background: #0a0f1c; color: rgba(255,255,255,.85); }
-.fund-section.dark h2,
-.fund-section.dark h3 { color: #fff; }
+
+.fund-hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.fund-hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.fund-hero p.tagline {
+  font-size: 1.05rem;
+  color: var(--text-2);
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.fund-meta-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+.fund-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fund-meta-item .label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.fund-meta-item .value {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.fund-meta-item .value.positive { color: var(--green); }
+.fund-meta-item .value.negative { color: var(--red); }
+.fund-meta-item .value.gold     { color: var(--gold); }
+
+/* ── MAIN LAYOUT ── */
+.fund-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .fund-body { grid-template-columns: 1fr; }
+}
+
+/* ── SECTIONS ── */
+.fund-section {
+  margin-bottom: 3rem;
+}
 
 .fund-section h2 {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-weight: 850;
-  letter-spacing: -.035em;
-  margin: 0 0 8px;
-  line-height: 1.05;
-}
-.fund-section h2 em {
-  font-family: 'Fraunces', serif;
-  font-style: italic; font-weight: 350;
-  color: var(--tbp-muted);
-}
-.fund-section .section-number {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--tbp-warm);
-  margin-bottom: 10px;
-}
-.fund-section .section-intro {
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--tbp-muted);
-  max-width: 72ch;
-  margin: 16px 0 36px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-/* ── Performance chart + table ──────────────────────────────── */
-.perf-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 56px);
-  align-items: start;
+.fund-section h2 .section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  font-style: normal;
 }
-@media (max-width: 880px) { .perf-grid { grid-template-columns: 1fr; } }
-.perf-chart-card {
-  background: #fff;
-  border: 1px solid var(--tbp-line);
-  border-radius: 14px;
-  padding: clamp(20px, 2.5vw, 28px);
-  height: 380px;
-  position: relative;
+
+.fund-section p {
+  color: var(--text-2);
+  line-height: 1.8;
+  margin-bottom: 1rem;
 }
-.perf-chart-card canvas { width: 100% !important; height: 100% !important; }
-.perf-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+
+.fund-section p:last-child { margin-bottom: 0; }
+
+/* ── PERFORMANCE CHART ── */
+.chart-container {
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
 }
-.perf-table th {
-  text-align: left;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--tbp-muted);
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--tbp-line);
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
 }
-.perf-table th + th { text-align: right; }
-.perf-table td {
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--tbp-line-soft);
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 14px;
-  color: var(--tbp-ink);
-}
-.perf-table td.label {
-  font-family: 'Inter Tight', sans-serif;
+
+.chart-title {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--tbp-ink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
 }
-.perf-table td:not(.label) { text-align: right; }
-.perf-table td.pos { color: var(--tbp-pos); font-weight: 600; }
-.perf-table td.neg { color: var(--tbp-neg); font-weight: 600; }
-.perf-table tr:last-child td { border-bottom: 0; }
 
-/* ── Holdings table ─────────────────────────────────────────── */
+.chart-tabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.chart-tab {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.chart-tab.active, .chart-tab:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-dim);
+}
+
+canvas.fund-chart {
+  width: 100% !important;
+  height: 200px !important;
+}
+
+/* ── ALLOCATION DONUT ── */
+.allocation-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+  .allocation-wrap { grid-template-columns: 1fr; }
+}
+
+.donut-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.donut-center .dc-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.donut-center .dc-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+.allocation-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.alloc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.82rem;
+}
+
+.alloc-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.alloc-name { color: var(--text-2); flex: 1; }
+.alloc-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text);
+}
+
+/* ── HOLDINGS TABLE ── */
 .holdings-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
+  font-size: 0.85rem;
 }
+
+.holdings-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
 .holdings-table th {
+  padding: 0.6rem 0.75rem;
   text-align: left;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--tbp-muted);
-  padding: 14px 16px;
-  border-bottom: 1.5px solid var(--tbp-ink);
-  background: transparent;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
 }
-.holdings-table th.num { text-align: right; }
+
+.holdings-table th:last-child { text-align: right; }
+
+.holdings-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background 0.15s;
+}
+
+.holdings-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
 .holdings-table td {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--tbp-line-soft);
-  font-size: 14px;
-  color: var(--tbp-ink);
+  padding: 0.65rem 0.75rem;
+  color: var(--text-2);
   vertical-align: middle;
 }
-.holdings-table tr:hover td { background: var(--tbp-bg-alt, #f5f3ec); }
-.holdings-table td.ticker {
-  font-family: ui-monospace, Menlo, monospace;
-  font-weight: 700;
-  color: var(--tbp-ink);
-}
-.holdings-table td.name { font-weight: 500; }
-.holdings-table td.asset { color: var(--tbp-muted); font-size: 13px; }
-.holdings-table td.weight {
-  font-family: ui-monospace, Menlo, monospace;
-  font-weight: 700;
+
+.holdings-table td:last-child {
   text-align: right;
-  position: relative;
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
 }
-.holdings-table .weight-bar {
-  position: absolute;
-  bottom: 4px; right: 16px; left: 16px;
+
+.holdings-table td .ticker {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--gold);
+  display: block;
+}
+
+.holdings-table td .name {
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+
+.weight-bar {
   height: 3px;
-  background: var(--tbp-line-soft);
+  background: var(--border);
   border-radius: 2px;
+  margin-top: 4px;
   overflow: hidden;
-}
-.holdings-table .weight-bar::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: var(--w, 0%);
-  background: var(--tbp-warm);
-  border-radius: 2px;
-}
-.holdings-total {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-  border-top: 1.5px solid var(--tbp-ink);
 }
 
-/* ── Allocation breakdown bars ──────────────────────────────── */
-.allocation-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: clamp(28px, 4vw, 56px);
-}
-@media (max-width: 720px) { .allocation-grid { grid-template-columns: 1fr; } }
-.alloc-card h3 {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -.015em;
-  margin: 0 0 20px;
-}
-.alloc-bars {
-  display: flex; flex-direction: column;
-  gap: 14px;
-}
-.alloc-bar {
-  display: grid;
-  grid-template-columns: 160px 1fr 50px;
-  gap: 14px;
-  align-items: center;
-  font-size: 13.5px;
-}
-.alloc-bar .name { color: var(--tbp-ink); font-weight: 500; }
-.alloc-bar .bar {
-  height: 8px;
-  background: var(--tbp-line-soft);
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-.alloc-bar .bar-fill {
+.weight-fill {
   height: 100%;
-  background: var(--tbp-ink);
-  border-radius: 4px;
-  transition: width .8s cubic-bezier(.16,.62,.24,1);
-}
-.alloc-bar .bar-fill.warm { background: var(--tbp-warm); }
-.alloc-bar .bar-fill.green { background: #1a8a4a; }
-.alloc-bar .bar-fill.blue { background: #0066ff; }
-.alloc-bar .bar-fill.purple { background: #9333ea; }
-.alloc-bar .bar-fill.red { background: #dc2626; }
-.alloc-bar .bar-fill.gold { background: #b8860b; }
-.alloc-bar .pct {
-  font-family: ui-monospace, Menlo, monospace;
-  font-weight: 700;
-  color: var(--tbp-ink);
-  text-align: right;
-  font-size: 13px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: width 0.8s ease;
 }
 
-/* ── Risk metrics grid ──────────────────────────────────────── */
-.risk-grid {
+/* ── RISK METRICS GRID ── */
+.metrics-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr));
-  gap: 0;
-  border: 1px solid var(--tbp-line);
-  border-radius: 14px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #fff;
-}
-@media (max-width: 720px) { .risk-grid { grid-template-columns: repeat(2,1fr); } }
-.risk-cell {
-  padding: clamp(20px, 2.5vw, 28px);
-  border-right: 1px solid var(--tbp-line);
-  border-bottom: 1px solid var(--tbp-line);
-}
-.risk-cell:nth-child(4n) { border-right: 0; }
-.risk-cell:nth-last-child(-n+4):not(:nth-child(4n+1)) { border-bottom: 0; }
-@media (max-width: 720px) {
-  .risk-cell { border-right: 0; }
-  .risk-cell:nth-child(odd) { border-right: 1px solid var(--tbp-line); }
-}
-.risk-cell .label {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--tbp-muted);
-  margin-bottom: 10px;
-}
-.risk-cell .value {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  font-weight: 800;
-  letter-spacing: -.025em;
-  color: var(--tbp-ink);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.risk-cell .value.pos { color: var(--tbp-pos); }
-.risk-cell .value.neg { color: var(--tbp-neg); }
-.risk-cell .meta {
-  font-size: 11.5px;
-  color: var(--tbp-muted);
-  line-height: 1.4;
+  margin-bottom: 1.5rem;
 }
 
-/* ── Strategy / methodology prose ───────────────────────────── */
-.fund-prose p {
-  font-size: 16px; line-height: 1.75;
-  color: var(--tbp-ink-2, var(--tbp-ink));
-  margin: 0 0 18px;
-  max-width: 72ch;
-}
-.fund-prose ul {
-  list-style: none; padding: 0; margin: 16px 0 24px;
-  max-width: 72ch;
-}
-.fund-prose ul li {
-  font-size: 15px;
-  color: var(--tbp-ink-2, var(--tbp-ink));
-  line-height: 1.6;
-  padding: 10px 0 10px 28px;
-  position: relative;
-  border-bottom: 1px solid var(--tbp-line-soft);
-}
-.fund-prose ul li:last-child { border-bottom: 0; }
-.fund-prose ul li::before {
-  content: "→";
-  position: absolute;
-  left: 4px; top: 10px;
-  color: var(--tbp-warm); font-weight: 700;
-}
-.fund-prose ul li strong { color: var(--tbp-ink); font-weight: 700; }
-
-.fund-prose code {
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 13px;
-  background: var(--tbp-bg-alt, #f5f3ec);
-  padding: 2px 6px;
-  border-radius: 4px;
+.metric-cell {
+  background: var(--ink-2);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-.method-rule {
+.metric-cell .m-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.metric-cell .m-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.metric-cell .m-note {
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+
+/* ── SIDEBAR CARD ── */
+.fund-sidebar {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sidebar-card {
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sidebar-card-header {
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.sidebar-card-body {
+  padding: 1rem 1.25rem;
+}
+
+.sc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.83rem;
+}
+
+.sc-row:last-child { border-bottom: none; }
+
+.sc-row .sc-key { color: var(--text-3); }
+.sc-row .sc-val {
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+/* ── DISCLAIMER ── */
+.fund-disclaimer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1.5rem, 5vw, 4rem) 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.fund-disclaimer p {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  line-height: 1.8;
+}
+
+.fund-disclaimer strong { color: var(--text-2); }
+
+/* ── STRATEGY PILLARS ── */
+.pillars-grid {
   display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 18px;
-  padding: 18px 0;
-  border-top: 1px solid var(--tbp-line);
-  align-items: start;
-}
-.method-rule:last-of-type { border-bottom: 1px solid var(--tbp-line); }
-.method-rule .rn {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -.02em;
-  color: var(--tbp-warm);
-  line-height: 1;
-}
-.method-rule h4 {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: -.015em;
-  margin: 0 0 6px;
-  color: var(--tbp-ink);
-}
-.method-rule p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--tbp-muted);
-  margin: 0;
-  max-width: 66ch;
-}
-.method-rule p strong { color: var(--tbp-ink); }
-.method-rule p code {
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 12.5px;
-  background: var(--tbp-bg-alt, #f5f3ec);
-  padding: 2px 6px;
-  border-radius: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
 }
 
-/* ── Related funds nav ──────────────────────────────────────── */
-.related-funds {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: clamp(14px, 2vw, 22px);
-  margin-top: 36px;
-}
-@media (max-width: 720px) { .related-funds { grid-template-columns: 1fr; } }
-.related-card {
-  padding: 22px 24px;
-  background: #fff;
-  border: 1px solid var(--tbp-line);
-  border-radius: 10px;
-  text-decoration: none;
-  color: var(--tbp-ink);
-  transition: border-color .25s, transform .3s, box-shadow .3s;
-  display: flex; flex-direction: column;
-  gap: 4px;
-}
-.related-card:hover {
-  border-color: var(--tbp-warm);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px -10px rgba(0,0,0,.1);
-}
-.related-card .code {
-  font-family: ui-monospace, Menlo, monospace;
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .12em;
-  color: var(--tbp-muted);
-}
-.related-card .name {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: -.015em;
-}
-.related-card .arr {
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--tbp-warm);
-  font-weight: 700;
+.pillar {
+  background: var(--ink-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: border-color 0.2s;
 }
 
-/* ── Disclosure block ───────────────────────────────────────── */
-.fund-disclosure {
-  background: var(--tbp-bg-alt, #f5f3ec);
-  border-left: 3px solid var(--tbp-muted);
-  padding: 20px 24px;
-  border-radius: 0 8px 8px 0;
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: var(--tbp-muted);
-  margin: 24px 0;
+.pillar:hover { border-color: var(--gold); }
+
+.pillar .p-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--gold);
 }
-.fund-disclosure strong { color: var(--tbp-ink); font-weight: 700; }
+
+.pillar .p-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.pillar .p-desc {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+/* ── ACADEMIC TAG ── */
+.academic-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 0.35rem 0.8rem;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+/* ── CRITERIA TABLE (options) ── */
+.criteria-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  margin: 1rem 0;
+}
+
+.criteria-table thead th {
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.criteria-table tbody td {
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-2);
+  vertical-align: top;
+}
+
+.criteria-table .crit-badge {
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+}
+
+.criteria-table .crit-badge.pass  { background: rgba(61,186,126,0.12); color: var(--green); }
+.criteria-table .crit-badge.warn  { background: rgba(201,168,76,0.12); color: var(--gold); }
+.criteria-table .crit-badge.fail  { background: rgba(224,82,82,0.12); color: var(--red); }

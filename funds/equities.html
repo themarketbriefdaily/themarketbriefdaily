@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equities Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–EQT · Global Equity</div>
+    <h1>Equities <em>Fund</em></h1>
+    <p class="tagline">A concentrated, high-conviction global equity portfolio targeting quality compounders — businesses with durable competitive advantages, high returns on invested capital, and pricing power through the cycle.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Quality Growth</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">MSCI World</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2021</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+12.6%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Active Share</span>
+        <span class="value">74%</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy &amp; Philosophy</h2>
+      <div class="academic-tag">📐 Buffett / Munger · Quality Factor · Moat Framework</div>
+      <p>The Equities Fund is built on the principle that truly exceptional businesses — those with durable economic moats, high returns on invested capital (ROIC), and strong free cash flow generation — compound wealth at rates that systematically exceed market-cap weighted indices over the long run.</p>
+      <p>This is supported by academic work on the quality factor (Asness, Frazzini &amp; Pedersen, 2019) showing that quality stocks exhibit a significant risk-adjusted return premium. The portfolio holds 25–35 stocks, diversified across sectors and geographies, with an average holding period of 3–5 years. Position sizing uses a modified Kelly criterion bounded by a 12% maximum single-name weight.</p>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> Stock Selection Criteria</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">ROIC &gt; WACC</span>
+          <span class="p-desc">Only businesses that generate returns on capital consistently above their cost of capital — the fundamental test of value creation.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Economic Moat</span>
+          <span class="p-desc">Network effects, switching costs, cost advantages, or intangible assets that protect margins over a 10-year horizon.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">FCF Conversion</span>
+          <span class="p-desc">Free cash flow conversion &gt;80% of net income. Capital-light models preferred. Low capex intensity.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Management Quality</span>
+          <span class="p-desc">Founder-led or owner-operator culture. Capital allocation track record. Skin in the game.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs MSCI World</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">5Y</button>
+            <button class="chart-tab">3Y</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Sector Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Holdings</span>
+            <span class="dc-value">30</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Representative Holdings</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr><th>Security</th><th>Sector</th><th>ROIC</th><th>Weight</th></tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–EQT</span></div>
+        <div class="sc-row"><span class="sc-key">Asset Class</span><span class="sc-val">Global Equity</span></div>
+        <div class="sc-row"><span class="sc-key">Style</span><span class="sc-val">Quality Growth</span></div>
+        <div class="sc-row"><span class="sc-key">Holdings</span><span class="sc-val">25–35 Names</span></div>
+        <div class="sc-row"><span class="sc-key">Active Share</span><span class="sc-val" style="color:var(--gold)">74%</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$50,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">16.1%</span>
+            <span class="m-note">vs 14.8% benchmark</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">1.28</span>
+            <span class="m-note">Since inception</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−24.2%</span>
+            <span class="m-note">Tech sell-off 2022</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Information Ratio</span>
+            <span class="m-value">0.84</span>
+            <span class="m-note">vs MSCI World</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Academic References</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Asness, Frazzini & Pedersen (2019) — <em>Quality minus Junk</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Buffett & Munger — <em>Berkshire Hathaway Annual Letters (1977–present)</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;border:none">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Porter (1985) — <em>Competitive Advantage</em></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice. Individual stock holdings are illustrative. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#c9a84c','#4a90d9','#3dba7e','#9b6dd4','#e07a38','#e05252'];
+
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      { label: 'Equities Fund', data: [100, 134, 108, 142, 172, 198],
+        borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.07)',
+        fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#c9a84c', borderWidth: 2 },
+      { label: 'MSCI World', data: [100, 122, 103, 128, 148, 162],
+        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
+        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+const allocs = [
+  { name: 'Technology',        pct: 32 },
+  { name: 'Financials',        pct: 18 },
+  { name: 'Consumer Discret.', pct: 15 },
+  { name: 'Healthcare',        pct: 14 },
+  { name: 'Industrials',       pct: 12 },
+  { name: 'Other / Cash',      pct:  9 },
+];
+
+new Chart(document.getElementById('donutChart').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: allocs.map(a=>a.name), datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0 }] },
+  options: { cutout: '68%', plugins: { legend: { display: false } } }
+});
+
+document.getElementById('allocLegend').innerHTML = allocs.map((a,i) =>
+  `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`
+).join('');
+
+const holdings = [
+  { ticker:'MSFT', name:'Microsoft Corporation',    sector:'Technology',    roic:'29%', w:10 },
+  { ticker:'V',    name:'Visa Inc.',                sector:'Financials',    roic:'44%', w:9  },
+  { ticker:'LVMH', name:'LVMH Moët Hennessy',       sector:'Luxury Goods',  roic:'18%', w:8  },
+  { ticker:'ASML', name:'ASML Holding NV',          sector:'Technology',    roic:'35%', w:8  },
+  { ticker:'MA',   name:'Mastercard Inc.',          sector:'Financials',    roic:'52%', w:8  },
+  { ticker:'NVO',  name:'Novo Nordisk A/S',         sector:'Healthcare',    roic:'66%', w:7  },
+  { ticker:'AAPL', name:'Apple Inc.',               sector:'Technology',    roic:'57%', w:7  },
+  { ticker:'SPGI', name:'S&P Global Inc.',          sector:'Financials',    roic:'17%', w:6  },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+holdings.forEach(h => {
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td>${h.sector}</td>
+    <td style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--green)">${h.roic}</td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%"></div></div></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

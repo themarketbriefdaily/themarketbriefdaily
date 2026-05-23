@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commodities Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–COM · Real Assets</div>
+    <h1>Commodities <em>Fund</em></h1>
+    <p class="tagline">A diversified real assets strategy spanning energy, metals, agriculture, and precious metals — providing inflation protection, portfolio diversification, and exposure to global commodity supercycles.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Diversified Real Assets</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">Bloomberg Commodity Index</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2022</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+7.8%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inflation Beta</span>
+        <span class="value">1.42</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy &amp; Academic Basis</h2>
+      <div class="academic-tag">📐 Gorton & Rouwenhorst (2006) · Bhardwaj, Gorton & Rouwenhorst (2015)</div>
+      <p>The Commodities Fund is grounded in the research of Gorton and Rouwenhorst (2006), who demonstrated that a diversified commodity futures portfolio exhibits returns comparable to equities with low correlation to both stocks and bonds — making commodities a genuinely valuable diversifier. Returns in commodity futures arise from three sources: spot price changes, roll yield (the curve structure premium), and collateral return from T-bills posted as margin.</p>
+      <p>The portfolio actively manages roll yield by selecting contracts along the term structure to maximise backwardation exposure and minimise contango drag — a discipline shown to significantly improve commodity returns by Erb &amp; Harvey (2006). Allocations are rebalanced monthly and reviewed quarterly for structural shifts in supply/demand fundamentals.</p>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> Investment Pillars</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">Inflation Hedge</span>
+          <span class="p-desc">Commodity prices have historically exhibited a strong positive correlation with unexpected inflation — CPI beta of ~1.4.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Portfolio Diversifier</span>
+          <span class="p-desc">Near-zero correlation to global equities and negative correlation to bonds in inflationary regimes.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">Roll Yield Optimisation</span>
+          <span class="p-desc">Actively select contracts to capture backwardation and avoid contango — the dominant driver of long-run commodity futures returns.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Supercycle Positioning</span>
+          <span class="p-desc">Structural overweight to energy transition metals (copper, lithium) aligned with the multi-decade decarbonisation capex cycle.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs Bloomberg Commodity Index</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">3Y</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Commodity Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Sectors</span>
+            <span class="dc-value">4</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Holdings &amp; Instruments</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr><th>Security</th><th>Commodity Sector</th><th>Instrument</th><th>Weight</th></tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–COM</span></div>
+        <div class="sc-row"><span class="sc-key">Asset Class</span><span class="sc-val">Commodities</span></div>
+        <div class="sc-row"><span class="sc-key">Inflation Beta</span><span class="sc-val" style="color:var(--gold)">1.42</span></div>
+        <div class="sc-row"><span class="sc-key">Equity Corr.</span><span class="sc-val">+0.12</span></div>
+        <div class="sc-row"><span class="sc-key">Bond Corr.</span><span class="sc-val">−0.18</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$10,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">16.8%</span>
+            <span class="m-note">vs 17.2% benchmark</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">0.72</span>
+            <span class="m-note">Since inception</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−21.4%</span>
+            <span class="m-note">H2 2022</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Roll Yield (Ann.)</span>
+            <span class="m-value">+2.1%</span>
+            <span class="m-note">Backwardation capture</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Academic References</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Gorton & Rouwenhorst (2006) — <em>Facts and fantasies about commodity futures</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Erb & Harvey (2006) — <em>The strategic and tactical value of commodity futures</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;border:none">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Ilmanen (2011) — <em>Expected Returns: Ch. 12, Real Assets</em></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. Commodity investments involve significant risk including leverage, basis risk, and roll yield uncertainty. Past performance is not indicative of future results. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#e07a38','#c9a84c','#9b6dd4','#3dba7e','#4a90d9'];
+
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan 22','Apr 22','Jul 22','Oct 22','Jan 23','Apr 23','Jul 23','Oct 23','Jan 24','Apr 24','Jul 24','Jan 25'],
+    datasets: [
+      { label: 'Commodities Fund', data: [100,118,108,102,108,106,109,104,112,119,116,124],
+        borderColor: '#e07a38', backgroundColor: 'rgba(224,122,56,0.07)',
+        fill: true, tension: 0.4, pointRadius: 2, pointBackgroundColor: '#e07a38', borderWidth: 2 },
+      { label: 'Bloomberg Commodity', data: [100,115,104,98,103,100,102,98,105,112,108,116],
+        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
+        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+const allocs = [
+  { name: 'Energy',               pct: 30 },
+  { name: 'Precious Metals',      pct: 25 },
+  { name: 'Industrial / Transition Metals', pct: 25 },
+  { name: 'Agriculture',          pct: 15 },
+  { name: 'Livestock',            pct:  5 },
+];
+
+new Chart(document.getElementById('donutChart').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: allocs.map(a=>a.name), datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0 }] },
+  options: { cutout: '68%', plugins: { legend: { display: false } } }
+});
+
+document.getElementById('allocLegend').innerHTML = allocs.map((a,i) =>
+  `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`
+).join('');
+
+const holdings = [
+  { ticker:'USO',  name:'United States Oil Fund',          sector:'Energy',         instrument:'ETF (Futures)', w:15 },
+  { ticker:'UNG',  name:'United States Nat. Gas Fund',     sector:'Energy',         instrument:'ETF (Futures)', w:8  },
+  { ticker:'GLD',  name:'SPDR Gold Shares',                sector:'Precious Metals',instrument:'Physical ETF',  w:16 },
+  { ticker:'SLV',  name:'iShares Silver Trust',            sector:'Precious Metals',instrument:'Physical ETF',  w:9  },
+  { ticker:'COPX', name:'Global X Copper Miners ETF',      sector:'Transition Metals',instrument:'Equity ETF',  w:12 },
+  { ticker:'REMX', name:'VanEck Rare Earth/Strat. Metals', sector:'Transition Metals',instrument:'Equity ETF',  w:8  },
+  { ticker:'WEAT', name:'Teucrium Wheat Fund',             sector:'Agriculture',    instrument:'ETF (Futures)', w:8  },
+  { ticker:'CORN', name:'Teucrium Corn Fund',              sector:'Agriculture',    instrument:'ETF (Futures)', w:7  },
+  { ticker:'PDBC', name:'Invesco Optimum Yield Div. Commodity', sector:'Diversified',instrument:'Multi-Futures',w:12},
+  { ticker:'CASH', name:'T-Bill Collateral',               sector:'Cash',           instrument:'Liquidity',     w:5  },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+const sColors = {'Energy':'#e07a38','Precious Metals':'#c9a84c','Transition Metals':'#9b6dd4','Agriculture':'#3dba7e','Diversified':'#4a90d9','Cash':'#5c5a56'};
+holdings.forEach(h => {
+  const col = sColors[h.sector] || '#9a9690';
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td><span style="color:${col};font-size:0.78rem">${h.sector}</span></td>
+    <td style="font-size:0.78rem">${h.instrument}</td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%;background:${col}"></div></div></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
