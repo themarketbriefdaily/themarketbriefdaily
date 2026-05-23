@@ -51,6 +51,61 @@
     .tbp-header.below-hero .tbp-burger span::before,
     .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
 
+    /* ── Methodology card grid ──────────────────────────────────── */
+    .method-card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: clamp(14px, 1.8vw, 22px);
+    }
+    @media (max-width: 980px) { .method-card-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 540px)  { .method-card-grid { grid-template-columns: 1fr; } }
+    .method-card {
+      padding: clamp(22px, 2.8vw, 32px);
+      background: var(--tbp-bg);
+      border: 1px solid var(--tbp-line);
+      border-radius: var(--tbp-radius);
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .25s, box-shadow .3s, transform .3s;
+    }
+    .method-card:hover {
+      border-color: rgba(200,163,90,.4);
+      box-shadow: 0 10px 30px -8px rgba(0,0,0,.08);
+      transform: translateY(-3px);
+    }
+    .method-card-num {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 2rem; font-weight: 850;
+      letter-spacing: -.04em; color: var(--tbp-line);
+      line-height: 1;
+    }
+    .method-card-sub {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: var(--tbp-warm); margin: 0;
+    }
+    .method-card h3 {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 1rem; font-weight: 800;
+      letter-spacing: -.01em; color: var(--tbp-ink);
+      margin: 0; line-height: 1.25;
+    }
+    .method-card p {
+      font-size: 13.5px; line-height: 1.6;
+      color: var(--tbp-muted); margin: 0;
+    }
+    .method-card ul {
+      list-style: none; padding: 0; margin: 4px 0 0;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .method-card ul li {
+      font-size: 13px; color: var(--tbp-muted);
+      padding-left: 14px; position: relative; line-height: 1.5;
+    }
+    .method-card ul li::before {
+      content: "·"; position: absolute; left: 0;
+      color: var(--tbp-warm); font-weight: 700;
+    }
+
     /* ── Benefits grid ─────────────────────────────────────────── */
     .benefits-grid {
       display: grid;
@@ -61,21 +116,22 @@
     @media (max-width: 540px)  { .benefits-grid { grid-template-columns: 1fr; } }
     .benefit-box {
       padding: clamp(24px, 3vw, 36px) clamp(22px, 2.5vw, 30px);
-      border: 1px solid rgba(255,255,255,.1);
+      border: 1px solid var(--tbp-line);
       border-radius: 14px;
-      background: rgba(255,255,255,.04);
+      background: var(--tbp-bg);
       display: flex; flex-direction: column; gap: 16px;
-      transition: background .25s, border-color .25s;
+      transition: border-color .25s, box-shadow .3s, transform .3s;
     }
     .benefit-box:hover {
-      background: rgba(255,255,255,.07);
-      border-color: rgba(200,163,90,.35);
+      border-color: rgba(0,0,0,.15);
+      box-shadow: 0 12px 32px -10px rgba(0,0,0,.09);
+      transform: translateY(-3px);
     }
     .benefit-icon {
       width: 52px; height: 52px;
       border-radius: 14px;
-      background: rgba(200,163,90,.15);
-      border: 1px solid rgba(200,163,90,.3);
+      background: rgba(200,163,90,.1);
+      border: 1px solid rgba(200,163,90,.25);
       display: flex; align-items: center; justify-content: center;
       font-size: 22px;
       color: var(--tbp-warm);
@@ -84,18 +140,18 @@
       font-family: 'Inter Tight', sans-serif;
       font-size: 1.05rem; font-weight: 800;
       letter-spacing: -.015em; line-height: 1.2;
-      color: #fff; margin: 0;
+      color: var(--tbp-ink); margin: 0;
     }
     .benefit-box p {
       font-size: 14px; line-height: 1.6;
-      color: rgba(255,255,255,.72); margin: 0;
+      color: var(--tbp-muted); margin: 0;
     }
     .benefit-box ul {
       list-style: none; padding: 0; margin: 0;
       display: flex; flex-direction: column; gap: 6px;
     }
     .benefit-box ul li {
-      font-size: 13.5px; color: rgba(255,255,255,.75);
+      font-size: 13.5px; color: var(--tbp-muted);
       padding-left: 14px; position: relative;
     }
     .benefit-box ul li::before {
@@ -104,9 +160,15 @@
       color: var(--tbp-warm); font-weight: 700;
     }
     .benefit-highlight {
-      font-weight: 700; color: #fff;
+      font-weight: 700; color: var(--tbp-ink);
       font-size: 13px;
     }
+
+    /* ── MBD portfolio 2×2 grid ─────────────────────────────────── */
+    .mbd-4-grid {
+      grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+    @media (max-width: 800px) { .mbd-4-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; } }
 
     /* ── Fund range cards ─────────────────────────────────────── */
     .fund-range-grid {
@@ -513,12 +575,118 @@
     </div>
   </section>
 
-  <!-- ══ BENEFITS (dark) ════════════════════════════════════════ -->
-  <section class="tbp-section dark">
+  <!-- ══ METHODOLOGY CARDS ════════════════════════════════════════ -->
+  <section class="tbp-section" id="methodology">
     <div class="tbp-container">
-      <div class="tbp-section-heading" style="border-bottom-color:rgba(255,255,255,.1);" data-tbp-reveal>
+      <div class="tbp-section-heading" data-tbp-reveal>
         <div class="left">
-          <div class="number" style="color:var(--tbp-warm);">01 / Why these portfolios</div>
+          <div class="number">00 / Methodology</div>
+          <h2>How the portfolios<br><em>are built.</em></h2>
+        </div>
+        <div class="right">
+          <p class="tbp-lead">Everything published here is documented openly — how each fund is built, what benchmarks it is compared to, and where the data comes from. Read this before drawing conclusions from any return figure on this site.</p>
+        </div>
+      </div>
+
+      <div class="method-card-grid" data-tbp-reveal>
+
+        <div class="method-card">
+          <div class="method-card-num">01</div>
+          <p class="method-card-sub">Purpose &amp; status</p>
+          <h3>Educational research project</h3>
+          <p>The model portfolios are illustrative — they do not represent any live fund, trading account, or advisory product. No client capital is allocated. Returns are simulated and do not constitute investment advice.</p>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">M1</div>
+          <p class="method-card-sub">Frame · Market structure</p>
+          <h3>Where the marginal trade clears</h3>
+          <p>Order-flow telemetry, dealer positioning, futures–physical linkage, and the microstructure effects that drive short-window price formation.</p>
+          <ul>
+            <li>Common failure: confusing flow with edge</li>
+            <li>Over-fitting to a single venue's tape</li>
+            <li>Ignoring funding constraints on structure trades</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">M2</div>
+          <p class="method-card-sub">Frame · Physical tightness</p>
+          <h3>When paper and physical diverge</h3>
+          <p>Inventory buffers, lease and funding regimes, delivery windows, and conditions where the futures curve mis-prices the cash market.</p>
+          <ul>
+            <li>Common failure: extrapolating one squeeze cycle</li>
+            <li>Forgetting warehousing arbitrage caps tightness</li>
+            <li>Underestimating how fast tight markets loosen</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">M3</div>
+          <p class="method-card-sub">Frame · Macro transmission</p>
+          <h3>From rates to risk assets</h3>
+          <p>How policy, real yields, dollar liquidity, and credit spreads propagate into commodity, equity, and FX pricing — with attention to lags and non-linearities.</p>
+          <ul>
+            <li>Common failure: linear-thinking in regime shifts</li>
+            <li>Reading the curve as forecast, not positioning</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">02</div>
+          <p class="method-card-sub">Portfolio construction</p>
+          <h3>Each portfolio follows a documented mandate</h3>
+          <ul>
+            <li><strong>MACRO</strong> — multi-asset overlay around rate-curve inflections and real-yield decomposition</li>
+            <li><strong>STRUCT</strong> — equity dislocations from order-flow and dealer positioning</li>
+            <li><strong>SUPPLY</strong> — long physical-tightness premia via inventory and delivery signals</li>
+            <li><strong>FACT</strong> — regime-aware factor rotation by rate-cycle classification</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">03</div>
+          <p class="method-card-sub">Benchmarks</p>
+          <h3>Compared to closest passive alternative</h3>
+          <p>Each fund is compared to a benchmark that reflects its closest passive alternative — never cherry-picked to flatter returns.</p>
+          <ul>
+            <li>MACRO → 60/40 balanced portfolio</li>
+            <li>STRUCT → S&amp;P 500</li>
+            <li>SUPPLY → Bloomberg Commodity</li>
+            <li>FACT → MSCI World</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">04</div>
+          <p class="method-card-sub">Data sources</p>
+          <h3>Public-by-default</h3>
+          <ul>
+            <li>Price &amp; market data — LME, CME, ICE, Bloomberg/Refinitiv</li>
+            <li>Inventory &amp; supply — COMEX/LME warehouse stocks, EIA, USDA</li>
+            <li>Macro &amp; rates — FRED, ECB SDW, BIS, central-bank minutes</li>
+            <li>Microstructure — published academic literature and exchange disclosures</li>
+          </ul>
+        </div>
+
+        <div class="method-card">
+          <div class="method-card-num">05</div>
+          <p class="method-card-sub">Scope &amp; independence</p>
+          <h3>No paid promotions. No allocation kickbacks.</h3>
+          <p>The brief is a working analyst's notebook — not a trade-recommendation service or signal feed. If an instrument is referenced, it is because the analysis pointed there, not because anyone paid for the mention.</p>
+          <p style="margin-top:8px;">Corrections are published in the next brief, marked with an erratum, and linked back. No silent edits.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BENEFITS ════════════════════════════════════════════════ -->
+  <section class="tbp-section alt">
+    <div class="tbp-container">
+      <div class="tbp-section-heading" data-tbp-reveal>
+        <div class="left">
+          <div class="number">01 / Why these portfolios</div>
           <h2>Understand the<br><em>foundations.</em></h2>
         </div>
         <div class="right">
@@ -692,7 +860,7 @@
   </section>
 
   <!-- ══ MBD RESEARCH PORTFOLIOS ════════════════════════════════ -->
-  <section class="tbp-section alt" id="mbd-portfolios">
+  <section class="tbp-section" id="mbd-portfolios">
     <div class="tbp-container">
       <div class="tbp-section-heading" data-tbp-reveal>
         <div class="left">
@@ -707,171 +875,134 @@
           </p>
           <div class="tbp-disclaimer" style="margin-top:18px;">
             <span style="font-size:1.2rem;flex-shrink:0;">⚠</span>
-            <div style="font-size:13px;">Illustrative model portfolios — not a fund, not investment advice. Returns are simulated for research purposes. Past hypothetical performance is not indicative of future results.</div>
+            <div style="font-size:13px;">Illustrative only — not a fund, not investment advice. Returns are simulated. Past hypothetical performance is not indicative of future results.</div>
           </div>
         </div>
       </div>
 
-      <!-- MBD-MACRO -->
-      <article class="mbd-card" data-tbp-reveal>
-        <div class="mbd-visual">
-          <span class="mbd-code-pill">MBD-MACRO</span>
-          <div class="mbd-ytd-overlay">
-            <div class="ytd-num">+8.4%</div>
-            <div class="ytd-label">YTD 2026 · vs 60/40 +3.3pp</div>
-          </div>
-          <img src="/assets/images/fund-macro.jpg" alt="Macro trading screens" loading="lazy">
-        </div>
-        <div class="mbd-body">
-          <div class="mbd-eyebrow">Macro overlay</div>
-          <h3>Macro Transmission Sleeve</h3>
-          <p class="mbd-desc">Multi-asset macro overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts. Adds or subtracts risk based on transmission state, not consensus narrative.</p>
-          <div class="mbd-stats-row">
-            <div class="ms-item"><div class="ms-k">YTD return</div><div class="ms-v pos">+8.40%</div></div>
-            <div class="ms-item"><div class="ms-k">vs 60/40</div><div class="ms-v pos">+3.30pp</div></div>
-            <div class="ms-item"><div class="ms-k">Since Jan 2025</div><div class="ms-v pos">+19.3%</div></div>
-            <div class="ms-item"><div class="ms-k">Max drawdown</div><div class="ms-v neg">−4.8%</div></div>
-          </div>
-          <div class="mbd-chart-wrap">
-            <canvas id="chartMacro"></canvas>
-          </div>
-          <div class="frc-chart-legend">
-            <span><span class="dot" style="background:#0066ff;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>MBD-MACRO</span>
-            <span><span class="dot" style="background:#8a8a85;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>60/40 benchmark</span>
-          </div>
-          <div class="mbd-pills">
-            <span>Macro</span><span>Multi-asset</span><span>Tactical</span><span>Rate-driven</span>
-          </div>
-          <div class="mbd-allocation">
-            <div class="alloc-row"><span>US Treasuries</span><span class="alloc-weight">38%</span></div>
-            <div class="alloc-row"><span>Global Equities</span><span class="alloc-weight">30%</span></div>
-            <div class="alloc-row"><span>Gold</span><span class="alloc-weight">22%</span></div>
-            <div class="alloc-row"><span>Cash / Short</span><span class="alloc-weight">10%</span></div>
-          </div>
-          <a class="tbp-btn" href="/methodology.html" style="align-self:flex-start;">Methodology <span class="arrow">→</span></a>
-        </div>
-      </article>
+      <div class="fund-range-grid mbd-4-grid" data-tbp-reveal>
 
-      <!-- MBD-STRUCT -->
-      <article class="mbd-card" data-tbp-reveal>
-        <div class="mbd-visual">
-          <span class="mbd-code-pill">MBD-STRUCT</span>
-          <div class="mbd-ytd-overlay">
-            <div class="ytd-num">+6.2%</div>
-            <div class="ytd-label">YTD 2026 · vs S&amp;P 500 +1.8pp</div>
+        <!-- MBD-MACRO -->
+        <div class="fund-range-card">
+          <div class="frc-visual">
+            <img src="/assets/images/fund-macro.jpg" alt="Macro trading screens" loading="lazy">
+            <span class="frc-code">MBD-MACRO</span>
+            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+8.4% YTD</span>
+            <span class="frc-title">Macro Transmission</span>
           </div>
-          <img src="/assets/images/fund-struct.jpg" alt="Market structure data" loading="lazy">
+          <div class="frc-body">
+            <p class="frc-desc">Multi-asset macro overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts. Adds or subtracts risk based on transmission state, not consensus narrative.</p>
+            <div class="frc-stats">
+              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+8.4%</div></div>
+              <div class="frc-stat"><div class="sk">vs 60/40</div><div class="sv pos">+3.3pp</div></div>
+              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−4.8%</div></div>
+            </div>
+            <div class="frc-chart-wrap"><canvas id="chartMacro"></canvas></div>
+            <div class="frc-chart-legend">
+              <span><span class="dot" style="background:#0066ff;"></span>MBD-MACRO</span>
+              <span><span class="dot" style="background:#8a8a85;"></span>60/40</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Macro</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Multi-asset</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Tactical</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Rate-driven</span>
+            </div>
+            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
+          </div>
         </div>
-        <div class="mbd-body">
-          <div class="mbd-eyebrow">Microstructure alpha</div>
-          <h3>Market Structure Alpha</h3>
-          <p class="mbd-desc">Captures dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure effects. A short-window equity strategy keyed off how price formation actually clears, not how headlines describe it.</p>
-          <div class="mbd-stats-row">
-            <div class="ms-item"><div class="ms-k">YTD return</div><div class="ms-v pos">+6.20%</div></div>
-            <div class="ms-item"><div class="ms-k">vs S&amp;P 500</div><div class="ms-v pos">+1.80pp</div></div>
-            <div class="ms-item"><div class="ms-k">Since Jan 2025</div><div class="ms-v pos">+11.5%</div></div>
-            <div class="ms-item"><div class="ms-k">Max drawdown</div><div class="ms-v neg">−5.6%</div></div>
-          </div>
-          <div class="mbd-chart-wrap">
-            <canvas id="chartStruct"></canvas>
-          </div>
-          <div class="frc-chart-legend">
-            <span><span class="dot" style="background:#0a0a0a;display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #ccc;"></span>MBD-STRUCT</span>
-            <span><span class="dot" style="background:#8a8a85;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>S&amp;P 500</span>
-          </div>
-          <div class="mbd-pills">
-            <span>Microstructure</span><span>Equity</span><span>Quant</span><span>Short-window</span>
-          </div>
-          <div class="mbd-allocation">
-            <div class="alloc-row"><span>US Large Caps</span><span class="alloc-weight">72%</span></div>
-            <div class="alloc-row"><span>Liquid ETFs</span><span class="alloc-weight">18%</span></div>
-            <div class="alloc-row"><span>Cash / Buffer</span><span class="alloc-weight">10%</span></div>
-            <div class="alloc-row"><span>Options overlay</span><span class="alloc-weight">—</span></div>
-          </div>
-          <a class="tbp-btn" href="/methodology.html" style="align-self:flex-start;">Methodology <span class="arrow">→</span></a>
-        </div>
-      </article>
 
-      <!-- MBD-SUPPLY -->
-      <article class="mbd-card" data-tbp-reveal>
-        <div class="mbd-visual">
-          <span class="mbd-code-pill">MBD-SUPPLY</span>
-          <div class="mbd-ytd-overlay">
-            <div class="ytd-num">+11.7%</div>
-            <div class="ytd-label">YTD 2026 · vs Bloomberg Cmdty +4.9pp</div>
+        <!-- MBD-STRUCT -->
+        <div class="fund-range-card">
+          <div class="frc-visual">
+            <img src="/assets/images/fund-struct.jpg" alt="Market structure data" loading="lazy">
+            <span class="frc-code">MBD-STRUCT</span>
+            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+6.2% YTD</span>
+            <span class="frc-title">Market Structure Alpha</span>
           </div>
-          <img src="/assets/images/fund-supply.jpg" alt="Gold bars physical supply" loading="lazy">
+          <div class="frc-body">
+            <p class="frc-desc">Captures dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure effects. A short-window equity strategy keyed off how price formation actually clears.</p>
+            <div class="frc-stats">
+              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+6.2%</div></div>
+              <div class="frc-stat"><div class="sk">vs S&amp;P 500</div><div class="sv pos">+1.8pp</div></div>
+              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−5.6%</div></div>
+            </div>
+            <div class="frc-chart-wrap"><canvas id="chartStruct"></canvas></div>
+            <div class="frc-chart-legend">
+              <span><span class="dot" style="background:#0a0a0a;border:1px solid #ccc;"></span>MBD-STRUCT</span>
+              <span><span class="dot" style="background:#8a8a85;"></span>S&amp;P 500</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Microstructure</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Equity</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Quant</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Short-window</span>
+            </div>
+            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
+          </div>
         </div>
-        <div class="mbd-body">
-          <div class="mbd-eyebrow">Physical premia</div>
-          <h3>Physical Supply Premia</h3>
-          <p class="mbd-desc">Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals. Compensates the futures curve for the cost of physical scarcity at points where paper and physical markets diverge.</p>
-          <div class="mbd-stats-row">
-            <div class="ms-item"><div class="ms-k">YTD return</div><div class="ms-v pos">+11.70%</div></div>
-            <div class="ms-item"><div class="ms-k">vs Bloomberg Cmdty</div><div class="ms-v pos">+4.90pp</div></div>
-            <div class="ms-item"><div class="ms-k">Since Jan 2025</div><div class="ms-v pos">+20.6%</div></div>
-            <div class="ms-item"><div class="ms-k">Max drawdown</div><div class="ms-v neg">−6.4%</div></div>
-          </div>
-          <div class="mbd-chart-wrap">
-            <canvas id="chartSupply"></canvas>
-          </div>
-          <div class="frc-chart-legend">
-            <span><span class="dot" style="background:#1a8a4a;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>MBD-SUPPLY</span>
-            <span><span class="dot" style="background:#8a8a85;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>Bloomberg Cmdty</span>
-          </div>
-          <div class="mbd-pills">
-            <span>Commodities</span><span>Physical</span><span>Supply cycle</span><span>Metals &amp; energy</span>
-          </div>
-          <div class="mbd-allocation">
-            <div class="alloc-row"><span>Precious metals</span><span class="alloc-weight">42%</span></div>
-            <div class="alloc-row"><span>Energy futures</span><span class="alloc-weight">38%</span></div>
-            <div class="alloc-row"><span>Industrial metals</span><span class="alloc-weight">12%</span></div>
-            <div class="alloc-row"><span>Cash</span><span class="alloc-weight">8%</span></div>
-          </div>
-          <a class="tbp-btn" href="/methodology.html" style="align-self:flex-start;">Methodology <span class="arrow">→</span></a>
-        </div>
-      </article>
 
-      <!-- MBD-FACT -->
-      <article class="mbd-card" data-tbp-reveal>
-        <div class="mbd-visual">
-          <span class="mbd-code-pill">MBD-FACT</span>
-          <div class="mbd-ytd-overlay">
-            <div class="ytd-num">+7.1%</div>
-            <div class="ytd-label">YTD 2026 · vs MSCI World +1.7pp</div>
+        <!-- MBD-SUPPLY -->
+        <div class="fund-range-card">
+          <div class="frc-visual">
+            <img src="/assets/images/fund-supply.jpg" alt="Physical supply premia" loading="lazy">
+            <span class="frc-code">MBD-SUPPLY</span>
+            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+11.7% YTD</span>
+            <span class="frc-title">Physical Supply Premia</span>
           </div>
-          <img src="/assets/images/fund-fact.jpg" alt="Factor analytics" loading="lazy">
+          <div class="frc-body">
+            <p class="frc-desc">Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals. Compensates the futures curve for physical scarcity where paper and physical markets diverge.</p>
+            <div class="frc-stats">
+              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+11.7%</div></div>
+              <div class="frc-stat"><div class="sk">vs BCOM</div><div class="sv pos">+4.9pp</div></div>
+              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−6.4%</div></div>
+            </div>
+            <div class="frc-chart-wrap"><canvas id="chartSupply"></canvas></div>
+            <div class="frc-chart-legend">
+              <span><span class="dot" style="background:#1a8a4a;"></span>MBD-SUPPLY</span>
+              <span><span class="dot" style="background:#8a8a85;"></span>Bloomberg Cmdty</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Commodities</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Physical</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Supply cycle</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Metals &amp; energy</span>
+            </div>
+            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
+          </div>
         </div>
-        <div class="mbd-body">
-          <div class="mbd-eyebrow">Factor rotation</div>
-          <h3>Regime-Aware Factor</h3>
-          <p class="mbd-desc">Rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions. The factor stack treated as state-dependent — not a permanent allocation.</p>
-          <div class="mbd-stats-row">
-            <div class="ms-item"><div class="ms-k">YTD return</div><div class="ms-v pos">+7.10%</div></div>
-            <div class="ms-item"><div class="ms-k">vs MSCI World</div><div class="ms-v pos">+1.70pp</div></div>
-            <div class="ms-item"><div class="ms-k">Since Jan 2025</div><div class="ms-v pos">+13.0%</div></div>
-            <div class="ms-item"><div class="ms-k">Max drawdown</div><div class="ms-v neg">−5.1%</div></div>
-          </div>
-          <div class="mbd-chart-wrap">
-            <canvas id="chartFact"></canvas>
-          </div>
-          <div class="frc-chart-legend">
-            <span><span class="dot" style="background:#c8a35a;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>MBD-FACT</span>
-            <span><span class="dot" style="background:#8a8a85;display:inline-block;width:10px;height:10px;border-radius:2px;"></span>MSCI World</span>
-          </div>
-          <div class="mbd-pills">
-            <span>Factor</span><span>Equity</span><span>Long-only</span><span>Regime-aware</span>
-          </div>
-          <div class="mbd-allocation">
-            <div class="alloc-row"><span>Value</span><span class="alloc-weight">30%</span></div>
-            <div class="alloc-row"><span>Quality</span><span class="alloc-weight">28%</span></div>
-            <div class="alloc-row"><span>Momentum</span><span class="alloc-weight">25%</span></div>
-            <div class="alloc-row"><span>Low volatility</span><span class="alloc-weight">17%</span></div>
-          </div>
-          <a class="tbp-btn" href="/methodology.html" style="align-self:flex-start;">Methodology <span class="arrow">→</span></a>
-        </div>
-      </article>
 
+        <!-- MBD-FACT -->
+        <div class="fund-range-card">
+          <div class="frc-visual">
+            <img src="/assets/images/fund-fact.jpg" alt="Factor analytics" loading="lazy">
+            <span class="frc-code">MBD-FACT</span>
+            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+7.1% YTD</span>
+            <span class="frc-title">Regime-Aware Factor</span>
+          </div>
+          <div class="frc-body">
+            <p class="frc-desc">Rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions. The factor stack treated as state-dependent — not a permanent allocation.</p>
+            <div class="frc-stats">
+              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+7.1%</div></div>
+              <div class="frc-stat"><div class="sk">vs MSCI W</div><div class="sv pos">+1.7pp</div></div>
+              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−5.1%</div></div>
+            </div>
+            <div class="frc-chart-wrap"><canvas id="chartFact"></canvas></div>
+            <div class="frc-chart-legend">
+              <span><span class="dot" style="background:#c8a35a;"></span>MBD-FACT</span>
+              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Factor</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Equity</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Long-only</span>
+              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Regime-aware</span>
+            </div>
+            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -986,12 +1117,12 @@
     <div class="tbp-container">
       <div class="tbp-cta-strip" data-tbp-reveal>
         <div>
-          <div class="tbp-eyebrow" style="margin-bottom:18px;">Methodology</div>
-          <h2>Read the full<br>construction <em>rules.</em></h2>
-          <p class="tbp-lead" style="margin-top:16px;">Every allocation is governed by a documented framework. Read the methodology before drawing any conclusions about the portfolios — or their results.</p>
+          <div class="tbp-eyebrow" style="margin-bottom:18px;">Subscribe</div>
+          <h2>Get full access to<br>every <em>portfolio.</em></h2>
+          <p class="tbp-lead" style="margin-top:16px;">The methodology is published above. For full archive access, model portfolio attribution, and weekly long-form research, subscribe to Professional or Institutional.</p>
         </div>
         <div class="actions">
-          <a class="tbp-btn primary" href="/methodology.html">Open methodology <span class="arrow">→</span></a>
+          <a class="tbp-btn primary" href="#methodology">View methodology <span class="arrow">↑</span></a>
           <a class="tbp-btn" href="/subscription.html">Get Pro access <span class="arrow">→</span></a>
         </div>
       </div>
