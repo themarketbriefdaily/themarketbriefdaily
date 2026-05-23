@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classic ESG Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–ESG · Sustainable Equity</div>
+    <h1>Classic <em>ESG</em></h1>
+    <p class="tagline">The Fama-French factor framework applied through an ESG lens — capturing the classic size and value premia while excluding companies screened against environmental, social, and governance criteria.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Factor + ESG Tilt</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">MSCI World ESG Leaders</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Mar 2021</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+8.7%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Sharpe Ratio</span>
+        <span class="value">1.06</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy &amp; Academic Basis</h2>
+      <div class="academic-tag">📐 Fama &amp; French (1993, 2015) · ESG Integration</div>
+      <p>The Classic ESG Fund applies the same systematic factor methodology as the Classic Fund — targeting the market, size (SMB), and value (HML) premia — but overlays a rigorous ESG screening and scoring layer. Holdings are evaluated against MSCI ESG ratings, with exclusions applied to thermal coal, weapons manufacturers, and companies with persistent governance controversies.</p>
+      <p>Research by Friede, Busse &amp; Bassen (2015) aggregating over 2,000 studies found a non-negative relationship between ESG scores and financial performance in roughly 90% of cases — suggesting ESG integration need not sacrifice returns. The portfolio targets an MSCI ESG Fund Rating of AA or above.</p>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> ESG Framework</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">E</span>
+          <span class="p-title">Environment</span>
+          <span class="p-desc">Carbon intensity screen, Paris-alignment scoring, zero tolerance for thermal coal &gt;30% revenue.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">S</span>
+          <span class="p-title">Social</span>
+          <span class="p-desc">Labour standards, supply-chain audits, gender diversity metrics. Weapons &amp; tobacco excluded.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">G</span>
+          <span class="p-title">Governance</span>
+          <span class="p-desc">Board independence, executive pay alignment, audit quality, anti-corruption policies.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">FF</span>
+          <span class="p-title">Factor Overlay</span>
+          <span class="p-desc">Post-ESG screen, remaining universe ranked by SMB + HML factor scores quarterly.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs Benchmark</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">5Y</button>
+            <button class="chart-tab">3Y</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Asset Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">ESG</span>
+            <span class="dc-value">AA</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Representative Holdings</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr>
+            <th>Security</th>
+            <th>Region</th>
+            <th>ESG Score</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–ESG</span></div>
+        <div class="sc-row"><span class="sc-key">Asset Class</span><span class="sc-val">Sustainable Equity</span></div>
+        <div class="sc-row"><span class="sc-key">ESG Rating</span><span class="sc-val" style="color:var(--green)">AA (MSCI)</span></div>
+        <div class="sc-row"><span class="sc-key">Rebalance</span><span class="sc-val">Quarterly</span></div>
+        <div class="sc-row"><span class="sc-key">Exclusions</span><span class="sc-val">Coal, Weapons, Tobacco</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$10,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">13.8%</span>
+            <span class="m-note">vs 14.5% benchmark</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">1.06</span>
+            <span class="m-note">3-year trailing</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−16.9%</span>
+            <span class="m-note">Mar 2020</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Carbon Intensity</span>
+            <span class="m-value">38 tCO₂</span>
+            <span class="m-note">per $M revenue</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Academic References</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Fama & French (1993) — <em>Common risk factors</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Friede, Busse & Bassen (2015) — <em>ESG and financial performance: aggregated evidence</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;border:none">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Pastor, Stambaugh & Taylor (2021) — <em>Sustainable investing in equilibrium</em></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice or a solicitation to buy or sell securities. ESG ratings are sourced from third parties and are subject to change. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#3dba7e','#4a90d9','#c9a84c','#9b6dd4','#e07a38','#5c9e6b'];
+
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels: ['2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      {
+        label: 'Classic ESG',
+        data: [100, 124, 107, 131, 152, 170],
+        borderColor: '#3dba7e',
+        backgroundColor: 'rgba(61,186,126,0.07)',
+        fill: true, tension: 0.4, pointRadius: 3,
+        pointBackgroundColor: '#3dba7e', borderWidth: 2
+      },
+      {
+        label: 'MSCI World ESG Leaders',
+        data: [100, 120, 102, 125, 143, 156],
+        borderColor: 'rgba(255,255,255,0.25)',
+        backgroundColor: 'transparent',
+        fill: false, tension: 0.4, pointRadius: 0,
+        borderWidth: 1, borderDash: [4,4]
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+const allocs = [
+  { name: 'US ESG Small-Cap Value',  pct: 25 },
+  { name: 'European ESG Equities',   pct: 22 },
+  { name: 'Developed Mkts ESG',      pct: 18 },
+  { name: 'Asia-Pacific ESG',        pct: 14 },
+  { name: 'EM ESG Leaders',          pct: 13 },
+  { name: 'Cash / Liquidity',        pct:  8 },
+];
+
+new Chart(document.getElementById('donutChart').getContext('2d'), {
+  type: 'doughnut',
+  data: {
+    labels: allocs.map(a=>a.name),
+    datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0, hoverOffset: 6 }]
+  },
+  options: { cutout: '68%', plugins: { legend: { display: false } } }
+});
+
+const legend = document.getElementById('allocLegend');
+allocs.forEach((a,i) => {
+  legend.innerHTML += `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`;
+});
+
+const holdings = [
+  { ticker:'ESGU', name:'iShares MSCI USA ESG Select ETF',     region:'US',   esg:'AA', w:14 },
+  { ticker:'SUSB', name:'iShares ESG Aware USD Corp Bond',     region:'US',   esg:'A',  w:12 },
+  { ticker:'ESGD', name:'iShares MSCI EAFE ESG Select ETF',    region:'Intl', esg:'AA', w:12 },
+  { ticker:'AVSU', name:'Avantis US Sustainability ETF',       region:'US',   esg:'AA', w:11 },
+  { ticker:'ESGE', name:'iShares MSCI EM ESG Select ETF',      region:'EM',   esg:'A',  w:10 },
+  { ticker:'XYLG', name:'Global X S&P 500 ESG Covered Call',  region:'US',   esg:'A',  w:9  },
+  { ticker:'SUSL', name:'iShares ESG MSCI USA Leaders ETF',    region:'US',   esg:'AAA',w:8  },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+holdings.forEach(h => {
+  const esgColor = h.esg === 'AAA' ? 'var(--green)' : h.esg === 'AA' ? '#7de0ae' : 'var(--text-2)';
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td>${h.region}</td>
+    <td><span style="color:${esgColor};font-family:'DM Mono',monospace;font-size:0.8rem">${h.esg}</span></td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%"></div></div></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
