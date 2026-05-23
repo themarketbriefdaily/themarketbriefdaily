@@ -1,4 +1,4 @@
-/* ═════════════════════════════════════════════════════════════════
+﻿/* ═════════════════════════════════════════════════════════════════
    PREMIUM HEDGE-FUND VISUAL SYSTEM — v2
    Loads after tbp-theme.css for editorial / institutional polish.
    ═════════════════════════════════════════════════════════════════ */
@@ -59,8 +59,8 @@
   content: "";
   position: absolute; inset: 0; z-index: -1;
   background:
-    linear-gradient(180deg, rgba(8,12,22,.55) 0%, rgba(8,12,22,.4) 35%, rgba(8,12,22,.88) 100%),
-    linear-gradient(90deg, rgba(8,12,22,.7) 0%, rgba(8,12,22,.2) 60%, transparent 100%);
+    linear-gradient(180deg, rgba(6,9,20,.72) 0%, rgba(6,9,20,.52) 30%, rgba(6,9,20,.92) 100%),
+    linear-gradient(90deg, rgba(6,9,20,.82) 0%, rgba(6,9,20,.35) 55%, rgba(6,9,20,.15) 100%);
 }
 .tbp-hero-cinematic-inner {
   position: relative;
@@ -300,15 +300,15 @@
   overflow: hidden;
   background: var(--tbp-bg-alt);
 }
-.tbp-premium-card .visual img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform .8s var(--tbp-ease-slow);
-}
+
+  param($m)
+  $m -replace 'transition: transform \.8s', 'transition: transform .8s'
+
 .tbp-premium-card:hover .visual img { transform: scale(1.05); }
 .tbp-premium-card .visual::after {
   content: "";
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.45) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,.1) 0%, transparent 40%, rgba(0,0,0,.6) 100%);
   pointer-events: none;
 }
 .tbp-premium-card .visual .label {
