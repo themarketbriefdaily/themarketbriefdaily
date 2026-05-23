@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBD-Classic — Three-Factor Equity Fund · The Market Brief Daily</title>
+  <meta name="description" content="MBD-Classic: a globally diversified equity portfolio grounded in the Fama-French three-factor model. Strategy, holdings, performance, methodology." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/funds/classic.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
+  <link rel="stylesheet" href="/assets/fund-detail.css" />
+  <script src="/assets/chart.umd.min.js" defer></script>
+</head>
+<body class="tbp">
+
+  <!-- ══ HEADER ════════════════════════════════════════════════ -->
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span><span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a class="is-active" href="/investments.html">Investments</a>
+        <a href="/posts.html">Research Posts</a>
+        <a href="/tools/">Tools</a>
+        <a href="/education.html">Education</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="/subscription.html">Get access <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/tools/">Tools</a><a href="/education.html">Education</a><a href="/about.html">About</a>
+    <a href="/subscription.html">Subscribe ↗</a>
+  </div>
+
+  <!-- ══ FUND HERO ════════════════════════════════════════════ -->
+  <section class="fund-hero">
+    <div class="tbp-container">
+      <nav class="fund-breadcrumb" aria-label="Breadcrumb">
+        <a href="/investments.html">Investments</a>
+        <span class="sep">/</span>
+        <a href="/investments.html#fund-range">Fund Families</a>
+        <span class="sep">/</span>
+        <span class="current">Classic</span>
+      </nav>
+
+      <div class="fund-hero-grid">
+        <div>
+          <span class="fund-code">MBD-CLASSIC</span>
+          <h1 class="fund-title">Classic<br><em>three-factor.</em></h1>
+          <p class="fund-tagline">
+            A globally diversified equity portfolio targeting the size and value risk premia
+            documented by Eugene Fama and Kenneth French. Systematic factor tilts, evidence-based
+            construction, quarterly rebalancing — no discretion, no market timing.
+          </p>
+          <div class="fund-hero-stats">
+            <div class="fhs-item"><div class="k">YTD 2026</div><div class="v pos">+12.0%</div></div>
+            <div class="fhs-item"><div class="k">Sharpe (1Y)</div><div class="v">0.84</div></div>
+            <div class="fhs-item"><div class="k">OCF</div><div class="v">0.22%</div></div>
+            <div class="fhs-item"><div class="k">Holdings</div><div class="v">10</div></div>
+          </div>
+        </div>
+
+        <aside class="academic-card">
+          <div class="eyebrow">Academic basis</div>
+          <blockquote>
+            "Size and book-to-market equity proxy for sensitivity to common risk factors in stock returns. Together with the market factor, they capture the cross-section of average returns."
+          </blockquote>
+          <cite>Fama &amp; French (1993)</cite>
+          <span class="doi">"Common risk factors in the returns on stocks and bonds." <em>Journal of Financial Economics 33: 3–56.</em></span>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PERFORMANCE ═══════════════════════════════════════════ -->
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">01 / Performance</div>
+      <h2>Cumulative return<br><em>since inception.</em></h2>
+      <p class="section-intro">Indexed to 100 at fund launch (Jan 2025). Benchmarked against MSCI World Net Total Return (USD). All returns are gross of fees, net of estimated transaction costs.</p>
+
+      <div class="perf-grid">
+        <div class="perf-chart-card">
+          <canvas id="perfChartClassic"></canvas>
+        </div>
+        <div>
+          <table class="perf-table">
+            <thead>
+              <tr><th>Period</th><th>MBD-Classic</th><th>MSCI World</th><th>Diff.</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="label">YTD 2026</td><td class="pos">+12.0%</td><td>+10.5%</td><td class="pos">+1.5pp</td></tr>
+              <tr><td class="label">1 Year</td><td class="pos">+18.2%</td><td>+14.8%</td><td class="pos">+3.4pp</td></tr>
+              <tr><td class="label">Since Jan 2025</td><td class="pos">+21.0%</td><td>+12.9%</td><td class="pos">+8.1pp</td></tr>
+              <tr><td class="label">3Y annualised</td><td class="pos">+9.5%</td><td>+7.2%</td><td class="pos">+2.3pp</td></tr>
+              <tr><td class="label">Worst quarter</td><td class="neg">−4.2%</td><td>−3.8%</td><td class="neg">−0.4pp</td></tr>
+              <tr><td class="label">Best quarter</td><td class="pos">+9.6%</td><td>+7.4%</td><td class="pos">+2.2pp</td></tr>
+            </tbody>
+          </table>
+          <div class="fund-disclosure">
+            <strong>Past performance is not indicative of future results.</strong>
+            Returns shown are simulated based on the published factor-tilt methodology and
+            constituent ETF total-return data. The MBD-Classic portfolio is an illustrative
+            research strategy — not a live fund.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOLDINGS ══════════════════════════════════════════════ -->
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">02 / Holdings</div>
+      <h2>Ten ETFs.<br><em>Full transparency.</em></h2>
+      <p class="section-intro">The Classic portfolio implements its factor tilts through 10 liquid, low-cost ETFs. All weights are reviewed quarterly and rebalanced to target if any single position drifts by more than ±300 bps.</p>
+
+      <table class="holdings-table">
+        <thead>
+          <tr>
+            <th>Holding</th>
+            <th>Ticker</th>
+            <th>Asset class</th>
+            <th class="num">Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">iShares Core S&amp;P US Value</td><td class="ticker">IUSV</td><td class="asset">US Large-cap Value</td><td class="weight" style="--w:90%;">18.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">iShares Russell 2000 Value</td><td class="ticker">IWN</td><td class="asset">US Small-cap Value</td><td class="weight" style="--w:80%;">16.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">iShares Core US Aggregate Bond</td><td class="ticker">AGG</td><td class="asset">US Investment-grade FI</td><td class="weight" style="--w:70%;">14.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Vanguard Small-Cap Value</td><td class="ticker">VBR</td><td class="asset">US Small-cap Value</td><td class="weight" style="--w:60%;">12.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">iShares MSCI EAFE Value</td><td class="ticker">EFV</td><td class="asset">Intl Developed Value</td><td class="weight" style="--w:50%;">10.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">iShares Russell 1000 Value</td><td class="ticker">IWD</td><td class="asset">US Large-cap Value</td><td class="weight" style="--w:50%;">10.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">WisdomTree Intl Small Cap Div</td><td class="ticker">DLS</td><td class="asset">Intl Small-cap Value</td><td class="weight" style="--w:40%;">8.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Vanguard FTSE Emerging Markets</td><td class="ticker">VWO</td><td class="asset">EM Equity</td><td class="weight" style="--w:30%;">6.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">iShares Short Treasury Bond</td><td class="ticker">SHV</td><td class="asset">Cash equivalents</td><td class="weight" style="--w:20%;">4.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Cash / settlement</td><td class="ticker">USD</td><td class="asset">Cash</td><td class="weight" style="--w:10%;">2.0%<span class="weight-bar"></span></td></tr>
+          <tr class="holdings-total"><td colspan="3">Total</td><td style="text-align:right;">100.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ ALLOCATION ════════════════════════════════════════════ -->
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">03 / Allocation</div>
+      <h2>Breakdowns.</h2>
+      <p class="section-intro">Aggregate exposure across asset classes and geographies, calculated bottom-up from the underlying ETF holdings on the most recent quarter-end.</p>
+
+      <div class="allocation-grid">
+        <div class="alloc-card">
+          <h3>By asset class</h3>
+          <div class="alloc-bars">
+            <div class="alloc-bar"><span class="name">US Equity</span><div class="bar"><div class="bar-fill warm" style="width:56%;"></div></div><span class="pct">56.0%</span></div>
+            <div class="alloc-bar"><span class="name">Intl Developed Equity</span><div class="bar"><div class="bar-fill" style="width:18%;"></div></div><span class="pct">18.0%</span></div>
+            <div class="alloc-bar"><span class="name">Investment-grade FI</span><div class="bar"><div class="bar-fill blue" style="width:14%;"></div></div><span class="pct">14.0%</span></div>
+            <div class="alloc-bar"><span class="name">Emerging Markets</span><div class="bar"><div class="bar-fill green" style="width:6%;"></div></div><span class="pct">6.0%</span></div>
+            <div class="alloc-bar"><span class="name">Cash &amp; T-Bills</span><div class="bar"><div class="bar-fill" style="width:6%; background:#8a8a85;"></div></div><span class="pct">6.0%</span></div>
+          </div>
+        </div>
+        <div class="alloc-card">
+          <h3>By geography</h3>
+          <div class="alloc-bars">
+            <div class="alloc-bar"><span class="name">United States</span><div class="bar"><div class="bar-fill warm" style="width:70%;"></div></div><span class="pct">70.0%</span></div>
+            <div class="alloc-bar"><span class="name">Europe</span><div class="bar"><div class="bar-fill" style="width:12%;"></div></div><span class="pct">12.0%</span></div>
+            <div class="alloc-bar"><span class="name">Japan</span><div class="bar"><div class="bar-fill" style="width:6%;"></div></div><span class="pct">6.0%</span></div>
+            <div class="alloc-bar"><span class="name">Emerging Markets</span><div class="bar"><div class="bar-fill green" style="width:6%;"></div></div><span class="pct">6.0%</span></div>
+            <div class="alloc-bar"><span class="name">Asia-Pacific ex-Japan</span><div class="bar"><div class="bar-fill" style="width:4%;"></div></div><span class="pct">4.0%</span></div>
+            <div class="alloc-bar"><span class="name">Cash (USD)</span><div class="bar"><div class="bar-fill" style="width:2%; background:#8a8a85;"></div></div><span class="pct">2.0%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RISK CHARACTERISTICS ══════════════════════════════════ -->
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">04 / Risk characteristics</div>
+      <h2>Risk &amp; <em>factor exposure.</em></h2>
+      <p class="section-intro">Eight measures of risk and factor exposure calculated on a rolling 1-year window. Factor loadings estimated via OLS regression against the Fama–French 5-factor monthly factor returns.</p>
+
+      <div class="risk-grid">
+        <div class="risk-cell"><div class="label">Volatility (1Y)</div><div class="value">13.4%</div><div class="meta">Annualised, daily returns</div></div>
+        <div class="risk-cell"><div class="label">Sharpe ratio</div><div class="value">0.84</div><div class="meta">Risk-free = 3-mo T-bill</div></div>
+        <div class="risk-cell"><div class="label">Sortino ratio</div><div class="value">1.21</div><div class="meta">Downside deviation</div></div>
+        <div class="risk-cell"><div class="label">Max drawdown</div><div class="value neg">−8.2%</div><div class="meta">Peak-to-trough, 1Y</div></div>
+        <div class="risk-cell"><div class="label">Beta vs MSCI World</div><div class="value">1.08</div><div class="meta">Slightly higher than market</div></div>
+        <div class="risk-cell"><div class="label">SMB loading</div><div class="value pos">+0.32</div><div class="meta">Small-cap tilt</div></div>
+        <div class="risk-cell"><div class="label">HML loading</div><div class="value pos">+0.41</div><div class="meta">Value tilt</div></div>
+        <div class="risk-cell"><div class="label">Tracking error</div><div class="value">3.8%</div><div class="meta">vs MSCI World</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STRATEGY ══════════════════════════════════════════════ -->
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">05 / Strategy</div>
+      <h2>The thesis.</h2>
+      <div class="fund-prose">
+        <p>
+          The Classic portfolio is built on three findings from financial economics that have survived
+          50 years of empirical replication:
+        </p>
+        <ul>
+          <li><strong>The equity risk premium exists.</strong> Long-run equity returns exceed the
+            risk-free rate by ~5–6% per year, compensation for bearing undiversifiable market risk.</li>
+          <li><strong>Small-cap stocks earn an additional premium (SMB).</strong> Smaller firms have
+            historically delivered ~2–3% annualised excess return over large-caps, after adjusting for
+            market exposure.</li>
+          <li><strong>Value stocks earn a separate premium (HML).</strong> Firms with high book-to-market
+            ratios (i.e. priced cheaply relative to their accounting book value) have historically
+            outperformed growth stocks by ~3–4% annualised.</li>
+        </ul>
+        <p>
+          The portfolio captures these premia by overweighting small-cap value and large-cap value
+          ETFs, complemented by a fixed-income sleeve for risk control. There is no active stock
+          picking, no market timing, no sector views. The only judgments embedded in the strategy are
+          the original Fama–French factor specifications — every allocation flows mechanically from those.
+        </p>
+        <p>
+          Crucially, this is <em>not</em> a strategy designed to outperform every quarter. Value has
+          underperformed growth for extended periods (2009–2020 being the most extreme), and small-caps
+          have multi-year stretches of disappointing returns. The portfolio is built for investors who
+          can tolerate factor drawdowns of 12–18 months in exchange for the long-run premium.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ METHODOLOGY ═══════════════════════════════════════════ -->
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">06 / Methodology</div>
+      <h2>Construction <em>rules.</em></h2>
+      <p class="section-intro">Every allocation decision is governed by a written rule. The portfolio is reconstructed quarterly using the latest factor data — no discretionary changes between rebalances.</p>
+
+      <div class="method-rule">
+        <div class="rn">01</div>
+        <div>
+          <h4>Factor target weights</h4>
+          <p>The portfolio targets a <strong>+0.35 SMB</strong> and <strong>+0.40 HML</strong> loading vs the MSCI World benchmark. Constituent ETF weights are solved as the optimisation that minimises tracking error subject to those loading constraints.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">02</div>
+        <div>
+          <h4>Rebalancing trigger</h4>
+          <p>Quarterly check on calendar dates (end of Mar / Jun / Sep / Dec). Any holding that has drifted by more than <strong>±300 bps</strong> from its target weight is reset; smaller drifts are tolerated to minimise transaction costs.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">03</div>
+        <div>
+          <h4>Universe screening</h4>
+          <p>Only ETFs with <strong>AUM &gt; USD 500M</strong>, <strong>3-month average daily volume &gt; USD 5M</strong>, and total expense ratio <strong>&lt; 0.40%</strong> qualify for inclusion. Tracking-error vs the stated underlying index is reviewed annually.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">04</div>
+        <div>
+          <h4>Cash buffer</h4>
+          <p>A <strong>2–6%</strong> cash buffer is maintained at all times to absorb rebalancing flow, dividend reinvestment timing, and any subscription/redemption activity. Cash is held in <code>SHV</code> (iShares Short Treasury) for yield pickup.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">05</div>
+        <div>
+          <h4>Benchmark</h4>
+          <p>MSCI World Net Total Return (USD). All performance comparisons net of estimated transaction costs (5 bps per round-trip trade) and gross of any management fee. The illustrative OCF of <strong>0.22%</strong> reflects the weighted average of underlying ETF expense ratios.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">06</div>
+        <div>
+          <h4>Risk variants</h4>
+          <p>The Classic strategy is available in five risk profiles — <code>Cautious</code>, <code>Moderate</code>, <code>Balanced</code>, <code>Growth</code>, <code>Adventurous</code> — which differ in the equity / fixed-income split (30/70 through 95/5). The factor tilts within the equity sleeve are constant across profiles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ RELATED FUNDS ═════════════════════════════════════════ -->
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">07 / Explore</div>
+      <h2>Other funds in the<br><em>family.</em></h2>
+
+      <div class="related-funds">
+        <a class="related-card" href="/funds/classic-esg.html">
+          <span class="code">MBD-ESG</span>
+          <span class="name">Classic ESG</span>
+          <span class="arr">Same framework, ESG-screened →</span>
+        </a>
+        <a class="related-card" href="/funds/tracker.html">
+          <span class="code">MBD-TRACK</span>
+          <span class="name">Tracker</span>
+          <span class="arr">Pure market portfolio · Sharpe CAPM →</span>
+        </a>
+        <a class="related-card" href="/funds/rotational.html">
+          <span class="code">MBD-ROTATE</span>
+          <span class="name">Rotational</span>
+          <span class="arr">Thematic conviction portfolio →</span>
+        </a>
+      </div>
+
+      <div style="margin-top:48px; text-align:center;">
+        <a class="tbp-btn" href="/investments.html">← Back to investments</a>
+        <a class="tbp-btn primary" href="/subscription.html" style="margin-left:8px;">Get Pro access <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═══════════════════════════════════════════════ -->
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/education.html">Education</a><a href="/bot.html">AI Trader</a>
+          <a href="/glossary.html">Glossary</a>
+        </div></div>
+        <div><h4>Tools &amp; Reports</h4><div class="tbp-footer-links">
+          <a href="/tools/dcf.html">DCF Calculator</a><a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+          <a href="/tools/cfa.html">CFA Study Tool</a><a href="/tools/bond-yield.html">Bond Yield</a>
+          <a href="/reports.html">Reports</a><a href="/subscription.html">Subscription</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="/contact.html">Contact</a>
+          <a href="/disclaimer.html">Disclaimer</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+
+  <script>
+  (function () {
+    function draw() {
+      if (typeof Chart === 'undefined') { setTimeout(draw, 200); return; }
+      var el = document.getElementById('perfChartClassic');
+      if (!el) return;
+      var LABELS = ['Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar','Apr','May'];
+      new Chart(el, {
+        type: 'line',
+        data: {
+          labels: LABELS,
+          datasets: [
+            { label: 'MBD-Classic', data: [102.8,105.4,103.1,107.6,110.2,109.4,112.8,110.9,108.5,112.4,110.7,112.0,114.3,117.6,116.2,119.8,121.0], borderColor: '#0066ff', backgroundColor: 'rgba(0,102,255,.06)', borderWidth: 2.5, fill: true, pointRadius: 0, tension: 0.3 },
+            { label: 'MSCI World', data: [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0,109.2,110.7,109.9,111.5,112.9], borderColor: '#8a8a85', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.3 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { display: true, labels: { font: { size: 12 }, color: '#0a0a0a', boxWidth: 18, boxHeight: 3, padding: 16 } },
+                     tooltip: { callbacks: { label: function(ctx) { var v = ctx.parsed.y; return ctx.dataset.label + ': ' + (v - 100 >= 0 ? '+' : '') + (v - 100).toFixed(1) + '%'; } } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#8a8a85', maxTicksLimit: 9 } },
+            y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 11 }, color: '#8a8a85', callback: function(v){ return (v >= 100 ? '+' : '') + (v - 100).toFixed(0) + '%'; } } }
+          }
+        }
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', draw); else draw();
+  })();
+  </script>
+
+</body>
+</html>

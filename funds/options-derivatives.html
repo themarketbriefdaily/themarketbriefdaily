@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBD-Options &amp; Derivatives — Earnings Vol Crush · The Market Brief Daily</title>
+  <meta name="description" content="MBD-Options: a systematic short-volatility strategy harvesting the implied-vol risk premium around single-stock earnings. Filters, sizing, and full methodology." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/funds/options-derivatives.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
+  <link rel="stylesheet" href="/assets/fund-detail.css" />
+  <script src="/assets/chart.umd.min.js" defer></script>
+  <style>
+    .code-block {
+      background: #0a0f1c;
+      color: #cbd5e1;
+      padding: 20px 24px;
+      border-radius: 10px;
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+    .code-block .keyword { color: #f59e0b; }
+    .code-block .num { color: #4ade80; }
+    .code-block .comment { color: #64748b; }
+  </style>
+</head>
+<body class="tbp">
+
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span><span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a class="is-active" href="/investments.html">Investments</a>
+        <a href="/posts.html">Research Posts</a>
+        <a href="/tools/">Tools</a>
+        <a href="/education.html">Education</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="/subscription.html">Get access <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/tools/">Tools</a><a href="/education.html">Education</a><a href="/about.html">About</a>
+    <a href="/subscription.html">Subscribe ↗</a>
+  </div>
+
+  <section class="fund-hero">
+    <div class="tbp-container">
+      <nav class="fund-breadcrumb" aria-label="Breadcrumb">
+        <a href="/investments.html">Investments</a><span class="sep">/</span>
+        <a href="/investments.html#asset-class">Asset-class Strategies</a><span class="sep">/</span>
+        <span class="current">Options &amp; Derivatives</span>
+      </nav>
+      <div class="fund-hero-grid">
+        <div>
+          <span class="fund-code">MBD-OPT</span>
+          <h1 class="fund-title">Options &amp;<br><em>derivatives.</em></h1>
+          <p class="fund-tagline">
+            A systematic short-volatility strategy harvesting the implied-volatility risk premium
+            around single-stock earnings events. Sells defined-risk premium when implied vol is
+            richening pre-earnings and term structure is in backwardation; closes positions on
+            IV collapse the morning after the print.
+          </p>
+          <div class="fund-hero-stats">
+            <div class="fhs-item"><div class="k">YTD 2026</div><div class="v pos">+14.2%</div></div>
+            <div class="fhs-item"><div class="k">Sharpe (1Y)</div><div class="v">1.38</div></div>
+            <div class="fhs-item"><div class="k">Win rate</div><div class="v">71%</div></div>
+            <div class="fhs-item"><div class="k">Avg trades / mo</div><div class="v">18</div></div>
+          </div>
+        </div>
+        <aside class="academic-card">
+          <div class="eyebrow">Academic basis</div>
+          <blockquote>
+            "We document a strikingly large variance risk premium across stock and index options. Selling variance swaps generates Sharpe ratios well in excess of those available from the underlying equities."
+          </blockquote>
+          <cite>Carr &amp; Wu (2009)</cite>
+          <span class="doi">"Variance Risk Premiums." <em>Review of Financial Studies, 22(3): 1311–1341.</em></span>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">01 / Performance</div>
+      <h2>The flattest curve<br><em>in the family.</em></h2>
+      <p class="section-intro">Options &amp; Derivatives is designed to be low-beta and low-correlation. The return stream is driven by event-specific vol crush, not by directional market moves. Drawdowns are typically short and well-contained because every position is defined-risk.</p>
+
+      <div class="perf-grid">
+        <div class="perf-chart-card"><canvas id="perfChart"></canvas></div>
+        <div>
+          <table class="perf-table">
+            <thead><tr><th>Period</th><th>MBD-OPT</th><th>S&amp;P 500</th><th>Diff.</th></tr></thead>
+            <tbody>
+              <tr><td class="label">YTD 2026</td><td class="pos">+14.2%</td><td>+11.6%</td><td class="pos">+2.6pp</td></tr>
+              <tr><td class="label">1 Year</td><td class="pos">+17.8%</td><td>+13.4%</td><td class="pos">+4.4pp</td></tr>
+              <tr><td class="label">Since Jan 2025</td><td class="pos">+24.5%</td><td>+11.6%</td><td class="pos">+12.9pp</td></tr>
+              <tr><td class="label">Avg trade P&amp;L</td><td class="pos">+0.41%</td><td>—</td><td>—</td></tr>
+              <tr><td class="label">Best trade</td><td class="pos">+3.8%</td><td>—</td><td>—</td></tr>
+              <tr><td class="label">Worst trade</td><td class="neg">−2.4%</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <div class="fund-disclosure">
+            <strong>Tail risk warning.</strong> Short-volatility strategies have a positively-skewed win rate but the loss distribution has a fatter left tail. A single uncovered earnings shock can erase weeks of gains. This implementation uses defined-risk structures (iron condors / credit spreads) to cap downside per position.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">02 / Current positions</div>
+      <h2>Live earnings <em>book.</em></h2>
+      <p class="section-intro">Positions are dynamic — entered 1–2 trading days before each earnings event and closed the following morning after IV collapse. Below is the current book at the most recent close. Position sizes shown as % of portfolio NAV.</p>
+
+      <table class="holdings-table">
+        <thead><tr><th>Underlying</th><th>Ticker</th><th>Structure</th><th class="num">Size</th></tr></thead>
+        <tbody>
+          <tr><td class="name">NVIDIA (Q1 print, T-2)</td><td class="ticker">NVDA</td><td class="asset">Short iron condor · 32 DTE</td><td class="weight" style="--w:35%;">3.5%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Adobe Inc. (T-1)</td><td class="ticker">ADBE</td><td class="asset">Short strangle · 14 DTE</td><td class="weight" style="--w:30%;">3.0%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Oracle Corp. (T-3)</td><td class="ticker">ORCL</td><td class="asset">Iron condor · 21 DTE</td><td class="weight" style="--w:28%;">2.8%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Broadcom (T-1)</td><td class="ticker">AVGO</td><td class="asset">Short straddle · 7 DTE</td><td class="weight" style="--w:25%;">2.5%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">CrowdStrike (T-2)</td><td class="ticker">CRWD</td><td class="asset">Iron condor · 28 DTE</td><td class="weight" style="--w:22%;">2.2%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Costco (T-4)</td><td class="ticker">COST</td><td class="asset">Put credit spread · 16 DTE</td><td class="weight" style="--w:18%;">1.8%<span class="weight-bar"></span></td></tr>
+          <tr><td class="name">Cash / T-Bill collateral</td><td class="ticker">SGOV</td><td class="asset">Buying-power coverage</td><td class="weight" style="--w:84%;">84.2%<span class="weight-bar"></span></td></tr>
+          <tr class="holdings-total"><td colspan="3">Total</td><td style="text-align:right;">100.0%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="fund-disclosure">
+        Note: short-option positions tie up <strong>buying power</strong> but the cash collateral
+        (~84%) remains in T-Bills earning the risk-free rate. The "delta" exposure of the book
+        is targeted to remain within <code>±0.10</code> at all times.
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">03 / Entry signal</div>
+      <h2>Three filters,<br><em>all must trigger.</em></h2>
+      <p class="section-intro">A position is only opened when an upcoming earnings event in a liquid name passes three simultaneous gates. The filters are tightened from the Tastytrade volatility-crush playbook with adjustments for term-structure slope and Yang–Zhang realised volatility.</p>
+
+      <div class="method-rule">
+        <div class="rn">F1</div>
+        <div>
+          <h4>Implied vs realised vol ratio</h4>
+          <p>30-day at-the-money implied volatility divided by 30-day Yang–Zhang realised volatility must exceed <code>1.25</code>. This indicates the option market is pricing in materially more future volatility than the stock has actually delivered — a necessary condition for vol-crush to be profitable.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">F2</div>
+        <div>
+          <h4>Term-structure slope</h4>
+          <p>Linear slope of the ATM-IV term structure from <code>DTE[0]</code> to <code>DTE=45</code> must be <code>≤ −0.00406</code>. A negative slope (backwardation) means the front month is priced higher than further-out expirations — the market is event-pricing the earnings move and will revert post-print.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">F3</div>
+        <div>
+          <h4>Liquidity floor</h4>
+          <p>30-day average daily share volume must exceed <code>1.5M</code>. This guarantees tight option spreads and ability to exit at fair mid in the post-earnings window. Stocks below this threshold are skipped regardless of how rich the vol is.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+<span class="comment"># Yang–Zhang realised-vol estimator (30-day window)</span>
+log_ho = log(High / Open)
+log_lo = log(Low / Open)
+log_co = log(Close / Open)
+log_oc = log(Open / Close.shift(<span class="num">1</span>))
+log_cc = log(Close / Close.shift(<span class="num">1</span>))
+
+rs       = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
+close_v  = rolling_sum(log_cc**<span class="num">2</span>, <span class="num">30</span>) / <span class="num">29</span>
+open_v   = rolling_sum(log_oc**<span class="num">2</span>, <span class="num">30</span>) / <span class="num">29</span>
+window_v = rolling_sum(rs, <span class="num">30</span>) / <span class="num">29</span>
+
+k        = <span class="num">0.34</span> / (<span class="num">1.34</span> + (<span class="num">31</span>/<span class="num">29</span>))
+sigma    = sqrt(open_v + k * close_v + (<span class="num">1</span>-k) * window_v) * sqrt(<span class="num">252</span>)
+
+<span class="comment"># Triggers</span>
+<span class="keyword">if</span> iv30 / sigma  &gt;= <span class="num">1.25</span>
+   <span class="keyword">and</span> slope_0_45 &lt;= <span class="num">-0.00406</span>
+   <span class="keyword">and</span> adv_30d    &gt;= <span class="num">1_500_000</span>:
+    enter_short_premium_structure()
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">04 / Position structure</div>
+      <h2>Defined risk,<br><em>always.</em></h2>
+      <p class="section-intro">No naked option positions are ever held. Every short-premium structure is paired with a long-option leg further out-of-the-money that caps the maximum loss before the trade is opened. The Greek profile and the maximum P&amp;L are known at trade inception.</p>
+
+      <div class="allocation-grid">
+        <div class="alloc-card">
+          <h3>Structure mix (rolling 12-mo)</h3>
+          <div class="alloc-bars">
+            <div class="alloc-bar"><span class="name">Iron condors</span><div class="bar"><div class="bar-fill red" style="width:54%;"></div></div><span class="pct">54.0%</span></div>
+            <div class="alloc-bar"><span class="name">Short strangles</span><div class="bar"><div class="bar-fill warm" style="width:22%;"></div></div><span class="pct">22.0%</span></div>
+            <div class="alloc-bar"><span class="name">Short straddles</span><div class="bar"><div class="bar-fill" style="width:14%;"></div></div><span class="pct">14.0%</span></div>
+            <div class="alloc-bar"><span class="name">Put credit spreads</span><div class="bar"><div class="bar-fill green" style="width:10%;"></div></div><span class="pct">10.0%</span></div>
+          </div>
+        </div>
+        <div class="alloc-card">
+          <h3>P&amp;L attribution</h3>
+          <div class="alloc-bars">
+            <div class="alloc-bar"><span class="name">Vega (IV collapse)</span><div class="bar"><div class="bar-fill blue" style="width:62%;"></div></div><span class="pct">62.0%</span></div>
+            <div class="alloc-bar"><span class="name">Theta (time decay)</span><div class="bar"><div class="bar-fill warm" style="width:28%;"></div></div><span class="pct">28.0%</span></div>
+            <div class="alloc-bar"><span class="name">Delta (price move)</span><div class="bar"><div class="bar-fill" style="width:6%;"></div></div><span class="pct">6.0%</span></div>
+            <div class="alloc-bar"><span class="name">T-Bill carry</span><div class="bar"><div class="bar-fill green" style="width:4%;"></div></div><span class="pct">4.0%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">05 / Risk characteristics</div>
+      <h2>The shape of <em>the bet.</em></h2>
+      <p class="section-intro">Positively-skewed win rate (~71%), but with capped downside per trade. Drawdowns are typically &lt;5% and recover within 4–8 weeks.</p>
+
+      <div class="risk-grid">
+        <div class="risk-cell"><div class="label">Volatility (1Y)</div><div class="value">8.4%</div><div class="meta">Annualised, daily returns</div></div>
+        <div class="risk-cell"><div class="label">Sharpe ratio</div><div class="value">1.38</div><div class="meta">Risk-free = 3-mo T-bill</div></div>
+        <div class="risk-cell"><div class="label">Win rate</div><div class="value">71%</div><div class="meta">Per individual trade</div></div>
+        <div class="risk-cell"><div class="label">Max drawdown</div><div class="value neg">−4.8%</div><div class="meta">Peak-to-trough, 1Y</div></div>
+        <div class="risk-cell"><div class="label">Beta vs S&amp;P 500</div><div class="value">0.18</div><div class="meta">Low market exposure</div></div>
+        <div class="risk-cell"><div class="label">Avg DTE at entry</div><div class="value">22</div><div class="meta">Days to expiry</div></div>
+        <div class="risk-cell"><div class="label">Avg position size</div><div class="value">2.4%</div><div class="meta">Of portfolio NAV</div></div>
+        <div class="risk-cell"><div class="label">Max book delta</div><div class="value">±0.10</div><div class="meta">Hard limit</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section alt">
+    <div class="tbp-container">
+      <div class="section-number">06 / Methodology</div>
+      <h2>Construction <em>rules.</em></h2>
+
+      <div class="method-rule">
+        <div class="rn">01</div>
+        <div>
+          <h4>Universe</h4>
+          <p>Coverage is restricted to single-stock equity options with weekly expiries and an upcoming earnings event within <strong>2–14 calendar days</strong>. Index options, ETF options, and commodity options are excluded.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">02</div>
+        <div>
+          <h4>Sizing rule</h4>
+          <p>Maximum loss per trade is capped at <strong>1% of portfolio NAV</strong>. Position notional is set so that the worst-case payout of the structure (e.g. the wing width of an iron condor minus credit received) equals that 1% threshold.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">03</div>
+        <div>
+          <h4>Strike selection</h4>
+          <p>Short strikes are placed at the <strong>±1σ</strong> level implied by the front-month ATM IV. Long wings are placed at <strong>±2σ</strong> for iron condors. The credit received targets <strong>20–30%</strong> of the max-loss capital.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">04</div>
+        <div>
+          <h4>Entry timing</h4>
+          <p>Positions are opened between <strong>T-1 and T-3</strong> trading days before the scheduled earnings release, when IV has typically richened to its event peak. Entry is skipped if the bid-ask spread on any leg exceeds <strong>10%</strong> of the mid.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">05</div>
+        <div>
+          <h4>Exit rule</h4>
+          <p>Positions are closed at <strong>open T+1</strong> (the morning after earnings) regardless of P&amp;L. No "letting it ride." If 80% of max profit is captured before earnings (rare), the position is closed early.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">06</div>
+        <div>
+          <h4>Concentration limits</h4>
+          <p>No more than <strong>3 positions</strong> in the same sector, no more than <strong>2 positions</strong> with overlapping earnings dates, and total book vega exposure capped at <strong>−$2,500 per $100k NAV</strong>.</p>
+        </div>
+      </div>
+      <div class="method-rule">
+        <div class="rn">07</div>
+        <div>
+          <h4>Disclaimer</h4>
+          <p>This strategy is provided solely for educational and research purposes. It is not investment advice. Options carry substantial risk of loss and are not suitable for all investors. Always consult a qualified financial advisor before deploying any options strategy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fund-section">
+    <div class="tbp-container">
+      <div class="section-number">07 / Explore</div>
+      <h2>Other asset-class<br><em>specialists.</em></h2>
+      <div class="related-funds">
+        <a class="related-card" href="/funds/fixed-income.html"><span class="code">MBD-FI</span><span class="name">Fixed Income</span><span class="arr">Duration-managed credit barbell →</span></a>
+        <a class="related-card" href="/funds/equities.html"><span class="code">MBD-EQ</span><span class="name">Equities</span><span class="arr">Multi-factor specialist →</span></a>
+        <a class="related-card" href="/funds/commodities.html"><span class="code">MBD-CM</span><span class="name">Commodities</span><span class="arr">Diversified physical exposure →</span></a>
+      </div>
+      <div style="margin-top:48px; text-align:center;">
+        <a class="tbp-btn" href="/investments.html">← Back to investments</a>
+        <a class="tbp-btn primary" href="/subscription.html" style="margin-left:8px;">Get Pro access <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/education.html">Education</a><a href="/bot.html">AI Trader</a>
+          <a href="/glossary.html">Glossary</a>
+        </div></div>
+        <div><h4>Tools &amp; Reports</h4><div class="tbp-footer-links">
+          <a href="/tools/dcf.html">DCF Calculator</a><a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+          <a href="/tools/cfa.html">CFA Study Tool</a><a href="/tools/bond-yield.html">Bond Yield</a>
+          <a href="/reports.html">Reports</a><a href="/subscription.html">Subscription</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="/contact.html">Contact</a>
+          <a href="/disclaimer.html">Disclaimer</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script>
+  (function () {
+    function draw() {
+      if (typeof Chart === 'undefined') { setTimeout(draw, 200); return; }
+      var el = document.getElementById('perfChart'); if (!el) return;
+      var LABELS = ['Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar','Apr','May'];
+      new Chart(el, {
+        type: 'line',
+        data: {
+          labels: LABELS,
+          datasets: [
+            { label: 'MBD-OPT', data: [101.8,103.5,102.8,104.7,106.2,105.6,107.5,106.8,105.4,107.8,106.4,107.2,109.1,111.4,110.6,113.0,114.5], borderColor: '#dc2626', backgroundColor: 'rgba(220,38,38,.06)', borderWidth: 2.5, fill: true, pointRadius: 0, tension: 0.3 },
+            { label: 'S&P 500', data: [101.4,102.9,101.3,104.0,105.7,105.1,107.3,106.1,104.6,107.0,105.9,106.8,108.2,109.8,109.0,110.5,111.6], borderColor: '#8a8a85', backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.3 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, labels: { font: { size: 12 }, color: '#0a0a0a', boxWidth: 18, boxHeight: 3, padding: 16 } },
+                     tooltip: { callbacks: { label: function(ctx){ var v = ctx.parsed.y; return ctx.dataset.label + ': ' + (v - 100 >= 0 ? '+' : '') + (v - 100).toFixed(1) + '%'; } } } },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#8a8a85', maxTicksLimit: 9 } },
+            y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 11 }, color: '#8a8a85', callback: function(v){ return (v >= 100 ? '+' : '') + (v - 100).toFixed(0) + '%'; } } }
+          }
+        }
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', draw); else draw();
+  })();
+  </script>
+</body>
+</html>

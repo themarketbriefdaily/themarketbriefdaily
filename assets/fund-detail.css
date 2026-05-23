@@ -1,0 +1,535 @@
+/* ═══════════════════════════════════════════════════════════════
+   Fund Factsheet — shared styles for /funds/*.html
+   Used in conjunction with tbp-theme.css + tbp-premium.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Breadcrumb ─────────────────────────────────────────────── */
+.fund-breadcrumb {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--tbp-muted);
+  margin-bottom: 24px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.fund-breadcrumb a {
+  color: var(--tbp-muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.fund-breadcrumb a:hover { color: var(--tbp-ink); }
+.fund-breadcrumb .sep { color: var(--tbp-line); }
+.fund-breadcrumb .current { color: var(--tbp-ink); }
+
+/* ── Fund hero ──────────────────────────────────────────────── */
+.fund-hero {
+  padding: clamp(120px, 14vw, 180px) 0 clamp(56px, 7vw, 96px);
+  background: var(--tbp-bg);
+  border-bottom: 1px solid var(--tbp-line);
+  position: relative;
+  overflow: hidden;
+}
+.fund-hero::before {
+  content: "";
+  position: absolute;
+  top: 0; right: -10%;
+  width: 50%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(200,163,90,.06), transparent 70%);
+  pointer-events: none;
+}
+.fund-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+  position: relative;
+}
+@media (max-width: 880px) {
+  .fund-hero-grid { grid-template-columns: 1fr; }
+}
+.fund-code {
+  display: inline-block;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .14em;
+  padding: 6px 14px;
+  background: var(--tbp-ink);
+  color: var(--tbp-bg);
+  border-radius: 6px;
+  margin-bottom: 18px;
+}
+.fund-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+  font-weight: 850;
+  letter-spacing: -.04em;
+  line-height: 1;
+  margin: 0 0 14px;
+  color: var(--tbp-ink);
+}
+.fund-title em {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 350;
+  color: var(--tbp-muted);
+}
+.fund-tagline {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--tbp-muted);
+  max-width: 56ch;
+  margin: 0 0 32px;
+}
+.fund-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 0;
+  border-top: 1px solid var(--tbp-line);
+  border-bottom: 1px solid var(--tbp-line);
+  padding: 20px 0;
+}
+@media (max-width: 640px) {
+  .fund-hero-stats { grid-template-columns: repeat(2,1fr); gap: 16px 0; }
+}
+.fhs-item { text-align: left; }
+.fhs-item + .fhs-item { border-left: 1px solid var(--tbp-line); padding-left: 16px; }
+@media (max-width: 640px) {
+  .fhs-item + .fhs-item { border-left: 0; padding-left: 0; }
+}
+.fhs-item .k {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tbp-muted);
+  margin-bottom: 6px;
+}
+.fhs-item .v {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--tbp-ink);
+  line-height: 1;
+}
+.fhs-item .v.pos { color: var(--tbp-pos); }
+.fhs-item .v.neg { color: var(--tbp-neg); }
+
+/* ── Academic citation block ────────────────────────────────── */
+.academic-card {
+  background: var(--tbp-bg-alt, #f5f3ec);
+  border: 1px solid var(--tbp-line);
+  border-left: 3px solid var(--tbp-warm);
+  border-radius: 10px;
+  padding: clamp(24px, 3vw, 32px);
+}
+.academic-card .eyebrow {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tbp-warm);
+  margin-bottom: 12px;
+}
+.academic-card blockquote {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 350;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.45;
+  color: var(--tbp-ink);
+  margin: 0 0 14px;
+  border: 0;
+  padding: 0;
+}
+.academic-card cite {
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tbp-muted);
+}
+.academic-card .doi {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: var(--tbp-muted);
+  font-family: ui-monospace, Menlo, monospace;
+}
+
+/* ── Fund detail section ────────────────────────────────────── */
+.fund-section {
+  padding-block: clamp(56px, 7vw, 96px);
+}
+.fund-section.alt { background: var(--tbp-bg-alt, #f5f3ec); }
+.fund-section.dark { background: #0a0f1c; color: rgba(255,255,255,.85); }
+.fund-section.dark h2,
+.fund-section.dark h3 { color: #fff; }
+
+.fund-section h2 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 850;
+  letter-spacing: -.035em;
+  margin: 0 0 8px;
+  line-height: 1.05;
+}
+.fund-section h2 em {
+  font-family: 'Fraunces', serif;
+  font-style: italic; font-weight: 350;
+  color: var(--tbp-muted);
+}
+.fund-section .section-number {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--tbp-warm);
+  margin-bottom: 10px;
+}
+.fund-section .section-intro {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--tbp-muted);
+  max-width: 72ch;
+  margin: 16px 0 36px;
+}
+
+/* ── Performance chart + table ──────────────────────────────── */
+.perf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 880px) { .perf-grid { grid-template-columns: 1fr; } }
+.perf-chart-card {
+  background: #fff;
+  border: 1px solid var(--tbp-line);
+  border-radius: 14px;
+  padding: clamp(20px, 2.5vw, 28px);
+  height: 380px;
+  position: relative;
+}
+.perf-chart-card canvas { width: 100% !important; height: 100% !important; }
+.perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.perf-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--tbp-muted);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--tbp-line);
+}
+.perf-table th + th { text-align: right; }
+.perf-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--tbp-line-soft);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 14px;
+  color: var(--tbp-ink);
+}
+.perf-table td.label {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  color: var(--tbp-ink);
+}
+.perf-table td:not(.label) { text-align: right; }
+.perf-table td.pos { color: var(--tbp-pos); font-weight: 600; }
+.perf-table td.neg { color: var(--tbp-neg); font-weight: 600; }
+.perf-table tr:last-child td { border-bottom: 0; }
+
+/* ── Holdings table ─────────────────────────────────────────── */
+.holdings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.holdings-table th {
+  text-align: left;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--tbp-muted);
+  padding: 14px 16px;
+  border-bottom: 1.5px solid var(--tbp-ink);
+  background: transparent;
+}
+.holdings-table th.num { text-align: right; }
+.holdings-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--tbp-line-soft);
+  font-size: 14px;
+  color: var(--tbp-ink);
+  vertical-align: middle;
+}
+.holdings-table tr:hover td { background: var(--tbp-bg-alt, #f5f3ec); }
+.holdings-table td.ticker {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 700;
+  color: var(--tbp-ink);
+}
+.holdings-table td.name { font-weight: 500; }
+.holdings-table td.asset { color: var(--tbp-muted); font-size: 13px; }
+.holdings-table td.weight {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 700;
+  text-align: right;
+  position: relative;
+}
+.holdings-table .weight-bar {
+  position: absolute;
+  bottom: 4px; right: 16px; left: 16px;
+  height: 3px;
+  background: var(--tbp-line-soft);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.holdings-table .weight-bar::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: var(--w, 0%);
+  background: var(--tbp-warm);
+  border-radius: 2px;
+}
+.holdings-total {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  border-top: 1.5px solid var(--tbp-ink);
+}
+
+/* ── Allocation breakdown bars ──────────────────────────────── */
+.allocation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: clamp(28px, 4vw, 56px);
+}
+@media (max-width: 720px) { .allocation-grid { grid-template-columns: 1fr; } }
+.alloc-card h3 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -.015em;
+  margin: 0 0 20px;
+}
+.alloc-bars {
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.alloc-bar {
+  display: grid;
+  grid-template-columns: 160px 1fr 50px;
+  gap: 14px;
+  align-items: center;
+  font-size: 13.5px;
+}
+.alloc-bar .name { color: var(--tbp-ink); font-weight: 500; }
+.alloc-bar .bar {
+  height: 8px;
+  background: var(--tbp-line-soft);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.alloc-bar .bar-fill {
+  height: 100%;
+  background: var(--tbp-ink);
+  border-radius: 4px;
+  transition: width .8s cubic-bezier(.16,.62,.24,1);
+}
+.alloc-bar .bar-fill.warm { background: var(--tbp-warm); }
+.alloc-bar .bar-fill.green { background: #1a8a4a; }
+.alloc-bar .bar-fill.blue { background: #0066ff; }
+.alloc-bar .bar-fill.purple { background: #9333ea; }
+.alloc-bar .bar-fill.red { background: #dc2626; }
+.alloc-bar .bar-fill.gold { background: #b8860b; }
+.alloc-bar .pct {
+  font-family: ui-monospace, Menlo, monospace;
+  font-weight: 700;
+  color: var(--tbp-ink);
+  text-align: right;
+  font-size: 13px;
+}
+
+/* ── Risk metrics grid ──────────────────────────────────────── */
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 0;
+  border: 1px solid var(--tbp-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+@media (max-width: 720px) { .risk-grid { grid-template-columns: repeat(2,1fr); } }
+.risk-cell {
+  padding: clamp(20px, 2.5vw, 28px);
+  border-right: 1px solid var(--tbp-line);
+  border-bottom: 1px solid var(--tbp-line);
+}
+.risk-cell:nth-child(4n) { border-right: 0; }
+.risk-cell:nth-last-child(-n+4):not(:nth-child(4n+1)) { border-bottom: 0; }
+@media (max-width: 720px) {
+  .risk-cell { border-right: 0; }
+  .risk-cell:nth-child(odd) { border-right: 1px solid var(--tbp-line); }
+}
+.risk-cell .label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--tbp-muted);
+  margin-bottom: 10px;
+}
+.risk-cell .value {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--tbp-ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.risk-cell .value.pos { color: var(--tbp-pos); }
+.risk-cell .value.neg { color: var(--tbp-neg); }
+.risk-cell .meta {
+  font-size: 11.5px;
+  color: var(--tbp-muted);
+  line-height: 1.4;
+}
+
+/* ── Strategy / methodology prose ───────────────────────────── */
+.fund-prose p {
+  font-size: 16px; line-height: 1.75;
+  color: var(--tbp-ink-2, var(--tbp-ink));
+  margin: 0 0 18px;
+  max-width: 72ch;
+}
+.fund-prose ul {
+  list-style: none; padding: 0; margin: 16px 0 24px;
+  max-width: 72ch;
+}
+.fund-prose ul li {
+  font-size: 15px;
+  color: var(--tbp-ink-2, var(--tbp-ink));
+  line-height: 1.6;
+  padding: 10px 0 10px 28px;
+  position: relative;
+  border-bottom: 1px solid var(--tbp-line-soft);
+}
+.fund-prose ul li:last-child { border-bottom: 0; }
+.fund-prose ul li::before {
+  content: "→";
+  position: absolute;
+  left: 4px; top: 10px;
+  color: var(--tbp-warm); font-weight: 700;
+}
+.fund-prose ul li strong { color: var(--tbp-ink); font-weight: 700; }
+
+.fund-prose code {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  background: var(--tbp-bg-alt, #f5f3ec);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.method-rule {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--tbp-line);
+  align-items: start;
+}
+.method-rule:last-of-type { border-bottom: 1px solid var(--tbp-line); }
+.method-rule .rn {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--tbp-warm);
+  line-height: 1;
+}
+.method-rule h4 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -.015em;
+  margin: 0 0 6px;
+  color: var(--tbp-ink);
+}
+.method-rule p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--tbp-muted);
+  margin: 0;
+  max-width: 66ch;
+}
+.method-rule p strong { color: var(--tbp-ink); }
+.method-rule p code {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 12.5px;
+  background: var(--tbp-bg-alt, #f5f3ec);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── Related funds nav ──────────────────────────────────────── */
+.related-funds {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: clamp(14px, 2vw, 22px);
+  margin-top: 36px;
+}
+@media (max-width: 720px) { .related-funds { grid-template-columns: 1fr; } }
+.related-card {
+  padding: 22px 24px;
+  background: #fff;
+  border: 1px solid var(--tbp-line);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--tbp-ink);
+  transition: border-color .25s, transform .3s, box-shadow .3s;
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.related-card:hover {
+  border-color: var(--tbp-warm);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px -10px rgba(0,0,0,.1);
+}
+.related-card .code {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--tbp-muted);
+}
+.related-card .name {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -.015em;
+}
+.related-card .arr {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--tbp-warm);
+  font-weight: 700;
+}
+
+/* ── Disclosure block ───────────────────────────────────────── */
+.fund-disclosure {
+  background: var(--tbp-bg-alt, #f5f3ec);
+  border-left: 3px solid var(--tbp-muted);
+  padding: 20px 24px;
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--tbp-muted);
+  margin: 24px 0;
+}
+.fund-disclosure strong { color: var(--tbp-ink); font-weight: 700; }
