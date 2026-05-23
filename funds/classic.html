@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classic Fund — The Market Brief Daily</title>
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–CLF · Equity</div>
+    <h1>Classic <em>Fund</em></h1>
+    <p class="tagline">A systematic, factor-driven equity portfolio grounded in Fama & French's three-factor and five-factor models — capturing the persistent premia of market, size, and value.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Factor / Systematic</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">MSCI World</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2020</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+9.4%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Sharpe Ratio</span>
+        <span class="value">1.12</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <!-- STRATEGY -->
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy &amp; Academic Basis</h2>
+      <div class="academic-tag">📐 Fama &amp; French (1993, 2015)</div>
+      <p>The Classic Fund draws directly from Eugene Fama and Kenneth French's landmark research demonstrating that a meaningful proportion of cross-sectional equity returns can be explained by three systematic risk factors: market excess return (Mkt-RF), small capitalisation (SMB — Small Minus Big), and value (HML — High Minus Low book-to-market ratio). The 2015 extension adds profitability (RMW) and investment (CMA) factors.</p>
+      <p>By tilting systematically toward small-cap and value stocks while maintaining broad market exposure, the portfolio aims to harvest these academically documented risk premia over a full market cycle. Factor loadings are rebalanced quarterly to prevent drift.</p>
+    </section>
+
+    <!-- PILLARS -->
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> Investment Pillars</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">Market Beta</span>
+          <span class="p-desc">Full exposure to broad equity market excess returns — the foundational risk premium.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Size Premium (SMB)</span>
+          <span class="p-desc">Overweight small-cap equities which historically outperform large-cap on a risk-adjusted basis.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">Value Premium (HML)</span>
+          <span class="p-desc">Tilt toward high book-to-market stocks, capturing the persistent value risk premium.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Profitability (RMW)</span>
+          <span class="p-desc">Bias toward robust operating profitability — documented by Fama &amp; French (2015).</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFORMANCE -->
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs Benchmark</span>
+          <div class="chart-tabs">
+            <button class="chart-tab active">5Y</button>
+            <button class="chart-tab">3Y</button>
+            <button class="chart-tab">1Y</button>
+          </div>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ALLOCATION -->
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Asset Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Equity</span>
+            <span class="dc-value">100%</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <!-- HOLDINGS -->
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Representative Holdings</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr>
+            <th>Security</th>
+            <th>Region</th>
+            <th>Factor Tilt</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–CLF</span></div>
+        <div class="sc-row"><span class="sc-key">Asset Class</span><span class="sc-val">Global Equity</span></div>
+        <div class="sc-row"><span class="sc-key">Strategy</span><span class="sc-val">Factor / Quant</span></div>
+        <div class="sc-row"><span class="sc-key">Rebalance</span><span class="sc-val">Quarterly</span></div>
+        <div class="sc-row"><span class="sc-key">Benchmark</span><span class="sc-val">MSCI World</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$10,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (Ann.)</span>
+            <span class="m-value">14.2%</span>
+            <span class="m-note">vs 14.8% benchmark</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">1.12</span>
+            <span class="m-note">3-year trailing</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−18.4%</span>
+            <span class="m-note">Mar 2020</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Beta</span>
+            <span class="m-value">0.94</span>
+            <span class="m-note">vs MSCI World</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Academic References</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Fama & French (1993) — <em>Common risk factors in stock and bond returns</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Fama & French (2015) — <em>A five-factor asset pricing model</em></span>
+        </div>
+        <div class="sc-row" style="flex-direction:column;align-items:flex-start;gap:0.2rem;border:none">
+          <span class="sc-val" style="font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--text-2)">Carhart (1997) — <em>On persistence in mutual fund performance</em></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice or a solicitation to buy or sell securities. Past performance and simulated returns are not indicative of future results. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#c9a84c','#4a90d9','#3dba7e','#e05252','#9b6dd4','#e07a38'];
+
+// Performance chart
+const perfCtx = document.getElementById('perfChart').getContext('2d');
+const labels = ['2020','2021','2022','2023','2024','2025'];
+new Chart(perfCtx, {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: 'Classic Fund',
+        data: [100, 126, 108, 135, 158, 178],
+        borderColor: '#c9a84c',
+        backgroundColor: 'rgba(201,168,76,0.07)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#c9a84c',
+        borderWidth: 2
+      },
+      {
+        label: 'MSCI World',
+        data: [100, 122, 103, 128, 148, 162],
+        borderColor: 'rgba(255,255,255,0.25)',
+        backgroundColor: 'transparent',
+        fill: false,
+        tension: 0.4,
+        pointRadius: 0,
+        borderWidth: 1,
+        borderDash: [4,4]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+      y: { ticks: { color: '#5c5a56', callback: v => v }, grid: { color: 'rgba(255,255,255,0.04)' } }
+    }
+  }
+});
+
+// Donut chart
+const allocs = [
+  { name: 'US Small-Cap Value',    pct: 28 },
+  { name: 'US Large-Cap Blend',    pct: 22 },
+  { name: 'International Dev.',    pct: 20 },
+  { name: 'Emerging Markets',      pct: 15 },
+  { name: 'US Small-Cap Growth',   pct: 10 },
+  { name: 'Cash / Other',          pct:  5 },
+];
+
+const donutCtx = document.getElementById('donutChart').getContext('2d');
+new Chart(donutCtx, {
+  type: 'doughnut',
+  data: {
+    labels: allocs.map(a => a.name),
+    datasets: [{
+      data: allocs.map(a => a.pct),
+      backgroundColor: COLORS,
+      borderWidth: 0,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    cutout: '68%',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } } }
+  }
+});
+
+// Legend
+const legend = document.getElementById('allocLegend');
+allocs.forEach((a, i) => {
+  legend.innerHTML += `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`;
+});
+
+// Holdings
+const holdings = [
+  { ticker:'VBR',  name:'Vanguard Small-Cap Value ETF',       region:'US',     tilt:'Size + Value',    w:14 },
+  { ticker:'AVUV', name:'Avantis US Small Cap Value ETF',     region:'US',     tilt:'Size + Value',    w:12 },
+  { ticker:'VEA',  name:'Vanguard Dev. Markets ETF',          region:'Intl',   tilt:'Market Beta',     w:12 },
+  { ticker:'EEM',  name:'iShares MSCI Emerging Mkts ETF',     region:'EM',     tilt:'Market + Size',   w:10 },
+  { ticker:'AVDV', name:'Avantis Intl Small Cap Value ETF',   region:'Intl',   tilt:'Size + Value',    w:10 },
+  { ticker:'VTV',  name:'Vanguard Value ETF',                 region:'US',     tilt:'Value',           w:9  },
+  { ticker:'IJS',  name:'iShares S&P SmallCap 600 Value ETF', region:'US',     tilt:'Size + Value',    w:8  },
+  { ticker:'ISVL', name:'iShares MSCI Intl Small-Cap Value',  region:'Intl',   tilt:'Size + Value',    w:7  },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+holdings.forEach(h => {
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td>${h.region}</td>
+    <td>${h.tilt}</td>
+    <td>
+      ${h.w}%
+      <div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%"></div></div>
+    </td>
+  </tr>`;
+});
+</script>
+</body>
+</html>
