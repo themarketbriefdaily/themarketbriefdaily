@@ -91,9 +91,9 @@
         <div class="chart-header">
           <span class="chart-title">Cumulative Return vs MSCI World</span>
           <div class="chart-tabs">
-            <button class="chart-tab active">5Y</button>
-            <button class="chart-tab">3Y</button>
-            <button class="chart-tab">1Y</button>
+            <button class="chart-tab active" data-period="5y">5Y</button>
+            <button class="chart-tab" data-period="3y">3Y</button>
+            <button class="chart-tab" data-period="1y">1Y</button>
           </div>
         </div>
         <canvas class="fund-chart" id="perfChart"></canvas>
@@ -189,31 +189,23 @@
   <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice. Individual stock holdings are illustrative. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
 </footer>
 
+<script src="../assets/fund-charts.js"></script>
 <script>
 const COLORS = ['#c9a84c','#4a90d9','#3dba7e','#9b6dd4','#e07a38','#e05252'];
 
-const perfCtx = document.getElementById('perfChart').getContext('2d');
-new Chart(perfCtx, {
-  type: 'line',
-  data: {
-    labels: ['2020','2021','2022','2023','2024','2025'],
-    datasets: [
-      { label: 'Equities Fund', data: [100, 134, 108, 142, 172, 198],
-        borderColor: '#c9a84c', backgroundColor: 'rgba(201,168,76,0.07)',
-        fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#c9a84c', borderWidth: 2 },
-      { label: 'MSCI World', data: [100, 122, 103, 128, 148, 162],
-        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
-        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
-    scales: {
-      x: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } },
-      y: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(255,255,255,0.04)' } }
-    }
-  }
+initFundChart({
+  fundId: 'equities',
+  fundLabel: 'Equities Fund',
+  benchmarkLabel: 'MSCI World',
+  fundColor: '#c9a84c',
+  fundFill: 'rgba(201,168,76,0.07)',
+  benchmarkColor: 'rgba(255,255,255,0.2)',
+  benchmarkDash: [4,4],
+  benchmarkBorderWidth: 1,
+  fundBorderWidth: 2,
+  fundPointRadius: 3,
+  benchmarkPointRadius: 0,
+  valueType: 'index'
 });
 
 const allocs = [
