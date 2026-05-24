@@ -23,20 +23,20 @@
   <style>
     /* ── Hero: same transparent-to-dark scroll treatment as index ── */
     .tbp-header {
-      background: linear-gradient(180deg, rgba(8,12,22,.82), rgba(8,12,22,.4) 70%, transparent);
-      border-bottom-color: transparent;
-      backdrop-filter: none;
+      background: rgba(250,249,246,.92);
+      border-bottom-color: var(--tbp-line);
+      backdrop-filter: blur(14px);
     }
     .tbp-header .tbp-brand,
-    .tbp-header .tbp-nav a { color: rgba(255,255,255,.92); }
-    .tbp-header .tbp-brand .mark { background: #fff; color: #0a0f1c; }
+    .tbp-header .tbp-nav a { color: var(--tbp-ink); }
+    .tbp-header .tbp-brand .mark { background: var(--tbp-ink); color: var(--tbp-bg); }
     .tbp-header .tbp-nav a.is-active::after { background: var(--tbp-warm); }
-    .tbp-header .tbp-cta-mini { background: #fff; color: #0a0f1c; }
+    .tbp-header .tbp-cta-mini { background: var(--tbp-ink); color: var(--tbp-bg); }
     .tbp-header .tbp-cta-mini:hover { background: var(--tbp-warm); color: #0a0f1c; }
-    .tbp-header .tbp-burger { border-color: rgba(255,255,255,.3); }
+    .tbp-header .tbp-burger { border-color: var(--tbp-line); }
     .tbp-header .tbp-burger span,
     .tbp-header .tbp-burger span::before,
-    .tbp-header .tbp-burger span::after { background: #fff; }
+    .tbp-header .tbp-burger span::after { background: var(--tbp-ink); }
     .tbp-header.below-hero {
       background: rgba(250,249,246,.92);
       backdrop-filter: blur(14px);
@@ -50,6 +50,47 @@
     .tbp-header.below-hero .tbp-burger span,
     .tbp-header.below-hero .tbp-burger span::before,
     .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
+
+    /* ── Hero light treatment for readability ───────────────────── */
+    .tbp-hero-cinematic.tbp-hero-light {
+      color: var(--tbp-ink);
+    }
+    .tbp-hero-cinematic.tbp-hero-light::before {
+      background:
+        linear-gradient(180deg, rgba(250,249,246,.92) 0%, rgba(250,249,246,.78) 35%, rgba(250,249,246,.95) 100%),
+        linear-gradient(90deg, rgba(250,249,246,.95) 0%, rgba(250,249,246,.72) 55%, rgba(250,249,246,.55) 100%);
+    }
+    .tbp-hero-cinematic.tbp-hero-light h1 {
+      color: var(--tbp-ink);
+      text-shadow: none;
+    }
+    .tbp-hero-cinematic.tbp-hero-light h1 em { color: var(--tbp-ink-2); }
+    .tbp-hero-cinematic.tbp-hero-light .lead { color: var(--tbp-ink-2); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-eyebrow { color: var(--tbp-muted); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-eyebrow::before { background: var(--tbp-warm); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-btn {
+      color: var(--tbp-ink);
+      border-color: var(--tbp-ink);
+      background: transparent;
+    }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-btn:hover {
+      background: var(--tbp-ink);
+      color: var(--tbp-bg);
+    }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-btn.primary {
+      background: var(--tbp-ink);
+      color: var(--tbp-bg);
+      border-color: var(--tbp-ink);
+    }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-btn.primary:hover {
+      background: var(--tbp-blue);
+      border-color: var(--tbp-blue);
+      color: var(--tbp-bg);
+    }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-hero-meta-card { border-left: 1px solid var(--tbp-line); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-hero-meta-card .k { color: var(--tbp-muted); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-hero-meta-card .v { color: var(--tbp-ink); }
+    .tbp-hero-cinematic.tbp-hero-light .tbp-hero-meta-card .v em { color: var(--tbp-muted); }
 
     /* ── Methodology card grid ──────────────────────────────────── */
     .method-card-grid {
@@ -574,7 +615,7 @@
   </div>
 
   <!-- ══ HERO ════════════════════════════════════════════════════ -->
-  <section class="tbp-hero-cinematic" id="hero-anchor">
+  <section class="tbp-hero-cinematic tbp-hero-light" id="hero-anchor">
     <div class="tbp-hero-cinematic-bg" style="background-image:url('/assets/images/editorial-pull.jpg');"></div>
     <div class="tbp-hero-cinematic-inner">
       <div>
