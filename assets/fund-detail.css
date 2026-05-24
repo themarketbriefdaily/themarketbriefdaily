@@ -12,9 +12,9 @@
   --surface:    #f0eee8;
   --border:     #e3e0d8;
   --border-h:   #d6d2c8;
-  --gold:       #c8a35a;
-  --gold-dim:   rgba(200,163,90,0.14);
-  --gold-glow:  rgba(200,163,90,0.12);
+  --gold:       #d8a84a;
+  --gold-dim:   rgba(216,168,74,0.18);
+  --gold-glow:  rgba(216,168,74,0.16);
   --text:       #0a0a0a;
   --text-2:     #5a5a5a;
   --text-3:     #8a8a85;
@@ -33,7 +33,7 @@ body {
   background: var(--ink);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
