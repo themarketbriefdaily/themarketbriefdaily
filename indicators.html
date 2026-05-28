@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Macroeconomic Indicators — The Market Brief Daily</title>
+  <meta name="description" content="Live macroeconomic dashboard: market levels, US inflation and CPI, the Treasury yield curve, the Fed funds rate, unemployment, payrolls, GDP and retail sales." />
+  <meta name="theme-color" content="#0a0f1c" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.marketbriefdaily.com/indicators.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Market Brief Daily" />
+  <meta property="og:title" content="Macroeconomic Indicators — The Market Brief Daily" />
+  <meta property="og:description" content="Live macroeconomic dashboard: markets, inflation, the Treasury yield curve, the Fed funds rate, jobs and growth." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <style>
+    .ind-hero { padding-block: clamp(56px,7vw,104px) clamp(28px,3vw,40px); }
+    .ind-live {
+      display:inline-flex; align-items:center; gap:9px;
+      padding:6px 14px; border:1px solid var(--tbp-line); border-radius:999px;
+      font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--tbp-muted); margin-bottom:20px;
+    }
+    .ind-live .dot { width:7px; height:7px; border-radius:50%; background:#4ade80;
+      animation:indPulse 2s ease-in-out infinite; }
+    @keyframes indPulse { 0%{box-shadow:0 0 0 0 rgba(74,222,128,.5);} 70%{box-shadow:0 0 0 9px rgba(74,222,128,0);} 100%{box-shadow:0 0 0 0 rgba(74,222,128,0);} }
+
+    .ind-section { padding-block: clamp(28px,4vw,52px); }
+    .ind-section-head { display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
+    .ind-section-head h2 { font-size:clamp(1.4rem,2.4vw,2rem); font-weight:800; letter-spacing:-.03em; margin:0; }
+    .ind-section-head .sub { font-size:13px; color:var(--tbp-muted); max-width:46ch; }
+
+    .ind-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:14px; }
+    .ind-card {
+      border:1px solid var(--tbp-line); border-radius:14px; padding:18px 18px 16px;
+      background:var(--tbp-card, rgba(255,255,255,.02)); position:relative; overflow:hidden;
+    }
+    .ind-card .lbl { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--tbp-muted); margin-bottom:10px; }
+    .ind-card .val { font-size:clamp(1.5rem,2.4vw,1.9rem); font-weight:800; letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums; }
+    .ind-card .meta { margin-top:9px; font-size:12px; display:flex; align-items:center; gap:8px; font-variant-numeric:tabular-nums; }
+    .ind-card .chg.pos { color:#16a34a; }
+    .ind-card .chg.neg { color:#dc2626; }
+    .ind-card .chg.neut { color:var(--tbp-muted); }
+    .ind-card .asof { color:var(--tbp-muted); font-size:11px; }
+    .ind-card.pending .val { color:var(--tbp-muted); font-weight:600; font-size:1rem; }
+
+    .ind-curve-wrap { border:1px solid var(--tbp-line); border-radius:16px; padding:20px; }
+    .ind-curve-canvas { position:relative; height:320px; }
+    .ind-note { font-size:12px; color:var(--tbp-muted); margin-top:14px; line-height:1.6; }
+    .ind-updated { font-size:12px; color:var(--tbp-muted); }
+    .ind-empty { font-size:13px; color:var(--tbp-muted); border:1px dashed var(--tbp-line); border-radius:12px; padding:18px; }
+  </style>
+</head>
+
+<body class="tbp">
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">M</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a>
+        <a href="/investments.html">Investments</a>
+        <a href="/posts.html">Research Posts</a>
+        <a class="is-active" href="/indicators.html">Indicators</a>
+        <a href="/tools/">Tools</a>
+        <a href="/education.html">Education</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="/subscription.html">
+        Get access <span class="arrow">↗</span>
+      </a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a>
+    <a href="/investments.html">Investments</a>
+    <a href="/posts.html">Research Posts</a>
+    <a href="/indicators.html">Indicators</a>
+    <a href="/tools/">Tools</a>
+    <a href="/education.html">Education</a>
+    <a href="/about.html">About</a>
+    <a href="/subscription.html">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-section ind-hero">
+    <div class="tbp-container">
+      <div class="ind-live"><span class="dot"></span>Live · auto-refreshed</div>
+      <div class="tbp-eyebrow" style="margin-bottom:14px;">Important macroeconomic indicators</div>
+      <h1 style="font-size:clamp(2.2rem,4.6vw,3.8rem); font-weight:850; letter-spacing:-.04em; line-height:1.02; margin:0 0 18px;">The regime, <em>in numbers</em>.</h1>
+      <p style="font-size:clamp(1rem,1.3vw,1.1rem); line-height:1.7; color:var(--tbp-muted); max-width:60ch; margin:0 0 14px;">
+        The indicators that drive every positioning decision across our model portfolios —
+        inflation and the path of policy, the shape of the Treasury curve, the labour market,
+        growth, and the market levels that price it all. Sourced from live data and refreshed
+        automatically.
+      </p>
+      <div class="ind-updated" id="indUpdated">Loading latest data…</div>
+    </div>
+  </section>
+
+  <section class="tbp-section ind-section">
+    <div class="tbp-container">
+      <div class="ind-section-head">
+        <h2>Market levels</h2>
+        <span class="sub">Spot levels and the latest session move across the assets our portfolios trade.</span>
+      </div>
+      <div class="ind-grid" id="marketsGrid"></div>
+    </div>
+  </section>
+
+  <section class="tbp-section ind-section">
+    <div class="tbp-container">
+      <div class="ind-section-head">
+        <h2>Inflation &amp; policy</h2>
+        <span class="sub">The two-sided impulse driving our fixed-income and precious-metals positioning.</span>
+      </div>
+      <div class="ind-grid" id="policyGrid"></div>
+    </div>
+  </section>
+
+  <section class="tbp-section ind-section">
+    <div class="tbp-container">
+      <div class="ind-section-head">
+        <h2>US Treasury yield curve</h2>
+        <span class="sub">The market's read on growth, inflation and the term premium — and how the US funds its debt.</span>
+      </div>
+      <div class="ind-curve-wrap">
+        <div class="ind-curve-canvas"><canvas id="curveChart"></canvas></div>
+        <div class="ind-note" id="curveNote"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tbp-section ind-section">
+    <div class="tbp-container">
+      <div class="ind-section-head">
+        <h2>Growth &amp; the labour market</h2>
+        <span class="sub">A tightening workforce against a slowing demand pulse — the stagflationary tension we watch.</span>
+      </div>
+      <div class="ind-grid" id="growthGrid"></div>
+    </div>
+  </section>
+
+  <section class="tbp-section ind-section" style="padding-bottom:clamp(48px,6vw,90px);">
+    <div class="tbp-container">
+      <p class="ind-note" style="max-width:70ch;">
+        Educational research only — not investment advice. Market levels are sourced from Yahoo Finance;
+        economic series (CPI, inflation, policy rate, Treasury yields, employment and growth) from
+        Alpha Vantage / official releases. Figures refresh automatically on a schedule and may lag
+        the most recent print.
+      </p>
+    </div>
+  </section>
+
+  <footer class="tbp-footer" role="contentinfo">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+        </div>
+        <div>
+          <h4>Content</h4>
+          <div class="tbp-footer-links">
+            <a href="/posts.html">Research</a>
+            <a href="/investments.html">Funds</a>
+            <a href="/indicators.html">Indicators</a>
+            <a href="/education.html">Education</a>
+            <a href="/glossary.html">Glossary</a>
+          </div>
+        </div>
+        <div>
+          <h4>Tools &amp; Reports</h4>
+          <div class="tbp-footer-links">
+            <a href="/tools/dcf.html">DCF Calculator</a>
+            <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
+            <a href="/tools/cfa.html">CFA Study Tool</a>
+            <a href="/tools/bond-yield.html">Bond Yield</a>
+            <a href="/subscription.html">Subscription</a>
+          </div>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <div class="tbp-footer-links">
+            <a href="/about.html">About</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/disclaimer.html">Disclaimer</a>
+            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
+      <div class="tbp-footer-bottom">
+        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <div class="legal">
+          <a href="/disclaimer.html">Full disclaimer</a>
+          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script>
+  (function () {
+    var DATA_URL = '/data/macro.json';
+
+    function dirClass(x) { return x > 0.01 ? 'pos' : (x < -0.01 ? 'neg' : 'neut'); }
+    function signPct(x) { return (x > 0 ? '+' : '') + x.toFixed(2) + '%'; }
+    function fmtDate(s) {
+      if (!s) return '';
+      var d = new Date(s);
+      if (isNaN(d)) return s;
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function card(label, value, metaHtml, pending) {
+      var el = document.createElement('div');
+      el.className = 'ind-card' + (pending ? ' pending' : '');
+      el.innerHTML =
+        '<div class="lbl"></div><div class="val"></div>' +
+        (metaHtml ? '<div class="meta">' + metaHtml + '</div>' : '');
+      el.querySelector('.lbl').textContent = label;
+      el.querySelector('.val').textContent = value;
+      return el;
+    }
+
+    function renderMarkets(markets, grid) {
+      grid.replaceChildren();
+      var order = ['sp500','ftse100','dxy','gold','silver','brent','wti','copper','gbpusd'];
+      var keys = order.filter(function (k) { return markets[k]; });
+      if (!keys.length) { grid.innerHTML = '<div class="ind-empty">Market data unavailable right now.</div>'; return; }
+      keys.forEach(function (k) {
+        var m = markets[k];
+        var c = dirClass(m.change_pct);
+        var meta = '<span class="chg ' + c + '">' + signPct(m.change_pct) + '</span>' +
+                   '<span class="asof">' + fmtDate(m.date) + '</span>';
+        grid.appendChild(card(m.label, m.value, meta));
+      });
+    }
+
+    // Economic indicator descriptor: key, label, value formatter, unit suffix
+    function econCard(grid, eco, key, label, fmt, unit) {
+      var d = eco[key];
+      if (!d) { grid.appendChild(card(label, 'Awaiting data', '', true)); return; }
+      var val = fmt ? fmt(d) : (d.value + (unit || ''));
+      var meta = '';
+      if (typeof d.change === 'number') {
+        var c = dirClass(d.change);
+        var arrow = d.change > 0 ? '▲' : (d.change < 0 ? '▼' : '–');
+        meta += '<span class="chg ' + c + '">' + arrow + ' ' +
+                Math.abs(d.change).toFixed(2) + (unit || '') + '</span>';
+      }
+      meta += '<span class="asof">' + fmtDate(d.date) + '</span>';
+      grid.appendChild(card(label, val, meta));
+    }
+
+    function renderPolicy(eco, grid) {
+      grid.replaceChildren();
+      econCard(grid, eco, 'cpi_yoy', 'CPI inflation (YoY)', function (d) { return d.value.toFixed(1) + '%'; }, '%');
+      econCard(grid, eco, 'inflation', 'Annual inflation', function (d) { return d.value.toFixed(1) + '%'; }, '%');
+      econCard(grid, eco, 'fed_funds', 'Fed funds rate', function (d) { return d.value.toFixed(2) + '%'; }, '%');
+      econCard(grid, eco, 'ust_2y', 'US 2Y yield', function (d) { return d.value.toFixed(2) + '%'; }, '%');
+      econCard(grid, eco, 'ust_10y', 'US 10Y yield', function (d) { return d.value.toFixed(2) + '%'; }, '%');
+    }
+
+    function renderGrowth(eco, grid) {
+      grid.replaceChildren();
+      econCard(grid, eco, 'unemployment', 'Unemployment', function (d) { return d.value.toFixed(1) + '%'; }, '%');
+      econCard(grid, eco, 'nonfarm_payroll', 'Nonfarm payrolls', function (d) { return Number(d.value).toLocaleString() + 'k'; });
+      econCard(grid, eco, 'real_gdp', 'Real GDP', function (d) { return '$' + Number(d.value).toLocaleString() + 'B'; });
+      econCard(grid, eco, 'retail_sales', 'Retail sales', function (d) { return '$' + Number(d.value).toLocaleString() + 'M'; });
+    }
+
+    function renderCurve(eco, note) {
+      var canvas = document.getElementById('curveChart');
+      var pts = [
+        { lbl: '3M', k: 'ust_3m' },
+        { lbl: '2Y', k: 'ust_2y' },
+        { lbl: '10Y', k: 'ust_10y' },
+        { lbl: '30Y', k: 'ust_30y' }
+      ];
+      var have = pts.filter(function (p) { return eco[p.k]; });
+      if (have.length < 2 || typeof Chart === 'undefined') {
+        canvas.parentElement.innerHTML =
+          '<div class="ind-empty">Treasury curve data will appear here once the economic feed is connected.</div>';
+        return;
+      }
+      var labels = have.map(function (p) { return p.lbl; });
+      var data = have.map(function (p) { return eco[p.k].value; });
+      new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'US Treasury yield (%)',
+            data: data,
+            borderColor: '#c79a3b',
+            backgroundColor: 'rgba(199,154,59,.12)',
+            fill: true, tension: 0.35,
+            pointRadius: 4, pointBackgroundColor: '#c79a3b', borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#5c5a56', font: { size: 11 } } } },
+          scales: {
+            x: { ticks: { color: '#5c5a56' }, grid: { color: 'rgba(0,0,0,.05)' } },
+            y: { ticks: { color: '#5c5a56', callback: function (v) { return v + '%'; } },
+                 grid: { color: 'rgba(0,0,0,.05)' } }
+          }
+        }
+      });
+      var s = eco.ust_10y && eco.ust_2y ? (eco.ust_10y.value - eco.ust_2y.value) : null;
+      if (s !== null) {
+        note.textContent = '10Y minus 2Y spread: ' + (s >= 0 ? '+' : '') + (s * 100).toFixed(0) +
+          ' bp — ' + (s < 0 ? 'inverted, the classic late-cycle warning.' :
+          'positive, a normalising term structure.');
+      }
+    }
+
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d) throw new Error('no data');
+        renderMarkets(d.markets || {}, document.getElementById('marketsGrid'));
+        var eco = d.economic || {};
+        renderPolicy(eco, document.getElementById('policyGrid'));
+        renderGrowth(eco, document.getElementById('growthGrid'));
+        renderCurve(eco, document.getElementById('curveNote'));
+        var up = document.getElementById('indUpdated');
+        up.textContent = 'Last updated ' + fmtDate(d.asOf) +
+          (Object.keys(eco).length ? '' : ' · economic series pending data feed');
+      })
+      .catch(function () {
+        document.getElementById('indUpdated').textContent = 'Live data is temporarily unavailable.';
+        document.getElementById('marketsGrid').innerHTML =
+          '<div class="ind-empty">Live data is temporarily unavailable. Please check back shortly.</div>';
+      });
+  })();
+  </script>
+</body>
+</html>

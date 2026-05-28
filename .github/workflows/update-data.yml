@@ -1,0 +1,48 @@
+name: Update live data
+
+# Refreshes data/ticker.json, data/macro.json and data/funds-history.json
+# from Yahoo Finance (+ Alpha Vantage economic series if the secret is set),
+# then commits any changes so GitHub Pages serves fresh numbers.
+
+on:
+  schedule:
+    # 06:10 and 21:10 UTC every weekday (after EU open and after US close)
+    - cron: "10 6 * * 1-5"
+    - cron: "10 21 * * 1-5"
+  workflow_dispatch: {}   # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch data
+        env:
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
+        run: python scripts/fetch_data.py ticker funds macro
+
+      - name: Commit updated data
+        run: |
+          git config user.name  "tmbd-data-bot"
+          git config user.email "actions@github.com"
+          git add data/ticker.json data/macro.json data/funds-history.json
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "chore(data): refresh live market data [skip ci]"
+            git push
+          fi

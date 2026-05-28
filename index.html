@@ -97,6 +97,7 @@
         <a class="is-active" href="/">Home</a>
         <a href="/investments.html">Investments</a>
         <a href="/posts.html">Research Posts</a>
+        <a href="/indicators.html">Indicators</a>
         <a href="/tools/">Tools</a>
         <a href="/education.html">Education</a>
         <a href="/about.html">About</a>
@@ -112,6 +113,7 @@
     <a href="/">Home</a>
     <a href="/investments.html">Investments</a>
     <a href="/posts.html">Research Posts</a>
+    <a href="/indicators.html">Indicators</a>
     <a href="/tools/">Tools</a>
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
@@ -174,7 +176,7 @@
        LIVE TICKER
        ════════════════════════════════════════════════════════════ -->
   <div class="tbp-ticker" aria-label="Market overview">
-    <div class="tbp-ticker-track">
+    <div class="tbp-ticker-track" id="tbpTickerTrack">
       <span class="tbp-ticker-item"><span class="sym">FTSE 100</span><span>8,432.1</span><span class="pos">+0.42%</span></span>
       <span class="tbp-ticker-item"><span class="sym">S&amp;P 500</span><span>5,287.6</span><span class="pos">+0.28%</span></span>
       <span class="tbp-ticker-item"><span class="sym">UST 10Y</span><span>4.24%</span><span class="neg">−4.2 bp</span></span>
@@ -586,5 +588,34 @@
   </footer>
 
   <script src="/assets/tbp.js" defer></script>
+  <script>
+  // Live market ticker: replace the static fallback with data/ticker.json.
+  (function () {
+    var track = document.getElementById('tbpTickerTrack');
+    if (!track) return;
+    fetch('/data/ticker.json', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var items = d && d.items;
+        if (!items || !items.length) return; // keep static fallback
+        function build() {
+          return items.map(function (it) {
+            var dir = it.dir === 'pos' ? 'pos' : (it.dir === 'neg' ? 'neg' : 'neut');
+            var s = document.createElement('span');
+            s.className = 'tbp-ticker-item';
+            s.innerHTML = '<span class="sym"></span><span></span><span class="' + dir + '"></span>';
+            s.children[0].textContent = it.sym;
+            s.children[1].textContent = it.value;
+            s.children[2].textContent = it.change;
+            return s;
+          });
+        }
+        track.replaceChildren();
+        build().forEach(function (n) { track.appendChild(n); });   // first pass
+        build().forEach(function (n) { track.appendChild(n); });   // duplicate for seamless loop
+      })
+      .catch(function () { /* leave static fallback in place */ });
+  })();
+  </script>
 </body>
 </html>

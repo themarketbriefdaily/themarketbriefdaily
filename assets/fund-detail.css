@@ -222,6 +222,52 @@ body {
 
 .fund-section p:last-child { margin-bottom: 0; }
 
+.fund-section h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.75rem 0 0.6rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.fund-section h3 .h3-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+.fund-section ul {
+  margin: 0 0 1rem 1.1rem;
+  color: var(--text-2);
+  line-height: 1.8;
+}
+.fund-section ul li { margin-bottom: 0.4rem; }
+
+.macro-callout {
+  background: var(--gold-glow);
+  border: 1px solid var(--gold-dim);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 0 0 1.5rem;
+}
+.macro-callout .mc-label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.macro-callout p { margin-bottom: 0; font-size: 0.92rem; }
+
 /* ── PERFORMANCE CHART ── */
 .chart-container {
   background: var(--ink-2);
