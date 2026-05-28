@@ -137,7 +137,7 @@
         <div class="chart-header">
           <span class="chart-title">Cumulative Strategy P&amp;L (% of NAV)</span>
           <div class="chart-tabs">
-            <button class="chart-tab active">Since Inception</button>
+            <button class="chart-tab active" data-period="si">Since Inception</button>
           </div>
         </div>
         <canvas class="fund-chart" id="perfChart"></canvas>
@@ -233,31 +233,24 @@
   <p><strong>Important Disclaimer:</strong> This software and strategy description is provided solely for educational and research purposes. It is not intended to provide investment advice, and no investment recommendations are made herein. The developers are not financial advisors and accept no responsibility for any financial decisions or losses resulting from the use of this software. Options trading involves substantial risk of loss, is complex, and is not suitable for all investors. Always consult a professional financial advisor before making any investment decisions.</p>
 </footer>
 
+<script src="../assets/fund-charts.js"></script>
 <script>
 const COLORS = ['#9b6dd4','#c9a84c','#3dba7e','#e05252'];
 
-const perfCtx = document.getElementById('perfChart').getContext('2d');
-new Chart(perfCtx, {
-  type: 'line',
-  data: {
-    labels: ['Jan 23','Mar 23','May 23','Jul 23','Sep 23','Nov 23','Jan 24','Mar 24','May 24','Jul 24','Sep 24','Nov 24','Jan 25','Mar 25'],
-    datasets: [
-      { label: 'Options Fund (Simulated)', data: [0,2.1,4.8,3.2,6.4,9.1,7.8,11.2,14.6,12.1,16.8,20.2,18.4,23.1],
-        borderColor: '#9b6dd4', backgroundColor: 'rgba(155,109,212,0.07)',
-        fill: true, tension: 0.4, pointRadius: 2, pointBackgroundColor: '#9b6dd4', borderWidth: 2 },
-      { label: 'CBOE PutWrite Index', data: [0,1.2,2.8,1.9,3.6,5.2,4.8,6.4,8.2,7.1,9.4,11.2,10.6,13.1],
-        borderColor: 'rgba(255,255,255,0.2)', backgroundColor: 'transparent',
-        fill: false, tension: 0.4, pointRadius: 0, borderWidth: 1, borderDash: [4,4] }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#9a9690', font: { size: 11 } } } },
-    scales: {
-      x: { ticks: { color: '#5c5a56', maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.04)' } },
-      y: { ticks: { color: '#5c5a56', callback: v => v+'%' }, grid: { color: 'rgba(255,255,255,0.04)' } }
-    }
-  }
+initFundChart({
+  fundId: 'options',
+  fundLabel: 'Options Fund',
+  benchmarkLabel: 'CBOE PutWrite Index',
+  fundColor: '#9b6dd4',
+  fundFill: 'rgba(155,109,212,0.07)',
+  benchmarkColor: '#7a776f',
+  benchmarkDash: [4,4],
+  benchmarkBorderWidth: 2,
+  fundBorderWidth: 2,
+  fundPointRadius: 2,
+  benchmarkPointRadius: 0,
+  xTickMaxRotation: 45,
+  valueType: 'percent'
 });
 
 const allocs = [

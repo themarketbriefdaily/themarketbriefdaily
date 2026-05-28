@@ -6,21 +6,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap');
 
 :root {
-  --ink:        #0a0c0f;
-  --ink-2:      #13161c;
-  --ink-3:      #1c2030;
-  --surface:    #111418;
-  --border:     rgba(255,255,255,0.07);
-  --border-h:   rgba(255,255,255,0.14);
-  --gold:       #c9a84c;
-  --gold-dim:   rgba(201,168,76,0.15);
-  --gold-glow:  rgba(201,168,76,0.06);
-  --text:       #e8e4dc;
-  --text-2:     #9a9690;
-  --text-3:     #5c5a56;
-  --green:      #3dba7e;
-  --red:        #e05252;
-  --blue:       #4a90d9;
+  --ink:        #faf9f6;
+  --ink-2:      #ffffff;
+  --ink-3:      #f0eee8;
+  --surface:    #f0eee8;
+  --border:     #e3e0d8;
+  --border-h:   #d6d2c8;
+  --gold:       #f1c453;
+  --gold-dim:   rgba(241,196,83,0.22);
+  --gold-glow:  rgba(241,196,83,0.2);
+  --text:       #0a0a0a;
+  --text-2:     #3f3f3f;
+  --text-3:     #6f6c66;
+  --green:      #1a8a4a;
+  --red:        #b03030;
+  --blue:       #0066ff;
   --radius:     4px;
   --radius-lg:  10px;
 }
@@ -33,7 +33,7 @@ body {
   background: var(--ink);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
@@ -43,7 +43,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10,12,15,0.92);
+  background: rgba(250,249,246,0.92);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   padding: 0 clamp(1.5rem, 5vw, 4rem);
@@ -229,6 +229,7 @@ body {
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 18px 40px -30px rgba(15,15,15,0.35);
 }
 
 .chart-header {
@@ -367,12 +368,12 @@ canvas.fund-chart {
 .holdings-table th:last-child { text-align: right; }
 
 .holdings-table tbody tr {
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
   transition: background 0.15s;
 }
 
 .holdings-table tbody tr:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
 }
 
 .holdings-table td {
@@ -467,6 +468,7 @@ canvas.fund-chart {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: 0 20px 42px -32px rgba(15,15,15,0.32);
 }
 
 .sidebar-card-header {
@@ -488,7 +490,7 @@ canvas.fund-chart {
   justify-content: space-between;
   align-items: baseline;
   padding: 0.45rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border);
   font-size: 0.83rem;
 }
 
@@ -534,6 +536,7 @@ canvas.fund-chart {
   flex-direction: column;
   gap: 0.4rem;
   transition: border-color 0.2s;
+  box-shadow: 0 16px 30px -26px rgba(15,15,15,0.3);
 }
 
 .pillar:hover { border-color: var(--gold); }
@@ -593,7 +596,7 @@ canvas.fund-chart {
 
 .criteria-table tbody td {
   padding: 0.7rem 0.8rem;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
   color: var(--text-2);
   vertical-align: top;
 }
