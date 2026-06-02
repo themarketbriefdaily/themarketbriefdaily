@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/* ================================================================
+   The Market Brief Daily — design system (ported from the static
+   site's tbp-theme). Editorial minimalism: warm off-white canvas,
+   oversized Inter Tight display type, Fraunces italics for emphasis,
+   gold used sparingly, near-black ink. Dark "midnight" sections for
+   institutional contrast.
+   ================================================================ */
+
+:root {
+  /* Brand tokens */
+  --bg:        #faf9f6;   /* warm off-white */
+  --bg-alt:    #f0eee8;
+  --card:      #ffffff;
+  --ink:       #0a0a0a;
+  --ink-2:     #1a1a1a;
+  --muted:     #5a5a5a;
+  --muted-2:   #8a8a85;
+  --line:      #e3e0d8;
+  --line-soft: #ecebe5;
+  --midnight:  #0a0f1c;   /* dark sections */
+  --warm:      #c8a35a;   /* gold accent */
+  --pos:       #1a8a4a;
+  --neg:       #b03030;
+  --radius:    12px;
+  --header-h:  72px;
+  --max:       1640px;
+  --pad-x:     clamp(20px, 4vw, 56px);
+  --ease:      cubic-bezier(.2,.8,.2,1);
+}
+
+/* Map brand tokens into Tailwind's theme so utilities like
+   bg-bg, text-ink, border-line, text-warm work out of the box. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--bg-alt);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-midnight: var(--midnight);
+  --color-warm: var(--warm);
+  --color-pos: var(--pos);
+  --color-neg: var(--neg);
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, serif;
+
+  --radius-DEFAULT: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "ss02", "cv11";
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+
+/* Fraunces italic for refined emphasis inside display lines */
+.serif-em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.02em;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Reusable editorial utilities (used across pages) ─────────── */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.eyebrow::before {
+  content: "";
+  width: 24px; height: 1px;
+  background: currentColor;
+}
+
+.container-tbp {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Live status dot */
+@keyframes dotPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.5); }
+  70%  { box-shadow: 0 0 0 9px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #4ade80; display: inline-block;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+/* Reveal-on-scroll (progressive enhancement; visible by default) */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  [data-reveal].is-in { opacity: 1; transform: none; }
+}
+
+/* Marquee ticker */
+@keyframes tickerScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-track { display: inline-flex; white-space: nowrap; animation: tickerScroll 48s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
