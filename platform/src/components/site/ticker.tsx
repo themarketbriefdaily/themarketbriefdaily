@@ -21,9 +21,6 @@ const FALLBACK: TickerItem[] = [
   { sym: "VIX", value: "13.42", change: "−2.1%", dir: "neg" },
 ];
 
-const colorFor = (d: TickerItem["dir"]) =>
-  d === "pos" ? "text-pos" : d === "neg" ? "text-neg" : "text-muted";
-
 export function Ticker() {
   const [items, setItems] = useState<TickerItem[]>(FALLBACK);
 
@@ -39,13 +36,13 @@ export function Ticker() {
   const loop = [...items, ...items];
 
   return (
-    <div className="overflow-hidden border-y border-line bg-card py-3">
-      <div className="ticker-track">
+    <div className="tbp-ticker" aria-label="Market overview">
+      <div className="tbp-ticker-track">
         {loop.map((it, i) => (
-          <span key={i} className="mx-6 inline-flex items-baseline gap-2.5 text-[13px]">
-            <span className="font-semibold tracking-wide text-ink">{it.sym}</span>
-            <span className="tabular text-muted">{it.value}</span>
-            <span className={`tabular font-medium ${colorFor(it.dir)}`}>{it.change}</span>
+          <span key={i} className="tbp-ticker-item">
+            <span className="sym">{it.sym}</span>
+            <span>{it.value}</span>
+            <span className={it.dir}>{it.change}</span>
           </span>
         ))}
       </div>

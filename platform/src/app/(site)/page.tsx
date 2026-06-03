@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { Ticker } from "@/components/site/ticker";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { RESEARCH_PORTFOLIOS as PORTFOLIOS } from "@/lib/data/products";
+import { MULTI_ASSET_PRODUCTS } from "@/lib/data/products";
 import { formatPct } from "@/lib/utils";
 
 const RESEARCH = [
   {
     href: "/research/japan-pm-us-stocks",
-    img: "/images/fund-macro.jpg",
+    img: "/assets/images/fund-macro.jpg",
     label: "Macro · Rates",
     date: "11 Feb 2026 · 9-min read",
     title: "Japan's PM Moment and Its Shadow Over US Stocks",
@@ -17,7 +15,7 @@ const RESEARCH = [
   },
   {
     href: "/research/druckenmiller-shadow",
-    img: "/images/trading-desk.jpg",
+    img: "/assets/images/trading-desk.jpg",
     label: "Risk · Sizing",
     date: "09 Feb 2026 · 12-min read",
     title: "Druckenmiller's Shadow: Sizing Macro Bets Under Uncertainty",
@@ -26,7 +24,7 @@ const RESEARCH = [
   },
   {
     href: "/research/silver-comex-inventory",
-    img: "/images/fund-supply.jpg",
+    img: "/assets/images/fund-supply.jpg",
     label: "Commodities",
     date: "07 Feb 2026 · 14-min read",
     title: "Silver Market Outlook: COMEX Inventory Squeeze",
@@ -36,375 +34,384 @@ const RESEARCH = [
 ];
 
 export default function HomePage() {
+  const portfolios = MULTI_ASSET_PRODUCTS.slice(0, 4);
+
   return (
-    <>
-      {/* Full-viewport video hero */}
-      <section className="relative h-[88vh] min-h-[520px] w-full overflow-hidden bg-midnight">
+    <div className="tbp">
+      {/* Full-viewport video hero (slides under the fixed header) */}
+      <section
+        className="tbp-video-hero"
+        aria-label="Market Brief Daily introduction"
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100vh",
+          minHeight: 520,
+          marginTop: -72,
+          overflow: "hidden",
+          background: "#0a0f1c",
+        }}
+      >
         <video
           autoPlay
           muted
           loop
           playsInline
-          poster="/images/hero-london-night.jpg"
-          className="absolute inset-0 h-full w-full object-cover"
+          poster="/assets/images/hero-london-night.jpg"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
         >
           <source src="/loading-video.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 via-transparent to-transparent" />
       </section>
 
       {/* Editorial intro */}
-      <section className="container-tbp py-[clamp(64px,8vw,120px)]">
-        <div
-          className="grid items-center gap-[clamp(40px,6vw,100px)] lg:grid-cols-[1.7fr_1fr]"
-          data-reveal
-        >
-          <div>
-            <span className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-line px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[.14em] text-muted">
-              <span className="live-dot" /> Live · Daily macro brief
-            </span>
-            <div className="eyebrow mb-4">Independent macro &amp; market-structure research</div>
-            <h1 className="text-[clamp(2.8rem,5.5vw,5rem)] font-extrabold leading-[1.0] tracking-[-.04em]">
-              Markets, <span className="serif-em">read</span>
-              <br />
-              with discipline.
-            </h1>
-            <p className="mt-6 max-w-[52ch] text-[clamp(1rem,1.4vw,1.13rem)] leading-relaxed text-muted">
-              Institutional-grade research on macro transmission, credit spreads, commodity
-              supply and microstructure — written daily for serious investors. Transparent model
-              portfolios, live indicators and an experimental AI day-trader, all from London.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link href="/pricing">Get full access →</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/research">Read today&apos;s brief ↗</Link>
-              </Button>
-            </div>
-          </div>
-          <aside className="rounded-2xl border-l border-line pl-7">
-            {[
-              ["Coverage", "Macro · Credit · Commodities · Microstructure"],
-              ["Cadence", "Daily brief · weekly long-form"],
-              ["Distribution", "London · themarketbriefdaily.com"],
-              ["Standard", "Educational research — not investment advice"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex flex-col gap-1 border-b border-line py-4 last:border-0">
-                <span className="text-[11px] font-semibold uppercase tracking-[.12em] text-muted">
-                  {k}
-                </span>
-                <span className="text-sm text-ink-2">{v}</span>
+      <section className="tbp-section tbp-editorial" style={{ paddingBlock: "clamp(72px,8vw,120px)" }}>
+        <div className="tbp-container">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0,1.7fr) minmax(0,1fr)",
+              gap: "clamp(40px,6vw,100px)",
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div className="hero-live" style={{ marginBottom: 24 }}>
+                <span className="dot" />
+                Live · Daily macro brief
               </div>
-            ))}
-          </aside>
+              <div className="tbp-eyebrow" style={{ marginBottom: 18 }}>
+                Independent macro &amp; market structure research
+              </div>
+              <h1 style={{ fontSize: "clamp(2.8rem,5.5vw,5rem)", fontWeight: 850, letterSpacing: "-.04em", lineHeight: 1, margin: "0 0 22px" }}>
+                Markets, <em>read</em>
+                <br />
+                with discipline.
+              </h1>
+              <p style={{ fontSize: "clamp(1rem,1.4vw,1.13rem)", lineHeight: 1.7, color: "var(--tbp-muted)", maxWidth: "52ch", margin: "0 0 36px" }}>
+                Institutional-grade research on macro transmission, credit spreads, commodity supply
+                and microstructure — written daily for serious investors. Transparent model
+                portfolios, live indicators and an experimental AI day-trader, all from London.
+              </p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <Link className="tbp-btn primary" href="/pricing">
+                  Get full access <span className="arrow">→</span>
+                </Link>
+                <Link className="tbp-btn" href="/research">
+                  Read today&apos;s brief <span className="arrow">↗</span>
+                </Link>
+              </div>
+            </div>
+            <aside className="tbp-hero-meta-card" aria-label="Publication details">
+              {[
+                ["Coverage", "Macro · Credit · Commodities · Microstructure"],
+                ["Cadence", "Daily brief · weekly long-form"],
+                ["Distribution", "London · themarketbriefdaily.com"],
+                ["Standard", "Educational research — not investment advice"],
+              ].map(([k, v]) => (
+                <div className="row" key={k}>
+                  <span className="k">{k}</span>
+                  <span className="v">{v}</span>
+                </div>
+              ))}
+            </aside>
+          </div>
         </div>
       </section>
 
       <Ticker />
 
-      {/* Featured research */}
-      <section className="container-tbp py-[clamp(56px,7vw,104px)]">
-        <SectionHeading
-          number="01 / Research"
-          title={
-            <>
-              This week&apos;s
-              <br />
-              <span className="serif-em">analysis.</span>
-            </>
-          }
-          lead="Three frames, one publication: macro transmission, market microstructure, and physical supply tightness — and the live commentary behind every portfolio decision."
-        />
-        <div className="grid gap-[clamp(16px,2vw,28px)] md:grid-cols-3" data-reveal>
-          {RESEARCH.map((r) => (
-            <Link
-              key={r.href}
-              href={r.href}
-              className="group overflow-hidden rounded-2xl border border-line bg-card transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)]"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-midnight">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={r.img}
-                  alt=""
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <Badge variant="dark" className="absolute left-3 top-3">
-                  {r.label}
-                </Badge>
-              </div>
-              <div className="p-6">
-                <div className="mb-2.5 text-[11px] font-semibold uppercase tracking-[.12em] text-muted">
-                  {r.date}
-                </div>
-                <h3 className="text-lg font-bold leading-snug tracking-tight">{r.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{r.blurb}</p>
-                <span className="mt-4 inline-block text-[13px] font-semibold text-ink">
-                  Read brief →
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-12 text-center" data-reveal>
-          <Button asChild variant="outline">
-            <Link href="/research">All research briefs →</Link>
-          </Button>
+      {/* Credentials strip */}
+      <section className="tbp-section" style={{ paddingBlock: "clamp(40px,5vw,72px)" }}>
+        <div className="tbp-container">
+          <div className="tbp-credentials">
+            <span className="tbp-credentials-label">Coverage drawn from</span>
+            <div className="tbp-credentials-items">
+              <span className="item"><em>Bloomberg</em>Terminal</span>
+              <span className="item"><em>Refinitiv</em>Eikon</span>
+              <span className="item"><em>FRED</em>St. Louis Fed</span>
+              <span className="item"><em>BoE</em>Statistical Database</span>
+              <span className="item"><em>LSEG</em>Workspace</span>
+              <span className="item"><em>FT</em>Editorial Archive</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Model portfolios — midnight */}
-      <section className="bg-midnight py-[clamp(56px,7vw,104px)] text-white">
-        <div className="container-tbp">
-          <div className="mb-12 grid gap-6 border-b border-white/10 pb-8 md:grid-cols-2" data-reveal>
-            <div>
-              <div className="mb-3 text-[11px] font-semibold uppercase tracking-[.14em] text-warm">
-                02 / Portfolios
-              </div>
-              <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold leading-none tracking-tight">
-                Research
+      {/* Featured research */}
+      <section className="tbp-section">
+        <div className="tbp-container">
+          <div className="tbp-section-heading">
+            <div className="left">
+              <div className="number">01 / Research</div>
+              <h2>
+                This week&apos;s
                 <br />
-                <span className="serif-em text-white/90">portfolios.</span>
+                <em>analysis.</em>
               </h2>
             </div>
-            <p className="self-end text-[15px] leading-relaxed text-white/65">
-              Macro regime, market microstructure and physical supply tightness — tracked publicly
-              with benchmark comparisons, monthly attribution and full methodology. Illustrative
-              research that drives the editorial direction, not marketing.
-            </p>
+            <div className="right">
+              <p className="tbp-lead">
+                Three frames, one publication: macro transmission, market microstructure, and
+                physical supply tightness. Read the latest long-form briefs and the live commentary
+                behind every model-portfolio decision.
+              </p>
+            </div>
           </div>
 
-          <div className="grid overflow-hidden rounded-2xl border border-white/10 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
-            {PORTFOLIOS.map((p, i) => (
-              <Link
-                key={p.code}
-                href={`/investments/${p.slug}`}
-                className={`flex flex-col gap-3.5 bg-[#0a0f1c] p-7 transition-colors hover:bg-white/[0.04] ${
-                  i > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : ""
-                }`}
-              >
-                <div className="text-[11px] font-semibold tracking-[.12em] text-warm">{p.code}</div>
-                <div className="font-display text-[2.4rem] font-extrabold leading-none tracking-tight text-[#4ade80]">
-                  {formatPct(p.ytd)}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: "clamp(16px,2vw,28px)" }}>
+            {RESEARCH.map((r) => (
+              <Link className="tbp-premium-card" href={r.href} key={r.href}>
+                <div className="visual">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={r.img} alt="" loading="lazy" />
+                  <span className="label">{r.label}</span>
                 </div>
-                <div className="text-[13px] text-white/55">
-                  YTD · vs {p.benchmark} {formatPct(p.excess ?? 0)}
+                <div className="body">
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--tbp-muted)", marginBottom: 10 }}>
+                    {r.date}
+                  </div>
+                  <h3>{r.title}</h3>
+                  <p>{r.blurb}</p>
+                  <span className="read-more">Read brief →</span>
                 </div>
-                <div className="mt-auto text-sm text-white/85">{p.name}</div>
               </Link>
             ))}
           </div>
 
-          <div className="mt-10 text-center" data-reveal>
-            <Button asChild variant="gold">
-              <Link href="/investments">View all portfolios →</Link>
-            </Button>
+          <div style={{ textAlign: "center", marginTop: 48 }}>
+            <Link className="tbp-btn" href="/research">
+              All research briefs <span className="arrow">→</span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* AI day-trader feature */}
-      <section className="container-tbp py-[clamp(56px,7vw,104px)]">
-        <Link
-          href="/research/ai-trader"
-          className="group grid overflow-hidden rounded-2xl border border-line transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)] md:grid-cols-[1fr_1.4fr]"
-          data-reveal
-        >
-          <div className="relative min-h-[340px] overflow-hidden bg-midnight">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/bot-tradingfloor.jpg"
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover opacity-55"
-            />
-            <Badge variant="dark" className="absolute left-6 top-6">
-              <span className="live-dot" /> Live experiment
-            </Badge>
-            <div className="absolute bottom-7 left-7">
-              <div className="font-display text-[clamp(3rem,5vw,4.5rem)] font-extrabold leading-none text-white">
-                AI
-              </div>
-              <div className="mt-1 text-[11px] font-semibold uppercase tracking-[.16em] text-white/65">
-                Day-trader · paper account
-              </div>
+      {/* Pull quote */}
+      <section className="tbp-section tight">
+        <div className="tbp-container">
+          <div className="tbp-pull-quote">
+            <div>
+              <div className="tbp-pull-quote-eyebrow">Editor&apos;s note</div>
+            </div>
+            <div>
+              <blockquote>
+                We don&apos;t publish narratives. We publish frameworks — the kind a portfolio
+                manager would test before sizing a position, and the kind a student should be able to
+                defend in an interview.
+              </blockquote>
+              <div className="tbp-pull-quote-attr">— The Market Brief Daily</div>
             </div>
           </div>
-          <div className="flex flex-col justify-center bg-bg p-[clamp(32px,5vw,64px)]">
-            <div className="eyebrow mb-4">Experimental · Open-book</div>
-            <h2 className="text-[clamp(1.8rem,3.4vw,2.6rem)] font-extrabold leading-tight tracking-tight">
-              An <span className="serif-em">AI agent</span> running an
-              <br />
-              intraday macro strategy.
-            </h2>
-            <p className="mt-4 max-w-[54ch] text-[15px] leading-relaxed text-muted">
-              Every trade logged in public with full reasoning — entry, exit, position size and the
-              macro signal that triggered it. Backtested on 18 months; running live since Jan 2026 in
-              a paper account.
-            </p>
-            <div className="mt-6 grid grid-cols-3 gap-5 border-y border-line py-5">
-              {[
-                ["Sharpe", "1.42"],
-                ["YTD", "+9.4%"],
-                ["Win rate", "58%"],
-              ].map(([k, v]) => (
-                <div key={k}>
-                  <div className="text-[10px] font-semibold uppercase tracking-[.12em] text-muted">
-                    {k}
-                  </div>
-                  <div className="font-display text-2xl font-extrabold">{v}</div>
-                </div>
-              ))}
-            </div>
-            <span className="mt-6 text-[13px] font-semibold uppercase tracking-wide text-ink">
-              View the live trade log →
-            </span>
-          </div>
-        </Link>
+        </div>
       </section>
 
-      {/* Learn & build */}
-      <section className="container-tbp pb-[clamp(56px,7vw,104px)]">
-        <SectionHeading
-          number="03 / Learn & Build"
-          title={
-            <>
-              Education
-              <br />
-              and <span className="serif-em">tools.</span>
-            </>
-          }
-          lead="A finance education library covering UK investing, tax wrappers, pensions and CFA / IMC material — plus institutional-grade calculators and a full question bank."
-        />
-        <div className="grid gap-[clamp(16px,2vw,28px)] md:grid-cols-2" data-reveal>
-          {[
-            {
-              href: "/education",
-              img: "/images/library-research.jpg",
-              label: "Education",
-              title: "Finance Education Library",
-              blurb:
-                "Chapters covering financial markets, asset classes, investing principles, UK tax wrappers (ISA, SIPP, LISA), pensions and the CFA / IMC syllabus — in plain English.",
-              cta: "Open the library →",
-            },
-            {
-              href: "/education/cfa",
-              img: "/images/trading-screens.jpg",
-              label: "Question bank",
-              title: "CFA L1 & Quant Question Bank",
-              blurb:
-                "Hundreds of exam-style questions across all topic areas, with timed quizzes, explanations and saved progress. Plus DCF, bond-yield and macro tools.",
-              cta: "Start practising →",
-            },
-          ].map((c) => (
-            <Link
-              key={c.href}
-              href={c.href}
-              className="group overflow-hidden rounded-2xl border border-line bg-card transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)]"
-            >
-              <div className="relative aspect-[16/9] overflow-hidden bg-midnight">
+      {/* Model portfolios — midnight */}
+      <section className="tbp-section midnight">
+        <div className="tbp-container">
+          <div className="tbp-section-heading" style={{ borderBottomColor: "rgba(255,255,255,.1)" }}>
+            <div className="left">
+              <div className="number">02 / Portfolios</div>
+              <h2>
+                Model
+                <br />
+                <em>portfolios.</em>
+              </h2>
+            </div>
+            <div className="right">
+              <p className="tbp-lead">
+                A flagship systematic quant mandate, factor and index strategies, and a
+                high-conviction thematic sleeve — tracked publicly with benchmark comparisons and
+                full methodology. Not marketing.
+              </p>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4,minmax(0,1fr))",
+              gap: 1,
+              background: "rgba(255,255,255,.1)",
+              border: "1px solid rgba(255,255,255,.1)",
+              borderRadius: 14,
+              overflow: "hidden",
+            }}
+          >
+            {portfolios.map((p) => (
+              <Link
+                key={p.code}
+                href={`/investments/${p.slug}`}
+                style={{ background: "#0a0f1c", padding: "32px 28px", textDecoration: "none", color: "#fff", display: "flex", flexDirection: "column", gap: 14 }}
+              >
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", color: "var(--tbp-warm)" }}>{p.code}</div>
+                <div style={{ fontFamily: "'Inter Tight',sans-serif", fontSize: "2.4rem", fontWeight: 850, letterSpacing: "-.04em", color: "#4ade80" }}>
+                  {formatPct(p.ytd)}
+                </div>
+                <div style={{ fontSize: 13, color: "rgba(255,255,255,.6)" }}>YTD · vs {p.benchmark}</div>
+                <div style={{ fontSize: 14, color: "rgba(255,255,255,.85)", marginTop: "auto" }}>{p.name}</div>
+              </Link>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 40 }}>
+            <Link className="tbp-btn primary" href="/investments">
+              View all portfolios <span className="arrow">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* By the numbers */}
+      <section className="tbp-section tight">
+        <div className="tbp-container">
+          <div style={{ marginBottom: 40 }}>
+            <div className="tbp-eyebrow">By the numbers</div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,minmax(0,1fr))", borderTop: "1px solid var(--tbp-line)", borderBottom: "1px solid var(--tbp-line)" }}>
+            <div className="tbp-stat-premium">
+              <div className="label-top">Strategies</div>
+              <div className="num">08</div>
+              <div className="label-bot">Model portfolios across quant, factor, thematic and research</div>
+            </div>
+            <div className="tbp-stat-premium">
+              <div className="label-top">Education</div>
+              <div className="num">07</div>
+              <div className="label-bot">Chapters covering markets, instruments, UK tax and the CFA syllabus</div>
+            </div>
+            <div className="tbp-stat-premium">
+              <div className="label-top">Archive</div>
+              <div className="num">80<span className="unit">+</span></div>
+              <div className="label-bot">Research briefs in the public archive</div>
+            </div>
+            <div className="tbp-stat-premium">
+              <div className="label-top">Quant Sharpe</div>
+              <div className="num">1.4<span style={{ fontSize: ".6em" }}>2</span></div>
+              <div className="label-bot">Flagship quant mandate, since inception — illustrative</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Education + tools */}
+      <section className="tbp-section">
+        <div className="tbp-container">
+          <div className="tbp-section-heading">
+            <div className="left">
+              <div className="number">03 / Learn &amp; Build</div>
+              <h2>
+                Education
+                <br />
+                and <em>tools.</em>
+              </h2>
+            </div>
+            <div className="right">
+              <p className="tbp-lead">
+                A finance education library covering UK investing, tax wrappers, pensions and CFA
+                material — plus a live indicator dashboard and institutional calculators.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: "clamp(16px,2vw,28px)" }}>
+            <Link className="tbp-premium-card" href="/education">
+              <div className="visual">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={c.img}
-                  alt=""
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <Badge variant="dark" className="absolute left-3 top-3">
-                  {c.label}
-                </Badge>
+                <img src="/assets/images/library-research.jpg" alt="" loading="lazy" />
+                <span className="label">Free · No sign-up</span>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold tracking-tight">{c.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{c.blurb}</p>
-                <span className="mt-4 inline-block text-[13px] font-semibold text-ink">{c.cta}</span>
+              <div className="body">
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--tbp-muted)", marginBottom: 10 }}>
+                  Education
+                </div>
+                <h3>Finance Education Library</h3>
+                <p>
+                  Chapters covering financial markets, asset classes, investing principles, UK tax
+                  wrappers (ISA, SIPP, LISA), pensions and the CFA syllabus — plus the Quant Trader
+                  course and CFA question bank.
+                </p>
+                <span className="read-more">Open the library →</span>
               </div>
             </Link>
-          ))}
+            <Link className="tbp-premium-card" href="/tools">
+              <div className="visual">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/images/trading-screens.jpg" alt="" loading="lazy" />
+                <span className="label">Live · Indicators</span>
+              </div>
+              <div className="body">
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--tbp-muted)", marginBottom: 10 }}>
+                  Tools
+                </div>
+                <h3>Indicators, DCF, Bond Yield &amp; Macro</h3>
+                <p>
+                  A live macro dashboard — market levels, inflation, the Treasury curve — alongside
+                  institutional calculators and the CFA question bank, all in one place.
+                </p>
+                <span className="read-more">Open the tools →</span>
+              </div>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Subscription CTA — dark */}
-      <section className="bg-midnight py-[clamp(64px,8vw,120px)] text-white">
-        <div className="container-tbp grid items-center gap-[clamp(32px,5vw,80px)] md:grid-cols-[1.2fr_1fr]" data-reveal>
-          <div>
-            <div className="mb-5 text-[11px] font-semibold uppercase tracking-[.14em] text-warm">
-              Subscribe
-            </div>
-            <h2 className="text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-tight">
-              Read every brief.
-              <br />
-              Run every <span className="serif-em">portfolio.</span>
-            </h2>
-            <p className="mt-5 max-w-[52ch] text-[1.05rem] leading-relaxed text-white/75">
-              Three tiers: Free for the daily brief and core education, Professional for full
-              archives and portfolio access, Institutional for direct analyst access and bespoke
-              research.
-            </p>
-            <div className="mt-8">
-              <Button asChild variant="gold" size="lg">
-                <Link href="/pricing">View subscription tiers →</Link>
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-3.5">
-            {[
-              ["F", "Free", "Daily brief · core library", "£0", false],
-              ["P", "Professional", "Full archive · portfolios · tools", "£24/mo", true],
-              ["I", "Institutional", "Bespoke research · API · seats", "£499/mo", false],
-            ].map(([letter, name, desc, price, featured]) => (
-              <div
-                key={name as string}
-                className={`grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border p-5 ${
-                  featured
-                    ? "border-warm/30 bg-warm/[0.08]"
-                    : "border-white/10 bg-white/[0.04]"
-                }`}
-              >
-                <div
-                  className={`grid h-9 w-9 place-items-center rounded-full text-sm font-extrabold ${
-                    featured ? "bg-warm text-midnight" : "bg-white/10 text-white/60"
-                  }`}
-                >
-                  {letter}
-                </div>
-                <div>
-                  <div className="font-semibold">{name}</div>
-                  <div className="text-xs text-white/55">{desc}</div>
-                </div>
-                <div className={`font-display font-extrabold ${featured ? "text-warm" : "text-white"}`}>
-                  {price}
-                </div>
+      <section className="tbp-section dark" style={{ paddingBlock: "clamp(72px,8vw,120px)" }}>
+        <div className="tbp-container">
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.2fr) minmax(0,1fr)", gap: "clamp(32px,5vw,80px)", alignItems: "center" }}>
+            <div>
+              <div className="tbp-eyebrow" style={{ marginBottom: 24 }}>Subscribe</div>
+              <h2 className="tbp-h2" style={{ color: "#fff", fontSize: "clamp(2rem,5vw,3.6rem)", margin: "0 0 18px" }}>
+                Read every brief.
+                <br />
+                Run every <em>portfolio.</em>
+              </h2>
+              <p style={{ fontSize: "1.05rem", lineHeight: 1.6, color: "rgba(255,255,255,.75)", margin: "0 0 32px", maxWidth: "52ch" }}>
+                Three tiers: Free for the daily brief and core education, Professional for full
+                archives and portfolio access, Institutional for direct analyst access and bespoke
+                research.
+              </p>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <Link className="tbp-btn primary" href="/pricing">
+                  View subscription tiers <span className="arrow">→</span>
+                </Link>
               </div>
-            ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {[
+                ["F", "Free", "Daily brief · core library", "£0", false],
+                ["P", "Professional", "Full archive · portfolios · tools", "£24/mo", true],
+                ["I", "Institutional", "Bespoke research · API · seats", "£499/mo", false],
+              ].map(([letter, name, desc, price, featured]) => (
+                <div
+                  key={name as string}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "auto 1fr auto",
+                    gap: 16,
+                    alignItems: "center",
+                    padding: "18px 22px",
+                    background: featured ? "rgba(200,163,90,.08)" : "rgba(255,255,255,.04)",
+                    border: featured ? "1px solid rgba(200,163,90,.3)" : "1px solid rgba(255,255,255,.1)",
+                    borderRadius: 12,
+                  }}
+                >
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: featured ? "var(--tbp-warm)" : "rgba(255,255,255,.08)", display: "flex", alignItems: "center", justifyContent: "center", color: featured ? "#0a0f1c" : "rgba(255,255,255,.6)", fontWeight: 800, fontSize: 14 }}>
+                    {letter}
+                  </div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: "#fff" }}>{name}</div>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,.55)" }}>{desc}</div>
+                  </div>
+                  <div style={{ fontFamily: "'Inter Tight',sans-serif", fontWeight: 800, color: featured ? "var(--tbp-warm)" : "#fff" }}>
+                    {price}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
-    </>
-  );
-}
-
-function SectionHeading({
-  number,
-  title,
-  lead,
-}: {
-  number: string;
-  title: React.ReactNode;
-  lead: string;
-}) {
-  return (
-    <div className="mb-12 grid gap-6 border-b border-line pb-8 md:grid-cols-2" data-reveal>
-      <div>
-        <div className="mb-3 text-[11px] font-semibold uppercase tracking-[.14em] text-muted">
-          {number}
-        </div>
-        <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold leading-none tracking-tight">
-          {title}
-        </h2>
-      </div>
-      <p className="self-end text-[15px] leading-relaxed text-muted">{lead}</p>
     </div>
   );
 }

@@ -1,85 +1,60 @@
 import Link from "next/link";
 
-const COLUMNS = [
-  {
-    title: "Content",
-    links: [
-      { href: "/research", label: "Research" },
-      { href: "/investments", label: "Investments" },
-      { href: "/tools", label: "Tools" },
-      { href: "/education", label: "Education" },
-    ],
-  },
-  {
-    title: "Platform",
-    links: [
-      { href: "/pricing", label: "Subscription" },
-      { href: "/education/cfa", label: "CFA Question Bank" },
-      { href: "/account", label: "Account" },
-      { href: "/tools#indicators", label: "Indicators" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { href: "/about", label: "About" },
-      { href: "/disclaimer", label: "Disclaimer" },
-      { href: "/disclaimer#privacy", label: "Privacy" },
-      { href: "mailto:hello@themarketbriefdaily.com", label: "Contact" },
-    ],
-  },
-];
-
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-bg-alt">
-      <div className="container-tbp py-16">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+    <footer className="tbp tbp-footer" role="contentinfo">
+      <div className="tbp-container">
+        <div className="tbp-footer-top">
           <div>
-            <div className="font-display text-2xl font-extrabold leading-tight tracking-tight">
+            <div className="tbp-footer-brand">
               The Market
               <br />
               Brief Daily.
             </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-              Independent macro and market-structure research. Educational only — not
-              investment advice.
+            <p className="tbp-footer-blurb">
+              Independent macro and market-structure research. Educational only — not investment
+              advice.
             </p>
           </div>
-          {COLUMNS.map((col) => (
-            <div key={col.title}>
-              <h4 className="mb-4 text-[11px] font-semibold uppercase tracking-[.12em] text-muted-2">
-                {col.title}
-              </h4>
-              <div className="flex flex-col gap-2.5">
-                {col.links.map((l) => (
-                  <Link
-                    key={l.label}
-                    href={l.href}
-                    className="text-sm text-muted transition-colors hover:text-ink"
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-              </div>
+          <div>
+            <h4>Content</h4>
+            <div className="tbp-footer-links">
+              <Link href="/research">Research</Link>
+              <Link href="/investments">Investments</Link>
+              <Link href="/tools">Tools</Link>
+              <Link href="/education">Education</Link>
             </div>
-          ))}
+          </div>
+          <div>
+            <h4>Platform</h4>
+            <div className="tbp-footer-links">
+              <Link href="/tools#indicators">Indicators</Link>
+              <Link href="/education/cfa">CFA Question Bank</Link>
+              <Link href="/pricing">Subscription</Link>
+              <Link href="/account">Account</Link>
+            </div>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <div className="tbp-footer-links">
+              <Link href="/about">About</Link>
+              <Link href="/disclaimer">Disclaimer</Link>
+              <Link href="/disclaimer#privacy">Privacy</Link>
+              <a href="mailto:hello@themarketbriefdaily.com">Contact</a>
+            </div>
+          </div>
         </div>
-
-        <div
-          aria-hidden
-          className="pointer-events-none mt-12 select-none overflow-hidden font-display text-[clamp(3rem,12vw,11rem)] font-extrabold leading-none tracking-tighter text-ink/[0.04]"
-        >
+        <div className="tbp-footer-massive" aria-hidden="true">
           MarketBriefDaily.
         </div>
-
-        <div className="flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} The Market Brief Daily. Educational research only — not investment advice.</span>
-          <div className="flex gap-5">
-            <Link href="/disclaimer" className="hover:text-ink">Full disclaimer</Link>
-            <a href="mailto:hello@themarketbriefdaily.com" className="hover:text-ink">
-              hello@themarketbriefdaily.com
-            </a>
+        <div className="tbp-footer-bottom">
+          <span>
+            © {new Date().getFullYear()} The Market Brief Daily. Educational research only — not
+            investment advice.
+          </span>
+          <div className="legal">
+            <Link href="/disclaimer">Full disclaimer</Link>
+            <a href="mailto:hello@themarketbriefdaily.com">hello@themarketbriefdaily.com</a>
           </div>
         </div>
       </div>

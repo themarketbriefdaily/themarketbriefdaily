@@ -44,10 +44,19 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${interTight.variable} ${fraunces.variable}`}>
+      <head>
+        {/* Original design-system stylesheets (served from /public/assets) — the
+            exact look of the original site. Scoped to `.tbp` wrappers. */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/assets/tbp-theme.css" />
+        <link rel="stylesheet" href="/assets/tbp-premium.css" />
+      </head>
       <body
         style={
           {
-            // Bind next/font CSS variables onto the design-system font tokens.
             ["--font-sans" as string]: "var(--font-inter)",
             ["--font-display" as string]: "var(--font-inter-tight)",
             ["--font-serif" as string]: "var(--font-fraunces)",
