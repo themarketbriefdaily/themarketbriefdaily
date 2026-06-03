@@ -23,21 +23,47 @@ export interface CurvePoint {
 
 const FRED_KEY = process.env.FRED_API_KEY ?? "";
 
-async function fredLatest(seriesId: string): Promise<{ value: number; date: string } | null> {
-  if (!FRED_KEY) return null;
-  try {
-    const url =
-      `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}` +
-      `&api_key=${FRED_KEY}&file_type=json&sort_order=desc&limit=1`;
-    const res = await fetch(url, { next: { revalidate: 3600 } });
-    if (!res.ok) return null;
-    const json = await res.json();
-    const obs = json?.observations?.[0];
-    if (!obs || obs.value === ".") return null;
-    return { value: Number(obs.value), date: obs.date };
-  } catch {
-    return null;
+async function fredObservations(
+  seriesId: string,
+  limit: number,
+): Promise<{ value: number; date: string }[]> {
+  if (!FRED_KEY) return [];
+  const url =
+    `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}` +
+    `&api_key=${FRED_KEY}&file_type=json&sort_order=desc&limit=${limit}`;
+  // One retry: FRED rate-limits bursts (the dashboard fires many series at once),
+  // so a transient 429/5xx shouldn't silently drop a series to its fallback.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url, { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const json = await res.json();
+        return (json?.observations ?? [])
+          .filter((o: { value: string }) => o.value !== ".")
+          .map((o: { value: string; date: string }) => ({ value: Number(o.value), date: o.date }));
+      }
+      if (res.status !== 429 && res.status < 500) return [];
+    } catch {
+      // network error — fall through to retry
+    }
+    await new Promise((r) => setTimeout(r, 350));
   }
+  return [];
+}
+
+async function fredLatest(seriesId: string): Promise<{ value: number; date: string } | null> {
+  const obs = await fredObservations(seriesId, 1);
+  return obs[0] ?? null;
+}
+
+/** Year-over-year % change for a monthly index series (e.g. CPI). */
+async function fredYoY(seriesId: string): Promise<{ value: number; date: string } | null> {
+  const obs = await fredObservations(seriesId, 13); // newest first
+  if (obs.length < 13) return null;
+  const latest = obs[0];
+  const yearAgo = obs[12];
+  if (!yearAgo.value) return null;
+  return { value: ((latest.value - yearAgo.value) / yearAgo.value) * 100, date: latest.date };
 }
 
 export interface MarketLevel {
@@ -73,20 +99,27 @@ export async function getMarketLevels(): Promise<MarketLevel[]> {
 
 /** Headline macro indicators (FRED with representative fallback). */
 export async function getMacroIndicators(): Promise<IndicatorValue[]> {
-  const specs: { key: string; series: string; label: string; unit: string; fallback: string }[] =
-    [
-      { key: "cpi", series: "CPIAUCSL", label: "US CPI (YoY)", unit: "%", fallback: "3.1" },
-      { key: "core", series: "CPILFESL", label: "US Core CPI (YoY)", unit: "%", fallback: "3.4" },
-      { key: "fedfunds", series: "FEDFUNDS", label: "Fed Funds Rate", unit: "%", fallback: "4.33" },
-      { key: "unrate", series: "UNRATE", label: "Unemployment", unit: "%", fallback: "4.1" },
-      { key: "gdp", series: "A191RL1Q225SBEA", label: "Real GDP (QoQ ann.)", unit: "%", fallback: "2.8" },
-      { key: "ust10", series: "DGS10", label: "UST 10Y", unit: "%", fallback: "4.24" },
-    ];
+  const specs: {
+    key: string;
+    series: string;
+    label: string;
+    unit: string;
+    fallback: string;
+    mode: "yoy" | "latest";
+    digits: number;
+  }[] = [
+    { key: "cpi", series: "CPIAUCSL", label: "US CPI (YoY)", unit: "%", fallback: "3.1", mode: "yoy", digits: 1 },
+    { key: "core", series: "CPILFESL", label: "US Core CPI (YoY)", unit: "%", fallback: "3.4", mode: "yoy", digits: 1 },
+    { key: "fedfunds", series: "FEDFUNDS", label: "Fed Funds Rate", unit: "%", fallback: "4.33", mode: "latest", digits: 2 },
+    { key: "unrate", series: "UNRATE", label: "Unemployment", unit: "%", fallback: "4.1", mode: "latest", digits: 1 },
+    { key: "gdp", series: "A191RL1Q225SBEA", label: "Real GDP (QoQ ann.)", unit: "%", fallback: "2.8", mode: "latest", digits: 1 },
+    { key: "ust10", series: "DGS10", label: "UST 10Y", unit: "%", fallback: "4.24", mode: "latest", digits: 2 },
+  ];
 
   const results = await Promise.all(
     specs.map(async (s) => {
-      const fred = await fredLatest(s.series);
-      const value = fred ? fred.value.toFixed(s.key === "ust10" || s.key === "fedfunds" ? 2 : 1) : s.fallback;
+      const fred = s.mode === "yoy" ? await fredYoY(s.series) : await fredLatest(s.series);
+      const value = fred ? fred.value.toFixed(s.digits) : s.fallback;
       return {
         key: s.key,
         label: s.label,
