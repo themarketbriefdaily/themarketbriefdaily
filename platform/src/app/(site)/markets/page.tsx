@@ -5,7 +5,7 @@ import {
   getTreasuryCurve,
   indicatorsConfigured,
 } from "@/lib/data/indicators";
-import { PORTFOLIOS } from "@/lib/data/portfolios";
+import { RESEARCH_PORTFOLIOS as PORTFOLIOS } from "@/lib/data/products";
 import { YieldCurveChart } from "@/components/charts/yield-curve";
 import { Badge } from "@/components/ui/badge";
 import { formatPct } from "@/lib/utils";
@@ -119,7 +119,7 @@ export default async function MarketsPage() {
                 {formatPct(p.ytd)}
               </div>
               <div className="mt-1 text-[13px] text-muted">
-                YTD · vs {p.benchmark} {formatPct(p.excess)}
+                YTD · vs {p.benchmark} {formatPct(p.excess ?? 0)}
               </div>
               <div className="mt-3 text-sm font-medium">{p.name}</div>
             </Link>

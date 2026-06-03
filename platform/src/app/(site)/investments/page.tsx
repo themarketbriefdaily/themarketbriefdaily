@@ -1,111 +1,182 @@
 import type { Metadata } from "next";
-import { PORTFOLIOS } from "@/lib/data/portfolios";
-import { PaywallGate } from "@/components/paywall/paywall-gate";
+import Link from "next/link";
+import { AlertTriangle, ArrowUpRight } from "lucide-react";
+import {
+  MULTI_ASSET_PRODUCTS,
+  STRATEGY_PRODUCTS,
+  RESEARCH_PORTFOLIOS,
+  type Product,
+} from "@/lib/data/products";
 import { Badge } from "@/components/ui/badge";
-import { formatPct } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Model Portfolios",
+  title: "Investments",
   description:
-    "Four transparent model portfolios — macro, market structure, physical supply and a regime-aware factor sleeve — with public summaries and gated holdings & attribution.",
+    "Multi-asset model portfolios, single-mandate asset-class strategies and transparent research portfolios — each with full methodology.",
 };
 
 export default function InvestmentsPage() {
   return (
     <div className="container-tbp py-[clamp(48px,6vw,88px)]">
       <header className="max-w-3xl" data-reveal>
-        <div className="eyebrow">Portfolios</div>
+        <div className="eyebrow">Investments</div>
         <h1 className="mt-4 text-[clamp(2.4rem,5vw,3.4rem)] font-extrabold leading-none tracking-tight">
-          Four transparent <span className="serif-em">portfolios.</span>
+          Strategies, grounded in <span className="serif-em">theory.</span>
         </h1>
         <p className="mt-5 text-[1.05rem] leading-relaxed text-muted">
-          Each sleeve is tracked publicly with benchmark comparisons and full methodology. Summary
-          performance is free; holdings, attribution and the live sleeve are part of Professional.
+          Every portfolio traces to a documented model — Fama–French factors, the Sharpe CAPM, a
+          proprietary thematic engine. Summary performance is open; full holdings and attribution
+          are part of Professional. Click any product for its methodology.
         </p>
       </header>
 
-      <div className="mt-12 space-y-6">
-        {PORTFOLIOS.map((p) => (
-          <article key={p.code} className="rounded-2xl border border-line bg-card p-7" data-reveal>
-            <div className="flex flex-wrap items-start justify-between gap-4 border-b border-line-soft pb-5">
-              <div>
-                <Badge size="sm">{p.code}</Badge>
-                <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight">
-                  {p.name}
-                </h2>
-                <p className="mt-1 text-sm text-muted">{p.sleeve}</p>
-              </div>
-              <div className="grid grid-cols-3 gap-6 text-right">
-                <Stat label="YTD" value={formatPct(p.ytd)} accent />
-                <Stat label={`vs ${p.benchmark}`} value={formatPct(p.excess)} />
-                <Stat label="Sharpe" value={p.sharpe.toFixed(2)} />
-              </div>
-            </div>
+      {/* 01 — Multi-asset products */}
+      <Section
+        number="01 / Multi-asset"
+        title="Model portfolios."
+        lead="Five diversified, rules-based portfolios spanning factor investing, pure indexing, systematic risk-parity quant and high-conviction thematic rotation — each available in multiple risk variants."
+      >
+        <div className="grid gap-6 lg:grid-cols-2">
+          {MULTI_ASSET_PRODUCTS.map((p) => (
+            <ProductCard key={p.slug} product={p} />
+          ))}
+        </div>
+      </Section>
 
-            <p className="mt-5 max-w-3xl text-[15px] leading-relaxed text-ink-2">{p.thesis}</p>
+      {/* 02 — Asset-class strategies */}
+      <Section
+        number="02 / Asset-class strategies"
+        title={<>Single-mandate <span className="serif-em">specialists.</span></>}
+        lead="Four focused single-asset-class strategies for investors who already own broad diversification and want a specialist sleeve. Each runs independently — discrete return profile, benchmark and risk budget."
+      >
+        <div className="grid gap-6 sm:grid-cols-2">
+          {STRATEGY_PRODUCTS.map((p) => (
+            <ProductCard key={p.slug} product={p} compact />
+          ))}
+        </div>
+      </Section>
 
-            <div className="mt-6">
-              <PaywallGate
-                required={p.detailTier}
-                title="Holdings & attribution"
-                description="See current holdings, weights, monthly attribution and the live sleeve with a Professional subscription."
-                teaser={<HoldingsTeaser />}
-              >
-                <HoldingsTeaser live />
-              </PaywallGate>
+      {/* 03 — Research portfolios */}
+      <Section
+        number="03 / Research portfolios"
+        title={<>The four MBD <span className="serif-em">model portfolios.</span></>}
+        lead="Fully transparent illustrative strategies tracked publicly — macro regime, market microstructure, physical supply and regime-aware factor. These drive the editorial research direction, not allocatable capital."
+      >
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-warm/30 bg-warm/[0.06] p-4 text-sm text-ink-2">
+          <AlertTriangle size={18} className="mt-0.5 shrink-0 text-warm" />
+          <p>
+            <span className="font-semibold">Illustrative only</span> — not a fund, not investment
+            advice. Returns are simulated. Past hypothetical performance is not indicative of future
+            results.
+          </p>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {RESEARCH_PORTFOLIOS.map((p) => (
+            <ProductCard key={p.slug} product={p} compact />
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+function Section({
+  number,
+  title,
+  lead,
+  children,
+}: {
+  number: string;
+  title: React.ReactNode;
+  lead: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-16" data-reveal>
+      <div className="mb-8 grid gap-5 border-b border-line pb-6 md:grid-cols-2">
+        <div>
+          <div className="mb-3 text-[11px] font-semibold uppercase tracking-[.14em] text-muted">
+            {number}
+          </div>
+          <h2 className="text-[clamp(1.7rem,3.2vw,2.4rem)] font-extrabold leading-tight tracking-tight">
+            {title}
+          </h2>
+        </div>
+        <p className="self-end text-[15px] leading-relaxed text-muted">{lead}</p>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function ProductCard({ product, compact }: { product: Product; compact?: boolean }) {
+  return (
+    <Link
+      href={`/investments/${product.slug}`}
+      className="group flex flex-col rounded-2xl border border-line bg-card p-7 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold tracking-[.12em] text-warm">
+              {product.code}
+            </span>
+            {product.badge && (
+              <Badge variant="gold" size="sm">
+                {product.badge}
+              </Badge>
+            )}
+          </div>
+          <h3 className="mt-2 font-display text-2xl font-extrabold tracking-tight">
+            {product.name}
+          </h3>
+          <p className="mt-0.5 text-sm text-muted">{product.model}</p>
+        </div>
+        <ArrowUpRight
+          size={20}
+          className="shrink-0 text-muted-2 transition-colors group-hover:text-ink"
+        />
+      </div>
+
+      {!compact && (
+        <p className="mt-4 text-[14px] leading-relaxed text-ink-2">{product.blurb}</p>
+      )}
+
+      <div className="mt-5 grid grid-cols-3 gap-3 border-y border-line-soft py-4">
+        {product.stats.map((s) => (
+          <div key={s.label}>
+            <div className="text-[10px] font-semibold uppercase tracking-[.1em] text-muted">
+              {s.label}
             </div>
-          </article>
+            <div
+              className={`font-display text-xl font-extrabold tabular ${
+                s.tone === "pos" ? "text-pos" : s.tone === "neg" ? "text-neg" : "text-ink"
+              }`}
+            >
+              {s.value}
+            </div>
+          </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div>
-      <div className="text-[10px] font-semibold uppercase tracking-[.12em] text-muted">{label}</div>
-      <div className={`font-display text-xl font-extrabold tabular ${accent ? "text-pos" : ""}`}>
-        {value}
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        <Badge size="sm">{product.benchmark}</Badge>
+        {product.tags.slice(0, compact ? 3 : 5).map((t) => (
+          <span
+            key={t}
+            className="rounded-full border border-line px-2.5 py-1 text-[11px] text-muted"
+          >
+            {t}
+          </span>
+        ))}
       </div>
-    </div>
-  );
-}
 
-function HoldingsTeaser({ live = false }: { live?: boolean }) {
-  const rows = [
-    ["US 2Y Treasury future", "18.0%", "+0.4%"],
-    ["Gold (physical proxy)", "14.5%", "+1.8%"],
-    ["TIPS 5Y", "12.0%", "+0.2%"],
-    ["USD index (long)", "9.5%", "−0.1%"],
-    ["EM local rates", "8.0%", "+0.6%"],
-  ];
-  return (
-    <div className="rounded-xl border border-line bg-bg-alt/40 p-5">
-      <div className="mb-3 flex items-center justify-between">
-        <h4 className="text-sm font-semibold">Top holdings {live && <span className="text-muted">· updated daily</span>}</h4>
-        {live && <Badge variant="pos" size="sm">Live</Badge>}
+      <div className="mt-5 flex items-center justify-between">
+        {product.meta && <span className="text-xs text-muted-2">{product.meta}</span>}
+        <span className="ml-auto text-[13px] font-semibold text-ink">
+          {product.category === "research" ? "View methodology →" : "Learn more →"}
+        </span>
       </div>
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-[11px] uppercase tracking-wider text-muted">
-            <th className="py-1.5 text-left font-semibold">Position</th>
-            <th className="py-1.5 text-right font-semibold">Weight</th>
-            <th className="py-1.5 text-right font-semibold">Contribution</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-line-soft">
-          {rows.map(([name, w, c]) => (
-            <tr key={name}>
-              <td className="py-2 text-ink-2">{name}</td>
-              <td className="py-2 text-right tabular">{w}</td>
-              <td className={`py-2 text-right tabular ${c.startsWith("−") ? "text-neg" : "text-pos"}`}>
-                {c}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    </Link>
   );
 }

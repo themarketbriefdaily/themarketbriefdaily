@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Ticker } from "@/components/site/ticker";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PORTFOLIOS } from "@/lib/data/portfolios";
+import { RESEARCH_PORTFOLIOS as PORTFOLIOS } from "@/lib/data/products";
 import { formatPct } from "@/lib/utils";
 
 const RESEARCH = [
@@ -164,33 +164,33 @@ export default function HomePage() {
                 02 / Portfolios
               </div>
               <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold leading-none tracking-tight">
-                Four model
+                Research
                 <br />
                 <span className="serif-em text-white/90">portfolios.</span>
               </h2>
             </div>
             <p className="self-end text-[15px] leading-relaxed text-white/65">
-              Macro regime, market microstructure, physical supply tightness and a regime-aware
-              factor sleeve — tracked publicly with benchmark comparisons, monthly attribution and
-              full methodology. Not marketing.
+              Macro regime, market microstructure and physical supply tightness — tracked publicly
+              with benchmark comparisons, monthly attribution and full methodology. Illustrative
+              research that drives the editorial direction, not marketing.
             </p>
           </div>
 
-          <div className="grid overflow-hidden rounded-2xl border border-white/10 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+          <div className="grid overflow-hidden rounded-2xl border border-white/10 sm:grid-cols-2 lg:grid-cols-3" data-reveal>
             {PORTFOLIOS.map((p, i) => (
               <Link
                 key={p.code}
-                href="/investments"
+                href={`/investments/${p.slug}`}
                 className={`flex flex-col gap-3.5 bg-[#0a0f1c] p-7 transition-colors hover:bg-white/[0.04] ${
                   i > 0 ? "border-t border-white/10 sm:border-t-0 sm:border-l" : ""
-                } ${i === 2 ? "lg:border-l" : ""}`}
+                }`}
               >
                 <div className="text-[11px] font-semibold tracking-[.12em] text-warm">{p.code}</div>
                 <div className="font-display text-[2.4rem] font-extrabold leading-none tracking-tight text-[#4ade80]">
                   {formatPct(p.ytd)}
                 </div>
                 <div className="text-[13px] text-white/55">
-                  YTD · vs {p.benchmark} {formatPct(p.excess)}
+                  YTD · vs {p.benchmark} {formatPct(p.excess ?? 0)}
                 </div>
                 <div className="mt-auto text-sm text-white/85">{p.name}</div>
               </Link>
