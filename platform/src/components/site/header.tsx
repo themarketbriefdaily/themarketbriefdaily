@@ -32,10 +32,12 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   return (
     <header
       className={cn(
+        // No backdrop-filter: a blurred fixed header over scrolling content
+        // causes white repaint smears in Chromium. Alpha background only.
         "fixed inset-x-0 top-0 z-50 h-[72px] transition-colors duration-300",
         scrolled
-          ? "border-b border-line bg-bg/85 backdrop-blur-xl backdrop-saturate-150"
-          : "border-b border-transparent bg-bg/60 backdrop-blur-md",
+          ? "border-b border-line bg-bg"
+          : "border-b border-transparent bg-bg/90",
       )}
     >
       <div className="container-tbp flex h-full items-center justify-between">
