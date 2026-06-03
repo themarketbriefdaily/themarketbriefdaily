@@ -58,6 +58,7 @@ export function YieldCurveChart({ data }: { data: CurvePoint[] }) {
             strokeWidth={2}
             fill="url(#curveFill)"
             dot={{ r: 3, fill: "#0a0a0a" }}
+            isAnimationActive={false}
           />
         </AreaChart>
       </ResponsiveContainer>

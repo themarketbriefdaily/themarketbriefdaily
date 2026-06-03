@@ -7,9 +7,10 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/markets", label: "Markets" },
-  { href: "/investments", label: "Portfolios" },
+  { href: "/", label: "Home" },
+  { href: "/investments", label: "Investments" },
   { href: "/research", label: "Research" },
+  { href: "/markets", label: "Markets" },
   { href: "/learn", label: "Learn" },
   { href: "/pricing", label: "Pricing" },
 ];
@@ -55,7 +56,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative py-1.5 text-[14.5px] font-medium text-ink-2 transition-colors hover:text-ink",
+                  "relative py-1.5 font-display text-[14.5px] font-medium text-ink-2 transition-colors hover:text-ink",
                   active && "text-ink",
                 )}
               >

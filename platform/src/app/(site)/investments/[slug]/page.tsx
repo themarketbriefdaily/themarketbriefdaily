@@ -2,8 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
-import { PRODUCTS, productBySlug } from "@/lib/data/products";
+import {
+  PRODUCTS,
+  productBySlug,
+  type Product,
+  type MethodologySection,
+} from "@/lib/data/products";
 import { PaywallGate } from "@/components/paywall/paywall-gate";
+import { PerformanceChart } from "@/components/charts/performance-chart";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -22,6 +28,37 @@ export async function generateMetadata({
   return { title: `${p.name} — ${p.code}`, description: p.blurb };
 }
 
+// Group long methodologies into pillars for a factsheet-style read.
+const PILLAR_BY_NUM: Record<number, string> = {
+  1: "Foundations",
+  2: "Return engines",
+  3: "Return engines",
+  4: "Return engines",
+  5: "Risk allocation & compounding",
+  6: "Risk allocation & compounding",
+  7: "Risk allocation & compounding",
+  8: "Convexity & downside",
+  9: "Robustness & the edge",
+  10: "Robustness & the edge",
+};
+
+function pillarOf(sec: MethodologySection): string | null {
+  if (sec.pillar) return sec.pillar;
+  const m = sec.title.match(/^(\d+)/);
+  return m ? PILLAR_BY_NUM[Number(m[1])] ?? null : null;
+}
+
+function groupSections(sections: MethodologySection[]) {
+  const groups: { pillar: string | null; items: MethodologySection[] }[] = [];
+  for (const s of sections) {
+    const pillar = pillarOf(s);
+    const last = groups[groups.length - 1];
+    if (last && last.pillar === pillar) last.items.push(s);
+    else groups.push({ pillar, items: [s] });
+  }
+  return groups;
+}
+
 export default async function ProductPage({
   params,
 }: {
@@ -30,6 +67,19 @@ export default async function ProductPage({
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) notFound();
+
+  const groups = groupSections(product.methodology.sections);
+  const grouped = groups.some((g) => g.pillar !== null);
+  const highlight = (product.metrics ?? product.stats).filter((s) =>
+    /sharpe|alpha|max drawdown|sortino/i.test(s.label),
+  ).slice(0, 3);
+
+  const perfData =
+    product.performance?.labels.map((label, i) => ({
+      label,
+      strategy: product.performance!.strategy[i],
+      benchmark: product.performance!.benchmark[i],
+    })) ?? [];
 
   return (
     <article className="container-tbp py-[clamp(40px,5vw,72px)]">
@@ -87,7 +137,7 @@ export default async function ProductPage({
               <div key={s.label} className="flex items-center justify-between py-3">
                 <span className="text-sm text-muted">{s.label}</span>
                 <span
-                  className={`font-display text-xl font-extrabold tabular ${
+                  className={`font-display text-lg font-extrabold tabular ${
                     s.tone === "pos" ? "text-pos" : s.tone === "neg" ? "text-neg" : "text-ink"
                   }`}
                 >
@@ -95,10 +145,6 @@ export default async function ProductPage({
                 </span>
               </div>
             ))}
-            <div className="flex items-center justify-between py-3">
-              <span className="text-sm text-muted">Benchmark</span>
-              <span className="text-sm font-semibold">{product.benchmark}</span>
-            </div>
           </div>
         </aside>
       </header>
@@ -113,36 +159,84 @@ export default async function ProductPage({
         </div>
       )}
 
-      {/* Methodology */}
-      <section className="mt-12 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+      {/* Performance (public summary) */}
+      {product.performance && (
+        <section className="mt-12">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-bold tracking-tight">Simulated growth of £100</h2>
+              <p className="mt-1 text-sm text-muted">
+                Hypothetical, net of estimated costs · vs {product.benchmark}
+              </p>
+            </div>
+            <div className="flex gap-6">
+              {highlight.map((s) => (
+                <div key={s.label} className="text-right">
+                  <div className="text-[10px] font-semibold uppercase tracking-[.1em] text-muted">
+                    {s.label}
+                  </div>
+                  <div
+                    className={`font-display text-lg font-extrabold tabular ${
+                      s.tone === "pos" ? "text-pos" : s.tone === "neg" ? "text-neg" : "text-ink"
+                    }`}
+                  >
+                    {s.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-line bg-card p-6">
+            <PerformanceChart data={perfData} benchmarkLabel={product.benchmark.split(" · ")[0]} />
+          </div>
+        </section>
+      )}
+
+      {/* Methodology + allocation */}
+      <section className="mt-14 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
         <div>
           <h2 className="text-xl font-bold tracking-tight">Methodology</h2>
           <p className="mt-4 text-[1.02rem] leading-relaxed text-ink-2">
             {product.methodology.overview}
           </p>
 
-          <div className="mt-8 space-y-6">
-            {product.methodology.sections.map((sec, i) => (
-              <div key={i} className="border-l-2 border-line pl-5">
-                <h3 className="font-display text-base font-bold tracking-tight">{sec.title}</h3>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{sec.body}</p>
-              </div>
-            ))}
+          <div className="mt-9 space-y-9">
+            {grouped
+              ? groups.map((g, gi) => (
+                  <div key={gi}>
+                    {g.pillar && (
+                      <div className="mb-4 flex items-center gap-3">
+                        <span className="text-[11px] font-semibold uppercase tracking-[.14em] text-warm">
+                          {g.pillar}
+                        </span>
+                        <span className="h-px flex-1 bg-line" />
+                      </div>
+                    )}
+                    <div className="space-y-5">
+                      {g.items.map((sec, i) => (
+                        <SectionBlock key={i} sec={sec} />
+                      ))}
+                    </div>
+                  </div>
+                ))
+              : product.methodology.sections.map((sec, i) => <SectionBlock key={i} sec={sec} />)}
           </div>
         </div>
 
-        {/* Holdings — gated */}
-        <div>
-          <h2 className="mb-4 text-xl font-bold tracking-tight">Holdings</h2>
+        {/* Allocation — gated */}
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <h2 className="mb-4 text-xl font-bold tracking-tight">
+            {product.category === "research" ? "Sleeves" : "Allocation"}
+          </h2>
           <PaywallGate
             required={product.detailTier}
             title="See the full book"
-            description={`Current holdings and weights for ${product.name} are part of the ${
+            description={`Current allocation and weights for ${product.name} are part of the ${
               product.detailTier === "free" ? "open" : "Professional"
             } tier.`}
-            teaser={<HoldingsList product={product} />}
+            teaser={<AllocationList product={product} />}
           >
-            <HoldingsList product={product} live />
+            <AllocationList product={product} live />
           </PaywallGate>
         </div>
       </section>
@@ -167,25 +261,50 @@ export default async function ProductPage({
   );
 }
 
-function HoldingsList({ product, live }: { product: import("@/lib/data/products").Product; live?: boolean }) {
+function SectionBlock({ sec }: { sec: MethodologySection }) {
+  return (
+    <div className="border-l-2 border-line pl-5">
+      <h3 className="font-display text-base font-bold tracking-tight">{sec.title}</h3>
+      <p className="mt-1.5 text-[14px] leading-relaxed text-muted">{sec.body}</p>
+    </div>
+  );
+}
+
+const BAR_COLORS = ["#0a0f1c", "#1a8a4a", "#c8a35a", "#5a5a5a", "#0066ff", "#b03030"];
+
+function AllocationList({ product, live }: { product: Product; live?: boolean }) {
   return (
     <div className="rounded-2xl border border-line bg-card p-5">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <span className="text-sm font-semibold">
-          {product.category === "research" ? "Sleeves" : "Top holdings"}
+          {product.category === "research" ? "Risk sleeves" : "Risk-weighted allocation"}
         </span>
         {live && <Badge variant="pos" size="sm">Live</Badge>}
       </div>
-      <div className="divide-y divide-line-soft">
-        {product.methodology.holdings.map((h) => (
-          <div key={h.name} className="flex items-center justify-between gap-3 py-2.5">
-            <div>
-              <div className="text-sm font-medium text-ink-2">{h.name}</div>
-              <div className="text-xs text-muted-2">{h.meta}</div>
+      <div className="space-y-3.5">
+        {product.methodology.holdings.map((h, i) => {
+          const pct = parseFloat(h.weight);
+          return (
+            <div key={h.name}>
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-[13px] font-medium text-ink-2">{h.name}</span>
+                <span className="font-display text-[13px] font-bold tabular">{h.weight}</span>
+              </div>
+              <div className="mt-1 text-[11px] text-muted-2">{h.meta}</div>
+              {!Number.isNaN(pct) && (
+                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-bg-alt">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${Math.min(pct, 100)}%`,
+                      backgroundColor: BAR_COLORS[i % BAR_COLORS.length],
+                    }}
+                  />
+                </div>
+              )}
             </div>
-            <span className="font-display text-sm font-bold tabular">{h.weight}</span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

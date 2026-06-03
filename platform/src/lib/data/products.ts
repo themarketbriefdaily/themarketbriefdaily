@@ -17,6 +17,17 @@ export interface Holding {
 export interface MethodologySection {
   title: string;
   body: string;
+  /** Optional grouping label, e.g. "Return engines". */
+  pillar?: string;
+}
+
+export interface PerformanceSeries {
+  /** Period labels (e.g. month ends). */
+  labels: string[];
+  /** Cumulative growth of 100 — strategy. */
+  strategy: number[];
+  /** Cumulative growth of 100 — benchmark. */
+  benchmark: number[];
 }
 
 export interface Product {
@@ -42,6 +53,8 @@ export interface Product {
   meta?: string;
   detailTier: Tier;
   illustrative?: boolean;
+  /** Optional simulated growth curve for the detail page. */
+  performance?: PerformanceSeries;
   methodology: {
     overview: string;
     sections: MethodologySection[];
@@ -88,6 +101,16 @@ const MULTI_ASSET: Product[] = [
     ],
     meta: "Equities · rates · credit · commodities · options",
     detailTier: "pro",
+    performance: {
+      labels: [
+        "Jan 24", "Mar 24", "May 24", "Jul 24", "Sep 24", "Nov 24",
+        "Jan 25", "Mar 25", "May 25", "Jul 25", "Sep 25", "Nov 25",
+        "Jan 26", "Mar 26", "May 26",
+      ],
+      // Simulated growth of £100 — smoother, shallower drawdowns than 60/40.
+      strategy: [100, 103.1, 105.4, 108.0, 110.2, 113.1, 115.0, 113.8, 117.2, 120.5, 123.1, 126.4, 129.0, 131.7, 135.6],
+      benchmark: [100, 101.8, 100.9, 104.2, 106.0, 103.4, 108.1, 104.0, 109.5, 112.0, 110.2, 114.8, 116.0, 113.1, 119.4],
+    },
     methodology: {
       overview:
         "This is the strategy a quant desk at a multi-strategy fund would actually run, written out in full. The objective is not the highest average return — it is the highest *compounded* return per unit of risk, net of trading costs, with the left tail deliberately truncated. Outperformance is engineered from four sources working together: (1) a basket of diversified, independently-replicated return premia rather than one fragile bet; (2) a machine-learning layer that blends those signals non-linearly; (3) a risk-allocation and volatility-targeting engine that defeats the 'volatility tax' on compounding; and (4) a convex options overlay that protects the portfolio precisely when correlations go to one. Critically, the real edge is discipline: every signal is validated with purged cross-validation, deflated for the number of trials, and modelled net of costs and capacity. Edges in markets are small and decay — stacking many small, low-correlation, cost-survivable edges is what gives a credible path to beating the benchmark, not a single 'genius' signal. (Illustrative and educational; documented historical premia, not a promise of future returns.)",
