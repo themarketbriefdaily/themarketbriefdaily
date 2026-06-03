@@ -1,6 +1,6 @@
 import type { Tier } from "@/lib/tiers";
 
-export type ProductCategory = "multi-asset" | "strategy" | "research";
+export type ProductCategory = "multi-asset" | "research";
 
 export interface Stat {
   label: string;
@@ -28,10 +28,14 @@ export interface Product {
   /** Academic / model line, e.g. "Three-factor model · Fama–French (1993)". */
   model: string;
   blurb: string;
+  /** Hero image (in /public/images). */
+  image: string;
   ytd: number;
   /** Excess vs benchmark in pp — used on research cards. */
   excess?: number;
   stats: Stat[];
+  /** Optional richer metric set for the detail page (falls back to stats). */
+  metrics?: Stat[];
   benchmark: string;
   tags: string[];
   /** e.g. "10 holdings · 5 risk variants". */
@@ -48,11 +52,144 @@ export interface Product {
 // ── Multi-asset model portfolios ("products") ──────────────────────────────
 const MULTI_ASSET: Product[] = [
   {
+    slug: "quant",
+    code: "MBD-QUANT",
+    name: "Quant",
+    badge: "FLAGSHIP QUANT",
+    category: "multi-asset",
+    model: "Systematic multi-asset risk premia & convexity",
+    image: "/images/trading-desk.jpg",
+    blurb:
+      "Our institutional quant mandate — a single, all-weather portfolio that replaces a shelf of single-asset sleeves. It spreads risk (not capital) across equities, rates, credit and commodities by Hierarchical Risk Parity, targets constant volatility to defeat the volatility tax, harvests trend, carry and the variance-risk premium, and runs a defined-risk options overlay that is short volatility for carry yet long the tail for crash convexity. Engineered to maximise compounded growth per unit of risk and to survive out-of-sample.",
+    ytd: 9.4,
+    stats: [
+      { label: "YTD", value: "+9.4%", tone: "pos" },
+      { label: "Sharpe", value: "1.42" },
+      { label: "Vol target", value: "10%" },
+    ],
+    metrics: [
+      { label: "YTD", value: "+9.4%", tone: "pos" },
+      { label: "Sharpe (since incep.)", value: "1.42" },
+      { label: "Sortino", value: "2.06" },
+      { label: "Volatility (target)", value: "10.0%" },
+      { label: "Max drawdown", value: "−7.1%", tone: "neg" },
+      { label: "Corr. to 60/40", value: "0.41" },
+    ],
+    benchmark: "60/40 · ARP composite",
+    tags: [
+      "Risk parity (HRP)",
+      "Volatility targeting",
+      "Trend & carry",
+      "Variance-risk premium",
+      "Tail convexity",
+      "Multi-asset",
+    ],
+    meta: "Equities · rates · credit · commodities · options",
+    detailTier: "pro",
+    methodology: {
+      overview:
+        "The quant mandate is built the way an institutional multi-strategy desk would build it: optimise for long-run compounded growth, which is governed not by average return but by return net of variance. The geometric return an investor actually earns is approximately the arithmetic mean minus half the variance — the 'volatility tax' or variance drain — so a strategy that cuts volatility and truncates the left tail without sacrificing expected return mechanically compounds faster. It deliberately replaces a row of single-asset sleeves: the equity, rates, credit and commodity exposures all live here, sized by risk and combined with systematic risk premia and a convex options overlay. Every block is chosen for out-of-sample robustness, not in-sample fit.",
+      sections: [
+        {
+          title: "01 · Objective — geometric growth & the volatility tax",
+          body: "We maximise the geometric growth rate g ≈ μ − σ²/2. Two assets with the same average return but different volatility compound to very different wealth; the higher-vol one is taxed by the variance term, and a single deep drawdown is mathematically the hardest thing to recover from. Everything downstream — diversification, vol targeting, tail hedging — is in service of lifting μ while shrinking σ² and the left tail.",
+        },
+        {
+          title: "02 · Risk allocation — diversification done properly",
+          body: "Capital is allocated by risk contribution, not dollars, across equities, government bonds, credit, commodities and gold (Qian, 'Risk Parity', 2005; Maillard–Roncalli–Teïletche equal-risk-contribution, 2010). Weights are solved with Hierarchical Risk Parity (López de Prado, 2016), which clusters assets and allocates down the tree — it never inverts an unstable covariance matrix, sidestepping Markowitz's estimation-error problem and proving far more stable out-of-sample. The covariance feeding it uses Ledoit–Wolf shrinkage (2004).",
+        },
+        {
+          title: "03 · Volatility targeting — attacking the drag",
+          body: "Gross exposure scales inversely to recent realised volatility to hold a constant ~10% portfolio vol (Moreira & Muir, 'Volatility-Managed Portfolios', JF 2017). Cutting risk precisely when volatility spikes both improves the realised Sharpe and directly reduces the σ²/2 drag — the single cheapest lever on compounded return.",
+        },
+        {
+          title: "04 · Alternative risk premia — trend, carry, defensive",
+          body: "Three diversifying, academically-durable premia sit on top of the risk-parity core: time-series momentum / trend (Moskowitz, Ooi & Pedersen, JFE 2012; Hurst, Ooi & Pedersen, 'A Century of Evidence on Trend-Following', 2017) for crisis alpha and convexity; cross-asset carry (Koijen, Moskowitz, Pedersen & Vrugt, 'Carry', JFE 2018); and a defensive equity tilt — quality and low-beta (Asness, Frazzini & Pedersen, 'Quality Minus Junk', 2019; Frazzini & Pedersen, 'Betting Against Beta', 2014).",
+        },
+        {
+          title: "05 · Options overlay — selling the variance-risk premium, owning the tail",
+          body: "Index implied volatility has, on average, exceeded subsequent realised volatility — a persistent variance-risk premium (Carr & Wu, 'Variance Risk Premiums', RFS 2009; Bakshi & Kapadia, 2003). We harvest it through small, defined-risk index option writing, then barbell it with a standing allocation to out-of-the-money puts funded by that carry, so the book is net short volatility for yield yet long convexity into a crash. The aim is an asymmetric payoff that truncates the left tail rather than naïve, ungated premium selling (Israelov, 'Pathetic Protection', 2019, on hedging-cost discipline).",
+        },
+        {
+          title: "06 · Rebalancing premium & position sizing",
+          body: "Systematic monthly rebalancing of volatile, low-correlation sleeves harvests a structural diversification / rebalancing return that partially offsets the variance drain (Willenbrock, 2011). Position sizing follows a fractional-Kelly rule (Kelly, 1956; Thorp) — large enough to compound, small enough to make ruin and over-betting effectively impossible.",
+        },
+      ],
+      holdings: [
+        { name: "Global equities", meta: "Quality & low-beta tilt", weight: "20%" },
+        { name: "Government bonds / rates", meta: "Duration, risk-weighted", weight: "22%" },
+        { name: "Credit (IG / HY)", meta: "Spread carry", weight: "12%" },
+        { name: "Commodities & gold", meta: "Inflation / supply premia", weight: "16%" },
+        { name: "Trend & carry overlay", meta: "Managed futures, crisis alpha", weight: "18%" },
+        { name: "Options overlay", meta: "Short VRP + long tail", weight: "12%" },
+      ],
+    },
+  },
+  {
+    slug: "rotational",
+    code: "MBD-ROTATE",
+    name: "Rotational",
+    badge: "THEMATIC",
+    category: "multi-asset",
+    model: "Thematic rotation · proprietary · 19 holdings",
+    image: "/images/trading-screens.jpg",
+    blurb:
+      'A high-conviction thematic portfolio built around the "picks & shovels" of the AI build-out — data-centre power & cooling (Vertiv, Constellation, Eaton), networking & interconnect (Arista, Marvell, Astera Labs), semis equipment, and the cybersecurity fabric — balanced with an early-stage quantum sleeve (IonQ, Rigetti, D-Wave), precious metals, clean energy, and defensive EU staples. Tilts adjust by macro regime, not by calendar.',
+    ytd: 18.6,
+    stats: [
+      { label: "YTD", value: "+18.6%", tone: "pos" },
+      { label: "Sharpe", value: "1.12" },
+      { label: "OCF", value: "0.34%" },
+    ],
+    benchmark: "MSCI World",
+    tags: [
+      "AI picks & shovels",
+      "Quantum computing",
+      "Cybersecurity",
+      "Precious metals",
+      "Clean energy",
+      "EU staples",
+    ],
+    meta: "19 holdings · 6 themes",
+    detailTier: "pro",
+    methodology: {
+      overview:
+        'A proprietary thematic strategy allocating across six structural mega-trends, with weights adjusted by momentum, macro-regime signals and relative valuation. The core conviction is a "picks & shovels" approach to AI — owning the indispensable infrastructure the build-out depends on, whoever wins the application layer.',
+      sections: [
+        {
+          title: "01 · AI Infrastructure — picks & shovels",
+          body: "Data-centre power & cooling (Vertiv, Eaton, Constellation Energy), networking & interconnect (Arista, Marvell, Astera Labs) and semiconductor capital equipment (MKS Instruments). Monetises AI capex on day one.",
+        },
+        {
+          title: "02 · Cybersecurity fabric",
+          body: "CrowdStrike, Palo Alto Networks, Fortinet and Cloudflare — recurring, mission-critical spend that scales with every new attack surface AI creates.",
+        },
+        {
+          title: "03 · Quantum computing",
+          body: "Venture-style sleeve in IonQ, Rigetti, D-Wave and the Defiance Quantum ETF, sized ahead of error-corrected quantum advantage.",
+        },
+        {
+          title: "04–06 · Real assets, energy transition & EU staples",
+          body: "Gold and silver as monetary hedges, global clean energy (ICLN) for the decarbonisation supercycle, and a low-beta European consumer-staples anchor. Theme weights are reviewed monthly on a quantitative score (momentum, earnings revisions, macro sensitivity).",
+        },
+      ],
+      holdings: [
+        { name: "AI infrastructure basket", meta: "Vertiv, Arista, Marvell…", weight: "32%" },
+        { name: "Cybersecurity fabric", meta: "CRWD, PANW, FTNT, NET", weight: "18%" },
+        { name: "Quantum sleeve", meta: "IONQ, RGTI, QBTS, QTUM", weight: "12%" },
+        { name: "Precious metals", meta: "Gold, SLV, AG, HL", weight: "16%" },
+        { name: "Clean energy", meta: "ICLN", weight: "12%" },
+        { name: "EU consumer staples", meta: "Defensive anchor", weight: "10%" },
+      ],
+    },
+  },
+  {
     slug: "classic",
     code: "MBD-CLASSIC",
     name: "Classic",
     category: "multi-asset",
     model: "Three-factor model · Fama–French (1993)",
+    image: "/images/glass-tower.jpg",
     blurb:
       "Globally diversified equity portfolio targeting the size and value premia documented by Fama & French. Systematic tilts toward small-cap and value, paired with investment-grade fixed income for risk control. Rebalanced quarterly to factor-weight targets.",
     ytd: 12.0,
@@ -98,6 +235,7 @@ const MULTI_ASSET: Product[] = [
     badge: "ESG",
     category: "multi-asset",
     model: "Fama–French + ESG-screened universe",
+    image: "/images/wind-turbines.jpg",
     blurb:
       "The Classic factor framework applied to an ESG-screened investable universe. Same size and value tilts, but using MSCI ESG-leader and Article 8 SFDR-aligned funds. Excludes tobacco, controversial weapons, thermal coal, and worst-decile ESG scorers.",
     ytd: 9.0,
@@ -140,6 +278,7 @@ const MULTI_ASSET: Product[] = [
     name: "Tracker",
     category: "multi-asset",
     model: "Market portfolio · Sharpe CAPM (1964)",
+    image: "/images/global-clusters.jpg",
     blurb:
       "Pure market-cap-weighted global market portfolio implementing the Sharpe CAPM result that the market portfolio is mean-variance efficient. No factor bets, no active selection — just the lowest-cost expression of the aggregate equity and bond market.",
     ytd: 10.5,
@@ -176,260 +315,6 @@ const MULTI_ASSET: Product[] = [
       ],
     },
   },
-  {
-    slug: "rotational",
-    code: "MBD-ROTATE",
-    name: "Rotational",
-    badge: "FLAGSHIP",
-    category: "multi-asset",
-    model: "Thematic rotation · proprietary · 19 holdings",
-    blurb:
-      'A high-conviction thematic portfolio built around the "picks & shovels" of the AI build-out — data-centre power & cooling (Vertiv, Constellation, Eaton), networking & interconnect (Arista, Marvell, Astera Labs), semis equipment, and the cybersecurity fabric — balanced with an early-stage quantum sleeve (IonQ, Rigetti, D-Wave), precious metals, clean energy, and defensive EU staples. Tilts adjust by macro regime, not by calendar.',
-    ytd: 18.6,
-    stats: [
-      { label: "YTD", value: "+18.6%", tone: "pos" },
-      { label: "Sharpe", value: "1.12" },
-      { label: "OCF", value: "0.34%" },
-    ],
-    benchmark: "MSCI World",
-    tags: [
-      "AI picks & shovels",
-      "Quantum computing",
-      "Cybersecurity",
-      "Precious metals",
-      "Clean energy",
-      "EU staples",
-    ],
-    meta: "19 holdings · 6 themes",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        'The flagship: a proprietary thematic strategy allocating across six structural mega-trends, with weights adjusted by momentum, macro-regime signals and relative valuation. The core conviction is a "picks & shovels" approach to AI — owning the indispensable infrastructure the build-out depends on, whoever wins the application layer.',
-      sections: [
-        {
-          title: "01 · AI Infrastructure — picks & shovels",
-          body: "Data-centre power & cooling (Vertiv, Eaton, Constellation Energy), networking & interconnect (Arista, Marvell, Astera Labs) and semiconductor capital equipment (MKS Instruments). Monetises AI capex on day one.",
-        },
-        {
-          title: "02 · Cybersecurity fabric",
-          body: "CrowdStrike, Palo Alto Networks, Fortinet and Cloudflare — recurring, mission-critical spend that scales with every new attack surface AI creates.",
-        },
-        {
-          title: "03 · Quantum computing",
-          body: "Venture-style sleeve in IonQ, Rigetti, D-Wave and the Defiance Quantum ETF, sized ahead of error-corrected quantum advantage.",
-        },
-        {
-          title: "04–06 · Real assets, energy transition & EU staples",
-          body: "Gold and silver as monetary hedges, global clean energy (ICLN) for the decarbonisation supercycle, and a low-beta European consumer-staples anchor. Theme weights are reviewed monthly on a quantitative score (momentum, earnings revisions, macro sensitivity).",
-        },
-      ],
-      holdings: [
-        { name: "AI infrastructure basket", meta: "Vertiv, Arista, Marvell…", weight: "32%" },
-        { name: "Cybersecurity fabric", meta: "CRWD, PANW, FTNT, NET", weight: "18%" },
-        { name: "Quantum sleeve", meta: "IONQ, RGTI, QBTS, QTUM", weight: "12%" },
-        { name: "Precious metals", meta: "Gold, SLV, AG, HL", weight: "16%" },
-        { name: "Clean energy", meta: "ICLN", weight: "12%" },
-        { name: "EU consumer staples", meta: "Defensive anchor", weight: "10%" },
-      ],
-    },
-  },
-  {
-    slug: "quant",
-    code: "MBD-QUANT",
-    name: "Quant",
-    badge: "QUANT",
-    category: "multi-asset",
-    model: "Vol-targeted risk parity · HRP (López de Prado, 2016)",
-    blurb:
-      "A systematic, all-weather multi-asset portfolio engineered to maximise compounded growth per unit of risk — not the highest backtest. It allocates by Hierarchical Risk Parity on a shrinkage-estimated covariance, targets constant volatility to suppress volatility drag, overlays time-series momentum for crisis alpha, and tilts toward low-beta assets. Designed to hold up out-of-sample.",
-    ytd: 9.4,
-    stats: [
-      { label: "YTD", value: "+9.4%", tone: "pos" },
-      { label: "Sharpe", value: "1.34" },
-      { label: "Vol target", value: "10%" },
-    ],
-    benchmark: "60/40",
-    tags: [
-      "Risk parity (HRP)",
-      "Volatility targeting",
-      "Trend overlay",
-      "Shrinkage covariance",
-      "Low-beta tilt",
-    ],
-    meta: "Systematic · monthly rebalance",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        "The quant mandate optimises for long-run compounded growth, which is governed not by average return but by return net of variance. Because the geometric (compounded) return is approximately the arithmetic return minus half the variance — the 'volatility drag' or variance drain — cutting portfolio volatility without sacrificing expected return mechanically improves terminal wealth. Every component below serves that objective and is chosen for out-of-sample robustness rather than in-sample fit.",
-      sections: [
-        {
-          title: "Allocation — Hierarchical Risk Parity",
-          body: "Capital is allocated by Hierarchical Risk Parity (López de Prado, 2016), which clusters assets by correlation and allocates down the tree. Unlike mean-variance optimisation it never inverts an unstable covariance matrix, so it avoids Markowitz's estimation-error problem and is markedly more stable out-of-sample. The covariance is estimated with Ledoit–Wolf shrinkage (2004) for further robustness.",
-        },
-        {
-          title: "Volatility targeting — attacking the drag",
-          body: "Gross exposure is scaled inversely to recent realised volatility to hold a constant ~10% portfolio vol (Moreira & Muir, 'Volatility-Managed Portfolios', JF 2017). De-risking when volatility spikes both raises the risk-adjusted return and directly reduces the σ²/2 drag on compounding.",
-        },
-        {
-          title: "Trend overlay — crisis alpha",
-          body: "A time-series momentum overlay (Moskowitz, Ooi & Pedersen, JFE 2012) adds positive convexity: it tends to be long going into and short coming out of sustained moves, which historically delivers 'crisis alpha' and shortens left-tail drawdowns when correlations converge to one.",
-        },
-        {
-          title: "Tilts & sizing",
-          body: "Within sleeves the book tilts toward low-beta assets (Frazzini & Pedersen, 'Betting Against Beta', 2014), whose superior risk-adjusted returns compound well under vol targeting. Disciplined monthly rebalancing of volatile, low-correlation sleeves harvests the diversification / rebalancing return (Willenbrock, 2011), and position sizing follows a fractional-Kelly rule to maximise geometric growth without over-betting.",
-        },
-      ],
-      holdings: [
-        { name: "Global equity beta", meta: "Risk-weighted, low-beta tilt", weight: "18%" },
-        { name: "Long-duration Treasuries", meta: "Convexity / deflation hedge", weight: "22%" },
-        { name: "TIPS / inflation-linked", meta: "Real-rate ballast", weight: "16%" },
-        { name: "Gold", meta: "Monetary diversifier", weight: "14%" },
-        { name: "Broad commodities", meta: "Inflation / supply", weight: "12%" },
-        { name: "Managed-futures trend overlay", meta: "Crisis alpha", weight: "18%" },
-      ],
-    },
-  },
-];
-
-// ── Single-mandate asset-class strategies ──────────────────────────────────
-const STRATEGIES: Product[] = [
-  {
-    slug: "fixed-income",
-    code: "MBD-FI",
-    name: "Fixed Income",
-    category: "strategy",
-    model: "Duration-managed credit barbell",
-    blurb:
-      "Barbell allocation between long-duration Treasuries (rate-cut hedge) and short-duration credit (carry). Adds opportunistic IG / HY, TIPS, and EM USD exposure. Duration target: 5–7 years. Credit overlay rotates by spread regime.",
-    ytd: 4.2,
-    stats: [
-      { label: "YTD", value: "+4.2%", tone: "pos" },
-      { label: "Sharpe", value: "0.68" },
-      { label: "Duration", value: "6.1y" },
-    ],
-    benchmark: "Bloomberg US Agg",
-    tags: ["Treasuries", "IG / HY credit", "TIPS", "EM USD bonds"],
-    meta: "Duration 5–7y · spread-regime overlay",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        "A duration-managed credit barbell: long-duration Treasuries provide a rate-cut hedge at one end, short-duration credit harvests carry at the other. The credit overlay rotates between IG, HY, TIPS and EM USD depending on the spread regime, targeting a 5–7 year portfolio duration.",
-      sections: [
-        { title: "Barbell", body: "Long Treasuries (rate convexity) vs short credit (carry) — the shape adjusts as the curve and cuts re-price." },
-        { title: "Credit overlay", body: "Opportunistic IG/HY, TIPS for breakevens, and EM USD for spread — sized by a spread-regime classifier." },
-        { title: "Duration", body: "Held to a 5–7 year target so rate sensitivity is deliberate rather than incidental." },
-      ],
-      holdings: [
-        { name: "Long Treasuries (20y+)", meta: "Rate hedge", weight: "30%" },
-        { name: "Short-duration IG credit", meta: "Carry", weight: "30%" },
-        { name: "TIPS 5Y", meta: "Breakevens", weight: "15%" },
-        { name: "HY credit", meta: "Spread", weight: "15%" },
-        { name: "EM USD bonds", meta: "Spread", weight: "10%" },
-      ],
-    },
-  },
-  {
-    slug: "equities",
-    code: "MBD-EQ",
-    name: "Equities",
-    category: "strategy",
-    model: "Multi-factor · quality & momentum",
-    blurb:
-      "Global equity sleeve combining quality, momentum, low-volatility, and value factor ETFs in a regime-aware blend. Factor weights shift with the rate cycle and credit conditions. No single-stock selection — pure factor expression at the portfolio level.",
-    ytd: 9.5,
-    stats: [
-      { label: "YTD", value: "+9.5%", tone: "pos" },
-      { label: "Sharpe", value: "0.91" },
-      { label: "Beta", value: "0.92" },
-    ],
-    benchmark: "MSCI World",
-    tags: ["Quality", "Momentum", "Min vol", "Value"],
-    meta: "Regime-aware factor blend",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        "A pure factor sleeve: quality, momentum, low-volatility and value ETFs blended in proportions that shift with the rate cycle and credit conditions. There is no single-stock selection — the strategy expresses factor views at the portfolio level only.",
-      sections: [
-        { title: "Factor stack", body: "Quality and momentum lead in expansion; min-vol and value are added as conditions tighten." },
-        { title: "Regime engine", body: "Weights respond to the rate cycle and credit spreads rather than a fixed allocation." },
-        { title: "Beta", body: "Run near a 0.92 beta so factor selection, not market timing, drives the active return." },
-      ],
-      holdings: [
-        { name: "Quality factor ETF", meta: "QUAL", weight: "30%" },
-        { name: "Momentum factor ETF", meta: "MTUM", weight: "30%" },
-        { name: "Min-volatility ETF", meta: "USMV", weight: "20%" },
-        { name: "Value factor ETF", meta: "VLUE", weight: "20%" },
-      ],
-    },
-  },
-  {
-    slug: "commodities",
-    code: "MBD-CM",
-    name: "Commodities",
-    category: "strategy",
-    model: "Diversified physical exposure",
-    blurb:
-      "Broad commodity sleeve: precious metals (gold, silver, platinum), energy (oil, natural gas, uranium), industrial metals (copper), and softs (agriculture, wheat). Targeted exposure to roll-yield in backwardated curves; risk-off rotation in contango regimes.",
-    ytd: 11.4,
-    stats: [
-      { label: "YTD", value: "+11.4%", tone: "pos" },
-      { label: "Sharpe", value: "0.86" },
-      { label: "OCF", value: "0.41%" },
-    ],
-    benchmark: "Bloomberg Cmdty",
-    tags: ["Precious metals", "Energy", "Base metals", "Agriculture"],
-    meta: "Roll-yield aware",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        "A diversified physical-commodity sleeve across precious metals, energy, industrial metals and softs. The strategy leans into roll-yield where curves are backwardated and rotates risk-off when curves move into contango.",
-      sections: [
-        { title: "Curve awareness", body: "Targets backwardated curves for positive roll; trims contango exposure to avoid roll drag." },
-        { title: "Diversification", body: "Precious metals (gold, silver, platinum), energy (oil, gas, uranium), copper and agriculture spread the risk across distinct supply cycles." },
-        { title: "Regime", body: "Precious metals carry a structural tailwind from de-dollarisation and central-bank accumulation." },
-      ],
-      holdings: [
-        { name: "Precious metals", meta: "Gold, silver, platinum", weight: "35%" },
-        { name: "Energy", meta: "Oil, nat gas, uranium", weight: "30%" },
-        { name: "Industrial metals", meta: "Copper", weight: "20%" },
-        { name: "Agriculture / softs", meta: "Wheat, grains", weight: "15%" },
-      ],
-    },
-  },
-  {
-    slug: "options-derivatives",
-    code: "MBD-OPT",
-    name: "Options & Derivatives",
-    badge: "VOL ARB",
-    category: "strategy",
-    model: "Earnings volatility crush · short premium",
-    blurb:
-      "Systematic short-volatility strategy harvesting the implied-volatility risk premium around single-stock earnings events. Filters for IV30/RV30 ≥ 1.25, term-structure backwardation, and adequate liquidity. Positions held through earnings, closed on IV collapse.",
-    ytd: 14.2,
-    stats: [
-      { label: "YTD", value: "+14.2%", tone: "pos" },
-      { label: "Sharpe", value: "1.38" },
-      { label: "Win rate", value: "71%" },
-    ],
-    benchmark: "S&P 500",
-    tags: ["Short straddle", "Iron condor", "Term-structure", "Yang–Zhang RV"],
-    meta: "Event-driven · defined risk",
-    detailTier: "pro",
-    methodology: {
-      overview:
-        "A systematic short-volatility strategy that harvests the implied-vol risk premium around single-stock earnings. It enters defined-risk short-premium structures when implied vol is rich relative to realised, and closes them on the post-earnings IV collapse.",
-      sections: [
-        { title: "Signal", body: "Filters for IV30/RV30 ≥ 1.25 (Yang–Zhang realised vol), term-structure backwardation into the event, and adequate option liquidity." },
-        { title: "Structures", body: "Short straddles and iron condors sized to a defined-risk budget; positions are held through the print and closed on the vol crush." },
-        { title: "Risk", body: "A 71% historical win rate reflects positive expectancy from the premium, with defined-risk wings capping the tail." },
-      ],
-      holdings: [
-        { name: "Earnings short straddles", meta: "Pre-print entry", weight: "55%" },
-        { name: "Iron condors", meta: "Defined-risk", weight: "30%" },
-        { name: "Cash / collateral", meta: "Margin buffer", weight: "15%" },
-      ],
-    },
-  },
 ];
 
 // ── Research / illustrative model portfolios ───────────────────────────────
@@ -440,6 +325,7 @@ const RESEARCH: Product[] = [
     name: "Macro Transmission",
     category: "research",
     model: "Multi-asset macro overlay",
+    image: "/images/fund-macro.jpg",
     blurb:
       "Multi-asset macro overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts. Adds or subtracts risk based on transmission state, not consensus narrative.",
     ytd: 8.4,
@@ -473,6 +359,7 @@ const RESEARCH: Product[] = [
     name: "Market Structure Alpha",
     category: "research",
     model: "Microstructure · short-window equity",
+    image: "/images/fund-struct.jpg",
     blurb:
       "Captures dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure effects. A short-window equity strategy keyed off how price formation actually clears.",
     ytd: 6.2,
@@ -505,6 +392,7 @@ const RESEARCH: Product[] = [
     name: "Physical Supply Premia",
     category: "research",
     model: "Commodity physical-tightness premia",
+    image: "/images/fund-supply.jpg",
     blurb:
       "Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals. Compensates the futures curve for physical scarcity where paper and physical markets diverge.",
     ytd: 11.7,
@@ -533,10 +421,9 @@ const RESEARCH: Product[] = [
   },
 ];
 
-export const PRODUCTS: Product[] = [...MULTI_ASSET, ...STRATEGIES, ...RESEARCH];
+export const PRODUCTS: Product[] = [...MULTI_ASSET, ...RESEARCH];
 
 export const MULTI_ASSET_PRODUCTS = MULTI_ASSET;
-export const STRATEGY_PRODUCTS = STRATEGIES;
 export const RESEARCH_PORTFOLIOS = RESEARCH;
 
 export function productBySlug(slug: string): Product | undefined {

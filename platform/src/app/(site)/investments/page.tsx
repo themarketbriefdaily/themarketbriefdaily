@@ -3,7 +3,6 @@ import Link from "next/link";
 import { AlertTriangle, ArrowUpRight } from "lucide-react";
 import {
   MULTI_ASSET_PRODUCTS,
-  STRATEGY_PRODUCTS,
   RESEARCH_PORTFOLIOS,
   type Product,
 } from "@/lib/data/products";
@@ -12,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 export const metadata: Metadata = {
   title: "Investments",
   description:
-    "Multi-asset model portfolios, single-mandate asset-class strategies and transparent research portfolios — each with full methodology.",
+    "Model portfolios grounded in financial theory — from a flagship systematic quant mandate to factor, index and thematic strategies — plus transparent research portfolios. Each with full methodology.",
 };
 
 export default function InvestmentsPage() {
@@ -24,43 +23,32 @@ export default function InvestmentsPage() {
           Strategies, grounded in <span className="serif-em">theory.</span>
         </h1>
         <p className="mt-5 text-[1.05rem] leading-relaxed text-muted">
-          Every portfolio traces to a documented model — Fama–French factors, the Sharpe CAPM, a
-          proprietary thematic engine. Summary performance is open; full holdings and attribution
-          are part of Professional. Click any product for its methodology.
+          Every portfolio traces to a documented model — a flagship systematic quant mandate, the
+          Fama–French factors, the Sharpe CAPM, a proprietary thematic engine. Summary performance is
+          open; full holdings and attribution are part of Professional. Click any product for its
+          methodology.
         </p>
       </header>
 
       {/* 01 — Multi-asset products */}
       <Section
-        number="01 / Multi-asset"
-        title="Model portfolios."
-        lead="Five diversified, rules-based portfolios spanning factor investing, pure indexing, systematic risk-parity quant and high-conviction thematic rotation — each available in multiple risk variants."
+        number="01 / Model portfolios"
+        title={<>Multi-asset <span className="serif-em">mandates.</span></>}
+        lead="Five diversified, rules-based portfolios — a flagship systematic quant strategy, pure indexing, factor investing and high-conviction thematic rotation. The quant mandate spans equities, rates, credit, commodities and options in one risk-balanced book."
       >
+        {/* Flagship spans full width, then a clean grid */}
         <div className="grid gap-6 lg:grid-cols-2">
-          {MULTI_ASSET_PRODUCTS.map((p) => (
-            <ProductCard key={p.slug} product={p} />
+          {MULTI_ASSET_PRODUCTS.map((p, i) => (
+            <ProductCard key={p.slug} product={p} feature={i === 0} />
           ))}
         </div>
       </Section>
 
-      {/* 02 — Asset-class strategies */}
+      {/* 02 — Research portfolios */}
       <Section
-        number="02 / Asset-class strategies"
-        title={<>Single-mandate <span className="serif-em">specialists.</span></>}
-        lead="Four focused single-asset-class strategies for investors who already own broad diversification and want a specialist sleeve. Each runs independently — discrete return profile, benchmark and risk budget."
-      >
-        <div className="grid gap-6 sm:grid-cols-2">
-          {STRATEGY_PRODUCTS.map((p) => (
-            <ProductCard key={p.slug} product={p} compact />
-          ))}
-        </div>
-      </Section>
-
-      {/* 03 — Research portfolios */}
-      <Section
-        number="03 / Research portfolios"
-        title={<>The four MBD <span className="serif-em">model portfolios.</span></>}
-        lead="Fully transparent illustrative strategies tracked publicly — macro regime, market microstructure, physical supply and regime-aware factor. These drive the editorial research direction, not allocatable capital."
+        number="02 / Research portfolios"
+        title={<>Illustrative <span className="serif-em">research.</span></>}
+        lead="Three fully transparent illustrative strategies tracked publicly — macro regime, market microstructure and physical supply. These drive the editorial research direction, not allocatable capital."
       >
         <div className="mb-6 flex items-start gap-3 rounded-xl border border-warm/30 bg-warm/[0.06] p-4 text-sm text-ink-2">
           <AlertTriangle size={18} className="mt-0.5 shrink-0 text-warm" />
@@ -70,7 +58,7 @@ export default function InvestmentsPage() {
             results.
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {RESEARCH_PORTFOLIOS.map((p) => (
             <ProductCard key={p.slug} product={p} compact />
           ))}
@@ -109,74 +97,101 @@ function Section({
   );
 }
 
-function ProductCard({ product, compact }: { product: Product; compact?: boolean }) {
+function ProductCard({
+  product,
+  feature,
+  compact,
+}: {
+  product: Product;
+  feature?: boolean;
+  compact?: boolean;
+}) {
   return (
     <Link
       href={`/investments/${product.slug}`}
-      className="group flex flex-col rounded-2xl border border-line bg-card p-7 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)]"
+      className={`group flex flex-col overflow-hidden rounded-2xl border border-line bg-card transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-16px_rgba(0,0,0,.14)] ${
+        feature ? "lg:col-span-2 lg:flex-row" : ""
+      }`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold tracking-[.12em] text-warm">
-              {product.code}
-            </span>
-            {product.badge && (
-              <Badge variant="gold" size="sm">
-                {product.badge}
-              </Badge>
-            )}
-          </div>
-          <h3 className="mt-2 font-display text-2xl font-extrabold tracking-tight">
+      {/* Image banner */}
+      <div
+        className={`relative overflow-hidden bg-midnight ${
+          feature ? "lg:w-2/5" : ""
+        } ${compact ? "aspect-[16/8]" : "aspect-[16/9]"} ${feature ? "lg:aspect-auto" : ""}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={product.image}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 via-midnight/10 to-transparent" />
+        <div className="absolute left-4 top-4 flex items-center gap-2">
+          <span className="rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-semibold tracking-[.12em] text-white backdrop-blur">
+            {product.code}
+          </span>
+          {product.badge && <Badge variant="gold" size="sm">{product.badge}</Badge>}
+        </div>
+        <div className="absolute bottom-4 left-4 right-4">
+          <h3 className="font-display text-2xl font-extrabold tracking-tight text-white">
             {product.name}
           </h3>
-          <p className="mt-0.5 text-sm text-muted">{product.model}</p>
+          <p className="mt-0.5 text-[12px] font-medium text-white/75">{product.model}</p>
         </div>
-        <ArrowUpRight
-          size={20}
-          className="shrink-0 text-muted-2 transition-colors group-hover:text-ink"
-        />
       </div>
 
-      {!compact && (
-        <p className="mt-4 text-[14px] leading-relaxed text-ink-2">{product.blurb}</p>
-      )}
+      {/* Body */}
+      <div className={`flex flex-1 flex-col p-6 ${feature ? "lg:p-8" : ""}`}>
+        {!compact && (
+          <p className="text-[14px] leading-relaxed text-ink-2">
+            {feature ? product.blurb : truncate(product.blurb, 165)}
+          </p>
+        )}
 
-      <div className="mt-5 grid grid-cols-3 gap-3 border-y border-line-soft py-4">
-        {product.stats.map((s) => (
-          <div key={s.label}>
-            <div className="text-[10px] font-semibold uppercase tracking-[.1em] text-muted">
-              {s.label}
-            </div>
-            <div
-              className={`font-display text-xl font-extrabold tabular ${
-                s.tone === "pos" ? "text-pos" : s.tone === "neg" ? "text-neg" : "text-ink"
-              }`}
-            >
-              {s.value}
-            </div>
+        <div className="mt-auto">
+          <div className="mt-5 grid grid-cols-3 gap-3 border-y border-line-soft py-4">
+            {product.stats.map((s) => (
+              <div key={s.label}>
+                <div className="text-[10px] font-semibold uppercase tracking-[.1em] text-muted">
+                  {s.label}
+                </div>
+                <div
+                  className={`font-display text-xl font-extrabold tabular ${
+                    s.tone === "pos" ? "text-pos" : s.tone === "neg" ? "text-neg" : "text-ink"
+                  }`}
+                >
+                  {s.value}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        <Badge size="sm">{product.benchmark}</Badge>
-        {product.tags.slice(0, compact ? 3 : 5).map((t) => (
-          <span
-            key={t}
-            className="rounded-full border border-line px-2.5 py-1 text-[11px] text-muted"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            <Badge size="sm">{product.benchmark}</Badge>
+            {product.tags.slice(0, feature ? 5 : 3).map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-line px-2.5 py-1 text-[11px] text-muted"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
 
-      <div className="mt-5 flex items-center justify-between">
-        {product.meta && <span className="text-xs text-muted-2">{product.meta}</span>}
-        <span className="ml-auto text-[13px] font-semibold text-ink">
-          {product.category === "research" ? "View methodology →" : "Learn more →"}
-        </span>
+          <div className="mt-5 flex items-center justify-between">
+            {product.meta && <span className="text-xs text-muted-2">{product.meta}</span>}
+            <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-semibold text-ink">
+              {product.category === "research" ? "View methodology" : "Learn more"}
+              <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </div>
+        </div>
       </div>
     </Link>
   );
+}
+
+function truncate(s: string, n: number) {
+  return s.length > n ? `${s.slice(0, n).trimEnd()}…` : s;
 }

@@ -37,8 +37,21 @@ export default async function ProductPage({
         ← All investments
       </Link>
 
+      {/* Image banner */}
+      <div className="relative mt-5 aspect-[21/7] overflow-hidden rounded-2xl bg-midnight">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={product.image} alt="" className="h-full w-full object-cover opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-midnight/70 via-midnight/10 to-transparent" />
+        <div className="absolute bottom-5 left-6 flex items-center gap-2.5">
+          <span className="rounded-full bg-black/35 px-3 py-1 text-[11px] font-semibold tracking-[.12em] text-white backdrop-blur">
+            {product.code}
+          </span>
+          {product.badge && <Badge variant="gold" size="sm">{product.badge}</Badge>}
+        </div>
+      </div>
+
       {/* Hero */}
-      <header className="mt-6 grid gap-8 border-b border-line pb-10 lg:grid-cols-[1.5fr_1fr]">
+      <header className="mt-8 grid gap-8 border-b border-line pb-10 lg:grid-cols-[1.5fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="text-[11px] font-semibold tracking-[.12em] text-warm">
@@ -70,7 +83,7 @@ export default async function ProductPage({
             Key metrics
           </div>
           <div className="mt-4 divide-y divide-line-soft">
-            {product.stats.map((s) => (
+            {(product.metrics ?? product.stats).map((s) => (
               <div key={s.label} className="flex items-center justify-between py-3">
                 <span className="text-sm text-muted">{s.label}</span>
                 <span
