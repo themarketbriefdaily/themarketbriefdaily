@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quant Fund — The Market Brief Daily</title>
+  <meta name="description" content="MBD-QUANT: a systematic multi-asset risk-premia and convexity strategy — Hierarchical Risk Parity, volatility targeting, trend & carry, a machine-learning signal blend, and a variance-risk-premium options overlay.">
+  <link rel="stylesheet" href="../assets/fund-detail.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="fund-nav">
+  <a class="back" href="../investments.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Investments
+  </a>
+  <span class="site-name">The Market Brief Daily</span>
+</nav>
+
+<header class="fund-hero">
+  <div class="fund-hero-inner">
+    <div class="fund-badge"><span class="dot"></span> TMBD–QNT · Flagship Quant</div>
+    <h1>Quant <em>Fund</em></h1>
+    <p class="tagline">An institutional, multi-strategy systematic book engineered to compound ahead of the market on a risk-adjusted basis — diversified return premia and a machine-learning signal blend on a Hierarchical-Risk-Parity core, scaled to constant volatility to defeat the volatility tax, and wrapped in a convex options overlay that is short volatility for carry yet long the tail for crash protection.</p>
+    <div class="fund-meta-strip">
+      <div class="fund-meta-item">
+        <span class="label">Strategy</span>
+        <span class="value gold">Systematic Multi-Asset</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Benchmark</span>
+        <span class="value">60/40 · ARP composite</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Inception</span>
+        <span class="value">Jan 2024</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Est. Annual Return</span>
+        <span class="value positive">+11.3%</span>
+      </div>
+      <div class="fund-meta-item">
+        <span class="label">Sharpe Ratio</span>
+        <span class="value">1.42</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="fund-body">
+  <main>
+
+    <section class="fund-section">
+      <h2><span class="section-num">01</span> Strategy Overview</h2>
+      <p>The Quant Fund is built the way a quant desk at a multi-strategy fund would build it: the objective is not the highest <em>average</em> return, but the highest <em>compounded</em> return per unit of risk, net of trading costs, with the left tail deliberately truncated. Long-run wealth is governed by the geometric growth rate, g ≈ μ − σ²/2 — the "volatility tax" or variance drain — so a strategy that cuts volatility and avoids deep drawdowns without sacrificing expected return mechanically compounds faster.</p>
+      <p>Outperformance is engineered from four sources working together: (1) a basket of diversified, independently-replicated return premia rather than one fragile bet; (2) a machine-learning layer that blends those signals non-linearly; (3) a risk-allocation and volatility-targeting engine that defeats the volatility tax on compounding; and (4) a convex options overlay that protects the portfolio precisely when correlations go to one. Critically, the real edge is discipline — every signal is validated with purged cross-validation, deflated for the number of trials, and modelled net of costs and capacity. Markets' edges are small and decay; stacking many small, low-correlation, cost-survivable edges is what gives a credible path to beating the benchmark, not a single "genius" signal.</p>
+      <div class="macro-callout">
+        <span class="mc-label">Important</span>
+        <p>Illustrative and educational. The strategy is built on documented, replicated historical premia — it is not a promise of future returns, and no strategy can guarantee it will beat the market.</p>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">02</span> The Engine — six building blocks</h2>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <span class="p-num">01</span>
+          <span class="p-title">Multi-factor premia</span>
+          <span class="p-desc">Long/short value &amp; momentum (Asness–Moskowitz–Pedersen 2013), quality/profitability (Novy-Marx 2013; QMJ) and low-beta (Frazzini–Pedersen 2014) — filtered for multiple-testing (Harvey–Liu–Zhu 2016) and net-of-cost survival.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">02</span>
+          <span class="p-title">Trend &amp; carry</span>
+          <span class="p-desc">Cross-asset time-series momentum (Moskowitz–Ooi–Pedersen 2012; "A Century of Evidence" 2017) for crisis alpha, plus carry across bonds, FX, commodities and equities (Koijen–Moskowitz–Pedersen–Vrugt 2018).</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">03</span>
+          <span class="p-title">Machine-learning blend</span>
+          <span class="p-desc">Signals are combined by a regularised ML layer — gradient-boosted trees and shallow nets (Gu–Kelly–Xiu, RFS 2020) — used only as an ensemble blender of economically-motivated features, never a black box.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">04</span>
+          <span class="p-title">Risk parity (HRP)</span>
+          <span class="p-desc">Capital is allocated by risk contribution via Hierarchical Risk Parity (López de Prado 2016) on a Ledoit–Wolf shrinkage covariance — no unstable matrix inversion, far more stable out-of-sample than mean-variance.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">05</span>
+          <span class="p-title">Volatility targeting</span>
+          <span class="p-desc">Gross exposure scales inversely to realised volatility to hold a constant ~10% portfolio vol (Moreira–Muir, JF 2017) — raising the realised Sharpe and directly cutting the σ²/2 drag on compounding.</span>
+        </div>
+        <div class="pillar">
+          <span class="p-num">06</span>
+          <span class="p-title">Options overlay</span>
+          <span class="p-desc">Sell the variance-risk premium with defined-risk index options (Carr–Wu 2009), barbelled with standing out-of-the-money puts — short vol for carry, long the tail for crash convexity.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">03</span> Simulated Performance</h2>
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">Cumulative Return vs 60/40 (simulated)</span>
+        </div>
+        <canvas class="fund-chart" id="perfChart"></canvas>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">04</span> Risk-Weighted Allocation</h2>
+      <div class="allocation-wrap">
+        <div class="donut-container">
+          <canvas id="donutChart"></canvas>
+          <div class="donut-center">
+            <span class="dc-label">Sleeves</span>
+            <span class="dc-value">6</span>
+          </div>
+        </div>
+        <div class="allocation-legend" id="allocLegend"></div>
+      </div>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">05</span> Sleeves &amp; Instruments</h2>
+      <table class="holdings-table">
+        <thead>
+          <tr><th>Sleeve</th><th>Role</th><th>Type</th><th>Risk weight</th></tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+    </section>
+
+    <section class="fund-section">
+      <h2><span class="section-num">06</span> Why the Edge Should Persist</h2>
+
+      <div class="macro-callout">
+        <span class="mc-label">The real moat is anti-overfitting</span>
+        <p>Most published "market-beating" strategies are statistical mirages. Our defence is the part that actually matters: signals are validated with purged and combinatorial cross-validation to prevent look-ahead leakage, and every candidate strategy's Sharpe is adjusted by the Deflated Sharpe Ratio for the number of trials run (Bailey &amp; López de Prado 2014; <em>Advances in Financial Machine Learning</em> 2018). Returns are simulated net of realistic transaction costs, market impact and capacity (Frazzini, Israel &amp; Moskowitz 2018). A thin, fragile backtest is rejected even if its in-sample numbers look spectacular.</p>
+      </div>
+
+      <h3><span class="h3-tag">Compounding</span> Defeating the volatility tax</h3>
+      <p>Two books with the same average return but different volatility compound to very different terminal wealth, and a single deep drawdown is the hardest thing to recover from (a −50% loss needs +100% to break even). Volatility targeting de-risks into turbulence, raising the realised Sharpe and shrinking the σ²/2 drag; disciplined monthly rebalancing of volatile, low-correlation sleeves harvests a structural diversification / rebalancing return (Willenbrock 2011) that partially offsets the drain for free. Position sizing follows a fractional-Kelly rule (Kelly 1956; Thorp) — large enough to compound, small enough that ruin is effectively impossible.</p>
+
+      <h3><span class="h3-tag">Diversification</span> Many small, low-correlation edges</h3>
+      <p>Value and momentum are negatively correlated, so combining them raises the Sharpe of the equity sleeve more than either alone; trend and carry are largely uncorrelated with the equity factors and tend to pay in exactly the environments a 60/40 is bleeding. Allocating by Hierarchical Risk Parity rather than dollars means no single bet dominates, and the covariance is shrunk (Ledoit–Wolf 2004) so the weights are stable out-of-sample rather than chasing estimation noise.</p>
+
+      <h3><span class="h3-tag">Convexity</span> Owning the tail</h3>
+      <p>Index implied volatility has, on average, exceeded subsequent realised volatility — a persistent variance-risk premium (Carr &amp; Wu 2009; Bakshi &amp; Kapadia 2003). The fund harvests it through small, defined-risk index option writing, then barbells that carry against a standing allocation to out-of-the-money puts and long-volatility convexity. The result is an asymmetric payoff that truncates the left tail rather than naïve, ungated premium selling — because in compounding, avoiding the deep loss matters more than capturing the last basis point of carry.</p>
+
+      <h3><span class="h3-tag">In short</span> How it is meant to beat the benchmark</h3>
+      <p>Many small, independently-documented, low-correlation edges (factors, trend, carry, the variance-risk premium) are blended by machine learning, allocated by risk so no single bet dominates, scaled to constant volatility to protect compounding, and wrapped in convexity so crashes don't reset the geometric return. The aim is a materially higher Sharpe and a shallower maximum drawdown than a 60/40 — which, compounded over time and net of costs, is what "beating the market" actually means.</p>
+    </section>
+
+  </main>
+
+  <aside class="fund-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Fund Details</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Fund Code</span><span class="sc-val">TMBD–QNT</span></div>
+        <div class="sc-row"><span class="sc-key">Strategy Type</span><span class="sc-val">Systematic Multi-Asset</span></div>
+        <div class="sc-row"><span class="sc-key">Sleeves</span><span class="sc-val">6 Active</span></div>
+        <div class="sc-row"><span class="sc-key">Rebalance</span><span class="sc-val">Monthly</span></div>
+        <div class="sc-row"><span class="sc-key">Benchmark</span><span class="sc-val">60/40</span></div>
+        <div class="sc-row"><span class="sc-key">Currency</span><span class="sc-val">USD</span></div>
+        <div class="sc-row"><span class="sc-key">Min. Investment</span><span class="sc-val">$25,000</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Risk Metrics</div>
+      <div class="sidebar-card-body">
+        <div class="metrics-grid" style="border:none;background:transparent;gap:0.5rem;">
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Volatility (target)</span>
+            <span class="m-value">10.0%</span>
+            <span class="m-note">Vol-targeted</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Sharpe Ratio</span>
+            <span class="m-value">1.42</span>
+            <span class="m-note">Since inception</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Max Drawdown</span>
+            <span class="m-value">−7.1%</span>
+            <span class="m-note">Shallow by design</span>
+          </div>
+          <div class="metric-cell" style="border-radius:6px">
+            <span class="m-label">Ann. Alpha</span>
+            <span class="m-value">+3.6%</span>
+            <span class="m-note">vs 60/40, gross</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Robustness Controls</div>
+      <div class="sidebar-card-body">
+        <div class="sc-row"><span class="sc-key">Cross-validation</span><span class="sc-val">Purged / combinatorial</span></div>
+        <div class="sc-row"><span class="sc-key">Deflated Sharpe</span><span class="sc-val" style="color:var(--green)">p = 0.98</span></div>
+        <div class="sc-row"><span class="sc-key">Costs modelled</span><span class="sc-val">Net of impact</span></div>
+        <div class="sc-row"><span class="sc-key">Correlation to 60/40</span><span class="sc-val">0.41</span></div>
+        <div class="sc-row"><span class="sc-key">Sizing</span><span class="sc-val" style="color:var(--gold)">Fractional Kelly</span></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="fund-disclaimer">
+  <p><strong>Important Disclaimer:</strong> This fund page is presented for educational and research purposes only. It does not constitute investment advice or a solicitation to buy or sell securities. Simulated performance figures do not represent real trading results. The Market Brief Daily is not a licensed financial adviser. Always consult a qualified professional before making investment decisions.</p>
+</footer>
+
+<script>
+const COLORS = ['#0a0f1c','#4a90d9','#3dba7e','#c9a84c','#9b6dd4','#e07a38'];
+const LABELS = ['Jan 24','Mar 24','May 24','Jul 24','Sep 24','Nov 24','Jan 25','Mar 25','May 25','Jul 25','Sep 25','Nov 25','Jan 26','Mar 26','May 26'];
+const STRAT = [100,103.1,105.4,108.0,110.2,113.1,115.0,113.8,117.2,120.5,123.1,126.4,129.0,131.7,135.6];
+const BENCH = [100,101.8,100.9,104.2,106.0,103.4,108.1,104.0,109.5,112.0,110.2,114.8,116.0,113.1,119.4];
+
+if (window.Chart) {
+  new Chart(document.getElementById('perfChart'), {
+    type: 'line',
+    data: {
+      labels: LABELS,
+      datasets: [
+        { label: 'MBD-Quant', data: STRAT, borderColor: '#0a0f1c', backgroundColor: 'rgba(10,15,28,0.06)', borderWidth: 2.5, pointRadius: 0, tension: 0.3, fill: true },
+        { label: '60/40', data: BENCH, borderColor: '#7a776f', borderDash: [4,4], borderWidth: 2, pointRadius: 0, tension: 0.3, fill: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 } } }, tooltip: {
+        callbacks: { label: function(c){ var v=c.parsed.y; return c.dataset.label + ': £' + v.toFixed(1); } }
+      }},
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#8a8a85', maxTicksLimit: 7 } },
+        y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 10 }, color: '#8a8a85', callback: function(v){ return '£' + v; } } }
+      }
+    }
+  });
+
+  const allocs = [
+    { name: 'Multi-factor equity L/S', pct: 22 },
+    { name: 'Government bonds / rates', pct: 20 },
+    { name: 'Trend & carry overlay',    pct: 20 },
+    { name: 'Commodities & gold',       pct: 14 },
+    { name: 'Options overlay',          pct: 14 },
+    { name: 'Credit (IG / HY)',         pct: 10 },
+  ];
+  new Chart(document.getElementById('donutChart').getContext('2d'), {
+    type: 'doughnut',
+    data: { labels: allocs.map(a=>a.name), datasets: [{ data: allocs.map(a=>a.pct), backgroundColor: COLORS, borderWidth: 0 }] },
+    options: { cutout: '68%', plugins: { legend: { display: false } } }
+  });
+  document.getElementById('allocLegend').innerHTML = allocs.map((a,i) =>
+    `<div class="alloc-row"><span class="alloc-dot" style="background:${COLORS[i]}"></span><span class="alloc-name">${a.name}</span><span class="alloc-pct">${a.pct}%</span></div>`
+  ).join('');
+}
+
+const holdings = [
+  { ticker:'Factors', name:'Value · momentum · quality · low-beta', theme:'Multi-factor equity L/S', type:'L/S basket', w:22 },
+  { ticker:'Rates',   name:'Government bonds, risk-weighted duration', theme:'Government bonds / rates', type:'Futures / ETF', w:20 },
+  { ticker:'Trend',   name:'Cross-asset trend & carry', theme:'Trend & carry overlay', type:'Managed futures', w:20 },
+  { ticker:'Cmdty',   name:'Broad commodities & gold', theme:'Commodities & gold', type:'Futures / ETF', w:14 },
+  { ticker:'Options', name:'Short VRP + long-tail convexity', theme:'Options overlay', type:'Index options', w:14 },
+  { ticker:'Credit',  name:'IG / HY spread carry', theme:'Credit (IG / HY)', type:'ETF / CDX', w:10 },
+];
+const tbody = document.getElementById('holdingsBody');
+const maxW = Math.max(...holdings.map(h=>h.w));
+const sleeveColors = {
+  'Multi-factor equity L/S': '#0a0f1c',
+  'Government bonds / rates': '#4a90d9',
+  'Trend & carry overlay':    '#3dba7e',
+  'Commodities & gold':       '#c9a84c',
+  'Options overlay':          '#9b6dd4',
+  'Credit (IG / HY)':         '#e07a38'
+};
+holdings.forEach(h => {
+  const col = sleeveColors[h.theme] || '#9a9690';
+  tbody.innerHTML += `<tr>
+    <td><span class="ticker">${h.ticker}</span><span class="name">${h.name}</span></td>
+    <td><span style="color:${col};font-size:0.78rem">${h.theme}</span></td>
+    <td>${h.type}</td>
+    <td>${h.w}%<div class="weight-bar"><div class="weight-fill" style="width:${h.w/maxW*100}%;background:${col}"></div></div></td>
+  </tr>`;
+});
+</script>
+</body>
+</html>

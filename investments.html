@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -554,7 +554,6 @@
         <a href="/">Home</a>
         <a class="is-active" href="/investments.html">Investments</a>
         <a href="/posts.html">Research Posts</a>
-        <a href="/indicators.html">Indicators</a>
         <a href="/tools/">Tools</a>
         <a href="/education.html">Education</a>
         <a href="/about.html">About</a>
@@ -568,7 +567,6 @@
     <a href="/">Home</a>
     <a href="/investments.html">Investments</a>
     <a href="/posts.html">Research Posts</a>
-    <a href="/indicators.html">Indicators</a>
     <a href="/tools/">Tools</a>
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
@@ -774,16 +772,49 @@
       <div class="tbp-section-heading" data-tbp-reveal>
         <div class="left">
           <div class="number">02 / Fund families</div>
-          <h2>Four diversified<br><em>portfolios.</em></h2>
+          <h2>Five diversified<br><em>portfolios.</em></h2>
         </div>
         <div class="right">
           <p class="tbp-lead">
-            Four portfolio strategies, three rooted in foundational academic finance (Fama–French, Sharpe, and a Fama–French ESG variant) and one proprietary thematic rotation. Each is fully documented — strategy, holdings, weights, rebalancing rules, and benchmark methodology.
+            Five portfolio strategies — a flagship systematic quant mandate, three rooted in foundational academic finance (Fama–French, Sharpe, and a Fama–French ESG variant), and a proprietary thematic rotation. Each is fully documented — strategy, holdings, weights, rebalancing rules, and benchmark methodology.
           </p>
         </div>
       </div>
 
       <div class="fund-range-grid" data-tbp-reveal>
+
+        <!-- Quant (Flagship) -->
+        <div class="fund-range-card">
+          <div class="frc-visual">
+            <img src="/assets/images/trading-desk.jpg" alt="Quant fund" loading="lazy">
+            <span class="frc-code">MBD-QUANT</span>
+            <span class="frc-badge" style="background:#0a0f1c; color:var(--tbp-warm); border:1px solid var(--tbp-warm);">FLAGSHIP QUANT</span>
+            <span class="frc-title">Quant</span>
+          </div>
+          <div class="frc-body">
+            <span class="frc-academic">Systematic multi-asset risk premia &amp; convexity</span>
+            <p class="frc-desc">An institutional, multi-strategy book engineered to compound ahead of the market on a risk-adjusted basis. It stacks diversified, academically-replicated return premia (value, momentum, quality, carry and trend) and a machine-learning signal blend on a Hierarchical-Risk-Parity core, targets constant volatility to defeat the volatility tax, and runs a convex options overlay — short the variance-risk premium for carry, long the tail for crash protection.</p>
+            <div class="frc-stats">
+              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+9.4%</div></div>
+              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">1.42</div></div>
+              <div class="frc-stat"><div class="sk">Vol target</div><div class="sv">10%</div></div>
+            </div>
+            <div class="frc-chart-wrap"><canvas id="chartQuant"></canvas></div>
+            <div class="frc-chart-legend">
+              <span><span class="dot" style="background:#0a0f1c;"></span>MBD-Quant</span>
+              <span><span class="dot" style="background:#8a8a85;"></span>60/40</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
+              <span class="frc-pill">Risk parity (HRP)</span>
+              <span class="frc-pill">Volatility targeting</span>
+              <span class="frc-pill">Trend &amp; carry</span>
+              <span class="frc-pill">Variance-risk premium</span>
+              <span class="frc-pill">Machine learning</span>
+              <span class="frc-pill">Tail convexity</span>
+            </div>
+            <a class="tbp-btn primary" href="/funds/quant.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
+          </div>
+        </div>
 
         <!-- Classic -->
         <div class="fund-range-card">
@@ -906,148 +937,6 @@
               <span class="frc-pill">EU staples</span>
             </div>
             <a class="tbp-btn primary" href="/funds/rotational.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ ASSET CLASS STRATEGIES ═════════════════════════════════ -->
-  <section class="tbp-section alt" id="asset-class">
-    <div class="tbp-container">
-      <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">03 / Asset-class strategies</div>
-          <h2>Single-mandate<br><em>specialists.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">
-            Four focused single-asset-class strategies designed for investors who already own broad diversification and want a specialist sleeve. Each mandate runs independently — discrete return profile, discrete benchmark, discrete risk budget.
-          </p>
-        </div>
-      </div>
-
-      <div class="fund-range-grid" data-tbp-reveal>
-
-        <!-- Fixed Income -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/glass-tower.jpg" alt="Fixed Income strategy" loading="lazy">
-            <span class="frc-code">MBD-FI</span>
-            <span class="frc-title">Fixed Income</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Duration-managed credit barbell</span>
-            <p class="frc-desc">Barbell allocation between long-duration Treasuries (rate-cut hedge) and short-duration credit (carry). Adds opportunistic IG / HY, TIPS, and EM USD exposure. Duration target: 5–7 years. Credit overlay rotates by spread regime.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+4.2%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.68</div></div>
-              <div class="frc-stat"><div class="sk">Duration</div><div class="sv">6.1y</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartFI"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0a4a8a;"></span>MBD-FI</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>Bloomberg US Agg</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Treasuries</span>
-              <span class="frc-pill">IG / HY credit</span>
-              <span class="frc-pill">TIPS</span>
-              <span class="frc-pill">EM USD bonds</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/fixed-income.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Equities -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/trading-desk.jpg" alt="Equities strategy" loading="lazy">
-            <span class="frc-code">MBD-EQ</span>
-            <span class="frc-title">Equities</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Multi-factor · quality &amp; momentum</span>
-            <p class="frc-desc">Global equity sleeve combining quality, momentum, low-volatility, and value factor ETFs in a regime-aware blend. Factor weights shift with the rate cycle and credit conditions. No single-stock selection — pure factor expression at the portfolio level.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+9.5%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.91</div></div>
-              <div class="frc-stat"><div class="sk">Beta</div><div class="sv">0.92</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartEQ"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0066ff;"></span>MBD-EQ</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Quality</span>
-              <span class="frc-pill">Momentum</span>
-              <span class="frc-pill">Min vol</span>
-              <span class="frc-pill">Value</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/equities.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Commodities -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/fund-supply.jpg" alt="Commodities strategy" loading="lazy">
-            <span class="frc-code">MBD-CM</span>
-            <span class="frc-title">Commodities</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Diversified physical exposure</span>
-            <p class="frc-desc">Broad commodity sleeve: precious metals (gold, silver, platinum), energy (oil, natural gas, uranium), industrial metals (copper), and softs (agriculture, wheat). Targeted exposure to roll-yield in backwardated curves; risk-off rotation in contango regimes.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+11.4%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.86</div></div>
-              <div class="frc-stat"><div class="sk">OCF</div><div class="sv">0.41%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartCM"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#b8860b;"></span>MBD-CM</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>Bloomberg Cmdty</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Precious metals</span>
-              <span class="frc-pill">Energy</span>
-              <span class="frc-pill">Base metals</span>
-              <span class="frc-pill">Agriculture</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/commodities.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Options & Derivatives -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/trading-screens.jpg" alt="Options &amp; Derivatives strategy" loading="lazy">
-            <span class="frc-code">MBD-OPT</span>
-            <span class="frc-badge" style="background:#0a0f1c;color:#fff;border:1px solid #4ade80;">VOL ARB</span>
-            <span class="frc-title">Options &amp; Derivatives</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Earnings volatility crush · short premium</span>
-            <p class="frc-desc">Systematic short-volatility strategy harvesting the implied-volatility risk premium around single-stock earnings events. Filters for IV30/RV30 ≥ 1.25, term-structure backwardation, and adequate liquidity. Positions held through earnings, closed on IV collapse.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+14.2%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">1.38</div></div>
-              <div class="frc-stat"><div class="sk">Win rate</div><div class="sv">71%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartOPT"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#dc2626;"></span>MBD-OPT</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>S&amp;P 500</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Short straddle</span>
-              <span class="frc-pill">Iron condor</span>
-              <span class="frc-pill">Term-structure</span>
-              <span class="frc-pill">Yang–Zhang RV</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/options-derivatives.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
           </div>
         </div>
 
@@ -1410,6 +1299,9 @@
       tracker:   [102.5,104.8,103.2,106.5,108.9,108.2,110.7,109.4,107.4,110.9,109.5,110.5, 112.4,114.7,114.1,117.2,118.5],
       sixty_forty: [100.8,101.9,100.6,102.8,104.0,103.5,104.8,103.9,102.6,104.7,103.9,104.8, 105.7,106.8,106.3,107.6,108.4],
 
+      // MBD-QUANT vs 60/40 — vol-targeted, shallow drawdowns
+      quant:     [101.0,102.4,103.1,104.6,105.9,106.4,107.8,107.2,108.9,110.3,111.0,111.7, 112.4,113.1,113.0,113.8,114.6],
+
       // MBD-MACRO vs 60/40
       macro:     [101.2,102.3,100.8,103.5,104.7,105.4,107.1,106.2,107.6,109.4,108.7,107.2, 109.5,111.8,111.1,113.7,116.2],
       macro_bm:  [100.8,101.9,100.6,102.8,104.0,103.5,104.8,103.9,102.6,104.7,103.9,104.8, 105.7,106.8,106.3,107.6,108.4],
@@ -1482,14 +1374,11 @@
 
     function init() {
       if (typeof Chart === 'undefined') { setTimeout(init, 200); return; }
+      makeChart('chartQuant',   DATA.quant,      DATA.sixty_forty, '#0a0f1c', '#8a8a85', 'MBD-Quant',    '60/40');
       makeChart('chartClassic', DATA.classic,   DATA.msci,        '#0066ff', '#8a8a85', 'MBD-Classic',  'MSCI World');
       makeChart('chartESG',     DATA.esg,        DATA.msci_esg,    '#1a8a4a', '#8a8a85', 'MBD-ESG',      'MSCI ESG');
       makeChart('chartTracker', DATA.tracker,    DATA.sixty_forty, '#c8a35a', '#8a8a85', 'MBD-Tracker',  '60/40');
       makeChart('chartRotate',  DATA.rotate,     DATA.rotate_bm,   '#9333ea', '#8a8a85', 'MBD-Rotate',   'MSCI World');
-      makeChart('chartFI',      DATA.fi,         DATA.fi_bm,       '#0a4a8a', '#8a8a85', 'MBD-FI',       'US Agg');
-      makeChart('chartEQ',      DATA.eq,         DATA.eq_bm,       '#0066ff', '#8a8a85', 'MBD-EQ',       'MSCI World');
-      makeChart('chartCM',      DATA.cm,         DATA.cm_bm,       '#b8860b', '#8a8a85', 'MBD-CM',       'BCOM');
-      makeChart('chartOPT',     DATA.opt,        DATA.opt_bm,      '#dc2626', '#8a8a85', 'MBD-OPT',      'S&P 500');
       makeChart('chartMacro',   DATA.macro,      DATA.macro_bm,    '#0066ff', '#8a8a85', 'MBD-MACRO',    '60/40');
       makeChart('chartStruct',  DATA.struct,     DATA.sp500,       '#0a0a0a', '#8a8a85', 'MBD-STRUCT',   'S&P 500');
       makeChart('chartSupply',  DATA.supply,     DATA.bcom,        '#1a8a4a', '#8a8a85', 'MBD-SUPPLY',   'BCOM');
