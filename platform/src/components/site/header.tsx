@@ -39,7 +39,7 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
     >
       <div className="container-tbp flex h-full items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5" aria-label="The Market Brief Daily">
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-ink font-display text-base font-extrabold text-white">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-display text-[13px] font-extrabold tracking-[.02em] text-bg">
             M
           </span>
           <span className="font-display text-[15px] font-bold tracking-tight">
@@ -47,19 +47,25 @@ export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "text-sm font-medium text-muted transition-colors hover:text-ink",
-                pathname.startsWith(item.href) && "text-ink",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+          {NAV.map((item) => {
+            const active = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "relative py-1.5 text-[14.5px] font-medium text-ink-2 transition-colors hover:text-ink",
+                  active && "text-ink",
+                )}
+              >
+                {item.label}
+                {active && (
+                  <span className="absolute inset-x-0 -bottom-px h-[1.5px] rounded-full bg-warm" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-3">

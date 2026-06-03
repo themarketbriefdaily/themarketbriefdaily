@@ -36,7 +36,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="flex min-h-screen bg-bg-alt">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-line bg-card lg:flex">
         <Link href="/" className="flex items-center gap-2.5 border-b border-line px-6 py-5">
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-ink font-display text-base font-extrabold text-white">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-display text-[13px] font-extrabold tracking-[.02em] text-bg">
             M
           </span>
           <span className="font-display text-sm font-bold tracking-tight">Admin</span>

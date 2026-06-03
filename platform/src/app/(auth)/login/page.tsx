@@ -12,7 +12,7 @@ export default function LoginPage() {
       <div className="flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-20">
         <div className="mx-auto w-full max-w-sm">
           <Link href="/" className="mb-10 flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-md bg-ink font-display text-base font-extrabold text-white">
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-ink font-display text-[13px] font-extrabold tracking-[.02em] text-bg">
               M
             </span>
             <span className="font-display text-[15px] font-bold tracking-tight">
