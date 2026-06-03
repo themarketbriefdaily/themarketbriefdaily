@@ -10,9 +10,9 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/investments", label: "Investments" },
   { href: "/research", label: "Research" },
-  { href: "/markets", label: "Markets" },
-  { href: "/learn", label: "Learn" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/tools", label: "Tools" },
+  { href: "/education", label: "Education" },
+  { href: "/about", label: "About" },
 ];
 
 export function Header({ isLoggedIn = false }: { isLoggedIn?: boolean }) {

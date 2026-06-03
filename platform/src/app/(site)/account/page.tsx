@@ -57,13 +57,13 @@ export default async function AccountPage() {
               Quick links
             </div>
             <div className="mt-4 flex flex-col gap-2.5 text-sm">
-              <Link href="/learn/cfa" className="text-ink-2 hover:text-ink">
+              <Link href="/education/cfa" className="text-ink-2 hover:text-ink">
                 → Question bank &amp; progress
               </Link>
               <Link href="/investments" className="text-ink-2 hover:text-ink">
                 → Model portfolios
               </Link>
-              <Link href="/markets" className="text-ink-2 hover:text-ink">
+              <Link href="/tools" className="text-ink-2 hover:text-ink">
                 → Live indicators
               </Link>
             </div>

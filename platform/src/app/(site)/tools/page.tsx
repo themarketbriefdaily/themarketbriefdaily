@@ -1,25 +1,31 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Calculator, LineChart, GraduationCap, Gauge } from "lucide-react";
 import {
   getMarketLevels,
   getMacroIndicators,
   getTreasuryCurve,
   indicatorsConfigured,
 } from "@/lib/data/indicators";
-import { RESEARCH_PORTFOLIOS as PORTFOLIOS } from "@/lib/data/products";
 import { YieldCurveChart } from "@/components/charts/yield-curve";
-import { Badge } from "@/components/ui/badge";
 import { formatPct } from "@/lib/utils";
-import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Markets",
+  title: "Tools",
   description:
-    "Live macro dashboard: market levels, inflation, the Fed funds rate, the Treasury yield curve, jobs and growth — plus model-portfolio snapshots.",
+    "Live macro indicators — market levels, inflation, the Fed funds rate, the Treasury yield curve, jobs and growth — plus institutional calculators (DCF, bond yield) and the CFA question bank.",
 };
 
 export const revalidate = 3600;
 
-export default async function MarketsPage() {
+const CALCULATORS = [
+  { icon: Calculator, title: "DCF Model", desc: "Build a discounted cash-flow valuation in one screen.", href: null },
+  { icon: LineChart, title: "Bond Yield Analytics", desc: "Price, yield, duration and convexity for any bond.", href: null },
+  { icon: Gauge, title: "Macro Dashboard", desc: "Yield curves, spreads and the policy path — above.", href: "#indicators" },
+  { icon: GraduationCap, title: "CFA Question Bank", desc: "Hundreds of exam-style questions with progress tracking.", href: "/education/cfa" },
+];
+
+export default async function ToolsPage() {
   const [levels, macro, curve] = await Promise.all([
     getMarketLevels(),
     getMacroIndicators(),
@@ -33,11 +39,13 @@ export default async function MarketsPage() {
           <span className="live-dot" /> Live · auto-refreshed
         </span>
         <h1 className="text-[clamp(2.4rem,5vw,3.4rem)] font-extrabold leading-none tracking-tight">
-          The macro <span className="serif-em">dashboard.</span>
+          Tools &amp; <span className="serif-em">indicators.</span>
         </h1>
         <p className="mt-5 text-[1.05rem] leading-relaxed text-muted">
-          Market levels, inflation, policy path, the Treasury curve, labour and growth — refreshed
-          from the data pipeline (Yahoo Finance) and FRED. {!indicatorsConfigured && (
+          A live macro dashboard and a set of institutional-grade calculators in one place. Market
+          levels, inflation, the policy path and the Treasury curve refresh from the data pipeline
+          (Yahoo Finance) and FRED.{" "}
+          {!indicatorsConfigured && (
             <span className="text-muted-2">
               Macro series show representative values until a FRED API key is set.
             </span>
@@ -45,8 +53,8 @@ export default async function MarketsPage() {
         </p>
       </header>
 
-      {/* Market levels */}
-      <section className="mt-12">
+      {/* Live indicators */}
+      <section className="mt-12" id="indicators">
         <SectionTitle>Market levels</SectionTitle>
         <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-4">
           {levels.map((m) => (
@@ -72,7 +80,6 @@ export default async function MarketsPage() {
         </div>
       </section>
 
-      {/* Treasury curve + macro */}
       <section className="mt-12 grid gap-6 lg:grid-cols-[1.3fr_1fr]">
         <div className="rounded-2xl border border-line bg-card p-6">
           <div className="mb-4 flex items-baseline justify-between">
@@ -99,31 +106,34 @@ export default async function MarketsPage() {
         </div>
       </section>
 
-      {/* Portfolio snapshots */}
-      <section className="mt-12" id="portfolios">
-        <div className="mb-5 flex items-baseline justify-between">
-          <SectionTitle className="mb-0">Model-portfolio snapshots</SectionTitle>
-          <Link href="/investments" className="text-sm font-semibold text-ink hover:underline">
-            All portfolios →
-          </Link>
-        </div>
+      {/* Calculators & models */}
+      <section className="mt-14">
+        <SectionTitle>Calculators &amp; models</SectionTitle>
         <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-          {PORTFOLIOS.map((p) => (
-            <Link
-              key={p.code}
-              href="/investments"
-              className="rounded-2xl border border-line bg-card p-5 transition-colors hover:border-ink/30"
-            >
-              <Badge size="sm">{p.code}</Badge>
-              <div className="mt-3 font-display text-2xl font-extrabold tabular text-pos">
-                {formatPct(p.ytd)}
+          {CALCULATORS.map((c) => {
+            const inner = (
+              <>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-bg-alt text-ink">
+                  <c.icon size={18} />
+                </span>
+                <h3 className="mt-4 text-base font-bold tracking-tight">{c.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{c.desc}</p>
+              </>
+            );
+            return c.href ? (
+              <Link
+                key={c.title}
+                href={c.href}
+                className="rounded-2xl border border-line bg-card p-6 transition-colors hover:border-ink/30"
+              >
+                {inner}
+              </Link>
+            ) : (
+              <div key={c.title} className="rounded-2xl border border-line bg-card p-6">
+                {inner}
               </div>
-              <div className="mt-1 text-[13px] text-muted">
-                YTD · vs {p.benchmark} {formatPct(p.excess ?? 0)}
-              </div>
-              <div className="mt-3 text-sm font-medium">{p.name}</div>
-            </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>
@@ -137,7 +147,5 @@ function SectionTitle({
   children: React.ReactNode;
   className?: string;
 }) {
-  return (
-    <h2 className={`mb-5 text-lg font-bold tracking-tight ${className}`}>{children}</h2>
-  );
+  return <h2 className={`mb-5 text-lg font-bold tracking-tight ${className}`}>{children}</h2>;
 }

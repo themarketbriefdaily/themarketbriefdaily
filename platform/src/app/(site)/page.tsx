@@ -280,7 +280,7 @@ export default function HomePage() {
         <div className="grid gap-[clamp(16px,2vw,28px)] md:grid-cols-2" data-reveal>
           {[
             {
-              href: "/learn",
+              href: "/education",
               img: "/images/library-research.jpg",
               label: "Education",
               title: "Finance Education Library",
@@ -289,7 +289,7 @@ export default function HomePage() {
               cta: "Open the library →",
             },
             {
-              href: "/learn/cfa",
+              href: "/education/cfa",
               img: "/images/trading-screens.jpg",
               label: "Question bank",
               title: "CFA L1 & Quant Question Bank",

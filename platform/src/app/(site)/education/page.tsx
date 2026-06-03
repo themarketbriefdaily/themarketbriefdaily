@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Calculator, GraduationCap, LineChart } from "lucide-react";
+import { GraduationCap, LineChart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
-  title: "Learn",
+  title: "Education",
   description:
-    "Finance education library, the CFA L1 & Quant question bank, and institutional-grade tools — DCF, bond yield and the macro dashboard.",
+    "A free finance education library plus the CFA L1 & Quant question bank with progress tracking — covering markets, asset classes, UK tax, pensions and the CFA syllabus.",
 };
 
 const CHAPTERS = [
@@ -21,14 +21,14 @@ const CHAPTERS = [
 
 const COURSES = [
   {
-    href: "/learn/cfa",
+    href: "/education/cfa",
     icon: GraduationCap,
     title: "CFA Level 1 Question Bank",
     desc: "Hundreds of exam-style questions across all 10 topic areas, with timed quizzes, explanations and saved progress.",
     badge: "Professional",
   },
   {
-    href: "/learn/cfa",
+    href: "/education/cfa",
     icon: LineChart,
     title: "Quant Trader Course",
     desc: "From signal construction to backtesting, risk and execution — the foundations behind the AI day-trader.",
@@ -36,23 +36,21 @@ const COURSES = [
   },
 ];
 
-const TOOLS = [
-  { icon: Calculator, title: "DCF Calculator", desc: "Build a discounted cash-flow model in one screen." },
-  { icon: LineChart, title: "Bond Yield Analytics", desc: "Price, yield, duration and convexity." },
-  { icon: BookOpen, title: "Macro Dashboard", desc: "Yield curves, spreads and policy path." },
-];
-
-export default function LearnPage() {
+export default function EducationPage() {
   return (
     <div className="container-tbp py-[clamp(48px,6vw,88px)]">
       <header className="max-w-3xl" data-reveal>
-        <div className="eyebrow">Learn</div>
+        <div className="eyebrow">Education</div>
         <h1 className="mt-4 text-[clamp(2.4rem,5vw,3.4rem)] font-extrabold leading-none tracking-tight">
-          Education and <span className="serif-em">tools.</span>
+          Learn the <span className="serif-em">fundamentals.</span>
         </h1>
         <p className="mt-5 text-[1.05rem] leading-relaxed text-muted">
-          A free education library, a paywalled question bank with progress tracking, and a set of
-          institutional-grade calculators — one hub.
+          A free education library and a paywalled question bank with progress tracking. Looking for
+          the calculators and the live macro dashboard? They live in{" "}
+          <Link href="/tools" className="font-semibold text-ink underline-offset-2 hover:underline">
+            Tools
+          </Link>
+          .
         </p>
       </header>
 
@@ -93,22 +91,6 @@ export default function LearnPage() {
               </div>
               <h3 className="mt-2 text-base font-bold tracking-tight">{ch.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted">{ch.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Tools */}
-      <section className="mt-12" data-reveal>
-        <h2 className="mb-5 text-lg font-bold tracking-tight">Tools</h2>
-        <div className="grid gap-3.5 sm:grid-cols-3">
-          {TOOLS.map((t) => (
-            <div key={t.title} className="rounded-2xl border border-line bg-card p-6">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-bg-alt text-ink">
-                <t.icon size={18} />
-              </span>
-              <h3 className="mt-4 text-base font-bold tracking-tight">{t.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{t.desc}</p>
             </div>
           ))}
         </div>

@@ -5,18 +5,18 @@ const COLUMNS = [
     title: "Content",
     links: [
       { href: "/research", label: "Research" },
-      { href: "/investments", label: "Portfolios" },
-      { href: "/markets", label: "Markets" },
-      { href: "/learn", label: "Learn" },
+      { href: "/investments", label: "Investments" },
+      { href: "/tools", label: "Tools" },
+      { href: "/education", label: "Education" },
     ],
   },
   {
     title: "Platform",
     links: [
       { href: "/pricing", label: "Subscription" },
-      { href: "/learn/cfa", label: "CFA Question Bank" },
+      { href: "/education/cfa", label: "CFA Question Bank" },
       { href: "/account", label: "Account" },
-      { href: "/markets#methodology", label: "Methodology" },
+      { href: "/tools#indicators", label: "Indicators" },
     ],
   },
   {
