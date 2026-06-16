@@ -1,0 +1,9 @@
+# local preview / tooling
+.claude/
+
+# quant compute price cache (regenerated each run)
+cache/
+
+# python
+__pycache__/
+*.pyc

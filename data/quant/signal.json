@@ -1,0 +1,84 @@
+{
+  "as_of": "2026-06-15",
+  "regime": "Bull",
+  "conviction": 0.774,
+  "credit_gate_active": false,
+  "regime_duration_months": 40,
+  "regime_avg_ann_return": 0.2522,
+  "allocation": [
+    {
+      "sleeve": "1x equity (Nasdaq-100)",
+      "ticker": "EQQQ.L",
+      "weight": 0.1619
+    },
+    {
+      "sleeve": "3x equity (Nasdaq-100)",
+      "ticker": "QQQ3.L",
+      "weight": 0.3699
+    },
+    {
+      "sleeve": "Managed futures",
+      "ticker": "DBMF",
+      "weight": 0.2279
+    },
+    {
+      "sleeve": "Gold",
+      "ticker": "SGLN.L",
+      "weight": 0.0
+    },
+    {
+      "sleeve": "Long Treasuries",
+      "ticker": "IDTL.L",
+      "weight": 0.0
+    },
+    {
+      "sleeve": "Cash (GBP)",
+      "ticker": "CASH",
+      "weight": 0.2403
+    }
+  ],
+  "proxy_prices": {
+    "EQQQ.L": 754.83,
+    "QQQ3.L": 754.83,
+    "DBMF": 30.88,
+    "SGLN.L": 396.55,
+    "IDTL.L": 85.72
+  },
+  "headline": {
+    "cagr": 0.215,
+    "ann": 0.2169,
+    "vol": 0.2098,
+    "sharpe": 1.0336,
+    "sortino": 1.4619,
+    "max_dd": -0.2542,
+    "calmar": 0.8456
+  },
+  "live_prices": {
+    "EQQQ.L": {
+      "price": 540.48,
+      "native_ccy": "GBp",
+      "asof": "2026-06-12"
+    },
+    "QQQ3.L": {
+      "price": 337.965,
+      "native_ccy": "USD",
+      "asof": "2026-06-12"
+    },
+    "DBMF": {
+      "price": 23.017,
+      "native_ccy": "USD",
+      "asof": "2026-06-15"
+    },
+    "SGLN.L": {
+      "price": 61.03,
+      "native_ccy": "GBp",
+      "asof": "2026-06-12"
+    },
+    "IDTL.L": {
+      "price": 2.405,
+      "native_ccy": "USD",
+      "asof": "2026-06-12"
+    }
+  },
+  "updated_utc": "2026-06-15T23:54:16.688592+00:00"
+}

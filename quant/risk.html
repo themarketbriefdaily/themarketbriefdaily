@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quant — Risk Analytics | The Market Brief Daily</title>
+  <meta name="description" content="Risk analytics for the v5c systematic strategy: VaR/CVaR, tail risk, regime-conditional performance, spanning regression, Deflated Sharpe and a monthly returns heatmap.">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css"><link rel="stylesheet" href="/assets/tbp-premium.css"><link rel="stylesheet" href="/assets/quant.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body class="tbp">
+  <header class="tbp-header" id="header">
+    <div class="tbp-container tbp-header-inner">
+      <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+        <a href="/tools/">Tools</a><a class="is-active" href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/tools/">Tools</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
+    <div class="q-wrap">
+      <span class="q-eyebrow">Systematic Strategy · v5c</span>
+      <h1 class="q-h1">Risk Analytics</h1>
+      <p class="q-sub">Tail risk, value-at-risk, regime-conditional behaviour and the statistical case for the strategy's edge (spanning alpha and Deflated Sharpe). VaR figures update with the latest data.</p>
+      <nav class="q-subnav" aria-label="Quant section">
+        <a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
+        <a href="/quant/risk.html" class="is-active">Risk Analytics</a><a href="/quant/tracker.html">Portfolio Tracker</a><a href="/quant/research.html">Research</a>
+      </nav>
+    </div>
+  </section>
+
+  <main class="q-wrap" style="padding-bottom:64px;">
+    <div class="q-spread q-block"><span class="q-updated" id="updated">Loading…</span></div>
+
+    <div class="q-block">
+      <p class="q-section-label">Distribution of daily returns</p>
+      <div class="q-chart med" id="hist"></div>
+    </div>
+
+    <div class="q-block q-row two">
+      <div>
+        <p class="q-section-label">Value-at-Risk &amp; Conditional VaR · historical simulation</p>
+        <div id="varTable"></div>
+        <p class="q-note" style="margin-top:8px;">Loss thresholds: VaR is the worst loss at the stated confidence; CVaR (expected shortfall) is the average loss beyond it.</p>
+      </div>
+      <div>
+        <p class="q-section-label">Tail risk</p>
+        <div id="tailTable"></div>
+      </div>
+    </div>
+
+    <div class="q-block q-row two">
+      <div>
+        <p class="q-section-label">Regime-conditional performance · v5c</p>
+        <div id="regimeTable"></div>
+      </div>
+      <div>
+        <p class="q-section-label">Edge: spanning regression &amp; Deflated Sharpe</p>
+        <div id="edgeCards" class="q-cards"></div>
+        <div id="spanTable" style="margin-top:12px;"></div>
+        <p class="q-note" id="spanNote" style="margin-top:8px;"></p>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">Monthly returns heatmap · v5c</p>
+      <div class="q-chart med" id="heatmap"></div>
+    </div>
+
+    <div class="q-block"><p class="q-disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Deploy capital at your own risk.</p></div>
+  </main>
+
+  <footer class="tbp-footer"><div class="tbp-container">
+    <div class="tbp-footer-top">
+      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p></div>
+      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+      <div><h4>Quant</h4><div class="tbp-footer-links"><a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a><a href="/quant/research.html">Research</a></div></div>
+      <div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
+    </div>
+    <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+  </div></footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script src="/assets/quant.js"></script>
+  <script>
+  (function(){
+    var Q = window.QUANT, C = Q.COLORS;
+    var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    Q.load('/data/quant/risk.json').then(function(rk){
+      Q.setUpdated('#updated', rk.updated_utc);
+      // histogram
+      var hc = rk.hist.centers;
+      Plotly.react('hist', [
+        {type:'bar', x:hc, y:rk.hist.spy, name:'SPY', marker:{color:'rgba(154,149,138,0.55)'}},
+        {type:'bar', x:hc, y:rk.hist.v5, name:'v5 baseline', marker:{color:'rgba(200,163,90,0.55)'}},
+        {type:'bar', x:hc, y:rk.hist.v5c, name:'v5c', marker:{color:'rgba(10,10,10,0.62)'}}
+      ], Q.layout({ barmode:'overlay', bargap:0.02, xaxis:{tickformat:'.0%', title:{text:'daily return',font:{size:11}}},
+        yaxis:{title:{text:'days',font:{size:11}}}, height:330,
+        shapes:[{type:'line',x0:0,x1:0,yref:'paper',y0:0,y1:1,line:{color:'#0a0a0a',width:1.4,dash:'dot'}}] }), Q.CONFIG);
+      // VaR table
+      var vrows = rk.var_cvar.map(function(r){
+        return { cells:[ {v:r.horizon+'-day'}, {v:Q.fmtPct(r.var95),cls:'neg'}, {v:Q.fmtPct(r.cvar95),cls:'neg'},
+          {v:Q.fmtPct(r.var99),cls:'neg'}, {v:Q.fmtPct(r.cvar99),cls:'neg'} ]};
+      });
+      document.getElementById('varTable').innerHTML = Q.table(['Horizon','VaR 95%','CVaR 95%','VaR 99%','CVaR 99%'], vrows);
+      // tail
+      var t=rk.tail;
+      document.getElementById('tailTable').innerHTML = Q.table(['Measure','Value'], [
+        {cells:[{v:'Semi-variance (ann.)'},{v:Q.fmtPct(t.semivar)}]},
+        {cells:[{v:'CVaR 95% (1-day)'},{v:Q.fmtPct(t.cvar95),cls:'neg'}]},
+        {cells:[{v:'Worst single day'},{v:Q.fmtPct(t.worst_day),cls:'neg'}]},
+        {cells:[{v:'Best single day'},{v:Q.fmtPct(t.best_day),cls:'pos'}]}
+      ]);
+      // regime conditional
+      var rc=rk.regime_cond, rorder=['Bull','Contango','Crisis'];
+      var rrows = rorder.map(function(k){ var x=rc[k]||{};
+        return { _cls: k==='Bull'?'':'', cells:[ {v:k}, {v:x.days}, {v:Q.fmtPct(x.ann), cls:(x.ann>=0?'pos':'neg')},
+          {v:Q.fmtPct(x.vol)}, {v:Q.fmtNum(x.sharpe)}, {v:Q.fmtNum(x.sortino)} ]};
+      });
+      document.getElementById('regimeTable').innerHTML = Q.table(['Regime','Days','Ann. return','Vol','Sharpe','Sortino'], rrows);
+      // edge cards + spanning
+      var sp=rk.spanning, ds=rk.dsr;
+      document.getElementById('edgeCards').innerHTML = [
+        ['Spanning α', Q.fmtSignedPct(sp.alpha_ann), 'annualised, vs 5 factors'],
+        ['HAC t-stat', Q.fmtNum(sp.t_stat), 'Newey-West'],
+        ['Deflated Sharpe', Q.fmtPct(ds.dsr,1), 'P(true SR>0), N='+ds.n_trials]
+      ].map(function(c){ var pos=(c[0]==='Spanning α'); return "<div class='q-card'><div class='k'>"+c[0]+"</div><div class='v "+(pos?'pos':'')+"'>"+c[1]+"</div><div class='s'>"+c[2]+"</div></div>"; }).join('');
+      var b=sp.betas;
+      document.getElementById('spanTable').innerHTML = Q.table(['Factor loading','β'], [
+        {cells:[{v:'1× equity (ndx1)'},{v:Q.fmtNum(b.ndx1)}]},
+        {cells:[{v:'3× equity (ndx3)'},{v:Q.fmtNum(b.ndx3)}]},
+        {cells:[{v:'DBMF'},{v:Q.fmtNum(b.mf)}]},
+        {cells:[{v:'GLD'},{v:Q.fmtNum(b.gld)}]},
+        {cells:[{v:'TLT'},{v:Q.fmtNum(b.tlt)}]}
+      ]);
+      document.getElementById('spanNote').innerHTML = "R² vs the five-factor replication = <strong>"+Q.fmtNum(sp.r2)+"</strong>. A positive, significant intercept means the strategy is not spanned by a static mix of its own sleeves — the timing adds value. Deflation benchmark SR₀ = "+Q.fmtNum(ds.sr0_ann)+" (ann.) vs realised "+Q.fmtNum(ds.sharpe_ann)+".";
+      // heatmap
+      var years = Object.keys(rk.monthly).map(Number).sort(function(a,b){return a-b;});
+      var z = years.map(function(y){ var row=[]; for(var m=1;m<=12;m++){ var v=(rk.monthly[y]||{})[m]; row.push(v==null?null:v); } return row; });
+      var text = z.map(function(r){ return r.map(function(v){ return v==null?'':(v*100).toFixed(1)+'%'; }); });
+      Plotly.react('heatmap', [{
+        type:'heatmap', z:z, x:MONTHS, y:years.map(String), text:text, texttemplate:'%{text}', textfont:{size:9},
+        zmid:0, colorscale:[[0,'#b03030'],[0.5,'#faf9f6'],[1,'#1a8a4a']], zmin:-0.15, zmax:0.15,
+        xgap:2, ygap:2, hovertemplate:'%{y} %{x}: %{z:.2%}<extra></extra>', colorbar:{tickformat:'.0%', thickness:10}
+      }], Q.layout({ height:Math.max(300, years.length*26+60), margin:{l:48,r:18,t:18,b:30}, yaxis:{autorange:'reversed'} }), Q.CONFIG);
+    }).catch(function(e){ document.getElementById('updated').textContent='Could not load risk data.'; console.error(e); });
+  })();
+  </script>
+</body>
+</html>

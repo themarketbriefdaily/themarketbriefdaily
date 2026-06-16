@@ -1,0 +1,6 @@
+# Python deps for the /quant dashboard compute (scripts/quant_compute.py + quant/strategy.py).
+# The rest of the site's data pipeline (scripts/fetch_data.py) is stdlib-only and needs none of these.
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+pyarrow>=15.0

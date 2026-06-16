@@ -1,0 +1,51 @@
+name: Update quant dashboard
+
+# Recomputes the v5c systematic strategy from fresh market data and writes
+# data/quant/*.json (+ returns.csv), which the static /quant pages render.
+# Runs the single source-of-truth module quant/strategy.py via scripts/quant_compute.py.
+
+on:
+  schedule:
+    # 06:25 and 21:25 UTC every weekday (after EU open and after US close)
+    - cron: "25 6 * * 1-5"
+    - cron: "25 21 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-quant
+  cancel-in-progress: false
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compute quant dashboard data
+        run: python scripts/quant_compute.py
+
+      - name: Commit updated quant data
+        run: |
+          git config user.name  "tmbd-data-bot"
+          git config user.email "actions@github.com"
+          git add data/quant/signal.json data/quant/backtest.json data/quant/risk.json \
+                  data/quant/returns.csv data/quant/meta.json data/quant/tracker_prices.json
+          if git diff --cached --quiet; then
+            echo "No quant data changes."
+          else
+            git commit -m "chore(quant): refresh v5c dashboard data [skip ci]"
+            git push
+          fi

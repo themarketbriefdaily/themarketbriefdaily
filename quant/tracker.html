@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quant — Portfolio Tracker | The Market Brief Daily</title>
+  <meta name="description" content="Live portfolio tracker for the v5c systematic strategy: log trades and cash, mark to market, see drift from target weights and the exact rebalance trades.">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css"><link rel="stylesheet" href="/assets/tbp-premium.css"><link rel="stylesheet" href="/assets/quant.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body class="tbp">
+  <header class="tbp-header" id="header">
+    <div class="tbp-container tbp-header-inner">
+      <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
+      <nav class="tbp-nav" aria-label="Primary">
+        <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+        <a href="/tools/">Tools</a><a class="is-active" href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
+      </nav>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/tools/">Tools</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
+  </div>
+
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
+    <div class="q-wrap">
+      <span class="q-eyebrow">Systematic Strategy · v5c</span>
+      <h1 class="q-h1">Portfolio Tracker</h1>
+      <p class="q-sub">Log your real trades and cash. Everything is marked to live GBP prices, compared against the v5c target weights, and stored in your browser (localStorage) — it persists between sessions and never leaves your device.</p>
+      <nav class="q-subnav" aria-label="Quant section">
+        <a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
+        <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html" class="is-active">Portfolio Tracker</a><a href="/quant/research.html">Research</a>
+      </nav>
+    </div>
+  </section>
+
+  <main class="q-wrap" style="padding-bottom:64px;">
+    <div class="q-spread q-block">
+      <span class="q-updated" id="updated">Loading…</span>
+      <div class="q-flex">
+        <button class="q-btn ghost" id="demo">Load example</button>
+        <button class="q-btn ghost" id="export">Export JSON</button>
+        <label class="q-btn ghost" style="cursor:pointer;">Import JSON<input type="file" id="import" accept="application/json" hidden></label>
+        <button class="q-btn ghost" id="reset">Reset</button>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="q-block"><div class="q-cards" id="summary"></div></div>
+
+    <!-- INPUTS -->
+    <div class="q-block q-row two">
+      <div>
+        <p class="q-section-label">Capital &amp; cash injections</p>
+        <div class="q-form" style="margin-bottom:14px;">
+          <div class="q-field"><label>Starting capital (£)</label><input type="number" id="capital" min="0" step="100" placeholder="10000"></div>
+          <button class="q-btn" id="saveCapital">Save</button>
+        </div>
+        <div class="q-form">
+          <div class="q-field"><label>Injection date</label><input type="date" id="injDate"></div>
+          <div class="q-field"><label>Amount (£)</label><input type="number" id="injAmt" step="100" placeholder="1000"></div>
+          <button class="q-btn" id="addInj">+ Add cash</button>
+        </div>
+        <div id="injList" style="margin-top:12px;"></div>
+      </div>
+      <div>
+        <p class="q-section-label">Log a trade</p>
+        <div class="q-form">
+          <div class="q-field"><label>Date</label><input type="date" id="trDate"></div>
+          <div class="q-field"><label>Ticker</label><select id="trTicker"></select></div>
+          <div class="q-field"><label>Action</label><select id="trAction"><option value="buy">Buy</option><option value="sell">Sell</option></select></div>
+          <div class="q-field"><label>Shares</label><input type="number" id="trShares" step="0.0001" placeholder="10"></div>
+          <div class="q-field"><label>Price / share (£)</label><input type="number" id="trPrice" step="0.0001" placeholder="5.40"></div>
+          <div class="q-field"><label>Fees (£)</label><input type="number" id="trFees" step="0.01" value="0"></div>
+          <button class="q-btn" id="addTrade">+ Add trade</button>
+        </div>
+        <div id="tradeList" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- HOLDINGS -->
+    <div class="q-block">
+      <p class="q-section-label">Current portfolio · marked to live GBP prices</p>
+      <div id="holdings"></div>
+    </div>
+
+    <!-- CURVES -->
+    <div class="q-block q-row two">
+      <div><p class="q-section-label">Portfolio equity curve vs benchmarks</p><div class="q-chart med" id="curve"></div></div>
+      <div><p class="q-section-label">Portfolio drawdown</p><div class="q-chart med" id="ddchart"></div></div>
+    </div>
+
+    <!-- DRIFT + REBALANCE -->
+    <div class="q-block q-row two">
+      <div>
+        <p class="q-section-label">Allocation drift vs v5c target</p>
+        <div id="drift"></div>
+        <p class="q-note" style="margin-top:8px;">Sleeves more than 5% off target are highlighted. The rebalance respects this 5% hysteresis band — sleeves within band are left untouched.</p>
+      </div>
+      <div>
+        <p class="q-section-label">Rebalance to target</p>
+        <button class="q-btn" id="rebalance">Compute rebalance trades</button>
+        <div id="rebalanceOut" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <div class="q-block"><p class="q-disclaimer">This is a systematic research model and a personal bookkeeping tool, not financial advice. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Deploy capital at your own risk. Your data is stored only in this browser.</p></div>
+  </main>
+
+  <footer class="tbp-footer"><div class="tbp-container">
+    <div class="tbp-footer-top">
+      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p></div>
+      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+      <div><h4>Quant</h4><div class="tbp-footer-links"><a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a><a href="/quant/research.html">Research</a></div></div>
+      <div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
+    </div>
+    <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+  </div></footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script src="/assets/quant.js"></script>
+  <script>
+  (function(){
+    var Q = window.QUANT, C = Q.COLORS;
+    var KEY = 'tmbd_quant_tracker_v1';
+    var TICKERS = ['EQQQ.L','QQQ3.L','DBMF','SGLN.L','IDTL.L'];
+    var LIVE = {}, ISA_HIST = {}, BENCH = null, TARGET = {};
+    var state = load();
+
+    function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+    function ensure(){ state.capital = state.capital||0; state.injections = state.injections||[]; state.trades = state.trades||[]; }
+
+    // ---- portfolio math ----
+    function holdingsAsOf(dateStr){
+      var sh = {}, cash = (+state.capital||0);
+      (state.injections||[]).forEach(function(i){ if(!dateStr || i.date<=dateStr) cash += (+i.amount||0); });
+      var cost = {}; // running cost basis per ticker
+      (state.trades||[]).slice().sort(function(a,b){return a.date<b.date?-1:1;}).forEach(function(t){
+        if(dateStr && t.date>dateStr) return;
+        sh[t.ticker] = sh[t.ticker]||0; cost[t.ticker] = cost[t.ticker]||0;
+        var notional = (+t.shares)*(+t.price);
+        if(t.action==='buy'){ sh[t.ticker]+=(+t.shares); cost[t.ticker]+= notional+(+t.fees||0); cash -= notional+(+t.fees||0); }
+        else { var avg = sh[t.ticker]>0? cost[t.ticker]/sh[t.ticker]:0; cost[t.ticker]-= avg*(+t.shares); sh[t.ticker]-=(+t.shares); cash += notional-(+t.fees||0); }
+      });
+      return {shares:sh, cash:cash, cost:cost};
+    }
+    function priceOnOrBefore(tk, dateStr){
+      var h = ISA_HIST[tk]; if(!h||!h.dates.length) return null;
+      var lo=0, hi=h.dates.length-1, ans=null;
+      while(lo<=hi){ var mid=(lo+hi)>>1; if(h.dates[mid]<=dateStr){ ans=h.close[mid]; lo=mid+1;} else hi=mid-1; }
+      return ans;
+    }
+    function livePrice(tk){ return (LIVE[tk]&&LIVE[tk].price) || priceOnOrBefore(tk,'9999') || 0; }
+
+    function currentPortfolio(){
+      var st = holdingsAsOf(null), rows=[], mvTotal=0;
+      TICKERS.forEach(function(tk){
+        var s = st.shares[tk]||0; if(Math.abs(s)<1e-9) return;
+        var px = livePrice(tk), mv = s*px, avg = s>0?(st.cost[tk]||0)/s:0, pl = (px-avg)*s;
+        mvTotal += mv; rows.push({tk:tk, shares:s, avg:avg, px:px, mv:mv, pl:pl});
+      });
+      var equity = st.cash + mvTotal;
+      rows.forEach(function(r){ r.weight = equity>0? r.mv/equity:0; });
+      return {rows:rows, cash:st.cash, mvTotal:mvTotal, equity:equity};
+    }
+
+    // ---- rendering ----
+    function fmtGbp(x){ return Q.fmtMoney(x); }
+    function render(){
+      ensure();
+      document.getElementById('capital').value = state.capital||'';
+      // injections
+      document.getElementById('injList').innerHTML = (state.injections.length? Q.table(['Date','Amount',''],
+        state.injections.map(function(i,idx){ return {cells:[{v:i.date},{v:fmtGbp(i.amount)},{v:"<a href='#' data-inj='"+idx+"' style='color:var(--tbp-neg)'>remove</a>"}]}; })) : "<p class='q-empty'>No cash injections yet.</p>");
+      // trades
+      document.getElementById('tradeList').innerHTML = (state.trades.length? Q.table(['Date','Ticker','Action','Shares','Price','Fees',''],
+        state.trades.map(function(t,idx){ return {cells:[{v:t.date},{v:"<span class='q-tk'>"+t.ticker+"</span>"},{v:t.action},{v:Q.fmtNum(t.shares,4)},{v:fmtGbp(t.price)},{v:fmtGbp(t.fees||0)},{v:"<a href='#' data-tr='"+idx+"' style='color:var(--tbp-neg)'>remove</a>"}]}; })) : "<p class='q-empty'>No trades logged. Add one above or click “Load example”.</p>");
+      // portfolio
+      var p = currentPortfolio();
+      var invested = p.mvTotal, totalPL = p.rows.reduce(function(a,r){return a+r.pl;},0);
+      var contributed = (+state.capital||0) + state.injections.reduce(function(a,i){return a+(+i.amount||0);},0);
+      var totalReturn = contributed>0 ? (p.equity-contributed)/contributed : 0;
+      document.getElementById('summary').innerHTML = [
+        ['Total equity', fmtGbp(p.equity), 'cash + holdings'],
+        ['Invested', fmtGbp(invested), p.rows.length+' holdings'],
+        ['Cash', fmtGbp(p.cash), 'uninvested'],
+        ['Unrealised P&L', fmtGbp(totalPL), (totalPL>=0?'gain':'loss'), totalPL>=0?'pos':'neg'],
+        ['Total return', Q.fmtSignedPct(totalReturn), 'vs £'+Math.round(contributed).toLocaleString()+' in', totalReturn>=0?'pos':'neg']
+      ].map(function(c){ return "<div class='q-card'><div class='k'>"+c[0]+"</div><div class='v "+(c[3]||'')+"'>"+c[1]+"</div><div class='s'>"+c[2]+"</div></div>"; }).join('');
+      // holdings table
+      if(p.rows.length){
+        document.getElementById('holdings').innerHTML = Q.table(['Ticker','Shares','Avg cost','Live price','Market value','P&L','Weight'],
+          p.rows.map(function(r){ return {cells:[
+            {v:"<span class='q-tk'>"+r.tk+"</span>"},{v:Q.fmtNum(r.shares,4)},{v:fmtGbp(r.avg)},{v:fmtGbp(r.px)},
+            {v:fmtGbp(r.mv)},{v:fmtGbp(r.pl), cls:r.pl>=0?'pos':'neg'},{v:Q.fmtPct(r.weight)} ]}; }));
+      } else { document.getElementById('holdings').innerHTML = "<p class='q-empty'>No open positions.</p>"; }
+      renderCurve(p); renderDrift(p);
+      document.getElementById('rebalanceOut').innerHTML='';
+      bindRemovers();
+    }
+
+    function renderCurve(p){
+      if(!BENCH || !state.trades.length){ Plotly.purge('curve'); Plotly.purge('ddchart');
+        document.getElementById('curve').innerHTML="<p class='q-empty'>Log a trade to see your equity curve.</p>";
+        document.getElementById('ddchart').innerHTML=""; return; }
+      var start = state.trades.map(function(t){return t.date;}).sort()[0];
+      var dates=[], vals=[];
+      for(var i=0;i<BENCH.dates.length;i++){ var d=BENCH.dates[i]; if(d<start) continue;
+        var st=holdingsAsOf(d), v=st.cash;
+        TICKERS.forEach(function(tk){ var s=st.shares[tk]||0; if(Math.abs(s)>1e-9){ var px=priceOnOrBefore(tk,d); if(px) v+=s*px; } });
+        dates.push(d); vals.push(+v.toFixed(2));
+      }
+      if(!dates.length){ document.getElementById('curve').innerHTML="<p class='q-empty'>No price history in range yet.</p>"; return; }
+      // rebase benchmarks to portfolio start value
+      var bi=0; while(bi<BENCH.dates.length && BENCH.dates[bi]<dates[0]) bi++;
+      var v0=vals[0], v5c0=BENCH.v5c[bi]||1, spy0=BENCH.spy[bi]||1, bd=[], bv5c=[], bspy=[];
+      for(var j=bi;j<BENCH.dates.length;j++){ bd.push(BENCH.dates[j]); bv5c.push(v0*BENCH.v5c[j]/v5c0); bspy.push(v0*BENCH.spy[j]/spy0); }
+      Plotly.react('curve', [
+        {x:dates,y:vals,name:'My portfolio',line:{color:C.v5c,width:2}},
+        {x:bd,y:bv5c,name:'v5c (rebased)',line:{color:C.blue,width:1.2}},
+        {x:bd,y:bspy,name:'SPY (rebased)',line:{color:C.spy,width:1.2}}
+      ], Q.layout({yaxis:{tickprefix:'£'},height:320,margin:{l:60,r:14,t:18,b:36}}), Q.CONFIG);
+      // drawdown
+      var peak=-1e18, dd=[]; vals.forEach(function(v){ peak=Math.max(peak,v); dd.push(peak>0?v/peak-1:0); });
+      Plotly.react('ddchart', [{x:dates,y:dd,fill:'tozeroy',line:{color:C.v5c,width:1},fillcolor:'rgba(10,10,10,0.1)',name:'Drawdown'}],
+        Q.layout({yaxis:{tickformat:'.0%'},height:320,margin:{l:48,r:14,t:18,b:36},showlegend:false}), Q.CONFIG);
+    }
+
+    function renderDrift(p){
+      if(!p.rows.length && p.cash<=0){ document.getElementById('drift').innerHTML="<p class='q-empty'>Nothing to compare yet.</p>"; return; }
+      var rows = Object.keys(TARGET).filter(function(t){return t!=='CASH';}).concat(['CASH']).map(function(tk){
+        var cur = tk==='CASH'? (p.equity>0?p.cash/p.equity:0) : ((p.rows.find(function(r){return r.tk===tk;})||{weight:0}).weight);
+        var tgt = TARGET[tk]||0, drift = cur-tgt, off = Math.abs(drift)>0.05;
+        return {_cls: off?'hl':'', cells:[ {v: tk==='CASH'?'CASH':"<span class='q-tk'>"+tk+"</span>"},
+          {v:Q.fmtPct(tgt)},{v:Q.fmtPct(cur)},{v:Q.fmtSignedPct(drift), cls:(off?(drift>0?'pos':'neg'):'')} ]};
+      });
+      document.getElementById('drift').innerHTML = Q.table(['Sleeve','Target','Current','Drift'], rows);
+    }
+
+    function rebalance(){
+      var p = currentPortfolio();
+      if(p.equity<=0){ document.getElementById('rebalanceOut').innerHTML="<p class='q-empty'>Add capital/holdings first.</p>"; return; }
+      var rows=[]; TICKERS.forEach(function(tk){
+        var tgt=TARGET[tk]||0, cur=(p.rows.find(function(r){return r.tk===tk;})||{weight:0,mv:0});
+        var drift=cur.weight-tgt; if(Math.abs(drift)<=0.05) return;        // 5% hysteresis band
+        var targetMV=tgt*p.equity, deltaMV=targetMV-cur.mv, px=livePrice(tk);
+        if(px<=0) return; var shares=deltaMV/px;
+        rows.push({cells:[ {v:"<span class='q-tk'>"+tk+"</span>"}, {v: deltaMV>0?'BUY':'SELL', cls:deltaMV>0?'pos':'neg'},
+          {v:Q.fmtNum(Math.abs(shares),4)}, {v:fmtGbp(Math.abs(deltaMV))} ]});
+      });
+      document.getElementById('rebalanceOut').innerHTML = rows.length
+        ? Q.table(['Ticker','Action','Shares','Est. value'], rows)
+        : "<p class='q-empty' style='color:var(--tbp-pos)'>✓ All sleeves within the 5% band — no rebalance needed.</p>";
+    }
+
+    function bindRemovers(){
+      document.querySelectorAll('[data-inj]').forEach(function(a){ a.onclick=function(e){ e.preventDefault();
+        state.injections.splice(+a.getAttribute('data-inj'),1); save(); render(); }; });
+      document.querySelectorAll('[data-tr]').forEach(function(a){ a.onclick=function(e){ e.preventDefault();
+        state.trades.splice(+a.getAttribute('data-tr'),1); save(); render(); }; });
+    }
+
+    // ---- events ----
+    document.getElementById('saveCapital').onclick=function(){ state.capital=+document.getElementById('capital').value||0; save(); render(); };
+    document.getElementById('addInj').onclick=function(){ var d=document.getElementById('injDate').value, a=+document.getElementById('injAmt').value;
+      if(!d||!a) return alert('Enter a date and amount.'); state.injections.push({date:d,amount:a}); save(); render(); };
+    document.getElementById('addTrade').onclick=function(){
+      var t={date:document.getElementById('trDate').value, ticker:document.getElementById('trTicker').value,
+        action:document.getElementById('trAction').value, shares:+document.getElementById('trShares').value,
+        price:+document.getElementById('trPrice').value, fees:+document.getElementById('trFees').value||0};
+      if(!t.date||!t.shares||!t.price) return alert('Enter date, shares and price.');
+      state.trades.push(t); save(); render();
+      document.getElementById('trShares').value=''; document.getElementById('trPrice').value='';
+    };
+    document.getElementById('rebalance').onclick=rebalance;
+    document.getElementById('reset').onclick=function(){ if(confirm('Clear all tracker data in this browser?')){ state={}; save(); render(); } };
+    document.getElementById('demo').onclick=function(){
+      state={ capital:10000, injections:[{date:'2024-01-15',amount:2000}],
+        trades:[ {date:'2023-12-01',ticker:'EQQQ.L',action:'buy',shares:3,price:480,fees:0},
+                 {date:'2023-12-01',ticker:'QQQ3.L',action:'buy',shares:8,price:230,fees:0},
+                 {date:'2024-01-15',ticker:'DBMF',action:'buy',shares:60,price:21.5,fees:0},
+                 {date:'2024-06-01',ticker:'SGLN.L',action:'buy',shares:15,price:50,fees:0} ] };
+      save(); render();
+    };
+    document.getElementById('export').onclick=function(){ var b=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+      var u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download='tmbd-tracker.json'; a.click(); URL.revokeObjectURL(u); };
+    document.getElementById('import').onchange=function(e){ var f=e.target.files[0]; if(!f) return; var r=new FileReader();
+      r.onload=function(){ try{ state=JSON.parse(r.result); save(); render(); }catch(err){ alert('Invalid file.'); } }; r.readAsText(f); };
+
+    // ---- init ----
+    document.getElementById('trTicker').innerHTML = TICKERS.map(function(t){return "<option>"+t+"</option>";}).join('');
+    document.getElementById('trDate').value = new Date().toISOString().slice(0,10);
+    Promise.all([Q.load('/data/quant/signal.json'), Q.load('/data/quant/tracker_prices.json')]).then(function(r){
+      LIVE = r[0].live_prices||{}; Q.setUpdated('#updated', r[0].updated_utc);
+      ISA_HIST = r[1].isa||{}; BENCH = r[1].benchmark; TARGET = r[1].target||{};
+      render();
+    }).catch(function(e){ document.getElementById('updated').textContent='Could not load price data — tracker runs in offline mode.'; render(); console.error(e); });
+  })();
+  </script>
+</body>
+</html>
