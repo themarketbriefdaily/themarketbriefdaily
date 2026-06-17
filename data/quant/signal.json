@@ -4,7 +4,7 @@
   "conviction": 0.777,
   "credit_gate_active": false,
   "regime_duration_months": 40,
-  "regime_avg_ann_return": 0.2521,
+  "regime_avg_ann_return": 0.2522,
   "allocation": [
     {
       "sleeve": "1x equity (Nasdaq-100)",
@@ -40,45 +40,45 @@
   "proxy_prices": {
     "EQQQ.L": 750.33,
     "QQQ3.L": 750.33,
-    "DBMF": 30.63,
+    "DBMF": 30.88,
     "SGLN.L": 397.63,
     "IDTL.L": 86.19
   },
   "headline": {
-    "cagr": 0.2149,
-    "ann": 0.2168,
+    "cagr": 0.215,
+    "ann": 0.2169,
     "vol": 0.2099,
-    "sharpe": 1.0331,
-    "sortino": 1.4615,
+    "sharpe": 1.0336,
+    "sortino": 1.4622,
     "max_dd": -0.2542,
-    "calmar": 0.8453
+    "calmar": 0.8457
   },
   "live_prices": {
     "EQQQ.L": {
-      "price": 555.02,
+      "price": 548.98,
       "native_ccy": "GBp",
-      "asof": "2026-06-15"
+      "asof": "2026-06-17"
     },
     "QQQ3.L": {
-      "price": 366.8606,
+      "price": 353.0468,
       "native_ccy": "USD",
-      "asof": "2026-06-15"
+      "asof": "2026-06-17"
     },
     "DBMF": {
-      "price": 22.831,
+      "price": 23.0173,
       "native_ccy": "USD",
-      "asof": "2026-06-16"
+      "asof": "2026-06-15"
     },
     "SGLN.L": {
-      "price": 62.86,
+      "price": 62.6155,
       "native_ccy": "GBp",
-      "asof": "2026-06-15"
+      "asof": "2026-06-17"
     },
     "IDTL.L": {
-      "price": 2.4079,
+      "price": 2.422,
       "native_ccy": "USD",
-      "asof": "2026-06-15"
+      "asof": "2026-06-17"
     }
   },
-  "updated_utc": "2026-06-16T23:00:49.281433+00:00"
+  "updated_utc": "2026-06-17T11:20:02.947093+00:00"
 }
