@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant, Daily Signal | The Market Brief Daily</title>
-  <meta name="description" content="Live daily allocation signal for the v5c systematic strategy: regime, conviction and target weights, updated from market data.">
+  <title>Quant, Strategy Terminal | The Market Brief Daily</title>
+  <meta name="description" content="The Market Brief Daily systematic strategy terminal: the live v5c flagship plus strategies in development. Subscriber access.">
   <link rel="icon" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="/assets/tbp-theme.css">
   <link rel="stylesheet" href="/assets/tbp-premium.css">
   <link rel="stylesheet" href="/assets/quant.css">
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body class="tbp quant-dark" data-q-gated="1">
 
@@ -39,78 +38,66 @@
     <a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
   </div>
 
-  <!-- HERO + SUBNAV -->
+  <!-- HERO -->
   <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
     <div class="q-wrap">
-      <span class="q-eyebrow">Systematic Strategy · v5c · SPY / GBP</span>
-      <h1 class="q-h1">Daily Signal</h1>
-      <p class="q-sub">A diversified, vol-targeted, regime-gated, credit-aware systematic allocation. This page recomputes the live regime, conviction and target weights from market data refreshed twice daily.</p>
-      <nav class="q-subnav" aria-label="Quant section">
-        <a href="/quant/" class="is-active">Daily Signal</a>
-        <a href="/quant/backtest.html">Backtest</a>
-        <a href="/quant/risk.html">Risk Analytics</a>
-        <a href="/quant/tracker.html">Portfolio Tracker</a>
-        <a href="/quant/research.html">Research</a>
-      </nav>
+      <span class="q-eyebrow">Quant · Systematic strategy terminal</span>
+      <h1 class="q-h1">Strategy Terminal</h1>
+      <p class="q-sub">Each tile is a systematic strategy. <strong>v5c</strong> is live and fully backtested with a complete signal, risk and tracker workspace; the others are in active development. Every figure is labelled <em>backtested</em> or <em>in development</em>, never presented as live trading.</p>
     </div>
   </section>
 
   <main class="q-wrap" style="padding-bottom:64px;">
-
     <div class="q-spread q-block">
       <span class="q-updated" id="updated">Loading…</span>
-      <button class="q-btn" id="refresh">↻ Refresh signal</button>
     </div>
 
-    <!-- REGIME BANNER -->
     <div class="q-block">
-      <div id="regimeBanner" class="q-regime q-contango">
-        <div>
-          <div class="q-conv-label">Current regime</div>
-          <div class="q-regime-name" id="regimeName">, </div>
-          <p class="q-regime-desc" id="regimeDesc">, </p>
-          <div class="q-flex" style="margin-top:14px;">
-            <span class="q-pill off" id="creditPill"><span class="dot"></span> Credit gate</span>
-            <span class="q-pill" id="durPill"><span class="dot"></span>, </span>
+      <p class="q-section-label">Strategies</p>
+      <div class="q-mosaic">
+
+        <a class="q-tile" href="/quant/v5c.html">
+          <span class="badge live"><span class="dot"></span> Live · Backtested</span>
+          <div class="code">v5c · SPY / GBP</div>
+          <h3>Regime-Gated Flagship</h3>
+          <p>Diversified, vol-targeted, regime-gated and credit-aware allocation on the S&amp;P 500. The production flagship, backtested 2008 to present.</p>
+          <div class="mini">
+            <div><div class="n pos" id="tCagr">–</div><div class="l">CAGR (bt)</div></div>
+            <div><div class="n" id="tSharpe">–</div><div class="l">Sharpe (bt)</div></div>
+            <div><div class="n neg" id="tMdd">–</div><div class="l">Max DD (bt)</div></div>
           </div>
-        </div>
-        <div>
-          <div class="q-conv-label">Conviction score</div>
-          <div class="q-conv-val" id="convVal">, </div>
-          <div class="q-meter"><i id="convBar" style="width:0%"></i></div>
-          <p class="q-conv-help">Continuous score in [0,1] = VIX-contango × trend-strength × low-vol state. Higher = the model is more confident in risk exposure.</p>
-        </div>
+          <div class="go">Open the v5c terminal →</div>
+        </a>
+
+        <a class="q-tile dev" href="/quant/mbd-quant.html">
+          <span class="badge dev">⚙ In development</span>
+          <div class="code">MBD-QUANT</div>
+          <h3>Multi-Factor Quant</h3>
+          <p>A multi-factor systematic equity sleeve (value, momentum, quality, low-volatility). Engine and backtest in development.</p>
+          <div class="go">Backtest pending →</div>
+        </a>
+
+        <a class="q-tile dev" href="/quant/macro.html">
+          <span class="badge dev">⚙ In development</span>
+          <div class="code">MBD-MACRO</div>
+          <h3>Macro Transmission</h3>
+          <p>Trades the transmission of macro shocks across rates, FX and credit into equity risk. Engine and backtest in development.</p>
+          <div class="go">Backtest pending →</div>
+        </a>
+
+        <a class="q-tile dev" href="/quant/structure.html">
+          <span class="badge dev">⚙ In development</span>
+          <div class="code">MBD-STRUCT</div>
+          <h3>Market Structure Alpha</h3>
+          <p>Harvests microstructure and liquidity-driven dislocations around index and flow events. Engine and backtest in development.</p>
+          <div class="go">Backtest pending →</div>
+        </a>
+
       </div>
     </div>
 
-    <!-- HEADLINE METRICS -->
     <div class="q-block">
-      <p class="q-section-label">Strategy performance · full sample (~2008–present)</p>
-      <div class="q-cards" id="headlineCards"></div>
-    </div>
-
-    <!-- ALLOCATION -->
-    <div class="q-block q-row side">
-      <div>
-        <p class="q-section-label">Today's target allocation · ISA-eligible instruments</p>
-        <div id="allocTable"></div>
-        <p class="q-note" id="creditNote" style="margin-top:10px;"></p>
-      </div>
-      <div>
-        <p class="q-section-label">Allocation</p>
-        <div class="q-chart med" id="pie"></div>
-      </div>
-    </div>
-
-    <!-- HISTORICAL CONTEXT -->
-    <div class="q-block">
-      <p class="q-section-label">Historical context</p>
-      <div class="q-cards" id="contextCards"></div>
-    </div>
-
-    <!-- DISCLAIMER -->
-    <div class="q-block">
-      <p class="q-disclaimer" id="disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Deploy capital at your own risk.</p>
+      <p class="q-disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Strategies marked "in development" have no live or backtested track record yet and display no performance figures. Deploy capital at your own risk.</p>
     </div>
   </main>
 
@@ -119,12 +106,12 @@
     <div class="tbp-container">
       <div class="tbp-footer-top">
         <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div>
-          <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p></div>
+          <p class="tbp-footer-blurb">Independent macro research, model portfolios, and a systematic quant terminal, built for clarity, not clicks.</p></div>
         <div><h4>Navigate</h4><div class="tbp-footer-links">
           <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
           <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
         <div><h4>Quant</h4><div class="tbp-footer-links">
-          <a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
+          <a href="/quant/v5c.html">v5c Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
           <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a>
           <a href="/quant/research.html">Research</a></div></div>
         <div><h4>Company</h4><div class="tbp-footer-links">
@@ -141,84 +128,13 @@
   <script>
   (function(){
     var Q = window.QUANT;
-    var REGIME_DESC = {
-      Bull: "VIX term structure in contango and price above its 210-day trend. The model runs its highest equity exposure, vol-targeted and diversified.",
-      Contango: "Contango intact but trend has weakened. Equity exposure is throttled toward the 10% vol target; diversifiers carry more of the book.",
-      Crisis: "VIX in backwardation, stress regime. Equity exposure is cut to cash and the book leans on managed futures and trend-gated diversifiers."
-    };
-    function render(sig){
-      Q.setUpdated('#updated', sig.updated_utc);
-      // banner
-      var banner = document.getElementById('regimeBanner');
-      banner.className = 'q-regime ' + Q.regimeClass(sig.regime);
-      document.getElementById('regimeName').textContent = (sig.regime||'').toUpperCase();
-      document.getElementById('regimeDesc').textContent = REGIME_DESC[sig.regime] || '';
-      document.getElementById('convVal').textContent = Q.fmtNum(sig.conviction, 2);
-      document.getElementById('convBar').style.width = Math.round(sig.conviction*100) + '%';
-      var cp = document.getElementById('creditPill');
-      cp.className = 'q-pill ' + (sig.credit_gate_active ? 'on':'off');
-      cp.innerHTML = '<span class="dot"></span> Credit gate ' + (sig.credit_gate_active ? 'ACTIVE':'inactive');
-      document.getElementById('durPill').innerHTML = '<span class="dot"></span> ' + sig.regime_duration_months + ' months in regime';
-      // headline cards
-      var h = sig.headline || {};
-      var cards = [
-        ['CAGR', Q.fmtPct(h.cagr), 'geometric'],
-        ['Volatility', Q.fmtPct(h.vol), 'annualised'],
-        ['Sharpe', Q.fmtNum(h.sharpe), 'rf = 0'],
-        ['Sortino', Q.fmtNum(h.sortino), 'downside'],
-        ['Max DD', Q.fmtPct(h.max_dd), 'peak-to-trough'],
-        ['Calmar', Q.fmtNum(h.calmar), 'CAGR / |MaxDD|']
-      ];
-      document.getElementById('headlineCards').innerHTML = cards.map(function(c){
-        var neg = (c[0]==='Max DD');
-        return "<div class='q-card'><div class='k'>"+c[0]+"</div><div class='v "+(neg?'neg':'')+"'>"+c[1]+"</div><div class='s'>"+c[2]+"</div></div>";
-      }).join('');
-      // allocation table
-      var rows = sig.allocation.map(function(a){
-        return { cells:[
-          {v:a.sleeve}, {v:"<span class='q-tk'>"+a.ticker+"</span>"},
-          {v:Q.fmtPct(a.weight,1), cls: a.weight>0?'':'' }
-        ]};
-      });
-      document.getElementById('allocTable').innerHTML = Q.table(['Sleeve','Ticker','Target weight'], rows);
-      document.getElementById('creditNote').innerHTML = sig.credit_gate_active
-        ? "⚠ <strong>Credit gate is ACTIVE</strong> (HYG below its 200-day average): equity exposure is capped at the defensive Contango target until credit stabilises."
-        : "Credit gate inactive, HYG is above its 200-day average, so no credit-stress cap is applied to equity exposure.";
-      // pie
-      var nz = sig.allocation.filter(function(a){ return a.weight>0.001; });
-      var palette = {'VUSA.L':'#28e0f0','3USL.L':'#a98bff','DBMF':'#f7bd57','SGLN.L':'#e0b34a','IDTL.L':'#5f9fd0','CASH':'#5f769b'};
-      Plotly.react('pie', [{
-        type:'pie', hole:0.55, sort:false,
-        labels: nz.map(function(a){return a.ticker;}),
-        values: nz.map(function(a){return +(a.weight*100).toFixed(2);}),
-        marker:{ colors: nz.map(function(a){return palette[a.ticker]||'#9a958a';}), line:{color:'#faf9f6',width:2} },
-        textinfo:'label+percent', textfont:{size:11},
-        hovertemplate:'%{label}: %{value}%<extra></extra>'
-      }], Q.layout({ margin:{l:8,r:8,t:8,b:8}, showlegend:false, height:300 }), Q.CONFIG);
-      // context
-      var ctx = [
-        ['Regime', (sig.regime||'').toUpperCase(), 'current state'],
-        ['Duration', sig.regime_duration_months + ' mo', 'since last change'],
-        ['Avg return in regime', Q.fmtSignedPct(sig.regime_avg_ann_return), 'annualised, historical'],
-        ['Cash buffer', Q.fmtPct((sig.allocation.find(function(a){return a.ticker==='CASH';})||{weight:0}).weight), 'unallocated → GBP cash']
-      ];
-      document.getElementById('contextCards').innerHTML = ctx.map(function(c){
-        return "<div class='q-card'><div class='k'>"+c[0]+"</div><div class='v'>"+c[1]+"</div><div class='s'>"+c[2]+"</div></div>";
-      }).join('');
-    }
-    function load(){
-      var btn = document.getElementById('refresh');
-      btn.disabled = true; btn.textContent = '↻ Refreshing…';
-      Q.load('/data/quant/signal.json').then(function(sig){
-        render(sig); btn.disabled=false; btn.textContent='↻ Refresh signal';
-      }).catch(function(e){
-        document.getElementById('updated').textContent = 'Could not load signal data.';
-        btn.disabled=false; btn.textContent='↻ Retry';
-        console.error(e);
-      });
-    }
-    document.getElementById('refresh').addEventListener('click', load);
-    load();
+    Q.load('/data/quant/meta.json').then(function(m){
+      Q.setUpdated('#updated', m.updated_utc);
+      var h = m.headline || {};
+      document.getElementById('tCagr').textContent = Q.fmtPct(h.cagr);
+      document.getElementById('tSharpe').textContent = Q.fmtNum(h.sharpe);
+      document.getElementById('tMdd').textContent = Q.fmtPct(h.max_dd);
+    }).catch(function(){ document.getElementById('updated').textContent = 'Subscriber access'; });
   })();
   </script>
 </body>
