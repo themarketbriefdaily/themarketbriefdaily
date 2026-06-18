@@ -87,5 +87,29 @@
     document.querySelectorAll('[data-tbp-reveal]').forEach(el => el.classList.add('in-view'));
   }
 
+  // ── 7. Graceful image fallback ──────────────────────────────
+  // Missing images render as a tasteful gradient (never a broken-icon);
+  // a missing brand logo falls back to the favicon.
+  const IMG_GRADS = [
+    'linear-gradient(135deg,#0a0f1c,#1b3870 68%,#2e9e4f)',
+    'linear-gradient(135deg,#0a0f1c,#243b6b 68%,#5f9fd0)',
+    'linear-gradient(135deg,#1a1030,#5a3aa6 68%,#c8a35a)',
+    'linear-gradient(135deg,#0a0f1c,#155e54 68%,#2ce8a6)'
+  ];
+  const BLANK = 'data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%221%22%20height=%221%22%3E%3C/svg%3E';
+  function fixImg(img, n) {
+    if (img.dataset.tbpFixed) return;
+    img.dataset.tbpFixed = '1';
+    if (img.classList.contains('brand-logo')) { img.src = '/assets/favicon.svg'; img.style.height = '30px'; img.style.width = 'auto'; return; }
+    img.style.background = IMG_GRADS[n % IMG_GRADS.length];
+    img.style.objectFit = 'cover';
+    if (img.offsetHeight < 4) { img.style.minHeight = '180px'; img.style.width = '100%'; }
+    img.src = BLANK;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('img'), function (img, n) {
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) fixImg(img, n);
+    img.addEventListener('error', function () { fixImg(img, n); });
+  });
+
   // (Custom cursor removed, system cursor is more accessible and reliable.)
 })();

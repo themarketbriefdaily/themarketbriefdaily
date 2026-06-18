@@ -20,11 +20,18 @@
   <style>
     .mp-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
     @media(max-width:760px){ .mp-grid{ grid-template-columns:1fr; } }
-    .mp-card{ display:flex; flex-direction:column; gap:12px; padding:28px; border:1px solid var(--tbp-line);
+    .mp-card{ display:flex; flex-direction:column; padding:0; overflow:hidden; border:1px solid var(--tbp-line);
       border-radius:var(--tbp-radius); background:var(--tbp-bg); text-decoration:none; color:inherit; transition:border-color .25s, transform .25s, box-shadow .25s; }
     .mp-card:hover{ border-color:var(--tbp-muted-2); transform:translateY(-3px); box-shadow:0 22px 50px -24px rgba(0,0,0,.18); }
-    .mp-card .code{ font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-warm); }
-    .mp-card h3{ font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+    .mp-card .thumb{ height:120px; display:flex; align-items:flex-end; padding:16px 22px; position:relative; overflow:hidden; }
+    .mp-card .thumb .tag{ position:relative; font-family:'Inter Tight',sans-serif; font-weight:850; font-size:1.85rem; letter-spacing:-.03em; color:rgba(255,255,255,.97); }
+    .mp-card .thumb .glyph{ position:absolute; top:-22px; right:-4px; font-size:7rem; font-weight:850; color:rgba(255,255,255,.13); font-family:'Inter Tight',sans-serif; line-height:1; }
+    .mp-t1{ background:linear-gradient(135deg,#0a0f1c,#1b3870 68%,#2e9e4f); }
+    .mp-t2{ background:linear-gradient(135deg,#0a0f1c,#155e54 68%,#2ce8a6); }
+    .mp-t3{ background:linear-gradient(135deg,#0a0f1c,#243b6b 68%,#5f9fd0); }
+    .mp-t4{ background:linear-gradient(135deg,#1a1030,#5a3aa6 68%,#c8a35a); }
+    .mp-card .body{ display:flex; flex-direction:column; gap:11px; padding:24px; flex:1; }
+    .mp-card h3{ font-family:'Inter Tight',sans-serif; font-size:1.4rem; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
     .mp-card p{ font-size:14px; line-height:1.6; color:var(--tbp-muted); margin:0; }
     .mp-card .meta{ margin-top:auto; padding-top:14px; border-top:1px solid var(--tbp-line); font-size:12px; color:var(--tbp-muted-2); letter-spacing:.01em; }
     .mp-card .go{ font-size:13px; font-weight:700; color:var(--tbp-ink); display:inline-flex; align-items:center; gap:7px; }
@@ -91,32 +98,40 @@
 
       <div class="mp-grid" data-tbp-reveal>
         <a class="mp-card" href="/funds/classic.html">
-          <div class="code">Classic</div>
-          <h3>Global multi-asset core</h3>
-          <p>Diversified equities and bonds in a strategic mix, rebalanced on a rules-based schedule. The default all-weather core.</p>
-          <div class="meta">Model portfolio · benchmark MSCI World · since 2019</div>
-          <span class="go">View portfolio →</span>
+          <div class="thumb mp-t1"><span class="glyph">C</span><span class="tag">Classic</span></div>
+          <div class="body">
+            <h3>Global multi-asset core</h3>
+            <p>Diversified equities and bonds in a strategic mix, rebalanced on a rules-based schedule. The default all-weather core.</p>
+            <div class="meta">Model portfolio · benchmark MSCI World · since 2019</div>
+            <span class="go">View portfolio →</span>
+          </div>
         </a>
         <a class="mp-card" href="/funds/classic-esg.html">
-          <div class="code">Classic ESG</div>
-          <h3>Values-aligned core</h3>
-          <p>The Classic blend tilted to MSCI World ESG Leaders, with the same disciplined rebalancing and cost focus.</p>
-          <div class="meta">Model portfolio · benchmark MSCI World ESG · since 2019</div>
-          <span class="go">View portfolio →</span>
+          <div class="thumb mp-t2"><span class="glyph">E</span><span class="tag">Classic ESG</span></div>
+          <div class="body">
+            <h3>Values-aligned core</h3>
+            <p>The Classic blend tilted to MSCI World ESG Leaders, with the same disciplined rebalancing and cost focus.</p>
+            <div class="meta">Model portfolio · benchmark MSCI World ESG · since 2019</div>
+            <span class="go">View portfolio →</span>
+          </div>
         </a>
         <a class="mp-card" href="/funds/tracker.html">
-          <div class="code">Tracker</div>
-          <h3>Low-cost index core</h3>
-          <p>Broad global market beta with minimal turnover and the lowest possible running cost. Pure, cheap diversification.</p>
-          <div class="meta">Model portfolio · benchmark MSCI ACWI · since 2019</div>
-          <span class="go">View portfolio →</span>
+          <div class="thumb mp-t3"><span class="glyph">T</span><span class="tag">Tracker</span></div>
+          <div class="body">
+            <h3>Low-cost index core</h3>
+            <p>Broad global market beta with minimal turnover and the lowest possible running cost. Pure, cheap diversification.</p>
+            <div class="meta">Model portfolio · benchmark MSCI ACWI · since 2019</div>
+            <span class="go">View portfolio →</span>
+          </div>
         </a>
         <a class="mp-card" href="/funds/rotational.html">
-          <div class="code">Rotational (Active)</div>
-          <h3>Active regime rotation</h3>
-          <p>Tactically rotates across asset classes as the macro regime shifts, the most active of the four mandates.</p>
-          <div class="meta">Model portfolio · benchmark MSCI World · since 2023</div>
-          <span class="go">View portfolio →</span>
+          <div class="thumb mp-t4"><span class="glyph">R</span><span class="tag">Rotational</span></div>
+          <div class="body">
+            <h3>Active regime rotation</h3>
+            <p>Tactically rotates across asset classes as the macro regime shifts, the most active of the four mandates.</p>
+            <div class="meta">Model portfolio · benchmark MSCI World · since 2023</div>
+            <span class="go">View portfolio →</span>
+          </div>
         </a>
       </div>
     </div>

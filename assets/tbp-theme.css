@@ -632,6 +632,34 @@ body.tbp em, body.tbp .tbp-it {
   background: var(--tbp-blue); border-color: var(--tbp-blue);
 }
 
+/* ================================================================
+   GLOBAL POLISH / CONTRAST HARDENING
+   Guarantees legible buttons and dark-hero headings on every page,
+   overriding any per-page inline header/hero styles (!important) so
+   nothing renders as black-on-black or white-on-white.
+   ================================================================ */
+/* Header CTA pill: always dark fill, white label, subtle outline */
+.tbp-cta-mini { background: #0a0a0a !important; color: #ffffff !important; border: 1px solid rgba(255,255,255,.18) !important; }
+.tbp-cta-mini:hover { background: #0066ff !important; color: #ffffff !important; border-color: #0066ff !important; }
+.tbp-cta-mini .arrow { color: #ffffff !important; }
+
+/* Primary buttons: dark fill + white label on light pages */
+.tbp-btn.primary { background: #0a0a0a; color: #ffffff; border-color: #0a0a0a; }
+.tbp-btn.primary:hover { background: #0066ff; color: #ffffff; border-color: #0066ff; }
+/* On dark contexts a primary button inverts to a white pill with dark text */
+.tbp-section.dark .tbp-btn.primary, .tbp-section.midnight .tbp-btn.primary,
+.tbp-hero-cinematic .tbp-btn.primary { background: #ffffff !important; color: #0a0f1c !important; border-color: #ffffff !important; }
+.tbp-section.dark .tbp-btn, .tbp-section.midnight .tbp-btn,
+.tbp-hero-cinematic .tbp-btn { color: #ffffff; border-color: rgba(255,255,255,.4); }
+
+/* Cinematic / dark heroes: every heading and lead stays white even if a
+   per-page style sets ink, or the background image is missing */
+.tbp-hero-cinematic h1, .tbp-hero-cinematic h2, .tbp-hero-cinematic h3,
+.tbp-hero-cinematic h1 em { color: #ffffff !important; }
+.tbp-hero-cinematic .lead, .tbp-hero-cinematic p, .tbp-hero-cinematic .tbp-lead { color: rgba(255,255,255,.86) !important; }
+.tbp-section.dark h1, .tbp-section.dark h2, .tbp-section.dark h3,
+.tbp-section.midnight h1, .tbp-section.midnight h2, .tbp-section.midnight h3 { color: #ffffff !important; }
+
 /* ── Editorial article body (for posts) ───────────────────────── */
 .tbp-article {
   max-width: 720px;
