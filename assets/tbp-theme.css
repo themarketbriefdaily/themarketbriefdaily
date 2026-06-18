@@ -143,7 +143,9 @@ body.tbp em, body.tbp .tbp-it {
 .tbp-brand .mark {
   width: 28px; height: 28px;
   border-radius: 7px;
-  background: url('/assets/favicon.svg') center / 28px 28px no-repeat;
+  /* !important so per-page header overrides (e.g. white/ink mark squares on
+     transparent-over-hero headers) cannot blank out the logo */
+  background: url('/assets/favicon.svg') center / 28px 28px no-repeat !important;
   font-size: 0; color: transparent;
   flex-shrink: 0;
 }

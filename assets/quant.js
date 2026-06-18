@@ -5,7 +5,7 @@
   "use strict";
 
   // neon palette (matches quant.css)
-  var TXT = "#cdd9ec", MUTED = "#8ea6cc", GRID = "rgba(120,160,255,0.12)", LINE = "rgba(120,160,255,0.22)";
+  var TXT = "#eef4ff", MUTED = "#aebfdd", GRID = "rgba(120,160,255,0.12)", LINE = "rgba(120,160,255,0.22)";
   var COLORS = {
     v5c: "#28e0f0", v5b: "#a98bff", v5: "#f7bd57", spy: "#5f769b",
     bull: "#2ce8a6", contango: "#f7bd57", crisis: "#ff5d72",

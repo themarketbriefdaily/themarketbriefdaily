@@ -8,7 +8,7 @@
 .quant-dark{
   --qd-bg:#05080f; --qd-bg2:#0a1020; --qd-panel:rgba(17,26,46,0.62); --qd-panel-solid:#0d1426;
   --qd-line:rgba(120,160,255,0.16); --qd-line-2:rgba(120,160,255,0.30);
-  --qd-text:#e7eefb; --qd-muted:#8ea6cc; --qd-muted-2:#5f769b;
+  --qd-text:#ffffff; --qd-muted:#aebfdd; --qd-muted-2:#8094b8;
   --qd-cyan:#28e0f0; --qd-green:#2ce8a6; --qd-amber:#f7bd57; --qd-red:#ff5d72; --qd-violet:#a98bff;
   --qd-mono:'JetBrains Mono', ui-monospace, monospace;
   --qd-display:'Space Grotesk', 'Inter Tight', sans-serif;
@@ -39,6 +39,12 @@
 .quant-dark .tbp-footer a{ color:var(--qd-muted); } .quant-dark .tbp-footer a:hover{ color:var(--qd-cyan); }
 .quant-dark .tbp-footer-massive{ color:rgba(120,160,255,0.06); }
 .quant-dark .tbp-hero{ background:transparent; }
+/* no inherited near-black tbp text on dark pages: headings white, footer headings
+   in the brand gradient-blue (cyan) */
+.quant-dark h1, .quant-dark h2, .quant-dark h3, .quant-dark h4,
+.quant-dark .tbp-footer-brand, .quant-dark .tbp-h1, .quant-dark .tbp-h2, .quant-dark .tbp-h3{ color:#ffffff; }
+.quant-dark .tbp-footer h4{ color:var(--qd-cyan); }
+.quant-dark .tbp-footer-blurb{ color:var(--qd-muted); }
 
 .q-wrap{ max-width:1320px; margin:0 auto; padding-inline:clamp(18px,4vw,48px); }
 

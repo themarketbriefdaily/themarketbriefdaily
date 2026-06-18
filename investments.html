@@ -3,543 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Model Portfolios &amp; Fund Range, The Market Brief Daily</title>
-  <meta name="description" content="Four illustrative model portfolios and three fund range options, Classic, Classic ESG, and Tracker. Evidence-based, low-cost, publicly tracked. Educational research only." />
-  <meta name="theme-color" content="#0a0f1c" />
+  <title>Model Portfolios | The Market Brief Daily</title>
+  <meta name="description" content="Four publicly tracked model portfolios: Classic, Classic ESG, Tracker, and Rotational. Evidence-based, low-cost, illustrative, and not investment advice." />
+  <meta name="theme-color" content="#faf9f6" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://themarketbriefdaily.com/investments.html" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Model Portfolios, The Market Brief Daily" />
-  <meta property="og:image" content="https://themarketbriefdaily.com/assets/images/og-default.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
+  <meta property="og:title" content="Model Portfolios | The Market Brief Daily" />
+  <meta property="og:url" content="https://themarketbriefdaily.com/investments.html" />
+  <meta property="og:description" content="Four publicly tracked model portfolios: Classic, Classic ESG, Tracker, and Rotational. Illustrative, not investment advice." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
   <link rel="stylesheet" href="/assets/tbp-premium.css" />
-  <script src="/assets/chart.umd.min.js" defer id="chartjs-script"></script>
-
   <style>
-    /* ── Hero: same transparent-to-dark scroll treatment as index ── */
-    .tbp-header {
-      background: linear-gradient(180deg, rgba(8,12,22,.82), rgba(8,12,22,.4) 70%, transparent);
-      border-bottom-color: transparent;
-      backdrop-filter: none;
-    }
-    .tbp-header .tbp-brand,
-    .tbp-header .tbp-nav a { color: rgba(255,255,255,.92); }
-    .tbp-header .tbp-brand .mark { background: #fff; color: #0a0f1c; }
-    .tbp-header .tbp-nav a.is-active::after { background: var(--tbp-warm); }
-    .tbp-header .tbp-cta-mini { background: #fff; color: #0a0f1c; }
-    .tbp-header .tbp-cta-mini:hover { background: var(--tbp-warm); color: #0a0f1c; }
-    .tbp-header .tbp-burger { border-color: rgba(255,255,255,.3); }
-    .tbp-header .tbp-burger span,
-    .tbp-header .tbp-burger span::before,
-    .tbp-header .tbp-burger span::after { background: #fff; }
-    .tbp-header.below-hero {
-      background: rgba(250,249,246,.92);
-      backdrop-filter: blur(14px);
-      border-bottom-color: var(--tbp-line);
-    }
-    .tbp-header.below-hero .tbp-brand,
-    .tbp-header.below-hero .tbp-nav a { color: var(--tbp-ink); }
-    .tbp-header.below-hero .tbp-brand .mark { background: var(--tbp-ink); color: var(--tbp-bg); }
-    .tbp-header.below-hero .tbp-cta-mini { background: var(--tbp-ink); color: var(--tbp-bg); }
-    .tbp-header.below-hero .tbp-burger { border-color: var(--tbp-line); }
-    .tbp-header.below-hero .tbp-burger span,
-    .tbp-header.below-hero .tbp-burger span::before,
-    .tbp-header.below-hero .tbp-burger span::after { background: var(--tbp-ink); }
-
-    /* ── Methodology card grid ──────────────────────────────────── */
-    .method-card-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: clamp(14px, 1.8vw, 22px);
-    }
-    @media (max-width: 980px) { .method-card-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 540px)  { .method-card-grid { grid-template-columns: 1fr; } }
-    .method-card {
-      padding: clamp(22px, 2.8vw, 32px);
-      background: var(--tbp-bg);
-      border: 1px solid var(--tbp-line);
-      border-radius: var(--tbp-radius);
-      display: flex; flex-direction: column; gap: 10px;
-      transition: border-color .25s, box-shadow .3s, transform .3s;
-    }
-    .method-card:hover {
-      border-color: rgba(200,163,90,.4);
-      box-shadow: 0 10px 30px -8px rgba(0,0,0,.08);
-      transform: translateY(-3px);
-    }
-    .method-card-num {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 2rem; font-weight: 850;
-      letter-spacing: -.04em; color: var(--tbp-line);
-      line-height: 1;
-    }
-    .method-card-sub {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--tbp-warm); margin: 0;
-    }
-    .method-card h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1rem; font-weight: 800;
-      letter-spacing: -.01em; color: var(--tbp-ink);
-      margin: 0; line-height: 1.25;
-    }
-    .method-card p {
-      font-size: 13.5px; line-height: 1.6;
-      color: var(--tbp-muted); margin: 0;
-    }
-    .method-card ul {
-      list-style: none; padding: 0; margin: 4px 0 0;
-      display: flex; flex-direction: column; gap: 5px;
-    }
-    .method-card ul li {
-      font-size: 13px; color: var(--tbp-muted);
-      padding-left: 14px; position: relative; line-height: 1.5;
-    }
-    .method-card ul li::before {
-      content: "·"; position: absolute; left: 0;
-      color: var(--tbp-warm); font-weight: 700;
-    }
-
-    /* ── Benefits grid ─────────────────────────────────────────── */
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: clamp(14px, 1.8vw, 24px);
-    }
-    @media (max-width: 980px) { .benefits-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 540px)  { .benefits-grid { grid-template-columns: 1fr; } }
-    .benefit-box {
-      padding: clamp(24px, 3vw, 36px) clamp(22px, 2.5vw, 30px);
-      border: 1px solid var(--tbp-line);
-      border-radius: 14px;
-      background: var(--tbp-bg);
-      display: flex; flex-direction: column; gap: 16px;
-      transition: border-color .25s, box-shadow .3s, transform .3s;
-    }
-    .benefit-box:hover {
-      border-color: rgba(0,0,0,.15);
-      box-shadow: 0 12px 32px -10px rgba(0,0,0,.09);
-      transform: translateY(-3px);
-    }
-    .benefit-icon {
-      width: 52px; height: 52px;
-      border-radius: 14px;
-      background: rgba(200,163,90,.1);
-      border: 1px solid rgba(200,163,90,.25);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      color: var(--tbp-warm);
-    }
-    .benefit-box h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1.05rem; font-weight: 800;
-      letter-spacing: -.015em; line-height: 1.2;
-      color: var(--tbp-ink); margin: 0;
-    }
-    .benefit-box p {
-      font-size: 14px; line-height: 1.6;
-      color: var(--tbp-muted); margin: 0;
-    }
-    .benefit-box ul {
-      list-style: none; padding: 0; margin: 0;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-    .benefit-box ul li {
-      font-size: 13.5px; color: var(--tbp-muted);
-      padding-left: 14px; position: relative;
-    }
-    .benefit-box ul li::before {
-      content: "·";
-      position: absolute; left: 0;
-      color: var(--tbp-warm); font-weight: 700;
-    }
-    .benefit-highlight {
-      font-weight: 700; color: var(--tbp-ink);
-      font-size: 13px;
-    }
-
-    /* ── MBD portfolio 2×2 grid ─────────────────────────────────── */
-    .mbd-4-grid {
-      grid-template-columns: repeat(2, minmax(0,1fr));
-    }
-    @media (max-width: 800px) { .mbd-4-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; } }
-
-    /* ── Fund range cards ─────────────────────────────────────── */
-    .fund-range-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: clamp(16px, 2vw, 28px);
-    }
-    @media (max-width: 880px) { .fund-range-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; } }
-
-    /* Inline pill chip used inside fund cards */
-    .frc-pill {
-      font-size: 11.5px; font-weight: 500;
-      padding: 4px 12px;
-      border: 1px solid var(--tbp-line);
-      border-radius: 999px;
-      color: var(--tbp-muted);
-      white-space: nowrap;
-    }
-
-    /* Academic-basis subtitle inside fund cards */
-    .frc-academic {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--tbp-warm);
-      padding: 6px 12px;
-      background: rgba(200,163,90,.08);
-      border: 1px solid rgba(200,163,90,.25);
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 16px;
-      align-self: flex-start;
-    }
-
-    .fund-range-card {
-      display: flex; flex-direction: column;
-      background: var(--tbp-bg);
-      border: 1px solid var(--tbp-line);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: border-color .25s, box-shadow .35s, transform .35s var(--tbp-ease);
-    }
-    .fund-range-card:hover {
-      border-color: rgba(0,0,0,.2);
-      box-shadow: 0 20px 52px -14px rgba(0,0,0,.14);
-      transform: translateY(-4px);
-    }
-    .fund-range-card .frc-visual {
-      position: relative;
-      aspect-ratio: 16 / 8;
-      overflow: hidden;
-      background: var(--tbp-ink);
-    }
-    .fund-range-card .frc-visual img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; opacity: .45;
-      transition: transform .8s var(--tbp-ease-slow), opacity .4s;
-    }
-    .fund-range-card:hover .frc-visual img { transform: scale(1.05); opacity: .75; }
-    .fund-range-card .frc-visual::after {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.65) 100%);
-      pointer-events: none;
-    }
-    .fund-range-card .frc-code {
-      position: absolute;
-      top: 16px; left: 18px; z-index: 1;
-      padding: 5px 12px;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.25);
-      backdrop-filter: blur(8px);
-      border-radius: 6px;
-      font-family: ui-monospace, Menlo, monospace;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .12em;
-      color: rgba(255,255,255,.92);
-    }
-    .fund-range-card .frc-badge {
-      position: absolute;
-      top: 16px; right: 18px; z-index: 1;
-      padding: 4px 10px;
-      background: var(--tbp-warm);
-      border-radius: 999px;
-      font-size: 10px; font-weight: 800;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: #0a0f1c;
-    }
-    .fund-range-card .frc-title {
-      position: absolute;
-      bottom: 16px; left: 18px; z-index: 1;
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1.3rem; font-weight: 850;
-      letter-spacing: -.025em; color: #fff;
-      text-shadow: 0 2px 12px rgba(0,0,0,.4);
-    }
-    .fund-range-card .frc-body {
-      padding: clamp(22px, 3vw, 32px);
-      display: flex; flex-direction: column; flex: 1;
-    }
-    .fund-range-card .frc-desc {
-      font-size: 14.5px; line-height: 1.65;
-      color: var(--tbp-muted);
-      margin: 0 0 20px;
-    }
-    .fund-range-card .frc-stats {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 0;
-      padding: 16px 0;
-      border-top: 1px solid var(--tbp-line);
-      border-bottom: 1px solid var(--tbp-line);
-      margin-bottom: 20px;
-    }
-    .fund-range-card .frc-stat { text-align: center; }
-    .fund-range-card .frc-stat + .frc-stat { border-left: 1px solid var(--tbp-line); }
-    .fund-range-card .frc-stat .sk {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: var(--tbp-muted); margin-bottom: 5px;
-    }
-    .fund-range-card .frc-stat .sv {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1.2rem; font-weight: 800;
-      letter-spacing: -.02em; color: var(--tbp-ink);
-    }
-    .fund-range-card .frc-stat .sv.pos { color: var(--tbp-pos); }
-    .frc-chart-wrap {
-      position: relative; height: 140px; width: 100%;
-      margin-bottom: 20px;
-    }
-    .frc-chart-legend {
-      display: flex; gap: 16px; flex-wrap: wrap;
-      font-size: 11.5px; color: var(--tbp-muted);
-      margin-bottom: 20px;
-    }
-    .frc-chart-legend span {
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .frc-chart-legend .dot {
-      width: 10px; height: 10px; border-radius: 2px;
-      display: inline-block; flex-shrink: 0;
-    }
-
-    /* ── MBD detail fund cards ──────────────────────────────── */
-    .mbd-card {
-      display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1.1fr);
-      gap: 0;
-      border: 1px solid var(--tbp-line);
-      border-radius: 14px;
-      overflow: hidden;
-      background: var(--tbp-bg);
-      margin-bottom: 24px;
-      transition: box-shadow .3s, border-color .3s;
-    }
-    .mbd-card:hover { border-color: rgba(0,0,0,.16); box-shadow: 0 16px 40px -12px rgba(0,0,0,.1); }
-    @media (max-width: 860px) { .mbd-card { grid-template-columns: 1fr; } }
-    .mbd-card .mbd-visual {
-      position: relative;
-      aspect-ratio: 4/3;
-      background: linear-gradient(135deg, #0a0f1c, #1a1a2e);
-      overflow: hidden;
-    }
-    .mbd-card .mbd-visual img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; opacity: .55;
-      transition: transform .8s var(--tbp-ease-slow);
-    }
-    .mbd-card:hover .mbd-visual img { transform: scale(1.04); }
-    .mbd-card .mbd-visual::after {
-      content: "";
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.3) 60%, rgba(0,0,0,.7) 100%),
-        linear-gradient(90deg, rgba(0,0,0,.4) 0%, transparent 60%);
-    }
-    .mbd-code-pill {
-      position: absolute; top: 18px; left: 18px; z-index: 1;
-      padding: 6px 10px;
-      background: rgba(255,255,255,.1);
-      border: 1px solid rgba(255,255,255,.22);
-      backdrop-filter: blur(8px);
-      border-radius: 6px;
-      font-family: ui-monospace, Menlo, monospace;
-      font-size: 11px; font-weight: 700;
-      color: rgba(255,255,255,.92); letter-spacing: .12em;
-    }
-    .mbd-ytd-overlay {
-      position: absolute; bottom: 18px; left: 18px; z-index: 1;
-    }
-    .mbd-ytd-overlay .ytd-num {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 2.2rem; font-weight: 850;
-      letter-spacing: -.04em; color: #4ade80;
-      line-height: 1;
-    }
-    .mbd-ytd-overlay .ytd-label {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: .1em; text-transform: uppercase;
-      color: rgba(255,255,255,.55); margin-top: 3px;
-    }
-    .mbd-body {
-      padding: clamp(24px, 3vw, 36px);
-      display: flex; flex-direction: column;
-    }
-    .mbd-eyebrow {
-      font-size: 10.5px; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase;
-      color: var(--tbp-muted); margin-bottom: 10px;
-    }
-    .mbd-body h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: clamp(1.3rem, 2vw, 1.65rem);
-      font-weight: 800; letter-spacing: -.02em;
-      margin: 0 0 10px; line-height: 1.15;
-    }
-    .mbd-body .mbd-desc {
-      font-size: 14.5px; line-height: 1.65;
-      color: var(--tbp-muted); margin: 0 0 20px;
-    }
-    .mbd-stats-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 16px 0;
-      border-top: 1px solid var(--tbp-line);
-      border-bottom: 1px solid var(--tbp-line);
-      margin-bottom: 18px;
-    }
-    .mbd-stats-row .ms-item .ms-k {
-      font-size: 10px; font-weight: 700; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--tbp-muted); margin-bottom: 4px;
-    }
-    .mbd-stats-row .ms-item .ms-v {
-      font-family: ui-monospace, Menlo, monospace;
-      font-size: 1.25rem; font-weight: 700;
-      letter-spacing: -.01em; color: var(--tbp-ink);
-    }
-    .mbd-stats-row .ms-item .ms-v.pos { color: var(--tbp-pos); }
-    .mbd-stats-row .ms-item .ms-v.neg { color: var(--tbp-neg); }
-    .mbd-pills {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px;
-    }
-    .mbd-pills span {
-      font-size: 11.5px; font-weight: 500;
-      padding: 4px 12px;
-      border: 1px solid var(--tbp-line);
-      border-radius: 999px;
-      color: var(--tbp-muted);
-    }
-    .mbd-chart-wrap {
-      position: relative; height: 130px; width: 100%;
-      margin-bottom: 20px;
-    }
-    .mbd-allocation {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 6px; margin-bottom: 20px;
-    }
-    .mbd-allocation .alloc-row {
-      display: flex; justify-content: space-between;
-      font-size: 13px; color: var(--tbp-ink-2);
-      padding: 6px 0; border-bottom: 1px solid var(--tbp-line-soft);
-    }
-    .mbd-allocation .alloc-row:nth-last-child(-n+2) { border-bottom: 0; }
-    .alloc-weight { font-weight: 700; color: var(--tbp-ink); }
-
-    /* ── Investment Philosophy grid ─────────────────────────── */
-    .philosophy-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: clamp(14px,1.8vw,22px);
-    }
-    @media (max-width: 980px) { .philosophy-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 540px)  { .philosophy-grid { grid-template-columns: 1fr; } }
-    .philosophy-card {
-      padding: clamp(22px,2.8vw,32px);
-      background: var(--tbp-bg);
-      border: 1px solid var(--tbp-line);
-      border-radius: var(--tbp-radius);
-      transition: border-color .25s, box-shadow .3s, transform .3s;
-    }
-    .philosophy-card:hover {
-      border-color: rgba(0,0,0,.15);
-      box-shadow: 0 10px 30px -8px rgba(0,0,0,.08);
-      transform: translateY(-3px);
-    }
-    .philosophy-num {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 2.4rem; font-weight: 850;
-      letter-spacing: -.04em; color: var(--tbp-line);
-      line-height: 1; margin-bottom: 16px;
-    }
-    .philosophy-card h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 1rem; font-weight: 800;
-      letter-spacing: -.01em; color: var(--tbp-ink);
-      margin: 0 0 10px; line-height: 1.25;
-    }
-    .philosophy-card p {
-      font-size: 13.5px; line-height: 1.6;
-      color: var(--tbp-muted); margin: 0;
-    }
-
-    /* ── Analyst "safe hands" section ───────────────────────── */
-    .analyst-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr) minmax(0,1.6fr);
-      gap: clamp(32px,5vw,72px);
-      align-items: start;
-      padding: clamp(48px,7vw,96px) 0;
-      border-top: 1px solid rgba(255,255,255,.1);
-    }
-    @media (max-width: 860px) { .analyst-grid { grid-template-columns: 1fr; } }
-    .analyst-portrait {
-      aspect-ratio: 3/4;
-      border-radius: 14px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #0a0f1c, #1a2a4a);
-      position: relative;
-      max-width: 320px;
-    }
-    .analyst-portrait img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .analyst-portrait .portrait-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Inter Tight', sans-serif;
-      font-size: 6rem; font-weight: 850;
-      letter-spacing: -.04em;
-      color: rgba(255,255,255,.15);
-    }
-    .analyst-info h3 {
-      font-family: 'Inter Tight', sans-serif;
-      font-size: clamp(1.6rem, 2.8vw, 2.4rem);
-      font-weight: 800; letter-spacing: -.025em;
-      line-height: 1.1; color: #fff; margin: 0 0 6px;
-    }
-    .analyst-role {
-      font-size: 13px; font-weight: 600;
-      letter-spacing: .08em; text-transform: uppercase;
-      color: var(--tbp-warm); margin-bottom: 22px;
-    }
-    .analyst-bio {
-      font-size: 15px; line-height: 1.7;
-      color: rgba(255,255,255,.78);
-      margin: 0 0 24px; max-width: 56ch;
-    }
-    .analyst-credentials {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px;
-    }
-    .analyst-credentials span {
-      font-size: 11.5px; font-weight: 600;
-      padding: 5px 14px;
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 999px;
-      color: rgba(255,255,255,.82);
-    }
-    .analyst-quote {
-      border-left: 2px solid var(--tbp-warm);
-      padding-left: 20px;
-      margin-top: 8px;
-    }
-    .analyst-quote p {
-      font-family: 'Fraunces', serif;
-      font-style: italic; font-weight: 300;
-      font-size: clamp(1.1rem,1.6vw,1.35rem);
-      letter-spacing: -.01em; line-height: 1.4;
-      color: rgba(255,255,255,.88); margin: 0;
-    }
+    .mp-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    @media(max-width:760px){ .mp-grid{ grid-template-columns:1fr; } }
+    .mp-card{ display:flex; flex-direction:column; gap:12px; padding:28px; border:1px solid var(--tbp-line);
+      border-radius:var(--tbp-radius); background:var(--tbp-bg); text-decoration:none; color:inherit; transition:border-color .25s, transform .25s, box-shadow .25s; }
+    .mp-card:hover{ border-color:var(--tbp-muted-2); transform:translateY(-3px); box-shadow:0 22px 50px -24px rgba(0,0,0,.18); }
+    .mp-card .code{ font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--tbp-warm); }
+    .mp-card h3{ font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+    .mp-card p{ font-size:14px; line-height:1.6; color:var(--tbp-muted); margin:0; }
+    .mp-card .meta{ margin-top:auto; padding-top:14px; border-top:1px solid var(--tbp-line); font-size:12px; color:var(--tbp-muted-2); letter-spacing:.01em; }
+    .mp-card .go{ font-size:13px; font-weight:700; color:var(--tbp-ink); display:inline-flex; align-items:center; gap:7px; }
+    .mp-summary{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media(max-width:760px){ .mp-summary{ grid-template-columns:1fr; } }
+    .mp-sum{ padding:22px; border:1px solid var(--tbp-line); border-radius:var(--tbp-radius); background:var(--tbp-bg); }
+    .mp-sum h4{ font-family:'Inter Tight',sans-serif; font-size:1.05rem; font-weight:750; margin:0 0 6px; }
+    .mp-sum p{ font-size:13.5px; line-height:1.6; color:var(--tbp-muted); margin:0; }
   </style>
 </head>
 
@@ -547,853 +40,155 @@
   <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
       <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
-        <span class="mark">M</span>
+        <span class="mark">MB</span>
         <span>The Market Brief Daily</span>
       </a>
-                  <nav class="tbp-nav" aria-label="Primary">
+      <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a class="is-active" href="/investments.html">Model Portfolios</a>
         <a href="/posts.html">Research</a>
-        <a href="/tools/">Tools</a>
+        
         <a href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
         <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Get access <span class="arrow">↗</span></a>
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
-
-      <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/investments.html">Model Portfolios</a>
     <a href="/posts.html">Research</a>
-    <a href="/tools/">Tools</a>
-        <a href="/quant/">Quant</a>
+    
+    <a href="/quant/">Quant</a>
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
     <a href="/subscription.html">Subscribe ↗</a>
   </div>
 
-  <!-- ══ HERO ════════════════════════════════════════════════════ -->
-  <section class="tbp-hero-cinematic" id="hero-anchor">
-    <div class="tbp-hero-cinematic-bg" style="background-image:url('/assets/images/editorial-pull.jpg');"></div>
-    <div class="tbp-hero-cinematic-inner">
-      <div>
-        <div class="tbp-eyebrow">Model portfolios &amp; fund range</div>
-        <h1>Four<br><em>philosophies.</em><br>One standard.</h1>
-        <p class="lead">
-          Evidence-based, low-cost, publicly tracked model portfolios, built on the same
-          three-frame analytical discipline used in every research brief.
-          Not a fund. Not investment advice. A transparent exercise in applied methodology.
+  <!-- HERO -->
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 48px); padding-bottom:32px;">
+    <div class="tbp-container">
+      <div data-tbp-reveal style="max-width:760px;">
+        <div class="tbp-eyebrow" style="margin-bottom:20px;">Model portfolios</div>
+        <h1 class="tbp-h1">Four model<br><em>portfolios.</em></h1>
+        <p class="tbp-lead" style="margin-top:24px;">
+          Four publicly tracked model portfolios, built on the same analytical discipline as every research brief.
+          Evidence-based, low-cost, and benchmarked honestly. These are illustrative model portfolios, not a fund and not investment advice.
         </p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a class="tbp-btn primary" href="#fund-range">Fund range <span class="arrow">↓</span></a>
-          <a class="tbp-btn" href="#mbd-portfolios">MBD portfolios <span class="arrow">↓</span></a>
-        </div>
       </div>
-      <aside class="tbp-hero-meta-card">
-        <div class="row"><span class="k">Fund types</span><span class="v">Classic · ESG · <em>Tracker</em></span></div>
-        <div class="row"><span class="k">MBD models</span><span class="v">Macro · Structure · Supply · <em>Factor</em></span></div>
-        <div class="row"><span class="k">OCF (illustrative)</span><span class="v">From 0.20% per annum</span></div>
-        <div class="row"><span class="k">Standard</span><span class="v"><em>Illustrative, not investment advice</em></span></div>
-      </aside>
     </div>
   </section>
 
-  <!-- ══ METHODOLOGY CARDS ════════════════════════════════════════ -->
-  <section class="tbp-section" id="methodology">
+  <!-- THE FOUR PORTFOLIOS -->
+  <section class="tbp-section" style="padding-top:24px;" id="portfolios">
     <div class="tbp-container">
       <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">00 / Methodology</div>
-          <h2>How the portfolios<br><em>are built.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">Everything published here is documented openly, how each fund is built, what benchmarks it is compared to, and where the data comes from. Read this before drawing conclusions from any return figure on this site.</p>
-        </div>
+        <div class="left"><div class="number">01 / The range</div><h2>The four<br><em>portfolios.</em></h2></div>
+        <div class="right"><p class="tbp-lead">Two diversified cores, a low-cost tracker, and an active rotational sleeve. Each links to its own page with holdings, benchmark, and methodology.</p></div>
       </div>
 
-      <div class="method-card-grid" data-tbp-reveal>
-
-        <div class="method-card">
-          <div class="method-card-num">01</div>
-          <p class="method-card-sub">Purpose &amp; status</p>
-          <h3>Educational research project</h3>
-          <p>The model portfolios are illustrative, they do not represent any live fund, trading account, or advisory product. No client capital is allocated. Returns are simulated and do not constitute investment advice.</p>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">M1</div>
-          <p class="method-card-sub">Frame · Market structure</p>
-          <h3>Where the marginal trade clears</h3>
-          <p>Order-flow telemetry, dealer positioning, futures–physical linkage, and the microstructure effects that drive short-window price formation.</p>
-          <ul>
-            <li>Common failure: confusing flow with edge</li>
-            <li>Over-fitting to a single venue's tape</li>
-            <li>Ignoring funding constraints on structure trades</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">M2</div>
-          <p class="method-card-sub">Frame · Physical tightness</p>
-          <h3>When paper and physical diverge</h3>
-          <p>Inventory buffers, lease and funding regimes, delivery windows, and conditions where the futures curve mis-prices the cash market.</p>
-          <ul>
-            <li>Common failure: extrapolating one squeeze cycle</li>
-            <li>Forgetting warehousing arbitrage caps tightness</li>
-            <li>Underestimating how fast tight markets loosen</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">M3</div>
-          <p class="method-card-sub">Frame · Macro transmission</p>
-          <h3>From rates to risk assets</h3>
-          <p>How policy, real yields, dollar liquidity, and credit spreads propagate into commodity, equity, and FX pricing, with attention to lags and non-linearities.</p>
-          <ul>
-            <li>Common failure: linear-thinking in regime shifts</li>
-            <li>Reading the curve as forecast, not positioning</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">02</div>
-          <p class="method-card-sub">Portfolio construction</p>
-          <h3>Each portfolio follows a documented mandate</h3>
-          <ul>
-            <li><strong>MACRO</strong>, multi-asset overlay around rate-curve inflections and real-yield decomposition</li>
-            <li><strong>STRUCT</strong>, equity dislocations from order-flow and dealer positioning</li>
-            <li><strong>SUPPLY</strong>, long physical-tightness premia via inventory and delivery signals</li>
-            <li><strong>FACT</strong>, regime-aware factor rotation by rate-cycle classification</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">03</div>
-          <p class="method-card-sub">Benchmarks</p>
-          <h3>Compared to closest passive alternative</h3>
-          <p>Each fund is compared to a benchmark that reflects its closest passive alternative, never cherry-picked to flatter returns.</p>
-          <ul>
-            <li>MACRO → 60/40 balanced portfolio</li>
-            <li>STRUCT → S&amp;P 500</li>
-            <li>SUPPLY → Bloomberg Commodity</li>
-            <li>FACT → MSCI World</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">04</div>
-          <p class="method-card-sub">Data sources</p>
-          <h3>Public-by-default</h3>
-          <ul>
-            <li>Price &amp; market data, LME, CME, ICE, Bloomberg/Refinitiv</li>
-            <li>Inventory &amp; supply, COMEX/LME warehouse stocks, EIA, USDA</li>
-            <li>Macro &amp; rates, FRED, ECB SDW, BIS, central-bank minutes</li>
-            <li>Microstructure, published academic literature and exchange disclosures</li>
-          </ul>
-        </div>
-
-        <div class="method-card">
-          <div class="method-card-num">05</div>
-          <p class="method-card-sub">Scope &amp; independence</p>
-          <h3>No paid promotions. No allocation kickbacks.</h3>
-          <p>The brief is a working analyst's notebook, not a trade-recommendation service or signal feed. If an instrument is referenced, it is because the analysis pointed there, not because anyone paid for the mention.</p>
-          <p style="margin-top:8px;">Corrections are published in the next brief, marked with an erratum, and linked back. No silent edits.</p>
-        </div>
-
+      <div class="mp-grid" data-tbp-reveal>
+        <a class="mp-card" href="/funds/classic.html">
+          <div class="code">Classic</div>
+          <h3>Global multi-asset core</h3>
+          <p>Diversified equities and bonds in a strategic mix, rebalanced on a rules-based schedule. The default all-weather core.</p>
+          <div class="meta">Model portfolio · benchmark MSCI World · since 2019</div>
+          <span class="go">View portfolio →</span>
+        </a>
+        <a class="mp-card" href="/funds/classic-esg.html">
+          <div class="code">Classic ESG</div>
+          <h3>Values-aligned core</h3>
+          <p>The Classic blend tilted to MSCI World ESG Leaders, with the same disciplined rebalancing and cost focus.</p>
+          <div class="meta">Model portfolio · benchmark MSCI World ESG · since 2019</div>
+          <span class="go">View portfolio →</span>
+        </a>
+        <a class="mp-card" href="/funds/tracker.html">
+          <div class="code">Tracker</div>
+          <h3>Low-cost index core</h3>
+          <p>Broad global market beta with minimal turnover and the lowest possible running cost. Pure, cheap diversification.</p>
+          <div class="meta">Model portfolio · benchmark MSCI ACWI · since 2019</div>
+          <span class="go">View portfolio →</span>
+        </a>
+        <a class="mp-card" href="/funds/rotational.html">
+          <div class="code">Rotational (Active)</div>
+          <h3>Active regime rotation</h3>
+          <p>Tactically rotates across asset classes as the macro regime shifts, the most active of the four mandates.</p>
+          <div class="meta">Model portfolio · benchmark MSCI World · since 2023</div>
+          <span class="go">View portfolio →</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ══ BENEFITS ════════════════════════════════════════════════ -->
-  <section class="tbp-section alt">
+  <!-- METHODOLOGY SUMMARY (full framework lives on the Methodology page) -->
+  <section class="tbp-section alt" id="methodology-summary">
     <div class="tbp-container">
       <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">01 / Why these portfolios</div>
-          <h2>Understand the<br><em>foundations.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">Four principles underpin every allocation decision, low cost, evidence-based construction, institutional-grade custody structure, and a transparent track record.</p>
-        </div>
+        <div class="left"><div class="number">02 / How they are built</div><h2>Documented,<br><em>not marketing.</em></h2></div>
+        <div class="right"><p class="tbp-lead">Every portfolio follows a written mandate, is compared to its closest passive benchmark, and is built from public-by-default data. The complete eight-point framework lives on the Methodology page.</p></div>
       </div>
 
-      <div class="benefits-grid" data-tbp-reveal>
-        <div class="benefit-box">
-          <div class="benefit-icon">◈</div>
-          <h3>Low-Cost, Great Value</h3>
-          <p>A multi-manager approach that combines editorial oversight with quantitative sub-management.</p>
-          <ul>
-            <li>Clear, simple reporting designed for ease of use</li>
-            <li>No hidden platform or switching costs</li>
-            <li>Full methodology published, no black box</li>
-          </ul>
-          <div class="benefit-highlight">Illustrative OCF from 0.20%</div>
-        </div>
-        <div class="benefit-box">
-          <div class="benefit-icon">◎</div>
-          <h3>An Evidence-Based, Global Strategy</h3>
-          <p>Built on an eight-point investment philosophy grounded in decades of academic research and empirical evidence.</p>
-          <ul>
-            <li>Straightforward, diversified construction</li>
-            <li>Systematic rebalancing to control risk exposure</li>
-            <li>Discipline over speculation, always</li>
-            <li>Factor tilts backed by published academic literature</li>
-          </ul>
-        </div>
-        <div class="benefit-box">
-          <div class="benefit-icon">◻</div>
-          <h3>Built on Strong Foundations</h3>
-          <p>A transparent relationship between portfolio construction, custody, and administration.</p>
-          <ul>
-            <li>Full separation of investment and operational functions</li>
-            <li>Independent valuation and NAV calculation</li>
-            <li>Institutional-grade efficiency with zero friction</li>
-            <li>Backed by audited methodology and public track record</li>
-          </ul>
-        </div>
-        <div class="benefit-box">
-          <div class="benefit-icon">◇</div>
-          <h3>Proven Strategy, Trusted Performance</h3>
-          <p>The Classic and Tracker ranges replicate strategies with validated long-run Sharpe ratios above 0.7.</p>
-          <ul>
-            <li>Consistent top-quartile risk-adjusted returns vs peers</li>
-            <li>Same strategy, now fully unitised and tracked publicly</li>
-            <li>No survivorship bias, all periods published</li>
-          </ul>
-        </div>
+      <div class="mp-summary" data-tbp-reveal>
+        <div class="mp-sum"><h4>Status</h4><p>Illustrative model portfolios. No client capital is allocated and returns are simulated. Past performance is not indicative of future results.</p></div>
+        <div class="mp-sum"><h4>Benchmarks</h4><p>Each portfolio is compared to its closest passive alternative (for example MSCI World, MSCI ACWI), never cherry-picked to flatter returns.</p></div>
+        <div class="mp-sum"><h4>Data &amp; independence</h4><p>Public-by-default sources (FRED, exchanges, fund factsheets). No paid promotions, no allocation kickbacks, corrections published openly.</p></div>
+      </div>
+
+      <div style="margin-top:32px;" data-tbp-reveal>
+        <a class="tbp-btn primary" href="/methodology.html">Read the full methodology <span class="arrow">→</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ══ FUND FAMILIES ══════════════════════════════════════════ -->
-  <section class="tbp-section" id="fund-range">
-    <div class="tbp-container">
-      <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">02 / Fund families</div>
-          <h2>Five diversified<br><em>portfolios.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">
-            Five portfolio strategies, a flagship systematic quant mandate, three rooted in foundational academic finance (Fama–French, Sharpe, and a Fama–French ESG variant), and a proprietary thematic rotation. Each is fully documented, strategy, holdings, weights, rebalancing rules, and benchmark methodology.
-          </p>
-        </div>
-      </div>
-
-      <div class="fund-range-grid" data-tbp-reveal>
-
-        <!-- Quant (Flagship) -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/trading-desk.jpg" alt="Quant fund" loading="lazy">
-            <span class="frc-code">MBD-QUANT</span>
-            <span class="frc-badge" style="background:#0a0f1c; color:var(--tbp-warm); border:1px solid var(--tbp-warm);">FLAGSHIP QUANT</span>
-            <span class="frc-title">Quant</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Systematic multi-asset risk premia &amp; convexity</span>
-            <p class="frc-desc">An institutional, multi-strategy book engineered to compound ahead of the market on a risk-adjusted basis. It stacks diversified, academically-replicated return premia (value, momentum, quality, carry and trend) and a machine-learning signal blend on a Hierarchical-Risk-Parity core, targets constant volatility to defeat the volatility tax, and runs a convex options overlay, short the variance-risk premium for carry, long the tail for crash protection.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+9.4%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">1.42</div></div>
-              <div class="frc-stat"><div class="sk">Vol target</div><div class="sv">10%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartQuant"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0a0f1c;"></span>MBD-Quant</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>60/40</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Risk parity (HRP)</span>
-              <span class="frc-pill">Volatility targeting</span>
-              <span class="frc-pill">Trend &amp; carry</span>
-              <span class="frc-pill">Variance-risk premium</span>
-              <span class="frc-pill">Machine learning</span>
-              <span class="frc-pill">Tail convexity</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/quant.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Classic -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/insights-skyline.jpg" alt="Classic fund" loading="lazy">
-            <span class="frc-code">MBD-CLASSIC</span>
-            <span class="frc-title">Classic</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Three-factor model · Fama–French (1993)</span>
-            <p class="frc-desc">Globally diversified equity portfolio targeting the size and value premia documented by Fama &amp; French. Systematic tilts toward small-cap and value, paired with investment-grade fixed income for risk control. Rebalanced quarterly to factor-weight targets.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+12.0%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.84</div></div>
-              <div class="frc-stat"><div class="sk">OCF</div><div class="sv">0.22%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartClassic"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0066ff;"></span>MBD-Classic</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">SMB · HML factor tilts</span>
-              <span class="frc-pill">Quarterly rebalance</span>
-              <span class="frc-pill">10 holdings</span>
-              <span class="frc-pill">5 risk variants</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/classic.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Classic ESG -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/wind-turbines.jpg" alt="Classic ESG fund" loading="lazy">
-            <span class="frc-code">MBD-ESG</span>
-            <span class="frc-badge">ESG</span>
-            <span class="frc-title">Classic ESG</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Fama–French + ESG-screened universe</span>
-            <p class="frc-desc">The Classic factor framework applied to an ESG-screened investable universe. Same size and value tilts, but using MSCI ESG-leader and Article 8 SFDR-aligned funds. Excludes tobacco, controversial weapons, thermal coal, and worst-decile ESG scorers.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+9.0%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.77</div></div>
-              <div class="frc-stat"><div class="sk">OCF</div><div class="sv">0.28%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartESG"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#1a8a4a;"></span>MBD-ESG</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World ESG</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">ESG-screened</span>
-              <span class="frc-pill">SFDR Article 8</span>
-              <span class="frc-pill">Low-carbon tilt</span>
-              <span class="frc-pill">Factor-aware</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/classic-esg.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Tracker -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/london-skyline.jpg" alt="Tracker fund" loading="lazy">
-            <span class="frc-code">MBD-TRACK</span>
-            <span class="frc-title">Tracker</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Market portfolio · Sharpe CAPM (1964)</span>
-            <p class="frc-desc">Pure market-cap-weighted global market portfolio implementing the Sharpe CAPM result that the market portfolio is mean-variance efficient. No factor bets, no active selection, just the lowest-cost expression of the aggregate equity and bond market.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+10.5%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">0.79</div></div>
-              <div class="frc-stat"><div class="sk">OCF</div><div class="sv">0.15%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartTracker"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#c8a35a;"></span>MBD-Tracker</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>60/40 benchmark</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">Market-cap weighted</span>
-              <span class="frc-pill">Pure passive</span>
-              <span class="frc-pill">Lowest OCF</span>
-              <span class="frc-pill">5 risk profiles</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/tracker.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-        <!-- Rotational -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/bot-tradingfloor.jpg" alt="Rotational thematic fund" loading="lazy">
-            <span class="frc-code">MBD-ROTATE</span>
-            <span class="frc-badge" style="background:#0a0f1c; color:var(--tbp-warm); border:1px solid var(--tbp-warm);">FLAGSHIP</span>
-            <span class="frc-title">Rotational</span>
-          </div>
-          <div class="frc-body">
-            <span class="frc-academic">Thematic rotation · proprietary · 19 holdings</span>
-            <p class="frc-desc">A high-conviction thematic portfolio built around the "picks &amp; shovels" of the AI build-out, data-centre power &amp; cooling (Vertiv, Constellation, Eaton), networking &amp; interconnect (Arista, Marvell, Astera Labs), semis equipment, and the cybersecurity fabric, balanced with an early-stage quantum sleeve (IonQ, Rigetti, D-Wave), precious metals, clean energy, and defensive EU staples. Tilts adjust by macro regime, not by calendar.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+18.6%</div></div>
-              <div class="frc-stat"><div class="sk">Sharpe</div><div class="sv">1.12</div></div>
-              <div class="frc-stat"><div class="sk">OCF</div><div class="sv">0.34%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartRotate"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#9333ea;"></span>MBD-Rotate</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span class="frc-pill">AI picks &amp; shovels</span>
-              <span class="frc-pill">Quantum computing</span>
-              <span class="frc-pill">Cybersecurity</span>
-              <span class="frc-pill">Precious metals</span>
-              <span class="frc-pill">Clean energy</span>
-              <span class="frc-pill">EU staples</span>
-            </div>
-            <a class="tbp-btn primary" href="/funds/rotational.html" style="width:100%;justify-content:center;">Learn more about this product →</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ MBD RESEARCH PORTFOLIOS ════════════════════════════════ -->
-  <section class="tbp-section" id="mbd-portfolios">
-    <div class="tbp-container">
-      <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">04 / Research portfolios</div>
-          <h2>The four MBD<br><em>model portfolios.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">
-            Four fully transparent illustrative strategies tracked publicly, macro regime, market
-            microstructure, physical supply, and regime-aware factor. These drive the editorial
-            research direction, not allocatable capital.
-          </p>
-          <div class="tbp-disclaimer" style="margin-top:18px;">
-            <span style="font-size:1.2rem;flex-shrink:0;">⚠</span>
-            <div style="font-size:13px;">Illustrative only, not a fund, not investment advice. Returns are simulated. Past hypothetical performance is not indicative of future results.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="fund-range-grid mbd-4-grid" data-tbp-reveal>
-
-        <!-- MBD-MACRO -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/fund-macro.jpg" alt="Macro trading screens" loading="lazy">
-            <span class="frc-code">MBD-MACRO</span>
-            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+8.4% YTD</span>
-            <span class="frc-title">Macro Transmission</span>
-          </div>
-          <div class="frc-body">
-            <p class="frc-desc">Multi-asset macro overlay positioned around rate-curve inflections, real-yield decomposition, and dollar-liquidity regime shifts. Adds or subtracts risk based on transmission state, not consensus narrative.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+8.4%</div></div>
-              <div class="frc-stat"><div class="sk">vs 60/40</div><div class="sv pos">+3.3pp</div></div>
-              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−4.8%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartMacro"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0066ff;"></span>MBD-MACRO</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>60/40</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Macro</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Multi-asset</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Tactical</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Rate-driven</span>
-            </div>
-            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
-          </div>
-        </div>
-
-        <!-- MBD-STRUCT -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/fund-struct.jpg" alt="Market structure data" loading="lazy">
-            <span class="frc-code">MBD-STRUCT</span>
-            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+6.2% YTD</span>
-            <span class="frc-title">Market Structure Alpha</span>
-          </div>
-          <div class="frc-body">
-            <p class="frc-desc">Captures dislocations from order-flow telemetry, dealer positioning, and zero-day option microstructure effects. A short-window equity strategy keyed off how price formation actually clears.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+6.2%</div></div>
-              <div class="frc-stat"><div class="sk">vs S&amp;P 500</div><div class="sv pos">+1.8pp</div></div>
-              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−5.6%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartStruct"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#0a0a0a;border:1px solid #ccc;"></span>MBD-STRUCT</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>S&amp;P 500</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Microstructure</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Equity</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Quant</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Short-window</span>
-            </div>
-            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
-          </div>
-        </div>
-
-        <!-- MBD-SUPPLY -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/fund-supply.jpg" alt="Physical supply premia" loading="lazy">
-            <span class="frc-code">MBD-SUPPLY</span>
-            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+11.7% YTD</span>
-            <span class="frc-title">Physical Supply Premia</span>
-          </div>
-          <div class="frc-body">
-            <p class="frc-desc">Long physical-tightness premia in metals and energy via inventory, lease, and delivery-window signals. Compensates the futures curve for physical scarcity where paper and physical markets diverge.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+11.7%</div></div>
-              <div class="frc-stat"><div class="sk">vs BCOM</div><div class="sv pos">+4.9pp</div></div>
-              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−6.4%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartSupply"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#1a8a4a;"></span>MBD-SUPPLY</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>Bloomberg Cmdty</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Commodities</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Physical</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Supply cycle</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Metals &amp; energy</span>
-            </div>
-            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
-          </div>
-        </div>
-
-        <!-- MBD-FACT -->
-        <div class="fund-range-card">
-          <div class="frc-visual">
-            <img src="/assets/images/fund-fact.jpg" alt="Factor analytics" loading="lazy">
-            <span class="frc-code">MBD-FACT</span>
-            <span class="frc-badge" style="background:rgba(74,222,128,.92);color:#0a0f1c;">+7.1% YTD</span>
-            <span class="frc-title">Regime-Aware Factor</span>
-          </div>
-          <div class="frc-body">
-            <p class="frc-desc">Rotates value, quality, and low-vol exposure based on rate-cycle regime classification and credit conditions. The factor stack treated as state-dependent, not a permanent allocation.</p>
-            <div class="frc-stats">
-              <div class="frc-stat"><div class="sk">YTD</div><div class="sv pos">+7.1%</div></div>
-              <div class="frc-stat"><div class="sk">vs MSCI W</div><div class="sv pos">+1.7pp</div></div>
-              <div class="frc-stat"><div class="sk">Max DD</div><div class="sv" style="color:var(--tbp-neg);">−5.1%</div></div>
-            </div>
-            <div class="frc-chart-wrap"><canvas id="chartFact"></canvas></div>
-            <div class="frc-chart-legend">
-              <span><span class="dot" style="background:#c8a35a;"></span>MBD-FACT</span>
-              <span><span class="dot" style="background:#8a8a85;"></span>MSCI World</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;">
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Factor</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Equity</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Long-only</span>
-              <span style="font-size:11.5px;font-weight:500;padding:4px 12px;border:1px solid var(--tbp-line);border-radius:999px;color:var(--tbp-muted);">Regime-aware</span>
-            </div>
-            <a class="tbp-btn" href="#methodology" style="width:100%;justify-content:center;">View methodology <span class="arrow">↑</span></a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ INVESTMENT PHILOSOPHY ══════════════════════════════════ -->
-  <section class="tbp-section" id="philosophy">
-    <div class="tbp-container">
-      <div class="tbp-section-heading" data-tbp-reveal>
-        <div class="left">
-          <div class="number">05 / Philosophy</div>
-          <h2>Eight-point<br><em>investment framework.</em></h2>
-        </div>
-        <div class="right">
-          <p class="tbp-lead">Every allocation in every portfolio can be traced back to one of these eight principles. They don&apos;t change with market conditions. They are the discipline that prevents conviction from becoming recklessness.</p>
-        </div>
-      </div>
-
-      <div class="philosophy-grid" data-tbp-reveal>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">01</div>
-          <h3>Risk and return are related</h3>
-          <p>Higher exposure to the right risk factors leads to higher expected returns, but is never a guarantee. Risk is the premium investors pay for the expectation of a greater return.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">02</div>
-          <h3>The capital markets work</h3>
-          <p>Prices in deep, liquid markets reflect all available public information almost instantaneously. Attempting to systematically trade on public news after the fact is a losing game.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">03</div>
-          <h3>Asset allocation drives returns</h3>
-          <p>The most important factor determining the level of risk and variability of return in a portfolio is asset allocation, not individual stock selection or market timing.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">04</div>
-          <h3>Consistent outperformance is rare</h3>
-          <p>Economic uncertainties and random market movements mean it is extremely difficult for anyone, including professional fund managers, to beat the market in the long term. Research suggests most outperformance is luck.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">05</div>
-          <h3>Costs matter profoundly</h3>
-          <p>Costs reduce an investor&apos;s net return and represent a hurdle any fund must clear before delivering value. A fund charging 1% per annum must generate that in alpha before the investor benefits at all.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">06</div>
-          <h3>Investor behaviour is decisive</h3>
-          <p>All too often, investors let their emotions dominate, buying high, selling low, abandoning discipline in volatility. The analyst&apos;s role is to help clients maintain discipline through extreme market conditions.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">07</div>
-          <h3>Diversification is essential</h3>
-          <p>Diversification spreads risk across many companies, sectors, and geographies. Our portfolios hold the shares and bonds of hundreds of companies in dozens of countries, because no single bet is ever worth the concentration risk.</p>
-        </div>
-
-        <div class="philosophy-card">
-          <div class="philosophy-num">08</div>
-          <h3>Rebalancing should be market-driven</h3>
-          <p>Unnecessary portfolio rebalancing, arbitrarily timed around review meetings, damages returns and generates costs. Rebalancing should be driven by market movements, returning the portfolio to its target risk exposure.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ "IN SAFE HANDS" ANALYST SECTION (dark) ═════════════════ -->
-  <section class="tbp-section dark" id="analyst">
-    <div class="tbp-container">
-      <div class="tbp-eyebrow" style="margin-bottom:48px;" data-tbp-reveal>A publication in safe hands</div>
-      <div class="analyst-grid" data-tbp-reveal>
-        <div>
-          <div class="analyst-portrait">
-            <div class="portrait-placeholder">M</div>
-          </div>
-        </div>
-        <div class="analyst-info">
-          <h3>The Market Brief Daily</h3>
-          <div class="analyst-role">Independent Macro Research · London</div>
-          <p class="analyst-bio">
-            One analyst. No house view to defend, no fund flows to protect, no clients to placate.
-            Every portfolio decision, every allocation change, and every research note is published
-            openly, with the full reasoning, the signals that triggered it, and the conditions under
-            which it would be reversed.
-          </p>
-          <p class="analyst-bio">
-            The analyst background combines buy-side multi-asset research with quantitative
-            modelling on commodity supply chains and rate-curve dynamics. The publication is
-            the byproduct of that work, what gets read, what gets modelled, what changes minds.
-          </p>
-          <div class="analyst-credentials">
-            <span>Buy-side research background</span>
-            <span>Multi-asset · Macro · Structural</span>
-            <span>Published since 2024</span>
-            <span>No paid promotions</span>
-            <span>0 undisclosed conflicts</span>
-          </div>
-          <div class="analyst-quote">
-            <p>No sell-side house view. No fund flow to defend. No clients to placate. When we&apos;re wrong, we say so in the next brief, and explain exactly why the model failed.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ CTA ════════════════════════════════════════════════════ -->
+  <!-- DISCLAIMER -->
   <section class="tbp-section tight">
     <div class="tbp-container">
-      <div class="tbp-cta-strip" data-tbp-reveal>
-        <div>
-          <div class="tbp-eyebrow" style="margin-bottom:18px;">Subscribe</div>
-          <h2>Get full access to<br>every <em>portfolio.</em></h2>
-          <p class="tbp-lead" style="margin-top:16px;">The methodology is published above. For full archive access, model portfolio attribution, and weekly long-form research, subscribe to Professional or Institutional.</p>
-        </div>
-        <div class="actions">
-          <a class="tbp-btn primary" href="#methodology">View methodology <span class="arrow">↑</span></a>
-          <a class="tbp-btn" href="/subscription.html">Get Pro access <span class="arrow">→</span></a>
-        </div>
+      <div class="tbp-disclaimer">
+        <div><strong>Illustrative returns.</strong> The portfolios on this page are simulated model portfolios for educational comparison only. They are not live funds, regulated products, or advice, and returns exclude the real-world costs of running a fund. See the <a href="/disclaimer.html">full disclaimer</a>.</div>
       </div>
     </div>
   </section>
 
-  <!-- ══ FOOTER ════════════════════════════════════════════════ -->
-  <footer class="tbp-footer" role="contentinfo">
+  <!-- SUBSCRIBE CTA -->
+  <section class="tbp-section dark" style="padding-block: clamp(64px,7vw,104px);">
+    <div class="tbp-container" style="text-align:center;">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="color:rgba(255,255,255,.5); justify-content:center; margin-bottom:18px;">Subscribe</div>
+        <h2 style="color:#fff; font-size:clamp(2rem,5vw,3.4rem); margin:0 0 18px;">Track every portfolio,<br>read every <em>brief.</em></h2>
+        <p style="color:rgba(255,255,255,.7); font-size:1.05rem; line-height:1.6; max-width:52ch; margin:0 auto 30px;">The free Substack delivers the daily brief and portfolio updates. Paid tiers add the full archive and the quant terminal.</p>
+        <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="background:#fff; color:#0a0a0a; border-color:#fff;">Subscribe on Substack <span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="tbp-footer">
     <div class="tbp-container">
       <div class="tbp-footer-top">
         <div>
           <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
           <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only, not investment advice.</p>
         </div>
-        <div>
-          <h4>Content</h4>
-          <div class="tbp-footer-links">
-            <a href="/posts.html">Research</a>
-            <a href="/investments.html">Model Portfolios</a>
-            <a href="/methodology.html">Methodology</a>
-            <a href="/education.html">Education</a>
-            <a href="/quant/">Quant</a>
-            <a href="/glossary.html">Glossary</a>
-          </div>
-        </div>
-        <div>
-          <h4>Tools &amp; Reports</h4>
-          <div class="tbp-footer-links">
-            <a href="/tools/dcf.html">DCF Calculator</a>
-            <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
-            <a href="/tools/cfa.html">CFA Study Tool</a>
-            <a href="/tools/bond-yield.html">Bond Yield</a>
-            <a href="/reports.html">Research Reports</a>
-            <a href="/subscription.html">Subscription</a>
-          </div>
-        </div>
-        <div>
-          <h4>Company</h4>
-          <div class="tbp-footer-links">
-            <a href="/about.html">About</a>
-            <a href="/contact.html">Contact</a>
-            <a href="/disclaimer.html">Disclaimer</a>
-            <a href="/disclaimer.html#privacy">Privacy</a>
-            <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
-          </div>
-        </div>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
+          <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/methodology.html">Methodology</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a>
+        </div></div>
       </div>
-      <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
-      <div class="tbp-footer-bottom">
-        <span>© 2026 The Market Brief Daily. Educational research only, not investment advice.</span>
-        <div class="legal">
-          <a href="/disclaimer.html">Full disclaimer</a>
-          <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
-        </div>
+      <div class="tbp-footer-bottom" style="margin-top:48px;">
+        <span>© 2026 The Market Brief Daily. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
-  <!-- Header scroll treatment -->
-  <script>
-    (function () {
-      var header = document.querySelector('.tbp-header');
-      var hero   = document.querySelector('#hero-anchor');
-      if (!header || !hero) return;
-      new IntersectionObserver(function (e) {
-        header.classList.toggle('below-hero', !e[0].isIntersecting);
-      }, { threshold: 0 }).observe(hero);
-    })();
-  </script>
-
   <script src="/assets/tbp.js" defer></script>
-
-  <!-- Charts, initialised after DOM + Chart.js are ready -->
-  <script>
-  (function () {
-    var LABELS = ['Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'];
-
-    // ── Cumulative index data (base = 100, Jan 2025) ──────────────
-    var DATA = {
-      // Classic fund vs MSCI World
-      classic:   [102.8,105.4,103.1,107.6,110.2,109.4,112.8,110.9,108.5,112.4,110.7,112.0, 114.3,117.6,116.2,119.8,121.0],
-      msci:      [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0, 109.2,110.7,109.9,111.5,112.9],
-
-      // Classic ESG vs MSCI World ESG
-      esg:       [102.1,104.3,102.7,105.8,107.9,107.1,109.5,108.1,106.3,109.2,108.0,109.0, 111.1,113.4,112.7,115.0,116.1],
-      msci_esg:  [101.2,102.8,101.4,103.7,105.3,104.8,106.4,105.5,104.1,106.7,105.9,106.8, 107.8,109.1,108.5,110.0,111.2],
-
-      // Tracker vs 60/40
-      tracker:   [102.5,104.8,103.2,106.5,108.9,108.2,110.7,109.4,107.4,110.9,109.5,110.5, 112.4,114.7,114.1,117.2,118.5],
-      sixty_forty: [100.8,101.9,100.6,102.8,104.0,103.5,104.8,103.9,102.6,104.7,103.9,104.8, 105.7,106.8,106.3,107.6,108.4],
-
-      // MBD-QUANT vs 60/40, vol-targeted, shallow drawdowns
-      quant:     [101.0,102.4,103.1,104.6,105.9,106.4,107.8,107.2,108.9,110.3,111.0,111.7, 112.4,113.1,113.0,113.8,114.6],
-
-      // MBD-MACRO vs 60/40
-      macro:     [101.2,102.3,100.8,103.5,104.7,105.4,107.1,106.2,107.6,109.4,108.7,107.2, 109.5,111.8,111.1,113.7,116.2],
-      macro_bm:  [100.8,101.9,100.6,102.8,104.0,103.5,104.8,103.9,102.6,104.7,103.9,104.8, 105.7,106.8,106.3,107.6,108.4],
-
-      // MBD-STRUCT vs S&P 500
-      struct:    [101.8,103.2,101.9,104.1,105.8,104.9,106.7,105.8,104.3,105.9,104.8,105.0, 106.8,108.4,107.6,109.2,111.5],
-      sp500:     [101.4,102.9,101.3,104.0,105.7,105.1,107.3,106.1,104.6,107.0,105.9,106.8, 108.2,109.8,109.0,110.5,111.6],
-
-      // MBD-SUPPLY vs Bloomberg Commodity
-      supply:    [102.4,105.1,103.8,107.2,109.6,108.3,111.2,109.7,107.4,110.8,108.9,108.0, 110.4,113.8,112.5,116.9,120.6],
-      bcom:      [100.6,101.5,100.2,102.4,103.8,103.0,105.2,104.1,102.4,104.6,103.3,103.8, 104.9,106.2,105.5,107.0,108.2],
-
-      // MBD-FACT vs MSCI World
-      fact:      [102.1,103.4,102.0,104.5,106.2,105.6,107.8,106.4,105.1,107.3,105.9,105.5, 107.4,109.6,108.9,111.3,113.0],
-      fact_bm:   [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0, 109.2,110.7,109.9,111.5,112.9],
-
-      // MBD-ROTATE (thematic) vs MSCI World, precious metals + clean energy + AI/cyber
-      rotate:    [103.4,106.8,104.2,108.7,112.6,111.4,115.2,113.6,111.0,116.4,114.7,117.1, 121.5,126.3,124.8,129.4,134.2],
-      rotate_bm: [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0, 109.2,110.7,109.9,111.5,112.9],
-
-      // MBD-FI vs Bloomberg US Aggregate
-      fi:        [100.9,101.6,101.2,102.4,103.1,102.7,103.8,103.2,102.4,103.7,103.0,103.6, 104.3,105.0,104.5,105.4,106.1],
-      fi_bm:     [100.4,100.9,100.5,101.5,102.0,101.6,102.5,102.0,101.3,102.4,101.8,102.3, 102.9,103.4,103.0,103.6,104.0],
-
-      // MBD-EQ (multi-factor) vs MSCI World
-      eq:        [102.6,104.5,103.0,105.8,107.9,107.0,109.6,108.3,106.6,109.5,108.2,109.4, 111.7,114.5,113.7,116.1,117.8],
-      eq_bm:     [101.5,103.2,101.8,104.3,106.1,105.6,107.4,106.3,104.8,107.5,106.9,108.0, 109.2,110.7,109.9,111.5,112.9],
-
-      // MBD-CM (commodities) vs Bloomberg Cmdty
-      cm:        [102.6,105.4,103.7,107.8,110.4,108.9,112.1,110.4,108.0,111.3,109.5,109.0, 111.6,114.9,113.6,118.0,121.5],
-      cm_bm:     [100.6,101.5,100.2,102.4,103.8,103.0,105.2,104.1,102.4,104.6,103.3,103.8, 104.9,106.2,105.5,107.0,108.2],
-
-      // MBD-OPT (earnings vol crush) vs S&P 500, low correlation, steady carry
-      opt:       [101.8,103.5,102.8,104.7,106.2,105.6,107.5,106.8,105.4,107.8,106.4,107.2, 109.1,111.4,110.6,113.0,114.5],
-      opt_bm:    [101.4,102.9,101.3,104.0,105.7,105.1,107.3,106.1,104.6,107.0,105.9,106.8, 108.2,109.8,109.0,110.5,111.6]
-    };
-
-    function makeChart(id, d1, d2, c1, c2, l1, l2) {
-      var el = document.getElementById(id);
-      if (!el || typeof Chart === 'undefined') return;
-      new Chart(el, {
-        type: 'line',
-        data: {
-          labels: LABELS,
-          datasets: [
-            { label: l1, data: d1, borderColor: c1, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.3 },
-            { label: l2, data: d2, borderColor: c2, backgroundColor: 'transparent', borderWidth: 1.5, borderDash: [4,3], pointRadius: 0, tension: 0.3 }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          interaction: { mode: 'index', intersect: false },
-          plugins: { legend: { display: false }, tooltip: {
-            callbacks: {
-              label: function(ctx) {
-                var v = ctx.parsed.y;
-                return ctx.dataset.label + ': ' + (v >= 100 ? '+' : '') + (v - 100).toFixed(1) + '%';
-              }
-            }
-          }},
-          scales: {
-            x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#8a8a85', maxTicksLimit: 6 } },
-            y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 10 }, color: '#8a8a85',
-              callback: function(v) { return (v - 100).toFixed(0) + '%'; }
-            }}
-          }
-        }
-      });
-    }
-
-    function init() {
-      if (typeof Chart === 'undefined') { setTimeout(init, 200); return; }
-      makeChart('chartQuant',   DATA.quant,      DATA.sixty_forty, '#0a0f1c', '#8a8a85', 'MBD-Quant',    '60/40');
-      makeChart('chartClassic', DATA.classic,   DATA.msci,        '#0066ff', '#8a8a85', 'MBD-Classic',  'MSCI World');
-      makeChart('chartESG',     DATA.esg,        DATA.msci_esg,    '#1a8a4a', '#8a8a85', 'MBD-ESG',      'MSCI ESG');
-      makeChart('chartTracker', DATA.tracker,    DATA.sixty_forty, '#c8a35a', '#8a8a85', 'MBD-Tracker',  '60/40');
-      makeChart('chartRotate',  DATA.rotate,     DATA.rotate_bm,   '#9333ea', '#8a8a85', 'MBD-Rotate',   'MSCI World');
-      makeChart('chartMacro',   DATA.macro,      DATA.macro_bm,    '#0066ff', '#8a8a85', 'MBD-MACRO',    '60/40');
-      makeChart('chartStruct',  DATA.struct,     DATA.sp500,       '#0a0a0a', '#8a8a85', 'MBD-STRUCT',   'S&P 500');
-      makeChart('chartSupply',  DATA.supply,     DATA.bcom,        '#1a8a4a', '#8a8a85', 'MBD-SUPPLY',   'BCOM');
-      makeChart('chartFact',    DATA.fact,       DATA.fact_bm,     '#c8a35a', '#8a8a85', 'MBD-FACT',     'MSCI World');
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-  })();
-  </script>
-
 </body>
 </html>

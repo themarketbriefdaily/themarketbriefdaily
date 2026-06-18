@@ -1,435 +1,173 @@
-```html
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>About, The Market Brief Daily</title>
-    <meta name="description" content="One analyst, independent perspective. The Market Brief Daily is a solo-operator research publication on macro and market structure." />
-    <meta name="theme-color" content="#faf9f6" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About | The Market Brief Daily</title>
+  <meta name="description" content="The Market Brief Daily is written by Karlo Weeks, MSc Financial Analysis and Fund Management (Distinction, Exeter), CFA Level 1. Independent macro and market-structure research from London." />
+  <meta name="theme-color" content="#faf9f6" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="canonical" href="https://themarketbriefdaily.com/about.html" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="About | The Market Brief Daily" />
+  <meta property="og:url" content="https://themarketbriefdaily.com/about.html" />
+  <meta property="og:description" content="Written by Karlo Weeks, MSc (Distinction, Exeter), CFA Level 1. Independent macro and market-structure research." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
   <link rel="stylesheet" href="/assets/tbp-premium.css" />
-    <style>
-        /* About page specific extensions */
-        .credentials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-top: 28px;
-        }
-        @media (max-width: 800px) {
-            .credentials-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .credential-card {
-            background: var(--tbp-bg);
-            border: 1px solid var(--tbp-line);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-        }
-        .credential-card .credential-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-        .credential-card h4 {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--tbp-ink);
-        }
-        .credential-card .credential-sub {
-            font-size: 12px;
-            color: var(--tbp-muted);
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            margin-bottom: 10px;
-        }
-        .credential-card p {
-            font-size: 13px;
-            color: var(--tbp-muted);
-            line-height: 1.55;
-        }
-        .publish-list {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 24px;
-        }
-        @media (max-width: 600px) {
-            .publish-list {
-                grid-template-columns: 1fr;
-            }
-        }
-        .publish-list li {
-            padding: 16px 18px;
-            border: 1px solid var(--tbp-line);
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--tbp-ink-2);
-            line-height: 1.5;
-            background: var(--tbp-bg);
-        }
-        .publish-list li strong {
-            display: block;
-            color: var(--tbp-ink);
-            margin-bottom: 4px;
-            font-weight: 700;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            margin-top: 28px;
-        }
-        @media (max-width: 600px) {
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .pricing-card {
-            background: var(--tbp-bg);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            padding: 28px 24px;
-        }
-        .pricing-card.featured {
-            border-color: var(--tbp-blue);
-            box-shadow: 0 4px 16px rgba(0,102,255,0.08);
-        }
-        .pricing-card h4 {
-            font-size: 1.1rem;
-            font-weight: 750;
-            margin-bottom: 4px;
-        }
-        .pricing-card .price {
-            font-family: 'Inter Tight', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -.03em;
-            color: var(--tbp-ink);
-            margin: 12px 0 4px;
-        }
-        .pricing-card .price span {
-            font-size: .9rem;
-            font-weight: 500;
-            color: var(--tbp-muted);
-            letter-spacing: 0;
-        }
-        .pricing-card ul {
-            list-style: none;
-            padding: 0;
-            margin: 16px 0 0;
-        }
-        .pricing-card ul li {
-            padding: 6px 0;
-            font-size: 14px;
-            color: var(--tbp-ink-2);
-            border-bottom: 1px solid var(--tbp-line-soft);
-        }
-        .pricing-card ul li:last-child {
-            border-bottom: 0;
-        }
-        .mission-quote {
-            font-family: 'Fraunces', serif;
-            font-style: italic;
-            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-            font-weight: 400;
-            line-height: 1.35;
-            color: var(--tbp-ink);
-            border-left: 3px solid var(--tbp-blue);
-            padding: 8px 0 8px 24px;
-        }
-        .ifa-card {
-            background: var(--tbp-bg);
-            border: 1px solid var(--tbp-line);
-            border-radius: 14px;
-            padding: 32px;
-            margin-top: 24px;
-        }
-    </style>
+  <style>
+    .ab-grid{ display:grid; grid-template-columns:300px 1fr; gap:clamp(28px,5vw,64px); align-items:start; }
+    @media(max-width:820px){ .ab-grid{ grid-template-columns:1fr; } }
+    .ab-photo{ aspect-ratio:4/5; border-radius:16px; border:1px solid var(--tbp-line); overflow:hidden; position:relative;
+      background:linear-gradient(150deg,#0a0f1c,#1b3870 70%,#2e9e4f); display:flex; align-items:center; justify-content:center; }
+    .ab-photo .mono{ font-family:'Inter Tight',sans-serif; font-size:4.5rem; font-weight:850; letter-spacing:-.04em; color:rgba(255,255,255,.92); }
+    .ab-photo .cap{ position:absolute; bottom:12px; left:0; right:0; text-align:center; font-size:11px; letter-spacing:.08em;
+      text-transform:uppercase; color:rgba(255,255,255,.6); }
+    .ab-creds{ margin-top:18px; display:flex; flex-direction:column; gap:10px; }
+    .ab-cred{ display:flex; gap:12px; align-items:flex-start; padding:14px 16px; border:1px solid var(--tbp-line); border-radius:12px; background:var(--tbp-bg); }
+    .ab-cred .ic{ color:var(--tbp-warm); font-weight:800; }
+    .ab-cred .t{ font-weight:700; font-size:14px; } .ab-cred .s{ font-size:12.5px; color:var(--tbp-muted); margin-top:2px; }
+    .ab-story h3{ font-family:'Inter Tight',sans-serif; font-size:1.4rem; font-weight:780; letter-spacing:-.015em; margin:0 0 8px; }
+    .ab-story p{ font-size:1.02rem; line-height:1.7; color:var(--tbp-ink-2); margin:0 0 16px; }
+    .ab-block{ margin-top:34px; }
+    .get-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    @media(max-width:680px){ .get-grid{ grid-template-columns:1fr; } }
+    .get-card{ padding:20px; border:1px solid var(--tbp-line); border-radius:12px; background:var(--tbp-bg); }
+    .get-card h4{ font-family:'Inter Tight',sans-serif; font-size:1.05rem; font-weight:750; margin:0 0 5px; }
+    .get-card p{ font-size:13.5px; line-height:1.6; color:var(--tbp-muted); margin:0; }
+  </style>
 </head>
 
 <body class="tbp">
-    <!-- HEADER -->
-    <header class="tbp-header" id="header" role="banner">
-        <div class="tbp-container tbp-header-inner">
-            <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
-                <span class="mark">MB</span>
-                <span>The Market Brief Daily</span>
-            </a>
-                                    <nav class="tbp-nav" aria-label="Primary">
+  <header class="tbp-header" role="banner">
+    <div class="tbp-container tbp-header-inner">
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">MB</span>
+        <span>The Market Brief Daily</span>
+      </a>
+      <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/investments.html">Model Portfolios</a>
         <a href="/posts.html">Research</a>
-        <a href="/tools/">Tools</a>
+        
         <a href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
         <a class="is-active" href="/about.html">About</a>
       </nav>
-            <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
-            <button class="tbp-burger" id="burger" aria-label="Open menu"><span></span></button>
-        </div>
-    </header>
-
-    <!-- MOBILE MENU -->
-            <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+    </div>
+  </header>
+  <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
     <a href="/investments.html">Model Portfolios</a>
     <a href="/posts.html">Research</a>
-    <a href="/tools/">Tools</a>
-        <a href="/quant/">Quant</a>
+    
+    <a href="/quant/">Quant</a>
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
     <a href="/subscription.html">Subscribe ↗</a>
   </div>
 
-    <!-- HERO -->
-    <section class="tbp-hero">
-        <div class="tbp-container">
-            <span class="tbp-eyebrow" data-tbp-reveal>About</span>
-            <div class="tbp-hero-grid" style="margin-top: 24px;">
-                <div data-tbp-reveal>
-                    <h1>One analyst.<br><em>Independent</em><br>perspective.</h1>
-                </div>
-                <div class="lead-block" data-tbp-reveal class="delay-1">
-                    <p style="font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.6; color: var(--tbp-ink-2); max-width: 48ch;">
-                        The Market Brief Daily is a solo-operator macro research publication. CFA Level 1, MSc Financial Analysis and Fund Management, BSc Economics and Finance. No house view, no fund flow to defend, no clients to placate.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- HERO -->
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 48px); padding-bottom:28px;">
+    <div class="tbp-container">
+      <div data-tbp-reveal style="max-width:780px;">
+        <div class="tbp-eyebrow" style="margin-bottom:20px;">About</div>
+        <h1 class="tbp-h1">Independent research,<br>written in the <em>open.</em></h1>
+        <p class="tbp-lead" style="margin-top:24px;">
+          The Market Brief Daily is a one-analyst publication: institutional-grade macro and market-structure research,
+          model portfolios, and a systematic quant terminal, all documented transparently and free of marketing spin.
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <!-- MISSION SECTION -->
-    <section class="tbp-section tight" style="padding-top: 0;">
-        <div class="tbp-container">
-            <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(28px, 5vw, 72px); align-items: start;" data-tbp-reveal>
-                <div class="mission-quote">
-                    "The goal is to publish frameworks I'd actually use to run capital, and to say so plainly when I'm wrong."
-                </div>
-                <div>
-                    <p class="tbp-body" style="font-size: 1.05rem; max-width: 60ch; line-height: 1.7;">
-                        The Market Brief Daily takes a macro‑first, microstructure‑aware approach to financial markets. Every piece of research published here is built on the same analytical frameworks the author uses to evaluate investment decisions. No stock tips. No hot takes. Just rigorous, transparent analysis that explains the <em>why</em> behind market movements.
-                    </p>
-                    <p class="tbp-body" style="margin-top: 16px; font-size: 1.05rem; max-width: 60ch; line-height: 1.7;">
-                        When the framework produces a wrong call, it's acknowledged in the next brief, with a clear explanation of what was missed and how the model is being adjusted. Transparency isn't a marketing slogan here; it's the core operating principle.
-                    </p>
-                </div>
-            </div>
+  <!-- BIO -->
+  <section class="tbp-section" style="padding-top:24px;">
+    <div class="tbp-container">
+      <div class="ab-grid">
+        <div data-tbp-reveal>
+          <div class="ab-photo">
+            <div class="mono">KW</div>
+            <div class="cap">Photo coming soon</div>
+          </div>
+          <div class="ab-creds">
+            <div class="ab-cred"><span class="ic">◈</span><div><div class="t">MSc Financial Analysis &amp; Fund Management</div><div class="s">Distinction, University of Exeter</div></div></div>
+            <div class="ab-cred"><span class="ic">◈</span><div><div class="t">CFA Level 1</div><div class="s">Chartered Financial Analyst candidate</div></div></div>
+            <div class="ab-cred"><span class="ic">◈</span><div><div class="t">J.P. Morgan applied-research project</div><div class="s">Markets and quantitative research</div></div></div>
+            <div class="ab-cred"><span class="ic">◈</span><div><div class="t">Student Investment Fund</div><div class="s">Ran a live, mandate-driven sleeve</div></div></div>
+          </div>
         </div>
-    </section>
 
-    <!-- CREDENTIALS SECTION -->
-    <section class="tbp-section alt">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left">
-                    <span class="tbp-eyebrow">Qualifications</span>
-                    <h2 class="tbp-h2">Credentials<br><em>&amp; background.</em></h2>
-                </div>
-                <div class="right">
-                    <p class="tbp-lead">All research is educational. The Market Brief Daily is not a regulated financial adviser.</p>
-                </div>
+        <div class="ab-story" data-tbp-reveal>
+          <h3>Who writes this</h3>
+          <p>I am <strong>Karlo Weeks</strong>, an analyst focused on macro transmission, market structure, and systematic strategy. I hold an MSc in Financial Analysis and Fund Management from the University of Exeter (Distinction), am a CFA Level 1 candidate, completed an applied-research project with J.P. Morgan, and ran a mandate-driven sleeve of a student investment fund. The Market Brief Daily is where that training is put to work in public.</p>
+
+          <h3 style="margin-top:28px;">What the publication does</h3>
+          <p>Every brief reads markets through three frames: <strong>macro transmission</strong> (how policy and liquidity propagate into risk assets), <strong>market structure</strong> (where the marginal trade actually clears), and <strong>physical supply</strong> (when paper and physical prices diverge). The same discipline drives the model portfolios and the quant research, so the analysis, the allocations, and the code all line up.</p>
+
+          <h3 style="margin-top:28px;">What you get</h3>
+          <p>A daily macro brief, four publicly tracked model portfolios, a gated systematic quant terminal (the v5c flagship plus strategies in development), and a free finance-education library. No paid promotions, no allocation kickbacks, and corrections published openly. Educational research, not investment advice.</p>
+
+          <div class="ab-block">
+            <div class="get-grid">
+              <div class="get-card"><h4>Daily brief</h4><p>Macro, credit, commodities and microstructure, written for serious readers.</p></div>
+              <div class="get-card"><h4>Model portfolios</h4><p>Classic, Classic ESG, Tracker and Rotational, tracked against honest benchmarks.</p></div>
+              <div class="get-card"><h4>Quant terminal</h4><p>The v5c systematic strategy with live signal, backtest, risk and a portfolio tracker.</p></div>
+              <div class="get-card"><h4>Education library</h4><p>Seven chapters from markets and instruments to UK tax wrappers and the CFA syllabus.</p></div>
             </div>
-            <div class="credentials-grid" data-tbp-reveal class="delay-1">
-                <div class="credential-card">
-                    <div class="credential-icon">📜</div>
-                    <h4>CFA Level 1</h4>
-                    <div class="credential-sub">CFA Institute</div>
-                    <p>Completed December 2025. Currently preparing for Level 2. The CFA curriculum informs the analytical rigour behind every research piece published here.</p>
-                </div>
-                <div class="credential-card">
-                    <div class="credential-icon">🎓</div>
-                    <h4>MSc Financial Analysis &amp; Fund Management</h4>
-                    <div class="credential-sub">University degree</div>
-                    <p>Advanced study in portfolio construction, risk modelling, and investment analysis. Dissertation on time‑varying equity‑bond dependence using copula models.</p>
-                </div>
-                <div class="credential-card">
-                    <div class="credential-icon">📊</div>
-                    <h4>BSc Economics &amp; Finance</h4>
-                    <div class="credential-sub">University degree</div>
-                    <p>Foundation in macroeconomic theory, econometrics, and financial economics. First‑class honours with a focus on applied empirical methods.</p>
-                </div>
-            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- WHAT WE PUBLISH SECTION -->
-    <section class="tbp-section">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left">
-                    <span class="tbp-eyebrow">What we publish</span>
-                    <h2 class="tbp-h2">Six ways to<br><em>stay informed.</em></h2>
-                </div>
-                <div class="right">
-                    <p class="tbp-lead">Everything we produce is designed to be useful, whether you're an individual investor, an IFA, or a boutique fund manager.</p>
-                </div>
-            </div>
-            <ul class="publish-list" data-tbp-reveal class="delay-1">
-                <li>
-                    <strong>Macro Research Briefs</strong>
-                    Weekly analysis of the macro landscape, yield curves, credit spreads, PMI data, and FX regimes. Published every Monday.
-                </li>
-                <li>
-                    <strong>Model Portfolios</strong>
-                    Monthly updates to our strategic and tactical asset allocation models. Includes performance attribution and rebalancing rationale.
-                </li>
-                <li>
-                    <strong>Bespoke Research Reports</strong>
-                    Custom macro and market structure reports produced on demand for IFA practices and boutique funds. From £500.
-                </li>
-                <li>
-                    <strong>AI Day‑Trader</strong>
-                    A live paper‑trading bot running a regime‑switching, score‑driven Student‑t copula model. Every trade is logged publicly with full reasoning.
-                </li>
-                <li>
-                    <strong>Finance Education Library</strong>
-                    Seven chapters covering macroeconomics, fixed income, equity valuation, derivatives, risk management, and portfolio construction. Free to access.
-                </li>
-                <li>
-                    <strong>Interactive Financial Tools</strong>
-                    DCF valuation calculator, live macro dashboard, CFA Level 1 study tool, and bond yield calculator, all free to use, no sign‑up required.
-                </li>
-            </ul>
+  <!-- WHY SUBSCRIBE -->
+  <section class="tbp-section dark" style="padding-block: clamp(64px,7vw,104px);">
+    <div class="tbp-container" style="text-align:center;">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="color:rgba(255,255,255,.5); justify-content:center; margin-bottom:18px;">Why subscribe</div>
+        <h2 style="color:#fff; font-size:clamp(2rem,5vw,3.4rem); margin:0 0 18px;">Read the work,<br>not the <em>marketing.</em></h2>
+        <p style="color:rgba(255,255,255,.7); font-size:1.05rem; line-height:1.6; max-width:56ch; margin:0 auto 22px;">
+          Free covers the daily brief and the education library. Professional adds the full archive, the model-portfolio detail, and the quant terminal. Institutional adds direct analyst access.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a class="tbp-btn primary" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="background:#fff; color:#0a0a0a; border-color:#fff;">Subscribe on Substack <span class="arrow">↗</span></a>
+          <a class="tbp-btn" href="/subscription.html" style="color:#fff; border-color:rgba(255,255,255,.3);">See the tiers <span class="arrow">→</span></a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- PRICING SECTION -->
-    <section class="tbp-section alt">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left">
-                    <span class="tbp-eyebrow">Pricing</span>
-                    <h2 class="tbp-h2">Free or paid.<br><em>Your choice.</em></h2>
-                </div>
-                <div class="right">
-                    <p class="tbp-lead">The free tier is genuinely useful. The paid tier is for professionals who need more depth, more often.</p>
-                </div>
-            </div>
-            <div class="pricing-grid" data-tbp-reveal class="delay-1">
-                <div class="pricing-card">
-                    <h4>Free</h4>
-                    <div class="price">£0<span> /month</span></div>
-                    <ul>
-                        <li>✓ Weekly macro brief</li>
-                        <li>✓ Education library (7 chapters)</li>
-                        <li>✓ DCF valuation calculator</li>
-                        <li>✓ CFA study tool (3 free topics)</li>
-                        <li>✓ Financial glossary</li>
-                        <li>✓ Bond yield calculator</li>
-                    </ul>
-                </div>
-                <div class="pricing-card featured">
-                    <h4>Paid</h4>
-                    <div class="price">£9<span> /month</span></div>
-                    <ul>
-                        <li>✓ Everything in Free</li>
-                        <li>✓ Daily deep‑dive research briefs</li>
-                        <li>✓ All 10 CFA Level 1 topics</li>
-                        <li>✓ PDF export on all tools</li>
-                        <li>✓ Research report discounts (30% off)</li>
-                        <li>✓ Real‑time macro dashboard</li>
-                        <li>✓ Trade alerts from AI Day‑Trader</li>
-                        <li>✓ Model portfolio monthly updates</li>
-                    </ul>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 24px;">
-                <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" class="tbp-btn primary">Subscribe on Substack <span class="arrow">↗</span></a>
-            </div>
+  <!-- FOOTER -->
+  <footer class="tbp-footer">
+    <div class="tbp-container">
+      <div class="tbp-footer-top">
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only, not investment advice.</p>
         </div>
-    </section>
+        <div><h4>Content</h4><div class="tbp-footer-links">
+          <a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
+          <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/methodology.html">Methodology</a>
+        </div></div>
+        <div><h4>Company</h4><div class="tbp-footer-links">
+          <a href="/about.html">About</a><a href="mailto:hello@marketbriefdaily.com">Contact</a>
+          <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
+        </div></div>
+        <div><h4>Legal</h4><div class="tbp-footer-links">
+          <a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a>
+        </div></div>
+      </div>
+      <div class="tbp-footer-bottom" style="margin-top:48px;">
+        <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
 
-    <!-- IFA & INSTITUTIONAL SECTION -->
-    <section class="tbp-section">
-        <div class="tbp-container">
-            <div class="tbp-section-head" data-tbp-reveal>
-                <div class="left">
-                    <span class="tbp-eyebrow">For professionals</span>
-                    <h2 class="tbp-h2">IFA practices<br><em>&amp; boutique funds.</em></h2>
-                </div>
-                <div class="right">
-                    <p class="tbp-lead">Bespoke research and AI‑powered tools for financial professionals who need depth without Bloomberg‑level costs.</p>
-                </div>
-            </div>
-            <div class="ifa-card" data-tbp-reveal class="delay-1">
-                <p class="tbp-body" style="font-size: 1.05rem; line-height: 1.7; max-width: 64ch;">
-                    We produce bespoke research for IFA practices and boutique fund managers who need macro context to inform their investment decisions. Custom reports start from £500 and are tailored to your specific asset universe, client base, and regulatory environment.
-                </p>
-                <p class="tbp-body" style="font-size: 1.05rem; line-height: 1.7; max-width: 64ch; margin-top: 16px;">
-                    AI‑powered document analysis tools for financial contracts, prospectuses, and regulatory filings are available on request. For clients with compliance requirements, all data processing can remain on‑premise, no third‑party cloud exposure.
-                </p>
-                <div style="margin-top: 24px;">
-                    <a href="/contact.html" class="tbp-btn primary">Get in touch →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="tbp-footer">
-        <div class="tbp-container">
-            <div class="tbp-footer-top">
-                <div>
-                    <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
-                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p>
-                </div>
-                <div>
-                    <h4>Navigate</h4>
-                    <div class="tbp-footer-links">
-                        <a href="/">Home</a>
-                        <a href="/posts.html">Research</a>
-                        <a href="/investments.html">Model Portfolios</a>
-                        <a href="/methodology.html">Methodology</a>
-                        <a href="/education.html">Education</a>
-                        <a href="/quant/">Quant</a>
-                        <a href="/tools/dcf.html">Tools</a>
-                        <a href="/about.html">About</a>
-                    </div>
-                </div>
-                <div>
-                    <h4>Tools &amp; Resources</h4>
-                    <div class="tbp-footer-links">
-                        <a href="/tools/dcf.html">DCF Tool</a>
-                        <a href="/tools/macro-dashboard.html">Macro Dashboard</a>
-                        <a href="/tools/cfa.html">CFA Resources</a>
-                        <a href="/tools/bond-yield.html">Bond Yield Tool</a>
-                        <a href="/glossary.html">Glossary</a>
-                        <a href="/reports.html">Reports</a>
-                    </div>
-                </div>
-                <div>
-                    <h4>Company</h4>
-                    <div class="tbp-footer-links">
-                        <a href="/about.html">About</a>
-                        <a href="/contact.html">Contact</a>
-                        <a href="/disclaimer.html">Disclaimer</a>
-                        <a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Substack ↗</a>
-                    </div>
-                </div>
-            </div>
-            <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
-            <div class="tbp-footer-bottom">
-                <span>© 2026 The Market Brief Daily. All rights reserved. Educational research only, not investment advice.</span>
-                <div class="legal">
-                    <a href="/disclaimer.html">Disclaimer</a>
-                    <a href="/disclaimer.html#privacy">Privacy</a>
-                    <a href="/disclaimer.html#terms">Terms</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="/assets/tbp.js" defer></script>
+  <script src="/assets/tbp.js" defer></script>
 </body>
 </html>
-```
