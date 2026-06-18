@@ -1,5 +1,5 @@
 /* ================================================================
-   Cinema Hero — full-page scroll-driven frame sequence
+   Cinema Hero, full-page scroll-driven frame sequence
    - Preloads 60 JPEG frames
    - Frame index now follows scroll progress through the WHOLE PAGE
    - Top of page    → frame 1  (rainy night)

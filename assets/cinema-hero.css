@@ -1,8 +1,8 @@
 /* ================================================================
-   Cinema Hero — full-page scroll backdrop
+   Cinema Hero, full-page scroll backdrop
    - Canvas is fixed to the viewport, not pinned to the hero section
    - Frames advance with whole-page scroll progress
-   - The hero section is now just the "title card" — content below
+   - The hero section is now just the "title card", content below
      sits on top of the cinematic backdrop with translucent treatments
    ================================================================ */
 
@@ -40,7 +40,7 @@
 }
 .cinema-canvas.ready { opacity: 1; }
 
-/* Color grade — film vignette + bottom-fade, slightly lifted globally so
+/* Color grade, film vignette + bottom-fade, slightly lifted globally so
    later content (which sits on top of the canvas) stays legible */
 .cinema-grade {
   position: absolute;
@@ -52,7 +52,7 @@
     linear-gradient(to bottom, rgba(0,0,0,.30) 0%, rgba(0,0,0,.10) 35%, rgba(0,0,0,.55) 100%);
 }
 
-/* Letterbox bars — only visible while we're in the hero (top of page) */
+/* Letterbox bars, only visible while we're in the hero (top of page) */
 .cinema-letterbox {
   position: absolute;
   left: 0; right: 0;
@@ -269,7 +269,7 @@ body.cinema-mode .site-header .nav a:hover {
 .cinema-section.tight { padding: 64px 0; }
 .cinema-section.bleed { background: rgba(8, 12, 24, .55); }
 
-/* Featured story strip — match cinema treatment */
+/* Featured story strip, match cinema treatment */
 body.cinema-mode .featured-strip {
   background: rgba(8, 12, 24, .82);
   backdrop-filter: blur(14px);
@@ -312,7 +312,7 @@ body.cinema-mode .featured-strip .featured-btn:hover {
   line-height: 1.7;
 }
 
-/* Cards on cinema sections — dark glass tiles */
+/* Cards on cinema sections, dark glass tiles */
 .cine-card {
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.10);

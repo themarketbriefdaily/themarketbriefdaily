@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-quant_compute.py — compute the v5c quant dashboard data files.
+quant_compute.py, compute the v5c quant dashboard data files.
 
 Fetches daily history from the Yahoo Finance chart API (stdlib urllib, the same
-source the rest of the site uses — no yfinance needed), feeds it into the single
+source the rest of the site uses, no yfinance needed), feeds it into the single
 source-of-truth strategy module quant/strategy.py, and writes the JSON the static
 /quant pages render with Plotly:
 
@@ -35,7 +35,7 @@ import strategy as S  # noqa: E402
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
 
-# (yahoo symbol, key, use_adjclose)  — adjclose for total-return ETFs, raw close for indices/FX
+# (yahoo symbol, key, use_adjclose), adjclose for total-return ETFs, raw close for indices/FX
 SYMBOLS = [
     ("SPY", "SPY", True), ("^VIX", "VIX", False), ("^VIX3M", "VIX3M", False),
     ("DBMF", "DBMF", True), ("GLD", "GLD", True), ("TLT", "TLT", True),
@@ -122,7 +122,7 @@ def yahoo_daily_ccy(symbol):
 
 def build_isa(gbpusd):
     """Live + ~6y daily GBP prices for the ISA-eligible instruments (for the tracker)."""
-    ISA = ["EQQQ.L", "QQQ3.L", "DBMF", "SGLN.L", "IDTL.L"]
+    ISA = ["VUSA.L", "3USL.L", "DBMF", "SGLN.L", "IDTL.L"]
     gbp_per_usd = (1.0 / gbpusd)
     live, hist = {}, {}
     cutoff = pd.Timestamp.utcnow().tz_localize(None) - pd.Timedelta(days=6 * 365)

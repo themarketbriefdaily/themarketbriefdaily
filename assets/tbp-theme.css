@@ -1,5 +1,5 @@
 /* ================================================================
-   TBP-style theme — editorial minimalism for asset management.
+   TBP-style theme, editorial minimalism for asset management.
    Inspired by tbp.studio's design language: oversized display type,
    white background, full-bleed image cards, diagonal-arrow hovers,
    auto-rotating hero carousel, numbered service rotator, scrolling
@@ -41,7 +41,7 @@ body.tbp {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* No overflow on html/body — it breaks position: sticky on the cinema hero stage. */
+  /* No overflow on html/body, it breaks position: sticky on the cinema hero stage. */
 }
 body.tbp h1, body.tbp h2, body.tbp h3, body.tbp h4,
 body.tbp .tbp-nav, body.tbp .tbp-brand {
@@ -93,7 +93,7 @@ body.tbp h1, body.tbp h2, body.tbp h3, body.tbp h4 {
 .tbp-body { font-size: 1rem; line-height: 1.65; color: var(--tbp-ink-2); }
 .tbp-small { font-size: 13px; color: var(--tbp-muted); letter-spacing: .005em; }
 
-/* Italics for emphasis — TBP-style refined italic in display lines */
+/* Italics for emphasis, TBP-style refined italic in display lines */
 body.tbp em, body.tbp .tbp-it {
   font-family: 'Fraunces', 'Inter Tight', serif;
   font-style: italic;
@@ -138,14 +138,14 @@ body.tbp em, body.tbp .tbp-it {
   /* removes white background on the warm off-white header */
   mix-blend-mode: multiply;
 }
-/* fallback mark kept for pages that haven't been updated yet */
+/* one brand mark site-wide: render the favicon bar-chart icon so the header
+   logo matches the browser tab on every page (the "M"/"MB" text is hidden) */
 .tbp-brand .mark {
   width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--tbp-ink);
-  color: var(--tbp-bg);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 13px; letter-spacing: .02em;
+  border-radius: 7px;
+  background: url('/assets/favicon.svg') center / 28px 28px no-repeat;
+  font-size: 0; color: transparent;
+  flex-shrink: 0;
 }
 .tbp-nav {
   display: flex; gap: 32px;
@@ -168,11 +168,13 @@ body.tbp em, body.tbp .tbp-it {
   display: inline-flex; align-items: center; gap: 8px;
   height: 40px; padding: 0 18px;
   border-radius: 999px;
-  background: var(--tbp-ink); color: var(--tbp-bg);
+  /* explicit colours so the label stays legible even where --tbp-bg / --tbp-ink
+     are re-scoped to dark values inside dark sections (fixes black-on-black) */
+  background: #0a0a0a; color: #ffffff;
   font-size: 13.5px; font-weight: 600; letter-spacing: .005em;
   transition: transform .25s var(--tbp-ease), background .25s var(--tbp-ease);
 }
-.tbp-cta-mini:hover { transform: translateY(-1px); background: var(--tbp-blue); }
+.tbp-cta-mini:hover { transform: translateY(-1px); background: #0066ff; color: #ffffff; }
 .tbp-cta-mini .arrow {
   display: inline-block;
   transform: rotate(-45deg);
@@ -292,7 +294,7 @@ body.tbp em, body.tbp .tbp-it {
 }
 .tbp-hero-meta strong { color: var(--tbp-ink); font-weight: 700; }
 
-/* Hero carousel — image stack with crossfade rotation */
+/* Hero carousel, image stack with crossfade rotation */
 .tbp-hero-carousel {
   position: relative;
   margin-top: clamp(60px, 7vw, 100px);
@@ -776,7 +778,7 @@ body.tbp em, body.tbp .tbp-it {
 [data-tbp-reveal].delay-3 { transition-delay: .3s; }
 [data-tbp-reveal].delay-4 { transition-delay: .4s; }
 
-/* Custom-cursor block removed — using system cursor for accessibility + reliability */
+/* Custom-cursor block removed, using system cursor for accessibility + reliability */
 
 /* ── Reduced motion ───────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

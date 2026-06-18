@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant — Backtest &amp; Performance | The Market Brief Daily</title>
+  <title>Quant, Backtest &amp; Performance | The Market Brief Daily</title>
   <meta name="description" content="Historical performance of the v5c systematic strategy vs SPY and the v5 baseline: equity curve, drawdowns, rolling Sharpe and annual returns.">
   <link rel="icon" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
     <div class="tbp-container tbp-header-inner">
       <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
       <nav class="tbp-nav" aria-label="Primary">
-        <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+        <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
         <a href="/tools/">Tools</a><a class="is-active" href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
@@ -24,7 +24,7 @@
     </div>
   </header>
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
     <a href="/tools/">Tools</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
   </div>
 
@@ -82,13 +82,13 @@
 
   <footer class="tbp-footer"><div class="tbp-container">
     <div class="tbp-footer-top">
-      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p></div>
-      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p></div>
+      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
       <div><h4>Quant</h4><div class="tbp-footer-links"><a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a><a href="/quant/research.html">Research</a></div></div>
       <div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
     </div>
     <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
-    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div></div>
   </div></footer>
 
   <script src="/assets/tbp.js" defer></script>
@@ -132,7 +132,7 @@
       document.getElementById('metrics').innerHTML = Q.table(['Model','CAGR','Vol','Sharpe','Sortino','Max DD','Calmar'], rows);
       // worst drawdowns
       var wrows = bt.worst_dd.map(function(w,i){
-        return { cells:[ {v:String(i+1)}, {v:w.start}, {v:w.trough}, {v:w.recovery||'—'},
+        return { cells:[ {v:String(i+1)}, {v:w.start}, {v:w.trough}, {v:w.recovery||', '},
           {v:Q.fmtPct(w.depth), cls:'neg'}, {v:w.days+' d'} ]};
       });
       document.getElementById('worst').innerHTML = Q.table(['#','Peak','Trough','Recovered','Depth','Peak→Trough'], wrows);

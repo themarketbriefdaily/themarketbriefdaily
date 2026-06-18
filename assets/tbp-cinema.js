@@ -1,5 +1,5 @@
 /* ================================================================
-   TBP-Cinema — scroll-driven 96-frame hero
+   TBP-Cinema, scroll-driven 96-frame hero
    - Frame index = scroll progress through the .tbp-cine-hero section
    - Top of section  → frame 1
    - End of section  → frame 96
@@ -19,10 +19,10 @@
   const progBar = document.querySelector('.tbp-cine-progress .bar');
   const frameEl = document.querySelector('.tbp-cine-progress .frame-num');
 
-  // Diagnostic — visible in DevTools Console, helps if cinema isn't advancing.
+  // Diagnostic, visible in DevTools Console, helps if cinema isn't advancing.
   console.log('[tbp-cinema] script loaded; hero:', !!hero, 'stage:', !!stage, 'canvas:', !!canvas);
   if (!hero || !stage || !canvas) {
-    console.warn('[tbp-cinema] Required DOM nodes missing — aborting init.');
+    console.warn('[tbp-cinema] Required DOM nodes missing, aborting init.');
     return;
   }
   // Surface the sticky state once layout settles, so we can confirm it's working.
@@ -115,7 +115,7 @@
       easingActive = false;
       return;
     }
-    // Lerp toward target — 0.18 is the smoothing factor (higher = snappier, lower = smoother)
+    // Lerp toward target, 0.18 is the smoothing factor (higher = snappier, lower = smoother)
     displayIdx += diff * 0.18;
     const idx = Math.round(displayIdx);
     drawFrame(idx);
@@ -127,7 +127,7 @@
     requestAnimationFrame(easeTick);
   }
 
-  // Public update entrypoint — called on scroll/resize
+  // Public update entrypoint, called on scroll/resize
   function update() { updateProgress(); }
 
   let rafPending = false;

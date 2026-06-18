@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant — Daily Signal | The Market Brief Daily</title>
+  <title>Quant, Daily Signal | The Market Brief Daily</title>
   <meta name="description" content="Live daily allocation signal for the v5c systematic strategy: regime, conviction and target weights, updated from market data.">
   <link rel="icon" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,8 +22,8 @@
       <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
       <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="/investments.html">Investments</a>
-        <a href="/posts.html">Research Posts</a>
+        <a href="/investments.html">Model Portfolios</a>
+        <a href="/posts.html">Research</a>
         <a href="/tools/">Tools</a>
         <a class="is-active" href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
@@ -34,7 +34,7 @@
     </div>
   </header>
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
     <a href="/tools/">Tools</a><a href="/quant/">Quant</a><a href="/education.html">Education</a>
     <a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
   </div>
@@ -67,16 +67,16 @@
       <div id="regimeBanner" class="q-regime q-contango">
         <div>
           <div class="q-conv-label">Current regime</div>
-          <div class="q-regime-name" id="regimeName">—</div>
-          <p class="q-regime-desc" id="regimeDesc">—</p>
+          <div class="q-regime-name" id="regimeName">, </div>
+          <p class="q-regime-desc" id="regimeDesc">, </p>
           <div class="q-flex" style="margin-top:14px;">
             <span class="q-pill off" id="creditPill"><span class="dot"></span> Credit gate</span>
-            <span class="q-pill" id="durPill"><span class="dot"></span> —</span>
+            <span class="q-pill" id="durPill"><span class="dot"></span>, </span>
           </div>
         </div>
         <div>
           <div class="q-conv-label">Conviction score</div>
-          <div class="q-conv-val" id="convVal">—</div>
+          <div class="q-conv-val" id="convVal">, </div>
           <div class="q-meter"><i id="convBar" style="width:0%"></i></div>
           <p class="q-conv-help">Continuous score in [0,1] = VIX-contango × trend-strength × low-vol state. Higher = the model is more confident in risk exposure.</p>
         </div>
@@ -119,9 +119,9 @@
     <div class="tbp-container">
       <div class="tbp-footer-top">
         <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div>
-          <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p></div>
+          <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p></div>
         <div><h4>Navigate</h4><div class="tbp-footer-links">
-          <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a>
+          <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
           <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
         <div><h4>Quant</h4><div class="tbp-footer-links">
           <a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
@@ -132,7 +132,7 @@
       </div>
       <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
       <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span>
-        <div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+        <div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div></div>
     </div>
   </footer>
 
@@ -144,7 +144,7 @@
     var REGIME_DESC = {
       Bull: "VIX term structure in contango and price above its 210-day trend. The model runs its highest equity exposure, vol-targeted and diversified.",
       Contango: "Contango intact but trend has weakened. Equity exposure is throttled toward the 10% vol target; diversifiers carry more of the book.",
-      Crisis: "VIX in backwardation — stress regime. Equity exposure is cut to cash and the book leans on managed futures and trend-gated diversifiers."
+      Crisis: "VIX in backwardation, stress regime. Equity exposure is cut to cash and the book leans on managed futures and trend-gated diversifiers."
     };
     function render(sig){
       Q.setUpdated('#updated', sig.updated_utc);
@@ -183,10 +183,10 @@
       document.getElementById('allocTable').innerHTML = Q.table(['Sleeve','Ticker','Target weight'], rows);
       document.getElementById('creditNote').innerHTML = sig.credit_gate_active
         ? "⚠ <strong>Credit gate is ACTIVE</strong> (HYG below its 200-day average): equity exposure is capped at the defensive Contango target until credit stabilises."
-        : "Credit gate inactive — HYG is above its 200-day average, so no credit-stress cap is applied to equity exposure.";
+        : "Credit gate inactive, HYG is above its 200-day average, so no credit-stress cap is applied to equity exposure.";
       // pie
       var nz = sig.allocation.filter(function(a){ return a.weight>0.001; });
-      var palette = {'EQQQ.L':'#0a0a0a','QQQ3.L':'#0066ff','DBMF':'#c8a35a','SGLN.L':'#caa84e','IDTL.L':'#5a7d9a','CASH':'#cfcabc'};
+      var palette = {'VUSA.L':'#28e0f0','3USL.L':'#a98bff','DBMF':'#f7bd57','SGLN.L':'#e0b34a','IDTL.L':'#5f9fd0','CASH':'#5f769b'};
       Plotly.react('pie', [{
         type:'pie', hole:0.55, sort:false,
         labels: nz.map(function(a){return a.ticker;}),

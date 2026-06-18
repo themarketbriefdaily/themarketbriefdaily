@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Macroeconomic Indicators — The Market Brief Daily</title>
+  <title>Macroeconomic Indicators, The Market Brief Daily</title>
   <meta name="description" content="Live macroeconomic dashboard: market levels, US inflation and CPI, the Treasury yield curve, the Fed funds rate, unemployment, payrolls, GDP and retail sales." />
   <meta name="theme-color" content="#0a0f1c" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://www.marketbriefdaily.com/indicators.html" />
+  <link rel="canonical" href="https://themarketbriefdaily.com/indicators.html" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="The Market Brief Daily" />
-  <meta property="og:title" content="Macroeconomic Indicators — The Market Brief Daily" />
+  <meta property="og:title" content="Macroeconomic Indicators, The Market Brief Daily" />
   <meta property="og:description" content="Live macroeconomic dashboard: markets, inflation, the Treasury yield curve, the Fed funds rate, jobs and growth." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,14 +68,14 @@
       </a>
       <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="/investments.html">Investments</a>
-        <a href="/posts.html">Research Posts</a>
+        <a href="/investments.html">Model Portfolios</a>
+        <a href="/posts.html">Research</a>
         <a href="/tools/">Tools</a>
         <a href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
         <a href="/about.html">About</a>
       </nav>
-      <a class="tbp-cta-mini" href="/subscription.html">
+      <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">
         Get access <span class="arrow">↗</span>
       </a>
       <button class="tbp-burger" aria-label="Open menu"><span></span></button>
@@ -84,8 +84,8 @@
 
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
-    <a href="/investments.html">Investments</a>
-    <a href="/posts.html">Research Posts</a>
+    <a href="/investments.html">Model Portfolios</a>
+    <a href="/posts.html">Research</a>
     <a href="/tools/">Tools</a>
         <a href="/quant/">Quant</a>
     <a href="/education.html">Education</a>
@@ -99,8 +99,7 @@
       <div class="tbp-eyebrow" style="margin-bottom:14px;">Important macroeconomic indicators</div>
       <h1 style="font-size:clamp(2.2rem,4.6vw,3.8rem); font-weight:850; letter-spacing:-.04em; line-height:1.02; margin:0 0 18px;">The regime, <em>in numbers</em>.</h1>
       <p style="font-size:clamp(1rem,1.3vw,1.1rem); line-height:1.7; color:var(--tbp-muted); max-width:60ch; margin:0 0 14px;">
-        The indicators that drive every positioning decision across our model portfolios —
-        inflation and the path of policy, the shape of the Treasury curve, the labour market,
+        The indicators that drive every positioning decision across our model portfolios, inflation and the path of policy, the shape of the Treasury curve, the labour market,
         growth, and the market levels that price it all. Sourced from live data and refreshed
         automatically.
       </p>
@@ -132,7 +131,7 @@
     <div class="tbp-container">
       <div class="ind-section-head">
         <h2>US Treasury yield curve</h2>
-        <span class="sub">The market's read on growth, inflation and the term premium — and how the US funds its debt.</span>
+        <span class="sub">The market's read on growth, inflation and the term premium, and how the US funds its debt.</span>
       </div>
       <div class="ind-curve-wrap">
         <div class="ind-curve-canvas"><canvas id="curveChart"></canvas></div>
@@ -145,7 +144,7 @@
     <div class="tbp-container">
       <div class="ind-section-head">
         <h2>Growth &amp; the labour market</h2>
-        <span class="sub">A tightening workforce against a slowing demand pulse — the stagflationary tension we watch.</span>
+        <span class="sub">A tightening workforce against a slowing demand pulse, the stagflationary tension we watch.</span>
       </div>
       <div class="ind-grid" id="growthGrid"></div>
     </div>
@@ -154,7 +153,7 @@
   <section class="tbp-section ind-section" style="padding-bottom:clamp(48px,6vw,90px);">
     <div class="tbp-container">
       <p class="ind-note" style="max-width:70ch;">
-        Educational research only — not investment advice. Market levels are sourced from Yahoo Finance;
+        Educational research only, not investment advice. Market levels are sourced from Yahoo Finance;
         economic series (CPI, inflation, policy rate, Treasury yields, employment and growth) from
         Alpha Vantage / official releases. Figures refresh automatically on a schedule and may lag
         the most recent print.
@@ -167,13 +166,13 @@
       <div class="tbp-footer-top">
         <div>
           <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
-          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only — not investment advice.</p>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only, not investment advice.</p>
         </div>
         <div>
           <h4>Content</h4>
           <div class="tbp-footer-links">
             <a href="/posts.html">Research</a>
-            <a href="/investments.html">Funds</a>
+            <a href="/investments.html">Model Portfolios</a>
             <a href="/education.html">Education</a>
             <a href="/glossary.html">Glossary</a>
           </div>
@@ -200,7 +199,7 @@
       </div>
       <div class="tbp-footer-massive" aria-hidden="true">MarketBriefDaily.</div>
       <div class="tbp-footer-bottom">
-        <span>© 2026 The Market Brief Daily. Educational research only — not investment advice.</span>
+        <span>© 2026 The Market Brief Daily. Educational research only, not investment advice.</span>
         <div class="legal">
           <a href="/disclaimer.html">Full disclaimer</a>
           <a href="mailto:hello@marketbriefdaily.com">hello@marketbriefdaily.com</a>
@@ -323,7 +322,7 @@
       var s = eco.ust_10y && eco.ust_2y ? (eco.ust_10y.value - eco.ust_2y.value) : null;
       if (s !== null) {
         note.textContent = '10Y minus 2Y spread: ' + (s >= 0 ? '+' : '') + (s * 100).toFixed(0) +
-          ' bp — ' + (s < 0 ? 'inverted, the classic late-cycle warning.' :
+          ' bp, ' + (s < 0 ? 'inverted, the classic late-cycle warning.' :
           'positive, a normalising term structure.');
       }
     }

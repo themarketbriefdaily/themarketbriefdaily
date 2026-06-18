@@ -1,5 +1,5 @@
 /* ================================================================
-   London 3D scene — Google Earth style controls.
+   London 3D scene, Google Earth style controls.
    Left drag = rotate · Right drag / two-finger = pan · Scroll = zoom
    Starting position: x=-2274  y=80  z=-384
    FOV: 58°  ·  No ground clipping  ·  Tight zoom limits
@@ -17,7 +17,7 @@ if (!container) { console.warn('[london] no #londonStage'); }
 // ── Renderer ─────────────────────────────────────────────────────
 const scene = new THREE.Scene();
 
-// FOV 58° — wider than before (was 45°), gives a stronger sense of depth
+// FOV 58°, wider than before (was 45°), gives a stronger sense of depth
 const camera = new THREE.PerspectiveCamera(58, 1, 5, 30000);
 
 const renderer = new THREE.WebGLRenderer({
@@ -31,13 +31,13 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // soft shadow edges
 
-// Canvas is transparent — CSS gradient on container is the sky
+// Canvas is transparent, CSS gradient on container is the sky
 renderer.setClearColor(0x000000, 0);
 renderer.domElement.style.background = 'transparent';
 renderer.domElement.style.display    = 'block';
 container.appendChild(renderer.domElement);
 
-// ── Lighting — warm golden-hour ───────────────────────────────────
+// ── Lighting, warm golden-hour ───────────────────────────────────
 scene.add(new THREE.AmbientLight(0xfff4e0, 0.75));      // slightly reduced ambient so shadows are visible
 
 const sun = new THREE.DirectionalLight(0xffe8c0, 1.1);  // warm golden sun, slightly brighter
@@ -54,7 +54,7 @@ sun.shadow.camera.bottom    = -8000;
 sun.shadow.bias             = -0.0005;                  // prevents shadow acne on flat surfaces
 scene.add(sun);
 
-const fill = new THREE.DirectionalLight(0xc8deff, 0.30); // cool sky bounce — no shadows needed
+const fill = new THREE.DirectionalLight(0xc8deff, 0.30); // cool sky bounce, no shadows needed
 fill.position.set(-3, 2, -3);
 scene.add(fill);
 
@@ -72,13 +72,13 @@ window.addEventListener('resize', resize, { passive: true });
 
 // ── Sky background ────────────────────────────────────────────────
 // We use a CSS gradient on the container instead of a 3D sphere.
-// A sphere always clips when you orbit low — the gradient never does.
+// A sphere always clips when you orbit low, the gradient never does.
 // The renderer clear colour (set after city loads) matches the horizon.
 function createSky() {
-  // Soft blue-sky gradient — lighter at top, matches fog colour at horizon
+  // Soft blue-sky gradient, lighter at top, matches fog colour at horizon
   container.style.background =
     'linear-gradient(to bottom, #b8d4e8 0%, #cce0ee 35%, #d8e8f0 65%, #8ab4c8 100%)';
-  // Tell Three.js to use alpha:false clear — gradient shows through
+  // Tell Three.js to use alpha:false clear, gradient shows through
   renderer.setClearColor(0x000000, 0);
   renderer.domElement.style.background = 'transparent';
   return Promise.resolve();
@@ -86,15 +86,15 @@ function createSky() {
 
 // ── Curated colour palette ────────────────────────────────────────
 //
-//  Buildings : eggshell — soft warm off-white, classic London stock brick look
-//  Water     : Thames deep teal — rich and distinctly river-like
-//  Green     : London sage — parks under overcast sky, muted and natural
-//  Roads     : warm stone — slightly cream, not cold grey
+//  Buildings : eggshell, soft warm off-white, classic London stock brick look
+//  Water     : Thames deep teal, rich and distinctly river-like
+//  Green     : London sage, parks under overcast sky, muted and natural
+//  Roads     : warm stone, slightly cream, not cold grey
 //  Shadows   : enabled via renderer + MeshPhongMaterial
 
 // MeshPhongMaterial lets us receive shadows and add subtle specularity
 const matBuilding  = new THREE.MeshPhongMaterial({
-  color:     0xf5f0e8,   // eggshell — warm off-white
+  color:     0xf5f0e8,   // eggshell, warm off-white
   shininess: 8,          // very subtle sheen, not plastic
   specular:  0xd4cfc8,   // warm specular tint
 });
@@ -150,7 +150,7 @@ async function loadCity() {
         console.log('[london] center x=' + center.x.toFixed(1) + ' y=' + center.y.toFixed(1) + ' z=' + center.z.toFixed(1));
         console.log('[london] size   x=' + size.x.toFixed(1)   + ' y=' + size.y.toFixed(1)   + ' z=' + size.z.toFixed(1));
 
-        // Fog — gradient sky colour at the horizon for seamless blending
+        // Fog, gradient sky colour at the horizon for seamless blending
         scene.fog = new THREE.Fog(0x8ab4c8, size.x * 0.5, size.x * 1.8);
 
         resolve({ center, size, box });
@@ -175,9 +175,9 @@ async function loadCity() {
 //  Scroll / pinch    = zoom
 //  Double-click      = zoom in and re-centre on that point
 //
-//  maxPolarAngle = 84.6° — camera stays above ground.
-//  minDistance   = 150   — can't fly into buildings.
-//  maxDistance   = 6000  — world feels large, not infinite.
+//  maxPolarAngle = 84.6°, camera stays above ground.
+//  minDistance   = 150, can't fly into buildings.
+//  maxDistance   = 6000, world feels large, not infinite.
 
 let controls;
 const _ray = new THREE.Raycaster();
@@ -193,12 +193,12 @@ function initControls(center) {
   controls.screenSpacePanning = false;  // pan slides along the ground plane
 
   // ── Zoom limits ─────────────────────────────────────────────────
-  controls.minDistance = 150;    // ~2 storeys — can get close to buildings
-  controls.maxDistance = 6000;   // tight ceiling — city stays prominent
+  controls.minDistance = 150;    // ~2 storeys, can get close to buildings
+  controls.maxDistance = 6000;   // tight ceiling, city stays prominent
 
-  // ── Angle limits — NO underground clipping ──────────────────────
+  // ── Angle limits, NO underground clipping ──────────────────────
   controls.minPolarAngle = 0.04;              // nearly top-down
-  controls.maxPolarAngle = Math.PI * 0.47;    // ≈84.6° — nearly flat, never below horizon
+  controls.maxPolarAngle = Math.PI * 0.47;    // ≈84.6°, nearly flat, never below horizon
 
   // ── Start position (exact coords) ──────────────────────────────
   camera.position.set(-2274, 80, -384);
@@ -224,7 +224,7 @@ function initControls(center) {
   });
 }
 
-// ── Ground clamp — prevents camera going below y=20 ──────────────
+// ── Ground clamp, prevents camera going below y=20 ──────────────
 // Called every frame after controls.update()
 function clampCameraToGround() {
   const MIN_Y = 20;
@@ -289,7 +289,7 @@ const LANDMARKS = [
   {
     name:  'Houses of Parliament',
     sub:   'AI Day-Trader',
-    desc:  'Autonomous algorithmic trading — live signals.',
+    desc:  'Autonomous algorithmic trading, live signals.',
     href:  '/bot.html',
     img:   '/assets/images/houses-of-parliament.jpg',
     world: new THREE.Vector3(-1913, 280, -369),
@@ -320,7 +320,7 @@ function buildMarkers() {
 }
 
 // ── Project markers to screen ─────────────────────────────────────
-// Cards are ALWAYS visible — no distance fading.
+// Cards are ALWAYS visible, no distance fading.
 // They only disappear when the landmark is behind the camera (_proj.z >= 1).
 const _proj = new THREE.Vector3();
 
@@ -329,14 +329,14 @@ function projectMarkers() {
   for (const m of markerEls) {
     _proj.copy(m.world).project(camera);
 
-    // Behind the camera — hide completely
+    // Behind the camera, hide completely
     if (_proj.z >= 1) {
       m.el.style.opacity       = '0';
       m.el.style.pointerEvents = 'none';
       continue;
     }
 
-    // On screen — always fully visible
+    // On screen, always fully visible
     const sx = (_proj.x *  0.5 + 0.5) * w;
     const sy = (_proj.y * -0.5 + 0.5) * h;
     m.el.style.transform     = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px) translate(-50%,-100%)`;
@@ -375,7 +375,7 @@ function tick() {
   try {
     await createSky();
   } catch (e) {
-    console.warn('[london] sky texture failed — using fallback colour', e);
+    console.warn('[london] sky texture failed, using fallback colour', e);
   }
   try {
     const { center } = await loadCity();
@@ -388,6 +388,6 @@ function tick() {
   } catch (err) {
     console.error('[london]', err);
     const label = loaderEl?.querySelector('.lon-load-label');
-    if (label) label.textContent = 'Map unavailable — ' + err.message;
+    if (label) label.textContent = 'Map unavailable, ' + err.message;
   }
 })();

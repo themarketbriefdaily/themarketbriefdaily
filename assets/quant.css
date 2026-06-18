@@ -1,4 +1,4 @@
-/* quant.css — "Markets Terminal" theme for the /quant section.
+/* quant.css, "Markets Terminal" theme for the /quant section.
    Deliberately distinct from the warm editorial site: dark, neon, monospace,
    animated. Scoped to .quant-dark so it never leaks into the rest of the site.
    Reuses the q-* class names so all five pages restyle automatically. */
@@ -29,10 +29,10 @@
 .quant-dark .tbp-header{ background:rgba(5,8,15,0.72); backdrop-filter:blur(12px); border-bottom:1px solid var(--qd-line); }
 .quant-dark .tbp-header.scrolled{ background:rgba(5,8,15,0.92); }
 .quant-dark .tbp-brand, .quant-dark .tbp-nav a, .quant-dark .tbp-cta-mini{ color:var(--qd-text); }
-.quant-dark .tbp-brand .mark{ background:var(--qd-cyan); color:#04121a; box-shadow:0 0 18px rgba(40,224,240,.5); }
+.quant-dark .tbp-brand .mark{ box-shadow:0 0 16px rgba(40,224,240,.4); }
 .quant-dark .tbp-nav a:hover{ color:var(--qd-cyan); }
 .quant-dark .tbp-nav a.is-active{ color:var(--qd-cyan); }
-.quant-dark .tbp-cta-mini{ border-color:var(--qd-line-2); }
+.quant-dark .tbp-cta-mini{ background:var(--qd-cyan); color:#04121a; border-color:var(--qd-cyan); }
 .quant-dark .tbp-burger span,.quant-dark .tbp-burger span::before,.quant-dark .tbp-burger span::after{ background:var(--qd-text); }
 .quant-dark .tbp-mobile-menu{ background:rgba(5,8,15,0.97); }
 .quant-dark .tbp-footer{ background:#04060c; border-top:1px solid var(--qd-line); color:var(--qd-muted); }

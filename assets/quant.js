@@ -1,4 +1,4 @@
-/* quant.js — shared helpers for the /quant "Markets Terminal".
+/* quant.js, shared helpers for the /quant "Markets Terminal".
    Dark Plotly theme + neon palette, access-code gate, animated background,
    and a live ticker. Auto-initialises on any page with <body class="quant-dark">. */
 (function (global) {
@@ -82,7 +82,7 @@
     gate.innerHTML =
       '<div class="lock">🔒</div>' +
       '<h2>Subscriber access</h2>' +
-      '<p>The live v5c terminal — signal, backtest, risk analytics and the portfolio tracker — is for Market Brief subscribers. Enter your access code to unlock it on this device.</p>' +
+      '<p>The live v5c terminal, signal, backtest, risk analytics and the portfolio tracker, is for Market Brief subscribers. Enter your access code to unlock it on this device.</p>' +
       '<div class="row"><input id="q-code" type="text" placeholder="ACCESS CODE" autocomplete="off" spellcheck="false" aria-label="Access code">' +
       '<button class="q-btn" id="q-unlock">Unlock</button></div>' +
       '<div class="err" id="q-err"></div>' +

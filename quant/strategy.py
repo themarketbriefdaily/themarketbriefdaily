@@ -1,5 +1,5 @@
 """
-quant/strategy.py — single source of truth for the v5c production strategy.
+quant/strategy.py, single source of truth for the v5c production strategy.
 
 A faithful pandas port of the research script v5c_regime.py (the winning "#2 credit
 gate" configuration), run on SPY, in GBP, with NO Trading-212 FX fee.
@@ -37,10 +37,13 @@ PARAMS = dict(
     equity_3x_ter=0.0095, fin_spread=0.004, hysteresis=0.05,
 )
 
-# ISA-eligible instrument mapping for the live allocation table
+# ISA-eligible instrument mapping for the live allocation table.
+# The engine trades SPY (S&P 500); these are the ISA-eligible UCITS used to
+# implement each sleeve. ndx1 = 1x S&P 500, ndx3 = 3x S&P 500 (labels kept
+# internal only; nothing on-page should read "NDX" or "QQQ").
 ISA_TICKERS = {
-    "ndx1": ("EQQQ.L",  "1x equity (Nasdaq-100)"),
-    "ndx3": ("QQQ3.L",  "3x equity (Nasdaq-100)"),
+    "ndx1": ("VUSA.L",  "1x S&P 500"),
+    "ndx3": ("3USL.L",  "3x S&P 500"),
     "mf":   ("DBMF",    "Managed futures"),
     "gld":  ("SGLN.L",  "Gold"),
     "tlt":  ("IDTL.L",  "Long Treasuries"),
@@ -459,7 +462,7 @@ def current_signal():
     avg_ann = float(same.mean() * TD) if len(same) else 0.0
     # current prices for the ISA tickers we actually have (proxies in USD/GBP space)
     px_now = {}
-    for key, ser in {"EQQQ.L": spy, "QQQ3.L": spy, "DBMF": dbmf, "SGLN.L": gld, "IDTL.L": tlt}.items():
+    for key, ser in {"VUSA.L": spy, "3USL.L": spy, "DBMF": dbmf, "SGLN.L": gld, "IDTL.L": tlt}.items():
         try:
             px_now[key] = round(float(ser.dropna().iloc[-1]), 4)
         except Exception:

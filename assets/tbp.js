@@ -1,5 +1,5 @@
 /* ================================================================
-   TBP-style behaviors — single self-contained script
+   TBP-style behaviors, single self-contained script
    ================================================================ */
 (function () {
   'use strict';
@@ -87,5 +87,5 @@
     document.querySelectorAll('[data-tbp-reveal]').forEach(el => el.classList.add('in-view'));
   }
 
-  // (Custom cursor removed — system cursor is more accessible and reliable.)
+  // (Custom cursor removed, system cursor is more accessible and reliable.)
 })();

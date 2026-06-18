@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DCF Calculator — The Market Brief Daily</title>
+    <title>DCF Calculator, The Market Brief Daily</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
@@ -205,8 +205,8 @@
             </a>
                                     <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="/investments.html">Investments</a>
-        <a href="/posts.html">Research Posts</a>
+        <a href="/investments.html">Model Portfolios</a>
+        <a href="/posts.html">Research</a>
         <a class="is-active" href="/tools/">Tools</a>
         <a href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
@@ -222,8 +222,8 @@
     <!-- MOBILE MENU -->
             <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
     <a href="/">Home</a>
-    <a href="/investments.html">Investments</a>
-    <a href="/posts.html">Research Posts</a>
+    <a href="/investments.html">Model Portfolios</a>
+    <a href="/posts.html">Research</a>
     <a href="/tools/">Tools</a>
         <a href="/quant/">Quant</a>
     <a href="/education.html">Education</a>
@@ -238,7 +238,7 @@
             <div style="margin-top: 16px;" data-tbp-reveal>
                 <h1 style="font-size: clamp(2.2rem, 6vw, 4rem);">DCF Valuation<br><em>Calculator.</em></h1>
             </div>
-            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">Enter your assumptions, get an intrinsic value estimate instantly. Free to use — no sign-up required. PDF export available with a paid subscription.</p>
+            <p class="tbp-lead" style="margin-top: 16px; max-width: 60ch;" data-tbp-reveal class="delay-1">Enter your assumptions, get an intrinsic value estimate instantly. Free to use, no sign-up required. PDF export available with a paid subscription.</p>
         </div>
     </section>
 
@@ -294,7 +294,7 @@
                         <input type="number" id="sharesOutstanding" value="100" min="0.01" step="1" oninput="calculateDCF()">
                     </div>
                     <div class="input-group">
-                        <label for="currentPrice">Current share price (£) — optional</label>
+                        <label for="currentPrice">Current share price (£), optional</label>
                         <input type="number" id="currentPrice" value="" placeholder="e.g. 50" min="0" step="0.01" oninput="calculateDCF()">
                     </div>
                     <div class="input-group">
@@ -307,18 +307,18 @@
                 <div class="calc-result-card" data-tbp-reveal class="delay-1">
                     <h3 style="font-size:1.1rem; font-weight:700; color:rgba(255,255,255,0.5); margin-bottom: 12px;">Results</h3>
                     <p class="result-label">Intrinsic value per share</p>
-                    <div class="result-large" id="intrinsicValue">£—</div>
+                    <div class="result-large" id="intrinsicValue">£, </div>
                     <div id="marginSafetyBlock" style="margin-top:12px; display:none;">
                         <span class="margin-of-safety" id="marginSafety"></span>
                     </div>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px;">
                         <div>
                             <p class="result-label">Enterprise Value</p>
-                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="enterpriseValue">£—</p>
+                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="enterpriseValue">£, </p>
                         </div>
                         <div>
                             <p class="result-label">Equity Value</p>
-                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="equityValue">£—</p>
+                            <p style="font-weight:700; font-size:1.2rem; margin:4px 0;" id="equityValue">£, </p>
                         </div>
                     </div>
                     <div class="bar-wrapper" id="barWrapper" style="display:none;">
@@ -375,15 +375,15 @@
             <div class="assumption-cards" data-tbp-reveal class="delay-1">
                 <div class="assumption-card">
                     <h4>WACC (Weighted Average Cost of Capital)</h4>
-                    <p>The discount rate that reflects the risk of the company's cash flows. It's the blended return required by both equity and debt holders. For stable, mature companies, WACC typically ranges 6–9%. Riskier, high-growth firms may have WACC of 12–15% or more.</p>
+                    <p>The discount rate that reflects the risk of the company's cash flows. It's the blended return required by both equity and debt holders. For stable, mature companies, WACC typically ranges 6 to 9%. Riskier, high-growth firms may have WACC of 12 to 15% or more.</p>
                 </div>
                 <div class="assumption-card">
                     <h4>Terminal growth rate</h4>
-                    <p>The rate at which free cash flows are assumed to grow beyond the projection period, in perpetuity. It should not exceed the long-term GDP growth rate of the economy. Typical range: 2–3.5% for mature companies. Setting it too high can dramatically overstate value.</p>
+                    <p>The rate at which free cash flows are assumed to grow beyond the projection period, in perpetuity. It should not exceed the long-term GDP growth rate of the economy. Typical range: 2 to 3.5% for mature companies. Setting it too high can dramatically overstate value.</p>
                 </div>
                 <div class="assumption-card">
                     <h4>EBIT margin</h4>
-                    <p>Earnings Before Interest and Tax as a percentage of revenue. This is a measure of operating profitability. Stable, defensive industries often have 20–40% margins. Cyclical or capital-intensive businesses may have 5–15% margins.</p>
+                    <p>Earnings Before Interest and Tax as a percentage of revenue. This is a measure of operating profitability. Stable, defensive industries often have 20 to 40% margins. Cyclical or capital-intensive businesses may have 5 to 15% margins.</p>
                 </div>
             </div>
         </div>
@@ -428,17 +428,17 @@
             <div class="tbp-footer-top">
                 <div>
                     <div class="tbp-footer-brand">The Market<br>Brief Daily</div>
-                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p>
+                    <p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p>
                 </div>
                 <div>
                     <h4>Navigate</h4>
                     <div class="tbp-footer-links">
                         <a href="/">Home</a>
                         <a href="/posts.html">Research</a>
-                        <a href="/investments.html">Funds</a>
+                        <a href="/investments.html">Model Portfolios</a>
                         <a href="/methodology.html">Methodology</a>
                         <a href="/education.html">Education</a>
-                        <a href="/bot.html">AI Trader</a>
+                        <a href="/quant/">Quant</a>
                         <a href="/tools/dcf.html">Tools</a>
                         <a href="/about.html">About</a>
                     </div>
@@ -469,8 +469,8 @@
                 <span>© 2026 The Market Brief Daily. All rights reserved.</span>
                 <div class="legal">
                     <a href="/disclaimer.html">Disclaimer</a>
-                    <a href="/privacy.html">Privacy</a>
-                    <a href="/terms.html">Terms</a>
+                    <a href="/disclaimer.html#privacy">Privacy</a>
+                    <a href="/disclaimer.html#terms">Terms</a>
                 </div>
             </div>
         </div>
@@ -508,9 +508,9 @@
             const currentPrice = parseFloat(document.getElementById('currentPrice').value);
 
             if (revenueInput <= 0 || sharesOutstanding <= 0) {
-                document.getElementById('intrinsicValue').textContent = '£—';
-                document.getElementById('enterpriseValue').textContent = '£—';
-                document.getElementById('equityValue').textContent = '£—';
+                document.getElementById('intrinsicValue').textContent = '£, ';
+                document.getElementById('enterpriseValue').textContent = '£, ';
+                document.getElementById('equityValue').textContent = '£, ';
                 document.getElementById('marginSafetyBlock').style.display = 'none';
                 document.getElementById('barWrapper').style.display = 'none';
                 return;

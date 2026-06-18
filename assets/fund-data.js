@@ -1,5 +1,5 @@
 /**
- * The Market Brief Daily — Shared Fund Data
+ * The Market Brief Daily, Shared Fund Data
  * Single source of truth for fund metadata used by both index.html and funds.html.
  *
  * Performance figures (r1y, benchR) are static fallbacks shown on the home page

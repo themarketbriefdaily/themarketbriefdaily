@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant — Research Library | The Market Brief Daily</title>
+  <title>Quant, Research Library | The Market Brief Daily</title>
   <meta name="description" content="Research history of the v5c systematic strategy: nine model versions, what changed in each, the verdict, and the economic rationale for every production component.">
   <link rel="icon" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
     <div class="tbp-container tbp-header-inner">
       <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
       <nav class="tbp-nav" aria-label="Primary">
-        <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+        <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
         <a href="/tools/">Tools</a><a class="is-active" href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
@@ -23,7 +23,7 @@
     </div>
   </header>
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a><a href="/investments.html">Investments</a><a href="/posts.html">Research Posts</a>
+    <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
     <a href="/tools/">Tools</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
   </div>
 
@@ -44,7 +44,7 @@
     <div class="q-block">
       <p class="q-section-label">Production strategy · v5c</p>
       <div class="q-cards" id="headline"></div>
-      <p class="q-note" style="margin-top:10px;">SPY underlier, GBP, no FX fee, full sample (~2008–present). Implemented with ISA-eligible instruments: EQQQ.L, QQQ3.L, DBMF, SGLN.L, IDTL.L.</p>
+      <p class="q-note" style="margin-top:10px;">SPY (S&P 500) underlier, GBP, no FX fee, full sample (2008 to present). Implemented with ISA-eligible instruments: VUSA.L (1x S&P 500), 3USL.L (3x S&P 500), DBMF, SGLN.L, IDTL.L.</p>
     </div>
 
     <div class="q-block">
@@ -63,7 +63,7 @@
           <tr class="hl"><td><span class="q-tk">v5c (v9)</span></td><td style="text-align:left">Credit gate: HYG below its 200-day MA caps equity at the defensive Contango target. (Fast-50 break, VIX-spike and asymmetric re-risk were tested in the same ablation and rejected.)</td><td><span class="q-verdict acc">Accepted · PRODUCTION</span></td></tr>
         </tbody>
       </table></div>
-      <p class="q-note" style="margin-top:10px;">Rejected in the v9 pre-registered ablation: <strong>fast-50 break</strong> (whipsaw — SPY crosses its 50-day MA constantly in bulls), <strong>VIX-spike force-out</strong> (cuts into V-shaped recoveries), <strong>asymmetric re-risk</strong> (redundant once the vol-cap governs book risk), <strong>broad commodities (DBC)</strong> (no Sharpe gain). Only the credit gate cleared the 90% bootstrap bar on live-era Sortino.</p>
+      <p class="q-note" style="margin-top:10px;">Rejected in the v9 pre-registered ablation: <strong>fast-50 break</strong> (whipsaw, SPY crosses its 50-day MA constantly in bulls), <strong>VIX-spike force-out</strong> (cuts into V-shaped recoveries), <strong>asymmetric re-risk</strong> (redundant once the vol-cap governs book risk), <strong>broad commodities (DBC)</strong> (no Sharpe gain). Only the credit gate cleared the 90% bootstrap bar on live-era Sortino.</p>
     </div>
 
     <div class="q-block">
@@ -71,8 +71,8 @@
       <div class="q-rationale">
         <div class="q-rcard"><div class="tag">Regime gate</div><h4>Contango × trend</h4><p>VIX3M&gt;VIX harvests the volatility-risk premium term structure; the 210-day trend filter keeps the book risk-on only while price momentum is intact. Backwardation flags stress and forces de-risking.</p></div>
         <div class="q-rcard"><div class="tag">Sizing</div><h4>Volatility targeting</h4><p>Holding risk constant rather than dollars reduces volatility drag and stabilises compounding. Exposure scales inversely with realised vol, capped by regime.</p></div>
-        <div class="q-rcard"><div class="tag">Diversifiers</div><h4>DBMF + gold + Treasuries</h4><p>Trend-gated, inverse-vol-weighted decorrelated sleeves raise portfolio Sharpe without lowering summed return — the one genuine free lunch. Commodities (DBC) were tested and added nothing.</p></div>
-        <div class="q-rcard"><div class="tag">Credit gate</div><h4>HYG &lt; 200-day MA</h4><p>The excess bond premium leads equity stress (Gilchrist–Zakrajšek 2012). When high-yield credit breaks trend, equity is capped at the defensive target — catching the credit-led grinds (2011, 2015-16, 2022) the VIX gate misses.</p></div>
+        <div class="q-rcard"><div class="tag">Diversifiers</div><h4>DBMF + gold + Treasuries</h4><p>Trend-gated, inverse-vol-weighted decorrelated sleeves raise portfolio Sharpe without lowering summed return, the one genuine free lunch. Commodities (DBC) were tested and added nothing.</p></div>
+        <div class="q-rcard"><div class="tag">Credit gate</div><h4>HYG &lt; 200-day MA</h4><p>The excess bond premium leads equity stress (Gilchrist–Zakrajšek 2012). When high-yield credit breaks trend, equity is capped at the defensive target, catching the credit-led grinds (2011, 2015-16, 2022) the VIX gate misses.</p></div>
         <div class="q-rcard"><div class="tag">Risk cap</div><h4>Total-portfolio vol-cap @ 0.28</h4><p>A book-level de-risk-only scalar (Moreira–Muir 2017): high conditional vol predicts poor returns, so cutting in those windows lowers vol <em>and</em> the volatility drag.</p></div>
         <div class="q-rcard"><div class="tag">Tail control</div><h4>Daily de-risk overlay</h4><p>A fast median-vol / realised-vol scalar on the equity sleeves reacts intraday-to-month faster than the monthly regime gate, trimming exposure as volatility spikes.</p></div>
       </div>
@@ -85,7 +85,7 @@
         <a class="q-btn ghost" href="/data/quant/returns.csv" download>Daily returns (CSV) ↓</a>
         <a class="q-btn ghost" href="/methodology.html">Site methodology</a>
       </div>
-      <p class="q-note" style="margin-top:12px;">The strategy logic lives in a single Python module (<code>quant/strategy.py</code>) — the same code that powers every page here. A GitHub Action recomputes the signal and backtest from fresh market data twice each weekday.</p>
+      <p class="q-note" style="margin-top:12px;">The strategy logic lives in a single Python module (<code>quant/strategy.py</code>), the same code that powers every page here. A GitHub Action recomputes the signal and backtest from fresh market data twice each weekday.</p>
     </div>
 
     <div class="q-block"><p class="q-disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Deploy capital at your own risk.</p></div>
@@ -93,13 +93,13 @@
 
   <footer class="tbp-footer"><div class="tbp-container">
     <div class="tbp-footer-top">
-      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools — built for clarity, not clicks.</p></div>
-      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Funds</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p></div>
+      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
       <div><h4>Quant</h4><div class="tbp-footer-links"><a href="/quant/">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a><a href="/quant/research.html">Research</a></div></div>
       <div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
     </div>
     <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
-    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div></div>
+    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div></div>
   </div></footer>
 
   <script src="/assets/tbp.js" defer></script>
