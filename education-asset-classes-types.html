@@ -42,7 +42,7 @@
 
   <main class="container">
     <section class="hero">
-      <span class="kicker">Asset Classes &amp; Types, 10 Modules</span>
+      <span class="kicker">Asset Classes &amp; Types, 12 Modules</span>
       <h1>Asset Classes &amp; Asset Types</h1>
       <p>Economic roles, payoff structures, valuation frameworks, and risk regimes across equities, fixed income, credit, inflation-linked securities, real assets, commodities, FX, derivatives, alternatives, and their cross-asset interactions.</p>
     </section>
@@ -61,6 +61,8 @@
           <a href="#m8"><span class="num">8</span>Derivatives: Options &amp; Swaps</a>
           <a href="#m9"><span class="num">9</span>Alternative Investments</a>
           <a href="#m10"><span class="num">10</span>Cross-Asset Interactions</a>
+          <a href="#m11"><span class="num">11</span>Cash &amp; Money Markets</a>
+          <a href="#m12"><span class="num">12</span>Digital Assets</a>
         </nav>
         <a class="sidebar-back" href="education-library.html">← Back to Hub</a>
       </aside>
@@ -463,6 +465,119 @@ Where: S = spot price at expiry, K = strike price</code>
               <li>Tail correlations spike in crises: diversification benefits evaporate precisely when they are most needed.</li>
               <li>Risk parity balances risk contribution (not capital weight) across asset classes, more robust than capital-weight diversification across regimes.</li>
               <li>Regime analysis, mapping portfolio exposures to four growth/inflation quadrants, is the most practical framework for assessing macro diversification quality.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M11 -->
+        <article id="m11" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 11</span>
+            <h2>Cash, Money Markets, and Short-Term Instruments</h2>
+          </div>
+          <p class="module-overview">Cash is treated as the absence of an investment decision, the residual you hold while waiting to do something else. That framing is a mistake. Money markets are a genuine asset class with their own term structure, credit hierarchy, and stress dynamics, and the difference between leaving cash in a current account and managing it actively can be worth several percent a year. After a decade near the zero bound, the return of 4 to 5% short rates made the cash allocation decision matter again.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Identify the main money-market instruments, Treasury bills, commercial paper, certificates of deposit, and repo, and their risk hierarchy.</li>
+              <li>Explain how money market funds (MMFs) work and the distinction between government, prime, and the historical constant-NAV structure.</li>
+              <li>Calculate the yield on a discount instrument and convert between discount yield and bond-equivalent yield.</li>
+              <li>Explain why cash carries reinvestment and inflation risk despite carrying negligible credit or duration risk.</li>
+              <li>Assess where cash belongs in a portfolio as dry powder, liquidity reserve, and a deflation/volatility hedge.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>The Money-Market Instrument Ladder</h3>
+              <ul>
+                <li><strong>Treasury bills</strong>: Short-dated government debt (1 to 12 months) issued at a discount to par. The closest thing to a true risk-free asset, backed by the sovereign and deeply liquid.</li>
+                <li><strong>Repo (repurchase agreements)</strong>: Collateralised short-term lending, examined in the markets chapter. The secured backbone of institutional cash management.</li>
+                <li><strong>Certificates of deposit (CDs)</strong>: Time deposits issued by banks, carrying bank credit risk above T-bills.</li>
+                <li><strong>Commercial paper (CP)</strong>: Unsecured short-term corporate debt (typically &lt;270 days). Higher yield, but carries issuer credit and rollover risk, the CP market froze in 2008 and March 2020.</li>
+                <li><strong>Money market funds</strong>: Pooled vehicles holding a diversified book of the above, offering daily liquidity and a stable or near-stable value.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Formula: Discount Yield vs Bond-Equivalent Yield</span>
+              <code>Discount yield = (Face − Price)/Face × (360/days)
+Bond-equivalent yield (BEY) = (Face − Price)/Price × (365/days)
+
+Example: 91-day T-bill, face £100, price £98.80
+Discount yield = (1.20/100) × (360/91) = 4.75%
+BEY          = (1.20/98.80) × (365/91) = 4.88%</code>
+              <p class="info-box-content">Money-market instruments are quoted on several yield conventions, and they are not directly comparable. The discount yield understates the true return because it divides the gain by face value rather than the price paid and uses a 360-day year. Always convert to a bond-equivalent (or money-market) yield before comparing a T-bill to a CD or a savings rate, the convention difference can be 10 to 15bps on a one-year instrument.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Stress Episode: When "Safe" Cash Isn't, MMF Runs</span>
+              <p class="info-box-content">In September 2008 the Reserve Primary Fund, a large prime money market fund holding Lehman commercial paper, "broke the buck", its net asset value fell below $1.00. The result was a run on prime MMFs that froze the commercial-paper market and forced a US Treasury guarantee. Reforms (SEC Rule 2a-7, EU MMFR) followed: government MMFs keep a constant NAV, but prime/institutional funds moved to a floating NAV with liquidity fees and redemption gates. The March 2020 dash-for-cash triggered prime-MMF stress again, prompting the Fed's Money Market Mutual Fund Liquidity Facility. Lesson: not all "cash" is equal, government and Treasury funds carry materially less run risk than prime funds reaching for yield.</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: The Real Risks of Holding Cash</span>
+              <p class="info-box-content">Cash has negligible credit and duration risk but two real risks. <strong>Inflation risk</strong>: with CPI at 4% and cash earning 4%, the real return is zero; through 2021 to 22, cash holders lost 8 to 10% of real purchasing power. <strong>Reinvestment risk</strong>: cash returns are not locked in, a 5% yield can become 2% within a year if the central bank cuts, which is precisely why investors "lock in" duration by buying bonds when they expect rate cuts. Cash earns its place as a portfolio holding not through return but through optionality (dry powder to deploy in dislocations) and its tendency to hold value exactly when risk assets fall.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Money markets are a real asset class with a credit hierarchy: T-bills and government repo sit safest; CP and prime MMFs carry issuer and rollover risk.</li>
+              <li>Always normalise quoted money-market yields to a bond-equivalent basis before comparing instruments.</li>
+              <li>Cash carries no duration risk but real inflation and reinvestment risk, a 5% yield is not a guarantee of 5% next year.</li>
+              <li>Government MMFs are materially safer in a run than yield-reaching prime funds, as 2008 and 2020 both demonstrated.</li>
+              <li>Cash earns its allocation through optionality and downside ballast, not through its headline return.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M12 -->
+        <article id="m12" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 12</span>
+            <h2>Digital Assets, Stablecoins, and Tokenisation</h2>
+          </div>
+          <p class="module-overview">Digital assets sit awkwardly across the asset-class taxonomy: some behave like speculative call options on adoption, some like bearer commodities, some like money-market instruments, and some are simply a new settlement rail for old assets. Whatever one's view on valuation, the institutional plumbing, spot ETFs, regulated custody, and tokenised treasuries, has matured to the point where an educated investor needs a working framework rather than either evangelism or dismissal.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Distinguish the main categories of digital asset: store-of-value tokens, smart-contract platforms, stablecoins, and tokenised real-world assets.</li>
+              <li>Explain why a non-cash-flow asset like Bitcoin cannot be valued with discounted cash flows and what frameworks are used instead.</li>
+              <li>Describe how fiat-backed stablecoins maintain their peg and the reserve and run risks they carry.</li>
+              <li>Explain tokenisation and why tokenised money-market funds and treasuries are the clearest institutional use case.</li>
+              <li>Assess custody, regulatory, and concentration risks specific to the asset class.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>A Working Taxonomy</h3>
+              <ul>
+                <li><strong>Store-of-value tokens</strong> (Bitcoin): fixed-supply bearer assets with no cash flow. The investment thesis is monetary, adoption as "digital gold", not productive.</li>
+                <li><strong>Smart-contract platforms</strong> (Ethereum and similar): tokens that pay for computation on a programmable network; closer to a commodity-plus-equity hybrid, with staking yield and fee-burn dynamics.</li>
+                <li><strong>Stablecoins</strong>: tokens pegged to fiat (USDC, USDT), functioning as on-chain money-market instruments and the settlement layer for most crypto trading.</li>
+                <li><strong>Tokenised real-world assets (RWAs)</strong>: blockchain representations of conventional assets, tokenised treasuries, money-market funds, and gold, where the chain is a settlement rail, not the asset.</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Valuing an Asset With No Cash Flow</span>
+              <p class="info-box-content">Bitcoin produces no dividends, coupons, or rent, so DDM and DCF are inapplicable. Analysts instead use: (1) <strong>relative store-of-value framing</strong>, sizing a potential market versus gold's ~$15tn market cap; (2) <strong>network/adoption models</strong> such as Metcalfe-style value-scales-with-users heuristics; and (3) <strong>cost-of-production</strong> floors from mining economics. All are weak: they anchor a price rather than derive it. The honest conclusion is that a non-cash-flow asset is a pure supply-and-demand instrument whose price reflects marginal adoption and liquidity conditions, which is exactly why realised volatility runs 3 to 5× that of equities. Position sizing, not valuation precision, is the operative discipline.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Risk Study: Stablecoin De-Pegs and Reserve Quality</span>
+              <p class="info-box-content">A fiat-backed stablecoin is only as good as its reserves and redemption rights, it is effectively an unregulated money-market fund. The collapse of TerraUSD (May 2022), an <em>algorithmic</em> stablecoin with no real reserves, erased ~$40bn in days and is the canonical warning against "stable" assets backed by reflexive token mechanics. Even fully-reserved coins carry risk: USDC briefly de-pegged to $0.88 in March 2023 when ~$3.3bn of its reserves were stranded at the failed Silicon Valley Bank, restored only when deposits were guaranteed. The lessons mirror the MMF chapter exactly: reserve composition, custody, and redemption mechanics are everything, and "stable" is a claim to verify, not assume.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Institutional Inflection: Spot ETFs and Tokenised Treasuries</span>
+              <p class="info-box-content">Two 2024 developments moved digital assets from the fringe toward the institutional perimeter. First, US spot Bitcoin ETFs launched in January 2024 and gathered tens of billions in assets within months, giving investors regulated, custodied exposure inside ordinary brokerage and (eventually) ISA-style wrappers without managing private keys. Second, <strong>tokenised money-market funds</strong>, led by BlackRock's BUIDL, put yield-bearing treasury exposure on-chain with instant settlement. The tokenised-treasury case is the most defensible institutional use of the technology: it is not a speculation on a new asset but a faster, cheaper settlement rail for the safest existing one, blurring the line between this module and the money-market module before it.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>"Digital assets" is not one asset class, separate store-of-value tokens, smart-contract platforms, stablecoins, and tokenised RWAs before forming a view.</li>
+              <li>Non-cash-flow tokens cannot be valued with DCF; price reflects adoption and liquidity, so position sizing matters more than a target price.</li>
+              <li>A stablecoin is an unregulated money-market fund, reserve quality, custody, and redemption rights determine whether the peg holds.</li>
+              <li>Tokenised treasuries and MMFs are the clearest institutional use case: the chain is a settlement upgrade, not a new asset.</li>
+              <li>Regulated spot ETFs and custody have lowered the operational barrier, but volatility and concentration risk remain defining features.</li>
             </ul>
           </div>
         </article>

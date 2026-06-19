@@ -42,7 +42,7 @@
 
   <main class="container">
     <section class="hero">
-      <span class="kicker">Financial Markets, 10 Modules</span>
+      <span class="kicker">Financial Markets, 12 Modules</span>
       <h1>Financial Markets</h1>
       <p>A rigorous progression from market microstructure and trading mechanics to clearing infrastructure, collateral channels, regulatory frameworks, and the systemic stress transmission pathways documented in the GFC, European sovereign crisis, and 2022 UK gilt market dislocation.</p>
     </section>
@@ -62,6 +62,8 @@
           <a href="#m8"><span class="num">8</span>Repo &amp; Collateral</a>
           <a href="#m9"><span class="num">9</span>Regulation &amp; Integrity</a>
           <a href="#m10"><span class="num">10</span>Crisis Case Studies</a>
+          <a href="#m11"><span class="num">11</span>Securities Lending &amp; Shorting</a>
+          <a href="#m12"><span class="num">12</span>Indices &amp; Passive</a>
         </nav>
         <a class="sidebar-back" href="education-library.html">← Back to Hub</a>
       </aside>
@@ -597,6 +599,121 @@
               <li>Complexity and opacity in structured products create invisible correlation that only appears in stress.</li>
               <li>Even high-quality sovereign bond markets (Treasuries, gilts) can become dysfunctional when multiple leveraged actors simultaneously seek cash.</li>
               <li>The most valuable risk management is prospective: identifying hidden leverage before the crisis is far more effective than responding after it unfolds.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M11 -->
+        <article id="m11" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 11</span>
+            <h2>Securities Lending, Short Selling, and Settlement Mechanics</h2>
+          </div>
+          <p class="module-overview">For every buyer who expects a price to rise there can be a seller who expects it to fall, and short selling is the mechanism that lets pessimism express itself in price. Short sellers borrow stock they do not own, sell it, and aim to buy it back cheaper. The plumbing that makes this possible, the securities-lending market, the settlement cycle, and the fees and recall risks attached to borrowing, is invisible to most investors but central to price discovery, index arbitrage, and market efficiency.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Describe the mechanics of a securities-lending transaction and identify who lends, who borrows, and why.</li>
+              <li>Explain how a short sale is constructed, collateralised, and closed, and distinguish it from a naked short.</li>
+              <li>Calculate the borrow cost of a short position and interpret the "specials" market for hard-to-borrow stock.</li>
+              <li>Explain settlement cycles (T+1, T+2) and the role of central securities depositories and settlement fails.</li>
+              <li>Assess the contribution of short selling to price discovery and the conditions under which short-selling bans are imposed.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>How a Short Sale Actually Works</h3>
+              <ul>
+                <li><strong>Locate and borrow</strong>: Before selling short, a broker must "locate" the stock, confirming it can be borrowed. The lender is typically a long-only holder (pension fund, index tracker, ETF) earning incremental yield on otherwise idle inventory via a securities-lending agent.</li>
+                <li><strong>Sell and collateralise</strong>: The borrowed shares are sold in the market. The short seller posts collateral (usually cash equal to 102 to 105% of the loan value) to the lender, marked to market daily.</li>
+                <li><strong>Carry the position</strong>: The short seller pays a borrow fee, receives interest on cash collateral (the "rebate"), and must pass any dividends paid on the borrowed stock back to the lender (manufactured dividend).</li>
+                <li><strong>Close the loop</strong>: To exit, the short seller buys the shares back in the market (buy-to-cover) and returns them to the lender, ending the loan.</li>
+              </ul>
+            </div>
+
+            <div class="formula-box">
+              <span class="info-box-title">Formula: Net Carry on a Short Position</span>
+              <code>Net carry ≈ Rebate rate (interest on cash collateral) − Borrow fee − Dividend yield passed through
+
+Hard-to-borrow ("special") stock: borrow fee can exceed the rebate,
+producing a negative rebate the short seller pays to hold the position.</code>
+              <p class="info-box-content">For an easy-to-borrow ("general collateral") large cap, the borrow fee may be 20 to 50bps annualised, trivial relative to the position thesis. For a heavily shorted small cap with limited free float, the borrow fee can reach 20%, 50%, or more per year, the stock trades "special." A high and rising borrow fee is itself a signal: it tells you the supply of lendable stock is scarce relative to short demand, which is precisely the setup for a short squeeze if the price starts rising and shorts rush to cover.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Case Study: The GameStop Short Squeeze, January 2021</span>
+              <p class="info-box-content">GameStop short interest exceeded 100% of free float, more shares had been sold short than were freely available, because lent shares can be re-lent, allowing the same share to back multiple short positions. When retail buying drove the price up, shorts faced mounting mark-to-market losses and margin calls. Buy-to-cover demand collided with scarce borrowable supply: borrow fees spiked, brokers issued recalls, and the resulting forced covering pushed the price from ~$20 to ~$480 intraday within weeks. The episode is a textbook illustration of how the securities-lending plumbing, not just sentiment, drives squeeze dynamics: crowded shorts plus thin lendable supply equals reflexive upside risk.</p>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Settlement, T+1, and Fails</span>
+              <p class="info-box-content">A trade executes instantly, but legal ownership transfers only at settlement. US equities moved to <strong>T+1</strong> settlement in May 2024; UK and EU equities remain <strong>T+2</strong> (the UK is scheduled to move to T+1 in 2027). Settlement is handled by central securities depositories (DTCC in the US, CREST/Euroclear UK in Britain) that net obligations and transfer title. A <strong>settlement fail</strong> occurs when the seller cannot deliver shares on time, common with hard-to-borrow stock, and triggers buy-in procedures or penalties (the EU's CSDR introduced cash penalties for fails). Shorter settlement cycles reduce counterparty risk and collateral requirements but compress the window to source borrow, raising operational pressure on the lending market.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Regulatory Note: Short-Selling Bans Rarely Work</span>
+              <p class="info-box-content">Regulators periodically ban short selling in stress (US and UK financials in 2008; several European markets in March 2020). The academic evidence is consistently unfavourable: Beber and Pagano (2013), studying bans across 30 countries during the GFC, found bans reduced liquidity, widened spreads, and slowed price discovery without reliably supporting prices. Short sellers also perform a documented monitoring role, much accounting fraud (Enron, Wirecard) was first flagged by short sellers. Bans treat the symptom (falling prices) while degrading the mechanism (price discovery) that markets exist to provide.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Securities lending lets long-term holders earn yield on idle stock and is the supply side that makes short selling possible.</li>
+              <li>Borrow fees are a real, observable signal: high and rising "specials" fees flag crowded shorts and squeeze risk.</li>
+              <li>Short interest above 100% of float is possible because lent shares can be re-lent, amplifying reflexive squeeze dynamics.</li>
+              <li>Settlement is moving to T+1, cutting counterparty risk but tightening the operational window to source borrow.</li>
+              <li>Short selling improves price discovery and fraud detection; bans generally harm liquidity without supporting prices.</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- M12 -->
+        <article id="m12" class="module">
+          <div class="module-head">
+            <span class="module-num-label">Module 12</span>
+            <h2>Indices, Benchmarks, and the Rise of Passive</h2>
+          </div>
+          <p class="module-overview">An index is meant to be a neutral thermometer of the market, but the moment trillions of dollars track it mechanically, the thermometer starts to change the temperature. Index construction, weighting, and reconstitution are no longer back-office details: they determine where passive flows go, create predictable demand around rebalance dates, and shape the cost of capital for companies that are included or excluded. Understanding how benchmarks are built is prerequisite to understanding modern market structure.</p>
+          <div class="module-body">
+            <h4 class="section-label">Learning Outcomes</h4>
+            <ul class="outcomes">
+              <li>Distinguish price-weighted, market-cap-weighted, and equal-weighted index construction and their biases.</li>
+              <li>Explain free-float adjustment and why it matters for investability and passive replication.</li>
+              <li>Describe index reconstitution and the documented price effects of additions and deletions.</li>
+              <li>Explain how the growth of passive ownership affects price discovery, correlation, and governance.</li>
+              <li>Differentiate a benchmark used for performance measurement from an investable index used for replication.</li>
+            </ul>
+
+            <div class="content-section">
+              <h3>How Indices Are Weighted</h3>
+              <ul>
+                <li><strong>Market-cap weighted</strong> (S&amp;P 500, FTSE 100, MSCI World): each constituent is held in proportion to its free-float market value. Self-rebalancing and capacity-friendly, but concentrates in the largest names, by 2024 the top 10 S&amp;P 500 stocks were ~35% of the index.</li>
+                <li><strong>Price weighted</strong> (Dow Jones, Nikkei 225): constituents weighted by share price, an accident of share-count history rather than economic size. A £900 share moves the index more than a £30 share regardless of company size, a structural quirk with no economic justification.</li>
+                <li><strong>Equal weighted</strong>: every constituent gets the same weight, requiring constant rebalancing (selling winners, buying losers). Tilts toward smaller companies and value; outperforms in broadening markets, lags when megacaps lead.</li>
+                <li><strong>Fundamental / factor weighted</strong>: weights set by dividends, earnings, or factor scores rather than price, the basis of "smart beta."</li>
+              </ul>
+            </div>
+
+            <div class="concept-box">
+              <span class="info-box-title">Key Concept: Free Float and Investability</span>
+              <p class="info-box-content">A serious index weights by <strong>free-float</strong> market cap, the value of shares actually available to trade, excluding stakes held by founders, governments, or strategic holders. This matters because a passive fund can only buy the float. If a company has a £100bn market cap but 70% is held by its founder, only £30bn is investable; full-cap weighting would force trackers to chase the small float, distorting price. Free-float adjustment keeps indices replicable and is why index providers (MSCI, FTSE Russell, S&amp;P) publish detailed float and liquidity screening rules.</p>
+            </div>
+
+            <div class="example-box">
+              <span class="info-box-title">Practical Example: The Index Inclusion Effect</span>
+              <p class="info-box-content">When a stock is added to a major index, passive funds must buy it on the effective date, creating concentrated, price-insensitive demand. The classic study, Shleifer (1986) and later Tesla's S&amp;P 500 inclusion in December 2020, shows measurable upward pressure into the event. Tesla rose ~70% between announcement (16 November 2020) and inclusion (21 December 2020), with index funds needing to buy ~$80bn of stock at the close. Conversely, deletions face forced selling. Active managers and arbitrageurs front-run these flows, which partly erodes the effect over time, but reconstitution days (e.g. FTSE Russell's annual June rebalance) remain among the highest-volume sessions of the year.</p>
+            </div>
+
+            <div class="warning-box">
+              <span class="info-box-title">Structural Debate: Does Passive Break Price Discovery?</span>
+              <p class="info-box-content">Passive funds do not analyse companies, they buy in index proportion regardless of valuation. As passive ownership of US equities passed ~50% of fund assets, critics (notably Grantham and the "passive bubble" thesis) argued price discovery is increasingly outsourced to a shrinking pool of active managers, raising correlation and weakening the link between price and fundamentals. The counter-argument: active trading volume, not ownership share, sets prices, and active turnover still dwarfs passive flow at the margin. The honest position is that the effect is real but bounded: passive amplifies momentum and megacap concentration, but active arbitrage still anchors prices to fundamentals over meaningful horizons. It is a reason to understand index mechanics, not to abandon low-cost investing.</p>
+            </div>
+
+            <h4 class="section-label">Key Takeaways</h4>
+            <ul class="takeaways">
+              <li>Weighting scheme is a design choice with real consequences: cap-weighting concentrates in megacaps, price-weighting is an economic accident, equal-weighting tilts small and value.</li>
+              <li>Free-float adjustment keeps indices investable and is central to how passive replication actually works.</li>
+              <li>Index additions and deletions create predictable, price-insensitive flows that move stocks around reconstitution dates.</li>
+              <li>A benchmark for measuring performance and an investable index for replication are related but not identical, the construction rules differ.</li>
+              <li>Passive growth amplifies concentration and momentum but does not eliminate price discovery; active arbitrage still anchors valuation.</li>
             </ul>
           </div>
         </article>
