@@ -18,6 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
   <link rel="stylesheet" href="/assets/tbp-premium.css" />
+  <link rel="stylesheet" href="/assets/course.css" />
 
   <style>
     .chap-grid {
@@ -278,25 +279,26 @@
     <div class="tbp-hero-cinematic-bg" style="background-image: url('/assets/images/library-research.jpg');"></div>
     <div class="tbp-hero-cinematic-inner">
       <div>
-        <div class="tbp-eyebrow">Free education library</div>
-        <h1>Build the<br><em>foundations.</em><br>Skip the noise.</h1>
+        <div class="tbp-eyebrow">MSc course library</div>
+        <h1>Master's-level<br><em>finance.</em><br>Open to all.</h1>
         <p class="lead">
-          Plain-English chapters on financial markets, asset classes, UK personal finance,
-          pensions, and the full IMC / CFA syllabus, written to be referred back to when it matters.
+          Six full MSc courses — derivatives pricing, portfolio management, equity analysis, risk
+          management, advanced accounting, and quantitative methods — rebuilt lesson by lesson, with
+          every derivation, formula, and worked example kept at full depth.
         </p>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <a class="tbp-btn primary" href="#chapters">Browse chapters <span class="arrow">↓</span></a>
+          <a class="tbp-btn primary" href="#chapters">Browse courses <span class="arrow">↓</span></a>
           <a class="tbp-btn" href="#imc">IMC track <span class="arrow">→</span></a>
         </div>
       </div>
       <aside class="tbp-hero-meta-card" aria-label="Library overview">
         <div class="row">
           <span class="k">Scope</span>
-          <span class="v">7 chapters · 70+ modules · ~450 pages</span>
+          <span class="v">6 courses · 50+ lessons</span>
         </div>
         <div class="row">
           <span class="k">Level</span>
-          <span class="v">Foundations through <em>CFA L1</em> / IMC</span>
+          <span class="v"><em>MSc</em> / CFA</span>
         </div>
         <div class="row">
           <span class="k">Format</span>
@@ -310,80 +312,66 @@
     </div>
   </section>
 
-  <!-- CHAPTERS -->
+  <!-- COURSES -->
   <section class="tbp-section" id="chapters">
     <div class="tbp-container">
       <div class="tbp-section-heading" data-tbp-reveal>
         <div class="left">
-          <div class="number">01 / Library</div>
-          <h2>The seven<br><em>core chapters.</em></h2>
+          <div class="number">01 / Courses</div>
+          <h2>Six MSc<br><em>courses.</em></h2>
         </div>
         <div class="right">
           <p class="tbp-lead">
-            Each chapter is self-contained, start anywhere. Together they cover everything from how
-            an exchange clears a trade through to how to structure a UK ISA-and-SIPP stack for
-            after-tax compounding.
+            Full master's-level courses, rebuilt lesson by lesson from the lecture material — derivatives,
+            portfolios, equity, risk, accounting, and quantitative methods. Each subject opens into its own
+            set of lessons, with the derivations, formulas, and worked examples kept at full depth.
           </p>
         </div>
       </div>
 
-      <div class="chap-grid" data-tbp-reveal>
+      <div class="course-grid" data-tbp-reveal>
 
-        <a href="/education-financial-markets.html" class="chap-card">
-          <div class="chap-num">01, Markets</div>
-          <h3>Financial markets</h3>
-          <p>How exchanges, brokers, market makers, and clearing actually fit together. Order types, liquidity, and where the price you see comes from.</p>
-          <div class="chap-tags"><span>Microstructure</span><span>Foundations</span></div>
-          <span class="chap-cta">Open chapter →</span>
+        <a href="/courses/derivatives-pricing.html" class="course-card acc-drv">
+          <span class="cc-badge">∂V</span>
+          <h3>Derivatives Pricing</h3>
+          <p>Forwards, futures, options, and swaps — priced from no-arbitrage first principles, with full valuation across equities, fixed income, rates, and currencies.</p>
+          <div class="cc-meta"><span class="lessons">10 lessons</span><span>Forwards → Swaps</span><span class="cc-go">Open →</span></div>
         </a>
 
-        <a href="/education-asset-classes-types.html" class="chap-card">
-          <div class="chap-num">02, Instruments</div>
-          <h3>Asset classes &amp; types</h3>
-          <p>Equities, fixed income, commodities, real estate, cash, and alternatives. What drives each, what risks they carry, and how they behave in regimes.</p>
-          <div class="chap-tags"><span>Multi-asset</span><span>Risk</span></div>
-          <span class="chap-cta">Open chapter →</span>
-        </a>
+        <div class="course-card acc-pfm soon-card">
+          <span class="cc-badge">Σw</span>
+          <h3>Portfolio Management</h3>
+          <p>Mean-variance optimisation, the CAPM and factor models, performance measurement, and the construction and rebalancing of efficient portfolios.</p>
+          <div class="cc-meta"><span class="lessons">9 lessons</span><span>Theory → Practice</span><span class="cc-go">Soon</span></div>
+        </div>
 
-        <a href="/education-investing.html" class="chap-card">
-          <div class="chap-num">03, Principles</div>
-          <h3>Investing principles</h3>
-          <p>Time horizons, diversification, the cost of being wrong, and the difference between investing and speculation. Mental models, not stock tips.</p>
-          <div class="chap-tags"><span>Frameworks</span><span>Strategy</span></div>
-          <span class="chap-cta">Open chapter →</span>
-        </a>
+        <div class="course-card acc-eqa soon-card">
+          <span class="cc-badge">EPS</span>
+          <h3>Equity Analysis</h3>
+          <p>Valuing companies — discounted cash flow, multiples, residual income, and the accounting and forecasting that drive a defensible equity thesis.</p>
+          <div class="cc-meta"><span class="lessons">10 lessons</span><span>Valuation</span><span class="cc-go">Soon</span></div>
+        </div>
 
-        <a href="/education-personal-finance.html" class="chap-card">
-          <div class="chap-num">04, Personal</div>
-          <h3>Personal finance</h3>
-          <p>Saving rates, debt prioritisation, emergency funds, mortgages, and how to build a financial life that doesn&apos;t fall apart at the first shock.</p>
-          <div class="chap-tags"><span>Cash flow</span><span>Risk</span></div>
-          <span class="chap-cta">Open chapter →</span>
-        </a>
+        <div class="course-card acc-risk soon-card">
+          <span class="cc-badge">VaR</span>
+          <h3>Financial Institutions' Risk Management</h3>
+          <p>Credit, interest-rate, market, liquidity, and off-balance-sheet risk — plus capital adequacy, regulation, and emerging climate and technology risk.</p>
+          <div class="cc-meta"><span class="lessons">9 lessons</span><span>Banks &amp; regulation</span><span class="cc-go">Soon</span></div>
+        </div>
 
-        <a href="/education-uk-investing-tax.html" class="chap-card">
-          <div class="chap-num">05, UK tax</div>
-          <h3>UK investing &amp; tax</h3>
-          <p>ISA, SIPP, GIA, capital gains allowances, dividend tax bands, and how to actually structure a portfolio for after-tax compounding in the UK.</p>
-          <div class="chap-tags"><span>UK</span><span>Tax-efficient</span></div>
-          <span class="chap-cta">Open chapter →</span>
-        </a>
+        <div class="course-card acc-afa soon-card">
+          <span class="cc-badge">B/S</span>
+          <h3>Advanced Financial Accounting</h3>
+          <p>Reporting and earnings quality — revenue recognition, deferred tax, intangibles, provisions, business combinations, and the move toward ESG reporting.</p>
+          <div class="cc-meta"><span class="lessons">11 lessons</span><span>IFRS / reporting</span><span class="cc-go">Soon</span></div>
+        </div>
 
-        <a href="/education-pensions.html" class="chap-card">
-          <div class="chap-num">06, Pensions</div>
-          <h3>Pensions</h3>
-          <p>Workplace pensions, SIPPs, annual allowance, contribution caps, and how to think about pension contributions vs ISA contributions through your career.</p>
-          <div class="chap-tags"><span>Long-horizon</span><span>UK</span></div>
-          <span class="chap-cta">Open chapter →</span>
-        </a>
-
-        <a href="/education-library.html" class="chap-card">
-          <div class="chap-num">07, Reading</div>
-          <h3>Reading library</h3>
-          <p>The books, papers, and primary sources that genuinely changed how I think about markets, with notes on what to read first and why.</p>
-          <div class="chap-tags"><span>Resources</span><span>Curated</span></div>
-          <span class="chap-cta">Open library →</span>
-        </a>
+        <div class="course-card acc-qrm soon-card">
+          <span class="cc-badge">β̂</span>
+          <h3>Quantitative Research Methods</h3>
+          <p>Inference and hypothesis testing, OLS regression, binary-choice models, model accuracy, and the data collection behind credible empirical finance.</p>
+          <div class="cc-meta"><span class="lessons">7 lessons</span><span>Econometrics</span><span class="cc-go">Soon</span></div>
+        </div>
 
       </div>
     </div>

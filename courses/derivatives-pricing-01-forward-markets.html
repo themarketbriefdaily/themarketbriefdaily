@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forward Markets and Contracts · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Pricing and valuation of forward contracts at initiation, during their life, and at expiration — across equities, fixed income, FRAs, and currencies, with day-count conventions, arbitrage, and credit risk." />
+  <meta name="theme-color" content="#0a0f1c" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv">
+
+  <div class="topbar">
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="sep">/</span>
+    <span class="crumb">Lesson 1</span>
+    <span class="spacer"></span>
+    <span class="pill">Lesson 1 of 10</span>
+  </div>
+  <div class="progress"><span id="progbar" style="width:0%"></span></div>
+
+  <div class="lesson-shell">
+    <header class="lesson-head">
+      <div class="kicker">Derivatives Pricing · Lesson 1</div>
+      <h1>Forward Markets and Contracts</h1>
+      <p class="summary">
+        A forward contract locks in today the price of a transaction that will settle in the future.
+        This lesson builds the no-arbitrage framework for pricing and valuing forwards — at initiation,
+        during their life, and at expiration — and applies it to equities, bonds, forward rate
+        agreements, and currencies.
+      </p>
+    </header>
+
+    <div class="lesson-layout">
+
+      <!-- TOC -->
+      <nav class="lesson-toc" aria-label="On this page">
+        <div class="toc-title">On this page</div>
+        <a href="#outcomes">Learning outcomes</a>
+        <a href="#intro">1 · Introduction</a>
+        <a href="#market">2 · The global forward market</a>
+        <a href="#types">3 · Types of forwards</a>
+        <a href="#daycount">Day-count conventions</a>
+        <a href="#generic">4.1 · Generic valuation</a>
+        <a href="#equity">4.2 · Equity forwards</a>
+        <a href="#fixed">4.3 · Fixed-income forwards</a>
+        <a href="#fra">4.3 · Forward rate agreements</a>
+        <a href="#currency">4.4 · Currency forwards</a>
+        <a href="#credit">5 · Credit risk</a>
+      </nav>
+
+      <main class="lesson-main">
+
+        <p class="lead">
+          A <strong>forward contract</strong> is an agreement between two parties in which the <strong>buyer</strong>
+          agrees to buy an underlying asset from the <strong>seller</strong> at a future date, at a price fixed today.
+          The buyer holds the <strong>long</strong> position; the seller holds the <strong>short</strong> position.
+          Unlike futures, forwards are customised, over-the-counter agreements — which makes them flexible but
+          exposes each side to the other's credit.
+        </p>
+
+        <!-- OUTCOMES -->
+        <div class="outcomes-card" id="outcomes">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain how the value of a forward contract is determined at initiation, during the life of the contract, and at expiration.</li>
+            <li>Calculate and interpret the price and value of an equity forward contract, with dividends paid either discretely or continuously.</li>
+            <li>Calculate and interpret the price and value of (i) a forward on a fixed-income security, (ii) a forward rate agreement (FRA), and (iii) a currency forward.</li>
+            <li>Evaluate credit risk in a forward contract and explain how market value measures the credit exposure of each party.</li>
+          </ol>
+        </div>
+
+        <!-- 1. INTRO -->
+        <h2 id="intro">1 · Introduction</h2>
+        <p>
+          The defining feature of a forward is that <em>terms are agreed now but performance happens later</em>.
+          Three operational questions follow from that gap in time.
+        </p>
+        <h3>1.1 Delivery and settlement</h3>
+        <p>
+          At expiration the contract can be settled by <strong>physical delivery</strong> — the short delivers the
+          asset and receives the agreed price — or by <strong>cash settlement</strong>, where only the difference
+          between the market price and the contract price changes hands. Cash settlement dominates where physical
+          delivery is impractical (an equity index, an interest rate).
+        </p>
+        <h3>1.2 Default (credit) risk</h3>
+        <p>
+          Because settlement lies in the future, each party bears the risk that the other fails to perform. As we
+          will see in §5, only the party to whom the contract currently has <em>positive</em> value is exposed:
+          a forward's market value is itself a measure of credit exposure.
+        </p>
+        <h3>1.3 Terminating a contract early</h3>
+        <p>
+          A party can exit before expiration by entering an <strong>offsetting forward</strong> with the same
+          expiration. If the new contract is struck with the original counterparty, exposure is extinguished; if
+          struck with a different party, price risk is removed but a residual credit exposure to both counterparties
+          remains.
+        </p>
+
+        <!-- 2. MARKET -->
+        <h2 id="market">2 · The structure of the global forward market</h2>
+        <div class="callout note">
+          <span class="ct-label">Context</span>
+          <p>
+            The global derivatives market is vast — notional estimates run into the hundreds of trillions of dollars,
+            with some analysts placing it at several times world GDP, a figure others argue is overstated because
+            notional amounts dwarf the actual capital at risk. Forwards exist on virtually every asset class:
+            equities, bonds, interest rates, currencies, and commodities.
+          </p>
+        </div>
+
+        <!-- 3. TYPES -->
+        <h2 id="types">3 · Types of forward contracts</h2>
+        <h3>3.1 Equity forwards</h3>
+        <p>Forwards written on individual stocks, stock portfolios, or stock indices. The key complication is the
+          <strong>effect of dividends</strong> paid by the underlying before expiration, handled in §4.2.</p>
+        <h3>3.2 Bond and interest-rate forwards</h3>
+        <p>Forwards on individual bonds and bond portfolios, and forwards on interest rates — <strong>forward rate
+          agreements (FRAs)</strong>. The underlying rate is historically a reference rate such as LIBOR/Euribor on a
+          Eurocurrency time deposit.</p>
+        <h3>3.3 Currency forwards</h3>
+        <p>An agreement to exchange one currency for another at a fixed rate on a future date — priced by
+          <strong>covered interest-rate parity</strong> (§4.4).</p>
+        <h3>3.4 Other forwards</h3>
+        <p>Commodity forwards (oil, precious metals, agricultural goods) and even weather forwards. Empirical work
+          documents strong spillovers across crude oil, precious-metal, and agricultural futures markets.</p>
+
+        <!-- DAY COUNT -->
+        <h2 id="daycount">Day-count conventions</h2>
+        <p>
+          Every valuation below discounts over a time fraction, and that fraction depends on the market's
+          <strong>day-count convention</strong> — the rule for counting days between two dates and days in a year.
+          Using the wrong convention is one of the most common sources of error.
+        </p>
+        <table>
+          <thead><tr><th>Convention</th><th>Typical use</th><th>Example: 1 May → 1 Aug</th></tr></thead>
+          <tbody>
+            <tr><td><strong>30/360</strong></td><td>Corporate, municipal, agency bonds; MBS</td><td>90/360 = 0.2500</td></tr>
+            <tr><td><strong>Actual/360</strong></td><td>Commercial paper, T-bills, most LIBOR (ex-GBP)</td><td>92/360 = 0.2556</td></tr>
+            <tr><td><strong>Actual/365</strong></td><td>US Treasuries; all GBP rates incl. LIBOR</td><td>92/365 = 0.2521</td></tr>
+            <tr><td><strong>Actual/Actual</strong></td><td>GBP &amp; EUR bonds, US Treasuries, some USD swaps</td><td>92/366 = 0.2514</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn">
+          <span class="ct-label">Watch out</span>
+          <p>Conventions are historical accidents, accepted as given. Always confirm which one applies to the
+            instrument before discounting — a mismatch quietly corrupts every figure downstream.</p>
+        </div>
+
+        <!-- 4.1 GENERIC -->
+        <h2 id="generic">4.1 · Generic pricing and valuation</h2>
+        <p>First, three definitions that are easy to conflate:</p>
+        <ul>
+          <li><strong>Value</strong> — what an asset can be sold for, or what must be paid to acquire it. <em>Valuation</em> is the process of determining it.</li>
+          <li><strong>Contract (forward) price</strong> — the fixed price \(F(0,T)\) at which the future transaction will occur.</li>
+          <li><strong>Cost</strong> — the amount that must be paid to produce, buy, or obtain the asset.</li>
+        </ul>
+
+        <p>Set up a timeline. Today is time 0 (the contract is created); expiration is time \(T\); \(t\) is an arbitrary
+          point in between.</p>
+        <div class="timeline">
+          <div class="pt"><span class="node"></span><span class="lab">0</span><span class="sub">today</span></div>
+          <div class="seg"></div>
+          <div class="pt"><span class="node"></span><span class="lab">t</span><span class="sub">mid-life</span></div>
+          <div class="seg"></div>
+          <div class="pt"><span class="node"></span><span class="lab">T</span><span class="sub">expiration</span></div>
+        </div>
+
+        <p>Let \(S_0,\,S_t,\,S_T\) be the spot price at each date, \(F(0,T)\) the forward price set at 0, and
+          \(V_t(0,T)\) the value at \(t\) of that contract to the long.</p>
+
+        <div class="formula">
+          <div class="f-label">Value at expiration <span class="eqno">(1)</span></div>
+          <div class="mjx-row">$$ V_T(0,T) = S_T - F(0,T) $$</div>
+          <div class="note">At \(T\) the long can buy at \(F(0,T)\) an asset worth \(S_T\); the contract is simply that difference.</div>
+        </div>
+
+        <p>By a <strong>cash-and-carry</strong> argument, buying the asset today and shorting a forward is a riskless
+          position that must earn the risk-free rate — otherwise arbitrage is available. Setting the initiation value
+          to zero (the market convention) gives the forward price:</p>
+
+        <div class="formula">
+          <div class="f-label">Forward price <span class="eqno">(2)</span></div>
+          <div class="mjx-row">$$ F(0,T) = S_0\,(1+r)^{T} $$</div>
+          <div class="note">The forward price is the spot compounded at the risk-free rate. It is <em>not</em> a forecast of \(S_T\).</div>
+        </div>
+
+        <div class="formula">
+          <div class="f-label">Value during the life of the contract <span class="eqno">(3)</span></div>
+          <div class="mjx-row">$$ V_t(0,T) = S_t - \frac{F(0,T)}{(1+r)^{\,T-t}} $$</div>
+          <div class="note">A positive value means the asset is worth more than the present value of what the long must pay — so the short would owe the long, and vice-versa.</div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">The three valuation points, together</span>
+          <p>
+            At initiation \(V_0(0,T)=S_0-\dfrac{F(0,T)}{(1+r)^{T}}=0\); during the life
+            \(V_t(0,T)=S_t-\dfrac{F(0,T)}{(1+r)^{T-t}}\); at expiration \(V_T(0,T)=S_T-F(0,T)\).
+            All three are the same idea: <em>spot now, minus the present value of the price you locked in</em>.
+          </p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 1</span><h4>Forward on an asset, no income</h4></div>
+          <div class="ex-body">
+            <p>An investor holds an asset worth $125.72 and will sell it in 9 months, hedging with a short forward.
+              The risk-free rate is 5.625%; day-count is 30/360.</p>
+
+            <p><strong>A. The appropriate forward price.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>With \(S_0=125.72,\ T=9/12=0.75,\ r=0.05625\):</p>
+              $$ F(0,T)=125.72\,(1.05625)^{0.75}=\$130.99 $$
+              <span class="answer">F(0,T) = $130.99</span>
+            </div></details>
+
+            <p><strong>B.</strong> A counterparty offers the forward at $140. Identify the riskless strategy and its annualised return.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Sell forward at the rich price of $140 while holding the asset. The locked-in return over 9 months is</p>
+              $$ \frac{140}{125.72}-1 = 0.1136 \;\Rightarrow\; (1.1136)^{12/9}-1 = 15.43\% $$
+              <p>That exceeds the 5.625% risk-free rate — a hedged position earning an arbitrage profit.</p>
+              <span class="answer">15.43% annualised &gt; 5.625% risk-free</span>
+            </div></details>
+
+            <p><strong>C.</strong> Two months later the asset trades at $118.875. Value the contract to the (short) investor.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Time remaining is \(7/12\) of a year, so for the long:</p>
+              $$ V_t(0,T)=118.875-\frac{130.99}{(1.05625)^{7/12}}=-\$8.00 $$
+              <p>Negative to the long means a <strong>+$8.00 gain to the short</strong> investor.</p>
+              <span class="answer">−$8.00 to the long → +$8.00 to the short</span>
+            </div></details>
+
+            <p><strong>D.</strong> At expiration the asset is $123.50. Value the contract and assess the overall hedged position.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_T(0,T)=123.50-130.99=-\$7.49 $$
+              <p>The short gains $7.49 on the forward but loses \(125.72-123.50=\$2.22\) on the asset, for a net
+                \(\$7.49-\$2.22=\$5.27\), a 4.19% return over 9 months —
+                \((1.0419)^{12/9}-1=5.625\%\), exactly the risk-free rate. The hedge worked: risk was removed and
+                the position earned \(r\).</p>
+              <span class="answer">Net +$5.27 ≈ 5.625% annualised = risk-free</span>
+            </div></details>
+          </div>
+        </div>
+
+        <!-- 4.2 EQUITY -->
+        <h2 id="equity">4.2 · Equity forwards (with dividends)</h2>
+        <p>
+          If the underlying pays dividends before expiration, the holder of the forward forgoes that income, so it
+          must be stripped out of the spot price. Let the discrete dividends have present value
+        </p>
+        <div class="formula">
+          <div class="f-label">Present value of dividends</div>
+          <div class="mjx-row">$$ PV(D,0,T)=\sum_{i=1}^{n}\frac{D_i}{(1+r)^{t_i}} $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Equity forward price — discrete dividends <span class="eqno">(4)(5)</span></div>
+          <div class="mjx-row">$$ F(0,T)=\big[S_0-PV(D,0,T)\big](1+r)^{T}=S_0(1+r)^{T}-FV(D,0,T) $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Equity forward price — continuous dividends <span class="eqno">(6)</span></div>
+          <div class="mjx-row">$$ F(0,T)=\big(S_0\,e^{-\delta^{c}T}\big)e^{\,r^{c}T},\qquad r^{c}=\ln(1+r) $$</div>
+          <div class="note">\(\delta^{c}\) is the continuously-compounded dividend yield; \(r^{c}\) the continuously-compounded risk-free rate.</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Value during the life <span class="eqno">(7)(8)</span></div>
+          <div class="mjx-row">$$ V_t(0,T)=S_t-PV(D,t,T)-\frac{F(0,T)}{(1+r)^{T-t}} $$</div>
+          <div class="mjx-row">$$ V_t(0,T)=S_t\,e^{-\delta^{c}(T-t)}-F(0,T)\,e^{-r^{c}(T-t)} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 2</span><h4>Equity forward with two dividends</h4></div>
+          <div class="ex-body">
+            <p>A manager will buy a stock in 200 days via a long forward. The stock is $62.50 and pays $0.75 dividends
+              in 50 and 140 days. The risk-free rate is 4.2%.</p>
+
+            <p><strong>A. The forward price.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ PV(D,0,T)=\frac{0.75}{1.042^{50/365}}+\frac{0.75}{1.042^{140/365}}=\$1.48 $$
+              $$ F(0,T)=(62.50-1.48)(1.042)^{200/365}=\$62.41 $$
+              <span class="answer">F(0,T) = $62.41</span>
+            </div></details>
+
+            <p><strong>B.</strong> 75 days later the stock is $55.75. Value the contract.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The first dividend has been paid; only the 140-day dividend remains (65 days away):</p>
+              $$ PV(D,t,T)=\frac{0.75}{1.042^{65/365}}=\$0.74 $$
+              $$ V_t(0,T)=55.75-0.74-\frac{62.41}{(1.042)^{125/365}}=-\$6.53 $$
+              <span class="answer">−$6.53 to the long</span>
+            </div></details>
+
+            <p><strong>C.</strong> At expiration the stock is $58.50. Value the contract.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_T(0,T)=58.50-62.41=-\$3.91 $$
+              <span class="answer">−$3.91 to the long</span>
+            </div></details>
+          </div>
+        </div>
+
+        <!-- 4.3 FIXED INCOME -->
+        <h2 id="fixed">4.3 · Fixed-income forwards</h2>
+        <p>
+          A forward on a coupon bond is valued exactly like an equity forward, with coupon interest \(CI\) playing the
+          role of dividends. Write \(B_0^{c}(T+Y)\) for the bond price (including accrued interest) of a bond maturing
+          \(Y\) periods after the forward expires.
+        </p>
+        <div class="formula">
+          <div class="f-label">Bond forward price <span class="eqno">(9)(10)</span></div>
+          <div class="mjx-row">$$ F(0,T)=\big[B_0^{c}(T+Y)-PV(CI,0,T)\big](1+r)^{T}=B_0^{c}(T+Y)(1+r)^{T}-FV(CI,0,T) $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Bond forward value <span class="eqno">(11)</span></div>
+          <div class="mjx-row">$$ V_t(0,T)=B_t^{c}(T+Y)-PV(CI,t,T)-\frac{F(0,T)}{(1+r)^{T-t}} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 3</span><h4>Forward on a coupon bond</h4></div>
+          <div class="ex-body">
+            <p>A 5-year bond pays $50 semi-annual coupons (at days 181, 365, 547, 730). It is now day 150, with the
+              bond at $1,010.25 (incl. accrued). The owner wants to forward-sell the day after the 4th coupon (day 731).
+              The risk-free rate is 8%.</p>
+
+            <p><strong>A. The forward price.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Time to expiration \(T=(731-150)/365=581/365\). PV of the four coupons (31, 215, 397, 580 days out):</p>
+              $$ PV(CI,t,T)=\frac{50}{1.08^{31/365}}+\frac{50}{1.08^{215/365}}+\frac{50}{1.08^{397/365}}+\frac{50}{1.08^{580/365}}=\$187.69 $$
+              $$ F(0,T)=(1010.25-187.69)(1.08)^{581/365}=\$929.76 $$
+              <span class="answer">F(0,T) = $929.76</span>
+            </div></details>
+
+            <p><strong>B.</strong> 365 days later (day 515) the rate is 7% and the bond is $1,025.375. Value the contract.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Two coupons remain (32 and 215 days out); time to expiration \(216/365\):</p>
+              $$ PV(CI,t,T)=\frac{50}{1.07^{32/365}}+\frac{50}{1.07^{215/365}}=\$97.75 $$
+              $$ V_t(0,T)=1025.37-97.75-\frac{929.76}{(1.07)^{216/365}}=\$34.36 $$
+              <span class="answer">+$34.36 to the long (a loss to the short counterparty)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <!-- 4.3 FRA -->
+        <h2 id="fra">4.3 · Forward rate agreements (FRAs)</h2>
+        <p>
+          An FRA fixes today the interest rate on a future deposit. The notation \(a \times b\) means the FRA expires
+          in \(a\) months on a deposit maturing in \(b\) months — so the underlying rate covers \(b-a\) months.
+        </p>
+        <table>
+          <thead><tr><th>Notation</th><th>Expires (h)</th><th>Underlying rate</th></tr></thead>
+          <tbody>
+            <tr><td>1 × 4</td><td>1 month</td><td>3-month rate</td></tr>
+            <tr><td>1 × 7</td><td>1 month</td><td>6-month rate</td></tr>
+            <tr><td>3 × 6</td><td>3 months</td><td>3-month rate</td></tr>
+            <tr><td>3 × 9</td><td>3 months</td><td>6-month rate</td></tr>
+            <tr><td>6 × 12</td><td>6 months</td><td>6-month rate</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Let the FRA expire on day \(h\) on an \(m\)-day deposit, so the deposit matures at \(h+m\). \(L_0(\cdot)\) is
+          today's LIBOR for a given tenor; \(g\) is a valuation date during the FRA's life.
+        </p>
+        <div class="formula">
+          <div class="f-label">FRA rate <span class="eqno">(13)</span></div>
+          <div class="mjx-row">$$ FRA(0,h,m)=\left[\frac{1+L_0(h+m)\frac{h+m}{360}}{1+L_0(h)\frac{h}{360}}-1\right]\frac{360}{m} $$</div>
+          <div class="note">The forward rate is the rate that makes lending for \(h+m\) days equivalent to lending for \(h\) then \(m\) days — pure no-arbitrage.</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Value of the FRA on day g <span class="eqno">(14)</span></div>
+          <div class="mjx-row">$$ V_g(0,h,m)=\frac{1}{1+L_g(h-g)\frac{h-g}{360}}-\frac{1+FRA(0,h,m)\frac{m}{360}}{1+L_g(h+m-g)\frac{h+m-g}{360}} $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Payoff at expiration (day h)</div>
+          <div class="mjx-row">$$ \text{Payoff}=\frac{\big[L_h(m)-FRA(0,h,m)\big]\frac{m}{360}}{1+L_h(m)\frac{m}{360}} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 4</span><h4>FRA on 180-day Euribor</h4></div>
+          <div class="ex-body">
+            <p>A treasurer hedges the 180-day Euribor rate 30 days from now. Term structure today: 30-day Euribor 5.75%,
+              210-day Euribor 6.15%. Notional €20m.</p>
+
+            <p><strong>A. Identify the FRA.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Expires in 1 month on a 6-month deposit → a <strong>1 × 7 FRA</strong> (\(h=30,\ m=180\)).</p>
+              <span class="answer">1 × 7 FRA</span>
+            </div></details>
+
+            <p><strong>B. The FRA rate.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ FRA(0,30,180)=\left[\frac{1+0.0615\frac{210}{360}}{1+0.0575\frac{30}{360}}-1\right]\frac{360}{180}=0.0619 $$
+              <span class="answer">FRA rate = 6.19%</span>
+            </div></details>
+
+            <p><strong>C.</strong> 20 days later rates fall: 10-day Euribor 5.45%, 190-day Euribor 5.95%. Value the long FRA.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_{20}=\frac{1}{1+0.0545\frac{10}{360}}-\frac{1+0.0619\frac{180}{360}}{1+0.0595\frac{190}{360}}=-0.0011 $$
+              <p>On €20m: \(20{,}000{,}000\times(-0.0011)=-\text{€}22{,}000\).</p>
+              <span class="answer">≈ −€22,000 to the long</span>
+            </div></details>
+
+            <p><strong>D.</strong> At expiration 180-day Euribor is 5.72%. Find the settlement payment.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \text{Payoff}=\frac{(0.0572-0.0619)\frac{180}{360}}{1+0.0572\frac{180}{360}}=-0.0023 $$
+              <p>On €20m: \(-\text{€}46{,}000\) — paid <em>by</em> the company because, as the long, the realised rate
+                came in below the FRA rate.</p>
+              <span class="answer">−€46,000 paid by the long</span>
+            </div></details>
+          </div>
+        </div>
+
+        <!-- 4.4 CURRENCY -->
+        <h2 id="currency">4.4 · Currency forwards</h2>
+        <p>
+          A currency forward is priced by <strong>covered interest-rate parity</strong>: holding the foreign currency
+          earns the foreign rate \(r^{f}\), so the forward must offset that yield difference against the domestic rate
+          \(r\). \(S_0\) is quoted as domestic per unit of foreign.
+        </p>
+        <div class="formula">
+          <div class="f-label">Currency forward price <span class="eqno">(15)(16)</span></div>
+          <div class="mjx-row">$$ F(0,T)=\frac{S_0}{(1+r^{f})^{T}}(1+r)^{T} \qquad\text{or}\qquad F(0,T)=\big(S_0\,e^{-r^{fc}T}\big)e^{\,r^{c}T} $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Currency forward value <span class="eqno">(17)(18)</span></div>
+          <div class="mjx-row">$$ V_t(0,T)=\frac{S_t}{(1+r^{f})^{T-t}}-\frac{F(0,T)}{(1+r)^{T-t}} $$</div>
+          <div class="mjx-row">$$ V_t(0,T)=S_t\,e^{-r^{fc}(T-t)}-F(0,T)\,e^{-r^{c}(T-t)} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 5</span><h4>Over-priced currency forward (GBP)</h4></div>
+          <div class="ex-body">
+            <p>Spot GBP = $1.7600; US rate 5.1%, UK rate 6.2% (annual). One-year forwards are quoted at $1.7500.</p>
+
+            <p><strong>A. Find the riskless arbitrage and its return.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The no-arbitrage forward is</p>
+              $$ F(0,T)=1.7600\cdot\frac{1.051}{1.062}=\$1.7418 $$
+              <p>The quote $1.7500 is therefore <strong>over-priced</strong>, so sell the pound forward and replicate
+                synthetically: take \(1.7600/1.062=\$1.6573\), convert to £0.9416, invest in the UK at 6.2% to grow to
+                £1.0000, and deliver it into the forward for $1.7500.</p>
+              $$ \frac{1.7500}{1.6573}-1 = 5.59\% > 5.1\% = r_\$ $$
+              <span class="answer">5.59% riskless &gt; 5.1% domestic rate</span>
+            </div></details>
+
+            <p><strong>B.</strong> One month later, rates unchanged but spot = $1.72. Value the short position.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_t(0,T)=\frac{1.72}{1.062^{11/12}}-\frac{1.75}{1.051^{11/12}}=-\$0.0443 $$
+              <p>−$0.0443 to the long → <strong>+$0.0443 to the short</strong>.</p>
+              <span class="answer">+$0.0443 per £ to the short</span>
+            </div></details>
+
+            <p><strong>C.</strong> At expiration the pound is $1.69. Value to the short.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_T(0,T)=1.69-1.75=-\$0.06 \text{ (long)} \;\Rightarrow\; +\$0.06 \text{ (short)} $$
+              <span class="answer">+$0.06 per £ to the short</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 6</span><h4>Under-priced currency forward (EUR)</h4></div>
+          <div class="ex-body">
+            <p>Spot EUR = $1.2015; US rate 4.5%, EC rate 5.2% (annual). One-year forwards quoted at $1.1920.</p>
+
+            <p><strong>A. Find the arbitrage and its return.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ F(0,T)=1.2015\cdot\frac{1.045}{1.052}=\$1.1935 $$
+              <p>The quote $1.1920 is <strong>under-priced</strong>, so buy the euro forward and fund it synthetically:
+                start with €0.7965, convert to $0.9569, invest in the US at 4.5% to reach $1.0000, and use the forward
+                to buy €0.8389.</p>
+              $$ \frac{0.8389}{0.7965}-1 = 5.33\% > 5.2\% = r_\euro $$
+              <span class="answer">5.33% riskless &gt; 5.2% foreign rate</span>
+            </div></details>
+
+            <p><strong>B.</strong> Two months later, rates unchanged but spot = $1.2200. Value the long position.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_t(0,T)=\frac{1.2200}{1.052^{10/12}}-\frac{1.1935}{1.045^{10/12}}=\$0.0086 $$
+              <p>Measured against the quoted forward of $1.1920, this is a <strong>gain of about $0.0205 to the long</strong>.</p>
+              <span class="answer">≈ +$0.0205 per € to the long</span>
+            </div></details>
+
+            <p><strong>C.</strong> At expiration the euro is $1.1950. Value to the long.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ V_T(0,T)=1.1950-1.1920=\$0.0030 $$
+              <span class="answer">+$0.0030 per € to the long</span>
+            </div></details>
+          </div>
+        </div>
+
+        <!-- 5. CREDIT -->
+        <h2 id="credit">5 · Credit risk and forward contracts</h2>
+        <p>
+          Credit risk in a forward arises when the party that <em>owes the greater amount</em> at expiration cannot
+          pay — for instance through bankruptcy before settlement. Three principles follow:
+        </p>
+        <ul>
+          <li>The <strong>market value</strong> of a forward reflects the current value of the expiration claim under prevailing conditions — so it directly measures credit exposure.</li>
+          <li>At any moment only <em>one</em> party faces credit risk: the one to whom the contract has positive value (the one expecting to receive).</li>
+          <li><strong>Marking to market</strong> mitigates this: periodically one party pays the other the current market value, and the contract is re-struck at the prevailing price or rate — resetting the exposure to zero.</li>
+        </ul>
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>
+            Every forward valuation in this lesson is the same sentence in different clothes: the value to the long is
+            <em>the current worth of the underlying minus the present value of the price locked in</em>. Income on the
+            underlying (dividends, coupons, a foreign interest rate) is subtracted from the spot leg; the forward price
+            is whatever makes the initiation value zero. Master that, and equities, bonds, FRAs, and currencies are one
+            framework.
+          </p>
+        </div>
+
+        <!-- prev/next -->
+        <nav class="lesson-nav">
+          <a class="prev disabled"><span class="dir">← Previous</span><span class="ttl">Start of course</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </main>
+    </div>
+  </div>
+
+  <footer class="course-foot">
+    <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+      Not investment advice. Figures are illustrative teaching examples.</p>
+    <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+  </footer>
+
+  <script>
+    // progress bar + TOC scrollspy
+    (function(){
+      var bar = document.getElementById('progbar');
+      var links = Array.prototype.slice.call(document.querySelectorAll('.lesson-toc a'));
+      var ids = links.map(function(a){ return a.getAttribute('href').slice(1); });
+      function onScroll(){
+        var h = document.documentElement;
+        var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+        bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+        var cur = ids[0], mid = window.innerHeight * 0.3;
+        ids.forEach(function(id){
+          var el = document.getElementById(id);
+          if(el && el.getBoundingClientRect().top <= mid) cur = id;
+        });
+        links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#'+cur); });
+      }
+      document.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
+
+</body>
+</html>
