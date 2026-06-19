@@ -23,13 +23,13 @@
     .mp-card{ display:flex; flex-direction:column; padding:0; overflow:hidden; border:1px solid var(--tbp-line);
       border-radius:var(--tbp-radius); background:var(--tbp-bg); text-decoration:none; color:inherit; transition:border-color .25s, transform .25s, box-shadow .25s; }
     .mp-card:hover{ border-color:var(--tbp-muted-2); transform:translateY(-3px); box-shadow:0 22px 50px -24px rgba(0,0,0,.18); }
-    .mp-card .thumb{ height:120px; display:flex; align-items:flex-end; padding:16px 22px; position:relative; overflow:hidden; }
-    .mp-card .thumb .tag{ position:relative; font-family:'Inter Tight',sans-serif; font-weight:850; font-size:1.85rem; letter-spacing:-.03em; color:rgba(255,255,255,.97); }
-    .mp-card .thumb .glyph{ position:absolute; top:-22px; right:-4px; font-size:7rem; font-weight:850; color:rgba(255,255,255,.13); font-family:'Inter Tight',sans-serif; line-height:1; }
-    .mp-t1{ background:linear-gradient(135deg,#0a0f1c,#1b3870 68%,#2e9e4f); }
-    .mp-t2{ background:linear-gradient(135deg,#0a0f1c,#155e54 68%,#2ce8a6); }
-    .mp-t3{ background:linear-gradient(135deg,#0a0f1c,#243b6b 68%,#5f9fd0); }
-    .mp-t4{ background:linear-gradient(135deg,#1a1030,#5a3aa6 68%,#c8a35a); }
+    .mp-card .thumb{ height:148px; display:flex; align-items:flex-end; padding:16px 22px; position:relative; overflow:hidden; background-size:cover; background-position:center; }
+    .mp-card .thumb .tag{ position:relative; font-family:'Inter Tight',sans-serif; font-weight:850; font-size:1.85rem; letter-spacing:-.03em; color:rgba(255,255,255,.97); text-shadow:0 1px 12px rgba(0,0,0,.45); }
+    .mp-card .thumb .glyph{ position:absolute; top:-22px; right:-4px; font-size:7rem; font-weight:850; color:rgba(255,255,255,.16); font-family:'Inter Tight',sans-serif; line-height:1; }
+    .mp-t1{ background-image:linear-gradient(135deg,rgba(10,15,28,.86),rgba(27,56,112,.62) 68%,rgba(46,158,79,.42)), url('/assets/images/london-skyline.jpg'); }
+    .mp-t2{ background-image:linear-gradient(135deg,rgba(10,15,28,.82),rgba(21,94,84,.6) 68%,rgba(44,232,166,.4)), url('/assets/images/wind-turbines.jpg'); }
+    .mp-t3{ background-image:linear-gradient(135deg,rgba(10,15,28,.84),rgba(36,59,107,.6) 68%,rgba(95,159,208,.42)), url('/assets/images/ny-skyline.jpg'); }
+    .mp-t4{ background-image:linear-gradient(135deg,rgba(26,16,48,.84),rgba(90,58,166,.6) 68%,rgba(200,163,90,.42)), url('/assets/images/trading-desk.jpg'); }
     .mp-card .body{ display:flex; flex-direction:column; gap:11px; padding:24px; flex:1; }
     .mp-card h3{ font-family:'Inter Tight',sans-serif; font-size:1.4rem; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
     .mp-card p{ font-size:14px; line-height:1.6; color:var(--tbp-muted); margin:0; }
@@ -172,7 +172,7 @@
   </section>
 
   <!-- SUBSCRIBE CTA -->
-  <section class="tbp-section dark" style="padding-block: clamp(64px,7vw,104px); background-image:linear-gradient(rgba(10,15,28,.84),rgba(10,15,28,.9)), url('/assets/images/hero-london-aerial.jpg'); background-size:cover; background-position:center;">
+  <section class="tbp-section dark" style="padding-block: clamp(64px,7vw,104px); background-image:linear-gradient(rgba(10,15,28,.86),rgba(10,15,28,.92)), url('/assets/images/subscription-bg.jpg'); background-size:cover; background-position:center;">
     <div class="tbp-container" style="text-align:center;">
       <div data-tbp-reveal>
         <div class="tbp-eyebrow" style="color:rgba(255,255,255,.5); justify-content:center; margin-bottom:18px;">Subscribe</div>
