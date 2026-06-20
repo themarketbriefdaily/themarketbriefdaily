@@ -54,7 +54,19 @@
             { a: 'bsm',             t: '7 · Black–Scholes–Merton' },
             { a: 'futures-options', t: '8 · Options on futures' }
           ] },
-        { n: '04', title: 'Topic 4', cfa: 'L2', built: false },
+        { n: '04', title: 'Swap Markets and Contracts', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-04-swap-markets.html',
+          topics: [
+            { a: 'intro',        t: '1 · What a swap is' },
+            { a: 'types',        t: '3 · Types of swaps' },
+            { a: 'equivalence',  t: '4.1 · Swap equivalences' },
+            { a: 'pricing',      t: '4.2 · Pricing rate swaps' },
+            { a: 'currency-val', t: '4.2.2 · Currency swaps' },
+            { a: 'equity-val',   t: '4.2.3 · Equity swaps' },
+            { a: 'variations',   t: '5 · Variations' },
+            { a: 'swaptions',    t: '6 · Swaptions' },
+            { a: 'credit',       t: '7 · Credit risk' }
+          ] },
         { n: '05', title: 'Topic 5', cfa: 'L2', built: false },
         { n: '06', title: 'Topic 6', cfa: 'L2', built: false },
         { n: '08', title: 'Topic 8', cfa: 'L2', built: false },

@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Swap Markets and Contracts · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Swaps: currency, interest-rate, equity and commodity swaps; pricing and valuation from replicating bonds; swaptions; and swap credit risk." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="04">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 4 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Swap Markets and Contracts</h1>
+        <p class="summary">
+          A swap is an agreement to exchange a series of future cash flows. It is the most heavily traded
+          derivative in the world — and, once you see the trick, the easiest to value: a swap is just a
+          portfolio of simpler instruments (bonds, currencies, stocks). This lesson prices and values
+          interest-rate, currency, and equity swaps by replicating them with fixed- and floating-rate bonds,
+          then covers swaptions and swap credit risk.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1 · What a swap is</a>
+            <a href="#types">3 · Types of swaps</a>
+            <a href="#equivalence">4.1 · Swap equivalences</a>
+            <a href="#pricing">4.2 · Pricing interest-rate swaps</a>
+            <a href="#currency-val">4.2.2 · Currency swaps</a>
+            <a href="#equity-val">4.2.3 · Equity swaps</a>
+            <a href="#variations">5 · Variations</a>
+            <a href="#swaptions">6 · Swaptions</a>
+            <a href="#credit">7 · Credit risk</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          In a swap, two parties exchange cash-flow streams on a series of future dates. The payments can be
+          tied to an interest rate (LIBOR/Euribor), an exchange rate, an equity return, or a commodity price.
+          By convention the party <em>receiving floating</em> is "long" and the party <em>receiving fixed</em>
+          is "short" — though that label breaks down when both sides float. Swaps are OTC, customised, and
+          carry default risk throughout their life.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Distinguish the pricing of a swap (setting the fixed rate so initial value = 0) from its valuation during life.</li>
+            <li>Explain why an interest-rate swap equals a series of off-market FRAs and a combination of an interest-rate cap and floor.</li>
+            <li>Calculate the fixed rate on a plain-vanilla interest-rate swap and its market value during its life.</li>
+            <li>Calculate the fixed rate and foreign notional on a currency swap, and value all four currency-swap types; do the same for equity swaps.</li>
+            <li>Explain payer vs receiver swaptions, value an interest-rate swaption at expiration, and evaluate swap credit risk (current vs potential), netting, marking to market, and the swap spread.</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1 · What a swap is</h2>
+        <p>A swap has <strong>zero value at initiation</strong> — neither party pays the other (the one technical
+          exception: currency swaps exchange equivalent notional principals in two currencies). Key terms:</p>
+        <ul>
+          <li><strong>Settlement date</strong> — a date payments are made; the swap's value resets toward zero. <strong>Settlement period</strong> — the interval between them. <strong>Termination date</strong> — the final payment.</li>
+          <li><strong>Netting</strong> — if both legs are in the same currency, only the net amount changes hands, sharply reducing credit risk.</li>
+          <li><strong>Default risk</strong> is present whenever a payment is due, but is zero immediately after each settlement.</li>
+        </ul>
+        <p>A swap can be terminated early by (1) paying its market value to the counterparty, (2) entering an
+          offsetting swap, (3) selling it to a third party (rare), or (4) exercising a <strong>swaption</strong>.</p>
+
+        <h2 id="types">3 · Types of swaps</h2>
+        <h3>Currency swaps</h3>
+        <p>Each party makes interest payments in a <em>different</em> currency. Example: Target (US) wants euro
+          funding but has a cost advantage issuing in dollars; it issues a $10m bond, then swaps with Deutsche
+          Bank to receive dollars and pay euros — converting a dollar liability into a euro one. There are four
+          fixed/floating combinations on each side (and reversed), and there is no natural "long/short".</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 1</span><h4>Currency-swap cash flows</h4></div>
+          <div class="ex-body">
+            <p>Domestic party pays GBP fixed, counterparty pays USD fixed. Notionals $50m / £30m; rates 5.6% (USD),
+              6.25% (GBP); 30/365, semi-annual.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>A. Start:</strong> domestic pays $50m, receives £30m.</p>
+              <p><strong>B. Each period:</strong> domestic pays \(£30\text{m}(0.0625)\tfrac{180}{365}=£924{,}658\);
+                counterparty pays \(\$50\text{m}(0.056)\tfrac{180}{365}=\$1{,}380{,}822\).</p>
+              <p><strong>C. End:</strong> final interest <em>plus</em> notional: £30,924,658 and $51,380,822.</p>
+              <p><strong>D.</strong> Suits a US firm that issues a dollar bond but prefers pound borrowing.</p>
+              <span class="answer">£924,658 vs $1,380,822 each period; notionals re-exchanged at the end</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Interest-rate swaps</h3>
+        <p>An interest-rate swap is a currency swap where both currencies are the same — so <strong>no notional is
+          exchanged</strong> and payments are netted. The <strong>plain-vanilla swap</strong> (one side fixed, one
+          side floating) is the single most common derivative in the world. One side is always fixed and the other
+          floating, or both float — but <strong>never both fixed</strong>. Example: GE borrows floating at
+          LIBOR+25bp, then swaps to pay 6.2% fixed and receive LIBOR, locking in an all-in 6.45% fixed cost. The
+          dealer (JPM) hedges its LIBOR exposure by selling Eurodollar futures.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 2</span><h4>Plain-vanilla swap payment</h4></div>
+          <div class="ex-body">
+            <p>€70m notional; end user pays 7% fixed (180/365), dealer pays Euribor 6.25% (180/360); netted.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Fixed: \(€70\text{m}(0.07)\tfrac{180}{365}=€2{,}416{,}438\). Floating: \(€70\text{m}(0.0625)\tfrac{180}{360}=€2{,}187{,}500\).</p>
+              <p>Net: the fixed payer pays \(€2{,}416{,}438-€2{,}187{,}500=€228{,}938\).</p>
+              <span class="answer">Fixed payer pays €228,938 net</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Equity swaps</h3>
+        <p>One leg pays the total return on a stock or index (dividends <em>and</em> capital gains — unlike rate or
+          currency swaps). The return is unknown until the period ends, and can be <strong>negative</strong> — in
+          which case the equity-return payer <em>receives</em> instead of pays, so a dealer paying fixed can end up
+          making both the fixed and the equity payment. Used, e.g., to convert an equity position into fixed income
+          without selling the stock.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 3</span><h4>Equity-swap net payments</h4></div>
+          <div class="ex-body">
+            <p>$100m notional; fund pays small-cap return (1,805.20 → 1,796.15).</p>
+            <p><strong>A. Dealer pays 6.75% fixed (182/360).</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Fixed: \(\$100\text{m}(0.0675)\tfrac{182}{360}=\$3{,}365{,}753\). Equity: \((1796.15/1805.20-1)\times\$100\text{m}=-\$501{,}329\).</p>
+              <p>The equity return is negative, so the dealer pays it <em>and</em> the fixed — net \(\$3{,}365{,}753+\$501{,}329=\$3{,}867{,}082\) to the fund.</p>
+              <span class="answer">Dealer pays $3,867,082 net</span>
+            </div></details>
+            <p><strong>B. Dealer pays large-cap return instead (1,155.14 → 1,148.91).</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Large-cap: \((1148.91/1155.14-1)\times\$100\text{m}=-\$539{,}329\). The dealer owes −$539,329 (so the fund owes the dealer $539,329); the dealer owes the fund $501,329.</p>
+              <p>Net: the fund pays \(\$539{,}329-\$501{,}329=\$38{,}000\).</p>
+              <span class="answer">Fund pays $38,000 net</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Commodity and other swaps</h3>
+        <p>Airlines swap to fix jet-fuel costs; miners hedge gold deliveries; parties also swap on non-storables
+          like electricity and even weather (rainfall, snowfall).</p>
+
+        <h2 id="equivalence">4.1 · Swaps as combinations of simpler instruments</h2>
+        <p>A swap is <strong>equivalent</strong> to a package of (a) assets — bonds, stocks, currencies; (b) forward
+          contracts; (c) futures; or (d) options. To <em>price and value</em> a swap we choose the simplest
+          replication — the <strong>underlying assets (bonds)</strong>.</p>
+        <div class="callout concept">
+          <span class="ct-label">Swap = series of off-market forwards</span>
+          <p>An interest-rate swap is a series of <strong>off-market FRAs</strong>: the implicit forwards are all
+            priced at the single swap fixed rate, not at the different market forward rates they would individually
+            carry (unless the yield curve is flat). The equity-/currency-swap-as-forwards view is an approximation;
+            the swap-as-options connection is straightforward only for interest-rate instruments — so we use bonds,
+            not options, to price swaps.</p>
+        </div>
+
+        <h2 id="pricing">4.2 · Pricing and valuing interest-rate swaps</h2>
+        <p><strong>Pricing</strong> a swap means finding the fixed rate that makes its initial value zero;
+          <strong>valuation</strong> means marking it to market later as rates move. A swap is neither asset nor
+          liability at a zero value; positive value to one party is a liability to the other.</p>
+        <h3>The floating leg is worth par</h3>
+        <p>The key insight: a floating-rate note resets to its <strong>par value of 1.0</strong> at every coupon
+          date — each payment "grosses up" to exactly cancel the discount. So with a hypothetical $1 notional
+          added at the end, the floating leg is worth 1.0 today. The discount factors are</p>
+        <div class="formula">
+          <div class="f-label">Discount factor</div>
+          <div class="mjx-row">$$ B_0(h_j) = \frac{1}{1 + L_0(h_j)\cdot\frac{h_j}{360}} $$</div>
+        </div>
+        <p>Equating the fixed leg (coupons + $1 notional) to the floating leg's value of 1.0 gives the
+          <strong>swap fixed rate</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Swap fixed payment rate <span class="eqno">(1)</span></div>
+          <div class="mjx-row">$$ FS(0,n,m) = \frac{1.0 - B_0(h_n)}{\displaystyle\sum_{j=1}^{n} B_0(h_j)} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 4</span><h4>Pricing &amp; valuing a one-year swap</h4></div>
+          <div class="ex-body">
+            <p>One-year swap, semi-annual; LIBOR: \(L_0(180)=7.2\%,\ L_0(360)=8.0\%\).</p>
+            <p><strong>A. Fixed rate.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(B_0(180)=\tfrac{1}{1+0.072(0.5)}=0.9653\); \(B_0(360)=\tfrac{1}{1+0.08(1)}=0.9259\).</p>
+              $$ FS=\frac{1-0.9259}{0.9653+0.9259}=0.0392 \;\Rightarrow\; \text{annualised } 0.0392\times\tfrac{360}{180}=7.84\% $$
+              <span class="answer">Periodic 0.0392 → 7.84% annual</span>
+            </div></details>
+            <p><strong>B. Value 90 days later</strong> (pay-floating, receive-fixed), $15m notional;
+              \(L_{90}(90)=7.1\%,\ L_{90}(270)=7.4\%\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(B_{90}(90)=0.9826,\ B_{90}(270)=0.9474\). Fixed leg \(=0.0392(0.9826+0.9474)+1.0(0.9474)=1.0231\).</p>
+              <p>First floating payment was set at 7.2% → 0.036; floating leg \(=(1.0+0.036)(0.9826)=1.0180\).</p>
+              <p>Pay-floating/receive-fixed value \(=1.0231-1.0180=0.0051\); on $15m \(=\$76{,}500\).</p>
+              <span class="answer">+$76,500 to the fixed receiver</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="currency-val">4.2.2 · Currency swaps</h2>
+        <p>Set the domestic notional at 1.0 unit; the foreign notional is \(1/S_0\) units. The fixed rate on each
+          leg is simply that country's <strong>own plain-vanilla swap rate</strong> (using Equation 1 with that
+          country's discount factors) — because \(1/S_0\) foreign units, converted at \(S_0\), gives exactly 1.0
+          domestic unit, so the present values match. Floating legs need no pricing.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 5</span><h4>Pricing &amp; valuing a currency swap</h4></div>
+          <div class="ex-body">
+            <p>One-year USD/EUR swap, semi-annual, \(S_0=\$0.75\). Euribor: 6.0% (180), 6.6% (360). USD fixed = 0.0392 (Example 4).</p>
+            <p><strong>A. Euro fixed rate.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(B_{0€}(180)=0.9709,\ B_{0€}(360)=0.9381\).
+                \(FS_€=\tfrac{1-0.9381}{0.9709+0.9381}=0.0324\) → annual \(6.48\%\).</p>
+              <span class="answer">Euro fixed 0.0324 (6.48% annual)</span>
+            </div></details>
+            <p><strong>B. Value the four "pay-$, receive-€" swaps 90 days later</strong>; new \(S=\$0.70\),
+              €notional \(=1/0.75=€1.3333\), $20m. USD legs (from Ex 4): fixed 1.0231, floating 1.0180.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>New euro factors: \(B_{90€}(180)=0.9864,\ B_{90€}(360)=0.9569\). Euro fixed leg
+                \(=0.0324(0.9864+0.9569)+0.9569=1.0199\); euro floating leg \(=1.03(0.9864)=1.0160\).</p>
+              <p>Value = −($ leg) + (€notional)(new FX)(€ leg):</p>
+              <ul>
+                <li>Pay $ fixed, receive € fixed: \(-1.0231+1.3333(0.70)(1.0199)=-\$0.0712\)</li>
+                <li>Pay $ fixed, receive € floating: \(-1.0231+1.3333(0.70)(1.0160)=-\$0.0749\)</li>
+                <li>Pay $ floating, receive € fixed: \(-1.0180+1.3333(0.70)(1.0199)=-\$0.0661\)</li>
+                <li>Pay $ floating, receive € floating: \(-1.0180+1.3333(0.70)(1.0160)=-\$0.0698\)</li>
+              </ul>
+              <span class="answer">All four negative (per $1) — the euro depreciation hurt the receive-€ side</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="equity-val">4.2.3 · Equity swaps</h2>
+        <p>For a <strong>pay-fixed, receive-equity</strong> swap, the fixed rate is the same Equation (1). The
+          market value at day \(t\) is the equity-return index ratio minus the value of a fixed-rate bond:</p>
+        <div class="formula">
+          <div class="f-label">Equity swap values <span class="eqno">(2)</span></div>
+          <div class="mjx-row">$$ \text{pay-fixed: } \frac{S_t}{S_0} - B_t(h_n) - FS(0,n,m)\sum_{j=1}^{n}B_t(h_j) $$</div>
+          <div class="mjx-row">$$ \text{pay-floating: } \frac{S_t}{S_0} - \big(1+\text{upcoming floating}\big)B_t(h_1), \qquad \text{equity-equity: } \frac{S_{1,t}}{S_{1,0}} - \frac{S_{2,t}}{S_{2,0}} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 6</span><h4>Valuing equity swaps</h4></div>
+          <div class="ex-body">
+            <p>One-year, semi-annual; receive DJIA (start 10,033.27). LIBOR as in Example 4 (fixed 0.0392).</p>
+            <p><strong>A.</strong> The fixed rate is unchanged at <strong>0.0392</strong> — receiving an equity return rather than floating does not change the fixed leg.</p>
+            <p><strong>B. Value 90 days later</strong>, $60m, DJIA at 9,955.14; \(B_{90}(180)=0.9826,\ B_{90}(270)=0.9474\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \frac{9955.14}{10033.27}-0.9474-0.0392(0.9826+0.9474)=-0.0309 \Rightarrow \$60\text{m}\times(-0.0309)=-\$1{,}854{,}000 $$
+              <span class="answer">−$1,854,000 (pay-fixed)</span>
+            </div></details>
+            <p><strong>C. If the counterparty pays floating</strong> instead of fixed (first floating 0.036):</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \frac{9955.14}{10033.27}-(1+0.036)(0.9826)=-0.0258 \Rightarrow -\$1{,}548{,}000 $$
+              <span class="answer">−$1,548,000 (pay-floating)</span>
+            </div></details>
+            <p><strong>D. Equity-for-equity</strong> (counterparty pays DJ Transports, 2,835.17 → 2,842.44):</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \frac{9955.14}{10033.27}-\frac{2842.44}{2835.17}=-0.0104 \Rightarrow -\$624{,}000 $$
+              <span class="answer">−$624,000</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="variations">5 · Variations of swaps</h2>
+        <ul>
+          <li><strong>Basis swap</strong> — both legs float (e.g. LIBOR vs T-bill); the LIBOR–T-bill gap reflects the general level of credit risk.</li>
+          <li><strong>Constant-maturity swap (CMS/CMT)</strong> — a leg pays a longer-maturity rate whose maturity <em>exceeds</em> the settlement period.</li>
+          <li><strong>Overnight index swap (OIS)</strong> — the floating leg compounds an overnight rate over the period.</li>
+          <li><strong>Amortizing / accreting swaps</strong> — the notional shrinks/grows on a schedule (index-amortizing swaps tie it to rates).</li>
+          <li><strong>Diff, arrears, capped, floored</strong> — cross-country single-currency floats; floating set at period end; or floating bounded above/below.</li>
+        </ul>
+
+        <h2 id="swaptions">6 · Swaptions</h2>
+        <p>A <strong>swaption</strong> is an option to enter a swap at a pre-agreed fixed rate. A <strong>payer
+          swaption</strong> gives the right to <em>pay fixed</em> / receive floating; a <strong>receiver
+          swaption</strong> the right to <em>receive fixed</em> / pay floating. They can be European or American.
+          Used to lock a fixed rate in advance while keeping flexibility, to terminate an existing swap, or to
+          speculate on rates.</p>
+        <p>On exercise, a swaption creates a stream of payments equal to the difference between the exercise rate
+          \(x\) and the market swap rate, valued across the swap's payment dates:</p>
+        <div class="formula">
+          <div class="f-label">Swaption payoffs <span class="eqno">(3)(4)</span></div>
+          <div class="mjx-row">$$ \text{payer: } \max\!\big[0,\,FS(0,n,m)-x\big]\sum_{j=1}^{n}B_0(h_j), \qquad \text{receiver: } \max\!\big[0,\,x-FS(0,n,m)\big]\sum_{j=1}^{n}B_0(h_j) $$</div>
+          <div class="note">A payer swaption can be exercised four ways: enter the swap; enter and offset; receive a net payment stream; or take an up-front cash settlement (the PV of the net stream).</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">A swaption is an option on a bond</span>
+          <p>Substituting the fixed-rate formula, a payer swaption's payoff becomes
+            \(\max[0,\,1.0 - \text{(value of a coupon bond)}]\) — exactly the payoff of a <strong>put</strong> on a
+            coupon bond (coupon \(x\), face 1.0). A receiver swaption is a <strong>call</strong> on the same bond.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 7</span><h4>Valuing a receiver swaption</h4></div>
+          <div class="ex-body">
+            <p>Exercise rate 4% (semi-annual); LIBOR as in Example 4 (FS = 0.0392); payments at 180 and 360 days; $25m.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \max(0,\,0.04-0.0392)(0.9653+0.9259)=0.0015 \Rightarrow \$25\text{m}\times0.0015=\$37{,}500 $$
+              <p>Equivalently, a call on a 4%-coupon bond (face 1.0): bond value
+                \(=0.04(0.9653+0.9259)+0.9259=1.0015\), so \(\max(0,1.0015-1.0)=0.0015\) — identical.</p>
+              <span class="answer">$37,500 — same as a call on the bond</span>
+            </div></details>
+          </div>
+        </div>
+        <p><strong>Forward swaps</strong> are a related instrument: a binding commitment (not an option) to enter a
+          swap later at a rate fixed today, priced off the forward — not spot — term structure, with no up-front premium.</p>
+
+        <h2 id="credit">7 · Credit risk</h2>
+        <p>Only the party holding the <strong>positive-value</strong> swap bears credit risk; the underwater party
+          owes more than it is owed. <strong>Current (immediate) credit risk</strong> is a payment due now and
+          unpayable; <strong>potential (deferred) credit risk</strong> is the chance of future non-payment.</p>
+        <ul>
+          <li>For interest-rate and equity swaps (no final principal), credit risk peaks in the <strong>middle</strong> of the life. For currency swaps (notionals re-exchanged at the end), it concentrates between the middle and the <strong>end</strong>.</li>
+          <li>The <strong>swap spread</strong> — swap fixed rate minus the default-free yield of the same maturity — reflects the <em>general</em> level of credit risk in the economy, not the risk of a specific swap.</li>
+          <li><strong>Netting</strong> (pay only the net) and <strong>marking to market</strong> (periodically settle the swap's market value and reset the fixed rate) both reduce credit risk.</li>
+        </ul>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 8</span><h4>Marking a swap to market</h4></div>
+          <div class="ex-body">
+            <p>Two-year pay-fixed (0.0462), semi-annual swap, 360 days in. LIBOR: 10.1% (180), 10.4% (360);
+              next floating 0.045.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(B_{360}(540)=0.9519,\ B_{360}(720)=0.9058\). Fixed leg \(=0.0462(0.9519+0.9058)+0.9058=0.9916\);
+                floating leg \(=1.045(0.9519)=0.9947\).</p>
+              <p>Pay-fixed value \(=0.9947-0.9916=0.0031\) → paid by the floating payer (receive-fixed) to the fixed payer.</p>
+              <p>New fixed rate \(=\tfrac{1-0.9058}{0.9519+0.9058}=0.0507\) → annual \(10.14\%\).</p>
+              <span class="answer">Value 0.0031; reset fixed rate 10.14%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Every swap decomposes into instruments you already know how to value. Add a hypothetical notional and
+            an interest-rate swap becomes a long/short pair of bonds; the floating leg is always worth par at a
+            reset, so the <strong>fixed rate that prices the swap is \(\tfrac{1-B_0(h_n)}{\sum B_0(h_j)}\)</strong>.
+            Currency swaps stack two such bonds in two currencies; equity swaps replace one bond with an index
+            ratio; and a swaption is just an option on the fixed-rate bond. Corporations embrace swaps because they
+            bundle a whole portfolio of rate-risk management into one simple, tailorable contract.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-03-option-markets.html"><span class="dir">← Previous</span><span class="ttl">Option Markets and Contracts</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
