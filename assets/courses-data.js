@@ -27,7 +27,20 @@
             { a: 'currency', t: '4.4 · Currency forwards' },
             { a: 'credit',   t: '5 · Credit risk' }
           ] },
-        { n: '02', title: 'Topic 2', cfa: 'L2', built: false },
+        { n: '02', title: 'Futures Markets and Contracts', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-02-futures-markets.html',
+          topics: [
+            { a: 'intro',    t: '1 · Introduction' },
+            { a: 'margins',  t: '2–3 · Margins &amp; limits' },
+            { a: 'delivery', t: '4 · Delivery &amp; settlement' },
+            { a: 'exchanges',t: '5 · Futures exchanges' },
+            { a: 'types',    t: '6 · Types of futures' },
+            { a: 'generic',  t: '7.1 · Cost-of-carry' },
+            { a: 'interest', t: '7.2 · Rate &amp; bond futures' },
+            { a: 'index',    t: '7.3 · Stock-index futures' },
+            { a: 'currency', t: '7.4 · Currency futures' },
+            { a: 'role',     t: '8 · Role of futures markets' }
+          ] },
         { n: '03', title: 'Topic 3', cfa: 'L2', built: false },
         { n: '04', title: 'Topic 4', cfa: 'L2', built: false },
         { n: '05', title: 'Topic 5', cfa: 'L2', built: false },

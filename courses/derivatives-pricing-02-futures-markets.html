@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Futures Markets and Contracts · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Futures contracts: marking to market and margins, delivery, the cost-of-carry pricing model, and the valuation of interest-rate, bond, stock-index, and currency futures." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="02">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 2 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Futures Markets and Contracts</h1>
+        <p class="summary">
+          A futures contract is a forward that has been standardised, exchange-traded, and — crucially —
+          <strong>marked to market every day</strong> through a clearinghouse. This lesson covers how margining
+          works, how futures are priced under the cost-of-carry model, and how to value interest-rate, bond,
+          stock-index, and currency futures.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1 · Introduction</a>
+            <a href="#margins">2–3 · Margins &amp; price limits</a>
+            <a href="#delivery">4 · Delivery &amp; settlement</a>
+            <a href="#exchanges">5 · Futures exchanges</a>
+            <a href="#types">6 · Types of futures</a>
+            <a href="#generic">7.1 · Cost-of-carry pricing</a>
+            <a href="#interest">7.2 · Interest-rate &amp; bond futures</a>
+            <a href="#index">7.3 · Stock-index futures</a>
+            <a href="#currency">7.4 · Currency futures</a>
+            <a href="#role">8 · Role of futures markets</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Like a forward, a <strong>futures contract</strong> commits the buyer (long) to buy and the seller
+          (short) to sell an underlying asset at a future date at a price agreed today. The differences are
+          structural: a futures contract is a <strong>standardised, public</strong> transaction on an organised
+          exchange, and a <strong>clearinghouse</strong> — the exchange's subsidiary — guarantees performance by
+          collecting and paying daily gains and losses. Those two features, standardisation and daily settlement,
+          drive almost everything that follows.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain why the futures price must converge to the spot price at expiration, and value a futures contract.</li>
+            <li>Explain how forward and futures prices differ, and how the monetary and non-monetary benefits and costs of holding the underlying affect the futures price.</li>
+            <li>Describe backwardation and contango, and discuss whether futures prices equal expected spot prices.</li>
+            <li>Describe the difficulty in pricing Eurodollar futures and constructing a pure arbitrage.</li>
+            <li>Calculate and interpret the price of Treasury-bond, stock-index, and currency futures.</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1 · Introduction</h2>
+        <p>A futures contract differs from a forward in three ways: it is <strong>standardised</strong> (fixed size,
+          quality, and delivery dates), it trades on an <strong>organised exchange</strong> rather than privately, and
+          it is <strong>cleared</strong>. The clearinghouse becomes the counterparty to both sides — buyer to every
+          seller and seller to every buyer — and collects and pays the daily change in value. This is why a futures
+          position carries effectively <em>no counterparty credit risk</em>: the clearinghouse stands behind it.</p>
+
+        <h2 id="margins">2–3 · Futures trading, margins, and price limits</h2>
+        <p>Trading occurs on the exchange (historically in a <strong>pit</strong>, now mostly electronic). A party
+          closes a position by <strong>offsetting</strong> — taking the opposite trade in the same contract, exactly
+          like selling a stock you bought.</p>
+        <p>Both sides post <strong>margin</strong> — a performance bond, not a down payment — with the clearinghouse:</p>
+        <ul>
+          <li><strong>Initial margin</strong> — the balance required when the position is opened (or restored after a margin call).</li>
+          <li><strong>Maintenance margin</strong> — the minimum balance that must be kept in the account.</li>
+          <li><strong>Variation margin</strong> — the deposit needed to bring the balance back up to the <em>initial</em> level once it falls below maintenance.</li>
+        </ul>
+        <div class="callout concept">
+          <span class="ct-label">Key mechanic: marking to market</span>
+          <p>Each day, gains and losses are added to or subtracted from the margin account at the new
+            <strong>settlement price</strong>. If the balance falls below the maintenance level, a
+            <strong>margin call</strong> requires a top-up all the way back to the initial margin — not just to the
+            maintenance level. <strong>Price limits</strong> cap the daily move; a <em>limit move</em> hits the cap
+            (limit up / limit down), and a <em>locked limit</em> means no trade can occur because the equilibrium
+            price lies beyond the limit.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 1</span><h4>A margin account through time</h4></div>
+          <div class="ex-body">
+            <p>Futures price $82; initial margin $5/contract, maintenance $2/contract. You go <strong>long 20
+              contracts</strong>, meet all margin calls, and withdraw no excess. Day 0 is established at the settlement
+              price, so there is no gain/loss on Day 0.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <table>
+                <thead><tr><th>Day</th><th>Begin</th><th>Deposit</th><th>Futures</th><th>Δ price</th><th>Gain/Loss</th><th>End</th></tr></thead>
+                <tbody>
+                  <tr><td>0</td><td>0</td><td>100</td><td>82</td><td>—</td><td>—</td><td>100</td></tr>
+                  <tr><td>1</td><td>100</td><td>0</td><td>84</td><td>+2</td><td>+40</td><td>140</td></tr>
+                  <tr><td>2</td><td>140</td><td>0</td><td>78</td><td>−6</td><td>−120</td><td>20</td></tr>
+                  <tr><td>3</td><td>20</td><td>80</td><td>73</td><td>−5</td><td>−100</td><td>0</td></tr>
+                  <tr><td>4</td><td>0</td><td>100</td><td>79</td><td>+6</td><td>+120</td><td>220</td></tr>
+                  <tr><td>5</td><td>220</td><td>0</td><td>82</td><td>+3</td><td>+60</td><td>280</td></tr>
+                  <tr><td>6</td><td>280</td><td>0</td><td>84</td><td>+2</td><td>+40</td><td>320</td></tr>
+                </tbody>
+              </table>
+              <p>Initial margin = \(20\times\$5=\$100\); maintenance = \(20\times\$2=\$40\). Each $1 price move is
+                \(20\times\$1=\$20\). At the end of Day 2 the balance ($20) is below the $40 maintenance level, so a
+                call on Day 3 tops it back up to $100 (deposit $80). The Day-3 loss wipes it to $0, triggering another
+                $100 deposit on Day 4.</p>
+              <span class="answer">Calls on Day 3 (+$80) and Day 4 (+$100); ending balance $320</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="delivery">4 · Delivery and cash settlement</h2>
+        <p>A position can be closed three ways: <strong>closeout</strong> (offset the contract before expiration),
+          <strong>physical delivery</strong>, or <strong>cash settlement</strong> (exchange only the final
+          difference). A fourth route, <strong>exchange for physicals (EFP)</strong>, lets the long and short arrange
+          an alternative off-exchange delivery. Because of daily marking to market, the total profit is identical
+          across closeout, delivery, and cash settlement — only the timing of the cash flows differs.</p>
+
+        <h2 id="exchanges">5 · Futures exchanges</h2>
+        <p>An exchange is a corporation owned by its members, who act as <strong>floor traders (locals)</strong> or
+          <strong>brokers (futures commission merchants)</strong>. Locals trade in three styles:</p>
+        <ul>
+          <li><strong>Scalper</strong> — holds for seconds to minutes, profiting from the bid–ask spread.</li>
+          <li><strong>Day trader</strong> — holds longer but closes everything by the end of the day.</li>
+          <li><strong>Position trader</strong> — carries positions overnight and beyond.</li>
+        </ul>
+
+        <h2 id="types">6 · Types of futures contracts</h2>
+        <p>Futures split into <strong>commodity</strong> (agricultural, metals, energy) and <strong>financial</strong>
+          (stocks, bonds, rates, currencies). The interest-rate complex spans the curve:</p>
+        <ul>
+          <li><strong>T-bill futures</strong> — on a discount instrument; price \(=1-\text{rate}\times(\text{days}/360)\).</li>
+          <li><strong>Eurodollar futures</strong> — pay off on LIBOR for a given day.</li>
+          <li><strong>T-note / T-bond futures</strong> — long-dated, with a <strong>conversion factor</strong> and a <strong>cheapest-to-deliver</strong> bond (the short chooses which eligible bond to deliver).</li>
+          <li><strong>Stock-index</strong> and <strong>currency</strong> futures complete the financial set.</li>
+        </ul>
+
+        <h2 id="generic">7.1 · Generic pricing: the cost-of-carry model</h2>
+        <p>At expiration the futures price must equal the spot price, \(f_T(T)=S_T\) — otherwise instant arbitrage
+          exists. Because the contract is marked to market daily, it is effectively <em>closed and reopened each
+          day</em>: its value resets to zero right after settlement, and an instant before marking is just the latest
+          price change.</p>
+        <div class="formula">
+          <div class="f-label">Value of a futures contract <span class="eqno">(2)(3)</span></div>
+          <div class="mjx-row">$$ v_0(T)=0, \qquad v_{t^-}(T)=f_t(T)-f_{t-1}(T), \qquad v_{t^+}(T)=0 $$</div>
+          <div class="note">Value is zero at initiation and resets to zero after each daily settlement; an instant before settlement it equals the change in the futures price since the last mark.</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Futures price — no carry costs or benefits <span class="eqno">(4)</span></div>
+          <div class="mjx-row">$$ f_0(T)=S_0\,(1+r)^{T} $$</div>
+          <div class="note">Identical in form to the forward price. If interest rates are constant (or uncorrelated with the futures price), forward and futures prices are equal.</div>
+        </div>
+        <p>Holding the physical underlying carries <strong>storage costs</strong> and may provide <strong>monetary cash
+          flows</strong> (coupons, dividends) and <strong>non-monetary benefits</strong> (a convenience yield). Each
+          adjusts the price:</p>
+        <div class="formula">
+          <div class="f-label">With storage costs / cash flows / net cost-of-carry <span class="eqno">(5)(6)(7)</span></div>
+          <div class="mjx-row">$$ f_0(T)=S_0(1+r)^{T}+FV(SC,0,T) $$</div>
+          <div class="mjx-row">$$ f_0(T)=S_0(1+r)^{T}-FV(CF,0,T) $$</div>
+          <div class="mjx-row">$$ f_0(T)=S_0(1+r)^{T}+FV(CB,0,T),\qquad FV(CB,0,T)=\text{storage}-\text{convenience yield} $$</div>
+          <div class="note">Storage costs <em>raise</em> the futures price (you must be compensated for carrying); cash flows and convenience yield <em>lower</em> it (the holder of the physical receives them).</div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Backwardation, contango, and expected spot</span>
+          <p><strong>Backwardation</strong>: benefits exceed costs plus interest, so the futures price is <em>below</em>
+            spot. <strong>Contango</strong>: costs plus interest exceed benefits, so futures is <em>above</em> spot.
+            Separately, the futures price equals the <em>expected</em> future spot price minus a risk premium —
+            <strong>normal backwardation</strong> (futures below expected spot) and <strong>normal contango</strong>
+            (futures above expected spot) describe that relationship.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 2</span><h4>Cost-of-carry and a futures arbitrage</h4></div>
+          <div class="ex-body">
+            <p>Asset $50, risk-free 8%, futures expires in 45 days (\(T=45/365=0.1233\)).</p>
+            <p><strong>A.</strong> Futures price with no storage, cash flows, or convenience yield.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(T)=50\,(1.08)^{0.1233}=\$50.48 $$
+              <span class="answer">$50.48</span>
+            </div></details>
+            <p><strong>B.</strong> With future-value storage costs of $2.25.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(T)=50\,(1.08)^{0.1233}+2.25=\$52.73 $$
+              <span class="answer">$52.73</span>
+            </div></details>
+            <p><strong>C.</strong> With future-value positive cash flows of $0.75.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(T)=50\,(1.08)^{0.1233}-0.75=\$49.73 $$
+              <span class="answer">$49.73</span>
+            </div></details>
+            <p><strong>D.</strong> With net cost-of-carry of $3.55.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(T)=50\,(1.08)^{0.1233}+3.55=\$54.03 $$
+              <span class="answer">$54.03</span>
+            </div></details>
+            <p><strong>E.</strong> Value of a long contract an instant before marking, if the previous settlement was $49 (using part A).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ v_{t^-}(T)=f_t(T)-f_{t-1}(T)=50.48-49=\$1.48 $$
+              <span class="answer">$1.48</span>
+            </div></details>
+            <p><strong>F.</strong> Using part D, show the arbitrage if the futures trades at $60.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The futures is overpriced ($60 &gt; $54.03). Sell the futures at $60 and buy the asset at $50. By
+                expiration the asset has cost \(50.48\) (interest foregone) plus \(3.55\) cost-of-carry \(=\$54.03\)
+                invested. Deliver the asset, receive $60.</p>
+              $$ \text{Net gain}=60-54.03=\$5.97 $$
+              <span class="answer">Riskless profit of $5.97</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="interest">7.2 · Pricing interest-rate and bond futures</h2>
+        <h3>T-bill futures</h3>
+        <p>Let the futures expire on day \(h\) on a T-bill maturing at \(h+m\). With \(B_0(\cdot)\) the price of a $1
+          face-value T-bill, no-arbitrage requires the futures price to be the ratio of the two bill prices:</p>
+        <div class="formula">
+          <div class="f-label">T-bill futures price <span class="eqno">(8)</span></div>
+          <div class="mjx-row">$$ f_0(h)=\frac{B_0(h+m)}{B_0(h)}=B_0(h+m)\big(1+r_0(h)\big)^{h/365} $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Implied repo rate &amp; implied discount rate <span class="eqno">(9)(10)</span></div>
+          <div class="mjx-row">$$ r_0(h)^{*}=\left(\frac{f_0(h)^{*}}{B_0(h+m)}\right)^{365/h}-1, \qquad r_0^{df}(h)=\big[1-f_0(h)\big]\frac{360}{m} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 3</span><h4>T-bill futures and the implied repo rate</h4></div>
+          <div class="ex-body">
+            <p>A T-bill matures in 140 days; a futures on it expires in 50 days. Discount rates are 5% (50-day) and
+              4.6% (140-day). So \(h=50,\ h+m=140,\ m=90\).</p>
+            <p><strong>A.</strong> Futures price from the two bill prices.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ B_0(50)=1-0.050\tfrac{50}{360}=0.9931,\qquad B_0(140)=1-0.046\tfrac{140}{360}=0.9821 $$
+              $$ f_0(50)=\frac{B_0(140)}{B_0(50)}=\frac{0.9821}{0.9931}=0.9889 $$
+              <span class="answer">0.9889</span>
+            </div></details>
+            <p><strong>B.</strong> Express via the spot price compounded at the risk-free rate.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ (1+r_0(h))^{h/365}=\frac{1}{B_0(50)}=\frac{1}{0.9931}=1.0069 \;\Rightarrow\; f_0(50)=0.9821\times1.0069=0.9889 $$
+              <span class="answer">0.9889 (consistent)</span>
+            </div></details>
+            <p><strong>C.</strong> Convert to the implied discount rate on the futures.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ r_0^{df}(50)=(1-0.9889)\frac{360}{90}=0.0444=4.44\% $$
+              <span class="answer">4.44%</span>
+            </div></details>
+            <p><strong>D.</strong> If the futures trades 10 bps below the no-arbitrage discount rate, show the arbitrage and the implied repo rate.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(50)=1-(0.0444-0.0010)\tfrac{90}{360}=0.9892 $$
+              <p>Buy the 140-day bill at 0.9821, sell the (rich) futures at 0.9892. Return per dollar
+                \(=0.9892/0.9821=1.0072\) vs 1.0069 if correctly priced. The implied repo rate is</p>
+              $$ r_0(h)^{*}=\left(\frac{0.9892}{0.9821}\right)^{365/50}-1=(1.0072)^{365/50}-1=5.38\% $$
+              <p>Since this exceeds available repo financing, the trade is profitable.</p>
+              <span class="answer">Implied repo 5.38% — finance below this and lock in profit</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Eurodollar futures</h3>
+        <p>Eurodollar futures settle on LIBOR. The price at expiration is \(f_h(h)=1-L_h(m)\,(m/360)\), where
+          \(L_h(m)\) is the \(m\)-day LIBOR observed on day \(h\). Because \(L_h(m)\) is unknown until expiration and
+          the contract's payoff is linear in the rate while the underlying deposit's value is <em>non-linear</em>
+          (it discounts at that rate), a <strong>pure arbitrage cannot be constructed</strong> — the reason
+          Eurodollar futures are difficult to price exactly.</p>
+
+        <h3>Bond futures</h3>
+        <p>For a coupon bond \(B_0^{C}(T+Y)\) delivered into the futures, coupons \(CI\) play the role of cash flows
+          and the <strong>conversion factor</strong> \(CF(T)\) standardises across deliverable bonds:</p>
+        <div class="formula">
+          <div class="f-label">Bond futures price <span class="eqno">(11)</span></div>
+          <div class="mjx-row">$$ f_0(T)=\frac{B_0^{C}(T+Y)\big[1+r_0(T)\big]^{T}-FV(CI,0,T)}{CF(T)} $$</div>
+          <div class="note">\(CF=1\) when only one bond is deliverable. The deliverable with the highest return to the short is the <strong>cheapest-to-deliver</strong> bond.</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 4</span><h4>Treasury-bond futures</h4></div>
+          <div class="ex-body">
+            <p>A 3-year, $1-par bond with 7.5% yield and 8% semi-annual coupon is priced at $1.0132. A futures calling
+              for its delivery expires in 1 year; risk-free 7%; reinvest coupons at 3.75% per 6 months.</p>
+            <p><strong>A.</strong> Future value of the coupons at expiration.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The first $0.04 coupon (month 6) reinvests for 6 months; the second (month 12) is simply collected:</p>
+              $$ FV(CI,0,T)=0.04\,(1.0375)+0.04=0.0815 $$
+              <span class="answer">0.0815</span>
+            </div></details>
+            <p><strong>B.</strong> Futures price assuming a single deliverable bond (\(CF=1\)).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(1)=[1.0132\times1.07]-0.0815=1.0026 $$
+              <span class="answer">1.0026</span>
+            </div></details>
+            <p><strong>C.</strong> With many deliverables and a conversion factor of 1.0372.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(1)=\frac{[1.0132\times1.07]-0.0815}{1.0372}=0.9667 $$
+              <span class="answer">0.9667</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="index">7.3 · Pricing stock-index futures</h2>
+        <p>A stock index pays a stream of dividends, handled exactly like the equity-forward case. The futures price
+          can be written four equivalent ways — using the future value of dividends, their present value, a dividend
+          yield \(\delta\), or a present-value yield \(\delta^{*}\):</p>
+        <div class="formula">
+          <div class="f-label">Stock-index futures price <span class="eqno">(13)–(16)</span></div>
+          <div class="mjx-row">$$ f_0(T)=S_0(1+r)^{T}-FV(D,0,T)=\big(S_0-PV(D,0,T)\big)(1+r)^{T} $$</div>
+          <div class="mjx-row">$$ f_0(T)=\frac{S_0}{(1+\delta)^{T}}(1+r)^{T}=S_0(1-\delta^{*})(1+r)^{T},\qquad \delta^{*}=\frac{PV(D,0,T)}{S_0} $$</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Continuously compounded <span class="eqno">(17)</span></div>
+          <div class="mjx-row">$$ f_0(T)=S_0\,e^{(r^{c}-\delta^{c})T},\qquad r^{c}=\ln(1+r),\ \ \delta^{c}=T^{-1}\ln\!\big[(1+\delta)^{T}\big] $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 5</span><h4>Stock-index futures</h4></div>
+          <div class="ex-body">
+            <p>Index 755.42; futures expires in 57 days (\(T=0.1562\)); risk-free 6.25%; dividends have future value
+              3.94, hence \(PV(D,0,T)=3.94/(1.0625)^{0.1562}=3.90\).</p>
+            <p><strong>A.</strong> Futures price using FV and PV of dividends.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0=755.42(1.0625)^{0.1562}-3.94=758.67 $$
+              $$ f_0=(755.42-3.90)(1.0625)^{0.1562}=758.67 $$
+              <span class="answer">758.67</span>
+            </div></details>
+            <p><strong>B.</strong> Using the two dividend-yield specifications.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ \frac{1}{(1+\delta)^{T}}=1-\frac{3.94}{755.42(1.0625)^{0.1562}}=0.9948 \;\Rightarrow\; f_0=755.42(0.9948)(1.0625)^{0.1562}=758.66 $$
+              $$ \delta^{*}=\frac{3.94}{755.42}=0.0052 \;\Rightarrow\; f_0=755.42(1-0.0052)(1.0625)^{0.1562}=758.64 $$
+              <span class="answer">≈ 758.6 (small rounding differences)</span>
+            </div></details>
+            <p><strong>C.</strong> Under continuous compounding.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ r^{c}=\ln(1.0625)=0.0606,\quad \delta^{c}=\tfrac{1}{0.1562}\ln\!\tfrac{1}{0.9948}=0.0332 $$
+              $$ f_0=755.42\,e^{(0.0606-0.0332)\,0.1562}=758.66 $$
+              <span class="answer">758.66</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="currency">7.4 · Pricing currency futures</h2>
+        <p>Currency futures follow covered interest-rate parity, with \(S_0\) the spot exchange rate (domestic per
+          unit of foreign) and \(r^{f}\) the foreign rate:</p>
+        <div class="formula">
+          <div class="f-label">Currency futures price <span class="eqno">(18)(19)</span></div>
+          <div class="mjx-row">$$ f_0(T)=\frac{S_0}{(1+r^{f})^{T}}(1+r)^{T}, \qquad f_0(T)=\big(S_0\,e^{-r^{fc}T}\big)e^{\,r^{c}T} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 6</span><h4>Currency futures and arbitrage</h4></div>
+          <div class="ex-body">
+            <p>Swiss franc spot $0.60; US rate 6%, Swiss rate 5%; futures expires in 78 days (\(T=0.2137\)).</p>
+            <p><strong>A.</strong> Appropriate futures price.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ f_0(T)=0.60\left(\frac{1.06}{1.05}\right)^{0.2137}=\$0.6012 $$
+              <span class="answer">$0.6012</span>
+            </div></details>
+            <p><strong>B.</strong> Under continuous compounding.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ r^{fc}=\ln(1.05)=0.0488,\ r^{c}=\ln(1.06)=0.0583 \;\Rightarrow\; f_0=0.60\,e^{(0.0583-0.0488)0.2137}=\$0.6012 $$
+              <span class="answer">$0.6012</span>
+            </div></details>
+            <p><strong>C.</strong> Arbitrage if the futures is quoted at $0.62.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>$0.62 &gt; $0.6012, so the futures is overpriced. At \(t=0\), buy \(1/1.05^{78/365}=0.9896\) francs for
+                \(0.9896\times\$0.60=\$0.5938\) and sell the futures at $0.62. Foreign interest grows the holding to
+                CHF 1.00, delivered for $0.62.</p>
+              $$ \frac{0.62}{0.5938}-1=4.41\% \;\Rightarrow\; (1.0441)^{365/78}-1=22.38\%\ \text{annualised} $$
+              <span class="answer">22.38% riskless — well above either funding rate</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="role">8 · The role of futures markets and exchanges</h2>
+        <p>Futures markets provide <strong>price discovery</strong>, <strong>risk management and arbitrage</strong>,
+          improved efficiency in the underlying market, and <strong>lower transaction costs</strong> than trading the
+          asset directly. They share the forward's defining features — a fixed price and date set in advance, and
+          (essentially) costless initiation — but add three advantages: <strong>standardisation</strong> (hence
+          liquidity), <strong>near-zero default risk</strong> via the clearinghouse, and <strong>transparency</strong>
+          through publicly quoted prices. The cost is flexibility: a forward can be tailored exactly, a futures cannot.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>The futures pricing model is the forward's cost-of-carry logic with one addition: daily marking to market.
+            Start from \(f_0(T)=S_0(1+r)^{T}\), then <em>add</em> storage costs and <em>subtract</em> cash flows and
+            convenience yield. The interest-rate, bond, index, and currency formulas are all special cases of that one
+            idea — carry the asset to expiration, and the futures price is whatever makes carrying it a fair, riskless
+            trade.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-01-forward-markets.html"><span class="dir">← Previous</span><span class="ttl">Forward Markets and Contracts</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
