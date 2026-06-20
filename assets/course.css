@@ -55,6 +55,9 @@
 }
 .course-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--line-2); }
 .course-card .cc-top{ display:flex; align-items:center; gap:13px; margin-bottom:15px; }
+.course-card .cc-top .cfa-badge{ margin-left:auto; }
+.idx-head .eyebrow .cfa-badge{ margin-left:8px; vertical-align:middle; }
+.lesson-meta .cfa-badge{ margin-left:9px; vertical-align:middle; }
 .course-card .cc-badge{
   display:inline-flex; align-items:center; justify-content:center;
   width:42px; height:42px; border-radius:10px; flex-shrink:0;
@@ -154,7 +157,7 @@ a{ color:var(--accent); }
 }
 @media(max-width:880px){
   .curric{ position:fixed; top:54px; left:0; width:min(86vw,330px); z-index:55; transform:translateX(-102%); transition:transform .28s var(--ease); box-shadow:var(--shadow); }
-  .curric.open{ transform:translateX(0); }
+  .curric.open-drawer{ transform:translateX(0); }
   .topbar .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; color:var(--ink); }
   .scrim{ position:fixed; inset:54px 0 0; background:rgba(15,22,35,.32); opacity:0; pointer-events:none; transition:opacity .25s; z-index:54; }
   .scrim.show{ opacity:1; pointer-events:auto; }
@@ -168,25 +171,51 @@ a{ color:var(--accent); }
 .curric-head .cp-row .pct{ font-size:12.5px; font-weight:800; color:var(--accent); }
 .curric-head.is-complete .cp-row .pct{ color:var(--green); }
 
-.curric-list{ padding:10px 0 26px; }
-.cl-item{
-  display:flex; gap:11px; align-items:flex-start;
-  padding:10px 18px 10px 15px; border-left:3px solid transparent;
-  font-size:13.5px; line-height:1.4; color:var(--muted); text-decoration:none;
+.curric-list{ padding:8px 0 26px; }
+.cl-group{ border-bottom:1px solid var(--line-soft); }
+.cl-row{ display:flex; align-items:stretch; }
+.cl-link{
+  flex:1; min-width:0; display:flex; gap:10px; align-items:center;
+  padding:10px 8px 10px 15px; border-left:3px solid transparent;
+  font-size:13.3px; line-height:1.35; color:var(--muted); text-decoration:none;
   transition:background .16s, color .16s;
 }
-.cl-item:hover{ background:var(--rail-2); color:var(--ink); }
-.cl-item.current{ background:#fff; color:var(--ink); border-left-color:var(--accent); font-weight:650; }
-.cl-item .check{
-  width:19px; height:19px; border-radius:50%; flex-shrink:0; margin-top:1px;
+.cl-link:hover{ background:var(--rail-2); color:var(--ink); }
+.cl-group.current > .cl-row > .cl-link{ background:#fff; color:var(--ink); font-weight:650; border-left-color:var(--accent); }
+.cl-link.soon{ opacity:.6; }
+.cl-link .cl-num{ color:var(--muted-2); font-weight:700; font-size:11.5px; min-width:16px; }
+.cl-link .cl-ttl{ flex:1; min-width:0; }
+.cl-link .check{
+  width:19px; height:19px; border-radius:50%; flex-shrink:0;
   border:1.6px solid var(--line-2); display:grid; place-items:center;
   color:transparent; font-size:10px; font-weight:800; background:#fff;
 }
-.cl-item.done .check{ background:var(--green); border-color:var(--green); color:#fff; }
-.cl-item.current .check{ border-color:var(--accent); }
-.cl-item.current.done .check{ border-color:var(--green); }
-.cl-item .cl-num{ color:var(--muted-2); font-weight:700; font-size:12px; min-width:18px; }
-.cl-item.soon{ opacity:.55; }
+.cl-group.done .check{ background:var(--green); border-color:var(--green); color:#fff; }
+.cl-group.current .cl-link .check{ border-color:var(--accent); }
+.cl-group.current.done .check{ border-color:var(--green); }
+.cl-toggle{
+  width:36px; flex-shrink:0; border:0; background:transparent; cursor:pointer;
+  color:var(--muted-2); font-size:11px; transition:transform .2s, color .15s;
+}
+.cl-toggle:hover{ color:var(--accent); }
+.cl-group.open > .cl-row > .cl-toggle{ transform:rotate(90deg); }
+.cl-topics{ display:none; padding:2px 0 8px; background:#fcfdfe; }
+.cl-group.open .cl-topics{ display:block; }
+.cl-topic{
+  display:block; padding:6px 14px 6px 44px; font-size:12.4px; line-height:1.4;
+  color:var(--muted); text-decoration:none; border-left:3px solid transparent;
+}
+.cl-topic:hover{ color:var(--ink); background:var(--rail-2); }
+.cl-topic.active{ color:var(--accent); border-left-color:var(--accent); font-weight:600; }
+.tag-soon{ font-size:9.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-2); border:1px solid var(--line); padding:2px 7px; border-radius:99px; align-self:center; margin-right:14px; }
+
+/* CFA level badges */
+.cfa-badge{ flex-shrink:0; font-size:9.5px; font-weight:800; letter-spacing:.02em; padding:2px 6px; border-radius:5px; white-space:nowrap; }
+.cfa-badge.sm{ font-size:8.5px; padding:2px 5px; }
+.cfa-l1{ background:#e7f5ef; color:#1c8a59; }
+.cfa-l2{ background:#efeafb; color:#6b49bd; }
+.cfa-mix{ background:#eef2f8; color:#4a647f; }
+.curric-head .ct-eyebrow .cfa-badge{ vertical-align:middle; }
 
 /* reading column */
 .reading{ min-width:0; }

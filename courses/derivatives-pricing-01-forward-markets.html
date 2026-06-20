@@ -16,7 +16,7 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
-<body class="course-page acc-drv">
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="01">
 
   <div class="topbar">
     <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
@@ -31,31 +31,12 @@
 
   <div class="lesson-app">
 
-    <aside class="curric" id="curric">
-      <div class="curric-head" data-progress-course="derivatives-pricing">
-        <div class="ct-eyebrow">Course</div>
-        <a class="ct-title" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
-        <div class="cp-row"><span class="lab">Your progress</span><span class="pct">0%</span></div>
-        <div class="pbar"><i></i></div>
-      </div>
-      <nav class="curric-list" aria-label="Lessons">
-        <a class="cl-item current" data-lesson="01" href="/courses/derivatives-pricing-01-forward-markets.html"><span class="check">✓</span><span class="cl-num">01</span><span>Forward Markets and Contracts</span></a>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">02</span><span>Topic 2 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">03</span><span>Topic 3 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">04</span><span>Topic 4 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">05</span><span>Topic 5 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">06</span><span>Topic 6 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">08</span><span>Topic 8 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">10</span><span>Topic 10 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">11</span><span>Topic 11 — coming soon</span></span>
-        <span class="cl-item soon"><span class="check">✓</span><span class="cl-num">12</span><span>Topic 12 — coming soon</span></span>
-      </nav>
-    </aside>
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
     <div class="scrim" id="scrim"></div>
 
     <main class="reading">
       <div class="reading-inner">
-        <div class="lesson-meta">Lesson 1 · Derivatives Pricing</div>
+        <div class="lesson-meta">Lesson 1 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
         <h1>Forward Markets and Contracts</h1>
         <p class="summary">
           A forward contract locks in today the price of a transaction that will settle in the future.
@@ -481,26 +462,7 @@
   </div>
 
   <script src="/assets/progress.js"></script>
-  <script>
-    (function(){
-      var COURSE='derivatives-pricing', LESSON='01';
-      function paint(){
-        document.querySelectorAll('.cl-item[data-lesson]').forEach(function(el){
-          el.classList.toggle('done', Progress.isDone(COURSE, el.getAttribute('data-lesson')));
-        });
-        var btn=document.getElementById('markBtn');
-        var done=Progress.isDone(COURSE,LESSON);
-        btn.classList.toggle('done',done);
-        btn.querySelector('.lbl').textContent = done ? 'Lesson completed' : 'Mark lesson complete';
-      }
-      document.getElementById('markBtn').addEventListener('click',function(){ Progress.toggle(COURSE,LESSON); paint(); });
-      window.addEventListener('tmbd-progress', paint);
-      paint();
-      var c=document.getElementById('curric'), s=document.getElementById('scrim'), b=document.getElementById('menuBtn');
-      function close(){ c.classList.remove('open'); s.classList.remove('show'); }
-      b.addEventListener('click',function(){ c.classList.toggle('open'); s.classList.toggle('show'); });
-      s.addEventListener('click',close);
-    })();
-  </script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
 </body>
 </html>
