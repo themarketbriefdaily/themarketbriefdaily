@@ -41,7 +41,19 @@
             { a: 'currency', t: '7.4 · Currency futures' },
             { a: 'role',     t: '8 · Role of futures markets' }
           ] },
-        { n: '03', title: 'Topic 3', cfa: 'L2', built: false },
+        { n: '03', title: 'Option Markets and Contracts', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-03-option-markets.html',
+          topics: [
+            { a: 'intro',           t: '1–2 · Definitions' },
+            { a: 'markets',         t: '3–4 · Markets &amp; types' },
+            { a: 'payoffs',         t: '5.1 · Payoff values' },
+            { a: 'boundaries',      t: '5.2 · Boundary conditions' },
+            { a: 'parity',          t: '5.5 · Put–call parity' },
+            { a: 'sensitivities',   t: '5.6 · American &amp; Greeks' },
+            { a: 'binomial',        t: '6 · Binomial model' },
+            { a: 'bsm',             t: '7 · Black–Scholes–Merton' },
+            { a: 'futures-options', t: '8 · Options on futures' }
+          ] },
         { n: '04', title: 'Topic 4', cfa: 'L2', built: false },
         { n: '05', title: 'Topic 5', cfa: 'L2', built: false },
         { n: '06', title: 'Topic 6', cfa: 'L2', built: false },

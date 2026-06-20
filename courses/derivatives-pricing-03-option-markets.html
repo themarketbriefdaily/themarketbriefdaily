@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Option Markets and Contracts · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Options: payoffs and moneyness, boundary conditions, put-call parity and synthetics, the binomial model, the Black-Scholes-Merton model, the Greeks, and the Black model for options on futures." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="03">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 3 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Option Markets and Contracts</h1>
+        <p class="summary">
+          An option is the right — but not the obligation — to buy or sell. That asymmetry makes options
+          the richest of all derivatives to value. This lesson builds option pricing from payoffs and
+          no-arbitrage boundaries, through put-call parity and synthetics, to the two great pricing
+          engines: the discrete-time <strong>binomial model</strong> and the continuous-time
+          <strong>Black-Scholes-Merton model</strong> — plus the Greeks and the Black model for options
+          on futures.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1–2 · Definitions &amp; characteristics</a>
+            <a href="#markets">3–4 · Markets &amp; types</a>
+            <a href="#payoffs">5.1 · Payoff values</a>
+            <a href="#boundaries">5.2–5.4 · Boundary conditions</a>
+            <a href="#parity">5.5 · Put–call parity &amp; synthetics</a>
+            <a href="#sensitivities">5.6–5.9 · American, cash flows &amp; sensitivities</a>
+            <a href="#binomial">6 · The binomial model</a>
+            <a href="#bsm">7 · Black–Scholes–Merton</a>
+            <a href="#futures-options">8 · Options on forwards &amp; futures</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          An <strong>option</strong> is a contract that gives one party the <em>right</em> to buy or sell an
+          underlying asset at a fixed price on (or before) a fixed date. A <strong>call</strong> grants the
+          right to buy; a <strong>put</strong> grants the right to sell. The buyer pays the seller (writer) an
+          <strong>option premium</strong> up front for that right. Because the holder will only exercise when it
+          is profitable, an option's payoff is one-sided — and pricing it means valuing that optionality.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Calculate and interpret the prices of a synthetic call, synthetic put, synthetic bond, and synthetic underlying, and explain why an investor would create them.</li>
+            <li>Calculate and interpret option prices using one- and two-period binomial models, including interest-rate options.</li>
+            <li>Explain the assumptions of the Black-Scholes-Merton model and how each input affects the option price (the Greeks).</li>
+            <li>Explain delta and dynamic hedging, the gamma effect, and the effect of the underlying's cash flows.</li>
+            <li>Estimate volatility (historical and implied), establish put-call parity for options on forwards/futures, and identify the appropriate European pricing model (the Black model).</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1–2 · Basic definitions and characteristics</h2>
+        <p>Every option is described by a handful of features:</p>
+        <ul>
+          <li><strong>Underlying</strong> and <strong>premium (price)</strong> — what the option is on, and what the buyer pays.</li>
+          <li><strong>Exercise (strike) price</strong> \(X\) — the fixed price at which the holder may buy (call) or sell (put).</li>
+          <li><strong>Expiration date</strong> — <strong>European</strong> options exercise <em>only</em> at expiration; <strong>American</strong> options exercise at <em>any</em> time up to expiration.</li>
+          <li><strong>Payoff</strong> — the option's value at expiration.</li>
+          <li><strong>Intrinsic (exercise) value vs time value</strong> — intrinsic value is what exercising is worth now; the rest of the premium is time (speculative) value. Before expiration an option normally sells for <em>more</em> than intrinsic value.</li>
+          <li><strong>Moneyness</strong> — whether the option has positive intrinsic value: in-the-money (ITM), at-the-money (ATM), or out-of-the-money (OTM).</li>
+        </ul>
+        <div class="callout note">
+          <span class="ct-label">Reading an option chain</span>
+          <p>For a stock at $16.25: a 15-strike call is ITM (\(16.25&gt;15\)); a 17.50-strike call is OTM. A
+            17.50-strike put is ITM (\(17.50&gt;16.25\)); a 15-strike put is OTM. <em>Call premiums fall</em> as the
+            strike rises; <em>put premiums rise</em> as the strike rises. You might not exercise an ITM option, but
+            you would <strong>never</strong> exercise an OTM one.</p>
+        </div>
+
+        <h2 id="markets">3–4 · The structure of options markets and types of options</h2>
+        <p>An <strong>exchange-traded option</strong> is standardised, traded on an exchange, cleared, and
+          guaranteed. <strong>Over-the-counter (OTC) options</strong> — often exotic — are privately negotiated
+          off-exchange. Options exist on a wide range of underlyings:</p>
+        <ul>
+          <li><strong>Financial options</strong>: stock, index, bond, interest-rate, and currency options.</li>
+          <li><strong>Options on futures</strong>, <strong>commodity options</strong>, and other exotic types.</li>
+        </ul>
+
+        <h2 id="payoffs">5.1 · Payoff values</h2>
+        <p>At expiration the option is worth its intrinsic value — zero, or the in-the-money amount:</p>
+        <div class="formula">
+          <div class="f-label">Payoffs at expiration <span class="eqno">(3)(4)</span></div>
+          <div class="mjx-row">$$ c_T = \max(0,\,S_T-X), \qquad p_T = \max(0,\,X-S_T) $$</div>
+          <div class="note">Same form for European (\(c_T,p_T\)) and American (\(C_T,P_T\)) options at expiration. Prior to expiration, market price = intrinsic value + <em>time value</em>.</div>
+        </div>
+        <p>The four basic position diagrams are worth memorising: a <strong>long call</strong> has unlimited upside
+          and limited downside (the premium); a <strong>short call</strong> is its mirror; a <strong>long put</strong>
+          profits as the price falls toward zero; a <strong>short put</strong> is its mirror.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 1</span><h4>Payoffs across underlyings, plus two strategies</h4></div>
+          <div class="ex-body">
+            <p><strong>A. Stock index</strong> at 5,601.19, multiplier 500.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>X = 5,500: call \(\max(0,101.19)\times500=50{,}595\); put \(=0\). X = 6,000: call \(=0\); put \(\max(0,398.81)\times500=199{,}405\).</p>
+              <span class="answer">5,500 → call 50,595 / put 0; &nbsp; 6,000 → call 0 / put 199,405</span>
+            </div></details>
+            <p><strong>B. Bond</strong> at $1.035 per $1 par, $100,000 face.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>X = 1.00: call \(0.035\times100{,}000=\$3{,}500\); put 0. X = 1.05: call 0; put \(0.015\times100{,}000=\$1{,}500\).</p>
+              <span class="answer">1.00 → 3,500 / 0; &nbsp; 1.05 → 0 / 1,500</span>
+            </div></details>
+            <p><strong>C. 90-day rate</strong> at 9%, notional $50m, 90/360.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>X = 8%: call \(0.01\times\tfrac{90}{360}\times50\text{m}=\$125{,}000\). X = 10.5%: put \(0.015\times\tfrac{90}{360}\times50\text{m}=\$187{,}500\).</p>
+              <span class="answer">8% → call 125,000; &nbsp; 10.5% → put 187,500</span>
+            </div></details>
+            <p><strong>D. Swiss franc</strong> at $0.775, $500,000 per franc.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>X = 0.75: call \(0.025\times500{,}000=\$12{,}500\). X = 0.81: put \(0.035\times500{,}000=\$17{,}500\).</p>
+              <span class="answer">0.75 → call 12,500; &nbsp; 0.81 → put 17,500</span>
+            </div></details>
+            <p><strong>E. Futures</strong> at 110.5, $1m, % of par.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>X = 110: call \(0.5\times\tfrac{1}{100}\times1\text{m}=\$5{,}000\). X = 115: put \(4.5\times\tfrac{1}{100}\times1\text{m}=\$45{,}000\).</p>
+              <span class="answer">110 → call 5,000; &nbsp; 115 → put 45,000</span>
+            </div></details>
+            <p><strong>F. Covered call</strong> — buy stock at $40, sell the 40-strike call for $7.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>At $52: \(52-\max(0,12)=40\). At $38: \(38-\max(0,-2)=38\). Payoff is capped at $40 above the strike and
+                declines with the stock below it — the same shape as a <strong>short put</strong> (Panel D).</p>
+              <span class="answer">Capped at 40 — a covered call</span>
+            </div></details>
+            <p><strong>G. Protective put</strong> — buy stock at $60, buy the 60-strike put for $5.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>At $68: \(68+\max(0,-8)=68\). At $50: \(50+\max(0,10)=60\). Payoff is floored at $60 and rises with the
+                stock — the same shape as a <strong>long call</strong> (Panel A).</p>
+              <span class="answer">Floored at 60 — a protective put</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="boundaries">5.2–5.4 · Boundary conditions</h2>
+        <h3>Minimum and maximum values</h3>
+        <p>No-arbitrage pins option prices between hard limits. Every option is worth at least zero. A call can
+          never be worth more than the underlying; a European put can never exceed the present value of the strike,
+          and an American put never exceeds the strike itself:</p>
+        <div class="formula">
+          <div class="f-label">Min / max values <span class="eqno">(5)(6)(7)</span></div>
+          <div class="mjx-row">$$ 0 \le c_0 \le S_0, \qquad 0 \le p_0 \le \frac{X}{(1+r)^{T}}, \qquad 0 \le P_0 \le X $$</div>
+          <div class="note">Example (\(S_0=52,\,X=50,\,r=5\%,\,T=0.5\)): \(0\le c_0\le52\); \(0\le p_0\le 48.80\); \(0\le P_0\le50\).</div>
+        </div>
+        <h3>Lower bounds</h3>
+        <p>The lower bound of an American option is its intrinsic value. For European calls and puts it is the
+          underlying (or strike PV) net of the other leg — derived by comparing a call-plus-bond portfolio to the
+          underlying:</p>
+        <div class="formula">
+          <div class="f-label">Lower bounds <span class="eqno">(8)(9)(10)</span></div>
+          <div class="mjx-row">$$ c_0 \ge \max\!\Big[0,\,S_0-\tfrac{X}{(1+r)^{T}}\Big], \qquad p_0 \ge \max\!\Big[0,\,\tfrac{X}{(1+r)^{T}}-S_0\Big] $$</div>
+          <div class="mjx-row">$$ C_0 \ge \max\!\Big[0,\,S_0-\tfrac{X}{(1+r)^{T}}\Big], \qquad P_0 \ge \max\big(0,\,X-S_0\big) $$</div>
+          <div class="note">The American call shares the European lower bound (so it is never optimal to exercise a non-dividend call early). The American put keeps the higher intrinsic-value bound.</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 2</span><h4>Lower bounds, European vs American</h4></div>
+          <div class="ex-body">
+            <p>Options expire in 42 days (\(T=0.1151\)); underlying $72; risk-free 4.5%; no cash flows.</p>
+            <p><strong>A. European bounds, strikes 70 and 75.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>70 call: \(\max[0,\,72-70/1.045^{0.1151}]=\$2.35\). &nbsp; 75 call: \(\max[0,-2.62]=\$0\).</p>
+              <p>70 put: \(\max[0,-2.35]=\$0\). &nbsp; 75 put: \(\max[0,\,75/1.045^{0.1151}-72]=\$2.62\).</p>
+              <span class="answer">Calls 2.35 / 0; &nbsp; Puts 0 / 2.62</span>
+            </div></details>
+            <p><strong>B. American bounds.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Calls identical (2.35 / 0). American puts use intrinsic value: 70 put \(\max[0,70-72]=\$0\);
+                75 put \(\max[0,75-72]=\$3\) — higher than the European 2.62.</p>
+              <span class="answer">Calls 2.35 / 0; &nbsp; Amer puts 0 / 3</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Effect of exercise price and time to expiration</h3>
+        <ul>
+          <li>A call with a <em>higher</em> strike cannot be worth more than one with a lower strike; a put with a higher strike is worth at least as much as one with a lower strike.</li>
+          <li>A longer-term European/American <strong>call</strong> is worth at least as much as a shorter-term one; likewise the American <strong>put</strong>. The <em>European put</em> is the exception — a longer-term European put can be worth either more or less.</li>
+        </ul>
+
+        <h2 id="parity">5.5 · Put-call parity and synthetics</h2>
+        <p>The single most important result in options. A <strong>fiduciary call</strong> (a call plus a
+          zero-coupon bond paying \(X\)) and a <strong>protective put</strong> (a put plus the underlying) have
+          identical payoffs at expiration — \(\max(S_T,X)\) — so they must cost the same today:</p>
+        <div class="formula">
+          <div class="f-label">Put-call parity <span class="eqno">(13)</span></div>
+          <div class="mjx-row">$$ c_0 + \frac{X}{(1+r)^{T}} = p_0 + S_0 $$</div>
+          <div class="note">The no-arbitrage condition for options. Rearranging it manufactures any instrument synthetically.</div>
+        </div>
+        <div class="formula">
+          <div class="f-label">Synthetic positions</div>
+          <div class="mjx-row">$$ C_0 = P_0 + S_0 - \frac{X}{(1+r)^{T}}, \qquad P_0 = C_0 - S_0 + \frac{X}{(1+r)^{T}} $$</div>
+          <div class="note">A synthetic call = long put + long underlying + short bond. A synthetic put = long call + short underlying + long bond. Synthetic underlying = long call + long bond − short put; synthetic bond = long put + long underlying − short call. Investors build synthetics to exploit mispricing or to trade an instrument that is cheaper/more liquid synthetically.</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Why this matters</span>
+          <p>Whenever the actual price of an option diverges from its synthetic, an <strong>arbitrage</strong> exists:
+            sell the expensive version, buy the cheap one, and the position is perfectly hedged to a riskless profit.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 3</span><h4>Put-call parity arbitrage</h4></div>
+          <div class="ex-body">
+            <p>European options, strike $45, expire in 115 days (\(T=0.3151\)); underlying $48, no cash flows;
+              risk-free 4.5%. Put $3.75, call $8.00.</p>
+            <p><strong>A. Identify the mispricing via the synthetic call.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ c_0^{\text{synthetic}} = 3.75 + 48.00 - \frac{45.00}{1.045^{0.3151}} = \$7.37 < \$8.00 $$
+              <p>The synthetic call is cheaper than the traded call — the traded call is overpriced.</p>
+              <span class="answer">Synthetic $7.37 vs traded $8.00</span>
+            </div></details>
+            <p><strong>B. Execute the arbitrage.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Sell the call for $8.00; buy the synthetic call (buy put $3.75, buy underlying $48, issue a bond paying
+                $45 → brings in $44.38 today). The position nets <strong>$0.63 up front</strong> and pays nothing at
+                expiration (perfectly hedged for all \(S_T\)).</p>
+              <span class="answer">Riskless +$0.63 up front</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="sensitivities">5.6–5.9 · American options, cash flows, rates, volatility</h2>
+        <h3>American options and early exercise</h3>
+        <p>American prices are never below European prices (\(C_0\ge c_0,\ P_0\ge p_0\)). For a <strong>non-dividend
+          call</strong>, \(C_0 \ge S_0 - X/(1+r)^T &gt; S_0 - X\) — selling beats exercising, so early exercise is
+          never optimal and \(C_0 = c_0\). The exception is a dividend-paying stock, where exercising captures the
+          dividend. For an American <strong>put</strong>, early exercise is frequently optimal — e.g. a put on a
+          bankrupt company should be exercised immediately to collect \(X\) now.</p>
+        <h3>Cash flows on the underlying</h3>
+        <p>Income on the underlying (dividends, coupons) reduces its effective price. Replace \(S_0\) with
+          \(S_0 - PV(CF,0,T)\) everywhere:</p>
+        <div class="formula">
+          <div class="f-label">With cash flows</div>
+          <div class="mjx-row">$$ c_0 \ge \max\!\Big[0,\,[S_0-PV(CF,0,T)]-\tfrac{X}{(1+r)^{T}}\Big] $$</div>
+          <div class="mjx-row">$$ c_0 + \frac{X}{(1+r)^{T}} = p_0 + [S_0 - PV(CF,0,T)] $$</div>
+        </div>
+        <h3>Interest rates and volatility</h3>
+        <ul>
+          <li>Higher interest rates <strong>raise call</strong> prices (the call is a leveraged claim on the underlying) and <strong>lower put</strong> prices (the opportunity cost of waiting to sell rises).</li>
+          <li>Higher <strong>volatility raises both</strong> call and put prices — more upside and downside both increase the value of one-sided payoffs.</li>
+        </ul>
+        <h3>The Greeks — option price sensitivities</h3>
+        <ul>
+          <li><strong>Delta</strong> — sensitivity to the underlying price.</li>
+          <li><strong>Gamma</strong> — how fast delta itself changes (how well delta approximates the move).</li>
+          <li><strong>Rho</strong> — sensitivity to the risk-free rate.</li>
+          <li><strong>Theta</strong> — the rate of time-value decay.</li>
+          <li><strong>Vega</strong> — sensitivity to volatility.</li>
+        </ul>
+
+        <h2 id="binomial">6 · Discrete-time pricing: the binomial model</h2>
+        <h3>One-period model</h3>
+        <p>The underlying moves to \(S^+ = Su\) or \(S^- = Sd\). Build a hedge of \(n\) units of the underlying
+          against one short call so the portfolio is riskless (\(H^+ = H^-\)); the hedge ratio is</p>
+        <div class="formula">
+          <div class="f-label">Hedge ratio &amp; option price <span class="eqno">(15)(16)(17)</span></div>
+          <div class="mjx-row">$$ n^{*}=\frac{c^{+}-c^{-}}{S^{+}-S^{-}}, \qquad c=\frac{\pi c^{+}+(1-\pi)c^{-}}{1+r}, \qquad \pi=\frac{1+r-d}{u-d} $$</div>
+          <div class="note">\(\pi\) is the <strong>risk-neutral probability</strong>. The option price is the expected payoff under \(\pi\), discounted at the risk-free rate — value as if investors were risk-neutral.</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Worked illustration</span>
+          <p>\(S=50,\ u=1.25,\ d=0.80,\ X=50,\ r=7\%\). Then \(S^+=62.50\ (c^+=12.50)\), \(S^-=40\ (c^-=0)\),
+            \(\pi=\tfrac{1.07-0.80}{1.25-0.80}=0.60\), and \(c=\tfrac{0.6(12.5)+0.4(0)}{1.07}=\$7.01\). If the call
+            traded at $8 (overpriced), sell 1,000 calls, buy \(n=0.556\) units each (556 units), and lock in a
+            12.37% riskless return — above the 7–8% rate.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 4</span><h4>One-period binomial call + arbitrage</h4></div>
+          <div class="ex-body">
+            <p>\(S=65\), up 30% / down 22%, \(r=8\%\), call strike $70.</p>
+            <p><strong>A. Price the call.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(u=1.30,\ d=0.78\). \(S^+=84.50\ (c^+=14.50)\), \(S^-=50.70\ (c^-=0)\).</p>
+              $$ \pi=\frac{1.08-0.78}{1.30-0.78}=0.5769 \;\Rightarrow\; c=\frac{0.5769(14.5)+0.4231(0)}{1.08}=\$7.75 $$
+              <span class="answer">c = $7.75</span>
+            </div></details>
+            <p><strong>B. The call trades at $9.00. Arbitrage with 10,000 calls.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Overpriced. \(n=\delta=\tfrac{14.50-0}{84.50-50.70}=0.4290\). Sell 10,000 calls (+$90,000), buy 4,290 units
+                (−$278,850) → net invest $188,850. Either outcome grows to ≈$217,505, a return
+                \(217{,}505/188{,}850-1=15.17\%\) — well above 8%.</p>
+              <span class="answer">15.17% riskless</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Two-period model</h3>
+        <p>Extend the tree one more step. Value the option backward: compute terminal payoffs, then
+          \(c^+,c^-\) one period out, then \(c\) today — each node using the same \(\pi\). The hedge ratio
+          \(n\) differs at every node.</p>
+        <div class="formula">
+          <div class="f-label">Two-period recursion <span class="eqno">(18)(19)(20)</span></div>
+          <div class="mjx-row">$$ c^{+}=\frac{\pi c^{++}+(1-\pi)c^{+-}}{1+r}, \quad c^{-}=\frac{\pi c^{-+}+(1-\pi)c^{--}}{1+r}, \quad c=\frac{\pi c^{+}+(1-\pi)c^{-}}{1+r} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 5</span><h4>Two-period binomial call &amp; hedge ratios</h4></div>
+          <div class="ex-body">
+            <p>\(S=30\), up 14% / down 11% each period, \(r=3\%\), strike 30, expires in two periods.</p>
+            <p><strong>A. Value the call.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(u=1.14,\ d=0.89\). Terminal: \(S^{++}=38.99\ (c^{++}=8.99)\), \(S^{+-}=30.44\ (c^{+-}=0.44)\),
+                \(S^{--}=23.76\ (c^{--}=0)\). \(\pi=\tfrac{1.03-0.89}{1.14-0.89}=0.56\).</p>
+              $$ c^{+}=\frac{0.56(8.99)+0.44(0.44)}{1.03}=5.08,\quad c^{-}=\frac{0.56(0.44)}{1.03}=0.24 $$
+              $$ c=\frac{0.56(5.08)+0.44(0.24)}{1.03}=2.86 $$
+              <span class="answer">c = 2.86</span>
+            </div></details>
+            <p><strong>B. Hedge ratios for 10,000 calls.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(n=\tfrac{5.08-0.24}{34.20-26.70}=0.6453\); \(n^{+}=\tfrac{8.99-0.44}{38.99-30.44}=1.0000\);
+                \(n^{-}=\tfrac{0.44-0}{30.44-23.76}=0.0659\). So 6,453 units today; 10,000 (up node) or 659 (down node)
+                at time 1.</p>
+              <span class="answer">δ = 0.6453 → 6,453 units today</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 6</span><h4>Binomial put pricing</h4></div>
+          <div class="ex-body">
+            <p>\(S=65\), up 30% / down 22%, \(r=8\%\), put strike 70.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(p^+=\max(0,70-84.50)=0\), \(p^-=\max(0,70-50.70)=19.30\). \(\pi=0.5769\).</p>
+              $$ p=\frac{0.5769(0)+0.4231(19.30)}{1.08}=7.56 $$
+              <span class="answer">p = 7.56</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Binomial interest-rate options &amp; American options</h3>
+        <p>For interest-rate options the risk-neutral probability is taken as \(\pi=0.5\) and the discount rate
+          <em>changes at each node</em> using a given binomial tree of interest rates. The model also handles
+          <strong>American options</strong> naturally: at each node, compare the calculated value to the early-exercise
+          value and keep whichever is larger. Adding more time periods makes the discrete binomial price converge to
+          the continuous-time (Black-Scholes-Merton) value.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 7</span><h4>Binomial interest-rate put on a coupon bond</h4></div>
+          <div class="ex-body">
+            <p>Using a two-period interest-rate tree (\(\pi=0.5\)), price a European put (strike 1.01) on a three-period
+              6% coupon bond, $1 face.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Bond prices at time 2 from the zero prices: \(S^{++}=1.06(0.9210)=0.9763\), \(S^{+-}=1.06(0.9443)=1.0010\),
+                \(S^{--}=1.06(0.9682)=1.0263\). Put payoffs: \(p^{++}=0.0337,\ p^{+-}=0.0090,\ p^{--}=0\).</p>
+              <p>Discount back at each node's rate: \(p^{+}=\tfrac{0.5(0.0337)+0.5(0.0090)}{1.064}=0.0201\),
+                \(p^{-}=\tfrac{0.5(0.0090)+0.5(0)}{1.0429}=0.0043\), then
+                \(p=\tfrac{0.5(0.0201)+0.5(0.0043)}{1.0513}=0.0116\).</p>
+              <span class="answer">p ≈ 0.0116</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="bsm">7 · Continuous-time pricing: Black-Scholes-Merton</h2>
+        <p>The BSM model assumes the underlying follows a <strong>geometric lognormal diffusion</strong>; a known,
+          constant risk-free rate and volatility; no taxes, transaction costs, or cash flows; and European exercise.
+          The famous formula:</p>
+        <div class="formula">
+          <div class="f-label">Black-Scholes-Merton <span class="eqno">(21)(22)</span></div>
+          <div class="mjx-row">$$ c = S_0\,N(d_1) - X e^{-r^{c}T}N(d_2), \qquad p = X e^{-r^{c}T}\big[1-N(d_2)\big] - S_0\big[1-N(d_1)\big] $$</div>
+          <div class="mjx-row">$$ d_1 = \frac{\ln(S_0/X) + \big(r^{c}+\sigma^{2}/2\big)T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T} $$</div>
+          <div class="note">\(\sigma\) is the annualised standard deviation of the continuously-compounded return; \(r^{c}\) the continuously-compounded risk-free rate; \(N(\cdot)\) the standard normal CDF.</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 8</span><h4>BSM call and put</h4></div>
+          <div class="ex-body">
+            <p>\(T=0.75\), \(S_0=52.75\), \(\sigma=0.35\), \(r^{c}=4.88\%\), \(X=50\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ d_1=\frac{\ln(52.75/50)+(0.0488+0.35^2/2)0.75}{0.35\sqrt{0.75}}=0.4489,\quad d_2=0.4489-0.35\sqrt{0.75}=0.1458 $$
+              <p>\(N(0.45)=0.6736,\ N(0.15)=0.5596\). Then</p>
+              $$ c=52.75(0.6736)-50e^{-0.0488(0.75)}(0.5596)=8.56 $$
+              $$ p=50e^{-0.0488(0.75)}(1-0.5596)-52.75(1-0.6736)=4.01 $$
+              <span class="answer">c ≈ 8.56, p ≈ 4.01</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 9</span><h4>BSM with a second data set</h4></div>
+          <div class="ex-body">
+            <p>\(S_0=68.5\), \(X=65\), \(r^{c}=4\%\), \(T=0.3014\), \(\sigma=0.38\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ d_1=0.4135,\quad d_2=0.2049,\quad N(0.41)=0.6591,\ N(0.20)=0.5793 $$
+              $$ c=68.5(0.6591)-65e^{-0.04(0.3014)}(0.5793)=7.95,\qquad p=3.67 $$
+              <span class="answer">c ≈ 7.95, p ≈ 3.67. (BSM is very sensitive to rounding in the normal table.)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Inputs and the Greeks</h3>
+        <ul>
+          <li><strong>Delta</strong> = change in option price ÷ change in underlying — the first derivative w.r.t. the underlying. A delta-hedged position matches a short (long) call with a long (short) position of delta units of the underlying; because delta changes, the hedge must be rebalanced — <strong>dynamic hedging</strong>. Long-call delta &gt; 0, short-call &lt; 0, long-put &lt; 0, short-put &gt; 0.</li>
+          <li><strong>Gamma</strong> = the second derivative — how sensitive delta is. Large gamma (at-the-money, near expiration) means delta changes fast and is a poor approximation, so a delta hedge needs frequent adjustment.</li>
+          <li><strong>Rho</strong> (risk-free rate), <strong>Theta</strong> (time decay; usually negative), <strong>Vega</strong> (volatility; positive for calls and puts, largest at-the-money).</li>
+          <li><strong>Exercise price</strong>: higher \(X\) → lower call, higher put.</li>
+        </ul>
+        <h3>Cash flows on the underlying</h3>
+        <div class="formula">
+          <div class="f-label">BSM adjusted for cash flows</div>
+          <div class="mjx-row">$$ c = \big[S_0-PV(CF,0,T)\big]N(d_1) - X e^{-r^{c}T}N(d_2) $$</div>
+          <div class="mjx-row">$$ \text{dividend yield: } c = S_0 e^{-\delta^{c}T}N(d_1) - X e^{-r^{c}T}N(d_2); \quad \text{currency: } c = S_0 e^{-r^{fc}T}N(d_1) - X e^{-r^{c}T}N(d_2) $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 10</span><h4>BSM with cash flows on the underlying</h4></div>
+          <div class="ex-body">
+            <p>\(S_0=225\), \(X=200\), \(r^{c}=5.25\%\), \(T=3\), \(\sigma=0.15\).</p>
+            <p><strong>A. PV of cash flows over the option life = 19.72.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(S_0-PV=205.28\). \(d_1=0.8364,\ d_2=0.5766\); \(N(0.84)=0.7995,\ N(0.58)=0.7190\).</p>
+              $$ c=205.28(0.7995)-200e^{-0.0525(3)}(0.7190)=41.28 $$
+              <span class="answer">c ≈ 41.28</span>
+            </div></details>
+            <p><strong>B. Continuously-compounded dividend yield = 2.7%.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(S_0 e^{-0.027(3)}=207.49\). \(d_1=0.8776,\ d_2=0.6178\); \(N(0.88)=0.8106,\ N(0.62)=0.7324\).</p>
+              $$ c=207.49(0.8106)-200e^{-0.0525(3)}(0.7324)=43.06 $$
+              <span class="answer">c ≈ 43.06</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>The critical role of volatility</h3>
+        <p>Volatility is the only BSM input not directly observable. <strong>Historical volatility</strong> is the
+          sample standard deviation of recent continuously-compounded returns,
+          \(\sigma=\sqrt{\tfrac{1}{N-1}\sum(R_i^{c}-\bar R^{c})^2}\). <strong>Implied volatility</strong> is the
+          volatility that, plugged into BSM, reproduces the option's market price — found by trial and error, it tells
+          you the volatility the market is pricing in.</p>
+
+        <h2 id="futures-options">8 · Options on forwards and futures</h2>
+        <p>When the underlying is a forward or futures price \(f_0(T)\), the payoffs are
+          \(c_T=\max(0,f_T(T)-X)\) and \(p_T=\max(0,X-f_T(T))\), with bounds analogous to asset options.
+          Put-call parity adapts to use the forward price:</p>
+        <div class="formula">
+          <div class="f-label">Put-call parity for options on forwards <span class="eqno">(28)</span></div>
+          <div class="mjx-row">$$ c_0 + \frac{X - F(0,T)}{(1+r)^{T}} = p_0 $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 11</span><h4>Forward-option parity arbitrage</h4></div>
+          <div class="ex-body">
+            <p>Strike 90, \(r=5\%\), \(T=2\), call 15.25, put 3.00, forward price 101.43.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ p_0^{\text{parity}}=15.25+\frac{90-101.43}{1.05^{2}}=4.88 > 3.00 $$
+              <p>The actual put (3.00) is underpriced. Buy put (−3.00), sell call (+15.25), buy bond worth
+                \(-(101.43-90)/1.05^2=-10.37\) → <strong>+1.88 up front</strong>, with zero cash at expiration for all
+                \(S_T\). A riskless gain.</p>
+              <span class="answer">Riskless +1.88 up front</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Early exercise and the Black model</h3>
+        <p>American options on <em>futures</em> may be worth exercising early (deep-in-the-money futures calls behave
+          like the underlying), whereas options on <em>forwards</em> generate no cash before expiration, so early
+          exercise is never justified. The standard model for pricing European options on futures is the
+          <strong>Black model</strong>:</p>
+        <div class="formula">
+          <div class="f-label">The Black model</div>
+          <div class="mjx-row">$$ c = e^{-r^{c}T}\big[f_0(T)N(d_1) - X N(d_2)\big], \qquad p = e^{-r^{c}T}\big[X(1-N(d_2)) - f_0(T)(1-N(d_1))\big] $$</div>
+          <div class="mjx-row">$$ d_1 = \frac{\ln(f_0/X) + (\sigma^{2}/2)T}{\sigma\sqrt{T}}, \qquad d_2 = d_1 - \sigma\sqrt{T} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 12</span><h4>The Black model = BSM on the spot</h4></div>
+          <div class="ex-body">
+            <p>Forward price 139.19, \(T=0.5890\), \(X=125\), \(r^{c}=4.25\%\), \(\sigma=0.15\).</p>
+            <p><strong>A. Black-model call price.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ d_1=\frac{\ln(139.19/125)+(0.15^2/2)0.5890}{0.15\sqrt{0.5890}}=0.9916,\quad d_2=0.8765 $$
+              <p>\(N(0.99)=0.8389,\ N(0.88)=0.8106\):</p>
+              $$ c=e^{-0.0425(0.5890)}[139.19(0.8389)-125(0.8106)]=15.06 $$
+              <span class="answer">c = 15.06</span>
+            </div></details>
+            <p><strong>B. Show it equals BSM on the implied spot.</strong></p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>With no cash flows and continuous compounding, \(S_0=F(0,T)e^{-r^{c}T}=139.19e^{-0.0425(0.5890)}=135.75\).
+                Plugging into BSM gives the same \(d_1=0.9916,\ d_2=0.8765\) and \(c=135.75(0.8389)-125e^{-0.0425(0.5890)}(0.8106)=15.06\)
+                — identical.</p>
+              <span class="answer">Same price, 15.06</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 13</span><h4>Interest-rate put via the Black model</h4></div>
+          <div class="ex-body">
+            <p>Expires in 280 days (\(T=0.7671\)); forward rate 6.8%; \(r^{c}=6.25\%\); exercise rate 7%;
+              \(\sigma=0.02\); 180-day underlying rate; notional $10m.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              $$ d_1=\frac{\ln(0.068/0.07)+(0.02^2)0.7671}{0.02\sqrt{0.7671}}=-1.6461,\quad d_2=-1.6636 $$
+              <p>\(N(-1.65)=0.0495,\ N(-1.66)=0.0485\):</p>
+              $$ p=e^{-0.0625(0.7671)}[0.07(1-0.0485)-0.068(1-0.0495)]=0.00187873 $$
+              <p>The payoff is made 180 days after expiry, so discount at the forward rate:
+                \(e^{-0.068(180/365)}(0.00187873)=0.00181677\); the 180-day rate \(=0.00181677\times\tfrac{180}{360}=0.00090839\);
+                times notional \(\$10\text{m}\times0.00090839=\$9{,}084\).</p>
+              <span class="answer">Put value ≈ $9,084</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Option valuation is one no-arbitrage idea applied at increasing resolution. <strong>Put-call parity</strong>
+            ties calls, puts, the underlying, and a bond into one equation — break it and you have an arbitrage. The
+            <strong>binomial model</strong> prices any option by working backward through a tree under the risk-neutral
+            probability; refine the tree and it converges to <strong>Black-Scholes-Merton</strong>. The
+            <strong>Greeks</strong> describe how that price moves, and the <strong>Black model</strong> is simply BSM
+            written in terms of a forward or futures price.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-02-futures-markets.html"><span class="dir">← Previous</span><span class="ttl">Futures Markets and Contracts</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
