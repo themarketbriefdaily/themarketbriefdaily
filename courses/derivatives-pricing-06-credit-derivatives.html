@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credit Derivatives &amp; CDS · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Credit default swaps: mechanics and settlement, CDS vs corporate bonds as pure credit risk, structured credit and CDO tranches, and credit-derivative trading strategies." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="06">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 6 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Credit Derivatives &amp; Credit Default Swaps</h1>
+        <p class="summary">
+          A credit default swap is insurance on a borrower's debt. It lets investors trade <em>pure</em> credit
+          risk — stripped of the risk-free rate and funding — and was at the centre of the 2008 crisis. This
+          lesson covers CDS mechanics and settlement, how a CDS differs from a corporate bond, the structured-credit
+          market (CDOs and tranches), and the main credit-derivative trading strategies.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1–2 · What a CDS is</a>
+            <a href="#cds-vs-bond">2.1 · CDS vs corporate bond</a>
+            <a href="#structured">2.4 · Structured credit</a>
+            <a href="#strategies">3 · Credit strategies</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <strong>Credit derivatives</strong> are instruments whose payoff depends on the creditworthiness of a
+          borrower. The <strong>credit default swap (CDS)</strong> is the building block — roughly half the market.
+          It is a bilateral contract in which a <strong>protection buyer</strong> pays a periodic premium to a
+          <strong>protection seller</strong>, who agrees to compensate the buyer if a <strong>credit event</strong>
+          (bankruptcy, material default, debt restructuring) hits a specified <strong>reference entity</strong>.
+          The protection buyer is <em>long the CDS but short the credit</em>; the seller is <em>short the CDS but
+          long the credit</em>.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Describe the characteristics of a CDS and contrast it with a corporate bond.</li>
+            <li>Explain the advantages of credit derivatives over other credit instruments.</li>
+            <li>Explain how the various market participants use credit derivatives.</li>
+            <li>Discuss the main credit-derivative strategies and how they are used.</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1–2 · What a CDS is</h2>
+        <p>Like fire insurance on a house, a CDS pays out only on disaster. The buyer pays an annual premium
+          (quoted in basis points on the notional, normally paid quarterly on the standard IMM dates — 20 Mar/Jun/Sep/Dec).
+          If no credit event occurs, the contract simply runs to maturity. If one does, it settles either:</p>
+        <ul>
+          <li><strong>Physically</strong> — the buyer delivers the defaulted (reference) obligation and receives par; or</li>
+          <li><strong>In cash</strong> — the buyer receives <em>par minus the recovered market value</em> of the obligation.</li>
+        </ul>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A Volkswagen CDS</h4></div>
+          <div class="ex-body">
+            <p>5-year CDS on €10m of Volkswagen debt at a 60 bp premium.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Annual premium \(=0.60\%\times€10\text{m}=€60{,}000\), paid quarterly. No credit event → it runs the full
+                five years. A credit event → physical settlement (deliver VW debt for par) or cash settlement (receive
+                par − market value).</p>
+              <span class="answer">€60,000/yr premium; pays out only on a VW credit event</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="cds-vs-bond">2.1 · CDS vs corporate bond — pure credit risk</h2>
+        <p>A corporate bond's yield bundles three things: the <strong>risk-free rate</strong>, <strong>funding risk</strong>
+          (the swap spread), and <strong>credit risk</strong>. An asset swap strips out the risk-free rate, leaving
+          funding + credit. A <strong>CDS isolates credit risk alone</strong> — e.g. a VW bond at Treasuries+100bp, a VW
+          asset swap at LIBOR+60bp, and a VW CDS at a flat 60bp. The CDS spread <strong>widens</strong> as perceived
+          credit risk rises and <strong>tightens</strong> as it falls.</p>
+        <div class="callout concept">
+          <span class="ct-label">Advantages of credit derivatives</span>
+          <p><strong>Portability of pure risk</strong> — buying protection is an efficient way to short credit, which
+            is otherwise hard (shorting corporate bonds is difficult). <strong>Liquidity</strong> — CDS create maturity,
+            currency, and credit exposures not readily available in the cash market. <strong>Confidentiality</strong> —
+            unlike a loan, the reference entity is not a party to the bilateral OTC contract.</p>
+        </div>
+        <p><strong>Market growth &amp; participants.</strong> The market grew explosively once documentation was
+          standardised and legal risk fell. It is dominated by <strong>banks</strong> (buy protection to hedge loan
+          books and free up regulatory capital), <strong>hedge funds</strong> (active relative-value traders, the
+          fastest-growing and most liquidity-providing segment), <strong>insurers</strong> (major protection
+          <em>sellers</em>, for yield and diversification), and <strong>corporations</strong> (risk management and
+          balance-sheet/pension uses).</p>
+
+        <h2 id="structured">2.4 · The structured-credit market</h2>
+        <p>Structured credit is the fastest-growing segment. A <strong>collateralised debt obligation (CDO)</strong>
+          pools credit exposures and redistributes the risk into <strong>tranches</strong>. A <strong>synthetic CDO</strong>
+          references a portfolio of CDS rather than holding cash bonds, and can be customised or index-based.</p>
+        <div class="callout note">
+          <span class="ct-label">Tranches &amp; subordination</span>
+          <p>Losses hit the most junior tranche first. The <strong>equity tranche</strong> (e.g. 0–3% of the iTraxx
+            Europe) absorbs the first losses and earns the highest spread; once it is wiped out, the next
+            (mezzanine, then senior, then super-senior) tranche begins absorbing losses. More subordination → lower
+            spread → safer tranche. This is how a pool of risky credits is sliced into pieces of very different risk.</p>
+        </div>
+
+        <h2 id="strategies">3 · Credit-derivative strategies</h2>
+        <h3>3.1 Basis trades</h3>
+        <p>The <strong>cash-default basis</strong> is the CDS premium minus the bond's asset-swap spread. Positive
+          basis = CDS richer; <strong>negative basis</strong> = CDS cheaper, a potential arbitrage. Investors look
+          for ~10–20 bp of upside (a couple of bps isn't worth it). Example: buy a 5-year British American Tobacco
+          bond at LIBOR+60bp and buy 5-year CDS protection at 46bp → a <strong>negative-basis package of 14 bp</strong>
+          of "free" carry (with residual basis risk if the legs don't perfectly match).</p>
+
+        <h3>3.2 Curve trades</h3>
+        <p>Express a view on how a credit profile changes <em>over time</em>, built either default-neutral (matched
+          notionals) or duration-neutral. A <strong>flattener</strong> buys short-dated protection and sells long-dated
+          (good long-term credit, short-term worry); a <strong>steepener</strong> is the reverse (bearish long-term but
+          minimising near-term negative carry).</p>
+
+        <h3>3.3 Index trades</h3>
+        <p>Credit indices (e.g. Dow Jones iTraxx Europe) are efficient, cheap, diversified, and liquid. Uses: an
+          outright short to hedge a portfolio; long-index vs short a sub-sector/specific names; inter-sector
+          relative value (autos vs telecoms); or a macro capital-structure trade (long a credit index, short an
+          equity index).</p>
+
+        <h3>3.4 Options on CDS</h3>
+        <p>European-style options on credit. A <strong>receiver option</strong> is the right to <em>sell</em> protection
+          (bullish on credit — profits as spreads tighten); a <strong>payer option</strong> is the right to <em>buy</em>
+          protection (bearish — profits as spreads widen). They are the building blocks for straddles, strangles, and
+          other strategies.</p>
+
+        <h3>3.5 Capital-structure trades</h3>
+        <p>Exploit perceived mispricing within one issuer's capital structure — holding company vs operating
+          company/financial subsidiary, or senior vs subordinated debt. Examples: sell Ford Motor Credit 5-year CDS
+          at 400bp and buy the parent's at 525bp, expecting the 125bp gap to widen; or, bullish on US housing, sell
+          Fannie Mae <em>subordinated</em> CDS at 30bp and buy <em>senior</em> protection at 15bp for +15bp carry.
+          <strong>Credit-vs-equity</strong> trades use the <strong>Merton model</strong>, which treats a firm's equity
+          as a call option on its assets.</p>
+
+        <h3>3.6 Correlation trades</h3>
+        <p><strong>Default correlation</strong> — the chance two credits default together — is the key input for
+          synthetic CDOs. Low correlation concentrates risk in the equity tranche; high correlation pushes it up into
+          the senior tranches. Correlations are estimated from history or implied from traded index tranches.</p>
+        <div class="callout concept">
+          <span class="ct-label">First-to-default (FTD) baskets</span>
+          <p>An FTD basket pays out on the <em>first</em> name in a basket to default — a leveraged credit view. With
+            five names each near 50bp, a diversified CDS portfolio pays ~50bp, but an FTD basket pays
+            <strong>~175bp</strong> (typically 60–80% of the aggregate spread), because a default of <em>any</em> name
+            triggers it. If each name has a 3% default probability, the chance none defaults is \(0.97^5\approx85.9\%\),
+            so the basket has a <strong>≈14.1%</strong> chance of being triggered. On default, the contract ceases and
+            the buyer delivers the notional in the defaulted name — it behaves as if the investor had written a contract
+            on that single name.</p>
+        </div>
+        <p>Investors also trade slices of the synthetic-CDO capital structure against each other (e.g. long the
+          0–3% equity tranche, delta-hedged with mezzanine or single-name CDS) to harvest the large positive carry of
+          the equity tranche while neutralising spread (DV01) exposure and idiosyncratic default risk.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>A CDS is insurance that isolates <strong>pure credit risk</strong> — the buyer pays a basis-point premium
+            and is made whole on a credit event, by physical or cash settlement. Stripped of the risk-free rate and
+            funding, credit becomes a tradeable asset class: <strong>basis</strong> trades arbitrage CDS against bonds,
+            <strong>curve</strong> and <strong>index</strong> trades express timing and macro views, <strong>options</strong>
+            and <strong>capital-structure</strong> trades take directional or relative-value positions, and
+            <strong>correlation/FTD</strong> trades and CDO tranches package default correlation itself. Powerful for
+            managing and enhancing return — and, as 2008 showed, powerful enough to amplify systemic risk.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-05-interest-rate-instruments.html"><span class="dir">← Previous</span><span class="ttl">Interest Rate Derivative Instruments</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

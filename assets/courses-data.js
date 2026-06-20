@@ -77,7 +77,14 @@
             { a: 'caps-floors', t: '5 · Caps &amp; floors' },
             { a: 'collar',      t: '5.3 · Collars' }
           ] },
-        { n: '06', title: 'Topic 6', cfa: 'L2', built: false },
+        { n: '06', title: 'Credit Derivatives &amp; CDS', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-06-credit-derivatives.html',
+          topics: [
+            { a: 'intro',       t: '1–2 · What a CDS is' },
+            { a: 'cds-vs-bond', t: '2.1 · CDS vs bond' },
+            { a: 'structured',  t: '2.4 · Structured credit' },
+            { a: 'strategies',  t: '3 · Credit strategies' }
+          ] },
         { n: '08', title: 'Topic 8', cfa: 'L2', built: false },
         { n: '10', title: 'Topic 10', cfa: 'L2', built: false },
         { n: '11', title: 'Topic 11', cfa: 'L2', built: false },
