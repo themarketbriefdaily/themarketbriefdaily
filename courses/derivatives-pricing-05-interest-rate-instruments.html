@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interest Rate Derivative Instruments · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Treasury bond and note futures, conversion factors and the cheapest-to-deliver, interest-rate options and swaps, and interest-rate caps, floors and collars." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="05">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 5 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Interest Rate Derivative Instruments</h1>
+        <p class="summary">
+          Interest-rate derivatives are instruments whose payoffs depend on a bond or a reference rate:
+          futures, options, swaps, caps and floors. This lesson covers the mechanics of Treasury bond and note
+          futures (conversion factors, the cheapest-to-deliver issue, the implied repo rate), options on
+          futures, the risk profile of interest-rate swaps, and how caps, floors and collars are simply
+          packages of interest-rate options.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1 · Introduction</a>
+            <a href="#futures">2 · Interest-rate futures</a>
+            <a href="#options">3 · Interest-rate options</a>
+            <a href="#swaps">4 · Interest-rate swaps</a>
+            <a href="#caps-floors">5 · Caps &amp; floors</a>
+            <a href="#collar">5.3 · Collars</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <strong>Interest-rate derivative instruments</strong> are financial contracts whose payoffs depend on
+          a cash-market instrument or a reference interest rate. Relative to trading the underlying bonds
+          directly, they offer three advantages: <strong>cost</strong>, <strong>speed</strong>, and
+          <strong>liquidity</strong>.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain Treasury bond futures: conversion factors, the invoice price, the cheapest-to-deliver issue, and the implied repo rate.</li>
+            <li>Describe interest-rate options and the payoffs of exercising options on bond futures.</li>
+            <li>Interpret an interest-rate swap as a package of forwards/futures and as a package of cash-market instruments, and identify how a swap's value changes with rates.</li>
+            <li>Demonstrate that a cap and a floor are packages of options (caplets/floorlets) on rates and on fixed-income instruments, and compute their payoffs.</li>
+            <li>Explain how a collar is created.</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1 · Introduction</h2>
+        <p>The family includes futures, forwards, options, swaps, caps and floors. Recall the
+          <strong>futures vs forward</strong> distinction: futures are standardised, exchange-traded,
+          clearinghouse-guaranteed, marked to market, margined, and free of counterparty credit risk; forwards
+          are customised OTC contracts with bilateral counterparty risk and no required margin. Because only
+          <strong>initial margin</strong> is posted, futures create a <strong>leveraged</strong> position useful
+          for controlling interest-rate risk.</p>
+
+        <h2 id="futures">2 · Interest-rate futures</h2>
+        <p>A <strong>futures contract</strong> obliges the buyer (seller) to take (make) delivery at a set price
+          on a set date, guaranteed by the clearinghouse. Margin terms: <strong>initial margin</strong> (minimum
+          per contract), <strong>maintenance margin</strong> (the floor the account may fall to before a top-up),
+          and <strong>variation margin</strong> (the deposit restoring the account to initial margin).</p>
+        <h3>Treasury bond futures (CBOT)</h3>
+        <p>The underlying is $100,000 par of a hypothetical 20-year coupon bond; par = 100; quotes are in 32nds of
+          1%. The short may deliver any of several eligible Treasury bonds, each with a CBOT-published
+          <strong>conversion factor</strong>. The amount the long pays is the <strong>invoice price</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Invoice price</div>
+          <div class="mjx-row">$$ \text{Invoice} = \text{contract size}\times\text{futures settlement price}\times\text{conversion factor} + \text{accrued interest} $$</div>
+          <div class="note">Settlement quotes like "105-16" mean \(105+\tfrac{16}{32}=105.5\%\) of par, i.e. 1.055 per $1 par.</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 1</span><h4>Invoice price</h4></div>
+          <div class="ex-body">
+            <p>June T-bond futures settle at 97-24; delivered issue's conversion factor 1.17; accrued interest $3,800 per $100,000 par.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>97-24 \(=97+\tfrac{24}{32}=97.75\) → 0.9775 per $1 par.</p>
+              $$ \$100{,}000\times0.9775\times1.17 + \$3{,}800 = \$118{,}167.50 $$
+              <span class="answer">$118,167.50</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Cheapest-to-deliver &amp; the implied repo rate</h3>
+        <p>The short profits by delivering the bond that is cheapest to buy-and-deliver. The
+          <strong>cheapest-to-deliver (CTD)</strong> issue is the one with the <em>highest</em> implied repo rate
+          — the financing rate at which buying the bond and delivering it into the futures breaks even:</p>
+        <div class="formula">
+          <div class="f-label">Implied repo rate</div>
+          <div class="mjx-row">$$ \text{Implied repo rate} = \frac{\text{Dollar return}}{\text{Cost of the investment}}\times\frac{360}{\text{days}_1} $$</div>
+          <div class="note">Dollar return = Proceeds received − Cost. Proceeds = converted price (futures price × CF) + accrued interest received + interim coupon + interest on reinvesting that coupon (coupon × repo × days₂/360). Cost = purchase price + accrued interest paid. days₁ = days to settlement; days₂ = days from interim coupon to delivery.</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 2</span><h4>Implied repo rate</h4></div>
+          <div class="ex-body">
+            <p>Futures price 97, days₁ = 62. Deliverable: price 95, accrued paid 3.0110, coupon 7%, interim coupon 3.50
+              after 25 days, days₂ = 37, CF 0.9710, accrued received 0.7096, 37-day repo 4.7%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Converted price \(=97\times0.9710=94.1870\). Reinvestment interest \(=3.50\times0.047\times\tfrac{37}{360}=0.0169\).</p>
+              <p>Proceeds \(=94.1870+0.7096+0.0169+3.5000=98.4135\); Cost \(=95+3.0110=98.0110\).</p>
+              $$ \text{Implied repo} = \frac{98.4135-98.0110}{98.0110}\times\frac{360}{62}=0.0238=2.38\% $$
+              <span class="answer">2.38%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <p>The short also holds delivery options: the <strong>quality (swap) option</strong> (which issue),
+          the <strong>timing option</strong> (when in the month), and the <strong>wild-card option</strong> (deliver
+          after the close is set). Delivery runs over three days — position day, notice day, delivery day.
+          <strong>Treasury note futures</strong> (2-, 5-, 10-year) and <strong>agency note futures</strong> (Fannie/Freddie,
+          6.5% notional) are modelled the same way.</p>
+
+        <h2 id="options">3 · Interest-rate options</h2>
+        <p>An interest-rate option grants the right, not the obligation, to transact a fixed-income instrument or
+          rate. The buyer's loss is capped at the premium; the writer's gain is capped at the premium received.
+          Unlike futures, <strong>only the writer is obligated</strong>, the payoff is asymmetric, and there is no
+          buyer margin. Exchange-traded options are standardised and cleared; OTC options are tailor-made, less
+          liquid, and costlier.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 3</span><h4>Options on T-bond futures</h4></div>
+          <div class="ex-body">
+            <p><strong>A. Call</strong>, strike $98; futures at expiration $103.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Exercise (103 &gt; 98). The buyer gets a long futures at the strike $98; marking to market to $103 means
+                the writer pays the buyer <strong>$5</strong>. Result: buyer holds a long future at $103 plus $5 cash;
+                writer holds a short future at $103 having paid $5.</p>
+              <span class="answer">Exercised; writer pays $5</span>
+            </div></details>
+            <p><strong>B. Put</strong>, strike $105; futures at expiration $96.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Exercise (96 &lt; 105). The buyer gets a short futures at $105; the writer pays the buyer
+                <strong>$9</strong> (105 − 96). Buyer: short future at $105 + $9 cash; writer: long future at $105 having paid $9.</p>
+              <span class="answer">Exercised; writer pays $9</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="swaps">4 · Interest-rate swaps</h2>
+        <p>Two parties exchange periodic interest payments on a <strong>notional principal</strong> (only interest
+          changes hands, never the notional). The <strong>fixed-rate payer</strong> pays the <strong>swap rate</strong>
+          — a spread (the <strong>swap spread</strong>) over the matched-maturity Treasury yield — and receives the
+          floating reference rate; the <strong>fixed-rate receiver</strong> takes the other side.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 4</span><h4>Swap payments</h4></div>
+          <div class="ex-body">
+            <p>4-year swap, $100m notional, quarterly, reference 3-month LIBOR, swap rate 4.4%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>A. Fixed payment:</strong> \(\$100\text{m}\times\tfrac{0.044}{4}=\$1.1\text{m}\) per quarter.</p>
+              <p><strong>B. First floating</strong> (3-month LIBOR 7.2%): \(\$100\text{m}\times\tfrac{0.072}{4}=\$1.8\text{m}\).</p>
+              <span class="answer">Fixed $1.1m; first floating $1.8m</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Risk/return: how the swap's value moves</h3>
+        <p>When rates <strong>rise</strong>, a fixed-rate payer who locked in the old (lower) rate is advantaged —
+          the swap's value to the <strong>fixed-rate payer increases</strong> and to the receiver decreases. When
+          rates <strong>fall</strong>, the reverse holds.</p>
+        <div class="callout concept">
+          <span class="ct-label">Two ways to read a swap position</span>
+          <p><strong>As a package of forwards/futures:</strong> the fixed-rate payer behaves like a <em>short</em>
+            interest-rate-futures (long FRA) position — gains when rates rise; the floating-rate payer is the mirror.
+            <strong>As a package of cash-market instruments:</strong> being the fixed-rate payer is identical to
+            <em>buying a floating-rate bond financed by issuing (shorting) a fixed-rate bond</em> — the net cash flow
+            \((\text{LIBOR}/2)\times\text{notional} - \text{fixed}\) is exactly the swap. So the fixed-rate payer is
+            <strong>short the bond market</strong> (long a swap); the fixed-rate receiver is <strong>long the bond
+            market</strong> (short a swap).</p>
+        </div>
+
+        <h2 id="caps-floors">5 · Interest-rate caps and floors</h2>
+        <p>A <strong>cap</strong> pays the buyer when the reference rate rises <em>above</em> the strike (the
+          <strong>cap rate</strong>); a <strong>floor</strong> pays when it falls <em>below</em> the strike (the
+          <strong>floor rate</strong>). The buyer pays an up-front premium — its maximum loss — and only the writer
+          is obligated (unilateral counterparty risk, like an option).</p>
+        <div class="formula">
+          <div class="f-label">Cap / floor payoff per settlement</div>
+          <div class="mjx-row">$$ \text{Cap: } N\times\max(0,\,\text{rate}-\text{cap rate})\times\tfrac{1}{\text{periods}}, \qquad \text{Floor: } N\times\max(0,\,\text{floor rate}-\text{rate})\times\tfrac{1}{\text{periods}} $$</div>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example 5</span><h4>Cap payoffs</h4></div>
+          <div class="ex-body">
+            <p>4-year cap, cap rate 7%, $100m notional, quarterly, on 3-month LIBOR. LIBOR by quarter: 6.7%, 7.0%, 7.4%, 7.6%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Payoff \(=\$100\text{m}\times\max(0,\text{LIBOR}-7\%)/4\):</p>
+              <ul>
+                <li>Q1 (6.7%): 0 &nbsp;·&nbsp; Q2 (7.0%): 0</li>
+                <li>Q3 (7.4%): \(\$100\text{m}\times0.004/4=\$100{,}000\)</li>
+                <li>Q4 (7.6%): \(\$100\text{m}\times0.006/4=\$150{,}000\)</li>
+              </ul>
+              <span class="answer">0, 0, $100,000, $150,000</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h3>Caps and floors are packages of options</h3>
+        <p>A cap is a string of <strong>caplets</strong>; a floor is a string of <strong>floorlets</strong> — one
+          option per settlement date. There are two equivalent ways to see them:</p>
+        <ul>
+          <li><strong>As options on the rate:</strong> a <strong>long cap = package of call options on the interest rate</strong> (calls gain as rates rise); a <strong>long floor = package of put options on the interest rate</strong>.</li>
+          <li><strong>As options on a fixed-income instrument:</strong> because bond prices move <em>inversely</em> to rates, a <strong>long cap = package of puts on the bond</strong> and a <strong>long floor = package of calls on the bond</strong>.</li>
+        </ul>
+
+        <h2 id="collar">5.3 · Interest-rate collar</h2>
+        <p>A <strong>collar</strong> = <strong>buy a cap + sell a floor</strong>. A borrower who buys a 7% cap and
+          sells a 4% floor receives a payment if rates exceed 7% and makes a payment if rates fall below 4% — so the
+          effective borrowing cost is bounded to a <strong>4%–7% band</strong> (adjusted by the net premium). Selling
+          the floor finances the cap, cheapening the protection at the cost of giving up the benefit of very low rates.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Interest-rate derivatives are the bond-market toolkit. <strong>Futures</strong> on Treasuries carry
+            delivery options that make the conversion factor and the cheapest-to-deliver (highest implied repo)
+            issue central to pricing. A <strong>swap</strong> is two things at once — a strip of forwards and a
+            long-floating/short-fixed bond pair — so the fixed-rate payer gains when rates rise. And
+            <strong>caps, floors and collars</strong> are nothing more than packages of interest-rate options:
+            a long cap = calls on the rate (puts on the bond), a long floor = puts on the rate (calls on the bond),
+            and a collar bounds a borrower's cost between the floor and cap strikes.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-04-swap-markets.html"><span class="dir">← Previous</span><span class="ttl">Swap Markets and Contracts</span></a>
+          <a class="next" href="/courses/derivatives-pricing.html"><span class="dir">Next →</span><span class="ttl">Back to course outline</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

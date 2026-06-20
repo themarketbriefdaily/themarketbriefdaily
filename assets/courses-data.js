@@ -67,7 +67,16 @@
             { a: 'swaptions',    t: '6 · Swaptions' },
             { a: 'credit',       t: '7 · Credit risk' }
           ] },
-        { n: '05', title: 'Topic 5', cfa: 'L2', built: false },
+        { n: '05', title: 'Interest Rate Derivative Instruments', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-05-interest-rate-instruments.html',
+          topics: [
+            { a: 'intro',       t: '1 · Introduction' },
+            { a: 'futures',     t: '2 · IR futures' },
+            { a: 'options',     t: '3 · IR options' },
+            { a: 'swaps',       t: '4 · IR swaps' },
+            { a: 'caps-floors', t: '5 · Caps &amp; floors' },
+            { a: 'collar',      t: '5.3 · Collars' }
+          ] },
         { n: '06', title: 'Topic 6', cfa: 'L2', built: false },
         { n: '08', title: 'Topic 8', cfa: 'L2', built: false },
         { n: '10', title: 'Topic 10', cfa: 'L2', built: false },
