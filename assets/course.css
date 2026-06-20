@@ -149,6 +149,8 @@ a{ color:var(--accent); }
    ───────────────────────────────────────────────────────────── */
 .lesson-app{ display:grid; grid-template-columns:var(--railw) minmax(0,1fr); align-items:start; }
 @media(max-width:880px){ .lesson-app{ grid-template-columns:1fr; } }
+/* scrim is a mobile-only overlay; hidden on desktop so it never occupies a grid column */
+.scrim{ display:none; }
 
 .curric{
   position:sticky; top:54px; align-self:start;
@@ -159,7 +161,7 @@ a{ color:var(--accent); }
   .curric{ position:fixed; top:54px; left:0; width:min(86vw,330px); z-index:55; transform:translateX(-102%); transition:transform .28s var(--ease); box-shadow:var(--shadow); }
   .curric.open-drawer{ transform:translateX(0); }
   .topbar .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; color:var(--ink); }
-  .scrim{ position:fixed; inset:54px 0 0; background:rgba(15,22,35,.32); opacity:0; pointer-events:none; transition:opacity .25s; z-index:54; }
+  .scrim{ display:block; position:fixed; inset:54px 0 0; background:rgba(15,22,35,.32); opacity:0; pointer-events:none; transition:opacity .25s; z-index:54; }
   .scrim.show{ opacity:1; pointer-events:auto; }
 }
 
