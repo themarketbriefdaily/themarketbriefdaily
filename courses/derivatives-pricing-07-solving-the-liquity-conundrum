@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solving the Liquidity Conundrum · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Liquidity as appetite for risk, the shadow banking system, Hyman Minsky's financial instability hypothesis, subprime mortgages as call options, and Ray Dalio's bubble indicators." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="07">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 7 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Solving the Liquidity Conundrum</h1>
+        <p class="summary">
+          Traditionally, liquidity is viewed as a pool of money created by central banks. This lesson challenges that view, redefining liquidity as "appetite for risk." We explore the shadow banking system, Hyman Minsky’s financial instability hypothesis, the mechanics of subprime mortgages as call options, and Ray Dalio’s framework for identifying market bubbles.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#intro">1 · Liquidity & Nonbanks</a>
+            <a href="#conundrum">2 · Solving the Conundrum</a>
+            <a href="#minsky">3 · The Minsky Framework</a>
+            <a href="#subprime">3.4 · Minsky & Subprime</a>
+            <a href="#dalio">4 · Ray Dalio's Bubble Indicators</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          A forward contract locks in today the price of a transaction that will settle in the future. Similarly, the traditional view of liquidity assumes it is a stock of money injected by the central bank. However, the modern financial system requires a paradigm shift: liquidity is best understood as <strong>appetite for risk</strong>. It is the joining or separating of two states of mind—a leveraged investor wanting to underwrite risk, and an unleveraged saver who is the source of that liquidity.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Distinguish between the concept of liquidity as appetite for risk versus the traditional view of liquidity as central bank money creation.</li>
+            <li>Explain Hyman Minsky’s financial instability hypothesis and the three phases of debt creation.</li>
+            <li>Illustrate how the default rate on a 2/28 adjustable subprime mortgage changes as debt creation journeys from hedge to speculative to Ponzi finance.</li>
+            <li>Explain how a subprime mortgage borrower is granted a free at-the-money call option on the value of their property.</li>
+            <li>Evaluate market bubbles using Ray Dalio’s six indicator framework.</li>
+          </ol>
+        </div>
+
+        <h2 id="intro">1. Liquidity and Nonbanks</h2>
+        <p>The current market reflects a fundamental difference between traditional banks and nonbanks (the <strong>shadow banking system</strong>), which includes hedge funds, conduits, and structured investment vehicles. Each item in the shadow banking system is a levered investment vehicle functioning similarly to a bank.</p>
+        <ul>
+          <li><strong>Traditional Banks:</strong> Regulated regarding the amount of leverage they can hold on their balance sheets. In return, they benefit from deposit insurance and access to the central bank’s discount window, which translates into always having liquidity.</li>
+          <li><strong>Shadow Banks:</strong> Unregulated. They are highly susceptible to changes in the risk appetite of their deposit base. Their two primary funding sources are reverse repos and asset-backed commercial paper.</li>
+        </ul>
+        <p>When the market’s risk appetite is strong, the liabilities of the shadow banking system look stable. Every 45–90 days, brokers roll over the asset-backed commercial paper, and effectively, the shadow banks have the same stability in their liabilities as traditional banks. The only quasi-regulators are rating agencies (Moody’s, S&P, Fitch).</p>
+        <p>At the beginning of 2007, the Bear Stearns hedge fund revealed that its reverse repo lenders had asked for more collateral, and it did not have it. The lenders decided to sell off the collateral they did hold. This was the wake-up call that initiated a run on the shadow banking system and the disappearance of liquidity.</p>
+
+        <h2 id="conundrum">2. Solving the Liquidity Conundrum</h2>
+        <p>Traditional banks could not experience runs because deposit insurance effectively makes the government the lender of last resort via the FDIC. Shadow banks, however, experienced the modern-day version of a bank run in 2007. The nonbanks could not sell assets fast enough to satisfy the increased risk aversion of their lenders.</p>
+        <p>Liquidity dissipated and volatility returned to the market because investors’ state of mind changed their risk appetite. By simply explaining the current state of liquidity through this lens, the issue of the liquidity conundrum is resolved.</p>
+        <div class="callout note">
+          <span class="ct-label">The Neutral Rate</span>
+          <p>Today, determining the state of liquidity means looking at the state of the risk appetite of levered nonbanks. This appetite also affects the decision-making process of the Fed because it influences the neutral real fed funds rate. When risk appetite is rising, the neutral level for the fed funds rate should also rise.</p>
+        </div>
+
+        <h2 id="minsky">3. The Minsky Framework</h2>
+        <p>Hyman Minsky, leader of the post-Keynesian school, critiqued capitalism’s inherent boom-bust proclivities. His <strong>financial instability hypothesis</strong> states that stability is inherently destabilizing. Stability leads to the extrapolation of stability into infinity, which encourages increasingly risk-seeking financial structures, particularly with debt. The longer stability lasts, the more unstable the foundation becomes.</p>
+        <p>Minsky broke down the process of stability producing instability into three steps, characterized by three types of debt units:</p>
+
+        <h3>3.1 Hedge Unit</h3>
+        <p>A borrower obtains a loan to buy an asset, and the asset plus other income generates sufficient income to pay the interest <em>and</em> amortize the principal. The debt is self-liquidating and hedged. Example: A conventional 30-year fixed-rate, level-payment, fully amortized mortgage (common in the U.S., less available in Europe).</p>
+
+        <h3>3.2 Speculative Unit</h3>
+        <p>A borrower buys an asset, but the income generated is sufficient only to pay the interest, not to amortize the principal. This is an interest-only loan with a balloon payment at maturity equal to the original amount borrowed. It is less stabilizing because the borrower speculates on three things: interest rates won’t rise, terms won’t change, and collateral value won’t decline.</p>
+
+        <h3>3.3 Ponzi Unit</h3>
+        <p>A borrower buys an asset, but income is insufficient for amortizing principal <em>or even paying all interest</em>. This is a negative amortization loan—at maturity, the balloon payment is bigger than the original borrowed amount. Like the speculative unit, it speculates on rates, terms, and collateral values, but it takes a fundamentally different position: it is betting that the value of the collateral will go up.</p>
+
+        <h2 id="subprime">3.4 Minsky and the U.S. Property Market</h2>
+        <p>By 2006, the preponderance of debt creation at the margin in the U.S. property market was Ponzi unit finance. A classic example is the <strong>2/28 subprime adjustable-rate mortgage (ARM)</strong>: borrowers put no money down, get a teaser rate for two years, and can opt to pay less than the full amount of interest.</p>
+        <p>After two years, the interest rate jumps by roughly 500 bps. Minsky’s hypothesis explains that because property prices had been steadily rising, borrowers walked the path from hedge, to speculative, to Ponzi. As more people walked this path, they drove up collateral values. By 2006, the mortgage industry was granting marginal borrowers a <strong>free at-the-money call option</strong> on the property value.</p>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>The Subprime Call Option</h4></div>
+          <div class="ex-body">
+            <p>As the property market continued to go up, the default rate on these mortgages was low because the borrowers’ free at-the-money call options were going in-the-money. They could refinance or sell for a profit.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>However, by Q1 2007, subprime mortgages issued in 2006 had a surge of early payment defaults, signaling the market had reached the Ponzi stage.</p>
+              <p>If property values go down, the borrowers’ call options are worth nothing. Rationally, why should the borrower continue to pay for an asset worth less than the loan? Once affordability is stretched beyond rational sense relative to rent values, borrowers stop seeking loans. The Minsky journey is over, and the economy heads in reverse.</p>
+              <span class="answer">Borrowers walk away when collateral value drops below the strike price (loan balance).</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="dalio">4. Ray Dalio's Bubble Framework</h2>
+        <p>Building on Minsky’s concepts of destabilizing speculation, Ray Dalio defines a bubble as an unsustainably high price, measured across six dimensions. Dalio combines these into aggregate gauges for the stock market going back to 1910.</p>
+        
+        <h3>The Six Indicators</h3>
+        <ol>
+          <li><strong>How high are prices relative to traditional measures?</strong> Dalio’s read on the price gauge for U.S. equities in Feb 2021 was around the 82nd percentile, shy of 1929 and 2000.</li>
+          <li><strong>Are prices discounting unsustainable conditions?</strong> Calculated by the earnings growth rate required to produce equity returns in excess of bond returns. In Feb 2021, this was at the 77th percentile. In 1929 and 2000 it was at the 100th.</li>
+          <li><strong>How many new buyers have entered the market?</strong> A rush of unsophisticated entrants is indicative of a bubble. This gauge hit the 95th percentile recently due to floods of retail investors.</li>
+          <li><strong>How broadly bullish is sentiment?</strong> The more bullish the sentiment, the more people have already invested. The aggregate market sentiment gauge was around the 85th percentile, heavily concentrated in "bubble stocks." IPOs were the hottest since the 2000 bubble, spurred further by the SPAC boom.</li>
+          <li><strong>Are purchases being financed by high leverage?</strong> Leveraged purchases make underpinnings vulnerable to forced selling. The leverage gauge showed a read just shy of the 80th percentile, driven heavily by retail options volume.</li>
+          <li><strong>Have buyers made exceptionally extended forward purchases?</strong> Looking at capex and M&A to see if businesses are extrapolating current demand. This is typically the weakest gauge in a bubble; aggregate corporate capex remained subdued during the pandemic.</li>
+        </ol>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Liquidity is psychological, not just monetary. The Minsky cycle shows that stability breeds risk-taking until the market relies on Ponzi units hoping for perpetual collateral appreciation. When risk appetite inverts, shadow banks face runs. Dalio's six gauges provide a practical framework for identifying where the market sits in this boom-bust cycle, though timing tops based solely on these gauges is precarious.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-06-credit-derivatives-cds.html"><span class="dir">← Previous</span><span class="ttl">Credit Derivatives & CDS</span></a>
+          <a class="next" href="/courses/derivatives-pricing-08-embedded-options.html"><span class="dir">Next →</span><span class="ttl">Valuing Bonds with Embedded Options</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
