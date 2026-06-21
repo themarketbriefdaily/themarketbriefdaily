@@ -85,7 +85,35 @@
             { a: 'structured',  t: '2.4 · Structured credit' },
             { a: 'strategies',  t: '3 · Credit strategies' }
           ] },
-        { n: '08', title: 'Topic 8', cfa: 'L2', built: false },
+                 { n: '06', title: 'Credit Derivatives &amp; CDS', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-06-credit-derivatives.html',
+          topics: [
+            { a: 'intro',       t: '1–2 · What a CDS is' },
+            { a: 'cds-vs-bond', t: '2.1 · CDS vs bond' },
+            { a: 'structured',  t: '2.4 · Structured credit' },
+            { a: 'strategies',  t: '3 · Credit strategies' }
+          ] },
+        { n: '07', title: 'Solving the Liquidity Conundrum', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-07-liquidity-conundrum.html',
+          topics: [
+            { a: 'intro',     t: '1 · Liquidity &amp; Nonbanks' },
+            { a: 'conundrum', t: '2 · Solving the Conundrum' },
+            { a: 'minsky',    t: '3 · The Minsky Framework' },
+            { a: 'subprime',  t: '3.4 · Minsky &amp; Subprime' },
+            { a: 'dalio',     t: '4 · Ray Dalio\'s Bubble Indicators' }
+          ] },
+        { n: '08', title: 'Valuing Bonds with Embedded Options', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-08-embedded-options.html',
+          topics: [
+            { a: 'benchmarks',   t: '3 · Benchmark Rates &amp; Spreads' },
+            { a: 'oas',          t: '3.5 · OAS &amp; Relative Value' },
+            { a: 'binomial',     t: '5 · The Binomial Model' },
+            { a: 'callable',     t: '6 · Valuing Callable Bonds' },
+            { a: 'duration',     t: '6.4 · Effective Duration' },
+            { a: 'putable',      t: '7 · Valuing Putable Bonds' },
+            { a: 'floaters',     t: '9 · Capped Floaters' },
+            { a: 'convertibles', t: '10 · Convertible Bonds' }
+          ] },
         { n: '10', title: 'Topic 10', cfa: 'L2', built: false },
         { n: '11', title: 'Topic 11', cfa: 'L2', built: false },
         { n: '12', title: 'Topic 12', cfa: 'L2', built: false }
