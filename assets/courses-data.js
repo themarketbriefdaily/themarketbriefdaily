@@ -85,14 +85,6 @@
             { a: 'structured',  t: '2.4 · Structured credit' },
             { a: 'strategies',  t: '3 · Credit strategies' }
           ] },
-                 { n: '06', title: 'Credit Derivatives &amp; CDS', cfa: 'L2', built: true,
-          url: '/courses/derivatives-pricing-06-credit-derivatives.html',
-          topics: [
-            { a: 'intro',       t: '1–2 · What a CDS is' },
-            { a: 'cds-vs-bond', t: '2.1 · CDS vs bond' },
-            { a: 'structured',  t: '2.4 · Structured credit' },
-            { a: 'strategies',  t: '3 · Credit strategies' }
-          ] },
         { n: '07', title: 'Solving the Liquidity Conundrum', cfa: 'L2', built: true,
           url: '/courses/derivatives-pricing-07-liquidity-conundrum.html',
           topics: [
