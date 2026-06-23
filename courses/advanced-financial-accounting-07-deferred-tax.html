@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deferred Tax · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="Why tax expense differs from tax paid: temporary differences, deferred tax liabilities and assets, taxable vs deductible differences, recognition and valuation allowances, the effect of tax-rate changes, statutory vs effective tax rates, permanent differences, and deferred tax in equity." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="07">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 7 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Deferred Tax</h1>
+        <p class="summary">
+          Companies keep two sets of books — one for shareholders (financial accounting) and one for the tax authority
+          (tax accounting). They use different rules, so the <strong>tax expense</strong> on the income statement rarely
+          equals the <strong>tax actually paid</strong>. Deferred tax is the bridge. This lesson builds deferred tax
+          liabilities and assets from temporary differences, covers recognition and valuation allowances, the effect of
+          tax-rate changes, and the difference between statutory and effective tax rates.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#basics">Tax expense vs tax paid</a>
+            <a href="#dtl">Deferred tax liability</a>
+            <a href="#dta">Deferred tax asset</a>
+            <a href="#types">Difference types</a>
+            <a href="#recognition">Recognition &amp; allowances</a>
+            <a href="#rates">Tax-rate changes</a>
+            <a href="#effective">Statutory vs effective</a>
+            <a href="#equity">Deferred tax in equity</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          The income statement reports <strong>tax expense</strong> (the tax on accounting profit); the tax return drives
+          <strong>tax payable</strong> (the tax on taxable income). The gap is captured on the balance sheet as deferred
+          tax, and the bridge is:
+        </p>
+        <div class="formula">
+          <div class="f-label">The deferred-tax bridge</div>
+          <div class="mjx-row">$$ \text{Tax expense}=\text{Tax payable}+\Delta\text{Deferred tax liability}-\Delta\text{Deferred tax asset} $$</div>
+        </div>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain why tax expense differs from tax paid and compute deferred tax from temporary differences.</li>
+            <li>Distinguish deferred tax liabilities from assets, and taxable from deductible differences.</li>
+            <li>Apply DTA recognition rules and valuation allowances (IFRS vs US GAAP).</li>
+            <li>Adjust deferred tax for a change in tax rates.</li>
+            <li>Reconcile statutory and effective tax rates, including permanent differences and multi-country operations.</li>
+          </ol>
+        </div>
+
+        <h2 id="basics">Carrying amount vs tax base</h2>
+        <p>A <strong>temporary difference</strong> is the gap between an item's <strong>carrying amount</strong>
+          (financial accounting) and its <strong>tax base</strong> (the value the tax authority assigns). It is
+          <em>temporary</em> because it reverses over time. Deferred tax = temporary difference × tax rate.</p>
+
+        <h2 id="dtl">The deferred tax liability</h2>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Faster tax depreciation creates a DTL</h4></div>
+          <div class="ex-body">
+            <p>Equipment £100k, no residual. Accounting: straight-line over 4 years (£25k/yr). Tax: straight-line over 2
+              years (£50k/yr). Tax rate 20%; pre-tax-and-depreciation profit a steady £200k. Build the DTL.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Carrying amount falls 75 → 50 → 25 → 0; tax base falls 50 → 0 → 0 → 0. Temporary differences 25, 50, 25,
+                0 → <strong>DTL = TD × 20% = 5, 10, 5, 0</strong>. On the income statement, tax <em>expense</em> is
+                \(175\times20\%=35\) every year; tax <em>payable</em> is \(150\times20\%=30\) in years 1–2 (tax lets you
+                deduct more, so less tax now) and \(200\times20\%=40\) in years 3–4. The DTL builds (ΔDTL = +5, +5) then
+                unwinds (−5, −5). Because tax base &lt; carrying amount of an <em>asset</em>, more tax is owed later — a
+                <strong>liability</strong>. (Governments often grant accelerated tax depreciation to encourage early
+                investment, recovered later.)</p>
+              <span class="answer">DTL = 5, 10, 5, 0; expense 35/yr vs payable 30, 30, 40, 40</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="dta">The deferred tax asset</h2>
+        <p>The mirror image: when the firm <em>over</em>pays tax now (an expense recognised for accounting but not yet
+          deductible for tax), it creates a <strong>deferred tax asset</strong> — a future tax saving.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A bad-debt allowance creates a DTA</h4></div>
+          <div class="ex-body">
+            <p>2010: receivables £180, bad-debt allowance £30 (so carrying amount £150, a £30 charge in income). The tax
+              authority deducts only actual write-offs, not the allowance. 2011: the firm collects £150 and writes off
+              £30 (now tax-deductible). Pre-tax-and-bad-debt profit £100; rate 20%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>2010: tax base of the receivable (180) &gt; carrying amount (150) → temporary difference −30 →
+                <strong>DTA = 30×20% = 6</strong>. Income statement: accounting profit \(100-30=70\) → tax expense
+                \(=14\); taxable income \(=100\) → tax payable \(=20\). Tax payable (20) &gt; tax expense (14) → £6
+                overpaid now, recovered later. 2011: the write-off is deductible, the difference reverses to zero, and
+                the DTA is <strong>used</strong>. The same logic applies to a <strong>liability</strong>: prepaid rent of
+                £50 taxed on receipt (carrying amount 50, tax base 0) creates a DTA of £10, released when the rent is
+                recognised in income next year.</p>
+              <span class="answer">DTA = 6 (TD −30 × 20%); tax payable 20 &gt; expense 14, recovered when written off</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="types">Taxable vs deductible temporary differences</h2>
+        <div class="callout concept">
+          <span class="ct-label">The four cases</span>
+          <p><strong>Taxable</strong> temporary differences create a future taxable amount → a <strong>DTL</strong>:
+            an <em>asset</em> with carrying amount &gt; tax base, or a <em>liability</em> with carrying amount &lt; tax
+            base. <strong>Deductible</strong> temporary differences create a future deduction → a <strong>DTA</strong>:
+            an <em>asset</em> with carrying amount &lt; tax base, or a <em>liability</em> with carrying amount &gt; tax
+            base. (The PPE example is the first; the receivable and prepaid-rent examples the latter two.)</p>
+        </div>
+
+        <h2 id="recognition">Recognition and valuation allowances</h2>
+        <p>A DTA is only worth something if there will be future profits to use it against. <strong>IFRS</strong>
+          recognises a DTA (and unused tax losses/credits) only to the extent future taxable profit is <em>probable</em>,
+          reducing the carrying amount if doubt arises (reversible if circumstances change). <strong>US GAAP</strong>
+          recognises the DTA in full, then nets it down with a <strong>valuation allowance</strong> (a contra-asset)
+          when it is "more likely than not" that part won't be realised — increasing the allowance reduces income;
+          reversing it increases income, with significant managerial discretion.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Little Rock Software — reading the allowance</h4></div>
+          <div class="ex-body">
+            <p>Net DTA fell from $135,250 (2009) to $126,250 (2010); the valuation allowance rose from $25,640 to
+              $35,780. Did the firm's prospects of <em>using</em> its DTAs (A) rise or (B) fall in 2010?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Gross DTAs in the notes actually <em>rose</em> (160,890 → 162,030); the net figure fell only because the
+                <strong>valuation allowance increased</strong>. A bigger allowance means management judges it
+                <em>less</em> likely the DTAs will be realised — so prospects <strong>fell (B)</strong>. The valuation
+                allowance is a window into management's own forecast of future profitability.</p>
+              <span class="answer">B — the rising valuation allowance signals worse prospects</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Nokia, 2014 — DTAs and the bottom line</span>
+          <p>Nokia's 2014 net income jumped despite weak revenue and pre-tax losses. The cause: an
+            <strong>income-tax benefit</strong> of €2.1bn from <em>re-recognising</em> previously unrecognised tax
+            losses, credits and temporary differences — based on a renewed pattern of profitability in Finland and
+            Germany. Without it, Nokia would have been loss-making. (Note: under IFRS, deferred tax is classified
+            non-current and is <em>not</em> discounted.) When DTAs (re)emerge, ask: will the firm really generate taxable
+            profit before the losses expire, and were the past losses a one-off?</p>
+        </div>
+
+        <h2 id="rates">Changes in tax rates</h2>
+        <p>Because deferred tax = temporary difference × tax rate, a change in the enacted rate re-values both DTAs and
+          DTLs. A <strong>rate cut</strong> reduces future tax payments (lowering DTLs) but also reduces the value of
+          future deductions (lowering DTAs); a rate rise does the opposite.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A rate cut from 30% to 25%</h4></div>
+          <div class="ex-body">
+            <p>A temporary difference of 2,571 carried a DTL of \(2{,}571\times30\%=771\). The rate falls to 25%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The DTL is re-measured at the new rate: \(2{,}571\times25\%=643\) — a fall of 128. For a firm with a net
+                <em>liability</em>, a rate cut is <strong>good news</strong> (a smaller future obligation). The remeasurement
+                runs through tax expense in the period of the rate change.</p>
+              <span class="answer">DTL 771 → 643; the rate cut lowers the liability</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="effective">Statutory vs effective (and cash) tax rates</h2>
+        <p>Three rates: the <strong>statutory rate</strong> (the rate where the firm is domiciled); the
+          <strong>effective tax rate</strong> = tax expense / pre-tax income (useful for forecasting earnings); and the
+          <strong>cash tax rate</strong> = cash tax paid / pre-tax income (useful for forecasting cash flow). Temporary
+          differences do <em>not</em> change the effective rate — in the receivable example it is 20% in both years,
+          matching the statutory rate. Two things <em>do</em> move it:</p>
+        <ul>
+          <li><strong>Permanent differences</strong> — items treated differently by tax that <em>never</em> reverse, so
+            they create no deferred tax (e.g. a non-deductible pollution fine). They push the effective rate away from
+            statutory: a £20 non-deductible penalty on £110 profit gives accounting profit £90, but taxable income £110,
+            so tax \(=110\times30\%=33\) and the effective rate \(=33/90=\textbf{37%}\) vs a 30% statutory rate.</li>
+          <li><strong>Multi-country operations</strong> — the effective rate becomes a profit-weighted blend. Neutrino
+            earns $1,000 in the US (21%) and $1,000 in Ireland (12%): tax \(=210+120=330\), effective rate
+            \(=330/2{,}000=\textbf{16.5%}\).</li>
+        </ul>
+
+        <h2 id="equity">Deferred tax in equity</h2>
+        <p>If a DTL will <strong>never reverse</strong> — e.g. future losses mean no tax will ever be paid — it is no
+          longer a real obligation: the DTL is reduced and the reduction taken directly to <strong>equity</strong>. From
+          the analyst's standpoint, when both the <em>timing and amount</em> of a deferred tax balance are genuinely
+          uncertain, the DTL should be excluded from <strong>both debt and equity</strong> when assessing leverage.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Deferred tax reconciles the shareholders' books to the tax return:
+            \(\text{Tax expense}=\text{Tax payable}+\Delta\text{DTL}-\Delta\text{DTA}\). A <strong>DTL</strong> arises
+            when an asset's carrying amount exceeds its tax base (pay less tax now, more later — accelerated tax
+            depreciation); a <strong>DTA</strong> arises when you overpay now (an allowance not yet deductible, prepaid
+            income taxed early). DTAs are only as good as future profits — recognised when probable (IFRS) or netted by a
+            <strong>valuation allowance</strong> (US GAAP), a revealing window on management's forecasts (Little Rock,
+            Nokia). <strong>Rate changes</strong> re-value the balances; and the <strong>effective tax rate</strong>
+            departs from statutory through <strong>permanent differences</strong> and multi-country blending — while
+            never-reversing balances belong in equity, or out of the leverage calculation entirely.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-06-liabilities-provisions.html"><span class="dir">← Previous</span><span class="ttl">Liabilities and Provisions</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-08-shareholders-capital-compensation.html"><span class="dir">Next →</span><span class="ttl">Shareholders’ Capital and Employee Compensation</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

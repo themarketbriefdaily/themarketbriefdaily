@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shareholders’ Capital and Employee Compensation · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="The components of shareholders' equity, OCI and accounting changes, dividends and treasury shares, basic and diluted EPS (if-converted and treasury-stock methods), and share-based compensation including the expensing debate and cash-settled awards." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="08">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 8 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Shareholders’ Capital and Employee Compensation</h1>
+        <p class="summary">
+          The right-hand side of the balance sheet that belongs to owners. This lesson maps the components of
+          shareholders' equity (including OCI), covers dividends and treasury shares, then tackles the two areas where
+          equity meets earnings: <strong>earnings per share</strong> in a complex capital structure (basic vs diluted),
+          and <strong>share-based compensation</strong> — the non-cash expense that dilutes shareholders and remains one
+          of accounting's most contested topics.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#equity">Share capital &amp; equity</a>
+            <a href="#oci">OCI &amp; accounting changes</a>
+            <a href="#dividends">Dividends &amp; treasury shares</a>
+            <a href="#eps-basic">Basic EPS</a>
+            <a href="#eps-diluted">Diluted EPS</a>
+            <a href="#sbc">Share-based compensation</a>
+            <a href="#sbc-debate">The SBC debate</a>
+            <a href="#cash-settled">Cash-settled awards</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Shareholders' equity comprises <strong>share capital</strong> (ordinary shares; preferred shares — possibly
+          with debt-like features if redeemable/convertible; shares with amended voting rights),
+          <strong>share premium</strong> (issue price − par value), <strong>retained earnings</strong>,
+          <strong>reserves</strong> (legal, statutory, revaluation, own-share and optional), and
+          <strong>other comprehensive income</strong> — which, despite bypassing the income statement, is genuinely part
+          of equity.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Identify the components of shareholders' equity and what flows through OCI.</li>
+            <li>Account for dividends, stock dividends and treasury shares.</li>
+            <li>Compute basic EPS with a weighted-average share count and retroactive split adjustment.</li>
+            <li>Compute diluted EPS using the if-converted and treasury-stock methods, and identify antidilutive securities.</li>
+            <li>Account for share-based compensation and explain the controversy over its treatment.</li>
+          </ol>
+        </div>
+
+        <h2 id="oci">OCI and accounting changes</h2>
+        <p><strong>Other comprehensive income</strong> collects gains/losses that are <em>not</em> part of business net
+          income — foreign-currency translation, defined-benefit plan remeasurements, and fair-value changes on certain
+          financial assets — in a separate equity component, <em>bypassing</em> the income statement, because they have a
+          different predictability than net income. Total comprehensive income = net income + OCI.</p>
+        <div class="callout note">
+          <span class="ct-label">Changes in standards, policies, estimates and errors</span>
+          <p>A new <strong>standard</strong> may be adopted <em>prospectively</em> or <em>retrospectively</em>. A change
+            in <strong>accounting policy</strong> (e.g. switching inventory-costing method) is applied
+            <strong>retrospectively</strong> unless impractical — restating all years as if the new policy had always
+            applied, with the cumulative impact of prior periods shown in the <strong>equity</strong> section.</p>
+        </div>
+
+        <h2 id="dividends">Dividends and treasury shares</h2>
+        <p>Management proposes, shareholders approve, and <strong>dividends are paid from retained earnings — not net
+          income</strong>. Usually cash; occasionally in kind, or as a <strong>stock dividend</strong>, which increases
+          share capital and premium (a capitalisation of retained earnings). <strong>Treasury shares</strong> (buybacks)
+          are repurchased to reduce capital / return cash, to signal that management thinks the stock is undervalued, as
+          a takeover defence, or to supply employee profit-sharing and option plans.</p>
+
+        <h2 id="eps-basic">Basic EPS</h2>
+        <p>IAS 33 (and US GAAP) require EPS on the face of the income statement. Basic EPS divides earnings available to
+          ordinary shareholders by the <strong>weighted-average</strong> shares outstanding:</p>
+        <div class="formula">
+          <div class="f-label">Basic EPS</div>
+          <div class="mjx-row">$$ \text{Basic EPS}=\frac{\text{Net income}-\text{Preferred dividends}}{\text{Weighted-average shares outstanding}} $$</div>
+        </div>
+        <p>Shares from a <strong>stock dividend, bonus or split</strong> are applied <em>retroactively</em> to the start
+          of the period (existing holders simply receive more shares — no new capital).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Weighted-average shares with a split</h4></div>
+          <div class="ex-body">
+            <p>NI 2,500; preferred dividends 200. Shares: 1,000 on 1 Jan; +200 issued 1 Apr; −100 repurchased 1 Oct; a
+              2-for-1 split on 1 Dec. Find basic EPS.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Weight by time: \((3/12)\times1{,}000=250\); \((6/12)\times1{,}200=600\);
+                \((3/12)\times1{,}100=275\) → \(1{,}125\). The split applies retroactively (no time-weighting):
+                \(2\times1{,}125=2{,}250\). Basic EPS \(=(2{,}500-200)/2{,}250=\textbf{1.02}\).</p>
+              <span class="answer">WASO 2,250; basic EPS = 1.02</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="eps-diluted">Diluted EPS</h2>
+        <p>A <strong>complex capital structure</strong> contains securities that could become common shares —
+          convertible bonds, convertible preferred, employee options and <strong>warrants</strong> (equity call options
+          the company itself issues) — threatening <strong>dilution</strong>. The standards require reporting both
+          <strong>basic</strong> and <strong>diluted</strong> EPS. A security is <strong>antidilutive</strong> if
+          including it would <em>raise</em> EPS — it is then excluded, and diluted EPS equals basic.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Convertible preferred — if-converted</h4></div>
+          <div class="ex-body">
+            <p>NI 1,750,000; 500,000 shares; 20,000 preferred shares (dividend $10 each → 200,000) each convertible into
+              5 common shares.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Basic EPS \(=(1{,}750{,}000-200{,}000)/500{,}000=3.10\). If-converted: add back the preferred dividend
+                (numerator 1,750,000) and add \(20{,}000\times5=100{,}000\) shares (denominator 600,000). Diluted EPS
+                \(=1{,}750{,}000/600{,}000=\textbf{2.92}\) — dilutive, so reported.</p>
+              <span class="answer">Basic 3.10 → diluted 2.92</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Convertible debt — if-converted</h4></div>
+          <div class="ex-body">
+            <p>NI 750,000; 690,000 shares; $50,000 of 6% convertible bonds convertible into 10,000 shares; tax 30%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Basic EPS \(=750{,}000/690{,}000=1.09\). If converted, the firm saves the interest but pays more tax:
+                after-tax interest \(=50{,}000\times6\%\times(1-0.30)=2{,}100\). Numerator
+                \(=750{,}000+2{,}100=752{,}100\); denominator \(=690{,}000+10{,}000=700{,}000\). Diluted EPS
+                \(=752{,}100/700{,}000=\textbf{1.07}\).</p>
+              <span class="answer">Add back after-tax interest 2,100; diluted EPS = 1.07</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Options/warrants — treasury-stock method</h4></div>
+          <div class="ex-body">
+            <p>NI 2,300,000; 800,000 shares; 30,000 options, exercise price 35, average share price 55.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>If exercised, the firm receives \(30{,}000\times35=1{,}050{,}000\) cash, which "repurchases"
+                \(1{,}050{,}000/55=19{,}091\) shares. Net new shares \(=30{,}000-19{,}091=10{,}909\). Diluted EPS
+                \(=2{,}300{,}000/(800{,}000+10{,}909)=\textbf{2.84}\) vs basic 2.88. (Instruments issued mid-year are
+                weighted by time outstanding.)</p>
+              <span class="answer">Net 10,909 new shares; diluted EPS = 2.84</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="sbc">Share-based compensation</h2>
+        <p>Salary, bonuses and benefits that vest immediately are simply expensed at fair value with a matching cash
+          outflow or liability. <strong>Equity-settled share-based compensation</strong> is different: it requires
+          <em>no cash</em>, supposedly aligns employees with shareholders — yet still records an <strong>expense that
+          reduces earnings</strong> and <strong>dilutes EPS</strong>. <strong>Stock grants</strong> may be outright,
+          restricted (<strong>RSUs</strong>, forfeited if conditions aren't met), or performance-contingent;
+          compensation expense is the <strong>grant-date fair value</strong> spread over the <strong>service
+          period</strong>. <strong>Stock options</strong> differ — they can expire worthless if the price stays below the
+          exercise price, so their fair value must be <em>estimated</em> (subjective).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Spreading option expense over the service period</h4></div>
+          <div class="ex-body">
+            <p>"$335m of unrecognized compensation cost … expected over a weighted-average 1.9 years." Estimate FY2022
+              and FY2023 expense.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>FY2022 \(\approx335/1.9=176\); FY2023 \(\approx335-176=159\) (new grants would add to this). During
+                vesting, <em>no cash</em> moves — compensation expense raises <strong>additional paid-in capital</strong>.
+                On exercise, equity rises by the grant-date fair value <em>plus</em> the employee's cash, and new shares
+                dilute existing holders. The shares delivered are new shares or treasury shares.</p>
+              <span class="answer">FY2022 ≈ 176; FY2023 ≈ 159</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="sbc-debate">Is stock-based compensation really free? (Bhojraj 2020; Mohanram et al. 2020)</h2>
+        <p>In the mid-1990s tech boom, the question was whether option pay is an expense. <em>Yes</em> — it is a real
+          cost replacing cash; <em>no</em> — it is non-cash, hard to value, worthless until exercised, and dilution is
+          already captured. The standards settled it: SBC <strong>is an expense</strong> (SFAS 123 / IFRS 2). Yet the
+          debate continues:</p>
+        <ul>
+          <li><strong>Preparers</strong> add SBC back in <em>non-GAAP</em> earnings ("non-cash, uncorrelated with
+            performance"); many analysts add it back too when forecasting EPS.</li>
+          <li><strong>Bhojraj (2020):</strong> SBC is two simultaneous transactions — an <em>operating</em> one (employee
+            provides services) and a <em>financing</em> one (employee provides capital) — so it arguably belongs in CFF,
+            not CFO; firms reporting non-GAAP free cash flow/EBITDA <strong>systematically overstate</strong> free cash
+            flow by ignoring it.</li>
+          <li><strong>Mohanram et al. (2020):</strong> high-SBC firms show higher valuations and lower subsequent returns
+            (overvaluation); analysts who ignore SBC produce optimistically biased price targets, while those who expense
+            it are unbiased.</li>
+          <li><strong>Not free:</strong> the firm must either spend cash on <em>buybacks</em> to offset dilution or
+            <em>dilute</em> existing shareholders — there is no free lunch.</li>
+        </ul>
+
+        <h2 id="cash-settled">Cash-settled awards</h2>
+        <p><strong>Cash-settled share-based compensation</strong> — <strong>stock appreciation rights (SARs)</strong> and
+          <strong>phantom stock</strong> — pays employees based on share-value changes <em>without</em> requiring them to
+          hold shares. The downside risk is limited and the upside unlimited (like options), so it limits the
+          risk-aversion problem, and crucially it does <strong>not dilute</strong> existing shareholders (though it does
+          create a cash liability).</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Owners' equity bundles share capital, premium, retained earnings, reserves and <strong>OCI</strong> (which
+            quarantines low-predictability gains/losses outside net income); dividends and stock dividends come from
+            <strong>retained earnings</strong>, and buybacks create treasury shares. Where a capital structure is
+            complex, report <strong>basic and diluted EPS</strong> — using the <strong>if-converted</strong> method for
+            convertibles (add back preferred dividends or after-tax interest) and the <strong>treasury-stock</strong>
+            method for options, excluding any <strong>antidilutive</strong> security. <strong>Share-based
+            compensation</strong> is a genuine, dilutive expense (grant-date fair value over the service period) — and
+            despite being routinely added back in non-GAAP metrics, the research shows that treating it as "free"
+            overstates cash flow and inflates valuations.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-07-deferred-tax.html"><span class="dir">← Previous</span><span class="ttl">Deferred Tax</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-09-business-combinations.html"><span class="dir">Next →</span><span class="ttl">Business Combinations and Associates</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

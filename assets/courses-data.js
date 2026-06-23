@@ -205,8 +205,30 @@
             { a: 'provisions',       t: 'Provisions &amp; contingents' },
             { a: 'environmental',    t: 'Environmental liabilities' }
           ] },
-        { n: '07', title: 'Deferred Tax', cfa: 'L1', built: false },
-        { n: '08', title: 'Shareholders’ Capital and Employee Compensation', cfa: 'L1', built: false },
+        { n: '07', title: 'Deferred Tax', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-07-deferred-tax.html',
+          topics: [
+            { a: 'basics',      t: 'Tax expense vs tax paid' },
+            { a: 'dtl',         t: 'Deferred tax liability' },
+            { a: 'dta',         t: 'Deferred tax asset' },
+            { a: 'types',       t: 'Difference types' },
+            { a: 'recognition', t: 'Recognition &amp; allowances' },
+            { a: 'rates',       t: 'Tax-rate changes' },
+            { a: 'effective',   t: 'Statutory vs effective' },
+            { a: 'equity',      t: 'Deferred tax in equity' }
+          ] },
+        { n: '08', title: 'Shareholders’ Capital and Employee Compensation', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-08-shareholders-capital-compensation.html',
+          topics: [
+            { a: 'equity',       t: 'Share capital &amp; equity' },
+            { a: 'oci',          t: 'OCI &amp; accounting changes' },
+            { a: 'dividends',    t: 'Dividends &amp; treasury shares' },
+            { a: 'eps-basic',    t: 'Basic EPS' },
+            { a: 'eps-diluted',  t: 'Diluted EPS' },
+            { a: 'sbc',          t: 'Share-based compensation' },
+            { a: 'sbc-debate',   t: 'The SBC debate' },
+            { a: 'cash-settled', t: 'Cash-settled awards' }
+          ] },
         { n: '09', title: 'Business Combinations and Investments in Associates', cfa: 'L1', built: false },
         { n: '10', title: 'Financial Reporting and Earnings Quality', cfa: 'L1', built: false },
         { n: '11', title: 'From Financial Reporting to ESG Reporting', cfa: 'L1', built: false }
