@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>International Portfolio Management · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="International diversification and home bias, exchange-rate quotation and cross rates, triangular arbitrage, the return and risk of a foreign asset, forward exchange rates and covered interest rate parity, and the carry trade with uncovered interest rate parity." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="06">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 6 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>International Portfolio Management</h1>
+        <p class="summary">
+          Going global widens the opportunity set — low cross-border correlations push the efficient frontier outward —
+          but it adds <strong>exchange-rate risk</strong>. This lesson covers the diversification gain (and why investors
+          under-use it via <strong>home bias</strong>), exchange-rate arithmetic and triangular arbitrage, how to put a
+          foreign asset's return and risk into your home currency, and how forwards and the <strong>interest-rate
+          parities</strong> tie spot rates, forward rates and the carry trade together.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#diversification">International diversification</a>
+            <a href="#home-bias">Home bias</a>
+            <a href="#exchange-rates">Exchange rates</a>
+            <a href="#cross-rate">Cross rates &amp; arbitrage</a>
+            <a href="#foreign-return">Foreign asset return</a>
+            <a href="#forward">Forwards &amp; covered parity</a>
+            <a href="#carry">Carry trade &amp; uncovered parity</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Investors naturally focus on their home market, but assets from all countries can enter the same optimisation.
+          Adding international assets <strong>can never hurt</strong> (at worst they are ignored), and usually helps —
+          reducing risk, lifting the efficient frontier and improving the Sharpe ratio.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain the diversification benefit of international assets and the home-bias anomaly.</li>
+            <li>Perform exchange-rate, cross-rate and triangular-arbitrage calculations.</li>
+            <li>Compute the return and risk of a foreign asset in the accounting currency.</li>
+            <li>Apply covered interest rate parity to price a forward exchange rate.</li>
+            <li>Analyse the carry trade and state uncovered interest rate parity.</li>
+          </ol>
+        </div>
+
+        <h2 id="diversification">International diversification</h2>
+        <p>For an equally-weighted portfolio of \(n\) assets with common variance \(\sigma^2\) and average pairwise
+          covariance \(c\):</p>
+        <div class="formula">
+          <div class="f-label">Risk of a large equally-weighted portfolio</div>
+          <div class="mjx-row">$$ \operatorname{var}(r_p)=\frac{\sigma^2-c}{n}+c\;\xrightarrow[n\to\infty]{}\;c $$</div>
+        </div>
+        <p>The firm-specific term vanishes with size, leaving the <strong>average covariance \(c\)</strong> as the
+          residual systematic risk — so the <em>lower</em> the average covariance, the greater the risk reduction.
+          Equity correlations are <strong>high within a region</strong> (North America, Europe, Asia) but
+          <strong>low across regions</strong> (though they rise in market distress), so a globally diversified pool has a
+          lower average covariance — pushing out the <strong>efficient frontier</strong> and creating a steeper, better
+          capital allocation line than a domestic-only investor could reach.</p>
+
+        <h2 id="home-bias">Home bias</h2>
+        <div class="callout note">
+          <span class="ct-label">A persistent anomaly</span>
+          <p>Despite the theory, investors heavily <strong>overweight domestic assets</strong> — the <strong>home-bias
+            anomaly</strong>. Candidate explanations: <strong>exchange-rate risk</strong>, <strong>ambiguity
+            aversion</strong> (unfamiliar foreign stocks), language and cultural barriers, trading costs and frictions,
+            and regulation on foreign holdings.</p>
+        </div>
+
+        <h2 id="exchange-rates">Exchange rates</h2>
+        <p>An <strong>exchange rate</strong> is the price of one currency in another. We use the "real-life" convention
+          (banks, traders, media): <strong>USD/JPY = 105 means 1 USD = 105 JPY</strong> — read the slash as division, so
+          the reciprocal gives the other side: \(\text{JPY/USD}=1/105=0.009524\). (Caution: many textbooks and the CFA
+          exam use the opposite convention.) If <strong>USD/JPY rises</strong>, the USD <em>appreciates</em> against the
+          JPY (and JPY depreciates).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Appreciation is not symmetric</h4></div>
+          <div class="ex-body">
+            <p>USD/JPY rises 5% from 105 to 110.25. By how much does the JPY depreciate against the USD?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Before: 1 JPY \(=1/105=0.009524\) USD. After: 1 JPY \(=1/110.25=0.009070\) USD. Change
+                \(=\frac{0.009070-0.009524}{0.009524}=-4.77\%\). A 5% USD appreciation is a <strong>4.77%</strong> JPY
+                depreciation — the two percentages differ because they are measured from different bases.</p>
+              <span class="answer">JPY depreciates 4.77% (not 5%)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="cross-rate">Cross rates and triangular arbitrage</h2>
+        <p>Treating rates as fractions gives the <strong>cross-rate</strong> shortcut: \(\text{A/C}=\text{A/B}\times\text{B/C}\).
+          E.g. with EUR/CHF = 1.086 and USD/CHF = 0.897, \(\text{EUR/USD}=1.086/0.897=1.211\). Any market quote that
+          breaks this relation creates <strong>triangular arbitrage</strong>.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Triangular arbitrage</h4></div>
+          <div class="ex-body">
+            <p>Fair EUR/USD is 1.211, but a dealer quotes 1.3 (with EUR/CHF 1.086, USD/CHF 0.897). Exploit it.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>EUR is overpriced vs USD. Borrow 1 EUR → sell for 1.3 USD → convert to CHF
+                (\(1.3\times0.897=1.1661\)) → convert to EUR (\(1.1661\times1.086=1.074\)) → repay the 1 EUR. Net profit
+                <strong>0.074 EUR</strong>, riskless. Such trades are how the no-arbitrage relation
+                \(\text{A/C}=\text{A/B}\times\text{B/C}\) is enforced.</p>
+              <span class="answer">Riskless profit of 0.074 EUR per cycle</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="foreign-return">Foreign asset return and exchange-rate risk</h2>
+        <p>A foreign asset's <em>native</em> return is not what a home investor earns — the conversion back through the
+          exchange rate matters. With native return \(r^A\) and exchange-rate change \(r_{A/B}\), the return in the
+          accounting currency \(B\) is:</p>
+        <div class="formula">
+          <div class="f-label">Foreign asset return, mean and variance</div>
+          <div class="mjx-row">$$ r^B=(1+r^A)(1+r_{A/B})-1\approx r^A+r_{A/B} $$</div>
+          <div class="mjx-row">$$ E(r^B)=E(r^A)+E(r_{A/B}), \quad \operatorname{var}(r^B)=\operatorname{var}(r^A)+\operatorname{var}(r_{A/B})+2\operatorname{Cov}(r^A,r_{A/B}) $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A UK equity fund for a US investor</h4></div>
+          <div class="ex-body">
+            <p>US riskfree 1%; UK fund (native GBP) \(\mu=3\%,\sigma=30\%\); GBP/USD \(\mu=4\%,\sigma=7\%\); correlation
+              0.1. Find the fund's USD return/risk, then a 70%-fund/30%-riskfree portfolio.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(E(r^{USD})=3\%+4\%=7\%\). \(\operatorname{var}=0.3^2+0.07^2+2(0.3)(0.07)(0.1)=0.0991\Rightarrow\sigma=31.48\%\).
+                Portfolio: \(\mu_p=0.7(7\%)+0.3(1\%)=5.2\%\); \(\sigma_p=0.7\times31.48\%=22.04\%\). The currency
+                contributes both extra return <em>and</em> extra risk.</p>
+              <span class="answer">Fund in USD: 7%, 31.48%; portfolio: 5.2%, 22.04%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="forward">Forward rates and covered interest rate parity</h2>
+        <p>A <strong>forward exchange rate</strong> locks in a future conversion rate today; the <strong>forward
+          premium</strong> = forward − spot (negative = discount), often quoted in basis points. No-arbitrage pins the
+          forward to the two interest rates — <strong>covered interest rate parity (CIP)</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Covered interest rate parity</div>
+          <div class="mjx-row">$$ F_{A/B}=X_{A/B}\cdot\frac{1+i_B\frac{\tau}{360}}{1+i_A\frac{\tau}{360}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A 6-month GBP/EUR forward</h4></div>
+          <div class="ex-body">
+            <p>\(i_{GBP}=0.1\%\), \(i_{EUR}=0\%\), spot GBP/EUR = 1.1563, \(\tau=180\). Find the forward and its premium in
+              basis points.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(F=1.1563\times\dfrac{1+0\%(180/360)}{1+0.1\%(180/360)}=1.155722\). Premium
+                \(=1.155722-1.1563=-0.000578\), i.e. \(-0.000578/0.0001=\textbf{−5.78 bp}\) — a forward
+                <em>discount</em>, because GBP carries the higher interest rate. (Higher-yield currencies trade at a
+                forward discount.)</p>
+              <span class="answer">Forward 1.15572; −5.78 bp (a discount)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="carry">The carry trade and uncovered interest rate parity</h2>
+        <p>Interest rates differ hugely across currencies (Japan vs Australia), motivating the <strong>carry trade</strong>:
+          borrow the low-rate currency (JPY), convert, and deposit in the high-rate currency (AUD) to harvest the spread.
+          It is <em>not</em> riskfree — the future exchange rate is unknown:</p>
+        <div class="formula">
+          <div class="f-label">Carry payoff and uncovered parity</div>
+          <div class="mjx-row">$$ \text{payoff}=\frac{X_1^{AUD/JPY}}{X_0^{AUD/JPY}}(1+i_{AUD})-(1+i_{JPY}) $$</div>
+          <div class="mjx-row">$$ \text{UIP: } E\!\big(X_1^{AUD/JPY}\big)=\frac{1+i_{JPY}}{1+i_{AUD}}\,X_0^{AUD/JPY} $$</div>
+        </div>
+        <p>If investors were risk-neutral, they would bid the trade until its expected payoff is zero — giving
+          <strong>uncovered interest rate parity (UIP)</strong>: the high-rate currency is <em>expected</em> to
+          depreciate by just enough to wipe out the carry. Combining UIP with CIP gives the <strong>unbiased forward
+          hypothesis</strong>: \(F=E(X_1)\) — the forward rate is an unbiased forecast of the future spot.</p>
+        <div class="callout concept">
+          <span class="ct-label">Does the carry trade actually work?</span>
+          <p>UIP says it shouldn't — but UIP assumes risk-neutrality. Empirically, carry trades have been
+            <em>somewhat profitable</em>, yet with <strong>excess kurtosis and substantial crash risk</strong> (fat-tailed
+            returns). The honest question is not "is it profitable?" but "is the reward justified by the risk?"</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>International assets lower the <strong>average covariance</strong>, improving the frontier — yet investors
+            cling to <strong>home bias</strong>. Once you account for currency, a foreign return is
+            \(r^B\approx r^A+r_{A/B}\), so the exchange rate adds both return and risk. Forwards let you hedge it, priced
+            by <strong>covered interest rate parity</strong> (the higher-yield currency trades at a forward discount), and
+            <strong>uncovered interest rate parity</strong> says the expected spot move should erase any interest-rate
+            edge — the theoretical reason the <strong>carry trade</strong> "shouldn't" work, even though in practice it
+            pays a premium for bearing crash risk.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-05-active-management.html"><span class="dir">← Previous</span><span class="ttl">Active Portfolio Management</span></a>
+          <a class="next" href="/courses/portfolio-management-07-applied.html"><span class="dir">Next →</span><span class="ttl">Applied Portfolio Management</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

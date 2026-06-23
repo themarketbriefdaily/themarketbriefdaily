@@ -328,7 +328,17 @@
             { a: 'grinold',         t: 'Grinold’s rule' },
             { a: 'fundamental-law', t: 'The fundamental law' }
           ] },
-        { n: '06', title: 'International Portfolio Management', cfa: 'L1', built: false },
+        { n: '06', title: 'International Portfolio Management', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-06-international.html',
+          topics: [
+            { a: 'diversification', t: 'International diversification' },
+            { a: 'home-bias',       t: 'Home bias' },
+            { a: 'exchange-rates',  t: 'Exchange rates' },
+            { a: 'cross-rate',      t: 'Cross rates &amp; arbitrage' },
+            { a: 'foreign-return',  t: 'Foreign asset return' },
+            { a: 'forward',         t: 'Forwards &amp; covered parity' },
+            { a: 'carry',           t: 'Carry trade &amp; uncovered parity' }
+          ] },
         { n: '07', title: 'Applied Portfolio Management', cfa: 'L1', built: false },
         { n: '08', title: 'Electronic Markets, Trade Execution and Technology', cfa: 'L1', built: false },
         { n: '09', title: 'Revision', cfa: 'L1', built: false }
