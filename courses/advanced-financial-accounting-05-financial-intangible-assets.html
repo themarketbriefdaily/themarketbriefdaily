@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Financial and Intangible Assets · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="Classifying and measuring financial assets (amortised cost, FVOCI, FVPL / HTM, AFS, trading), intangible assets under IAS 38, the R&D research/development split, expensers vs purchasers, goodwill, and goodwill impairment with the supporting research." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="05">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 5 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Financial and Intangible Assets</h1>
+        <p class="summary">
+          Two asset types whose accounting is dominated by judgement. <strong>Financial assets</strong> are classified
+          by management's <em>business model</em>, and that classification dictates whether fair-value swings hit income,
+          OCI, or nothing. <strong>Intangible assets</strong> are mostly <em>off</em> the balance sheet when grown
+          internally and <em>on</em> it when bought — distorting comparisons — and the on-balance-sheet ones (especially
+          goodwill) are governed by impairment tests riddled with discretion.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#fin-assets">Financial assets</a>
+            <a href="#classification">Classification &amp; measurement</a>
+            <a href="#fin-impact">Income &amp; equity impact</a>
+            <a href="#intangibles">Intangible assets</a>
+            <a href="#rd">R&amp;D &amp; internal intangibles</a>
+            <a href="#expensers">Expensers vs purchasers</a>
+            <a href="#goodwill">Goodwill</a>
+            <a href="#gw-impairment">Goodwill impairment</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <strong>Financial assets</strong> are investments in another entity's shares, notes or bonds, held to earn
+          interest, dividends and disposal gains — <em>not</em> strategic stakes in subsidiaries, associates or joint
+          ventures (those come later in the course). Even non-financial companies hold large financial-asset piles, so
+          their measurement can swing reported profit.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Classify financial assets by business model and link classification to measurement.</li>
+            <li>Trace how fair-value changes flow to income, OCI, or neither.</li>
+            <li>Apply the IAS 38 recognition criteria and the R&amp;D research/development split.</li>
+            <li>Explain how off-balance-sheet intangibles distort ratios and the expenser/purchaser divide.</li>
+            <li>Account for goodwill and its impairment, and read impairments as transitory signals.</li>
+          </ol>
+        </div>
+
+        <h2 id="fin-assets">Financial assets — fair value vs amortised cost</h2>
+        <p>The two measurement bases are <strong>fair value</strong> (the price to sell in an orderly transaction — most
+          often market price) and <strong>amortised cost</strong> (initial recognition, minus principal repayments,
+          plus/minus amortisation of any discount or premium, minus impairment). Which one applies is decided by
+          classification — and classification reflects management's <strong>business model</strong> for the asset.</p>
+
+        <h2 id="classification">Classification determines measurement</h2>
+        <div class="callout concept">
+          <span class="ct-label">Three buckets (IFRS / US GAAP)</span>
+          <p><strong>Hold to collect</strong> contractual cash flows that are solely principal and interest →
+            <strong>Amortised cost</strong> (IFRS) / <strong>Held-to-maturity (HTM)</strong> (US GAAP). Debt only.<br>
+            <strong>Collect <em>and</em> sell</strong> → <strong>Fair value through OCI (FVOCI)</strong> (IFRS) /
+            <strong>Available-for-sale (AFS)</strong> (US GAAP).<br>
+            <strong>Anything else</strong> → <strong>Fair value through P&amp;L (FVPL)</strong> (IFRS) /
+            <strong>Trading</strong> (US GAAP). Under US GAAP <em>all</em> equity securities are here unless the stake
+            confers significant influence; under IFRS a firm may irrevocably elect FVOCI for some equities at
+            acquisition.</p>
+        </div>
+
+        <h2 id="fin-impact">Implications for income and equity</h2>
+        <p>Take a debt security paying interest income of 2,500,000 with an unrealised fair-value gain of 2,000,000. The
+          interest income flows to retained earnings (via income) and cash in every case; the <em>unrealised gain</em>
+          is treated very differently:</p>
+        <div class="callout note">
+          <span class="ct-label">Where the unrealised 2,000,000 goes</span>
+          <p><strong>Amortised cost / HTM:</strong> not reported at all (asset stays at amortised cost).
+            <strong>FVOCI / AFS:</strong> routed to <strong>OCI</strong> (raises the asset, bypasses income).
+            <strong>FVPL / Trading:</strong> flows through <strong>income</strong> into retained earnings (raises the
+            asset and net profit). Because fair-value changes are transitory and unpredictable, FVPL classification can
+            make a non-financial company's net profit lurch with markets — an analyst should strip these out of core
+            earnings.</p>
+        </div>
+
+        <h2 id="intangibles">Intangible assets (IAS 38)</h2>
+        <p>An <strong>intangible asset</strong> is an identifiable non-monetary asset without physical substance, meeting
+          three tests: <strong>identifiability</strong> (separable, or arising from contractual/legal rights),
+          <strong>control</strong> (power to obtain its benefits), and <strong>future economic benefits</strong>.
+          Examples: patents, copyrights, trademarks, franchises, brands, technology, know-how, goodwill. They sit
+          <strong>on</strong> the balance sheet when <em>purchased or acquired</em> (allocating the price involves
+          discretion) and largely <strong>off</strong> it when <em>internally developed</em>. IAS 38 capitalises an
+          intangible only if future benefits are probable <em>and</em> cost is reliably measurable — otherwise the spend
+          is expensed as incurred.</p>
+
+        <h2 id="rd">R&amp;D and internally generated intangibles</h2>
+        <p>For internally generated intangibles, IFRS splits R&amp;D: <strong>research-phase</strong> costs are
+          <em>expensed</em>; <strong>development-phase</strong> costs are <em>capitalised</em> once specific criteria are
+          met. Other internal intangibles (start-up costs, brands, customer lists) are expensed (usually SG&amp;A).
+          <strong>US GAAP is similar but prohibits capitalising development costs</strong> (except certain software).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>When does R&D hit the balance sheet?</h4></div>
+          <div class="ex-body">
+            <p>A project costs £10,000/month (salary + lab). On 1 Feb 2022 it meets the IFRS development criteria. How is
+              the year reported at December 2022?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>January is research → an <strong>expense of £10,000</strong>. February–December (11 months) is
+                development meeting the criteria → <strong>capitalised as an intangible asset of £110,000</strong>.
+                Capitalisation thus lifts current earnings versus expensing. Dinh et al. (2012, German firms) show the
+                decision to capitalise — and how much — is strongly associated with <em>benchmark beating</em>: it can
+                signal private information about future benefits, but equally serve opportunistic earnings management.</p>
+              <span class="answer">£10,000 expensed (research) + £110,000 capitalised (development)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="expensers">Distortion: expensers vs purchasers</h2>
+        <p>Omitting internally generated intangibles distorts ROA, asset turnover, ROE and margins, and investors
+          fixating on net income tend to <em>underestimate</em> R&amp;D's future payoff — undervaluing high-R&amp;D-growth
+          (early-stage) firms and overvaluing low-R&amp;D-growth (mature) firms (Lev et al., 2005), and ignoring how well
+          past R&amp;D converted into sales (Cohen et al., 2013).</p>
+        <div class="callout concept">
+          <span class="ct-label">Two firms, same economics, different statements</span>
+          <p><strong>Expensers</strong> (grow intangibles internally): lower assets (research not recognised), lower CFO
+            (intangible spend is an operating outflow), lower profits and margins — think early-stage biotech.
+            <strong>Purchasers</strong> (buy intangibles): higher assets (on balance sheet), lower CFI / higher CFO
+            (spend looks like capex), higher profits/margins (intangibles amortised, not expensed in full). Even
+            purchasers carry heavy operating spend, because intangibles are "fragile" — brands need constant advertising
+            to sustain. This makes cross-firm and cross-time comparison treacherous.</p>
+        </div>
+
+        <h2 id="goodwill">Goodwill</h2>
+        <p>On-balance-sheet intangibles must be identifiable. In an acquisition (the <strong>acquisition method</strong>),
+          the acquirer allocates the purchase price to each identifiable asset and liability at fair value; any excess is
+          <strong>goodwill</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Goodwill</div>
+          <div class="mjx-row">$$ \text{Goodwill}=\text{Purchase price}-\sum(\text{Fair value of identifiable net assets}) $$</div>
+        </div>
+        <p>Goodwill captures the target's <em>un</em>identifiable intangibles (reputation, trained staff, in-process
+          research), the strategic positioning of the combined entity, and <strong>synergies</strong>. After
+          acquisition, finite-life intangibles are <strong>amortised</strong>; indefinite-life intangibles and
+          <strong>goodwill are not amortised</strong> but carried at cost and tested for impairment.</p>
+
+        <h2 id="gw-impairment">Goodwill impairment — discretion and research</h2>
+        <p>Goodwill is allocated to a <strong>cash-generating unit (CGU)</strong> at inception. Impairment compares the
+          CGU's carrying value with the present value of its future cash flows — requiring estimates of a
+          <strong>growth rate</strong>, a <strong>discount rate</strong> and the <em>choice of CGU</em>. That is a great
+          deal of discretion. The research is unflattering:</p>
+        <ul>
+          <li><strong>Ramanna &amp; Watts (2012):</strong> since goodwill is not amortised, impairment is the only way
+            managers are held accountable for acquisition premiums — yet reluctance to impair often reflects CEO
+            <em>reputational</em> concerns, not private good news.</li>
+          <li><strong>Gu &amp; Lev (2011):</strong> overpriced acquirer shares tempt managers to overpay for synergies,
+            setting up later write-offs; the worse the overpayment, the worse subsequent returns.</li>
+          <li><strong>Hayn &amp; Hughes (2006):</strong> write-offs lag the <em>economic</em> impairment by 3–4 years on
+            average — up to ten for a third of firms.</li>
+          <li><strong>Riedl (2004):</strong> write-offs are associated with <strong>"big bath"</strong> behaviour —
+            opportunistic, not informative.</li>
+        </ul>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Case</span><h4>Diageo, 2020</h4></div>
+          <div class="ex-body">
+            <p>Diageo took a £1.3bn pandemic-era write-down. What does it reveal, and how should an analyst treat it?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>The charge split into a <strong>£655m goodwill</strong> impairment and a <strong>£564m acquired-brands</strong>
+                impairment, tied to India, Nigeria, Ethiopia and a Korean whisky brand. In the years <em>before</em> 2020,
+                Africa and Asia-Pacific already showed the group's lowest operating margins — impairments confirm a prior
+                trajectory of weak performance and unrealised synergies, exacerbated (not caused) by Covid. Treat goodwill
+                and intangible impairments as <strong>transitory, non-recurring</strong> items, removed from your view of
+                core profitability — while noting a possible "big bath": depressing 2020 profit to reset expectations and
+                surprise on the upside in 2021.</p>
+              <span class="answer">£655m goodwill + £564m brands; a transitory item flagging prior underperformance</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p><strong>Financial assets</strong> are measured by <em>business model</em>: amortised cost / HTM (hide
+            fair-value swings), FVOCI / AFS (swings to OCI), or FVPL / trading (swings through profit) — so the same
+            security can produce very different earnings. <strong>Intangibles</strong> are mostly expensed when grown
+            internally (the R&amp;D research/development split) and capitalised when bought, creating a deep
+            <strong>expenser-vs-purchaser</strong> comparability gap that markets misprice. Acquisitions throw off
+            <strong>goodwill</strong> — unamortised and tested by discretion-laden impairment that research shows is
+            untimely, reputationally driven and prone to <strong>big baths</strong>. Across all of it, treat fair-value
+            and impairment hits as <strong>transitory</strong> and look through to core economics.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-04-tangible-assets-inventory.html"><span class="dir">← Previous</span><span class="ttl">Tangible Assets and Inventory</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-06-liabilities-provisions.html"><span class="dir">Next →</span><span class="ttl">Liabilities and Provisions</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

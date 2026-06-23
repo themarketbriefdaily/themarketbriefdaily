@@ -181,8 +181,30 @@
             { a: 'inv-methods',   t: 'FIFO / LIFO / average' },
             { a: 'inv-writedown', t: 'LIFO reserve &amp; write-downs' }
           ] },
-        { n: '05', title: 'Financial and Intangible Assets', cfa: 'L1', built: false },
-        { n: '06', title: 'Liabilities and Provisions', cfa: 'L1', built: false },
+        { n: '05', title: 'Financial and Intangible Assets', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-05-financial-intangible-assets.html',
+          topics: [
+            { a: 'fin-assets',    t: 'Financial assets' },
+            { a: 'classification',t: 'Classification &amp; measurement' },
+            { a: 'fin-impact',    t: 'Income &amp; equity impact' },
+            { a: 'intangibles',   t: 'Intangible assets' },
+            { a: 'rd',            t: 'R&amp;D &amp; internal intangibles' },
+            { a: 'expensers',     t: 'Expensers vs purchasers' },
+            { a: 'goodwill',      t: 'Goodwill' },
+            { a: 'gw-impairment', t: 'Goodwill impairment' }
+          ] },
+        { n: '06', title: 'Liabilities and Provisions', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-06-liabilities-provisions.html',
+          topics: [
+            { a: 'bonds',            t: 'Bonds &amp; effective interest' },
+            { a: 'bond-reporting',   t: 'Reporting &amp; extinguishment' },
+            { a: 'leases',           t: 'Leases — IFRS 16' },
+            { a: 'lessor',           t: 'Lessor &amp; the evidence' },
+            { a: 'pensions',         t: 'Pensions: DB vs DC' },
+            { a: 'pension-reporting',t: 'Pension reporting' },
+            { a: 'provisions',       t: 'Provisions &amp; contingents' },
+            { a: 'environmental',    t: 'Environmental liabilities' }
+          ] },
         { n: '07', title: 'Deferred Tax', cfa: 'L1', built: false },
         { n: '08', title: 'Shareholders’ Capital and Employee Compensation', cfa: 'L1', built: false },
         { n: '09', title: 'Business Combinations and Investments in Associates', cfa: 'L1', built: false },
