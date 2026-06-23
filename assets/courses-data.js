@@ -229,9 +229,39 @@
             { a: 'sbc-debate',   t: 'The SBC debate' },
             { a: 'cash-settled', t: 'Cash-settled awards' }
           ] },
-        { n: '09', title: 'Business Combinations and Investments in Associates', cfa: 'L1', built: false },
-        { n: '10', title: 'Financial Reporting and Earnings Quality', cfa: 'L1', built: false },
-        { n: '11', title: 'From Financial Reporting to ESG Reporting', cfa: 'L1', built: false }
+        { n: '09', title: 'Business Combinations and Investments in Associates', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-09-business-combinations.html',
+          topics: [
+            { a: 'relationships',   t: 'Group relationships' },
+            { a: 'control-interest',t: 'Control vs interest' },
+            { a: 'consolidation',   t: 'Full consolidation' },
+            { a: 'goodwill-mi',     t: 'Goodwill &amp; minorities' },
+            { a: 'equity-method',   t: 'The equity method' },
+            { a: 'comparison',      t: 'Method comparison' },
+            { a: 'gw-asset',        t: 'Is goodwill an asset?' },
+            { a: 'ma',              t: 'Does M&amp;A create value?' }
+          ] },
+        { n: '10', title: 'Financial Reporting and Earnings Quality', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-10-earnings-quality.html',
+          topics: [
+            { a: 'setters',      t: 'Setters &amp; regulators' },
+            { a: 'framework',    t: 'The IFRS framework' },
+            { a: 'conservatism', t: 'Conservatism' },
+            { a: 'quality',      t: 'Reporting vs earnings quality' },
+            { a: 'choices',      t: 'Aggressive &amp; conservative' },
+            { a: 'cfo',          t: 'The CFO/earnings test' },
+            { a: 'nongaap',      t: 'Non-GAAP earnings' }
+          ] },
+        { n: '11', title: 'From Financial Reporting to ESG Reporting', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-11-esg-reporting.html',
+          topics: [
+            { a: 'demand', t: 'Why investors want ESG' },
+            { a: 'issb',   t: 'The ISSB' },
+            { a: 's1',     t: 'IFRS S1' },
+            { a: 's2',     t: 'IFRS S2 — climate' },
+            { a: 'ghg',    t: 'Scope 1/2/3 emissions' },
+            { a: 'csrd',   t: 'CSRD &amp; double materiality' }
+          ] }
       ]
     },
 
