@@ -158,8 +158,29 @@
             { a: 'manipulation',   t: 'CFO manipulation' },
             { a: 'fcf',            t: 'Free cash flow' }
           ] },
-        { n: '03', title: 'Revenue Recognition', cfa: 'L1', built: false },
-        { n: '04', title: 'Tangible Assets and Inventory', cfa: 'L1', built: false },
+        { n: '03', title: 'Revenue Recognition', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-03-revenue-recognition.html',
+          topics: [
+            { a: 'fivesteps',    t: 'The five-step model' },
+            { a: 'principal',    t: 'Principal vs agent' },
+            { a: 'longterm',     t: 'Long-term contracts' },
+            { a: 'receivables',  t: 'Receivables &amp; bad debt' },
+            { a: 'earnings-mgmt',t: 'Managing the allowance' },
+            { a: 'factoring',    t: 'Factoring &amp; channel stuffing' },
+            { a: 'deferred',     t: 'Deferred revenue' }
+          ] },
+        { n: '04', title: 'Tangible Assets and Inventory', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-04-tangible-assets-inventory.html',
+          topics: [
+            { a: 'recognition',   t: 'Initial recognition' },
+            { a: 'depreciation',  t: 'Depreciation' },
+            { a: 'revaluation',   t: 'Revaluation &amp; investment property' },
+            { a: 'impairment',    t: 'Impairment' },
+            { a: 'derecognition', t: 'Derecognition' },
+            { a: 'inv-cost',      t: 'Inventory cost' },
+            { a: 'inv-methods',   t: 'FIFO / LIFO / average' },
+            { a: 'inv-writedown', t: 'LIFO reserve &amp; write-downs' }
+          ] },
         { n: '05', title: 'Financial and Intangible Assets', cfa: 'L1', built: false },
         { n: '06', title: 'Liabilities and Provisions', cfa: 'L1', built: false },
         { n: '07', title: 'Deferred Tax', cfa: 'L1', built: false },

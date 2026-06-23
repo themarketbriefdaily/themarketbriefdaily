@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Revenue Recognition · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="The five-step revenue model (IFRS 15 / ASC 606), principal vs agent, long-term contracts and percentage-of-completion, bill-and-hold, receivables and the allowance for bad debt, factoring and channel stuffing, and deferred revenue — with the earnings-management research." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="03">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 3 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Revenue Recognition</h1>
+        <p class="summary">
+          Accrual accounting records the effects of transactions <em>when they occur</em>, not when cash moves — so the
+          central questions are <strong>when</strong> to recognise revenue and <strong>in what amount</strong>. This
+          lesson works through the converged five-step model (IFRS 15 / ASC 606), the principal-vs-agent and long-term
+          contract complications, and then the two timing mismatches that create earnings-management opportunities:
+          revenue recognised <em>before</em> cash (receivables and bad-debt allowances) and <em>after</em> cash
+          (deferred revenue).
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#fivesteps">The five-step model</a>
+            <a href="#principal">Principal vs agent</a>
+            <a href="#longterm">Long-term contracts</a>
+            <a href="#receivables">Receivables &amp; bad debt</a>
+            <a href="#earnings-mgmt">Managing the allowance</a>
+            <a href="#factoring">Factoring &amp; channel stuffing</a>
+            <a href="#deferred">Deferred revenue</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <em>"Accrual accounting depicts the effects of transactions … in the periods in which those effects occur,
+          even if the resulting cash receipts and payments occur in a different period"</em> (IFRS Conceptual Framework
+          1.17). The converged standard — <strong>US GAAP ASC 606</strong> and <strong>IFRS 15</strong>, effective 2018
+          — has a single core principle: recognise revenue to depict the <strong>transfer of promised goods or
+          services</strong> in the amount the entity <strong>expects to be entitled to</strong> in exchange.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Apply the five-step revenue model and identify performance obligations.</li>
+            <li>Distinguish principal (gross) from agent (net) revenue reporting.</li>
+            <li>Recognise revenue on long-term contracts using percentage-of-completion.</li>
+            <li>Account for receivables and estimate the allowance for bad debt.</li>
+            <li>Explain how allowances, factoring, channel stuffing and deferred revenue can distort earnings.</li>
+          </ol>
+        </div>
+
+        <h2 id="fivesteps">The five-step model</h2>
+        <p>Revenue recognition follows five steps — the first two define <em>whether</em> and <em>what</em>, steps 3–4
+          the <em>amount</em>, and step 5 the <em>timing</em>:</p>
+        <div class="callout concept">
+          <span class="ct-label">IFRS 15 / ASC 606 — five steps</span>
+          <ol>
+            <li><strong>Identify the contract</strong> with a customer — collectability (it is probable the customer
+              will pay) defines whether a contract exists.</li>
+            <li><strong>Identify the distinct performance obligations</strong> — each is accounted for separately.</li>
+            <li><strong>Determine the transaction price</strong>.</li>
+            <li><strong>Allocate the transaction price</strong> to the obligations — this sets the <em>amount</em> of
+              revenue.</li>
+            <li><strong>Recognise revenue when (or as) each obligation is satisfied</strong> — the <em>timing</em>.</li>
+          </ol>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Selling a mobile phone with software upgrades</h4></div>
+          <div class="ex-body">
+            <p>A phone is sold bundling hardware + software, plus future software upgrades. How is revenue recognised?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>It is <em>highly likely</em> the customer pays → a contract exists (step 1). The
+                <strong>hardware + software</strong> is a distinct performance obligation, separate from the
+                <strong>software upgrades</strong> (step 2). The transaction price is split between the two (steps 3–4).
+                Revenue for the hardware + software is recognised <strong>now</strong> (delivered); revenue for the
+                upgrades is <strong>deferred</strong> and recognised in future periods as they are provided (step 5).</p>
+              <span class="answer">Recognise hardware+software now; defer the upgrade portion to future periods</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="principal">Principal vs agent, franchising and licensing</h2>
+        <p>Whether revenue is reported <strong>gross</strong> or <strong>net</strong> depends on the entity's role.
+          A <strong>principal</strong> (controls the good/service before transfer) reports <strong>gross</strong>
+          revenue; an <strong>agent</strong> (arranges for another party to provide it) reports only its
+          <strong>net</strong> fee or commission. Agents therefore show much larger profit margins (little or no COGS).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Buyonline vs Supplier</h4></div>
+          <div class="ex-body">
+            <p>Buyonline operates a marketplace; customers prepay (non-refundable). Buyonline passes payment to Supplier
+              and keeps a 10% commission. Supplier manufactures and delivers. Who reports what?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>Supplier is the principal</strong> — it controls and delivers the goods, so it reports the full
+                (gross) sale as revenue. <strong>Buyonline is the agent</strong> — it merely facilitates, so it reports
+                only the <strong>10% commission</strong> as revenue. Misclassifying an agent as a principal is a classic
+                way to inflate headline revenue (and is why margins should be read alongside the revenue model).</p>
+              <span class="answer">Supplier: gross revenue; Buyonline: 10% commission only</span>
+            </div></details>
+          </div>
+        </div>
+        <p>For <strong>franchising/licensing</strong>, decompose the revenue: franchise royalties and fees / licence
+          transfers; <em>deferred</em> revenue from upfront or subscription fees (e.g. SaaS); and supply-chain revenue
+          (selling equipment and supplies to franchisees).</p>
+
+        <h2 id="longterm">Long-term contracts</h2>
+        <p>A performance obligation is satisfied <strong>over time</strong> (rather than at a point) if any of these
+          hold: (i) the customer simultaneously receives and consumes the benefit as the entity performs (routine
+          service contracts); (ii) the entity's work creates or enhances an asset the customer controls (refurbishing
+          the customer's factory, building a road for a government); or (iii) the work creates an asset with no
+          alternative use to the entity <em>and</em> the entity has an enforceable right to payment for work done to date
+          (a bespoke weapons system).</p>
+        <p>Such contracts use the <strong>percentage-of-completion</strong> method, measuring progress by an
+          <strong>input method</strong> (% of total costs incurred) or an <strong>output method</strong> (units or
+          milestones). This matches revenues with costs so performance is visible each period.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Builder Co. — percentage-of-completion</h4></div>
+          <div class="ex-body">
+            <p>Contract price \$1.0m; total expected cost \$0.7m over two years. Year 1 cost \$0.42m; year 2 cost \$0.28m.
+              Recognise revenue and profit each year.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>Year 1:</strong> progress \(=0.42/0.7=60\%\) → revenue \(=0.6\times\$1\text{m}=\$0.6\text{m}\);
+                profit \(=0.6-0.42=\$0.18\text{m}\). <strong>Year 2:</strong> progress \(=0.28/0.7=40\%\) → revenue
+                \(=\$0.4\text{m}\); profit \(=0.4-0.28=\$0.12\text{m}\). Total profit \(\$0.30\text{m}\) is recognised
+                across the two years in proportion to costs incurred.</p>
+              <span class="answer">Yr1: rev 0.6m, profit 0.18m; Yr2: rev 0.4m, profit 0.12m</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Bill-and-hold</span>
+          <p>In a <strong>bill-and-hold</strong> sale (billed but not yet shipped), revenue is recognised only when the
+            customer obtains control — which requires <em>all</em> of: a <strong>substantive reason</strong> (the
+            customer requested it), the product <strong>separately identified</strong> as the customer's, the product
+            <strong>ready for physical transfer</strong>, and the entity <strong>unable to use or redirect</strong> it.</p>
+        </div>
+
+        <h2 id="receivables">Revenue before cash — receivables and bad debt</h2>
+        <p>When revenue is earned before cash is received, the entity accrues a <strong>receivable</strong> (a financial
+          asset — effectively 0%-interest "trade credit"). Under the <strong>matching principle</strong>, expected
+          customer defaults must be estimated up front through an <strong>allowance for bad debt</strong>, estimated
+          either <strong>globally</strong> (a % of sales or of receivables) or by <strong>aging analysis</strong> — the
+          further past due a receivable, the higher its probability of non-collection. Allocating to the allowance is an
+          <strong>expense</strong> (reduces earnings); <strong>reversing</strong> it increases earnings.</p>
+
+        <h2 id="earnings-mgmt">Managing the allowance — Jackson &amp; Liu (2010)</h2>
+        <p>Because the allowance is a managerial estimate, it is a lever for earnings management:</p>
+        <div class="callout concept">
+          <span class="ct-label">Under-provision vs cookie-jar</span>
+          <p><strong>Under-provision:</strong> when earnings look likely to miss expectations, managers book an
+            abnormally <em>low</em> bad-debt provision to boost profit (e.g. cutting the allowance from 13 to 9 records
+            an expense of 8 instead of 12 — earnings up \(\sim\)£4m). <strong>"Cookie-jar" accounting:</strong> in
+            <em>good</em> years managers <em>over</em>-provision (allowance 13 → 17, expense 16 instead of 12 — earnings
+            down £4m) to build a cushion that can be released later to meet targets. Detection (Jackson &amp; Liu):
+            compare the <strong>opening allowance to subsequent write-offs</strong> — if
+            \(\text{Allowance}(t)/\text{Utilised allowance}(t+1)\) keeps exceeding 1, the firm is becoming
+            systematically more conservative (building a jar).</p>
+        </div>
+
+        <h2 id="factoring">Factoring and channel stuffing</h2>
+        <p><strong>Factoring (discounting)</strong> sells receivables — often <em>notes</em> or commercial paper — for
+          cash before maturity, at a discount fee. <strong>Without recourse</strong>, default risk fully transfers to
+          the buyer; <strong>with recourse</strong>, the seller must reimburse the buyer (plus fees) if the debtor
+          defaults. Factoring <em>reduces reported receivables</em> and so flatters days-sales-outstanding — e.g.
+          AstraZeneca's days' receivables fell from 72.5 (FY2015) to 48.8 (FY2017), explained in its report by "more
+          factored invoices." A genuine collection improvement and a balance-sheet clean-up via factoring look the same
+          in DSO, so read the notes.</p>
+        <div class="callout note">
+          <span class="ct-label">Channel stuffing</span>
+          <p><strong>Channel stuffing</strong> overloads a distribution channel with more product than it can sell —
+            inducing customers to over-buy via unusual discounts or the threat of price rises, or simply shipping
+            unordered goods. It pulls revenue forward and is often <em>reversed</em> (restated) later. Red flag:
+            receivables abnormally high relative to revenue (high days' receivables) versus the firm's own history or
+            its peers.</p>
+        </div>
+
+        <h2 id="deferred">Revenue after cash — deferred revenue</h2>
+        <p>When cash is received <em>before</em> revenue is earned (think Netflix subscriptions), the entity records a
+          <strong>deferred-revenue liability</strong> and releases it to revenue as the obligation is met. It is
+          double-edged: <em>good</em> news (a leading indicator of future revenue and a cash inflow) but also an
+          <em>obligation</em> still to be fulfilled.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Softsystems SaaS prepayment</h4></div>
+          <div class="ex-body">
+            <p>On 1 Jan 2024, Softsystems receives £120,000 in advance for a full-year cloud service delivered evenly.
+              What does the half-year (30 Jun) statement show? (A) £120,000 revenue; (B) £60,000 liability and £120,000
+              YTD revenue; (C) £60,000 liability and £60,000 YTD revenue.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>On receipt: Cash 120,000 / Deferred-revenue liability 120,000. Each quarter, release 30,000 to revenue.
+                By 30 June, two quarters have been earned: revenue \(=2\times30{,}000=\$60{,}000\); remaining liability
+                \(=120{,}000-60{,}000=\$60{,}000\). <strong>Answer C.</strong></p>
+              <span class="answer">C — £60,000 deferred-revenue liability and £60,000 YTD revenue</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Why deferred revenue moves margins — Prakash &amp; Sinha (2013), Caylor (2010)</span>
+          <p>If revenue is deferred but some associated costs (R&amp;D, advertising, other period costs) are expensed as
+            incurred, deferral <strong>depresses margins in the deferral year</strong> and <strong>lifts them in later
+            years</strong> when the revenue is recognised without those costs. The larger the period costs, the bigger
+            these swings — so apparent margin "fluctuations" may be deferral timing, not cost control. Managers can
+            therefore <em>accelerate</em> deferred revenue into the present to avoid earnings disappointments (Caylor,
+            2010), and neither analysts nor prices fully price the implications (Prakash &amp; Sinha). Crucially,
+            managing <em>deferred</em> revenue has <strong>no cash implications</strong>, whereas managing
+            <em>accrued</em> revenue degrades receivable quality and cash — which is why deferred revenue is the
+            "cleaner" lever for earnings management.</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Recognise revenue under the <strong>five-step model</strong> as control transfers, in the amount expected —
+            splitting distinct obligations, reporting <strong>gross (principal)</strong> vs <strong>net (agent)</strong>,
+            and using <strong>percentage-of-completion</strong> for over-time contracts. The two cash–revenue timing
+            gaps are where quality issues hide: revenue <em>before</em> cash creates <strong>receivables</strong> whose
+            <strong>bad-debt allowance</strong> can be under-provided or stuffed into a <strong>cookie jar</strong>, and
+            can be flattered by <strong>factoring</strong> or <strong>channel stuffing</strong>; revenue <em>after</em>
+            cash creates <strong>deferred revenue</strong>, a leading indicator that also swings margins and is the
+            cash-neutral lever of choice for managing earnings.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-02-cash-flow-statement.html"><span class="dir">← Previous</span><span class="ttl">The Cash Flow Statement</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-04-tangible-assets-inventory.html"><span class="dir">Next →</span><span class="ttl">Tangible Assets and Inventory</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tangible Assets and Inventory · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="Initial recognition of PPE (IAS 16), depreciation methods and asset-base age, the IFRS revaluation model and investment property, impairment under IFRS vs US GAAP, derecognition, inventory cost, FIFO/LIFO/weighted-average, the LIFO reserve, and write-downs to net realisable value." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="04">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 4 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Tangible Assets and Inventory</h1>
+        <p class="summary">
+          Long-lived assets and inventory are where management's estimates — useful lives, residual values, impairment,
+          cost-flow assumptions — most visibly shape reported earnings. This lesson covers the life of a tangible asset
+          (recognition, depreciation, revaluation, impairment, disposal) and then inventory: what costs go into it, the
+          FIFO / LIFO / weighted-average choice and its effect on COGS and ratios, the LIFO reserve, and write-downs to
+          net realisable value.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#recognition">Initial recognition</a>
+            <a href="#depreciation">Depreciation</a>
+            <a href="#revaluation">Revaluation &amp; investment property</a>
+            <a href="#impairment">Impairment</a>
+            <a href="#derecognition">Derecognition</a>
+            <a href="#inv-cost">Inventory cost</a>
+            <a href="#inv-methods">FIFO / LIFO / average</a>
+            <a href="#inv-writedown">LIFO reserve &amp; write-downs</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Under <strong>IAS 16</strong>, an item of property, plant and equipment (PPE) is capitalised at cost — and the
+          art of analysis is separating what genuinely belongs <em>on</em> the balance sheet (an asset) from what should
+          be <em>expensed</em> immediately, because that choice moves both current earnings and future depreciation.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Determine which costs are capitalised into PPE and which are expensed.</li>
+            <li>Apply depreciation methods and assess the age of the asset base.</li>
+            <li>Account for the IFRS revaluation model, investment property, and impairment under IFRS vs US GAAP.</li>
+            <li>Recognise gains/losses on derecognition and classify held-for-sale assets.</li>
+            <li>Measure inventory cost and apply FIFO, LIFO and weighted-average, including the LIFO reserve and write-downs.</li>
+          </ol>
+        </div>
+
+        <h2 id="recognition">Initial recognition (IAS 16)</h2>
+        <p><strong>Capitalised</strong> into PPE: the purchase price (incl. import duties and non-refundable taxes, net
+          of trade discounts), any cost <em>directly attributable</em> to bringing the asset to the location/condition
+          needed to operate as intended, and the estimated cost of <strong>dismantling and site restoration</strong>.
+          <strong>Expensed</strong> in the income statement: costs of opening a new facility, introducing a new product
+          (advertising/promotion), operating in a new location or with new customers (staff training), and general
+          overhead.</p>
+
+        <h2 id="depreciation">Depreciation and the age of the asset base</h2>
+        <p><strong>Depreciation</strong> allocates the cost of a non-current asset systematically over its useful life,
+          to <em>match</em> the expense with the revenues it helps generate. (Tangible assets are
+          <em>depreciated</em>, intangibles <em>amortised</em>, natural resources <em>depleted</em>.) Two estimates
+          drive it: the <strong>residual value</strong> (expected disposal proceeds at end of life) and the
+          <strong>useful life</strong> (time or output units). Overstating residual value or useful life
+          <em>understates</em> depreciation — and so overstates earnings.</p>
+        <div class="formula">
+          <div class="f-label">Straight-line depreciation</div>
+          <div class="mjx-row">$$ \text{Annual depreciation}=\frac{\text{Cost}-\text{Residual value}}{\text{Useful life}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Straight-line schedule</h4></div>
+          <div class="ex-body">
+            <p>Cost 2,300, residual value 100, useful life 4 years. Find the annual charge and the schedule.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Depreciable amount \(=2{,}300-100=2{,}200\); annual charge \(=2{,}200/4=550\). Net book value runs
+                \(2{,}300\to1{,}750\to1{,}200\to650\to100\); accumulated depreciation \(550\to1{,}100\to1{,}650\to2{,}200\).
+                Other methods: <strong>declining-balance</strong> (accelerated — a % of carrying amount each year) and
+                <strong>units-of-production</strong> (depreciable cost × output / capacity).</p>
+              <span class="answer">550 per year; NBV ends at the 100 residual</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Reading the asset base</span>
+          <p><strong>Average age</strong> \(\approx\) Accumulated depreciation / Depreciation expense.
+            <strong>Remaining life</strong> \(\approx\) Net PPE / Depreciation expense, and
+            \(\text{Useful life}=\text{Average age}+\text{Remaining life}\). An old asset base (short remaining life)
+            flags a pressing need to reinvest, and makes asset-turnover/ROE hard to compare across firms. Check whether
+            <strong>capex</strong> is keeping pace with the depreciation expense. <em>Example:</em> gross PPE 80,
+            accumulated depreciation 45, annual depreciation 5 → average age \(=45/5=\textbf{9 years}\).</p>
+        </div>
+
+        <h2 id="revaluation">The revaluation model and investment property</h2>
+        <p>The <strong>revaluation model</strong> (offered by <strong>IFRS only — not US GAAP</strong>) carries an asset
+          at fair value at the revaluation date less subsequent depreciation. It must be applied to a whole
+          <em>class</em> of assets (no cherry-picking) and only where an active market gives a reliable fair value. The
+          accounting routes a revaluation through OCI or income depending on history:</p>
+        <div class="callout note">
+          <span class="ct-label">Where a revaluation goes</span>
+          <p><strong>Increase</strong> in fair value → <em>OCI</em> (revaluation surplus), <em>unless</em> it reverses a
+            prior decrease charged to income — then to <em>income</em> up to that loss, excess to OCI.
+            <strong>Decrease</strong> → <em>income</em> (a loss), <em>unless</em> there is a prior surplus in OCI — then
+            to <em>OCI</em> up to the available surplus, excess to income. (Missonier-Piera, 2007: Swiss firms revalue
+            upward to signal borrowing capacity, lift credit ratings and avoid covenant breaches — note banks dominate
+            Swiss funding.)</p>
+        </div>
+        <p><strong>Investment property</strong> (an IFRS-only category — property held to earn rentals/capital
+          appreciation, not used in operations) may be held at cost or at <strong>fair value with all changes through
+          net income</strong> — distinct from the revaluation model's OCI surplus route.</p>
+
+        <h2 id="impairment">Impairment</h2>
+        <p>Depreciation is a planned allocation; <strong>impairment</strong> is an <em>unanticipated</em> decline in an
+          asset's value. The trigger test differs by framework:</p>
+        <div class="formula">
+          <div class="f-label">Impairment tests</div>
+          <div class="mjx-row">$$ \textbf{IFRS: } \text{Carrying value} > \text{Recoverable amount}=\max(\text{Fair value} - \text{cost to sell},\ \text{Value in use}) $$</div>
+          <div class="mjx-row">$$ \textbf{US GAAP: } \text{Carrying value} > \text{Undiscounted expected future cash flows} \;\Rightarrow\; \text{write down to fair value} $$</div>
+        </div>
+        <p>Value in use is the discounted expected future cash flows. The write-down reduces the carrying amount and is a
+          <strong>loss</strong> in income. PPE and finite-life intangibles are tested when there are
+          <em>indications</em> (obsolescence, falling demand, adverse legal/economic change); indefinite-life
+          intangibles are tested <strong>at least annually</strong>.</p>
+        <div class="callout concept">
+          <span class="ct-label">Reading impairments</span>
+          <p>Impairments are <strong>transitory</strong> items — but beware "big baths." A goodwill impairment hints the
+            acquisition was overpriced; a PPE impairment suggests residual value/useful life were overstated, so past
+            depreciation under-matched revenue and <em>past earnings were overstated</em>. Either way it signals an
+            underperforming business. <strong>Reversals:</strong> IFRS permits reversing an impairment up to the original
+            loss (confirming it was transitory); <strong>US GAAP forbids</strong> reversals on assets held for use
+            (allowed only for held-for-sale). Under US GAAP a firm cannot revalue up, but impairment is mandatory — with
+            judgment over the timing of the test.</p>
+        </div>
+
+        <h2 id="derecognition">Derecognition</h2>
+        <p>An asset is derecognised when disposed of or expected to yield no further benefit. The gain/loss
+          \(=\text{selling price}-\text{carrying amount}\) is a <strong>transitory</strong> item. If sale is not
+          imminent but highly probable and the asset is available immediately, reclassify to <strong>assets held for
+          sale</strong> — depreciation stops (impairment may still apply). A whole cash-generating unit being
+          <strong>spun off</strong> is shown as held for distribution, with gains/losses from
+          <strong>discontinued operations</strong> reported <em>after tax</em> — strip these from ROE and the tax-burden
+          ratio. Special cases: <em>abandonment</em> records a non-cash loss equal to carrying value;
+          <em>exchanges</em> record a non-cash gain/loss = carrying value given up − fair value acquired (no gain/loss
+          if fair value is unreliable).</p>
+
+        <h2 id="inv-cost">Inventory cost</h2>
+        <p>Inventory is capitalised at <strong>all costs of purchase, conversion and bringing it to its present location
+          and condition</strong> — purchase price, transport, insurance (net of discounts); and conversion (direct
+          labour, fixed and variable overhead). <strong>Excluded</strong> (expensed): abnormal waste, storage of
+          finished goods, administrative overhead, selling costs, and overhead on <em>unutilised</em> capacity.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Exeter Power Tools — overhead on idle capacity</h4></div>
+          <div class="ex-body">
+            <p>Capacity 25,000 drills/yr; ran at 80%; total production overhead £100,000. Overhead capitalised per drill?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Only the overhead for capacity <em>used</em> is capitalised: \(80\%\times£100{,}000=£80{,}000\). The
+                idle \(£20{,}000\) is expensed (SG&amp;A). Units produced \(=80\%\times25{,}000=20{,}000\), so per drill
+                \(=£80{,}000/20{,}000=\textbf{£4.00}\). (Transport to customers and finished-goods storage would be
+                SG&amp;A, not inventory; factory-stage storage that is part of production can be capitalised.)</p>
+              <span class="answer">£4.00 per drill; the £20,000 idle-capacity overhead is expensed</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="inv-methods">Cost-flow assumptions: FIFO, LIFO, weighted-average</h2>
+        <p>Cost flow rarely matches physical flow. <strong>Specific identification</strong> suits non-interchangeable
+          items (gemstones). Otherwise: <strong>FIFO</strong> (first in, first out), <strong>LIFO</strong> (last in,
+          first out — <em>US GAAP only</em>), or <strong>weighted-average cost</strong>.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Buy 5, sell 3</h4></div>
+          <div class="ex-body">
+            <p>Units bought at 10, 10, 12, 12, 13; sell 3, leaving 2. Compute COGS and ending inventory under each method.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>FIFO</strong> (sell the oldest): COGS \(=10+10+12=32\); inventory \(=12+13=25\).
+                <strong>LIFO</strong> (sell the newest): COGS \(=12+12+13=37\); inventory \(=10+10=20\).
+                <strong>Weighted-average</strong>: unit cost \(=(2\!\cdot\!10+2\!\cdot\!12+13)/5=11.4\); COGS
+                \(=3\times11.4=34.2\); inventory \(=2\times11.4=22.8\). Total cost is the same; the methods only
+                <em>allocate</em> it between COGS and inventory.</p>
+              <span class="answer">FIFO: COGS 32 / inv 25 · LIFO: 37 / 20 · WAC: 34.2 / 22.8</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Rising prices — who wins where</span>
+          <p>With rising unit costs and stable/growing quantities: <strong>COGS: FIFO &lt; WAC &lt; LIFO</strong> and
+            <strong>Inventory: LIFO &lt; WAC &lt; FIFO</strong>. FIFO gives a realistic <em>balance sheet</em> (inventory
+            near replacement cost) but a stale, low <em>COGS</em>; LIFO gives a realistic <em>income statement</em>
+            (COGS near replacement cost) but a stale, low <em>inventory</em>. Days-of-inventory (DOH) is therefore
+            <strong>higher under FIFO</strong> than weighted-average (higher inventory numerator, lower COGS
+            denominator).</p>
+        </div>
+
+        <h2 id="inv-writedown">The LIFO reserve and write-downs</h2>
+        <p>When prices rise, LIFO raises COGS → lowers taxable income → lowers tax → <strong>raises cash flow</strong>.
+          But the US tax code's <strong>LIFO conformity rule</strong> forces firms using LIFO for tax to use it for
+          reporting too, so over time LIFO leaves inventory, working capital, total assets and retained earnings
+          artificially low. US GAAP requires disclosing the <strong>LIFO reserve</strong> — the gap to a FIFO inventory
+          — so analysts can convert:</p>
+        <div class="formula">
+          <div class="f-label">LIFO reserve and conversion</div>
+          <div class="mjx-row">$$ \text{LIFO reserve}=\text{FIFO inventory}-\text{LIFO inventory}, \qquad \text{COGS}_{\text{FIFO}}=\text{COGS}_{\text{LIFO}}-\Delta\text{LIFO reserve} $$</div>
+        </div>
+        <p><strong>Write-downs.</strong> If inventory's recoverable amount falls below cost (spoilage, obsolescence,
+          price falls), it is written down — via COGS, a restructuring line, or an inventory-valuation allowance.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>ABC envelopes — net realisable value</h4></div>
+          <div class="ex-body">
+            <p>Closing inventory carried at £50/pack. Auditors find the selling price is £40, and £15 of repair is needed
+              to make each pack saleable. Write-down?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Net realisable value \(=£40-£15=£25\). Since NRV (£25) &lt; cost (£50), write down to £25 — a
+                <strong>£25</strong> charge per pack. Under <strong>IFRS</strong> the test is NRV for all methods, and a
+                later recovery can be <strong>reversed</strong> (up to the original write-down, through COGS). Under
+                <strong>US GAAP</strong>, FIFO/weighted-average use NRV while LIFO/retail use <em>market value</em>
+                (replacement cost, bounded by NRV and NRV − normal margin), and <strong>reversals are prohibited</strong>.
+                With rising costs, LIFO firms are <em>less</em> likely to need write-downs (their inventory already sits
+                at old, low costs).</p>
+              <span class="answer">NRV £25 &lt; cost £50 → write down £25 per pack</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Capitalise PPE at cost (IAS 16), then <strong>depreciate</strong> over a useful life and residual value the
+            manager <em>estimates</em> — the lever for earnings — and read the <strong>age of the asset base</strong> to
+            judge reinvestment needs. IFRS adds an optional <strong>revaluation model</strong> (through OCI) and
+            fair-value <strong>investment property</strong>; both frameworks force <strong>impairment</strong> on a
+            decline (recoverable amount under IFRS, undiscounted-then-fair-value under US GAAP), with IFRS allowing
+            reversals and US GAAP not. For inventory, capitalise purchase + conversion, choose a
+            <strong>cost-flow assumption</strong> (FIFO/LIFO/WAC) that — under rising prices — drives COGS, inventory and
+            DOH in predictable directions, undo LIFO distortions with the <strong>LIFO reserve</strong>, and write down
+            to <strong>net realisable value</strong> when cost is not recoverable.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-03-revenue-recognition.html"><span class="dir">← Previous</span><span class="ttl">Revenue Recognition</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-05-financial-intangible-assets.html"><span class="dir">Next →</span><span class="ttl">Financial and Intangible Assets</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
