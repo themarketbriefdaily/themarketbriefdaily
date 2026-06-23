@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Cash Flow Statement · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="Classifying cash flows into CFO, CFI and CFF under IFRS and US GAAP, the direct and indirect methods with a fully worked reconciliation, analysing cash flows over the corporate life cycle, CFO manipulation, and free cash flow." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="02">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 2 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>The Cash Flow Statement</h1>
+        <p class="summary">
+          The income statement is built on accruals; the cash flow statement strips those away to show where cash
+          actually came from and went. This lesson classifies flows into <strong>operating, investing and
+          financing</strong> (and where IFRS and US GAAP disagree), derives operating cash flow by both the
+          <strong>direct</strong> and <strong>indirect</strong> methods through one fully worked example, then uses the
+          statement to read a company's life-cycle stage, spot <strong>CFO manipulation</strong>, and compute
+          <strong>free cash flow</strong>.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#classification">CFO / CFI / CFF</a>
+            <a href="#methods">Direct vs indirect</a>
+            <a href="#direct">Direct-method CFO</a>
+            <a href="#indirect">Indirect-method CFO</a>
+            <a href="#cfi-cff">CFI &amp; CFF</a>
+            <a href="#analysis">Analysis &amp; life cycle</a>
+            <a href="#manipulation">CFO manipulation</a>
+            <a href="#fcf">Free cash flow</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          The statement reconciles the change in cash into three buckets: <strong>cash flow from operations
+          (CFO)</strong> — the cash effect of the day-to-day business; <strong>cash flow from investing (CFI)</strong> —
+          buying and selling long-lived assets and other businesses; and <strong>cash flow from financing (CFF)</strong>
+          — raising and returning capital to debt and equity holders. By construction,
+          \(\text{CFO}+\text{CFI}+\text{CFF}\) equals the change in cash and equivalents.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Classify cash flows into CFO, CFI and CFF, and identify the IFRS vs US GAAP differences.</li>
+            <li>Compute CFO by the direct method from income-statement and balance-sheet changes.</li>
+            <li>Reconcile net income to CFO by the indirect method.</li>
+            <li>Derive CFI and CFF items, including proceeds on disposal and dividends paid.</li>
+            <li>Use cash flows to read the corporate life cycle and assess earnings quality.</li>
+            <li>Define and compute free cash flow (FCFF) and explain CFO manipulation.</li>
+          </ol>
+        </div>
+
+        <h2 id="classification">Classification: CFO, CFI, CFF — and IFRS vs US GAAP</h2>
+        <p>Under <strong>US GAAP</strong> the classification is rigid: interest received, dividends received and
+          interest paid are all <strong>operating</strong>; only dividends paid are financing; tax is operating.
+          <strong>IFRS</strong> gives management <em>flexibility</em>: interest and dividends received may sit in CFO or
+          CFI; interest and dividends paid may sit in CFO or CFF; and tax is operating unless specifically identifiable
+          with investing or financing. That discretion matters — it lets two economically identical firms report
+          different CFO.</p>
+        <div class="callout note">
+          <span class="ct-label">Where the two frameworks differ</span>
+          <p><strong>Interest paid:</strong> CFO (GAAP) vs CFO <em>or</em> CFF (IFRS). <strong>Interest/dividends
+            received:</strong> CFO (GAAP) vs CFO <em>or</em> CFI (IFRS). <strong>Dividends paid:</strong> CFF (GAAP) vs
+            CFO <em>or</em> CFF (IFRS). Because IFRS lets firms push interest paid out of CFO and pull interest received
+            in, <strong>reported CFO under IFRS tends to exceed</strong> what US GAAP would show.</p>
+        </div>
+
+        <h2 id="methods">The direct and indirect methods</h2>
+        <p>CFO can be presented two ways. The <strong>direct method</strong> lists the specific operating receipts and
+          payments (cash from customers, cash to suppliers, …). The <strong>indirect method</strong> starts from net
+          income and adjusts for non-cash items, non-operating items, and changes in operating working-capital accounts
+          to arrive at the same CFO. The indirect method is by far the most popular because it <em>shows why net income
+          and operating cash flow differ</em>, and it mirrors the way analysts forecast — project income, then adjust
+          for balance-sheet timing differences — which is exactly what a DCF valuation needs. (CFI and CFF are always
+          presented by the direct method.)</p>
+
+        <h2 id="direct">CFO by the direct method</h2>
+        <p>Each operating line converts an accrual figure to cash by adjusting for the change in its related
+          balance-sheet account. Throughout we use one worked dataset (Revenue 100, COGS 40, Wages 5, Depreciation 7,
+          interest 0.5, gain on land 10, tax 20, NI 37.5; with the year's balance-sheet changes).</p>
+        <div class="formula">
+          <div class="f-label">Direct-method CFO components</div>
+          <div class="mjx-row">$$ \text{Cash from customers}=\text{Revenue}-\Delta\text{AR} $$</div>
+          <div class="mjx-row">$$ \text{Cash to suppliers}=\text{COGS}+\Delta\text{Inventory}-\Delta\text{AP} $$</div>
+          <div class="mjx-row">$$ \text{Cash to employees}=\text{Wages}-\Delta\text{Wages payable} $$</div>
+          <div class="mjx-row">$$ \text{Interest paid}=\text{Interest exp}-\Delta\text{Interest payable} $$</div>
+          <div class="mjx-row">$$ \text{Tax paid}=\text{Tax exp}-\Delta\text{Tax payable}-\Delta\text{DTL} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Building CFO line by line</h4></div>
+          <div class="ex-body">
+            <p>AR 9→10, Inventory 7→5, AP 5→9, Wages payable 8→4.5, Interest payable 3→3.5, Tax payable 4→5, DTL 15→20.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Customers: \(100-(10-9)=99\) (a <em>rise</em> in receivables means less cash collected than revenue).
+                Suppliers: purchases \(=40+(5-7)=38\), then \(38-(9-5)=34\) (a rise in payables means less cash paid).
+                Employees: \(5-(4.5-8)=8.5\). Interest: \(0.5-(3.5-3)=0\). Tax: \(20-(5-4)-(20-15)=14\). Summing:</p>
+              <p>$$ \text{CFO}=99-34-8.5-0-14=42.5. $$</p>
+              <p>CFO can be negative when payments exceed collections.</p>
+              <span class="answer">CFO = 42.5 (99 − 34 − 8.5 − 0 − 14)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="indirect">CFO by the indirect method</h2>
+        <p>Start from net income and (1) reverse non-operating investing/financing items, (2) add back non-cash
+          expenses, and (3) add the changes in operating working-capital accounts:</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Reconciling net income to CFO</h4></div>
+          <div class="ex-body">
+            <p>Reconcile NI = 37.5 to CFO using the same data.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>NI 37.5; <em>less</em> gain on sale of land 10 (an investing item); <em>plus</em> depreciation 7
+                (non-cash); <em>less</em> increase in receivables 1; <em>plus</em> decrease in inventory 2; <em>plus</em>
+                increase in payables 4; <em>less</em> decrease in wages payable 3.5; <em>plus</em> increase in interest
+                payable 0.5; <em>plus</em> increase in taxes payable 1; <em>plus</em> increase in deferred taxes 5.
+                Total \(=42.5\) — identical to the direct method. A source of cash (asset down / liability up) is a plus;
+                a use of cash (asset up / liability down) is a minus.</p>
+              <span class="answer">37.5 − 10 + 7 − 1 + 2 + 4 − 3.5 + 0.5 + 1 + 5 = 42.5</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="cfi-cff">CFI and CFF</h2>
+        <p><strong>Investing.</strong> Proceeds from selling a long-lived asset =
+          <strong>carrying amount + gain (or − loss)</strong>, where carrying amount = gross PPE sold − accumulated
+          depreciation on it. Capital expenditure (capex) is read from the change in gross PPE (adjusted for disposals).</p>
+        <div class="formula">
+          <div class="f-label">CFI and CFF building blocks</div>
+          <div class="mjx-row">$$ \text{Proceeds on disposal}=\text{Carrying amount}+\text{gain (}-\text{loss)} $$</div>
+          <div class="mjx-row">$$ \text{Dividends paid}=\text{NI}-\Delta\text{Retained earnings}-\Delta\text{Dividends payable} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Completing the statement</h4></div>
+          <div class="ex-body">
+            <p>Land 40→35 (not depreciated), gain 10; gross PPE 60→85; retained earnings 30→59; common stock 50→40;
+              bonds 10→15; treasury-stock purchase 10.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>CFI:</strong> land carrying amount \(=40-35=5\), so proceeds \(=5+10=15\); capex from gross PPE
+                \(=85-60=25\). CFI \(=15-25=-10\). <strong>CFF:</strong> dividends paid
+                \(=37.5-(59-30)-(6-1)=3.5\); equity change \(40-50=-10\) (repurchase, here the \$10 treasury purchase);
+                debt \(15-10=+5\) (issue). CFF \(=-10+5-3.5=-8.5\). <strong>Reconciliation:</strong>
+                \(42.5-10-8.5=24\); cash \(9\to33\) (\(\Delta=24\)). ✓</p>
+              <span class="answer">CFO 42.5 + CFI −10 + CFF −8.5 = 24 = cash 9 → 33</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="analysis">Analysis and the corporate life cycle</h2>
+        <p>The <em>signs</em> of the three cash flows reveal a firm's life-cycle stage (Dickinson, 2011):</p>
+        <div class="callout concept">
+          <span class="ct-label">Cash-flow signatures by stage</span>
+          <p><strong>Start-up:</strong> CFO −, CFI −, CFF + (burning cash, investing, raising capital).
+            <strong>Step-up (growth):</strong> CFO +, CFI −, CFF + (operations turn cash-positive but still funding
+            expansion). <strong>Mature:</strong> CFO ++, CFI −, CFF − (self-funding and returning capital).
+            <strong>Decline:</strong> CFO +/−, CFI + (selling assets), CFF − or mixed.</p>
+        </div>
+        <p>Beyond the stage, the statement tests durability: Is CFO positive and sufficient to cover <strong>capex</strong>
+          (financial flexibility)? Do aggressive accounting choices inflate net income <em>without</em> generating cash —
+          i.e. is CFO lagging NI? That <strong>CFO-vs-NI</strong> gap is the heart of earnings-quality analysis, covered
+          later in the course.</p>
+
+        <h2 id="manipulation">CFO manipulation</h2>
+        <p>"Cash is king" — but CFO is not a gold standard; it too can be managed (Lee, 2012):</p>
+        <ul>
+          <li><strong>Classification:</strong> shifting items between CFO, CFI and CFF while holding earnings and total
+            cash flow constant (e.g. parking an operating outflow in investing).</li>
+          <li><strong>Timing:</strong> adjusting working capital to flatter CFO while holding earnings constant — e.g.
+            delaying payments to suppliers or accelerating collections from customers near period-end.</li>
+        </ul>
+        <p>Depreciation, being a non-cash add-back, <em>cannot</em> change CFO. Managers most prone to manage CFO are
+          firms in <strong>financial distress</strong>, near the <strong>investment-grade cut-off</strong>, or where
+          <strong>analysts forecast cash flow</strong>. Under IFRS (Gordon et al., 2016) the classification flexibility
+          means CFO tends to exceed the US-GAAP figure, with stronger incentives among highly levered firms and frequent
+          equity issuers — though US cross-listed firms tend to choose GAAP-consistent classifications.</p>
+
+        <h2 id="fcf">Free cash flow</h2>
+        <p><strong>Free cash flow to the firm (FCFF)</strong> is the cash available to <em>all</em> capital providers
+          (debt and equity) after reinvestment:</p>
+        <div class="formula">
+          <div class="f-label">FCFF</div>
+          <div class="mjx-row">$$ \text{FCFF}=\text{NI}+\text{Non-cash charges}+\text{Interest}\times(1-t)-\text{WC investment}-\text{Capex} $$</div>
+          <div class="mjx-row">$$ \text{FCFF}=\text{CFO}+\text{Interest}\times(1-t)-\text{Capex} $$</div>
+        </div>
+        <p>The second form assumes CFO as defined under US GAAP. Under IFRS, adjust for the classification choice: if all
+          interest paid is already in CFF, drop the \(\text{Interest}\times(1-t)\) add-back; if interest/dividends
+          received sit in CFI, add them back to CFO; if dividends paid were put in CFO, add them back. FCFF is a
+          <strong>non-GAAP</strong> measure and must be reconciled to the reported statements.</p>
+        <div class="callout note">
+          <span class="ct-label">FCF and stock-based compensation</span>
+          <p>Stock options granted as pay are expensed at their <strong>grant-date</strong> fair value over the period to
+            the <strong>vesting date</strong> — but <em>no cash changes hands</em>, so it is a non-cash add-back that
+            <em>raises</em> reported free cash flow. Had the firm paid cash wages instead, FCF would be much lower. This
+            makes FCF look better precisely when a company pays staff in equity — a quality issue revisited in the
+            earnings-quality lesson.</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Cash flow reconciles to three buckets — <strong>CFO, CFI, CFF</strong> — whose definitions differ between
+            rigid <strong>US GAAP</strong> and flexible <strong>IFRS</strong> (which tends to report higher CFO). CFO
+            arrives either by the <strong>direct</strong> method (receipts and payments) or the more common
+            <strong>indirect</strong> method (net income adjusted for non-cash items, non-operating items and
+            working-capital changes) — both giving the same number. The pattern of the three signs reveals the
+            <strong>life-cycle stage</strong>; the gap between <strong>CFO and net income</strong> flags earnings
+            quality; and <strong>FCFF</strong> measures what is truly available to investors — while remembering that
+            CFO itself can be managed through classification and timing, and that non-cash stock compensation flatters
+            free cash flow.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting-01-balance-sheet-income-statement.html"><span class="dir">← Previous</span><span class="ttl">Balance Sheet and Income Statement</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-03-revenue-recognition.html"><span class="dir">Next →</span><span class="ttl">Revenue Recognition</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

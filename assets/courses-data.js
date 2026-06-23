@@ -146,7 +146,18 @@
             { a: 'solvency',      t: 'Solvency ratios' },
             { a: 'benchmarks',    t: 'Benchmarks &amp; segments' }
           ] },
-        { n: '02', title: 'Financial Reporting & Analysis: Cash Flow Statement', cfa: 'L1', built: false },
+        { n: '02', title: 'Financial Reporting & Analysis: Cash Flow Statement', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-02-cash-flow-statement.html',
+          topics: [
+            { a: 'classification', t: 'CFO / CFI / CFF' },
+            { a: 'methods',        t: 'Direct vs indirect' },
+            { a: 'direct',         t: 'Direct-method CFO' },
+            { a: 'indirect',       t: 'Indirect-method CFO' },
+            { a: 'cfi-cff',        t: 'CFI &amp; CFF' },
+            { a: 'analysis',       t: 'Analysis &amp; life cycle' },
+            { a: 'manipulation',   t: 'CFO manipulation' },
+            { a: 'fcf',            t: 'Free cash flow' }
+          ] },
         { n: '03', title: 'Revenue Recognition', cfa: 'L1', built: false },
         { n: '04', title: 'Tangible Assets and Inventory', cfa: 'L1', built: false },
         { n: '05', title: 'Financial and Intangible Assets', cfa: 'L1', built: false },
