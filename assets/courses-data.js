@@ -134,7 +134,18 @@
       title: 'Advanced Financial Accounting', cfa: 'L1',
       blurb: 'Financial reporting and earnings quality — the full CFA Level 1 FRA syllabus.',
       lessons: [
-        { n: '01', title: 'Financial Reporting & Analysis: Balance Sheet and Income Statement', cfa: 'L1', built: false },
+        { n: '01', title: 'Financial Reporting & Analysis: Balance Sheet and Income Statement', cfa: 'L1', built: true,
+          url: '/courses/advanced-financial-accounting-01-balance-sheet-income-statement.html',
+          topics: [
+            { a: 'ratios',        t: 'Ratios as tools' },
+            { a: 'roe',           t: 'ROE &amp; DuPont' },
+            { a: 'profitability', t: 'Profitability analysis' },
+            { a: 'opleverage',    t: 'Operating leverage' },
+            { a: 'activity',      t: 'Activity ratios' },
+            { a: 'liquidity',     t: 'Liquidity ratios' },
+            { a: 'solvency',      t: 'Solvency ratios' },
+            { a: 'benchmarks',    t: 'Benchmarks &amp; segments' }
+          ] },
         { n: '02', title: 'Financial Reporting & Analysis: Cash Flow Statement', cfa: 'L1', built: false },
         { n: '03', title: 'Revenue Recognition', cfa: 'L1', built: false },
         { n: '04', title: 'Tangible Assets and Inventory', cfa: 'L1', built: false },

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Financial Reporting &amp; Analysis: Balance Sheet and Income Statement · Advanced Financial Accounting | The Market Brief Daily</title>
+  <meta name="description" content="Ratio analysis of the income statement and balance sheet: the DuPont decomposition of ROE, profitability and efficiency, operating leverage, activity ratios, liquidity, solvency, and how to benchmark — the CFA Level 1 toolkit." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-afa" data-course="advanced-financial-accounting" data-lesson="01">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/advanced-financial-accounting.html">Advanced Financial Accounting</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="advanced-financial-accounting" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 1 · Advanced Financial Accounting<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Financial Reporting &amp; Analysis: The Balance Sheet and Income Statement</h1>
+        <p class="summary">
+          This course evaluates financial reporting from the <em>user's</em> perspective — critically, not just
+          mechanically. We begin with the analyst's toolkit: <strong>ratios</strong>. Ratios make companies comparable
+          across firms and time, and the headline measure of performance, <strong>return on equity (ROE)</strong>,
+          decomposes — via DuPont analysis — into profitability, efficiency and leverage. This lesson works through that
+          decomposition and the full set of profitability, activity, liquidity and solvency ratios, then asks the harder
+          question: against <em>what benchmark</em> should a ratio be judged?
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#ratios">Ratios as tools</a>
+            <a href="#roe">ROE &amp; DuPont</a>
+            <a href="#profitability">Profitability analysis</a>
+            <a href="#opleverage">Operating leverage</a>
+            <a href="#activity">Activity ratios</a>
+            <a href="#liquidity">Liquidity ratios</a>
+            <a href="#solvency">Solvency ratios</a>
+            <a href="#benchmarks">Benchmarks &amp; segments</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          A <strong>ratio</strong> is an indicator of a company's performance and position. Critically, ratios tell you
+          <em>"what happened"</em>, not <em>"why it happened"</em> — for a good analyst they generate good
+          <strong>questions</strong>, not answers. They serve two ends that can conflict: a
+          <strong>financial-analysis objective</strong> (comparison between companies and across time) and a
+          <strong>financial-reporting objective</strong> — differences in accounting policy can <em>distort</em> ratios,
+          and a large part of this course is learning where those distortions hide.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Decompose ROE into ROA and leverage, and into the five-factor DuPont identity.</li>
+            <li>Interpret profitability margins and the role of non-recurrent items and operating leverage.</li>
+            <li>Compute and interpret activity ratios and the cash conversion cycle.</li>
+            <li>Assess liquidity (current, quick, cash) and solvency (debt/equity, interest coverage) ratios.</li>
+            <li>Select appropriate benchmarks and use segment disclosures, with their agency and proprietary-cost caveats.</li>
+          </ol>
+        </div>
+
+        <h2 id="ratios">Ratios as tools — and why averages</h2>
+        <p>Absolute numbers indicate only the <em>size</em> of a business; <strong>ratios</strong> provide comparable
+          measures between companies and across time. Two firms can earn very different absolute profits yet have very
+          different ROEs: Company A earning 30 on equity of 300 has ROE 10%, while Company B earning 300 on equity of
+          6,000 has ROE 5% — B is larger but creates <em>less</em> value per pound of equity.</p>
+        <div class="callout note">
+          <span class="ct-label">Why "average" assets and equity?</span>
+          <p>The <strong>balance sheet</strong> is a <em>snapshot</em> at a point in time (a "stock"); the
+            <strong>income statement</strong> describes performance <em>over</em> a period (a "flow"). Pairing a flow
+            (net income) with a single-date stock would mix incompatible data, so we use the <strong>average</strong> of
+            opening and closing assets/equity to approximate the level held <em>during</em> the period.</p>
+        </div>
+
+        <h2 id="roe">The drivers of ROE — DuPont analysis</h2>
+        <p>Return on equity is net income attributable to common shareholders over average common equity. Its first
+          decomposition splits it into return on assets and leverage:</p>
+        <div class="formula">
+          <div class="f-label">Three-step DuPont</div>
+          <div class="mjx-row">$$ \text{ROE}=\underbrace{\frac{\text{Net income}}{\text{Avg total assets}}}_{\text{ROA}}\times\underbrace{\frac{\text{Avg total assets}}{\text{Avg equity}}}_{\text{Leverage}} = \text{Net profit margin}\times\text{Asset turnover}\times\text{Leverage} $$</div>
+        </div>
+        <p>Leverage is approximately \(1+\frac{\text{Avg total liabilities}}{\text{Avg equity}}\). A high ROE driven by
+          <strong>leverage</strong> is a warning sign, not a triumph — it raises risk. ROA itself splits into
+          <strong>profitability</strong> (net profit margin = income per unit of sales) and <strong>efficiency</strong>
+          (asset turnover = revenue per unit of assets). There is a subtle inconsistency in ROA: net income belongs to
+          <em>shareholders</em>, but assets are financed by shareholders <em>and</em> creditors — which is why the full
+          DuPont identity below restores consistency.</p>
+        <div class="formula">
+          <div class="f-label">Five-step DuPont</div>
+          <div class="mjx-row">$$ \text{ROE}=\underbrace{\frac{\text{NI}}{\text{EBT}}}_{\text{tax burden}}\times\underbrace{\frac{\text{EBT}}{\text{EBIT}}}_{\text{interest burden}}\times\underbrace{\frac{\text{EBIT}}{\text{Revenue}}}_{\text{EBIT margin}}\times\underbrace{\frac{\text{Revenue}}{\text{Avg assets}}}_{\text{asset turnover}}\times\underbrace{\frac{\text{Avg assets}}{\text{Avg equity}}}_{\text{leverage}} $$</div>
+        </div>
+
+        <h2 id="profitability">Profitability analysis</h2>
+        <p>The income statement runs <strong>Revenue − COGS = Gross profit − Operating expenses (SG&amp;A, R&amp;D,
+          depreciation) = Operating profit (EBIT) − net interest = Pre-tax profit (EBT) − tax = Net income</strong>. The
+          five-step identity reads off three margin-related drivers:</p>
+        <ul>
+          <li><strong>Tax burden</strong> = NI/EBT ≈ (1 − average tax rate). Higher ratio → lower effective tax. Watch
+            for non-recurrent items (e.g. discontinued operations).</li>
+          <li><strong>Interest burden</strong> = EBT/EBIT. Higher ratio → less drag from interest and other
+            non-operating items.</li>
+          <li><strong>Operating (EBIT) margin</strong> = EBIT/Revenue. Higher may signal better cost control, given the
+            nature of operations.</li>
+        </ul>
+        <p>Above EBIT sits the <strong>gross profit margin</strong> (Gross profit/Revenue), which reflects pricing and
+          product cost — a premium strategy (e.g. Ted Baker) earns higher gross margins than a value/volume strategy
+          (e.g. Primark). The <strong>operating margin</strong> additionally reflects control of mostly-fixed overhead.</p>
+        <div class="callout concept">
+          <span class="ct-label">Non-recurrent (transitory) items</span>
+          <p>Unusual or infrequent items — gains/losses on disposal, impairments, restructuring — distort margins. Under
+            both <strong>IFRS</strong> and <strong>US GAAP</strong>, items material to understanding performance are
+            disclosed separately. <strong>Discontinued operations</strong> (a disposed component) are shown
+            <em>net</em> at the bottom of the income statement, with their assets and liabilities aggregated on the
+            balance sheet as <em>held for sale</em>. Strip these out before drawing conclusions about recurring
+            profitability.</p>
+        </div>
+
+        <h2 id="opleverage">Operating leverage</h2>
+        <p>The gap between gross margin and operating margin reveals <strong>operating leverage</strong> — the ratio of
+          fixed to variable costs. High operating leverage <em>increases the sensitivity of income to small changes in
+          revenue</em>: it amplifies both the rewards of revenue growth and the risk of revenue falls. Pharma/tech firms
+          (high R&amp;D) tend to have high operating leverage; retailers, low.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>High vs low operating leverage</h4></div>
+          <div class="ex-body">
+            <p>Two firms each grow revenue 20% (100 → 120). Firm H: COGS (variable) 40 → 48, opex (fixed) 30. Firm L:
+              COGS 20 → 24, opex (fixed) 10. Compare the change in operating margin.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>Firm H</strong> (fixed/variable ≈ 0.75): operating profit 30 → margin rises from
+                \(10/100=10\%\) to \(18/120=15\%\). <strong>Firm L</strong> (fixed/variable ≈ 0.13): operating profit
+                margin rises only from \(10/100=10\%\) to \(14/120\approx12\%\). With high fixed costs, variable costs
+                rise with revenue but fixed costs do not, so margins jump — gross margins, being mostly variable, stay
+                stable while operating margins swing. High operating leverage means margins are very sensitive to
+                revenue — hence <strong>risky</strong> (the same mechanism magnifies losses when revenue falls).</p>
+              <span class="answer">H: 10% → 15%; L: 10% → 12% — leverage amplifies the margin move</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="activity">Efficiency and activity ratios</h2>
+        <p><strong>Asset turnover</strong> = Revenue / Avg total assets measures efficiency, but reflects strategy:
+          labour-intensive services (consultancy, advertising) show high turnover; capital-intensive manufacturing shows
+          low. Two other efficiency ratios — <strong>fixed-asset turnover</strong> and <strong>working-capital
+          turnover</strong> — are <em>not recommended</em> (depreciation distorts the first; the second is meaningless
+          near zero or negative). Prefer the <strong>activity ratios</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Activity ratios (days)</div>
+          <div class="mjx-row">$$ \text{DSO}=\frac{\text{Avg receivables}}{\text{Revenue}/\text{days}}, \quad \text{DOH}=\frac{\text{Avg inventory}}{\text{COGS}/\text{days}}, \quad \text{Days payables}=\frac{\text{Avg trade payables}}{\text{Purchases}/\text{days}} $$</div>
+        </div>
+        <ul>
+          <li><strong>DSO (days of sales outstanding)</strong> — the credit policy toward customers. Supermarkets (cash)
+            have low DSO; food manufacturers (credit) high. Very high DSO may flag a weak customer base and earnings-quality
+            issues.</li>
+          <li><strong>DOH (days of inventory on hand)</strong> — inventory management. Supermarkets low (perishables);
+            jewellers high. High DOH may signal obsolescence or fashion risk.</li>
+          <li><strong>Days of payables</strong> — supplier financing. Purchases are usually estimated as
+            \(\text{COGS}+\text{ending inventory}-\text{beginning inventory}\). High days payable may mean bargaining
+            power — or a looming liquidity problem.</li>
+        </ul>
+
+        <h2 id="liquidity">Liquidity ratios</h2>
+        <p>The <strong>cash conversion cycle</strong> measures the time from investing in working capital to collecting
+          cash:</p>
+        <div class="formula">
+          <div class="f-label">Cash conversion cycle &amp; liquidity ratios</div>
+          <div class="mjx-row">$$ \text{CCC}=\text{DOH}+\text{DSO}-\text{Days payables} $$</div>
+          <div class="mjx-row">$$ \text{Current}=\frac{\text{Current assets}}{\text{Current liab.}}, \quad \text{Quick}=\frac{\text{Cash}+\text{ST investments}+\text{Receivables}}{\text{Current liab.}}, \quad \text{Cash}=\frac{\text{Cash}+\text{ST investments}}{\text{Current liab.}} $$</div>
+        </div>
+        <p>If \(\text{DOH}+\text{DSO}&gt;\) days payable, the firm may need extra funding; if it is less, no liquidity
+          strain is apparent. The <strong>current ratio</strong> has a benchmark of 1, but a value <strong>below 1 can
+          be perfectly acceptable</strong> for cash-based retailers.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Marks &amp; Spencer — why a current ratio under 1 is fine</h4></div>
+          <div class="ex-body">
+            <p>FY2018: DSO ≈ 6, DOH ≈ 41, days' payables ≈ 50, current ratio ≈ 0.67. Is M&amp;S facing a liquidity crisis?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Cash conversion cycle \(=41+6-50=-3\) days — <strong>negative</strong>. Suppliers are paid only after
+                inventory has been sold and (mostly cash) customers have paid, so no external funding is needed to settle
+                payables. A current ratio below 1 is affordable. But note the limits: a current ratio <em>above</em> 1
+                does <em>not</em> guarantee safety if inventory is hard to liquidate (check DOH) — hence the
+                <strong>quick</strong> ratio (excludes inventory) and the <strong>cash</strong> ratio (most
+                conservative). Read the quick ratio alongside DSO: a high value driven by low-quality receivables is a
+                red flag.</p>
+              <span class="answer">CCC = −3 days → current ratio of 0.67 is not a concern</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="solvency">Solvency ratios</h2>
+        <p><strong>Solvency</strong> is the ability to meet long-term obligations.</p>
+        <div class="formula">
+          <div class="f-label">Solvency ratios</div>
+          <div class="mjx-row">$$ \frac{\text{Debt}}{\text{Equity}}=\frac{\text{Current}+\text{non-current debt}}{\text{Total equity}}, \quad \text{Net D/E}=\frac{\text{Debt}-\text{Cash}}{\text{Total equity}}, \quad \text{Interest coverage}=\frac{\text{EBIT}}{\text{Interest}} $$</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Is debt good or bad?</span>
+          <p>Debt is <em>cheaper</em> than equity — there is a contractual repayment obligation (unlike equity) and
+            interest is tax-deductible (unlike dividends) — and its discipline (covenants) can curb management, though it
+            also limits flexibility. Firms may avoid equity markets to protect proprietary information. But <strong>high
+            debt/equity plus high uncertainty about future performance is a risky combination</strong>. <strong>Net
+            debt</strong> can be negative (excess cash), which mitigates the risk — but check <em>how</em> that cash is
+            generated (the cash-flow statement). <strong>Interest coverage</strong> of 1 or below signals high financial
+            risk; very large values may simply mean little external capital is used, so the ratio loses meaning.</p>
+        </div>
+
+        <h2 id="benchmarks">Evaluating ratios — benchmarks and segments</h2>
+        <p>No authoritative body fixes ratio formulas; this course follows <strong>CFA guidelines</strong>. The key
+          question is whether a ratio sits in a <em>reasonable range</em> — which requires a <strong>benchmark</strong>.
+          The best comparison is firms in the <strong>same industry</strong> (similar operations, environment, business
+          risk). Because firms have several lines of business, use the <strong>segment-reporting</strong> disclosures.</p>
+        <div class="callout note">
+          <span class="ct-label">What is a reportable segment?</span>
+          <p>A component that (i) engages in activities generating revenue/expense, (ii) whose results are
+            <em>regularly reviewed by management</em>, and (iii) for which discrete financial information is available.
+            Quantitative thresholds: a segment is reportable if it is <strong>&gt;10%</strong> of combined assets,
+            revenue or profit/loss (absolute), and reportable segments together must cover <strong>&gt;75%</strong> of
+            total external revenue. <strong>Pro:</strong> see the firm through management's eyes. <strong>Cons:</strong>
+            <em>agency</em> issues (hiding low-profit segments that are being subsidised) and <em>proprietary costs</em>
+            (concealing high-growth segments to avoid attracting competition).</p>
+        </div>
+        <p>Beyond industry, refine the peer set by <strong>age</strong> (start-ups vs mature — e.g. R&amp;D-heavy young
+          tech has suppressed margins), <strong>geography</strong> (macro and geopolitics), <strong>growth rate</strong>
+          (similar financing/liquidity constraints), relative <strong>strength</strong>, similar <strong>operations</strong>,
+          and <strong>size</strong> (scale effects). At the industry level a <strong>PEST</strong> scan — Political,
+          Economic, Socio-cultural, Technological — frames the forces on revenues and costs (regulation, GDP/inflation/rates,
+          lifestyle shifts, and technological disruption such as smartphones for Nokia).</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Ratios make firms comparable but only raise questions; pair flows with <strong>average</strong> stocks.
+            <strong>ROE</strong> decomposes via DuPont into <strong>margin × turnover × leverage</strong> (and further
+            into tax burden, interest burden and EBIT margin), so you can see <em>where</em> performance comes from — and
+            beware ROE flattered by leverage. Read profitability with an eye on <strong>non-recurrent items</strong> and
+            <strong>operating leverage</strong>; assess working-capital efficiency through the <strong>cash conversion
+            cycle</strong>; judge <strong>liquidity</strong> (current/quick/cash) and <strong>solvency</strong>
+            (debt/equity, interest coverage) in context — a retailer's sub-1 current ratio can be fine. Above all, every
+            ratio needs a <strong>benchmark</strong>, and segment disclosures help build one.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/advanced-financial-accounting.html"><span class="dir">← Course</span><span class="ttl">Advanced Financial Accounting</span></a>
+          <a class="next" href="/courses/advanced-financial-accounting-02-cash-flow-statement.html"><span class="dir">Next →</span><span class="ttl">The Cash Flow Statement</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/advanced-financial-accounting.html">← Advanced Financial Accounting</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
