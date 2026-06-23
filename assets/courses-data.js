@@ -269,15 +269,26 @@
       title: 'Portfolio Management', cfa: 'L1',
       blurb: 'Mean-variance optimisation, CAPM, factor models, and performance.',
       lessons: [
-        { n: '01', title: 'Portfolio Management — Lesson 1', cfa: 'L1', built: false },
-        { n: '02', title: 'Portfolio Management — Lesson 2', cfa: 'L1', built: false },
-        { n: '03', title: 'Portfolio Management — Lesson 3', cfa: 'L1', built: false },
-        { n: '04', title: 'Portfolio Management — Lesson 4', cfa: 'L1', built: false },
-        { n: '05', title: 'Portfolio Management — Lesson 5', cfa: 'L1', built: false },
-        { n: '06', title: 'Portfolio Management — Lesson 6', cfa: 'L1', built: false },
-        { n: '07', title: 'Portfolio Management — Lesson 7', cfa: 'L1', built: false },
-        { n: '08', title: 'Portfolio Management — Lesson 8', cfa: 'L1', built: false },
-        { n: '09', title: 'Portfolio Management — Revision', cfa: 'L1', built: false }
+        { n: '01', title: 'Portfolio Risk and Return', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-01-risk-and-return.html',
+          topics: [
+            { a: 'mean-var',      t: 'Return, risk &amp; utility' },
+            { a: 'cal',           t: 'Capital allocation line' },
+            { a: 'optimal-y',     t: 'Optimal risky/riskfree split' },
+            { a: 'two-risky',     t: 'Two risky assets' },
+            { a: 'frontier',      t: 'The efficient frontier' },
+            { a: 'optimal-risky', t: 'The optimal risky portfolio' },
+            { a: 'mutual-fund',   t: 'The mutual-fund theorem' },
+            { a: 'practical',     t: 'Practical issues' }
+          ] },
+        { n: '02', title: 'CAPM and Performance Evaluation', cfa: 'L1', built: false },
+        { n: '03', title: 'Factor Models, APT and Factor Investing', cfa: 'L1', built: false },
+        { n: '04', title: 'Portfolio Risk Management', cfa: 'L1', built: false },
+        { n: '05', title: 'Active Portfolio Management', cfa: 'L1', built: false },
+        { n: '06', title: 'International Portfolio Management', cfa: 'L1', built: false },
+        { n: '07', title: 'Applied Portfolio Management', cfa: 'L1', built: false },
+        { n: '08', title: 'Electronic Markets, Trade Execution and Technology', cfa: 'L1', built: false },
+        { n: '09', title: 'Revision', cfa: 'L1', built: false }
       ]
     },
 

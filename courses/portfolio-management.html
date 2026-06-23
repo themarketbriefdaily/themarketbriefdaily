@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="An MSc-level portfolio management course: mean-variance optimisation, the CAPM and performance evaluation, factor models and APT, risk management, active management, international investing, execution and technology." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+</head>
+<body class="course-page acc-pfm">
+
+  <div class="topbar">
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <span class="crumb">Portfolio Management</span>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <main class="idx-wrap">
+    <div class="idx-head">
+      <div class="eyebrow">MSc Course · Portfolio<span class="cfa-badge cfa-l1">CFA L1</span></div>
+      <h1>Portfolio Management</h1>
+      <p>
+        A macroscopic, analytical approach to investing: how return and risk combine across many assets. From
+        mean-variance optimisation and the capital allocation line, through the CAPM, factor models and APT, to risk
+        management, active management, international investing and trade execution — investment decisions backed by
+        numbers.
+      </p>
+
+      <div class="idx-progress" data-progress-course="portfolio-management">
+        <div class="meta">
+          <div class="t">Your progress · <span class="pfrac">0 / 9</span> lessons</div>
+          <div class="pbar"><i></i></div>
+          <div class="s">Progress saves automatically in your browser as you complete lessons.</div>
+        </div>
+        <div class="big"><span class="pct">0%</span></div>
+      </div>
+    </div>
+
+    <div class="idx-section-title">Lessons</div>
+    <div class="lesson-list">
+
+      <a class="lesson-item" data-lesson="01" href="/courses/portfolio-management-01-risk-and-return.html">
+        <span class="check">✓</span>
+        <div class="li-body">
+          <div class="li-num">Lesson 01</div>
+          <h3>Portfolio Risk and Return</h3>
+          <p>Mean-variance preferences and utility, the capital allocation line and Sharpe ratio, optimal risky/riskfree splits, two risky assets, the efficient frontier, the optimal risky portfolio, and the mutual-fund theorem.</p>
+        </div>
+        <span class="li-go">→</span>
+      </a>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 02</div><h3>CAPM and Performance Evaluation</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 03</div><h3>Factor Models, APT and Factor Investing</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 04</div><h3>Portfolio Risk Management</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 05</div><h3>Active Portfolio Management</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 06</div><h3>International Portfolio Management</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 07</div><h3>Applied Portfolio Management</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 08</div><h3>Electronic Markets, Trade Execution and Technology</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 09</div><h3>Revision</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+
+    </div>
+  </main>
+
+  <footer class="course-foot">
+    <p class="disc">Educational material for MSc-level study. Not investment advice. Derived and rewritten from course lecture notes.</p>
+    <a href="/education.html">← All courses</a>
+  </footer>
+
+  <script src="/assets/progress.js"></script>
+  <script>
+    (function(){
+      var COURSE='portfolio-management';
+      function paint(){
+        document.querySelectorAll('.lesson-item[data-lesson]').forEach(function(el){
+          el.classList.toggle('done', Progress.isDone(COURSE, el.getAttribute('data-lesson')));
+        });
+      }
+      window.addEventListener('tmbd-progress', paint); paint();
+    })();
+  </script>
+</body>
+</html>

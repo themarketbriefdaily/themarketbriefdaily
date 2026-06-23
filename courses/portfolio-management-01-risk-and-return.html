@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Risk and Return · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="Mean-variance preferences and the utility function, the capital allocation line and Sharpe ratio, the optimal split between a risky and riskfree asset, combining two risky assets, the efficient frontier, the optimal risky portfolio, and the mutual-fund theorem." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="01">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 1 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Portfolio Risk and Return</h1>
+        <p class="summary">
+          Modern portfolio theory takes a deliberately <em>macroscopic</em> view: an investment is summarised by just
+          two numbers — its expected <strong>return</strong> (mean) and its <strong>risk</strong> (standard deviation).
+          This lesson builds the machinery from there: a utility function that trades return against risk, the
+          <strong>capital allocation line</strong> mixing a risky and a riskfree asset, the optimal split, then two
+          risky assets, the <strong>efficient frontier</strong>, the optimal risky portfolio, and the mutual-fund
+          theorem.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#mean-var">Return, risk &amp; utility</a>
+            <a href="#cal">Capital allocation line</a>
+            <a href="#optimal-y">Optimal risky/riskfree split</a>
+            <a href="#two-risky">Two risky assets</a>
+            <a href="#frontier">The efficient frontier</a>
+            <a href="#optimal-risky">The optimal risky portfolio</a>
+            <a href="#mutual-fund">The mutual-fund theorem</a>
+            <a href="#practical">Practical issues</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          The entire prospect of an investment is summarised by its <strong>return</strong> — the expected value (mean)
+          \(\mu=E(X)\) — and its <strong>risk</strong> — the standard deviation \(\sigma=\sqrt{\operatorname{var}(X)}\),
+          a measure of variability. Both are estimated from history (Excel's <code>average</code>, <code>stdev</code>),
+          and plotting investments on a \((\mu,\sigma)\) plane lets us compare them directly.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Quantify return and risk and rank investments with a mean-variance utility function.</li>
+            <li>Derive the capital allocation line and interpret its slope as the Sharpe ratio.</li>
+            <li>Solve for the optimal allocation between a risky and a riskfree asset.</li>
+            <li>Compute the mean and variance of a two-asset portfolio and the minimum-variance and efficient sets.</li>
+            <li>Find the optimal risky portfolio and apply the two-step allocation and mutual-fund theorem.</li>
+          </ol>
+        </div>
+
+        <h2 id="mean-var">Return, risk and the utility function</h2>
+        <p>An investor <em>loves return but dislikes risk</em>. On the \((\mu,\sigma)\) plane, an investment that offers
+          higher return <em>and</em> lower risk dominates — but trade-offs (more return for more risk) need a rule. We
+          score each investment with a <strong>mean-variance utility function</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Mean-variance utility</div>
+          <div class="mjx-row">$$ U(\mu,\sigma)=\mu-\tfrac{1}{2}A\,\sigma^2 $$</div>
+        </div>
+        <p>\(U\) rises with return and falls with risk; \(A\) is the investor's <strong>risk-aversion</strong> parameter
+          (larger \(A\) penalises risk more heavily). Investments giving the same \(U\) trace an
+          <strong>indifference curve</strong> — upward-sloping (more risk must be paid for with more return), with higher
+          curves carrying higher utility.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Aggressive vs conservative fund</h4></div>
+          <div class="ex-body">
+            <p>An investor has \(A=4.5\). Fund 1: \(\mu=20\%,\ \sigma=18\%\). Fund 2: \(\mu=15\%,\ \sigma=10\%\). Which is preferred?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(U_1=0.20-\tfrac{1}{2}(4.5)(0.18)^2=0.1271\); \(U_2=0.15-\tfrac{1}{2}(4.5)(0.10)^2=0.1275\). The
+                conservative Fund 2 wins — for this risk-averse investor, its much lower risk outweighs the 5-point
+                return shortfall.</p>
+              <span class="answer">Fund 2 (U = 0.1275 &gt; 0.1271)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="cal">The capital allocation line</h2>
+        <p>Mix a <strong>riskfree</strong> asset (return \(r_f\)) with a <strong>risky</strong> asset (mean \(\mu_p\),
+          s.d. \(\sigma_p\)), putting fraction \(y\) in the risky asset. Using \(E(a+bX)=a+bE(X)\) and
+          \(\operatorname{var}(a+bX)=b^2\operatorname{var}(X)\):</p>
+        <div class="formula">
+          <div class="f-label">Complete portfolio and the CAL</div>
+          <div class="mjx-row">$$ \mu_c=r_f+(\mu_p-r_f)\,y, \qquad \sigma_c=y\,\sigma_p $$</div>
+          <div class="mjx-row">$$ \mu_c=r_f+\underbrace{\frac{\mu_p-r_f}{\sigma_p}}_{\text{Sharpe ratio}}\,\sigma_c $$</div>
+        </div>
+        <p>All attainable risk-return profiles lie on this straight <strong>capital allocation line (CAL)</strong>, whose
+          slope is the <strong>Sharpe ratio</strong>. \(y=100\%\) is full investment in the risky asset; \(y&gt;100\%\)
+          means borrowing at \(r_f\) to buy more (margin); \(y&lt;0\) means short-selling the risky asset (which flips
+          the slope's sign — and is never optimal when \(\mu_p&gt;r_f\)).</p>
+
+        <h2 id="optimal-y">The optimal risky/riskfree split</h2>
+        <p>Maximising \(U=r_f+(\mu_p-r_f)y-\tfrac{1}{2}A\sigma_p^2 y^2\) over \(y\) (a quadratic) gives:</p>
+        <div class="formula">
+          <div class="f-label">Optimal weight on the risky asset</div>
+          <div class="mjx-row">$$ y^{*}=\frac{\mu_p-r_f}{A\,\sigma_p^2} $$</div>
+        </div>
+        <p>Graphically, the optimum is where the CAL is tangent to the highest reachable indifference curve. \(y^{*}\)
+          <em>falls</em> as risk aversion \(A\) rises — a more cautious investor holds less of the risky asset.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Optimal investment in an S&amp;P 500 ETF</h4></div>
+          <div class="ex-body">
+            <p>\(r_f=1\%\), ETF \(\mu_p=9\%\), \(\sigma_p=15\%\). (1) Risk/return of a 50-50 split? (2) Optimal \(y\) if
+              \(A=4\)? (3) Another investor picks \(y=80\%\) — infer his \(A\); who is more aggressive?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>(1) \(\mu_c=0.5(1\%)+0.5(9\%)=5\%\); \(\sigma_c=0.5(15\%)=7.5\%\).
+                (2) \(y^{*}=\frac{0.09-0.01}{4(0.15)^2}=0.889\) → 88.9% ETF, 11.1% riskfree.
+                (3) \(0.8=\frac{0.08}{A(0.15)^2}\Rightarrow A=4.44\). Since \(4.44&gt;4\), the second investor is
+                <em>more</em> risk averse — the first is more aggressive.</p>
+              <span class="answer">(1) 5%, 7.5%; (2) y*=0.889; (3) A=4.44, investor 1 more aggressive</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="two-risky">Combining two risky assets</h2>
+        <p>Now two risky assets A and B with weight \(w_A\) in A. Covariance
+          \(\sigma_{AB}=\operatorname{Cov}(r_A,r_B)\) and correlation \(\rho=\sigma_{AB}/(\sigma_A\sigma_B)\in[-1,1]\)
+          capture co-movement. Using \(\operatorname{var}(aX+bY)=a^2\operatorname{var}X+2ab\operatorname{Cov}(X,Y)+b^2\operatorname{var}Y\):</p>
+        <div class="formula">
+          <div class="f-label">Two-asset mean and variance</div>
+          <div class="mjx-row">$$ \mu_p=w_A\mu_A+(1-w_A)\mu_B $$</div>
+          <div class="mjx-row">$$ \sigma_p^2=w_A^2\sigma_A^2+2w_A(1-w_A)\sigma_{AB}+(1-w_A)^2\sigma_B^2 $$</div>
+        </div>
+        <p>The mean is linear in \(w_A\); the variance is quadratic. Two telling special cases: at
+          <strong>\(\rho=+1\)</strong>, \(\sigma_p=w_A\sigma_A+(1-w_A)\sigma_B\) (just a weighted average — no
+          diversification); at <strong>\(\rho=-1\)</strong>, \(\sigma_p=|w_A\sigma_A-(1-w_A)\sigma_B|\), and setting
+          \(w_A=\sigma_B/(\sigma_A+\sigma_B)\) gives \(\sigma_p=0\) — risk is <em>perfectly</em> removed. Anything below
+          \(\rho=+1\) provides a diversification benefit.</p>
+        <div class="formula">
+          <div class="f-label">Minimum-variance portfolio</div>
+          <div class="mjx-row">$$ w_A^{\min}=\frac{\sigma_B^2-\sigma_{AB}}{\sigma_A^2-2\sigma_{AB}+\sigma_B^2} $$</div>
+        </div>
+
+        <h2 id="frontier">The opportunity set and efficient frontier</h2>
+        <p>As \(w_A\) varies, the attainable \((\mu_p,\sigma_p)\) combinations trace a curve — the <strong>portfolio
+          opportunity set</strong>. A portfolio is <strong>efficient</strong> if it offers the highest return for its
+          level of risk, so only the <em>upper</em> half of the curve — the <strong>efficient frontier</strong> — is of
+          interest. (With many risky assets the opportunity set becomes a solid region whose upper boundary is the
+          frontier.)</p>
+
+        <h2 id="optimal-risky">The optimal risky portfolio</h2>
+        <p>Add a riskfree asset. Each risky portfolio spawns a CAL; the best is the <strong>steepest</strong> — the one
+          tangent to the efficient frontier, maximising the Sharpe ratio. With \(R_{Af}=\mu_A-r_f\) and
+          \(R_{Bf}=\mu_B-r_f\):</p>
+        <div class="formula">
+          <div class="f-label">Weight of A in the optimal risky portfolio</div>
+          <div class="mjx-row">$$ w_A^{*}=\frac{R_{Af}\sigma_B^2-R_{Bf}\sigma_{AB}}{R_{Af}\sigma_B^2+R_{Bf}\sigma_A^2-(R_{Af}+R_{Bf})\sigma_{AB}} $$</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Two-step allocation → the complete portfolio</span>
+          <p><strong>Step 1:</strong> find the optimal risky portfolio (the \(w_A^{*}\) above) and its \(\mu_p,\sigma_p\).
+            <strong>Step 2:</strong> using the investor's \(A\), split between that risky portfolio and the riskfree asset
+            with \(y^{*}=(\mu_p-r_f)/(A\sigma_p^2)\). Final weights: riskfree \(1-y^{*}\), Asset A \(y^{*}w_A^{*}\),
+            Asset B \(y^{*}(1-w_A^{*})\). This is the <strong>optimal complete portfolio</strong>.</p>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Pension-fund allocation</h4></div>
+          <div class="ex-body">
+            <p>Riskfree 1%; bond fund \(\mu=6\%,\sigma=8\%\); equity fund \(\mu=10\%,\sigma=20\%\); \(\rho=0.4\). Find the
+              optimal risky portfolio, then the complete allocation for \(A=8\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(R_{Af}=5\%,\ R_{Bf}=9\%,\ \sigma_{AB}=0.4(0.08)(0.20)=0.0064\).
+                \(w_A^{*}=\dfrac{(0.05)(0.2)^2-(0.09)(0.0064)}{(0.05)(0.2)^2+(0.09)(0.08)^2-(0.14)(0.0064)}=0.8476\).
+                Then \(\mu_p=0.8476(6\%)+0.1524(10\%)=6.6\%\), \(\sigma_p=8.47\%\). With \(A=8\):
+                \(y^{*}=\frac{0.066-0.01}{8(0.0847)^2}=0.9766\). Final: riskfree 2.34%, bond \(0.9766\times0.8476=82.78\%\),
+                equity \(0.9766\times0.1524=14.88\%\).</p>
+              <span class="answer">Risky portfolio: 84.8% bond / 15.2% equity (μ 6.6%, σ 8.47%); complete: 2.3% rf, 82.8% bond, 14.9% equity</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="mutual-fund">The mutual-fund theorem</h2>
+        <div class="callout concept">
+          <span class="ct-label">One fund for everyone</span>
+          <p>The optimal risky portfolio does <em>not</em> depend on the investor's risk aversion — only the split
+            between it and the riskfree asset does. So <strong>a single risky portfolio (the maximum-Sharpe "mutual
+            fund") serves all investors</strong>; they merely choose different points along the same best CAL by mixing
+            that fund with the riskfree asset. This separation of the risky-portfolio choice from the risk-preference
+            choice is the <strong>mutual-fund theorem</strong>.</p>
+        </div>
+
+        <h2 id="practical">Practical issues</h2>
+        <p>The theory is only as good as its inputs. Optimising the Sharpe ratio over many assets is computationally
+          demanding (Excel's Solver, or more) and, more importantly, requires estimates of every mean, variance and
+          <em>pairwise correlation</em> — "junk in, junk out." Volatilities and correlations are <strong>time-varying</strong>
+          and tend to <strong>spike together in market distress</strong> (just when diversification is most needed), so
+          advanced statistical models are used to capture these dynamics.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Summarise investments by <strong>mean and standard deviation</strong> and rank them with
+            \(U=\mu-\tfrac{1}{2}A\sigma^2\). Mixing a riskfree and a risky asset traces the <strong>CAL</strong>, whose
+            slope is the <strong>Sharpe ratio</strong>, with optimal risky weight \(y^{*}=(\mu_p-r_f)/(A\sigma_p^2)\).
+            Two risky assets diversify whenever \(\rho&lt;1\), generating an <strong>efficient frontier</strong>; adding a
+            riskfree asset singles out the <strong>maximum-Sharpe optimal risky portfolio</strong>, after which a simple
+            risk-preference split completes the allocation. The <strong>mutual-fund theorem</strong> means everyone holds
+            the same risky fund — but it all rests on input estimates that are noisy and unstable.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management.html"><span class="dir">← Course</span><span class="ttl">Portfolio Management</span></a>
+          <a class="next" href="/courses/portfolio-management-02-capm-performance.html"><span class="dir">Next →</span><span class="ttl">CAPM and Performance Evaluation</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
