@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valuing Bonds with Embedded Options · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Benchmark rates and the three spread measures, option-adjusted spread and relative value, the binomial interest-rate tree and backward induction, valuing callable and putable bonds, effective duration and convexity, capped floaters and convertible bonds." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="08">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 8 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Valuing Bonds with Embedded Options</h1>
+        <p class="summary">
+          A call, put, cap or conversion feature makes a bond's cash flows depend on the <em>path</em> of future
+          interest rates — so a single discount rate no longer works. This lesson builds the tool that does: the
+          <strong>binomial interest-rate tree</strong>, valued by backward induction. We start with benchmark rates
+          and the three spread measures, define the <strong>option-adjusted spread (OAS)</strong> and use it for
+          relative value, then value callable bonds, putable bonds, step-up notes, capped floaters and convertibles,
+          and measure their interest-rate risk with <strong>effective duration and convexity</strong>.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#benchmarks">3 · Benchmark rates &amp; spreads</a>
+            <a href="#oas">3.5 · OAS &amp; relative value</a>
+            <a href="#binomial">5 · The binomial model</a>
+            <a href="#callable">6 · Valuing callable bonds</a>
+            <a href="#duration">6.4 · Effective duration</a>
+            <a href="#putable">7 · Valuing putable bonds</a>
+            <a href="#floaters">9 · Capped floaters</a>
+            <a href="#convertibles">10 · Convertible bonds</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          An <strong>embedded option</strong> is an option that is part of a bond's structure rather than a separate
+          instrument. The common ones are <strong>call provisions</strong> (the issuer may buy the bond back early),
+          <strong>put provisions</strong> (the holder may sell it back early), and <strong>caps</strong> on
+          floating-rate coupons. Because exercising these depends on where rates go, the bond's future cash flows are
+          uncertain even when default is not — so the option-free valuation (discount fixed cash flows at spot rates)
+          breaks down. A <strong>convertible bond</strong> is harder still: its value depends both on interest rates
+          <em>and</em> on the issuer's share price.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Use relative-value analysis to judge whether a security is undervalued or overvalued.</li>
+            <li>Interpret the three spread measures against the relevant benchmark interest rate.</li>
+            <li>Use backward induction in a binomial interest-rate tree to value option-free and option-embedded bonds.</li>
+            <li>Compute the value of callable and putable bonds, and the value of the embedded option.</li>
+            <li>Explain the effect of interest-rate volatility on an embedded option's value.</li>
+            <li>Interpret an OAS relative to a nominal spread and a benchmark.</li>
+            <li>Calculate effective duration and effective convexity from the binomial model.</li>
+            <li>Describe and value a convertible bond and its component values, and contrast it with the stock.</li>
+          </ol>
+        </div>
+
+        <h2 id="benchmarks">3 · Benchmark interest rates and spread measures</h2>
+        <p>The presence of an embedded option complicates valuation because future cash flows depend on the
+          future level of interest rates. A bond valuation model therefore needs two ingredients: a set of
+          <strong>benchmark interest rates</strong> to discount against, and an <strong>interest-rate model</strong> —
+          a probabilistic description of how the rate can change over the bond's life. We use a <strong>one-factor
+          binomial model</strong>: given a rate model and a volatility assumption, the rate can realise one of two
+          values each period, generating an interest-rate tree. (We will use ready-built trees, not construct them.)</p>
+
+        <p>Benchmark rates can be taken from any of three markets, each available as a <em>yield curve</em> or a
+          <em>spot-rate curve</em> — six possible benchmarks in all:</p>
+        <ul>
+          <li><strong>Treasury market</strong> — Treasury yield curve / Treasury spot-rate curve.</li>
+          <li><strong>A bond sector</strong> with a given credit rating — sector yield curve / sector spot-rate curve.</li>
+          <li><strong>The issuer's own securities</strong> — issuer yield curve / issuer spot-rate curve.</li>
+        </ul>
+        <p>The <strong>spot-rate curve</strong> plots, for each maturity, the yield-to-maturity of a zero-coupon
+          bond from today to that maturity; it is bootstrapped from the yield curve.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">The three spread measures</span>
+          <p><strong>Nominal spread</strong> — the bond's yield minus the benchmark <em>yield</em>. <strong>Zero-volatility
+            (Z-) spread</strong> — the constant spread added to every benchmark <em>spot</em> rate that makes the
+            discounted cash flows equal the price; it assumes no interest-rate volatility (no option exercise).
+            <strong>Option-adjusted spread (OAS)</strong> — the constant spread added to every rate in the binomial
+            tree that makes the model value equal the market price. The OAS strips out the part of the spread that is
+            compensation for the <em>option</em>, leaving compensation for credit and liquidity risk.</p>
+        </div>
+        <p>What each spread compensates for depends on the benchmark. Against the <strong>Treasury</strong> curve, the
+          nominal and Z-spread reflect credit + option + liquidity risk, while the OAS reflects credit + liquidity
+          (option removed). Against a <strong>same-rating sector</strong>, the same applies but credit risk is largely
+          netted out. Against the <strong>issuer's own</strong> curve, even credit is netted out, so the OAS reflects
+          essentially <em>liquidity</em> risk alone.</p>
+
+        <h2 id="oas">3.5 · OAS, the benchmark and relative value</h2>
+        <p>The OAS is the workhorse of relative-value analysis, but its sign and size must be read against the benchmark.
+          Taking the <strong>Treasury spot-rate curve</strong> as benchmark: a <strong>zero or negative OAS</strong>
+          means the security offers no spread (or a negative spread) over Treasuries and should be avoided. A
+          <strong>positive OAS alone does not</strong> tell you the bond is cheap — you must compare it with the OAS the
+          market demands on comparable issues.</p>
+        <div class="callout note">
+          <span class="ct-label">Security OAS vs required OAS</span>
+          <p>Call the OAS on comparable securities the <strong>required OAS</strong>, and the OAS computed for the bond
+            in question the <strong>security OAS</strong>. Then:</p>
+          <ul>
+            <li>Security OAS <strong>&gt;</strong> required OAS → the bond is <strong>cheap</strong> (undervalued).</li>
+            <li>Security OAS <strong>&lt;</strong> required OAS → the bond is <strong>rich</strong> (overvalued).</li>
+            <li>Security OAS <strong>=</strong> required OAS → the bond is <strong>fairly priced</strong>.</li>
+          </ul>
+          <p>The same logic applies when the benchmark is a same-rating bond sector; there the required OAS is the OAS
+            of comparable issues measured against that sector.</p>
+        </div>
+
+        <h2 id="binomial">5 · The binomial interest-rate tree</h2>
+        <h3>Review: valuing an option-free bond</h3>
+        <p>Start with the issuer's on-the-run par curve and bootstrap the spot rates and one-year forward rates:</p>
+        <div class="formula">
+          <div class="f-label">On-the-run issue → spot and forward rates</div>
+          <div class="mjx-row">$$ \begin{array}{lcccc} \text{Year} & 1 & 2 & 3 & 4\\ \text{YTM (par)} & 3.50\% & 4.20\% & 4.70\% & 5.20\%\\ \text{Spot} & 3.5000\% & 4.2148\% & 4.7352\% & 5.2706\%\\ \text{1-yr forward} & 3.5000\% & 4.9345\% & 5.7838\% & 6.8933\% \end{array} $$</div>
+        </div>
+        <p>A 4-year 6.5% option-free bond can be valued either by discounting each cash flow at its spot rate, or by
+          discounting through the chain of one-year forwards — both give the same answer:</p>
+        <div class="formula">
+          <div class="f-label">Two equivalent valuations <span class="eqno">(spot / forward)</span></div>
+          <div class="mjx-row">$$ \tfrac{6.5}{1.035}+\tfrac{6.5}{1.042148^2}+\tfrac{6.5}{1.047352^3}+\tfrac{106.5}{1.052706^4}=\$104.643 $$</div>
+          <div class="mjx-row">$$ \tfrac{6.5}{1.035}+\tfrac{6.5}{1.035\cdot1.04935}+\cdots+\tfrac{106.5}{1.035\cdot1.04935\cdot1.05784\cdot1.06893}=\$104.643 $$</div>
+        </div>
+
+        <h3>Nodes and backward induction</h3>
+        <p>The tree begins at the root node \(N\) with today's one-year rate \(r_0\). Volatility is introduced by letting
+          the rate move to one of two values next period — a higher state (subscript H) or a lower state (L) — and so on.
+          A <strong>node</strong> is where either a random event (the rate jump) or a decision (exercise the option)
+          occurs. To value the bond we work <strong>backwards</strong> from maturity. At each node, let \(V_H\) and
+          \(V_L\) be the bond values one year forward in the up and down states and \(C\) the coupon. With equal
+          (risk-neutral) probabilities of ½, the value at the node, discounted at that node's rate \(r^{*}\), is:</p>
+        <div class="formula">
+          <div class="f-label">Value at a node — backward induction</div>
+          <div class="mjx-row">$$ V \;=\; \tfrac{1}{2}\!\left[\frac{V_H+C}{1+r^{*}}+\frac{V_L+C}{1+r^{*}}\right] \;=\; \frac{\tfrac{1}{2}(V_H+V_L)+C}{1+r^{*}} $$</div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Arbitrage-free construction</span>
+          <p>The tree is calibrated so that valuing the benchmark on-the-run issue through it reproduces that issue's
+            observed market price. A correctly built tree is therefore <strong>arbitrage-free</strong>. The two
+            one-year rates in any period are linked by the volatility assumption, e.g. with 10% volatility the rates
+            \(5.4289\%\) and \(4.4448\%\) reprice the 3-year on-the-run issue to par.</p>
+        </div>
+
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Option-free value is volatility-independent</h4></div>
+          <div class="ex-body">
+            <p>Value the 4-year 6.5% option-free bond on (a) the 10% -volatility tree and (b) the 20% -volatility tree.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Rolling the bond back through either tree returns the root value \(\$104.643\) — identical to the
+                spot-rate valuation. Because no option is being exercised, the cash flows are fixed, so the value does
+                not depend on the volatility assumption. Volatility only matters once an embedded option lets the cash
+                flows change.</p>
+              <span class="answer">Both trees give $104.643 — the arbitrage-free option-free value</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="callable">6 · Valuing and analysing a callable bond</h2>
+        <p>Valuing a callable bond uses the same backward induction with <strong>one change</strong>: at each node the
+          issuer decides whether to call. The bond value at a node is replaced by the <strong>lesser</strong> of (i) its
+          computed value if not called and (ii) the call price. (We assume the issuer calls whenever the computed value
+          exceeds the call price.) Capping the value at the call price at every node feeds a lower number back through
+          the tree.</p>
+        <div class="formula">
+          <div class="f-label">Value of the embedded call</div>
+          <div class="mjx-row">$$ V_{\text{call option}} \;=\; V_{\text{option-free bond}} \;-\; V_{\text{callable bond}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A 6.5% bond callable at 100</h4></div>
+          <div class="ex-body">
+            <p>The 4-year 6.5% bond, callable in one year at \$100, valued on the 10% -volatility tree.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>With the call rule applied at every node the root value falls to \(\$102.899\) (versus \(\$104.643\)
+                option-free). The embedded call is worth</p>
+              <p>$$ \$104.643 - \$102.899 = \$1.744. $$</p>
+              <p>With a softer <em>call-price schedule</em> (102 in yr 1, 101 in yr 2, 100 in yr 3) the issuer can call
+                less often, so the callable bond is worth more — \(\$103.942\) — and the call is worth less.</p>
+              <span class="answer">Callable value $102.899; embedded call worth $1.744</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Volatility and the option</span>
+          <p>The higher the assumed volatility, the more valuable any option — including an embedded one. Re-pricing the
+            same callable bond at <strong>20%</strong> volatility gives \(\$102.108\), below the \(\$102.899\) found at
+            10%: the lower callable value means a <strong>larger</strong> call option. The issuer is short that option,
+            so higher volatility hurts the callable bondholder.</p>
+        </div>
+        <p><strong>OAS of the callable bond.</strong> If the bond trades at \(\$102.218\), the OAS is the constant
+          spread added to every tree rate that reprices it to \(\$102.218\); here that is <strong>35 bp</strong> at 10%
+          volatility. At 20% volatility the OAS is \(-6\) bp. The OAS removes the option component from the nominal
+          spread — it is a spread (point 1) that adjusts the cash flows for the option when measured against the
+          benchmark (point 2).</p>
+
+        <h2 id="duration">6.4 · Effective duration and effective convexity</h2>
+        <p>For bonds with embedded options, modified duration is inappropriate (the cash flows move with rates).
+          <strong>Effective duration</strong> measures the approximate percentage price change for a 100 bp parallel
+          shift, allowing the cash flows to change; <strong>effective convexity</strong> corrects the linear estimate:</p>
+        <div class="formula">
+          <div class="f-label">Effective duration and convexity</div>
+          <div class="mjx-row">$$ D_{\text{eff}}=\frac{V_{-}-V_{+}}{2\,V_0\,(\Delta y)}, \qquad C_{\text{eff}}=\frac{V_{+}+V_{-}-2V_0}{2\,V_0\,(\Delta y)^2} $$</div>
+        </div>
+        <p>where \(V_0\) is the initial price, and \(V_+\) / \(V_-\) are the values after shifting the curve up / down
+          by \(\Delta y\). The key procedure: (1) find the bond's OAS at the market price; (2) shift the on-the-run
+          curve by \(\Delta y\); (3) rebuild the tree on the shifted curve; (4) add the <em>same</em> OAS to every rate
+          (assume OAS is unchanged); (5) re-value to get \(V_+\) (or \(V_-\)).</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Effective duration of the callable bond</h4></div>
+          <div class="ex-body">
+            <p>Using \(\Delta y = 25\) bp, \(V_0 = 102.218\), the shifted-and-OAS-adjusted trees give \(V_+ = 101.621\)
+              and \(V_- = 102.765\). Find effective duration and convexity.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>$$ D_{\text{eff}}=\frac{102.765-101.621}{2(102.218)(0.0025)} = 2.24 $$</p>
+              <p>$$ C_{\text{eff}}=\frac{101.621+102.765-2(102.218)}{2(102.218)(0.0025)^2} = -39.13 $$</p>
+              <p>The <strong>negative convexity</strong> is the signature of a callable bond: as rates fall, the call caps
+                the price upside.</p>
+              <span class="answer">Effective duration ≈ 2.24; effective convexity ≈ −39.1</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="putable">7 · Valuing a putable bond</h2>
+        <p>A <strong>putable bond</strong> lets the <em>holder</em> force early repayment. Backward induction is the
+          same, but at each node the value is the <strong>greater</strong> of the computed value and the put price (the
+          holder puts when the bond is worth less than the put price). Because the holder owns the put, it
+          <em>adds</em> value:</p>
+        <div class="formula">
+          <div class="f-label">Putable bond and the embedded put</div>
+          <div class="mjx-row">$$ V_{\text{putable}} = V_{\text{option-free}} + V_{\text{put option}} \;\Rightarrow\; V_{\text{put option}} = V_{\text{putable}} - V_{\text{option-free}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A 6.5% bond putable at 100</h4></div>
+          <div class="ex-body">
+            <p>The 4-year 6.5% bond, putable in one year at \$100, on the 10% -volatility tree.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Applying the "max with the put price" rule gives \(\$105.327\), <em>above</em> the \(\$104.643\)
+                option-free value. The embedded put is worth \(\$105.327 - \$104.643 = \$0.684\). At 20% volatility the
+                putable value rises to \(\$106.010\) — again, more volatility means a more valuable option. A bond that
+                is both callable <em>and</em> putable is valued by applying both adjustments (call cap and put floor) at
+                each node.</p>
+              <span class="answer">Putable value $105.327; embedded put worth $0.684</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">Step-up callable notes</span>
+          <p>A <strong>step-up callable note</strong> has a coupon that rises on a set schedule (a <em>single</em>
+            step-up rises once; a <em>multiple</em> step-up rises several times) and is callable. The rising coupon makes
+            the issuer more likely to call once the step-up kicks in. It is valued exactly like any callable bond — apply
+            the call rule at each node — but using the scheduled coupon at each year.</p>
+        </div>
+
+        <h2 id="floaters">9 · Valuing a capped floater</h2>
+        <p>For a floating-rate note the coupon is reset to the reference rate <strong>at the start</strong> of each
+          period and paid <strong>in arrears</strong> at the end. In the tree, the coupon at a node is set by the
+          one-year rate at the <em>previous</em> node. An uncapped floater always values to <strong>par</strong> at every
+          node (the coupon exactly compensates for the rate). A <strong>cap</strong> limits the coupon: whenever the
+          reference rate exceeds the cap, the coupon is held at the cap, so the holder receives less than market — and
+          the floater is worth <strong>less than par</strong>.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A 7.25% capped floater</h4></div>
+          <div class="ex-body">
+            <p>Value a floater on the 10% -volatility tree (a) with no cap and (b) with a 7.25% cap.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>(a) With no cap every node values to <strong>100.000</strong> — par. (b) With a 7.25% cap, at nodes where
+                the reference rate would exceed 7.25% (e.g. the 9.1987% and 7.5312% nodes) the coupon is capped, pushing
+                those node values below par; rolled back, the floater is worth <strong>\(\$99.724\)</strong>. The cap is
+                a short call on rates owned by the issuer, so it reduces the floater's value.</p>
+              <span class="answer">Uncapped = par (100.000); 7.25% cap → 99.724</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="convertibles">10 · Analysis of convertible bonds</h2>
+        <p>A <strong>convertible bond</strong> can be converted into the issuer's common stock at the holder's option;
+          an <strong>exchangeable</strong> can be exchanged into the stock of a <em>different</em> firm. Its value
+          depends on both interest rates and the share price, so it bundles bond and equity exposure.</p>
+        <div class="callout concept">
+          <span class="ct-label">Traditional convertible measures</span>
+          <p><strong>Conversion value</strong> = stock price × conversion ratio — what the bond is worth if converted
+            now. <strong>Straight value</strong> = value as an ordinary (option-free) bond — the assumed price floor.
+            <strong>Market conversion price</strong> = convertible price ÷ conversion ratio — the effective price paid
+            per share. <strong>Market premium per share</strong> = market conversion price − stock price.
+            <strong>Premium payback period</strong> = market premium per share ÷ favourable income differential per
+            share — how long the bond's extra income takes to recoup the premium.</p>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>ADC 5.75% convertible</h4></div>
+          <div class="ex-body">
+            <p>Conversion ratio 25.320 shares per \$1,000 par; stock at \$33; convertible at \$106.50 (i.e. \$1,065 per
+              \$1,000). Find the conversion value and market conversion price.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>$$ \text{Conversion value}=\$33\times25.320=\$835.6\ \text{per \$1,000 par.} $$</p>
+              <p>$$ \text{Market conversion price}=\frac{\$1{,}065}{25.320}=\$42.06\ \text{per share,} $$</p>
+              <p>a market premium of \(\$42.06-\$33=\$9.06\) per share over buying the stock directly. The premium is the
+                price of the bond's downside protection (its straight value).</p>
+              <span class="answer">Conversion value ≈ $836; market conversion price ≈ $42.06; premium ≈ $9.06/sh</span>
+            </div></details>
+          </div>
+        </div>
+        <p><strong>Investment character</strong> depends on the share price. If the stock is <em>low</em>, straight value
+          &gt; conversion value and the bond behaves like a <strong>fixed-income equivalent</strong> (a "busted
+          convertible"). If the stock is <em>high</em>, conversion value &gt; straight value and it is a
+          <strong>common-stock equivalent</strong> (small premium). In between it is a <strong>hybrid</strong>, sharing
+          both characters — giving the asymmetric profile convertibles are bought for: most of the stock's upside, much
+          less of its downside (e.g. for ADC, a +25% move in the stock gives the convertible +6.9%, while a −25% move
+          costs it only −0.3%).</p>
+        <div class="formula">
+          <div class="f-label">Option-based valuation of a convertible</div>
+          <div class="mjx-row">$$ V_{\text{convertible}} = V_{\text{straight}} + V_{\text{call on stock}} $$</div>
+          <div class="mjx-row">$$ V_{\text{callable conv.}} = V_{\text{straight}} + V_{\text{call on stock}} - V_{\text{call on bond}} $$</div>
+          <div class="mjx-row">$$ V_{\text{callable\,\&\,putable conv.}} = V_{\text{straight}} + V_{\text{call on stock}} - V_{\text{call on bond}} + V_{\text{put on bond}} $$</div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>When cash flows depend on the rate path, value the bond on an <strong>arbitrage-free binomial tree</strong>
+            by <strong>backward induction</strong>. Insert the option as a decision at each node: <em>cap</em> the value
+            at the call price (callable) or <em>floor</em> it at the put price (putable). Then
+            \(V_{\text{call}}=V_{\text{free}}-V_{\text{callable}}\) and \(V_{\text{put}}=V_{\text{putable}}-V_{\text{free}}\),
+            and <strong>higher volatility raises every embedded option's value</strong>. The <strong>OAS</strong> strips
+            the option out of the spread for relative value (security vs required OAS), and <strong>effective
+            duration/convexity</strong> — computed by shifting the curve and holding the OAS fixed — capture the
+            interest-rate risk, with callables showing the tell-tale negative convexity. Convertibles add an equity call
+            on top of the straight bond floor.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-07-liquidity-conundrum.html"><span class="dir">← Previous</span><span class="ttl">Solving the Liquidity Conundrum</span></a>
+          <a class="next" href="/courses/derivatives-pricing-09-mortgage-backed.html"><span class="dir">Next →</span><span class="ttl">Mortgage-Backed Sector of the Bond Market</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

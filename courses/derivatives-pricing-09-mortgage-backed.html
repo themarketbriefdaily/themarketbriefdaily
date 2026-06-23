@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mortgage-Backed Sector of the Bond Market · Derivatives Pricing | The Market Brief Daily</title>
+  <meta name="description" content="Residential mortgages and amortisation, passthrough securities, WAC/WAM, measuring prepayments (SMM, CPR, PSA), average life, contraction and extension risk, CMOs and their tranches (sequential, accrual, floater/inverse, IO, PAC and support), stripped MBS, and commercial MBS." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-drv" data-course="derivatives-pricing" data-lesson="09">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/derivatives-pricing.html">Derivatives Pricing</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="derivatives-pricing" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 9 · Derivatives Pricing<span class="cfa-badge cfa-l2">CFA L2</span></div>
+        <h1>Mortgage-Backed Sector of the Bond Market</h1>
+        <p class="summary">
+          A mortgage-backed security (MBS) turns a pool of home loans into a tradeable bond. The catch is that
+          borrowers can <strong>prepay</strong>, so the cash flows are uncertain even without default — the dominant
+          risk here is <strong>prepayment risk</strong>, not credit. This lesson covers the mortgage itself and its
+          amortisation, passthrough securities, how prepayments are measured (SMM, CPR, the PSA benchmark), average
+          life, and how <strong>collateralised mortgage obligations (CMOs)</strong> slice the cash flows into tranches
+          that redistribute that risk — sequential, accrual, floater/inverse, IO, PAC and support — plus stripped MBS
+          and commercial MBS.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#loans">2 · Residential mortgage loans</a>
+            <a href="#passthrough">3 · Passthrough securities</a>
+            <a href="#prepay">3.4 · Measuring prepayments</a>
+            <a href="#avglife">3.5 · Average life &amp; risk</a>
+            <a href="#cmo">4 · CMOs &amp; tranches</a>
+            <a href="#pac">4.5 · PAC &amp; support</a>
+            <a href="#strips">5 · Stripped MBS</a>
+            <a href="#cmbs">7 · Commercial MBS</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Residential MBS come in three forms: <strong>mortgage passthrough securities</strong>,
+          <strong>collateralised mortgage obligations (CMOs)</strong>, and <strong>stripped MBS</strong> — the latter
+          two being <em>derivative</em> MBS built by redistributing a passthrough's cash flows. Before the 2008 crisis,
+          agency MBS were viewed as carrying essentially no credit risk, so the focus was prepayment risk and how to
+          redistribute it. We keep that focus, then add the credit dimension for non-agency and commercial MBS.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Describe a mortgage and the cash flows of a fixed-rate, level-payment, fully amortised loan.</li>
+            <li>Describe passthrough securities and compute WAC and WAM.</li>
+            <li>Calculate the prepayment for a month from the SMM, and relate SMM, CPR and the PSA benchmark.</li>
+            <li>Explain why average life is more relevant than maturity, and the factors driving prepayments.</li>
+            <li>Distinguish sequential-pay, accrual, PAC and support tranches and their risk under rate changes.</li>
+            <li>Explain stripped (IO/PO) MBS, and contrast agency, non-agency and commercial MBS.</li>
+          </ol>
+        </div>
+
+        <h2 id="loans">2 · Residential mortgage loans</h2>
+        <p>A <strong>mortgage</strong> is a loan secured by specified real estate that obliges the borrower to make a
+          set series of payments. The interest rate is the <strong>mortgage (contract) rate</strong>; the lender may
+          <strong>foreclose</strong> and seize the property on default. The standard U.S. design is the
+          <strong>fixed-rate, level-payment, fully amortised mortgage</strong>: the rate is fixed for life, every
+          monthly payment is identical, and the final payment leaves a zero balance. Each payment splits into
+          <strong>interest</strong> (1/12 of the annual rate on the outstanding balance) and a
+          <strong>scheduled principal repayment</strong> (amortisation). Alternative designs — adjustable-rate,
+          balloon, growing-equity, reverse and tiered-payment mortgages — are the riskier "speculative/Ponzi" units.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Amortisation of a $100,000 mortgage</h4></div>
+          <div class="ex-body">
+            <p>30-year (360-month) \$100,000 loan, 8.125% rate, level payment \$742.50. Split month 1 into interest and
+              principal, and find the month-2 interest.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Monthly rate \(=0.08125/12=0.0067708\). Month-1 interest \(=\$100{,}000\times0.0067708=\$677.08\);
+                principal \(=\$742.50-\$677.08=\$65.41\); end balance \(=\$99{,}934.59\). Month-2 interest
+                \(=0.0067708\times\$99{,}934.59=\$676.64\). As the balance falls, the <strong>interest portion declines
+                and the principal portion rises</strong> each month. A <strong>servicing fee</strong> (e.g. 50 bp) is
+                taken from the mortgage rate, so an 8.125% loan pays the investor a 7.625% <em>net coupon</em>. Any
+                payment above the scheduled amount is a <strong>prepayment</strong> — the source of prepayment risk.</p>
+              <span class="answer">Mo.1: $677.08 interest + $65.41 principal; Mo.2 interest $676.64</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="passthrough">3 · Mortgage passthrough securities</h2>
+        <p>A <strong>passthrough</strong> is created when holders of a pool of mortgages sell participation certificates
+          in the pool; the mortgages are then <strong>securitised</strong>. Monthly cash flows pass through to investors
+          less servicing and other fees, so the <strong>passthrough rate</strong> is below the loans' rates. Because the
+          pooled loans differ, the pool is described by a <strong>weighted-average coupon (WAC)</strong> and a
+          <strong>weighted-average maturity (WAM)</strong>, each weighted by outstanding balance.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>WAC and WAM of a pool</h4></div>
+          <div class="ex-body">
+            <p>Five loans with weights 22.12%, 15.04%, 30.97%, 19.47%, 12.39%; rates 7.5%, 7.2%, 7.0%, 7.8%, 6.9%;
+              months remaining 275, 260, 290, 285, 270.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>$$ \text{WAC}=0.2212(7.5)+0.1504(7.2)+0.3097(7.0)+0.1947(7.8)+0.1239(6.9)=7.28\% $$</p>
+              <p>$$ \text{WAM}=0.2212(275)+0.1504(260)+0.3097(290)+0.1947(285)+0.1239(270)=279\ \text{months} $$</p>
+              <span class="answer">WAC = 7.28%; WAM = 279 months</span>
+            </div></details>
+          </div>
+        </div>
+        <p>The three U.S. <strong>agency</strong> guarantors are <strong>Ginnie Mae</strong> (a federally related
+          institution — full faith and credit of the U.S. government), and <strong>Fannie Mae</strong> and
+          <strong>Freddie Mac</strong> (government-sponsored enterprises — guarantee <em>not</em> backed by full faith
+          and credit). A <strong>conforming</strong> loan meets agency underwriting standards;
+          <strong>non-conforming</strong> loans fail them and back <strong>non-agency</strong> securities. Prices are
+          quoted like Treasuries (a quote of 94-05 = 94 + 5/32 = 94.15625% of par), and the <strong>pool factor</strong>
+          gives the % of the original balance still outstanding.</p>
+        <div class="formula">
+          <div class="f-label">Dollar price of a passthrough trade</div>
+          <div class="mjx-row">$$ \text{Dollar price} = \text{Price}\times \text{Par value}\times \text{Pool factor} $$</div>
+        </div>
+        <p>E.g. a price of 92 on \$1,000,000 par with pool factor 0.85 costs
+          \(0.92\times\$1{,}000{,}000\times0.85=\$782{,}000\).</p>
+
+        <h2 id="prepay">3.4 · Measuring the prepayment rate</h2>
+        <p>The <strong>single monthly mortality rate (SMM)</strong> is the month's prepayment as a fraction of the
+          amount available to prepay (beginning balance less scheduled principal). The
+          <strong>conditional prepayment rate (CPR)</strong> annualises the SMM:</p>
+        <div class="formula">
+          <div class="f-label">SMM ↔ CPR</div>
+          <div class="mjx-row">$$ \text{Prepayment}_t = \text{SMM}\times(\text{beginning balance}_t-\text{scheduled principal}_t) $$</div>
+          <div class="mjx-row">$$ \text{CPR}=1-(1-\text{SMM})^{12}, \qquad \text{SMM}=1-(1-\text{CPR})^{1/12} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>SMM, prepayment and CPR</h4></div>
+          <div class="ex-body">
+            <p>(a) Month 33: beginning balance \$358,326,766; scheduled principal \$297,825; prepayment \$1,841,347.
+              Find SMM. (b) If next month's balance is \$290m, scheduled principal \$3m and SMM 0.5143%, find the
+              prepayment. (c) Annualise SMM = 0.5143% to a CPR.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>(a) $$ \text{SMM}_{33}=\frac{1{,}841{,}347}{358{,}326{,}766-297{,}825}=0.5143\%. $$</p>
+              <p>(b) $$ \text{Prepay}=0.005143\times(290{,}000{,}000-3{,}000{,}000)=\$1{,}476{,}041. $$</p>
+              <p>(c) $$ \text{CPR}=1-(1-0.005143)^{12}=6\%. $$</p>
+              <span class="answer">SMM = 0.5143%; prepayment ≈ $1.476m; CPR = 6%</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">The PSA prepayment benchmark</span>
+          <p>The <strong>100% PSA</strong> benchmark assumes prepayments start slow on new loans and "season": a CPR of
+            0.2% in month 1, rising 0.2%/month for 30 months until it hits 6%, then a flat 6% thereafter. Formally,
+            \(\text{CPR}=6\%\times(t/30)\) for \(t&lt;30\) and \(6\%\) for \(t\ge30\). Other speeds scale this: "165 PSA"
+            is 1.65× the benchmark CPR at each month, "50 PSA" is half.</p>
+        </div>
+
+        <h2 id="avglife">3.5 · Average life, and contraction vs extension risk</h2>
+        <p>Because principal arrives gradually (and unpredictably), final maturity is misleading. The
+          <strong>average life</strong> — the weighted-average time to receive principal — is the relevant measure, and
+          it depends entirely on the prepayment assumption:</p>
+        <div class="formula">
+          <div class="f-label">Average life</div>
+          <div class="mjx-row">$$ \text{Average life}=\sum_{t=1}^{T}\frac{t\times(\text{principal received at }t)}{12\times \text{Total principal}} $$</div>
+        </div>
+        <p>For one illustrative passthrough, average life falls from <strong>15.11 years at 50 PSA</strong> to
+          11.66 (100), 8.76 (165), 5.63 (300) and just <strong>2.78 years at 700 PSA</strong> — faster prepayments pull
+          cash forward. Prepayments are driven by the <strong>prevailing mortgage rate</strong> (refinancing incentive),
+          <strong>housing turnover</strong>, and <strong>loan characteristics</strong>.</p>
+        <div class="callout note">
+          <span class="ct-label">Two sides of prepayment risk</span>
+          <p><strong>Contraction risk:</strong> rates fall → prepayments speed up → the passthrough <em>shortens</em>
+            (cash returns just when reinvestment rates are low). <strong>Extension risk:</strong> rates rise →
+            prepayments slow → the passthrough <em>lengthens</em> (you are stuck in a below-market bond). This two-sided
+            uncertainty is exactly what CMOs are built to redistribute.</p>
+        </div>
+
+        <h2 id="cmo">4 · Collateralised mortgage obligations (CMOs)</h2>
+        <p>A <strong>CMO</strong> redistributes a passthrough's cash flows to different bond classes
+          (<strong>tranches</strong>) with different prepayment exposures. A CMO <em>cannot eliminate</em> prepayment
+          risk — it reallocates it so each tranche suits a different investor.</p>
+        <h3>Sequential-pay and accrual (Z) tranches</h3>
+        <p><strong>Sequential-pay:</strong> all principal (scheduled + prepayments) goes to Tranche A until it is
+          retired, then to B, then C, and so on — so A has the shortest, last tranche the longest, average life. An
+          <strong>accrual (Z) tranche</strong> receives no current interest; its accrued interest is instead used to
+          pay down the earlier tranches faster. Adding a Z bond therefore <em>shortens</em> A, B and C (e.g. at 165 PSA,
+          tranche A falls from 3.48 to 2.90 years) while the Z bond itself runs long.</p>
+        <h3>Floater and inverse-floater tranches</h3>
+        <p>A fixed-rate tranche can be split into a <strong>floater</strong> and an <strong>inverse floater</strong>
+          whose coupons sum to the tranche's fixed interest. The inverse floater pays \(K-L\times\text{LIBOR}\), where
+          \(K\) is the cap and \(L\) the <strong>leverage</strong> (higher \(L\) → bigger coupon swings):</p>
+        <div class="formula">
+          <div class="f-label">Inverse-floater cap and floater cap</div>
+          <div class="mjx-row">$$ K=\frac{\text{inverse-floater interest when LIBOR}=0}{\text{inverse-floater principal}}, \qquad \text{floater cap}=\frac{\text{collateral tranche interest}}{\text{floater principal}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Splitting tranche C into FL + IFL</h4></div>
+          <div class="ex-body">
+            <p>Tranche C: \$96.5m at 7.5%. Carve a \$72.375m floater (LIBOR + 0.50%) and a \$24.125m inverse floater.
+              Find the inverse floater's coupon if LIBOR = 3.75%, and verify the cap \(K\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>With \(K=28.5\%\) and \(L=3\): coupon \(=28.5\%-3\times3.75\%=17.25\%\). To check \(K\): if LIBOR \(=0\),
+                the floater takes \(0.5\%\times\$72.375\text{m}=\$361{,}875\); tranche C's total interest is
+                \(7.5\%\times\$96.5\text{m}=\$7{,}237{,}500\), leaving the inverse floater
+                \(\$7{,}237{,}500-\$361{,}875=\$6{,}875{,}625\). Then
+                \(K=\$6{,}875{,}625/\$24{,}125{,}000=28.5\%.\)</p>
+              <span class="answer">IFL coupon = 17.25%; cap K = 28.5%</span>
+            </div></details>
+          </div>
+        </div>
+        <h3>Structured IO tranches</h3>
+        <p>Setting a tranche's coupon <em>below</em> the collateral coupon frees <strong>excess interest</strong>, which
+          can be packaged as a <strong>structured interest-only (IO)</strong> tranche with a notional principal:</p>
+        <div class="formula">
+          <div class="f-label">Notional amount of a 7.5% IO</div>
+          <div class="mjx-row">$$ \text{Notional}=\frac{\text{tranche par}\times(\text{collateral coupon}-\text{tranche coupon})}{0.075} $$</div>
+        </div>
+        <p>E.g. tranche A (\$194.5m, 6.0% coupon, excess 1.5%) gives
+          \(\$194.5\text{m}\times0.015/0.075=\$38.9\text{m}\) of 7.5% IO notional; summed over the deal, \$52.57m.</p>
+
+        <h2 id="pac">4.5 · PAC and support tranches</h2>
+        <p>A <strong>planned amortisation class (PAC)</strong> bond follows a fixed principal-repayment
+          <em>schedule</em> as long as prepayments stay within a chosen band — the <strong>PAC collar</strong> (e.g.
+          90–300 PSA). PAC holders have <strong>priority</strong> on principal, giving them <strong>two-sided</strong>
+          protection against both contraction and extension risk. That certainty is bought at the expense of the
+          <strong>support (companion) tranches</strong>, which absorb the prepayment variability and therefore carry
+          the <em>most</em> prepayment risk. The <strong>PAC window</strong> is the span over which principal is
+          repaid; a narrow window resembles a bullet bond. As the deal seasons, the band that can still keep the
+          schedule changes — the <strong>effective collar</strong>. A PAC can be split into a series of sequential PAC
+          tranches (P-A … P-F), and even support tranches can themselves be carved into scheduled (PAC-like) pieces.</p>
+
+        <h2 id="strips">5 · Stripped mortgage-backed securities</h2>
+        <p>A <strong>stripped MBS</strong> (a type of CMO) divides the cash flows into a
+          <strong>principal-only (PO)</strong> strip and an <strong>interest-only (IO)</strong> strip, so each is
+          extremely sensitive to prepayments — in opposite directions:</p>
+        <div class="callout concept">
+          <span class="ct-label">PO vs IO</span>
+          <p><strong>PO</strong> is bought at a deep discount; the investor wants <em>fast</em> prepayments — falling
+            rates bring par forward, raising the return. It is an extreme <em>discount</em> security.
+            <strong>IO</strong> has no par value; it receives interest only on the principal still outstanding, so the
+            investor wants <em>slow</em> prepayments — rising rates (and slower prepayments) help. It is an extreme
+            <em>premium</em> security and can fail to return the amount invested if rates fall. Unusually, an IO's price
+            can <em>rise</em> with rising mortgage rates.</p>
+        </div>
+
+        <h2 id="cmbs">7 · Non-agency and commercial MBS</h2>
+        <p><strong>Non-agency</strong> securities carry no government guarantee, so the investor bears
+          <strong>credit risk</strong> and the deal must be <strong>credit-enhanced</strong>. Agency underwriting
+          standards govern the maximum <strong>loan-to-value (LTV)</strong> ratio, payment-to-income ratio, and loan
+          amount.</p>
+        <p><strong>Commercial MBS (CMBS)</strong> are backed by loans on income-producing property and are
+          <strong>non-recourse</strong> — the lender can look only to the property, not the borrower, for repayment.
+          Each property is assessed as a stand-alone business; the two key credit measures are the
+          <strong>debt-service-coverage ratio</strong> and the <strong>LTV ratio</strong>. Deal structures are
+          multi-property single-borrower or multi-property conduit.</p>
+        <div class="callout note">
+          <span class="ct-label">Call protection in CMBS</span>
+          <p>Unlike residential borrowers, commercial borrowers face <strong>call protection</strong>. At the
+            <strong>loan level</strong>: <em>prepayment lockout</em>, <em>defeasance</em> (substitute a Treasury
+            portfolio replicating the cash flows), <em>prepayment penalty points</em>, and <em>yield-maintenance
+            charges</em> (make the lender indifferent to prepayment timing). At the <strong>structure level</strong>:
+            sequential-pay-by-rating means an AA tranche cannot pay down until the AAA is retired, and so on. Many CMBS
+            loans are <strong>balloon</strong> loans, adding <strong>balloon risk</strong> — the borrower may be unable
+            to refinance or sell to make the final lump-sum payment.</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>An MBS converts pooled mortgages into bonds whose dominant risk is <strong>prepayment</strong>, not default.
+            Prepayments are measured by <strong>SMM</strong>, annualised to <strong>CPR</strong> and benchmarked against
+            <strong>PSA</strong>; because they make cash flows uncertain, <strong>average life</strong> beats maturity,
+            and falling/rising rates create <strong>contraction/extension</strong> risk. A <strong>CMO</strong> cannot
+            remove that risk but reallocates it across <strong>tranches</strong> — sequential, accrual (Z), floater /
+            inverse floater, structured IO, and the two-sided-protected <strong>PAC</strong> bonds backed by
+            risk-absorbing <strong>support</strong> tranches. <strong>Stripped</strong> MBS split it into opposite-facing
+            PO and IO bets, while non-agency and <strong>commercial</strong> MBS add the credit dimension and their own
+            call protection.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/derivatives-pricing-08-embedded-options.html"><span class="dir">← Previous</span><span class="ttl">Valuing Bonds with Embedded Options</span></a>
+          <a class="next" href="/courses/derivatives-pricing-10-european-mortgage-market.html"><span class="dir">Next →</span><span class="ttl">Europe's Whole-Loan Sales Market</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/derivatives-pricing.html">← Derivatives Pricing</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

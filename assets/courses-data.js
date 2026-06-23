@@ -106,9 +106,27 @@
             { a: 'floaters',     t: '9 · Capped Floaters' },
             { a: 'convertibles', t: '10 · Convertible Bonds' }
           ] },
-        { n: '10', title: 'Topic 10', cfa: 'L2', built: false },
-        { n: '11', title: 'Topic 11', cfa: 'L2', built: false },
-        { n: '12', title: 'Topic 12', cfa: 'L2', built: false }
+        { n: '09', title: 'Mortgage-Backed Sector of the Bond Market', cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-09-mortgage-backed.html',
+          topics: [
+            { a: 'loans',      t: '2 · Residential mortgage loans' },
+            { a: 'passthrough',t: '3 · Passthrough securities' },
+            { a: 'prepay',     t: '3.4 · Measuring prepayments' },
+            { a: 'avglife',    t: '3.5 · Average life &amp; risk' },
+            { a: 'cmo',        t: '4 · CMOs &amp; tranches' },
+            { a: 'pac',        t: '4.5 · PAC &amp; support' },
+            { a: 'strips',     t: '5 · Stripped MBS' },
+            { a: 'cmbs',       t: '7 · Commercial MBS' }
+          ] },
+        { n: '10', title: "Europe's Whole-Loan Sales Market", cfa: 'L2', built: true,
+          url: '/courses/derivatives-pricing-10-european-mortgage-market.html',
+          topics: [
+            { a: 'background', t: '1 · Whole-loan sales market' },
+            { a: 'funding',    t: 'Whole-loan vs securitisation' },
+            { a: 'mirror',     t: '2 · Will Europe mirror the U.S.?' },
+            { a: 'countries',  t: '3 · Prospects by country' },
+            { a: 'servicing',  t: '4 · Importance of servicing' }
+          ] }
       ]
     },
 
