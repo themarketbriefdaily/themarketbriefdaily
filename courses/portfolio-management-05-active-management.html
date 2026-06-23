@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Active Portfolio Management · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="Active return and active weights, decomposing value into asset allocation and security selection, the information ratio and optimal active risk, the Treynor-Black model for security selection, Grinold's rule, and the fundamental law of active management." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="05">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 5 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Active Portfolio Management</h1>
+        <p class="summary">
+          If the market portfolio is efficient, passive investing suffices — yet active managers bet they can beat the
+          benchmark. This lesson makes that bet measurable: <strong>active return</strong> and active weights,
+          decomposing value into <strong>asset allocation vs security selection</strong>, the <strong>information
+          ratio</strong> and the optimal amount of active risk to take, the <strong>Treynor-Black</strong> model for
+          turning mispricings into weights, and the <strong>fundamental law</strong> that ties performance to skill and
+          breadth.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#active-return">Active return &amp; weights</a>
+            <a href="#decomposition">Allocation vs selection</a>
+            <a href="#info-ratio">Information ratio</a>
+            <a href="#optimal-risk">Optimal active risk</a>
+            <a href="#treynor-black">Treynor-Black model</a>
+            <a href="#grinold">Grinold's rule</a>
+            <a href="#fundamental-law">The fundamental law</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <strong>Active return</strong> is the difference between an actively managed portfolio's return and its
+          benchmark: \(R_A=R_P-R_B\). It can be viewed ex-ante (expected) or ex-post (realised), and measures the value
+          active management adds.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Compute active return from active weights.</li>
+            <li>Decompose active return into asset allocation and security selection.</li>
+            <li>Define the information ratio and find the optimal active risk.</li>
+            <li>Apply the Treynor-Black model to build the optimal active portfolio.</li>
+            <li>State Grinold's rule and the fundamental law of active management.</li>
+          </ol>
+        </div>
+
+        <h2 id="active-return">Active return and active weights</h2>
+        <p>The <strong>active weight</strong> on asset \(i\) is the deviation from the benchmark,
+          \(\Delta w_i=w_i^P-w_i^B\) (positive = overweight, negative = underweight), and active weights sum to zero.
+          Active return is their return-weighted sum:</p>
+        <div class="formula">
+          <div class="f-label">Active return from active weights</div>
+          <div class="mjx-row">$$ R_A=R_P-R_B=\sum_{i=1}^{N}\big(w_i^P-w_i^B\big)r_i=\sum_{i=1}^{N}\Delta w_i\,r_i, \qquad \sum_i\Delta w_i=0 $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>An international equity portfolio</h4></div>
+          <div class="ex-body">
+            <p>US: benchmark 22%, portfolio 16%, return 20%. UK: 28% / 34% / 23%. Other: 50% / 50% / 16%. Find the active
+              weights and active return.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Active weights: US \(16-22=-6\%\); UK \(34-28=+6\%\); Other \(50-50=0\). Active return
+                \(=(-0.06)(20\%)+(0.06)(23\%)+0(16\%)=\textbf{0.18%}\) — a small gain from overweighting the
+                higher-returning UK and underweighting the US.</p>
+              <span class="answer">Active weights −6%, +6%, 0; active return 0.18%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="decomposition">Asset allocation vs security selection</h2>
+        <p>When a manager both allocates across asset <em>classes</em> and selects securities <em>within</em> them, the
+          value splits cleanly into two sources (it does not, however, capture their interaction):</p>
+        <div class="formula">
+          <div class="f-label">Two sources of active value</div>
+          <div class="mjx-row">$$ R_A=\underbrace{\sum_j \Delta w_j\,R_j^B}_{\text{asset allocation}}+\underbrace{\sum_j w_j^P\,R_j^A}_{\text{security selection}} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Equities and bonds</h4></div>
+          <div class="ex-body">
+            <p>Equities fund 22% (benchmark 16%); bonds fund −1% (benchmark −2%). Baseline policy 60/40; actual 68/32.
+              Split the value.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Active returns: equities \(22-16=6\%\); bonds \(-1-(-2)=1\%\). <strong>Allocation</strong> (active class
+                weights +8%, −8%): \(0.08(16\%)+(-0.08)(-2\%)=1.44\%\). <strong>Selection</strong>:
+                \(0.68(6\%)+0.32(1\%)=4.4\%\). Total \(=1.44\%+4.4\%=\textbf{5.84%}\). Check directly:
+                \(R_B=0.6(16\%)+0.4(-2\%)=8.8\%\), \(R_P=0.68(22\%)+0.32(-1\%)=14.64\%\), \(R_A=5.84\%\). ✓</p>
+              <span class="answer">Allocation 1.44% + selection 4.4% = 5.84% total active return</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="info-ratio">The information ratio</h2>
+        <p>Good active management is high <em>and</em> consistent. The <strong>information ratio</strong> rewards both:</p>
+        <div class="formula">
+          <div class="f-label">Information ratio</div>
+          <div class="mjx-row">$$ \text{IR}=\frac{E(R_A)}{\sqrt{\operatorname{var}(R_A)}}=\frac{E(R_P-R_B)}{\text{tracking error}} $$</div>
+        </div>
+        <p>The denominator, \(\sqrt{\operatorname{var}(R_A)}\), is the <strong>active risk</strong> (tracking error). The
+          IR is <strong>scale-invariant</strong> — doubling all active weights doubles \(R_A\) and the active risk, so the
+          ratio is unchanged.</p>
+
+        <h2 id="optimal-risk">Optimal active risk</h2>
+        <p>How much active risk should you take? Mix the benchmark (weight \(1-w\)) with the active portfolio (weight
+          \(w\)) and maximise the combined Sharpe ratio. The optimum and the resulting optimal active risk are:</p>
+        <div class="formula">
+          <div class="f-label">Optimal active weight and risk</div>
+          <div class="mjx-row">$$ w^{*}=\frac{\text{IR}}{\text{SR}_B}\cdot\frac{\sigma_B}{\sigma_A}, \qquad \text{optimal active risk}=w^{*}\sigma_A=\frac{\text{IR}}{\text{SR}_B}\,\sigma_B $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Mixing a fund with its benchmark</h4></div>
+          <div class="ex-body">
+            <p>Fund: IR 0.2, active risk 9%. Benchmark: Sharpe 0.4, s.d. 12%. Find the optimal weights and active risk.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(w^{*}=\frac{0.2}{0.4}\cdot\frac{0.12}{0.09}=0.6667\) in the fund, \(0.3333\) in the benchmark. Optimal
+                active risk \(=0.6667\times9\%=\textbf{6%}\).</p>
+              <span class="answer">66.7% fund / 33.3% benchmark; optimal active risk 6%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="treynor-black">The Treynor-Black model</h2>
+        <p>Treynor-Black turns identified mispricings into a portfolio. In a single-index framework, asset \(i\) has a
+          non-zero Jensen's alpha \(\alpha_i\), beta \(\beta_i\) and idiosyncratic variance \(\sigma_{\varepsilon i}^2\).
+          The <strong>optimal active portfolio</strong> weights each asset by its <em>alpha-to-idiosyncratic-variance</em>
+          ratio, then blends that active portfolio with the benchmark:</p>
+        <div class="formula">
+          <div class="f-label">Treynor-Black weights</div>
+          <div class="mjx-row">$$ w_i=\frac{\alpha_i/\sigma_{\varepsilon i}^2}{\sum_j \alpha_j/\sigma_{\varepsilon j}^2}, \qquad w_0=\frac{\alpha_A/\sigma_{\varepsilon A}^2}{(E(R_B)-r_f)/\operatorname{var}(R_B)}, \qquad w_A^{*}=\frac{w_0}{1+(1-\beta_A)w_0} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Four mispriced stocks</h4></div>
+          <div class="ex-body">
+            <p>Forecasts — A: 20%, β 0.6, σε 60%; B: 17%, 0.6, 50%; C: 14%, 0.5, 45%; D: 8%, 0.2, 40%. Benchmark 10%, s.d.
+              25%; \(r_f=4\%\). Build the optimal active portfolio and the final allocation.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Alphas \(\alpha_i=E(r_i)-[r_f+\beta_i(E(R_B)-r_f)]\): A \(=20\%-[4\%+0.6(6\%)]=12.4\%\); similarly B
+                9.4%, C 7%, D 2.8%. Weighting by \(\alpha_i/\sigma_{\varepsilon i}^2\) and normalising gives
+                \(w=(0.28,0.30,0.28,0.14)\). Then \(\alpha_A=8.64\%\), \(\beta_A=0.516\),
+                \(\sigma_{\varepsilon A}^2=0.0697\). So \(w_0=\frac{0.0864/0.0697}{(0.06)/(0.25)^2}=1.29\) and
+                \(w_A^{*}=\frac{1.29}{1+(1-0.516)(1.29)}=0.8\). Final weights: A 0.22, B 0.24, C 0.22, D 0.11, benchmark
+                0.20.</p>
+              <span class="answer">Active portfolio (0.28, 0.30, 0.28, 0.14); 80% active / 20% benchmark</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="grinold">Grinold's rule</h2>
+        <p>Treynor-Black takes the alphas as given. <strong>Grinold's rule</strong> models where they come from:</p>
+        <div class="formula">
+          <div class="f-label">Grinold's rule</div>
+          <div class="mjx-row">$$ \alpha_i=\text{IC}\times\sigma_i\times S_i $$</div>
+        </div>
+        <p>The <strong>information coefficient (IC)</strong> — common to all assets — is the correlation between forecast
+          alphas and realised active returns (high IC = good forecasting skill); \(S_i\) is a standardised score for asset
+          \(i\) (from fundamentals or analyst forecasts), scaled so the average squared score is 1.</p>
+
+        <h2 id="fundamental-law">The fundamental law of active management</h2>
+        <p>Substituting Grinold's alpha into the optimal active weights and the expected active return yields the
+          celebrated law:</p>
+        <div class="formula">
+          <div class="f-label">Fundamental law</div>
+          <div class="mjx-row">$$ \text{IR}=\text{IC}\sqrt{N}=\text{IC}\sqrt{\text{BR}} \qquad\Longrightarrow\qquad \text{(with constraints) } \text{IR}=\text{TC}\cdot\text{IC}\sqrt{N} $$</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Skill × breadth</span>
+          <p>Active quality = <strong>skill</strong> (the IC) × <strong>breadth</strong> (\(\sqrt{N}\), the number of
+            independent bets / size of the investment universe, BR). Be skilful <em>and</em> apply that skill across many
+            opportunities. Adding portfolio <strong>constraints</strong> introduces the <strong>transfer coefficient
+            (TC)</strong> — the correlation between the actual and theoretically-optimal active weights; \(\text{TC}=1\)
+            with no friction, and \(\text{TC}&lt;1\) measures value lost in implementation.</p>
+        </div>
+        <p><strong>Limitations:</strong> a constant IC across all assets and time is unrealistic (forecasting difficulty
+          varies); "breadth" is ambiguous (many similar stocks are not many independent bets); and the logic is somewhat
+          circular (alpha depends on IC, but IC is defined via alpha) — which is why academia treats the law cautiously.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Active management is measured by <strong>active return</strong> \(R_A=\sum\Delta w_i r_i\), decomposed into
+            <strong>asset allocation</strong> and <strong>security selection</strong>, and judged by the
+            <strong>information ratio</strong> (active return per unit tracking error). The right amount of active risk is
+            \(\frac{\text{IR}}{\text{SR}_B}\sigma_B\); the <strong>Treynor-Black</strong> model converts alphas into
+            weights proportional to \(\alpha_i/\sigma_{\varepsilon i}^2\); and the <strong>fundamental law</strong>
+            \(\text{IR}=\text{IC}\sqrt{\text{BR}}\) says performance is <strong>skill × breadth</strong> (times a transfer
+            coefficient under constraints) — a clean intuition built on fragile assumptions.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-04-risk-management.html"><span class="dir">← Previous</span><span class="ttl">Portfolio Risk Management</span></a>
+          <a class="next" href="/courses/portfolio-management-06-international.html"><span class="dir">Next →</span><span class="ttl">International Portfolio Management</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

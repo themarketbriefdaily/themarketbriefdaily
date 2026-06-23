@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Risk Management · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="Value at risk and its computation by historical simulation, the parametric (normal) method and Monte Carlo, VaR under a single-index model, why the normal assumption fails on fat tails, backtesting, expected shortfall, stress testing, and risk control." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="04">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 4 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Portfolio Risk Management</h1>
+        <p class="summary">
+          Standard deviation and beta measure risk symmetrically and are hard to translate into "how much could I lose?"
+          <strong>Value at risk (VaR)</strong> answers exactly that — a single, communicable loss threshold. This lesson
+          covers VaR's definition and the three ways to compute it (historical simulation, the parametric normal method,
+          Monte Carlo), how a factor model slashes the estimation burden, why the normal assumption understates crashes,
+          and the tools that go beyond VaR: <strong>expected shortfall</strong>, <strong>backtesting</strong> and
+          <strong>stress testing</strong>.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#types">Types of risk</a>
+            <a href="#var">Value at risk</a>
+            <a href="#historical">Historical simulation</a>
+            <a href="#parametric">Parametric method</a>
+            <a href="#sim-var">VaR under a factor model</a>
+            <a href="#fat-tails">Beyond normal</a>
+            <a href="#backtest">Backtesting</a>
+            <a href="#es">Expected shortfall &amp; control</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Finance faces many risks — <strong>market</strong> (price moves), <strong>credit</strong> (defaults),
+          <strong>operational</strong> (failed processes/errors), <strong>liquidity</strong> (asset: can't trade
+          quickly; funding: can't raise cash for obligations), and <strong>regulatory</strong>. This lesson focuses on
+          <strong>market risk</strong> in a portfolio.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Define VaR and convert between percentage, dollar, and multi-horizon VaR.</li>
+            <li>Compute VaR by historical simulation, the parametric normal method, and Monte Carlo.</li>
+            <li>Use a single-index model to estimate the covariance structure efficiently.</li>
+            <li>Explain why the normal assumption fails and list the stylised facts of returns.</li>
+            <li>Backtest VaR and apply expected shortfall, stress testing and risk-control limits.</li>
+          </ol>
+        </div>
+
+        <h2 id="var">Value at risk (VaR)</h2>
+        <p>An industry standard since J.P. Morgan's 1994 RiskMetrics, <strong>VaR</strong> is a loss threshold a
+          portfolio should not exceed over a <strong>time horizon</strong> at a <strong>confidence level</strong>. A
+          "30-day 95% VaR of \(V\%\)" means: <em>there is a 95% chance the portfolio will not lose more than \(V\%\) over
+          the next 30 days</em>. Statistically, the %-VaR is the negative of the \((100-\alpha)\) percentile of the return
+          distribution, reported as a positive loss magnitude.</p>
+        <div class="formula">
+          <div class="f-label">Dollar VaR and horizon scaling</div>
+          <div class="mjx-row">$$ \text{Dollar VaR}=\text{\%-VaR}\times\text{notional}, \qquad \text{$N$-day VaR}=\text{1-day VaR}\times\sqrt{N} $$</div>
+        </div>
+        <p>The \(\sqrt{N}\) rule is exact only for i.i.d. zero-mean normal daily returns — otherwise an approximation.</p>
+
+        <h2 id="historical">Historical simulation</h2>
+        <p>"History repeats itself": treat each past daily return as a future scenario and read VaR off the percentile of
+          historical portfolio returns. Procedure: pick a data window; compute each asset's daily returns; compute the
+          portfolio return each day (constant weights); take the \((100-\alpha)\) percentile (Excel
+          <code>percentile</code>); scale by \(\sqrt{N}\); multiply by notional for dollars.
+          <strong>Pros:</strong> no distributional assumption, transparent, grounded in real events.
+          <strong>Cons:</strong> no guidance on window length (and results are sensitive to it), purely backward-looking,
+          and limited to what has happened — it cannot foresee a first-time "black swan."</p>
+
+        <h2 id="parametric">The parametric (normal) method</h2>
+        <p>Assume a distribution and read off its theoretical percentile. For the normal, any weighted average of normals
+          is normal, so a portfolio of normal assets is normal. With portfolio mean \(\mu\) and s.d. \(\sigma\):</p>
+        <div class="formula">
+          <div class="f-label">Parametric VaR</div>
+          <div class="mjx-row">$$ \text{\%-VaR}=-\big(\mu+z(\alpha)\,\sigma\big), \qquad z(95)=-1.645,\ z(97.5)=-1.960,\ z(99)=-2.326 $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Two-asset VaR</h4></div>
+          <div class="ex-body">
+            <p>Asset A: daily \(\mu=0.05\%,\sigma=1.3\%\); B: \(0.08\%, 2\%\); \(\rho=0.7\); weights 40% A / 60% B. Find
+              the 1-day and 10-day 95% VaR.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(\mu_p=0.4(0.05\%)+0.6(0.08\%)=0.068\%\). \(\sigma_p=\sqrt{0.4^2(1.3\%)^2+2(0.4)(0.6)(0.7)(1.3\%)(2\%)+0.6^2(2\%)^2}=1.607\%\).
+                1-day 95% VaR \(=-[0.068\%+(-1.645)(1.607\%)]=\textbf{2.576%}\). 10-day
+                \(=2.576\%\times\sqrt{10}=\textbf{8.147%}\).</p>
+              <span class="answer">1-day 95% VaR = 2.576%; 10-day = 8.147%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="sim-var">VaR under a single-index model</h2>
+        <p>For \(n\) assets, the portfolio s.d. needs every pairwise covariance — \(n(n-1)/2\) estimates (124,750 for 500
+          stocks!). A <strong>single-index model</strong> collapses this. For a well-diversified portfolio
+          \(\sigma_p\approx\beta_p\sigma_M\); and even otherwise, covariances simplify to
+          \(\operatorname{Cov}(r_i,r_j)=\beta_i\beta_j\sigma_M^2\) — so 500 stocks need just 501 estimates (500 betas + the
+          market variance) instead of 124,750.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Portfolio VaR via SIM</h4></div>
+          <div class="ex-body">
+            <p>Well-diversified A (\(\mu=0.05\%,\beta=0.5\)), B (\(0.12\%,1.6\)), C (\(0.08\%,1.1\)); benchmark daily s.d.
+              0.95%; weights 30/20/50. Find the 30-day 99% VaR.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(\mu_p=0.3(0.05)+0.2(0.12)+0.5(0.08)=0.079\%\); \(\beta_p=0.3(0.5)+0.2(1.6)+0.5(1.1)=1.02\);
+                \(\sigma_p\approx1.02\times0.95\%=0.969\%\). 1-day 99% VaR
+                \(=-[0.079\%-2.326(0.969\%)]=2.175\%\); 30-day \(=2.175\%\times\sqrt{30}=\textbf{11.9%}\).</p>
+              <span class="answer">βp=1.02, σp=0.969%; 30-day 99% VaR = 11.9%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="fat-tails">Beyond the normal assumption</h2>
+        <p>The normal is a poor model of crashes: under it, the Dow's −25.6% on 19 Oct 1987 should occur once in
+          \(\sim10^{15}\) years. Its tails are simply too thin. Real returns show three <strong>stylised facts</strong>:
+          <strong>negative skewness</strong> (big drops more common than big rises), <strong>excess kurtosis</strong>
+          (fat tails — extreme moves too frequent), and <strong>volatility clustering</strong> (big moves follow big
+          moves). Remedies: heavy-tailed distributions (Student-\(t\), extreme-value), or time-varying-volatility models
+          such as RiskMetrics' <strong>EWMA</strong>: \(\sigma_t^2=\lambda\sigma_{t-1}^2+(1-\lambda)r_{t-1}^2\).</p>
+        <div class="callout note">
+          <span class="ct-label">Monte Carlo simulation</span>
+          <p>Fix a statistical model, generate many simulated return scenarios, compute portfolio returns, and read VaR
+            from their percentile. It is a <em>hybrid</em>: like the parametric method it needs a model, but like
+            historical simulation it reads VaR off observed (here, simulated) data. It handles many assets and
+            sophisticated models — at the cost of computation and a "black-box" feel.</p>
+        </div>
+
+        <h2 id="backtest">Backtesting</h2>
+        <p><strong>Backtesting</strong> checks the VaR procedure: count the fraction of days the actual loss
+          <em>breached</em> the VaR. For a good 95% VaR, breaches should be \(\approx5\%\) — too many means the VaR is too
+          lenient; too few means it is too conservative (tying up capital needlessly). Compute breaches over a window,
+          avoiding lookahead bias (don't use data on/after the estimation day). One example — 95% VaR on an S&amp;P 500
+          ETF over 2018–2020 via historical simulation — produced almost <strong>8%</strong> breaches, well above the
+          expected 5%.</p>
+
+        <h2 id="es">Expected shortfall, stress testing and risk control</h2>
+        <p>VaR's weaknesses: it says nothing about <em>how bad</em> losses are once breached, is hard to aggregate across
+          books, and is very methodology-sensitive. <strong>Expected shortfall (ES / CVaR)</strong> fixes the first — the
+          average loss <em>given</em> a breach:</p>
+        <div class="formula">
+          <div class="f-label">Expected shortfall</div>
+          <div class="mjx-row">$$ \text{ES}=-\,E\big[r \mid r\le -\text{VaR}\big] \;\ge\; \text{VaR} $$</div>
+        </div>
+        <p>ES is always at least VaR, and much larger when tails are heavy and skewed. Whereas VaR and ES are
+          <em>statistical</em> measures, <strong>stress testing</strong> is a "what-if": project losses under extreme
+          scenarios (all global equities −30%, a +5% parallel yield-curve shift, option vol +100%, or historical events
+          like 2008/COVID) <em>without</em> assigning probabilities. Finally, <strong>risk control</strong> uses limits:
+          <strong>risk budgeting</strong> (set total risk, then allocate it across strategies), <strong>position
+          limits</strong> (caps on notional/market value), <strong>scenario limits</strong> (caps on a scenario's loss),
+          and <strong>stop-loss limits</strong> (cut exposure once losses pass a threshold).</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p><strong>VaR</strong> states the worst loss at a confidence level over a horizon — computed by
+            <strong>historical simulation</strong> (no assumptions, backward-looking), the <strong>parametric normal</strong>
+            method (\(\text{VaR}=-(\mu+z(\alpha)\sigma)\), scaled by \(\sqrt{N}\)), or <strong>Monte Carlo</strong>; a
+            <strong>factor model</strong> makes the covariance estimation tractable (\(\beta_i\beta_j\sigma_M^2\)). But the
+            <strong>normal assumption understates crashes</strong> — returns are skewed, fat-tailed and cluster — so VaR
+            is <strong>backtested</strong> and supplemented by <strong>expected shortfall</strong> (the loss beyond VaR),
+            <strong>stress tests</strong> (probability-free what-ifs), and hard <strong>risk limits</strong>.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-03-factor-models-apt.html"><span class="dir">← Previous</span><span class="ttl">Factor Models, APT and Factor Investing</span></a>
+          <a class="next" href="/courses/portfolio-management-05-active-management.html"><span class="dir">Next →</span><span class="ttl">Active Portfolio Management</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

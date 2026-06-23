@@ -305,8 +305,29 @@
             { a: 'attribution',  t: 'Style &amp; attribution' },
             { a: 'buffett',      t: 'Buffett’s alpha' }
           ] },
-        { n: '04', title: 'Portfolio Risk Management', cfa: 'L1', built: false },
-        { n: '05', title: 'Active Portfolio Management', cfa: 'L1', built: false },
+        { n: '04', title: 'Portfolio Risk Management', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-04-risk-management.html',
+          topics: [
+            { a: 'types',      t: 'Types of risk' },
+            { a: 'var',        t: 'Value at risk' },
+            { a: 'historical', t: 'Historical simulation' },
+            { a: 'parametric', t: 'Parametric method' },
+            { a: 'sim-var',    t: 'VaR under a factor model' },
+            { a: 'fat-tails',  t: 'Beyond normal' },
+            { a: 'backtest',   t: 'Backtesting' },
+            { a: 'es',         t: 'Expected shortfall &amp; control' }
+          ] },
+        { n: '05', title: 'Active Portfolio Management', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-05-active-management.html',
+          topics: [
+            { a: 'active-return',   t: 'Active return &amp; weights' },
+            { a: 'decomposition',   t: 'Allocation vs selection' },
+            { a: 'info-ratio',      t: 'Information ratio' },
+            { a: 'optimal-risk',    t: 'Optimal active risk' },
+            { a: 'treynor-black',   t: 'Treynor-Black model' },
+            { a: 'grinold',         t: 'Grinold’s rule' },
+            { a: 'fundamental-law', t: 'The fundamental law' }
+          ] },
         { n: '06', title: 'International Portfolio Management', cfa: 'L1', built: false },
         { n: '07', title: 'Applied Portfolio Management', cfa: 'L1', built: false },
         { n: '08', title: 'Electronic Markets, Trade Execution and Technology', cfa: 'L1', built: false },
