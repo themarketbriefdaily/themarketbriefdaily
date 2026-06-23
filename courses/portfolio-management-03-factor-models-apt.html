@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Factor Models, APT and Factor Investing · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="Multifactor models and factor loadings, arbitrage pricing theory derived from no-arbitrage, the multifactor SML, the Fama-French three-factor model and other factors, smart-beta factor investing, and style analysis and performance attribution including Buffett's alpha." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="03">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 3 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Factor Models, APT and Factor Investing</h1>
+        <p class="summary">
+          The CAPM rests on heavy economic assumptions. This lesson reaches the same kind of risk-return relationship by
+          two looser routes: a <strong>factor model</strong> that lets many common forces drive returns, and
+          <strong>arbitrage pricing theory (APT)</strong>, derived from the single principle that there is no free lunch.
+          We then meet the <strong>Fama-French</strong> factors, the <strong>smart-beta</strong> investing they spawned,
+          and how factor models attribute performance — including unpicking <strong>Buffett's alpha</strong>.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#factor-model">Factor models</a>
+            <a href="#arbitrage">Arbitrage &amp; APT</a>
+            <a href="#apt">The APT equation</a>
+            <a href="#capm-apt">CAPM vs APT</a>
+            <a href="#fama-french">Fama-French 3-factor</a>
+            <a href="#smart-beta">Factor investing</a>
+            <a href="#attribution">Style &amp; attribution</a>
+            <a href="#buffett">Buffett's alpha</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          A <strong>factor model</strong> generalises the single-index model: instead of one market factor, returns are
+          driven by \(K\) common factors — which can be the market, macro variables, or empirical regularities.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Write a multifactor model and compute portfolio factor loadings.</li>
+            <li>Define arbitrage and derive the APT pricing equation.</li>
+            <li>Relate the multifactor SML to the CAPM and contrast CAPM with APT.</li>
+            <li>Estimate the Fama-French three-factor model and interpret its loadings.</li>
+            <li>Explain factor (smart-beta) investing and use factor models for performance attribution.</li>
+          </ol>
+        </div>
+
+        <h2 id="factor-model">Factor models</h2>
+        <div class="formula">
+          <div class="f-label">K-factor model</div>
+          <div class="mjx-row">$$ r_i=a_i+b_{i1}F_1+b_{i2}F_2+\cdots+b_{iK}F_K+\varepsilon_i $$</div>
+          <div class="mjx-row">$$ r_i-E(r_i)=b_{i1}\tilde F_1+\cdots+b_{iK}\tilde F_K+\varepsilon_i,\qquad \tilde F_k=F_k-E(F_k) $$</div>
+        </div>
+        <p>Each <strong>factor loading</strong> \(b_{ik}\) is the asset's sensitivity to factor \(k\) (it behaves like
+          beta); \(\varepsilon_i\) is zero-mean firm-specific noise, uncorrelated with the factors and other assets'
+          noise. The second form reads return as <em>mean + Σ(loading × factor surprise) + noise</em>. A portfolio's
+          loading on each factor is, like portfolio beta, the <strong>weighted average</strong> of constituent loadings;
+          and in a <strong>well-diversified</strong> portfolio the firm-specific noise washes out, leaving only the
+          common factors as sources of randomness.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Factor tilting</h4></div>
+          <div class="ex-body">
+            <p>Fund 1 loadings (1.2, 0.9, 3); Fund 2 (0.8, −0.5, 1.5). (1) Loadings of a 30%/70% mix? (2) What mix gives a
+              Factor-3 loading of 2.5?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>(1) Weighted averages: F1 \(=0.3(1.2)+0.7(0.8)=0.92\); F2 \(=0.3(0.9)+0.7(-0.5)=-0.08\); F3
+                \(=0.3(3)+0.7(1.5)=1.95\). (2) Solve \(3w+1.5(1-w)=2.5\Rightarrow w=0.667\) in Fund 1. This is
+                <strong>factor tilting</strong> — engineering a target factor exposure.</p>
+              <span class="answer">(1) 0.92, −0.08, 1.95; (2) 66.7% in Fund 1</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="arbitrage">Arbitrage and APT</h2>
+        <p><strong>Arbitrage</strong> is a strategy generating a riskless profit with zero net investment (e.g. IBM at
+          \$160 on NYSE and \$162 on NASDAQ — buy one, sell the other). In an efficient market, persistent arbitrage
+          should not exist. <strong>APT</strong> uses far weaker assumptions than CAPM: (1) enough assets to diversify,
+          (2) no arbitrage, (3) the factor model is accurate.</p>
+        <p>The derivation: build a well-diversified portfolio (noise ≈ 0) whose net factor loading is <em>zero</em>. Its
+          return is then certain, so by no-arbitrage it must equal \(r_f\). Working this through for any pair of assets
+          forces a common ratio of excess return to loading — the factor's <strong>risk premium</strong> \(\lambda\).</p>
+
+        <h2 id="apt">The APT pricing equation</h2>
+        <div class="formula">
+          <div class="f-label">APT and the multifactor SML</div>
+          <div class="mjx-row">$$ E(r_i)=r_f+b_{i1}\lambda_1+b_{i2}\lambda_2+\cdots+b_{iK}\lambda_K $$</div>
+          <div class="mjx-row">$$ \text{if } F_k \text{ is a tradable portfolio return: } \lambda_k=E(F_k)-r_f \;\Rightarrow\; E(r_i)=r_f+\sum_k b_{ik}\big(E(F_k)-r_f\big) $$</div>
+        </div>
+        <p>The factor <strong>risk premium</strong> \(\lambda_k\) is the fair excess return per unit of loading on factor
+          \(k\). When a factor is the return of a tradable portfolio, \(\lambda_k=E(F_k)-r_f\); with a single market
+          factor, this collapses to the <strong>CAPM security market line</strong> — hence the name
+          <strong>multifactor SML</strong>. (If a factor is not a tradable asset, its \(\lambda\) may differ.)</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Applying a two-factor APT</h4></div>
+          <div class="ex-body">
+            <p>Factors: an equity portfolio \(E(r_e)=15\%\) and a bond portfolio \(E(r_d)=10\%\); \(r_f=3\%\); premiums
+              \(\lambda_e=E(r_e)-r_f\), \(\lambda_d=E(r_d)-r_f\). Find the fair return for XYZ with \(b_e=0.8,\ b_d=1.5\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(E(r)=r_f+b_e(0.15-0.03)+b_d(0.10-0.03)=0.03+0.12b_e+0.07b_d\). For XYZ:
+                \(E(r)=0.03+0.12(0.8)+0.07(1.5)=\textbf{23.1%}\).</p>
+              <span class="answer">E(r) = 0.03 + 0.12·0.8 + 0.07·1.5 = 23.1%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="capm-apt">CAPM vs APT</h2>
+        <div class="callout note">
+          <span class="ct-label">Two roads to fair return</span>
+          <p><strong>CAPM:</strong> requires the (untestable) hypothetical market portfolio; derived from economic
+            <em>equilibrium</em> under strong assumptions; one source of systematic risk. <strong>APT:</strong> requires
+            you to specify the <em>factors</em> (but is silent on what they are); derived from <em>no-arbitrage</em> with
+            mild assumptions; rewards exposure to <em>multiple</em> factors. CAPM is a special one-factor case of APT.</p>
+        </div>
+
+        <h2 id="fama-french">The Fama-French three-factor model</h2>
+        <p>Empirically the market factor alone leaves systematic patterns unexplained. Fama-French add two:</p>
+        <div class="formula">
+          <div class="f-label">Fama-French three-factor model</div>
+          <div class="mjx-row">$$ r_i-r_f=\alpha_i+b_{i1}(r_M-r_f)+b_{i2}\,\text{SMB}+b_{i3}\,\text{HML}+\varepsilon_i $$</div>
+        </div>
+        <p><strong>SMB</strong> ("small minus big") is the return of small-cap over large-cap stocks;
+          <strong>HML</strong> ("high minus low") is value (high book-to-market) over growth. They are built by sorting
+          stocks into six size × book-to-market groups: \(\text{SMB}=\tfrac{1}{3}(r_{S/H}+r_{S/M}+r_{S/L})-\tfrac{1}{3}(r_{B/H}+r_{B/M}+r_{B/L})\)
+          and \(\text{HML}=\tfrac{1}{2}(r_{S/H}+r_{B/H})-\tfrac{1}{2}(r_{S/L}+r_{B/L})\). Because SMB and HML are
+          zero-investment <em>long-short</em> portfolios, no \(r_f\) is subtracted from their expected returns. Estimate
+          by multivariate regression: the intercept \(\alpha\) should be zero if the model holds, and the loadings reveal
+          style (high positive SMB → small-cap tilt; high HML → value tilt). Other popular factors: momentum
+          (<strong>UMD</strong>), quality (<strong>QMJ</strong>), low-beta (<strong>BAB</strong>) — data free on Kenneth
+          French's site and AQR.</p>
+
+        <h2 id="smart-beta">Factor investing ("smart beta")</h2>
+        <p>Traditional allocation targets asset classes or sectors; <strong>factor investing</strong> instead targets
+          the factors with strong academic evidence of historical risk-adjusted excess returns — value, size, momentum,
+          quality, low-volatility, liquidity. <strong>"Smart-beta"</strong> strategies harvest these premia through
+          <em>systematic, rules-based</em> processes — a hybrid of active and passive, at lower cost than active funds,
+          now widely packaged as ETFs. But factor returns are <strong>cyclical</strong> over the short run, so factor
+          investing is genuinely risky — the premia can disappear for years.</p>
+
+        <h2 id="attribution">Style analysis and performance attribution</h2>
+        <p>Factor loadings summarise a fund's <strong>style</strong> (its exposures), useful for mimicking, risk
+          management and attribution. Extending Jensen's alpha to a multifactor benchmark:</p>
+        <div class="formula">
+          <div class="f-label">Multifactor alpha</div>
+          <div class="mjx-row">$$ \alpha=E(r)-\Big[r_f+\sum_{k=1}^{K}b_k\lambda_k\Big] $$</div>
+        </div>
+        <div class="callout concept">
+          <span class="ct-label">Why ignoring factors inflates "skill"</span>
+          <p>If you measure performance with a one-factor model but the true model is Fama-French, the
+            \(b_2\,E(\text{SMB})+b_3\,E(\text{HML})\) reward gets <em>misread as alpha</em>. The return earned for
+            correctly tilting toward small/value stocks is mistaken for manager <strong>skill</strong>, when it is just
+            <strong>reward for bearing factor risk</strong>. Apparent alpha often shrinks once more factors are added.</p>
+        </div>
+
+        <h2 id="buffett">Buffett's alpha</h2>
+        <p>Frazzini et al. (2018) regressed Berkshire Hathaway's public-stock returns on six factors
+          (market, SMB, HML, UMD, BAB, QMJ). The result: significant loadings on <strong>HML (value)</strong>,
+          <strong>BAB (bet-against-beta / low-beta)</strong> and <strong>QMJ (quality)</strong> — Buffett buys cheap,
+          safe, high-quality stocks. Controlling for these factors drove the portfolio's alpha from <strong>5.8% down to
+          a statistically insignificant 0.3%</strong> — the factors almost entirely explain his returns. In principle
+          one could <em>mimic</em> the style by factor-tilting a diversified portfolio to match Berkshire's loadings —
+          though, as ever, treat such results critically.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>A <strong>factor model</strong> lets many common forces drive returns, with portfolio loadings as weighted
+            averages. <strong>APT</strong> derives the fair return \(E(r_i)=r_f+\sum_k b_{ik}\lambda_k\) from
+            <strong>no-arbitrage</strong> alone — a multifactor SML that contains CAPM as the one-factor case. The
+            <strong>Fama-French</strong> market/SMB/HML model captures size and value premia, seeding
+            <strong>smart-beta</strong> investing — systematic, cheap factor harvesting that is nonetheless cyclical and
+            risky. And factor models discipline <strong>attribution</strong>: much apparent <strong>alpha</strong> is
+            really reward for factor exposure, as Buffett's near-zero residual alpha shows.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-02-capm-performance.html"><span class="dir">← Previous</span><span class="ttl">CAPM and Performance Evaluation</span></a>
+          <a class="next" href="/courses/portfolio-management-04-risk-management.html"><span class="dir">Next →</span><span class="ttl">Portfolio Risk Management</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

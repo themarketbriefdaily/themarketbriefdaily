@@ -281,8 +281,30 @@
             { a: 'mutual-fund',   t: 'The mutual-fund theorem' },
             { a: 'practical',     t: 'Practical issues' }
           ] },
-        { n: '02', title: 'CAPM and Performance Evaluation', cfa: 'L1', built: false },
-        { n: '03', title: 'Factor Models, APT and Factor Investing', cfa: 'L1', built: false },
+        { n: '02', title: 'CAPM and Performance Evaluation', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-02-capm-performance.html',
+          topics: [
+            { a: 'equilibrium',     t: 'Equilibrium &amp; market portfolio' },
+            { a: 'cml',             t: 'Capital market line' },
+            { a: 'capm',            t: 'The CAPM &amp; beta' },
+            { a: 'sml',             t: 'Security market line' },
+            { a: 'sim',             t: 'The single-index model' },
+            { a: 'diversification', t: 'Diversification' },
+            { a: 'measures',        t: 'Performance measures' },
+            { a: 'which',           t: 'Which measure to use' }
+          ] },
+        { n: '03', title: 'Factor Models, APT and Factor Investing', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-03-factor-models-apt.html',
+          topics: [
+            { a: 'factor-model', t: 'Factor models' },
+            { a: 'arbitrage',    t: 'Arbitrage &amp; APT' },
+            { a: 'apt',          t: 'The APT equation' },
+            { a: 'capm-apt',     t: 'CAPM vs APT' },
+            { a: 'fama-french',  t: 'Fama-French 3-factor' },
+            { a: 'smart-beta',   t: 'Factor investing' },
+            { a: 'attribution',  t: 'Style &amp; attribution' },
+            { a: 'buffett',      t: 'Buffett’s alpha' }
+          ] },
         { n: '04', title: 'Portfolio Risk Management', cfa: 'L1', built: false },
         { n: '05', title: 'Active Portfolio Management', cfa: 'L1', built: false },
         { n: '06', title: 'International Portfolio Management', cfa: 'L1', built: false },
