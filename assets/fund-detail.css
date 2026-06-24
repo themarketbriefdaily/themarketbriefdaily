@@ -659,3 +659,52 @@ canvas.fund-chart {
 .criteria-table .crit-badge.pass  { background: rgba(61,186,126,0.12); color: var(--green); }
 .criteria-table .crit-badge.warn  { background: rgba(201,168,76,0.12); color: var(--gold); }
 .criteria-table .crit-badge.fail  { background: rgba(224,82,82,0.12); color: var(--red); }
+
+/* ============================================================
+   Institutional metrics: key-strip + statistics table
+   (rendered by assets/fund-metrics.js)
+   ============================================================ */
+.fund-keystrip { margin-top: 1.1rem; }
+.ks-caption {
+  font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 0.6rem;
+}
+.ks-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; }
+.ks-tile {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding: 0.85rem 0.9rem; background: var(--ink-2);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.ks-tile.ks-hi { border-color: var(--gold); background: var(--gold-dim); }
+.ks-val { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.45rem; line-height: 1; color: var(--text); }
+.ks-val.pos { color: var(--green); }
+.ks-val.neg { color: var(--red); }
+.ks-key { font-size: 0.72rem; color: var(--text-3); letter-spacing: 0.02em; }
+.ks-tile.ks-hi .ks-key { color: #8a6d12; font-weight: 600; }
+
+.fund-stats { margin-top: 1.6rem; }
+.st-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+.st-head h3 { margin: 0; font-family: 'Inter Tight', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text); }
+.st-win { font-size: 0.74rem; color: var(--text-3); }
+.stats-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.stats-table thead th {
+  text-align: right; font-weight: 600; color: var(--text-3); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.03em; padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border-h);
+}
+.stats-table thead th:first-child { text-align: left; }
+.stats-table td { padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--border); text-align: right; }
+.stats-table td.st-m { text-align: left; color: var(--text-2); font-weight: 500; }
+.stats-table td.st-f { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
+.stats-table td.st-b { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.st-note { display: block; font-size: 0.68rem; color: var(--text-3); font-weight: 400; margin-top: 0.1rem; }
+.stats-table tr.st-hi td { background: var(--gold-dim); }
+.stats-table tr.st-hi td.st-f { color: #7a5e0c; }
+.stats-table tr.st-sub td {
+  text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text-3); padding-top: 0.85rem; border-bottom: 1px solid var(--border-h);
+}
+@media (max-width: 560px) {
+  .ks-row { grid-template-columns: repeat(2, 1fr); }
+  .ks-val { font-size: 1.25rem; }
+}
