@@ -391,8 +391,28 @@
             { a: 'mean-returns',  t: 'Geometric vs arithmetic' },
             { a: 'multistage',    t: 'Multi-stage &amp; H-model' }
           ] },
-        { n: '02', title: 'Discounted Cash Flow Models and the Cost of Capital', cfa: 'L1', built: false },
-        { n: '03', title: 'Free Cash Flow and Residual Income Valuation', cfa: 'L1', built: false },
+        { n: '02', title: 'Discounted Cash Flow Models and the Cost of Capital', cfa: 'L1', built: true,
+          url: '/courses/equity-analysis-02-dcf-cost-of-capital.html',
+          topics: [
+            { a: 'reformat',    t: 'Reformatting the balance sheet' },
+            { a: 'fcff',        t: 'FCFF, FCFE &amp; FCFD' },
+            { a: 'dcf',         t: 'DCF: firm vs equity' },
+            { a: 'wacc',        t: 'WACC &amp; its circularity' },
+            { a: 'unlevered',   t: 'Unlevered cost of capital' },
+            { a: 'apv',         t: 'The APV model' },
+            { a: 'debt-policy', t: 'PDMP vs ADMP' }
+          ] },
+        { n: '03', title: 'Residual Income Valuation and Value Drivers', cfa: 'L1', built: true,
+          url: '/courses/equity-analysis-03-fcf-residual-income.html',
+          topics: [
+            { a: 'motivation',      t: 'Why earnings-based models' },
+            { a: 'rivm',            t: 'The residual income model' },
+            { a: 'economic-profit', t: 'Firm-level economic profit' },
+            { a: 'fcf-link',        t: 'FCF ↔ economic profit' },
+            { a: 'steady-state',    t: 'Steady state &amp; growth' },
+            { a: 'pe',              t: 'The P/E relationship' },
+            { a: 'value-drivers',   t: 'Value drivers &amp; Rappaport' }
+          ] },
         { n: '04', title: 'Value Drivers', cfa: 'L1', built: false },
         { n: '05', title: 'Reconciliation of Valuation Models', cfa: 'L1', built: false },
         { n: '06', title: 'Forecasting and Business Environment Analysis', cfa: 'L1', built: false },

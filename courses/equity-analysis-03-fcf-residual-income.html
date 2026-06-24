@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Residual Income Valuation and Value Drivers · Equity Analysis | The Market Brief Daily</title>
+  <meta name="description" content="The residual income (economic profit) valuation model from the clean-surplus relation, firm-level economic profit and the ROIC–WACC spread, the link between free cash flow and economic profit, steady-state and sustainable growth, the P/E relationship, and value drivers (Rappaport)." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-eqa" data-course="equity-analysis" data-lesson="03">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/equity-analysis.html">Equity Analysis</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="equity-analysis" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 3 · Equity Analysis<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Residual Income Valuation and Value Drivers</h1>
+        <p class="summary">
+          Free cash flows are often negative and uninformative about economic performance, so practice has shifted to
+          <strong>earnings-based</strong> valuation. The <strong>residual income (economic profit)</strong> model values
+          equity as <em>current book value plus the present value of future abnormal earnings</em> — and reconciles
+          exactly with the DCF and dividend models. This lesson builds it from the clean-surplus relation, links it to
+          free cash flow, and ends with steady-state growth, the P/E relationship, and the <strong>value drivers</strong>
+          behind every model.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#motivation">Why earnings-based models</a>
+            <a href="#rivm">The residual income model</a>
+            <a href="#economic-profit">Firm-level economic profit</a>
+            <a href="#fcf-link">FCF ↔ economic profit</a>
+            <a href="#steady-state">Steady state &amp; growth</a>
+            <a href="#pe">The P/E relationship</a>
+            <a href="#value-drivers">Value drivers &amp; Rappaport</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Earnings are <em>less volatile</em> than cash flows and easier to model — profitability (ROE) tends to
+          <strong>mean-revert</strong> under competition. Residual-income models show <em>how a firm creates value each
+          period</em>, yet, under consistent assumptions, deliver a valuation identical to DCF or the DDM.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Derive the residual income model from the clean-surplus relation.</li>
+            <li>Express residual income via the ROE–r<sub>e</sub> and ROIC–WACC spreads.</li>
+            <li>Link free cash flow to economic profit and value equity both ways.</li>
+            <li>Use steady-state relationships and the sustainable growth rate.</li>
+            <li>Connect the DGM to the P/E ratio and identify the value drivers.</li>
+          </ol>
+        </div>
+
+        <h2 id="motivation">Why earnings-based models?</h2>
+        <p>Forecasting net dividends ("wealth distribution") is hard, and DCF ("value creation") struggles when free cash
+          flows are <em>negative</em> (e.g. a fast-investing firm like Ocado) — annual FCF then says little about
+          economic performance. So the trend is toward <strong>economic profit / residual income (RI)</strong> models,
+          which relate intrinsic value to <strong>earnings and book value</strong>.</p>
+
+        <h2 id="rivm">The residual income valuation model</h2>
+        <p>Start from the <strong>clean-surplus relation (CSR)</strong>: all changes in equity flow through
+          (comprehensive) earnings, \(b_t-b_{t-1}=e_t-d_t\). "Normal" earnings on a marginal (zero-NPV) firm would be
+          \(r_e\,b_{t-1}\); <strong>residual income</strong> is the excess:</p>
+        <div class="formula">
+          <div class="f-label">Residual income → the valuation model</div>
+          <div class="mjx-row">$$ RI_t=e_t-r_e\,b_{t-1}=(\text{ROE}_t-r_e)\,b_{t-1} $$</div>
+          <div class="mjx-row">$$ MV_{E,0}=b_0+\sum_{t\ge1}\frac{RI_t}{(1+r_e)^t} \qquad\xrightarrow{RI_{t+1}=(1+g)RI_t}\qquad MV_{E,0}=b_0+\frac{RI_1}{r_e-g} $$</div>
+        </div>
+        <p>Substituting the dividend from the CSR into the DDM and telescoping (assuming the PV of book assets in the far
+          future → 0) collapses to this elegant result: <strong>value = current book value + PV of future abnormal
+          earnings</strong>. Its great advantage is the <em>reliable, available</em> anchor of current book value
+          \(b_0\). (The Ohlson model, covered later, uses an alternative RI-decay assumption with \(g&lt;0\).)</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Highgate plc by residual income</h4></div>
+          <div class="ex-body">
+            <p>Book value \(b_0=500\); cost of equity 9%; forecast year-1 earnings 108; abnormal earnings grow at 5%.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Normal earnings \(=b_0\times9\%=45\), so \(RI_1=108-45=63\). With 5% growth:
+                \(MV_{E,0}=500+\frac{63}{0.09-0.05}=\textbf{2,075}\) — identical to the DCF value from Lesson 2. Same
+                economics, anchored on book value rather than projected cash flows.</p>
+              <span class="answer">b₀ 500 + RI₁ 63/(0.09−0.05) = 2,075</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="economic-profit">Firm-level economic profit</h2>
+        <p>Charging a capital cost on opening invested capital gives the firm-level RI — also called
+          <strong>economic profit</strong> (the basis of Stern-Stewart's <strong>EVA®</strong>):</p>
+        <div class="formula">
+          <div class="f-label">Economic profit and the spread</div>
+          <div class="mjx-row">$$ RIF_t=\text{NOPAT}_t-\text{WACC}\cdot IC_{t-1}=(\text{ROIC}_t-\text{WACC})\cdot IC_{t-1} $$</div>
+        </div>
+        <p>where \(\text{ROIC}_t=\text{NOPAT}_t/IC_{t-1}\). Value is created only when the return on capital
+          <strong>exceeds its cost</strong> — a positive <em>economic spread</em>. (Recall invested capital
+          \(IC=OA-OL=\) fixed + intangibles + net operating working capital \(=\) book equity + book debt − non-operating
+          cash.)</p>
+
+        <h2 id="fcf-link">Free cash flow ↔ economic profit</h2>
+        <p>The two views are algebraically linked. Since \(\text{FCFF}_t=\text{NOPAT}_t-\Delta IC_t\), substituting the
+          economic-profit definition gives the equity value either way:</p>
+        <div class="formula">
+          <div class="f-label">Economic-profit valuation of invested capital</div>
+          <div class="mjx-row">$$ \text{FCFF}_t=RIF_t+(1+\text{WACC})IC_{t-1}-IC_t $$</div>
+          <div class="mjx-row">$$ MV_{IC,0}=IC_0+\sum_{t\ge1}\frac{RIF_t}{(1+\text{WACC})^t}, \qquad MV_{E,0}=(IC_0-MV_{NFO,0})+\sum_{t\ge1}\frac{RIF_t}{(1+\text{WACC})^t} $$</div>
+        </div>
+        <p>So invested capital is worth its book value plus the PV of future economic profit. The same WACC circularity
+          from Lesson 2 applies to this indirect route. (RI models assume opening book value \(b_{t-1}\) — required for
+          the DCF reconciliation — though firms change through the year, so some practitioners use mid-year conventions.)</p>
+
+        <h2 id="steady-state">Steady state and sustainable growth</h2>
+        <p>With a constant retention ratio \(q\) (so \(d_1=(1-q)e_1\)) and constant ROE \(=k\), the clean-surplus
+          relation makes book value, earnings and dividends all grow at the same rate:</p>
+        <div class="formula">
+          <div class="f-label">Sustainable growth</div>
+          <div class="mjx-row">$$ b_1=b_0(1+qk), \qquad g=qk=\text{retention ratio}\times\text{ROE} $$</div>
+        </div>
+
+        <h2 id="pe">From the DGM to the P/E ratio</h2>
+        <p>Substituting the sustainable growth rate into the dividend growth model and dividing by forward earnings
+          yields the <strong>forward P/E</strong> as a function of three things — the cost of equity, the payout/retention
+          and the ROE:</p>
+        <div class="formula">
+          <div class="f-label">Forward P/E</div>
+          <div class="mjx-row">$$ P_0=\frac{(1-q)e_1}{r_e-qk} \quad\Rightarrow\quad \frac{P_0}{e_1}=\frac{1-q}{r_e-qk}=f(r_e,\ q,\ \text{ROE}) $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Highgate plc on a P/E basis</h4></div>
+          <div class="ex-body">
+            <p>Earnings 108, book 500, FCF 83, growth 5%. Find the implied forward P/E and check the value.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>ROE \(k=108/500=21.6\%\); retention \(q=(108-83)/108=23.15\%\) (so \(g=qk=5\%\) ✓). Forward P/E
+                \(=\frac{1-0.2315}{0.09-0.05}=19.21\), and \(19.21\times108=\textbf{2,075}\) — the same value yet again.
+                Three models (DCF, residual income, P/E) reconcile because they share the same assumptions.</p>
+              <span class="answer">ROE 21.6%, q 23.15%, P/E 19.21 → 19.21×108 = 2,075</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="value-drivers">Value drivers and the Rappaport model</h2>
+        <p>Every model reduces to a few <strong>value drivers</strong>. At equity level, \(P_0/e_1=f(r_e,g,\text{ROE})\);
+          at firm level, \(MV_{IC,0}/\text{NOPAT}_1=f(\text{WACC},g,\text{ROIC})\). These can be decomposed further by
+          <strong>DuPont</strong> (ROE = operating margin × asset turnover × leverage). The <strong>Rappaport</strong>
+          model forecasts FCFF directly from value-driver ratios:</p>
+        <div class="formula">
+          <div class="f-label">Rappaport value-driver FCFF</div>
+          <div class="mjx-row">$$ \text{FCFF}_{t+1}=\underbrace{\text{OM}(1-\tau)}_{\text{after-tax margin}}(1+g)S_t-\underbrace{\text{IR}}_{IC/\text{sales}}\,g\,S_t $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Henkel AG — value-driver FCFF</h4></div>
+          <div class="ex-body">
+            <p>Sales €16,428m; after-tax operating margin (NOPAT/sales) 11.58%; investment ratio (IC/sales) 81%; growth
+              3.4%; tax 24.8%. Estimate next-year FCFF.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(\text{FCFF}=11.58\%(1.034)(16{,}428)-81\%(3.4\%)(16{,}428)=\textbf{€1,515m}\). The first term is the
+                after-tax operating cash the grown sales throw off; the second is the capital the growth consumes.
+                Holding the driver ratios constant lets you roll this forward each year.</p>
+              <span class="answer">11.58%·1.034·16,428 − 81%·3.4%·16,428 = €1,515m</span>
+            </div></details>
+          </div>
+        </div>
+        <div class="callout note">
+          <span class="ct-label">All of these use accounting numbers</span>
+          <p>Whether you estimate residual income directly or use value drivers to forecast FCFF, the inputs are
+            accounting figures — so all the methods can be <strong>distorted by accounting</strong>, depending on asset
+            replacement patterns, growth, and reporting quality. Be alert to the effects and <em>restate</em> figures
+            before analysing where needed.</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>The <strong>residual income model</strong> values equity as <strong>book value + PV of abnormal
+            earnings</strong> \(\big(b_0+\sum RI_t/(1+r_e)^t\big)\), where \(RI=(\text{ROE}-r_e)b\); at the firm level it
+            becomes <strong>economic profit</strong> \((\text{ROIC}-\text{WACC})\cdot IC\). It reconciles exactly with
+            DCF and the DDM — value is created only by a positive <strong>spread</strong> of return over cost of capital.
+            In steady state, growth is <strong>retention × ROE</strong>, which makes the <strong>forward P/E</strong> a
+            function of \(r_e\), payout and ROE — the same handful of <strong>value drivers</strong> that the
+            <strong>Rappaport</strong> model uses to forecast FCFF directly. And because every input is an accounting
+            number, every model is only as clean as the accounting behind it.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/equity-analysis-02-dcf-cost-of-capital.html"><span class="dir">← Previous</span><span class="ttl">Discounted Cash Flow Models</span></a>
+          <a class="next" href="/courses/equity-analysis-04-value-drivers.html"><span class="dir">Next →</span><span class="ttl">Value Drivers</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/equity-analysis.html">← Equity Analysis</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
