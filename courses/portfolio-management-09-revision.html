@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Revision · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="A course-wide revision of portfolio management: mean-variance optimisation, the CAPM and performance measures, factor models and APT, value at risk, active management, international investing and interest-rate parity, the IPS, and trade execution." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="09">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 9 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Revision</h1>
+        <p class="summary">
+          A consolidated formula sheet and concept recap of the whole course — from mean-variance optimisation and the
+          CAPM to factor models, value at risk, active management, international investing, the investment policy
+          statement, and trade execution. Use it to pull the threads together; each section links back to the full
+          lesson.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#risk-return">Risk &amp; return</a>
+            <a href="#capm">CAPM &amp; performance</a>
+            <a href="#factors">Factor models &amp; APT</a>
+            <a href="#var">Value at risk</a>
+            <a href="#active">Active management</a>
+            <a href="#international">International</a>
+            <a href="#applied">IPS &amp; objectives</a>
+            <a href="#execution">Execution</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          The unifying logic of the course: summarise assets by <strong>mean and variance</strong>, build efficient
+          portfolios, price risk in <strong>equilibrium</strong> (CAPM) or by <strong>no-arbitrage</strong> (APT),
+          <strong>measure</strong> risk and performance, then <strong>implement</strong> the portfolio for a real
+          investor and <strong>execute</strong> it in the market.
+        </p>
+
+        <h2 id="risk-return">Portfolio risk and return</h2>
+        <div class="formula">
+          <div class="f-label">Core mean-variance results <span class="eqno">(Lesson 1)</span></div>
+          <div class="mjx-row">$$ U=\mu-\tfrac{1}{2}A\sigma^2, \qquad \text{CAL: } \mu_c=r_f+\frac{\mu_p-r_f}{\sigma_p}\sigma_c, \qquad y^{*}=\frac{\mu_p-r_f}{A\sigma_p^2} $$</div>
+          <div class="mjx-row">$$ \sigma_p^2=w_A^2\sigma_A^2+2w_A(1-w_A)\sigma_{AB}+(1-w_A)^2\sigma_B^2 $$</div>
+        </div>
+        <p>The CAL's slope is the <strong>Sharpe ratio</strong>; the optimal risky portfolio maximises it, after which a
+          risk-preference split completes the allocation (<strong>mutual-fund theorem</strong>). See
+          <a href="/courses/portfolio-management-01-risk-and-return.html">Lesson 1</a>.</p>
+
+        <h2 id="capm">CAPM and performance evaluation</h2>
+        <div class="formula">
+          <div class="f-label">CAPM, risk decomposition and the four measures <span class="eqno">(Lesson 2)</span></div>
+          <div class="mjx-row">$$ E(r_i)=r_f+\beta_i(E(r_M)-r_f), \qquad \operatorname{var}(r_i)=\beta_i^2\operatorname{var}(r_M)+\operatorname{var}(\varepsilon_i) $$</div>
+          <div class="mjx-row">$$ \text{Sharpe}=\tfrac{\mu-r_f}{\sigma}, \ M^2=r_f+\sigma_M\text{Sharpe}, \ \text{Treynor}=\tfrac{\mu-r_f}{\beta}, \ \alpha=\mu-[r_f+\beta(E(r_M)-r_f)] $$</div>
+        </div>
+        <p>Total risk = systematic + diversifiable; only systematic (\(\beta\)) is rewarded. Use <strong>Sharpe/M²</strong>
+          (total risk) for a standalone holding, <strong>Treynor/alpha</strong> (systematic risk) for part of a
+          diversified portfolio. See <a href="/courses/portfolio-management-02-capm-performance.html">Lesson 2</a>.</p>
+
+        <h2 id="factors">Factor models and APT</h2>
+        <div class="formula">
+          <div class="f-label">Factor model and the multifactor SML <span class="eqno">(Lesson 3)</span></div>
+          <div class="mjx-row">$$ r_i=a_i+\textstyle\sum_k b_{ik}F_k+\varepsilon_i, \qquad E(r_i)=r_f+\textstyle\sum_k b_{ik}\lambda_k $$</div>
+          <div class="mjx-row">$$ \text{Fama-French: } r_i-r_f=\alpha_i+b_1(r_M-r_f)+b_2\text{SMB}+b_3\text{HML}+\varepsilon_i $$</div>
+        </div>
+        <p>APT derives fair return from <strong>no-arbitrage</strong>; CAPM is its one-factor case. Smart-beta harvests
+          factor premia (value/size/momentum/quality/low-vol), and much apparent alpha is really factor reward (Buffett).
+          See <a href="/courses/portfolio-management-03-factor-models-apt.html">Lesson 3</a>.</p>
+
+        <h2 id="var">Value at risk</h2>
+        <div class="formula">
+          <div class="f-label">VaR <span class="eqno">(Lesson 4)</span></div>
+          <div class="mjx-row">$$ \text{parametric \%-VaR}=-(\mu+z(\alpha)\sigma), \quad N\text{-day}= \text{1-day}\times\sqrt{N}, \quad \text{ES}=-E[r\mid r\le-\text{VaR}] $$</div>
+        </div>
+        <p>Three methods — <strong>historical simulation</strong>, <strong>parametric</strong> (normal,
+          \(z(95)=-1.645,\ z(99)=-2.326\)), <strong>Monte Carlo</strong>. The normal understates fat tails; supplement
+          with <strong>expected shortfall</strong>, backtesting and stress tests. See
+          <a href="/courses/portfolio-management-04-risk-management.html">Lesson 4</a>.</p>
+
+        <h2 id="active">Active management</h2>
+        <div class="formula">
+          <div class="f-label">Active value, IR and the fundamental law <span class="eqno">(Lesson 5)</span></div>
+          <div class="mjx-row">$$ R_A=\underbrace{\textstyle\sum_j\Delta w_j R_j^B}_{\text{allocation}}+\underbrace{\textstyle\sum_j w_j^P R_j^A}_{\text{selection}}, \qquad \text{IR}=\frac{E(R_A)}{\sqrt{\operatorname{var}(R_A)}}=\text{IC}\sqrt{\text{BR}} $$</div>
+        </div>
+        <p>Optimal active risk \(=\frac{\text{IR}}{\text{SR}_B}\sigma_B\); <strong>Treynor-Black</strong> weights
+          \(\propto\alpha_i/\sigma_{\varepsilon i}^2\); the fundamental law is <strong>skill × breadth</strong> (× transfer
+          coefficient under constraints). See <a href="/courses/portfolio-management-05-active-management.html">Lesson 5</a>.</p>
+
+        <h2 id="international">International investing</h2>
+        <div class="formula">
+          <div class="f-label">Foreign return and the parities <span class="eqno">(Lesson 6)</span></div>
+          <div class="mjx-row">$$ r^B\approx r^A+r_{A/B}, \qquad F_{A/B}=X_{A/B}\frac{1+i_B\frac{\tau}{360}}{1+i_A\frac{\tau}{360}}\ \text{(CIP)}, \qquad E(X_1)=\frac{1+i_{base}}{1+i_{high}}X_0\ \text{(UIP)} $$</div>
+        </div>
+        <p>Low cross-region correlations improve the frontier (despite <strong>home bias</strong>); cross rates obey
+          \(\text{A/C}=\text{A/B}\times\text{B/C}\) (else triangular arbitrage); the <strong>carry trade</strong> earns
+          the rate spread but bears crash risk. See
+          <a href="/courses/portfolio-management-06-international.html">Lesson 6</a>.</p>
+
+        <h2 id="applied">The IPS and investor objectives</h2>
+        <p>An <strong>IPS</strong> fixes objectives, constraints and governance. Return/risk objectives are
+          <strong>absolute</strong> or <strong>relative</strong> and must be consistent — required return is often
+          inferred from a future goal by inflating it and solving \(C_0(1+\mu)^T=\text{goal}\). Risk tolerance combines
+          <strong>ability</strong> (objective) and <strong>willingness</strong> (psychological), erring conservative on
+          conflict. Constraints: liquidity, horizon, legal/tax, unique needs. When return and risk objectives can't both
+          be met on the CAL, an explicit compromise is required. See
+          <a href="/courses/portfolio-management-07-applied.html">Lesson 7</a>.</p>
+
+        <h2 id="execution">Trade execution and technology</h2>
+        <p><strong>Market orders</strong> guarantee speed (paying market impact); <strong>limit orders</strong>
+          guarantee price (not fill). Large orders are sliced by <strong>VWAP/TWAP/POV</strong> algos and benchmarked by
+          \(\text{VWAP}=\sum n_ip_i/\sum n_i\). <strong>HFT</strong> tightens spreads but fuels a latency arms race;
+          <strong>big data / machine learning</strong> (regression → neural nets → reinforcement learning) extend the
+          toolkit, with over-fitting and opacity as the key risks. See
+          <a href="/courses/portfolio-management-08-electronic-markets.html">Lesson 8</a>.</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Exam approach</span>
+          <p>For calculation questions, <strong>write the formula first</strong>, define the strategy, and explain step
+            by step (realise profit in the same currency as the initial investment, per unit invested). For written
+            questions, answer <strong>clearly and concisely with bullet points</strong>. Lecture material and problem
+            sets are sufficient; extra readings help with open-ended questions.</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>The course is one arc: <strong>mean-variance</strong> efficiency → equilibrium (<strong>CAPM</strong>) and
+            no-arbitrage (<strong>APT/factors</strong>) pricing → <strong>risk</strong> (VaR/ES) and
+            <strong>performance</strong> measurement → <strong>active</strong> value (IR, fundamental law) →
+            <strong>international</strong> and <strong>applied</strong> implementation → <strong>execution</strong>.
+            Master the handful of formulas above and the intuition behind each, and you have the whole syllabus.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-08-electronic-markets.html"><span class="dir">← Previous</span><span class="ttl">Electronic Markets and Trade Execution</span></a>
+          <a class="next" href="/courses/portfolio-management.html"><span class="dir">Finish →</span><span class="ttl">Back to course index</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

@@ -339,9 +339,40 @@
             { a: 'forward',         t: 'Forwards &amp; covered parity' },
             { a: 'carry',           t: 'Carry trade &amp; uncovered parity' }
           ] },
-        { n: '07', title: 'Applied Portfolio Management', cfa: 'L1', built: false },
-        { n: '08', title: 'Electronic Markets, Trade Execution and Technology', cfa: 'L1', built: false },
-        { n: '09', title: 'Revision', cfa: 'L1', built: false }
+        { n: '07', title: 'Applied Portfolio Management', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-07-applied.html',
+          topics: [
+            { a: 'ips',            t: 'The IPS' },
+            { a: 'return-obj',     t: 'Return objectives' },
+            { a: 'risk-obj',       t: 'Risk objectives' },
+            { a: 'tolerance',      t: 'Risk tolerance' },
+            { a: 'constraints',    t: 'Constraints' },
+            { a: 'investor-types', t: 'Types of investors' },
+            { a: 'case',           t: 'Case study' }
+          ] },
+        { n: '08', title: 'Electronic Markets, Trade Execution and Technology', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-08-electronic-markets.html',
+          topics: [
+            { a: 'lob',          t: 'Limit order book' },
+            { a: 'market-order', t: 'Market orders' },
+            { a: 'limit-order',  t: 'Limit orders' },
+            { a: 'vwap',         t: 'VWAP &amp; TWAP' },
+            { a: 'algos',        t: 'Execution algorithms' },
+            { a: 'hft',          t: 'High-frequency trading' },
+            { a: 'bigdata',      t: 'Big data &amp; machine learning' }
+          ] },
+        { n: '09', title: 'Revision', cfa: 'L1', built: true,
+          url: '/courses/portfolio-management-09-revision.html',
+          topics: [
+            { a: 'risk-return',   t: 'Risk &amp; return' },
+            { a: 'capm',          t: 'CAPM &amp; performance' },
+            { a: 'factors',       t: 'Factor models &amp; APT' },
+            { a: 'var',           t: 'Value at risk' },
+            { a: 'active',        t: 'Active management' },
+            { a: 'international',  t: 'International' },
+            { a: 'applied',       t: 'IPS &amp; objectives' },
+            { a: 'execution',     t: 'Execution' }
+          ] }
       ]
     },
 

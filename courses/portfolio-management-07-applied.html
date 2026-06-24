@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Applied Portfolio Management · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="The investment policy statement, absolute vs relative return and risk objectives, inferring required return from target cash flows, ability vs willingness to take risk, portfolio constraints, types of investors, and a full case study reconciling return and risk objectives." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="07">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 7 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Applied Portfolio Management</h1>
+        <p class="summary">
+          Theory tells you how to build an efficient portfolio; <em>applied</em> portfolio management asks what a real
+          investor actually needs. This lesson covers the <strong>investment policy statement (IPS)</strong>, how to set
+          and reconcile <strong>return and risk objectives</strong>, how to assess <strong>risk tolerance</strong> from
+          ability <em>and</em> willingness, the <strong>constraints</strong> that bind real investors, the major
+          investor types, and a full case study where the desired return and risk turn out to be incompatible.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#ips">The IPS</a>
+            <a href="#return-obj">Return objectives</a>
+            <a href="#risk-obj">Risk objectives</a>
+            <a href="#tolerance">Risk tolerance</a>
+            <a href="#constraints">Constraints</a>
+            <a href="#investor-types">Types of investors</a>
+            <a href="#case">Case study</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Portfolio management is a hybrid of science and art: the maths builds a portfolio with a desired risk-return
+          profile under assumptions, but understanding what an investor truly needs is a case-by-case judgement with no
+          universal formula.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Describe the purpose and scope of an investment policy statement.</li>
+            <li>Set absolute and relative return and risk objectives, and infer required return from a goal.</li>
+            <li>Assess risk tolerance from ability and willingness, including conflicts.</li>
+            <li>Incorporate liquidity, horizon, legal and unique constraints.</li>
+            <li>Reconcile inconsistent return and risk objectives against the efficient frontier.</li>
+          </ol>
+        </div>
+
+        <h2 id="ips">The investment policy statement</h2>
+        <p>An <strong>IPS</strong> is a strategic guide to planning and running an investment programme. It provides
+          transparent guidance, keeps the focus on objectives so the investor doesn't deviate emotionally when markets
+          move, establishes accountability, and is a legal requirement in places (UK pension schemes need a statement of
+          investment principles under the Pensions Act 1995). Though unstandardised, a good IPS covers: the
+          <strong>context/investor/purpose</strong>; <strong>return and risk objectives</strong> (with constraints and a
+          target <em>policy portfolio</em>); <strong>risk management</strong> (performance measurement, risk metrics,
+          rebalancing); and <strong>governance</strong> (who is responsible).</p>
+
+        <h2 id="return-obj">Return objectives</h2>
+        <p>A target return can be <strong>absolute</strong> (a stand-alone figure, e.g. 5% per year, nominal or
+          inflation-adjusted) or <strong>relative</strong> (versus a benchmark, e.g. beat the FTSE 100 by 1%). Often the
+          required return must be <em>inferred</em> from a future goal:</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Required return for a retirement goal</h4></div>
+          <div class="ex-body">
+            <p>Age 30, retire at 65. Needs £600,000 in <em>today's</em> money; has £120,000 now; inflation 2%. What
+              annual return is required?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Horizon 35 years. Future cost \(=600{,}000(1.02)^{35}=1{,}199{,}933\). Solve
+                \(120{,}000(1+\mu)^{35}=1{,}199{,}933\Rightarrow\mu=\textbf{6.8%}\). Inflate the goal first, then back out
+                the rate that grows current capital to it.</p>
+              <span class="answer">Required annual return ≈ 6.8%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="risk-obj">Risk objectives</h2>
+        <p>Risk objectives are also <strong>absolute</strong> (standard deviation, VaR) or <strong>relative</strong>
+          (active risk, e.g. stay within 4% of the S&amp;P 500 with high probability). Crucially, return and risk
+          objectives must be <em>consistent</em> — there is no return without risk — and if the return target is
+          unrealistic given the risk limit, the two must be reconciled (as the case study shows).</p>
+
+        <h2 id="tolerance">Risk tolerance: ability vs willingness</h2>
+        <p><strong>Risk tolerance</strong> has two determinants. <strong>Ability</strong> to take risk is objective —
+          income stability, dependents, required horizon. <strong>Willingness</strong> is psychological — gauged by
+          conversation or a questionnaire. When both agree, tolerance is clear; conflicts need care:</p>
+        <div class="callout note">
+          <span class="ct-label">Resolving conflicts</span>
+          <p><strong>Low ability + high willingness</strong> → adopt the <em>conservative</em> view: assign low risk
+            tolerance (circumstances trump enthusiasm). <strong>High ability + low willingness</strong> → counsel and
+            educate the client about the risk-return trade-off, but <em>do not</em> override a genuine preference that
+            isn't due to a misconception. The tolerance level can be encoded as the parameter \(A\) in the
+            mean-variance utility \(U=\mu-\tfrac{1}{2}A\sigma^2\). <em>Example:</em> a freelancer with volatile
+            near-median income and heavy maintenance payments has <em>low ability</em> but, being finance-literate and
+            comfortable with stocks, <em>high willingness</em> → classify him <strong>low</strong> tolerance.</p>
+        </div>
+
+        <h2 id="constraints">Constraints</h2>
+        <p>Even with identical risk attitudes, investors differ because of constraints:</p>
+        <ul>
+          <li><strong>Liquidity</strong> — the need to sell for cash at a fair price (healthcare, tuition). Favour liquid
+            classes (cash, short-term government bonds, large listed stocks) over illiquid ones (real estate, private
+            equity).</li>
+          <li><strong>Time horizon</strong> — the planned liquidation date. Illiquid or risky assets suit short horizons
+            poorly (no time to recover losses; illiquids can't be cashed without a discount).</li>
+          <li><strong>Legal/regulation</strong> — e.g. US mutual funds may not hold more than 5% of any public company; a
+            Japanese pension fund may be barred from real estate. The theoretical optimum may be infeasible, needing
+            constrained optimisation.</li>
+          <li><strong>Unique circumstances</strong> — a property agent avoiding property stocks (income already tied to
+            it); ethical/religious exclusions ("sin stocks", ESG). Implemented via <em>negative screening</em>,
+            <em>best-in-class</em> selection, or a quant-qualitative <em>score</em> (e.g. MSCI ESG Ratings) optimised
+            alongside the Sharpe ratio.</li>
+        </ul>
+
+        <h2 id="investor-types">Types of investors</h2>
+        <div class="callout concept">
+          <span class="ct-label">Who needs what</span>
+          <p><strong>Individuals</strong> — driven by life-cycle stage. <strong>Mutual funds</strong> — by the fund's
+            market positioning. <strong>Pensions</strong> — <em>defined-contribution</em> (employee bears risk) vs
+            <em>defined-benefit</em> (company bears risk, must fund its liability). <strong>Endowments</strong> — steady
+            income for a non-profit purpose, very long horizon. <strong>Life insurers</strong> — hedge predictable
+            long-term liabilities (low risk tolerance). <strong>Non-life insurers</strong> — similar but with far less
+            predictable claims. <strong>Banks</strong> — earn the interest-rate spread between loans and deposits, short
+            horizon. Each implies different return needs, risk tolerance, liquidity, horizon and regulatory limits.</p>
+        </div>
+
+        <h2 id="case">Case study — when objectives collide</h2>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Funding a daughter's education</h4></div>
+          <div class="ex-body">
+            <p>A high-earning lawyer (£150k, stable; dual income) sets aside £35,000 today for £60,000 (today's money) of
+              university costs in 5 years; inflation 3%; he won't accept losing more than 25% in a year with 99%
+              probability. Assets: riskfree 1%; bond fund 6%/8%; equity fund 10%/20%; correlation 0.4. Are his objectives
+              feasible?</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p><strong>Return objective:</strong> goal \(=60{,}000(1.03)^5=69{,}556\); solve
+                \(35{,}000(1+\mu)^5=69{,}556\Rightarrow\mu=14.72\%\). <strong>Risk objective:</strong> 1-year 99% VaR
+                ≤ 25% (absolute). <strong>Tolerance:</strong> high (stable high income, dual earner, willing).
+                <strong>Optimal risky portfolio</strong> (as in Lesson 1): \(w_A=0.8476\), \(\mu_p=6.6\%\),
+                \(\sigma_p=8.47\%\), so the CAL is \(\mu_c=0.01+0.662\,\sigma_c\). For 99% VaR = 25% at the target
+                return: \(-(0.1472-2.326\sigma_c)=0.25\Rightarrow\sigma_c=17.07\%\). But the CAL says that
+                \(\sigma_c\) only yields \(\mu_c=0.01+0.662(0.1707)=12.3\%\) — <em>below</em> the required 14.72%. The
+                objectives are <strong>infeasible together</strong>. Reconcile: <strong>(A)</strong> cut the target
+                return to 12.3% (keeping the 25% VaR), or <strong>(B)</strong> keep 14.72% (then
+                \(\sigma_c=20.725\%\), so VaR rises to 33.48%), or anything in between — guided by his (high) risk
+                tolerance.</p>
+              <span class="answer">Need 14.72% but the 25% VaR caps return at 12.3% — relax return (A) or the VaR limit (B)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Applied portfolio management starts with an <strong>IPS</strong> that fixes objectives, constraints and
+            governance. <strong>Return</strong> and <strong>risk</strong> objectives — absolute or relative — must be
+            mutually consistent, and the required return is often <em>inferred</em> from a future goal.
+            <strong>Risk tolerance</strong> combines objective <em>ability</em> and psychological <em>willingness</em>,
+            erring conservative when they conflict. <strong>Constraints</strong> — liquidity, horizon, legal, and unique
+            ethical/personal needs — and the <strong>investor type</strong> shape the feasible set. And as the case study
+            shows, the maths often reveals that a client's desired return and risk simply don't fit the efficient
+            frontier — forcing an explicit, tolerance-guided <strong>compromise</strong>.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-06-international.html"><span class="dir">← Previous</span><span class="ttl">International Portfolio Management</span></a>
+          <a class="next" href="/courses/portfolio-management-08-electronic-markets.html"><span class="dir">Next →</span><span class="ttl">Electronic Markets and Trade Execution</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>

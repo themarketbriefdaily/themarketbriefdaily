@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Electronic Markets and Trade Execution · Portfolio Management | The Market Brief Daily</title>
+  <meta name="description" content="The limit order book, market and limit orders and market impact, execution algorithms (VWAP, TWAP, POV) and transaction-cost benchmarks, high-frequency trading and latency arbitrage, and big data and machine learning for investment." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-pfm" data-course="portfolio-management" data-lesson="08">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/portfolio-management.html">Portfolio Management</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="portfolio-management" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 8 · Portfolio Management<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Electronic Markets and Trade Execution</h1>
+        <p class="summary">
+          Theory decides <em>what</em> to hold; <strong>execution</strong> decides what you actually pay to hold it —
+          and poor execution leaks straight into fund performance. This lesson opens the modern electronic market: the
+          <strong>limit order book</strong>, the two order types and their <strong>market impact</strong>, the
+          <strong>VWAP/TWAP/POV</strong> execution algorithms and how their cost is benchmarked, then
+          <strong>high-frequency trading</strong> and the <strong>big-data / machine-learning</strong> tools reshaping
+          investment.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#lob">Limit order book</a>
+            <a href="#market-order">Market orders</a>
+            <a href="#limit-order">Limit orders</a>
+            <a href="#vwap">VWAP &amp; TWAP</a>
+            <a href="#algos">Execution algorithms</a>
+            <a href="#hft">High-frequency trading</a>
+            <a href="#bigdata">Big data &amp; machine learning</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          Modern exchanges (e.g. the NYSE) are electronic <strong>double auctions</strong>: buyers post
+          <strong>bid</strong> prices (the most they'll pay), sellers post <strong>ask</strong> (offer) prices (the least
+          they'll accept). A trading day has an <strong>opening auction</strong>, continuous <strong>intraday</strong>
+          trading, and a <strong>closing auction</strong> (not every venue runs all three).
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Read a limit order book and identify the best bid/ask.</li>
+            <li>Execute market and limit orders and compute the resulting price and market impact.</li>
+            <li>Compute VWAP/TWAP benchmarks and the VWAP transaction cost.</li>
+            <li>Contrast the VWAP, TWAP and POV execution algorithms.</li>
+            <li>Explain high-frequency trading, latency arbitrage, and machine learning in finance.</li>
+          </ol>
+        </div>
+
+        <h2 id="lob">The limit order book</h2>
+        <p>At any instant, supply and demand are summarised by the <strong>limit order book (LOB)</strong>, which has
+          many <em>levels</em> of bid and ask prices with aggregate sizes. Using a Vodafone snapshot (best 3 levels):</p>
+        <div class="formula">
+          <div class="f-label">Limit order book — Vodafone</div>
+          <div class="mjx-row">$$ \begin{array}{cc|cc} \text{Bid size} & \text{Bid} & \text{Ask} & \text{Ask size}\\\hline 5696 & 122.50 & 122.55 & 49432\\ 30179 & 122.45 & 122.60 & 47036\\ 87472 & 122.40 & 122.65 & 5696 \end{array} $$</div>
+        </div>
+        <p>The <strong>best bid</strong> (122.50) and <strong>best ask</strong> (122.55) are simply "the bid" and "the
+          ask". You will never see an ask ≤ a bid — if that happened, trading would instantly clear it.</p>
+
+        <h2 id="market-order">Market orders</h2>
+        <p>A <strong>market order</strong> executes immediately at the best available prices, walking down the book if one
+          level can't fill it. <em>Pro:</em> near-guaranteed quick execution. <em>Con:</em> no price control and
+          potential <strong>market impact</strong>.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>A market sell of 10,000 shares</h4></div>
+          <div class="ex-body">
+            <p>Using the Vodafone book, sell 10,000 at market. Find the proceeds, average price and the book afterwards.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>5,696 fill at the best bid 122.50; the remaining 4,304 fill at 122.45. Proceeds
+                \(=5696(122.50)+4304(122.45)=1{,}224{,}784\); average price \(=1{,}224{,}784/10{,}000=122.478\). Afterwards
+                the 122.50 level is emptied and 122.45 has \(30{,}179-4{,}304=25{,}875\) left — the order has
+                <strong>pushed the price down</strong> (market impact).</p>
+              <span class="answer">Proceeds 1,224,784; avg 122.478; new best bid 122.45 (size 25,875)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="limit-order">Limit orders</h2>
+        <p>A <strong>limit order</strong> executes only at a target price <em>or better</em>. If it doesn't cross the
+          book it simply joins the queue at its level; if a limit buy's price is at/above the best ask it executes
+          against those sellers, with any remainder resting on the book. <em>Pro:</em> price guaranteed. <em>Con:</em>
+          execution is not — it may wait, or never fill.</p>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Two limit buys</h4></div>
+          <div class="ex-body">
+            <p>(a) Limit buy 10,000 @122.50. (b) Limit buy 50,000 @122.55.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>(a) 122.50 is the bid, not the ask — nothing executes; you join the queue and the 122.50 size grows to
+                \(5696+10000=15{,}696\) (with 5,696 ahead of you). (b) 122.55 is the best ask with 49,432 shares: 49,432
+                of your 50,000 fill immediately; the leftover \(568\) rests as a new <em>bid</em> at 122.55. A marketable
+                limit order behaves like a market order up to its limit price.</p>
+              <span class="answer">(a) queue at 122.50 → size 15,696; (b) 49,432 filled, 568 rest at 122.55</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="vwap">Execution benchmarks: VWAP and TWAP</h2>
+        <p>Trading a large order means balancing speed against price. Performance is judged against benchmarks:</p>
+        <div class="formula">
+          <div class="f-label">VWAP and TWAP</div>
+          <div class="mjx-row">$$ \text{VWAP}=\frac{\sum_i n_i p_i}{\sum_i n_i}, \qquad \text{TWAP}=\frac{1}{N}\sum_i p_i $$</div>
+          <div class="mjx-row">$$ \text{VWAP cost}=\text{size}\times\begin{cases}(\text{trade VWAP}-\text{benchmark}) & \text{buy}\\(\text{benchmark}-\text{trade VWAP}) & \text{sell}\end{cases} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>VWAP transaction cost</h4></div>
+          <div class="ex-body">
+            <p>Market trades: (12,300), (14,100), (10,150), (10,200), (13,350). A trader buys: (12,100), (10,50),
+              (13,150). Find the VWAP benchmark, the trade VWAP and the VWAP cost.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Benchmark \(=\frac{300(12)+100(14)+150(10)+200(10)+350(13)}{1100}=11.8636\). Trade VWAP
+                \(=\frac{100(12)+50(10)+150(13)}{300}=12.1667\). For a buy, cost
+                \(=300\times(12.1667-11.8636)=\textbf{90.92}\) — the trader paid above market. The
+                <strong>TWAP</strong> (volume-ignoring) here is \(\frac{12+14+10+10+13}{5}=11.8\), useful when one giant
+                trade would distort the volume-weighted figure. <em>Caveat:</em> if a trader <em>is</em> most of the
+                day's volume, trade VWAP ≈ benchmark by construction, making the cost a misleading ~0.</p>
+              <span class="answer">Benchmark 11.8636, trade VWAP 12.1667, VWAP cost 90.92</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="algos">Execution algorithms</h2>
+        <div class="callout concept">
+          <span class="ct-label">VWAP vs TWAP vs POV</span>
+          <p>An <strong>execution algorithm</strong> slices a large order and sends pieces over time. A
+            <strong>VWAP algo</strong> schedules trades on the historical intraday <em>volume profile</em> — trading more
+            when volume is high (open/close) — aiming to hit/beat VWAP. A <strong>TWAP algo</strong> sends equal slices
+            <em>uniformly</em> over time (e.g. every 5 minutes), targeting TWAP. Both have a <em>deterministic</em>
+            schedule. A <strong>percent-of-volume (POV) algo</strong> instead adjusts <em>dynamically</em>, trading a
+            fixed fraction (say 10%) of the <em>actual</em> volume each interval — adapting better to real liquidity, but
+            without guaranteeing completion by day's end.</p>
+        </div>
+
+        <h2 id="hft">High-frequency trading</h2>
+        <p><strong>HFT</strong> is algorithmic trading using high-speed computation for executions in fractions of a
+          second — characterised by very short holding periods, many small trades, a high order-to-transaction ratio, and
+          complex algorithms. Uses include signal trading (from news/the LOB), index arbitrage with derivatives/ETFs,
+          statistical trading (pairs, mean reversion), and <strong>latency arbitrage</strong>.</p>
+        <div class="callout note">
+          <span class="ct-label">Latency arbitrage and the HFT debate</span>
+          <p><strong>Latency</strong> is the delay between sending an order and its arrival. HFT firms shave it via
+            <strong>co-location</strong> (servers next to the exchange) and even microwave links (faster than fibre),
+            gaining a speed and information edge. <strong>Pros:</strong> tighter bid-ask spreads, added liquidity, faster
+            arbitrage elimination (more efficient markets). <strong>Cons:</strong> a costly technological arms race,
+            predatory/unethical latency arbitrage, little human oversight, and herding of similar algos raising systemic
+            risk — as in the May 2010 <em>flash crash</em>.</p>
+        </div>
+
+        <h2 id="bigdata">Big data and machine learning</h2>
+        <p><strong>Big data</strong> is characterised by three V's: <strong>volume</strong> (millions/billions of points),
+          <strong>velocity</strong> (real-time generation), and <strong>variety</strong> (text, images, video — not just
+          numbers). <strong>Machine learning</strong> is, in essence, statistical model-fitting: predict \(y\) from
+          attributes via \(y=f(x_1,\dots,x_n;\theta)\), and "learn" the parameters \(\theta\) from data.</p>
+        <div class="formula">
+          <div class="f-label">Linear regression is the simplest ML</div>
+          <div class="mjx-row">$$ r-r_f=a+b_1(r_M-r_f)+b_2\text{SMB}+b_3\text{HML}+\varepsilon \quad\Rightarrow\quad \theta=(a,b_1,b_2,b_3)\ \text{learnt by OLS} $$</div>
+        </div>
+        <p>A <strong>neural network</strong> is just a richer, multi-layer non-linear regression — feed inputs through a
+          linear stage, apply an <em>activation function</em>, repeat; many hidden layers make a <strong>deep</strong>
+          network (deep learning). Applications include text-mining sentiment (ratio of "excitement" to "anxiety" words)
+          and using satellite/street-view images to estimate house prices. <strong>Pros:</strong> the
+          <em>universal approximation theorem</em> (a rich enough network can approximate any function), efficient
+          fitting at scale, and accessible free tools (Python, Keras, TensorFlow, scikit-learn). <strong>Cons:</strong>
+          <em>over-fitting</em> (mistaking noise for signal, failing out-of-sample) and a <em>black-box</em> nature that
+          resists interpretation. <strong>Reinforcement learning</strong> goes further — the model continuously
+          fine-tunes as it observes new data, choosing \(\text{action}=f(\text{state})\) and learning from the reward
+          (the technology behind AlphaGo and dynamic trading).</p>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Execution is where theory meets cost. The <strong>limit order book</strong> aggregates bids and asks;
+            <strong>market orders</strong> guarantee speed but pay <strong>market impact</strong>, while <strong>limit
+            orders</strong> guarantee price but not fill. Large orders are sliced by <strong>VWAP/TWAP/POV</strong>
+            algorithms and judged against the <strong>VWAP benchmark</strong>. <strong>HFT</strong> compresses spreads and
+            adds liquidity but fuels a latency arms race and systemic fragility, while <strong>big data and machine
+            learning</strong> — from linear regression to deep and reinforcement learning — extend the analyst's toolkit,
+            powerful but prone to over-fitting and opacity.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/portfolio-management-07-applied.html"><span class="dir">← Previous</span><span class="ttl">Applied Portfolio Management</span></a>
+          <a class="next" href="/courses/portfolio-management-09-revision.html"><span class="dir">Next →</span><span class="ttl">Revision</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/portfolio-management.html">← Portfolio Management</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
