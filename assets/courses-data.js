@@ -380,16 +380,26 @@
       title: 'Equity Analysis', cfa: 'L1',
       blurb: 'Valuing companies — DCF, multiples, residual income and forecasting.',
       lessons: [
-        { n: '01', title: 'Equity Analysis — Class 1', cfa: 'L1', built: false },
-        { n: '02', title: 'Equity Analysis — Class 2', cfa: 'L1', built: false },
-        { n: '03', title: 'Equity Analysis — Class 3', cfa: 'L1', built: false },
-        { n: '04', title: 'Equity Analysis — Class 4', cfa: 'L1', built: false },
-        { n: '05', title: 'Equity Analysis — Class 5', cfa: 'L1', built: false },
-        { n: '06', title: 'Equity Analysis — Class 6', cfa: 'L1', built: false },
-        { n: '07', title: 'Equity Analysis — Class 7', cfa: 'L1', built: false },
-        { n: '08', title: 'Equity Analysis — Class 8', cfa: 'L1', built: false },
-        { n: '09', title: 'Equity Analysis — Class 9', cfa: 'L1', built: false },
-        { n: '10', title: 'Equity Analysis — Revision', cfa: 'L1', built: false }
+        { n: '01', title: 'Foundations of Value and the Dividend Discount Model', cfa: 'L1', built: true,
+          url: '/courses/equity-analysis-01-foundations-ddm.html',
+          topics: [
+            { a: 'foundation',    t: 'The foundation of value' },
+            { a: 'ddm',           t: 'The dividend discount model' },
+            { a: 'gordon',        t: 'Gordon growth model' },
+            { a: 'cost-capital',  t: 'Cost of capital &amp; implied returns' },
+            { a: 'discount-rate', t: 'The discount rate' },
+            { a: 'mean-returns',  t: 'Geometric vs arithmetic' },
+            { a: 'multistage',    t: 'Multi-stage &amp; H-model' }
+          ] },
+        { n: '02', title: 'Discounted Cash Flow Models and the Cost of Capital', cfa: 'L1', built: false },
+        { n: '03', title: 'Free Cash Flow and Residual Income Valuation', cfa: 'L1', built: false },
+        { n: '04', title: 'Value Drivers', cfa: 'L1', built: false },
+        { n: '05', title: 'Reconciliation of Valuation Models', cfa: 'L1', built: false },
+        { n: '06', title: 'Forecasting and Business Environment Analysis', cfa: 'L1', built: false },
+        { n: '07', title: 'The Ohlson Model and Forward Earnings Growth', cfa: 'L1', built: false },
+        { n: '08', title: 'The Discount Rate and Implied Cost of Equity Capital', cfa: 'L1', built: false },
+        { n: '09', title: 'Fundamental Valuation and Market Multiples', cfa: 'L1', built: false },
+        { n: '10', title: 'Revision', cfa: 'L1', built: false }
       ]
     },
 

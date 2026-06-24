@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Equity Analysis | The Market Brief Daily</title>
+  <meta name="description" content="An MSc-level equity valuation course: the foundations of value, dividend discount and DCF models, free cash flow and residual income, value drivers, forecasting, the discount rate and implied cost of capital, multiples, and fundamental analysis." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+</head>
+<body class="course-page acc-eqa">
+
+  <div class="topbar">
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <span class="crumb">Equity Analysis</span>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="equity-analysis">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <main class="idx-wrap">
+    <div class="idx-head">
+      <div class="eyebrow">MSc Course · Equity<span class="cfa-badge cfa-l1">CFA L1</span></div>
+      <h1>Equity Analysis</h1>
+      <p>
+        Valuing companies from first principles. Starting from the no-arbitrage foundation of value, the course builds
+        the dividend discount, discounted-cash-flow and residual-income models, the value drivers behind them, the
+        discount rate and implied cost of capital, the link to market multiples, and how fundamental analysis informs
+        an equity thesis.
+      </p>
+
+      <div class="idx-progress" data-progress-course="equity-analysis">
+        <div class="meta">
+          <div class="t">Your progress · <span class="pfrac">0 / 10</span> lessons</div>
+          <div class="pbar"><i></i></div>
+          <div class="s">Progress saves automatically in your browser as you complete lessons.</div>
+        </div>
+        <div class="big"><span class="pct">0%</span></div>
+      </div>
+    </div>
+
+    <div class="idx-section-title">Lessons</div>
+    <div class="lesson-list">
+
+      <a class="lesson-item" data-lesson="01" href="/courses/equity-analysis-01-foundations-ddm.html">
+        <span class="check">✓</span>
+        <div class="li-body">
+          <div class="li-num">Lesson 01</div>
+          <h3>Foundations of Value and the Dividend Discount Model</h3>
+          <p>The no-arbitrage foundation and the stochastic discount factor, the dividend discount model, the Gordon growth model, deriving cost of capital and implied growth, the discount rate and risk premium, and multi-stage and H-models.</p>
+        </div>
+        <span class="li-go">→</span>
+      </a>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 02</div><h3>Discounted Cash Flow Models and the Cost of Capital</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 03</div><h3>Free Cash Flow and Residual Income Valuation</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 04</div><h3>Value Drivers</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 05</div><h3>Reconciliation of Valuation Models</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 06</div><h3>Forecasting and Business Environment Analysis</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 07</div><h3>The Ohlson Model and Forward Earnings Growth</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 08</div><h3>The Discount Rate and Implied Cost of Equity Capital</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 09</div><h3>Fundamental Valuation and Market Multiples</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+      <span class="lesson-item soon"><span class="check">✓</span><div class="li-body"><div class="li-num">Lesson 10</div><h3>Revision</h3><p>Lesson being prepared from the slide deck.</p></div><span class="tag-soon">Soon</span></span>
+
+    </div>
+  </main>
+
+  <footer class="course-foot">
+    <p class="disc">Educational material for MSc-level study. Not investment advice. Derived and rewritten from course lecture notes.</p>
+    <a href="/education.html">← All courses</a>
+  </footer>
+
+  <script src="/assets/progress.js"></script>
+  <script>
+    (function(){
+      var COURSE='equity-analysis';
+      function paint(){
+        document.querySelectorAll('.lesson-item[data-lesson]').forEach(function(el){
+          el.classList.toggle('done', Progress.isDone(COURSE, el.getAttribute('data-lesson')));
+        });
+      }
+      window.addEventListener('tmbd-progress', paint); paint();
+    })();
+  </script>
+</body>
+</html>

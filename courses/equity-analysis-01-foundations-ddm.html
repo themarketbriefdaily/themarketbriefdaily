@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foundations of Value and the Dividend Discount Model · Equity Analysis | The Market Brief Daily</title>
+  <meta name="description" content="The no-arbitrage foundation of value and the stochastic discount factor, the dividend discount model and clean-surplus relation, the Gordon growth model, deriving cost of capital and implied growth, the discount rate and equity risk premium, geometric vs arithmetic means, and multi-stage and H-models." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-eqa" data-course="equity-analysis" data-lesson="01">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/equity-analysis.html">Equity Analysis</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="equity-analysis" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 1 · Equity Analysis<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Foundations of Value and the Dividend Discount Model</h1>
+        <p class="summary">
+          All equity valuation rests on one idea: <strong>value is the present value of future cash flows</strong>. This
+          lesson derives that from <strong>no-arbitrage</strong> and the stochastic discount factor, builds the
+          <strong>dividend discount model</strong> and the <strong>Gordon growth model</strong>, shows how to back out a
+          cost of capital or implied growth rate, examines how to set the <strong>discount rate</strong> and equity risk
+          premium, and extends to multi-stage and <strong>H-models</strong>.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#foundation">The foundation of value</a>
+            <a href="#ddm">The dividend discount model</a>
+            <a href="#gordon">Gordon growth model</a>
+            <a href="#cost-capital">Cost of capital &amp; implied returns</a>
+            <a href="#discount-rate">The discount rate</a>
+            <a href="#mean-returns">Geometric vs arithmetic</a>
+            <a href="#multistage">Multi-stage &amp; H-model</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          <strong>No-arbitrage</strong> — an efficient market self-destructs riskless profit — is equivalent (Cochrane,
+          2005) to the existence of a <strong>stochastic discount factor (SDF)</strong> \(m\), so that any asset's value
+          is \(V_t=E_t[m_{t+1}x_{t+1}]\), where \(x\) is the payoff and \(m\) reflects investors' beliefs and risk
+          aversion.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Explain the no-arbitrage foundation of value and the SDF.</li>
+            <li>Derive and apply the dividend discount and Gordon growth models.</li>
+            <li>Back out a cost of capital, implied growth and implied risk premium from price.</li>
+            <li>Set a discount rate with the CAPM and choose between geometric and arithmetic means.</li>
+            <li>Value a firm with two-stage and H-models.</li>
+          </ol>
+        </div>
+
+        <h2 id="foundation">The foundation of value</h2>
+        <p>Decompose the SDF pricing equation: \(V_t=E_t[m]E_t[x]+\operatorname{cov}_t(m,x)\). With <em>no</em> uncertainty,
+          \(V_t=x_{t+1}/R_f\) (riskless cash flows are discounted at the riskfree rate, and \(E_t[m]=1/R_f\)). With risk,
+          there are two equivalent routes to value:</p>
+        <div class="formula">
+          <div class="f-label">Two equivalent valuations</div>
+          <div class="mjx-row">$$ V_t=\frac{E_t[x_{t+1}]}{1+r}\quad(\text{risk-adjusted rate}), \qquad V_t=\frac{E_t[x_{t+1}]+R_f\operatorname{cov}_t(m,x)}{1+r_f}\quad(\text{certainty equivalent}) $$</div>
+        </div>
+        <p>Either discount expected cash flows at a <strong>risk-adjusted rate</strong> \(r=r_f+\text{premium}\), or
+          discount <strong>certainty-equivalent</strong> cash flows at the riskfree rate. Risk-averse investors price
+          risky assets <em>below</em> equivalent riskfree ones. For equity, the payoff is the next price plus dividend,
+          \(x_{t+1}=V_{t+1}+d_{t+1}\), and <strong>value = the present value of future cash flows</strong> — the
+          <em>intrinsic</em> (fundamental) value, generally different from the market price (which also reflects supply,
+          demand and sentiment).</p>
+
+        <h2 id="ddm">The dividend discount model</h2>
+        <p>Iterating \(V_t=\frac{E_t[V_{t+1}+d_{t+1}]}{1+r}\) forward (a going concern is never liquidated) gives the
+          <strong>dividend discount model (DDM)</strong>:</p>
+        <div class="formula">
+          <div class="f-label">Dividend discount model</div>
+          <div class="mjx-row">$$ V_0=\sum_{t=1}^{\infty}\frac{E_0[d_t]}{(1+r)^t} $$</div>
+        </div>
+        <p>Here \(d_t\) is <strong>net dividends</strong> — cash dividends + buybacks − new equity issued. The
+          <strong>clean-surplus relation</strong> ties this to accounting: net dividends = comprehensive earnings −
+          change in book equity. The DDM is the fundamental pricing model; <em>every</em> other equity model must
+          reconcile to it. Its practical weakness: net dividends are hard to forecast (policy depends on investment
+          opportunities, perceived mis-valuation and capital structure), and the DDM captures wealth <em>distribution</em>,
+          not <em>creation</em>.</p>
+
+        <h2 id="gordon">The Gordon growth model</h2>
+        <p>Assume dividends grow at a constant \(g&lt;r\): \(d_{t+1}=(1+g)d_t\). The infinite sum collapses to a growing
+          perpetuity:</p>
+        <div class="formula">
+          <div class="f-label">Gordon growth model</div>
+          <div class="mjx-row">$$ V_0=\frac{d_0(1+g)}{r-g}=\frac{d_1}{r-g}, \qquad \text{(terminal value) } V_n=\frac{d_{n+1}}{r-g} $$</div>
+        </div>
+        <p>In practice analysts forecast dividends explicitly for \(n\) years and add a <strong>terminal (continuing)
+          value</strong> \(V_n=d_{n+1}/(r-g)\), discounted back. The share is worth the PV of the explicit dividends plus
+          the PV of the terminal price. Because the continuing value is often more than half the total, the valuation is
+          <strong>very sensitive to \(g\)</strong> — a small change moves the answer a lot.</p>
+
+        <h2 id="cost-capital">Deriving cost of capital and implied growth</h2>
+        <p>If price is a good proxy for intrinsic value, the Gordon model can be inverted to extract market expectations:</p>
+        <div class="formula">
+          <div class="f-label">Inverting the Gordon model</div>
+          <div class="mjx-row">$$ r=\frac{d_0(1+g)}{P_0}+g=\text{DY}+g, \qquad g=r-\text{DY} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Required return on the FTSE 100</h4></div>
+          <div class="ex-body">
+            <p>2024 dividend yield 3.77%; long-run real GDP and dividend growth 1%; expected inflation 2.5%. Find the
+              required real and nominal return.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>Real: \(r_r=\frac{d_0(1+g)}{P_0}+g=3.77\%\times1.01+1\%=4.81\%\). Nominal:
+                \(r=(1+r_r)(1+\text{inf})-1=1.0481\times1.025-1=\textbf{7.43%}\). Inverting the model turns an observed
+                yield and a growth assumption into an implied cost of equity — and, at the index level, an implied equity
+                risk premium (useful in regulation).</p>
+              <span class="answer">Real ≈ 4.81%, nominal ≈ 7.43%</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="discount-rate">The discount rate and the risk premium</h2>
+        <p>The most common way to set \(r\) is the <strong>CAPM</strong>: \(\bar r_i=r_f+\beta_i(\bar r_m-r_f)\) — excess
+          return = beta × market risk premium. Since CAPM is a single-period model, valuation use is always a compromise:
+          a popular approach pairs a duration-matched riskfree rate (from the yield curve) with a constant risk premium
+          drawn from capital-market history (Dimson et al.).</p>
+
+        <h2 id="mean-returns">Geometric vs arithmetic mean returns</h2>
+        <div class="callout concept">
+          <span class="ct-label">Which average to use</span>
+          <p>The <strong>geometric</strong> mean \(\sqrt[n]{\prod(1+r_i)}-1\) is the actual compounded return — use it for
+            <em>expected future wealth</em> (an actuarial estimate). The <strong>arithmetic</strong> mean
+            \(\frac{1}{n}\sum r_i\) treats returns as independent draws — use it for <em>cost of capital / discounting</em>.
+            <em>Example:</em> returns of +10.52% then −9.52% take 100 → 110.52 → 100, so the geometric mean is exactly
+            <strong>0%</strong> (the real outcome), but the arithmetic mean is \(+0.5\%\). On the
+            <strong>risk-premium puzzle</strong>: banks use ~4–5%, while Dimson et al. forecast a geometric world premium
+            of 3–3.5% over T-bills (~1.5% more arithmetic).</p>
+        </div>
+
+        <h2 id="multistage">Multi-stage models and the H-model</h2>
+        <p>Firms rarely grow at one rate forever. A <strong>two-stage model</strong> applies a short-run \(g_s\) for
+          \(n\) years, then a sustainable \(g_l\):</p>
+        <div class="formula">
+          <div class="f-label">Two-stage model</div>
+          <div class="mjx-row">$$ V_0=\sum_{t=1}^{n}\frac{d_0(1+g_s)^t}{(1+r)^t}+\frac{1}{(1+r)^n}\cdot\frac{d_0(1+g_s)^n(1+g_l)}{r-g_l} $$</div>
+        </div>
+        <p>Its flaw: growth "falls off a cliff" at year \(n\). The <strong>H-model</strong> (Fuller &amp; Hsia, 1984)
+          assumes a <em>gradual</em> linear decline from \(g_s\) to \(g_l\):</p>
+        <div class="formula">
+          <div class="f-label">H-model</div>
+          <div class="mjx-row">$$ V_0=\frac{d_0(1+g_l)}{r-g_l}+\frac{d_0\,H\,(g_s-g_l)}{r-g_l}, \qquad r=g_l+\frac{d_0\big[(1+g_l)+H(g_s-g_l)\big]}{P_0} $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>General Mills — two-stage vs H-model</h4></div>
+          <div class="ex-body">
+            <p>\(d_0=\$0.40\); \(g_s=9\%\) for 10 years; \(g_l=5\%\); \(r_f=2.4\%\), MRP 5.2%, \(\beta=0.9\). Value it.</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>CAPM: \(r=2.4\%+0.9(5.2\%)=7.08\%\). The full <strong>two-stage</strong> value is \(P_0=4.416+24.119=\$28.54\).
+                The <strong>H-model</strong> (with \(H=5\), half the 10-year transition) gives
+                \(\frac{0.4(1.05)}{0.0708-0.05}+\frac{0.4(5)(0.09-0.05)}{0.0708-0.05}=20.19+3.85=\$24.04\) — a "normal"
+                value plus an "abnormal-growth" value. The H-model is an approximation (CFA L2), less accurate when the
+                abnormal period \(H\) is long or the growth gap is large; with spreadsheets the exact multi-stage model
+                is preferred, but the H-model's decomposition is instructive.</p>
+              <span class="answer">CAPM r = 7.08%; two-stage $28.54; H-model ≈ $24.04 (20.19 normal + 3.85 abnormal)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>Value is the <strong>present value of future cash flows</strong>, grounded in <strong>no-arbitrage</strong>
+            and the SDF — discount expected cash flows at a risk-adjusted rate, or certainty-equivalents at the riskfree
+            rate. The <strong>DDM</strong> \(V_0=\sum E_0[d_t]/(1+r)^t\) is the fundamental model; the <strong>Gordon</strong>
+            model \(V_0=d_1/(r-g)\) operationalises it and, inverted, yields the implied <strong>cost of capital</strong>
+            (\(r=\text{DY}+g\)) and risk premium. Set \(r\) with the <strong>CAPM</strong> and the right mean
+            (geometric for wealth, arithmetic for discounting), and handle changing growth with <strong>multi-stage</strong>
+            and <strong>H-models</strong> — always mindful that the terminal value, and thus \(g\), dominates.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/equity-analysis.html"><span class="dir">← Course</span><span class="ttl">Equity Analysis</span></a>
+          <a class="next" href="/courses/equity-analysis-02-dcf-cost-of-capital.html"><span class="dir">Next →</span><span class="ttl">Discounted Cash Flow Models</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/equity-analysis.html">← Equity Analysis</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
