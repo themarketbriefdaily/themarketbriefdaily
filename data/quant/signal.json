@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-06-30",
+  "as_of": "2026-07-01",
   "regime": "Bull",
-  "conviction": 0.724,
+  "conviction": 0.725,
   "credit_gate_active": false,
-  "regime_duration_months": 40,
-  "regime_avg_ann_return": 0.2515,
+  "regime_duration_months": 41,
+  "regime_avg_ann_return": 0.2512,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.1128
+      "weight": 0.0811
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.4266
+      "weight": 0.4724
     },
     {
       "sleeve": "Managed futures",
       "ticker": "DBMF",
-      "weight": 0.2312
+      "weight": 0.2372
     },
     {
       "sleeve": "Gold",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.2294
+      "weight": 0.2093
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 746.77,
-    "3USL.L": 746.77,
-    "DBMF": 30.61,
-    "SGLN.L": 368.38,
-    "IDTL.L": 86.42
+    "VUSA.L": 745.76,
+    "3USL.L": 745.76,
+    "DBMF": 30.52,
+    "SGLN.L": 370.6,
+    "IDTL.L": 85.52
   },
   "headline": {
-    "cagr": 0.2144,
-    "ann": 0.2165,
+    "cagr": 0.2141,
+    "ann": 0.2162,
     "vol": 0.2099,
-    "sharpe": 1.0311,
-    "sortino": 1.4589,
+    "sharpe": 1.03,
+    "sortino": 1.4573,
     "max_dd": -0.2542,
-    "calmar": 0.8435
+    "calmar": 0.8424
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 106.85,
+      "price": 107.2775,
       "native_ccy": "GBP",
       "asof": "2026-07-01"
     },
     "3USL.L": {
-      "price": 133.514,
+      "price": 135.3346,
       "native_ccy": "USD",
       "asof": "2026-07-01"
     },
     "DBMF": {
-      "price": 23.0949,
+      "price": 22.9825,
       "native_ccy": "USD",
-      "asof": "2026-06-30"
+      "asof": "2026-07-01"
     },
     "SGLN.L": {
-      "price": 58.3798,
+      "price": 59.6,
       "native_ccy": "GBp",
       "asof": "2026-07-01"
     },
     "IDTL.L": {
-      "price": 2.3886,
+      "price": 2.3837,
       "native_ccy": "USD",
       "asof": "2026-07-01"
     }
   },
-  "updated_utc": "2026-07-01T10:26:47.523551+00:00"
+  "updated_utc": "2026-07-01T22:45:39.127346+00:00"
 }
