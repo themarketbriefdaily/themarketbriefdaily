@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-07-10",
+  "as_of": "2026-07-13",
   "regime": "Bull",
-  "conviction": 0.868,
+  "conviction": 0.753,
   "credit_gate_active": false,
   "regime_duration_months": 41,
-  "regime_avg_ann_return": 0.2518,
+  "regime_avg_ann_return": 0.251,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,12 +14,12 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.6855
+      "weight": 0.7
     },
     {
       "sleeve": "Managed futures",
       "ticker": "DBMF",
-      "weight": 0.2938
+      "weight": 0.3
     },
     {
       "sleeve": "Gold",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.0207
+      "weight": 0.0
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 754.95,
-    "3USL.L": 754.95,
-    "DBMF": 30.8,
-    "SGLN.L": 377.01,
-    "IDTL.L": 84.47
+    "VUSA.L": 749.17,
+    "3USL.L": 749.17,
+    "DBMF": 30.99,
+    "SGLN.L": 367.13,
+    "IDTL.L": 83.97
   },
   "headline": {
-    "cagr": 0.2148,
-    "ann": 0.2167,
-    "vol": 0.2099,
-    "sharpe": 1.0327,
-    "sortino": 1.4614,
+    "cagr": 0.214,
+    "ann": 0.2161,
+    "vol": 0.2098,
+    "sharpe": 1.0299,
+    "sortino": 1.4574,
     "max_dd": -0.2542,
-    "calmar": 0.8448
+    "calmar": 0.842
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 106.9625,
+      "price": 106.9125,
       "native_ccy": "GBP",
       "asof": "2026-07-13"
     },
     "3USL.L": {
-      "price": 135.3183,
+      "price": 135.6158,
       "native_ccy": "USD",
       "asof": "2026-07-13"
     },
     "DBMF": {
-      "price": 22.9583,
+      "price": 23.2118,
       "native_ccy": "USD",
-      "asof": "2026-07-10"
+      "asof": "2026-07-13"
     },
     "SGLN.L": {
-      "price": 59.0061,
+      "price": 58.24,
       "native_ccy": "GBp",
       "asof": "2026-07-13"
     },
     "IDTL.L": {
-      "price": 2.3289,
+      "price": 2.3257,
       "native_ccy": "USD",
       "asof": "2026-07-13"
     }
   },
-  "updated_utc": "2026-07-13T09:50:47.442201+00:00"
+  "updated_utc": "2026-07-13T22:25:12.610506+00:00"
 }
