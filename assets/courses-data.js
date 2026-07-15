@@ -413,7 +413,17 @@
             { a: 'pe',              t: 'The P/E relationship' },
             { a: 'value-drivers',   t: 'Value drivers &amp; Rappaport' }
           ] },
-        { n: '04', title: 'Value Drivers', cfa: 'L1', built: false },
+        { n: '04', title: 'Abnormal Earnings Growth and Model Reconciliation', cfa: 'L1', built: true,
+          url: '/courses/equity-analysis-04-value-drivers.html',
+          topics: [
+            { a: 'aeg',            t: 'The AEG model' },
+            { a: 'aeg-value',      t: 'AEG valuation' },
+            { a: 'ri-vs-aeg',      t: 'RI vs AEG' },
+            { a: 'accounting',     t: 'Accounting effects' },
+            { a: 'reconciliation', t: 'Why models disagree' },
+            { a: 'growth-errors',  t: 'Growth-timing errors' },
+            { a: 'consistency',    t: 'WACC &amp; dirty surplus' }
+          ] },
         { n: '05', title: 'Reconciliation of Valuation Models', cfa: 'L1', built: false },
         { n: '06', title: 'Forecasting and Business Environment Analysis', cfa: 'L1', built: false },
         { n: '07', title: 'The Ohlson Model and Forward Earnings Growth', cfa: 'L1', built: false },

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abnormal Earnings Growth and Model Reconciliation · Equity Analysis | The Market Brief Daily</title>
+  <meta name="description" content="The abnormal earnings growth (AEG/Ohlson-Juettner-Nauroth) model, its valuation formula, residual income vs AEG trade-offs, how accounting choices wash out under clean surplus, why models disagree in practice (Lundholm & O'Keefe), growth-timing errors, and WACC and dirty-surplus consistency." />
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/course.css" />
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body class="course-page acc-eqa" data-course="equity-analysis" data-lesson="04">
+
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Course menu">☰</button>
+    <a class="home" href="/education.html"><span class="dot"></span> Education</a>
+    <span class="sep">/</span>
+    <a class="crumb" href="/courses/equity-analysis.html">Equity Analysis</a>
+    <span class="spacer"></span>
+    <div class="tb-progress" data-progress-course="equity-analysis" title="Your progress in this course">
+      <div class="pbar"><i></i></div><span class="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="lesson-app">
+    <aside class="curric" id="curric" aria-label="Course curriculum"></aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="reading">
+      <div class="reading-inner">
+        <div class="lesson-meta">Lesson 4 · Equity Analysis<span class="cfa-badge cfa-l1">CFA L1</span></div>
+        <h1>Abnormal Earnings Growth and Model Reconciliation</h1>
+        <p class="summary">
+          The residual income model needs a clean-surplus balance sheet; the <strong>abnormal earnings growth
+          (AEG)</strong> model needs only forecast <em>earnings per share</em> — exactly what analysts produce. This
+          lesson builds the AEG model, weighs it against residual income, shows how accounting choices "wash out" under
+          clean surplus, and then tackles the central practical puzzle: <em>why do the DDM, DCF, RIVM and AEG models
+          appear to disagree?</em> — and how to make them reconcile.
+        </p>
+
+        <details class="contents">
+          <summary>On this page</summary>
+          <div class="toc-grid">
+            <a href="#aeg">The AEG model</a>
+            <a href="#aeg-value">AEG valuation</a>
+            <a href="#ri-vs-aeg">RI vs AEG</a>
+            <a href="#accounting">Accounting effects</a>
+            <a href="#reconciliation">Why models disagree</a>
+            <a href="#growth-errors">Growth-timing errors</a>
+            <a href="#consistency">WACC &amp; dirty surplus</a>
+          </div>
+        </details>
+
+        <p class="lead">
+          The RIVM builds on the DDM and the clean-surplus relation (CSR), assuming "comprehensive" earnings — but in
+          practice analysts use net income. Ohlson &amp; Juettner-Nauroth (2005) develop a model that needs
+          <em>neither book value nor CSR</em>, working with the notion of <strong>abnormal earnings growth</strong>
+          rather than abnormal earnings.
+        </p>
+
+        <div class="outcomes-card">
+          <h4>Learning outcomes</h4>
+          <ol>
+            <li>Define abnormal earnings growth and relate it to residual income.</li>
+            <li>Value equity with the AEG model (perpetuity, constant-growth, two-stage).</li>
+            <li>Weigh residual income against AEG, and explain how accounting washes out.</li>
+            <li>Diagnose why practical forecasts fail to reconcile (Lundholm &amp; O'Keefe).</li>
+            <li>Avoid growth-timing, WACC and dirty-surplus inconsistencies.</li>
+          </ol>
+        </div>
+
+        <h2 id="aeg">The abnormal earnings growth model</h2>
+        <p>If a firm reinvested its dividend at \(r_e\), next year's "normal" earnings would be \((1+r_e)e_0\).
+          <strong>Abnormal earnings growth</strong> is the excess of actual over normal earnings growth:</p>
+        <div class="formula">
+          <div class="f-label">Abnormal earnings growth</div>
+          <div class="mjx-row">$$ AEG_1=e_1+r_e d_0-(1+r_e)e_0=(e_1-e_0)-r_e(e_0-d_0) $$</div>
+        </div>
+        <div class="example">
+          <div class="ex-head"><span class="ex-tag">Worked example</span><h4>Computing AEG</h4></div>
+          <div class="ex-body">
+            <p>\(r_e=10\%\), \(e_0=10\text{p}\), \(d_0=4\text{p}\), \(e_1=12\text{p}\).</p>
+            <details><summary>Show solution</summary><div class="sol">
+              <p>\(AEG_1=12+(0.1\times4)-(1.10\times10)=\textbf{1.4p}\). If clean surplus holds,
+                \(AEG_t=RI_t-RI_{t-1}\) — AEG is simply the <em>change</em> in residual income.</p>
+              <span class="answer">12 + 0.4 − 11 = 1.4p (= the change in residual income under CSR)</span>
+            </div></details>
+          </div>
+        </div>
+
+        <h2 id="aeg-value">AEG valuation</h2>
+        <p>A no-growth firm is worth capitalised next-year earnings, \(e_1/r_e\). A going concern adds the compounded
+          stream of future AEG:</p>
+        <div class="formula">
+          <div class="f-label">The AEG valuation model</div>
+          <div class="mjx-row">$$ MV_{E,0}=\frac{e_1}{r_e}+\frac{1}{r_e}\sum_{t\ge1}\frac{AEG_{t+1}}{(1+r_e)^t} \quad\xrightarrow{\text{constant }g}\quad MV_{E,0}=\frac{e_1}{r_e}+\frac{1}{r_e}\cdot\frac{AEG_2}{r_e-g} $$</div>
+        </div>
+        <p>A two-stage version forecasts AEG explicitly for \(n\) years then applies terminal growth. Because the model
+          is built on <em>changes</em> rather than levels, you must be careful exactly <strong>when</strong> terminal
+          growth begins (see below). Even a <em>negative</em> PV of AEG is valid — it just means the price is worth less
+          than capitalised one-year-ahead EPS.</p>
+
+        <h2 id="ri-vs-aeg">Residual income vs AEG — for and against</h2>
+        <div class="callout concept">
+          <span class="ct-label">Trade-offs</span>
+          <p><strong>RI and AEG advantages:</strong> easier when dividends are hard to forecast and FCF is negative for
+            years; they <em>recognise value earlier</em> via the book-value (\(b_0\)) or capitalised-earnings
+            (\(e_1/r_e\)) anchor, so the uncertain "continuing value" is a smaller share — reducing error.
+            <strong>But</strong> it is still <em>all future cash flows</em> that matter (for most firms \(P_0&gt;B_0\) and
+            \(P_0&gt;e_1/r_e\)), and both rest on accounting that can be manipulated. <strong>RIVM</strong> equals the DDM
+            <em>only if CSR holds</em> (comprehensive earnings, watching off-balance-sheet items). <strong>AEG</strong>
+            focuses on EPS (what analysts forecast) and needs no clean surplus — but that is also its weakness: creative
+            accounting can paint a misleading earnings-growth picture.</p>
+        </div>
+
+        <h2 id="accounting">How accounting choices wash out</h2>
+        <p>Consider an all-equity firm earning 30% on £1m of tangible assets, spending 10% of assets on R&amp;D each year
+          (5-year life), cost of capital 10%. <strong>Capitalising</strong> vs <strong>expensing</strong> R&amp;D changes
+          the reported ROE and residual income in the early years (capitalising makes early ROE look high — 28% falling
+          to a steady 16.7% once capitalisation = amortisation; RI falls from 180 to 80) — yet <strong>FCF is
+          identical</strong>. In the long-run steady state the effect <em>disappears</em>: lower RI is offset by higher
+          book value (the balance sheet and income statement act jointly), so <strong>accounting does not change equity
+          value</strong>. The danger is the short term — a naïve analyst may over-value the capitalising firm early on
+          (the general problem of "aggressive" accounting). Treat non-recurring "exceptionals" with care, since the aim
+          is to predict <em>future</em> RI.</p>
+
+        <h2 id="reconciliation">Why models disagree in practice</h2>
+        <p>Some studies (Penman, 2001) find RI-based models predict prices "better" than DCF — which can't be right in
+          theory, since all models give the same answer under consistent assumptions. Lundholm &amp; O'Keefe (2001)
+          identify why practical forecasts fail to reconcile:</p>
+        <div class="callout note">
+          <span class="ct-label">The three reconciliation errors (LOK, 2001)</span>
+          <ol>
+            <li><strong>Inconsistent growth</strong> — cash-flow, dividend, asset and RI growth rates don't agree.</li>
+            <li><strong>Inconsistent cost of capital.</strong></li>
+            <li><strong>Clean surplus assumed but violated.</strong></li>
+          </ol>
+          <p>All are fixable — and the central remedy is to <strong>forecast the balance sheet and income statement
+            jointly</strong>.</p>
+        </div>
+
+        <h2 id="growth-errors">Growth-timing errors</h2>
+        <p>The subtle trap is naïvely multiplying the final forecast value by \((1+g)\). Under CSR, if dividends and book
+          value grow at \(g\) from year \(t\), then <strong>earnings and RI grow at \(g\) only from \(t+1\)</strong> (one
+          year later), and <strong>AEG grows at \(g\) from \(t+2\)</strong> (one year later still — two years after
+          dividends and book values):</p>
+        <div class="formula">
+          <div class="f-label">The growth lags</div>
+          <div class="mjx-row">$$ \text{dividends, book value: from } t \;\Rightarrow\; \text{earnings, RI: from } t+1 \;\Rightarrow\; \text{AEG: from } t+2 $$</div>
+        </div>
+        <p>So if you truncate RI in the same period as dividends (or AEG in the same period as RI), the models will
+          generate <em>different</em> equity values. The true steady state — where dividends, RI and AEG all grow at the
+          same rate — begins at \(n+2\). Mind the lagged variable.</p>
+
+        <h2 id="consistency">WACC and dirty-surplus consistency</h2>
+        <p><strong>WACC.</strong> The leverage weights must be at <em>market value</em>. If \(r_e\) is held constant (as
+          in the DDM), then for a given \(r_d\) the WACC <em>must change with leverage</em> — you cannot hold both
+          \(r_e\) and WACC constant unless leverage is constant (MM Proposition 2). And calculating WACC needs MVE, which
+          is exactly what the indirect approach is trying to estimate — a real consistency bind at high leverage.</p>
+        <p><strong>Dirty surplus.</strong> The other trap is forgetting clean surplus: items in comprehensive earnings
+          but not net income — unrealised gains/losses on available-for-sale securities, foreign-currency translation,
+          gains/losses on derivatives, employee stock options. What matters for valuation is the <em>present value</em>
+          of these dirty-surplus items.</p>
+        <div class="callout note">
+          <span class="ct-label">Reconciliation example</span>
+          <p>Morrisons plc (a FTSE 100 supermarket until Oct 2021) was taken private by Clayton, Dubilier &amp; Rice in a
+            ~£7bn deal, its shares bid from ~180p to 286p. Building a consistent model from the balance sheet and income
+            statement (e.g. debt = 60% of book equity, 4% pre-tax interest, 20% tax) shows all the methods — DDM, DCF,
+            RIVM, AEG — converge to the same value. Reconciliation is a test of <em>consistency</em>, not of which model
+            is "right".</p>
+        </div>
+
+        <div class="callout concept">
+          <span class="ct-label">Key takeaway</span>
+          <p>The <strong>AEG model</strong> values equity as capitalised next-year earnings plus the PV of future
+            <strong>abnormal earnings growth</strong> — needing only EPS forecasts and no clean surplus
+            (\(AEG=RI_t-RI_{t-1}\) when CSR holds). RI/AEG models <strong>recognise value earlier</strong> and suit
+            negative-FCF growth firms, but rest on accounting that only <em>washes out in the long run</em>. Apparent
+            disagreement between DDM, DCF, RIVM and AEG comes from <strong>inconsistent growth, cost of capital, or
+            broken clean surplus</strong> (Lundholm &amp; O'Keefe) — and from <strong>growth-timing lags</strong> (RI
+            lags dividends by a year, AEG by two). Forecast the <strong>balance sheet and income statement jointly</strong>,
+            keep the WACC compatible with the implied leverage each period, and respect clean surplus — and every model
+            reconciles, as the Morrisons case shows.</p>
+        </div>
+
+        <div class="complete-row">
+          <button class="mark-btn" id="markBtn"><span class="ck">✓</span><span class="lbl">Mark lesson complete</span></button>
+          <span class="hint">Saved in your browser — your progress bars update automatically.</span>
+        </div>
+
+        <nav class="lesson-nav">
+          <a class="prev" href="/courses/equity-analysis-03-fcf-residual-income.html"><span class="dir">← Previous</span><span class="ttl">Residual Income Valuation and Value Drivers</span></a>
+          <a class="next" href="/courses/equity-analysis-05-reconciliation.html"><span class="dir">Next →</span><span class="ttl">Reconciliation of Valuation Models</span></a>
+        </nav>
+
+      </div>
+
+      <footer class="course-foot">
+        <p class="disc">Educational material for MSc-level study, rewritten and re-derived from course lecture notes.
+          Not investment advice. Figures are illustrative teaching examples.</p>
+        <a href="/courses/equity-analysis.html">← Equity Analysis</a>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/assets/progress.js"></script>
+  <script src="/assets/courses-data.js"></script>
+  <script src="/assets/courses-ui.js"></script>
+</body>
+</html>
