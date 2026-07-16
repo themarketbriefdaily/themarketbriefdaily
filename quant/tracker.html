@@ -1,160 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>v5c, Portfolio Tracker | The Market Brief Daily</title>
-  <meta name="description" content="Live portfolio tracker for the v5c systematic strategy: log trades and cash, mark to market, see drift from target weights and the exact rebalance trades." />
-  <meta name="theme-color" content="#faf9f6" />
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://themarketbriefdaily.com/quant/tracker.html" />
-  <meta name="robots" content="noindex, follow" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/tbp-theme.css" />
-  <link rel="stylesheet" href="/assets/tbp-premium.css" />
-  <link rel="stylesheet" href="/assets/quant.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quant, Portfolio Tracker | The Market Brief Daily</title>
+  <meta name="description" content="Live portfolio tracker for the v5c systematic strategy: log trades and cash, mark to market, see drift from target weights and the exact rebalance trades.">
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css"><link rel="stylesheet" href="/assets/tbp-premium.css"><link rel="stylesheet" href="/assets/quant.css">
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
-  <style>
-    .q-wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
-    .q-block { margin-bottom:32px; }
-    .q-spread { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
-    .q-updated { color:var(--tbp-muted); font-size:13px; }
-    .q-section-label { font-family:'Inter Tight',sans-serif; color:var(--tbp-ink); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin:0 0 16px; padding-bottom:10px; border-bottom:1px solid var(--tbp-line); }
-    .q-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
-    .q-card { background:var(--tbp-bg); border:1px solid var(--tbp-line); border-radius:12px; padding:18px 20px; }
-    .q-card .k { color:var(--tbp-muted); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; }
-    .q-card .v { color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; font-size:1.6rem; font-weight:700; font-variant-numeric:tabular-nums; margin:4px 0; letter-spacing:-.01em; }
-    .q-card .v.pos { color:#15803d; }
-    .q-card .v.neg { color:#b91c1c; }
-    .q-card .s { color:var(--tbp-muted); font-size:11px; }
-    .q-table-wrap { overflow-x:auto; border:1px solid var(--tbp-line); border-radius:12px; }
-    .q-table { width:100%; border-collapse:collapse; font-size:14px; font-family:'Inter Tight',sans-serif; }
-    .q-table thead th { background:var(--tbp-bg); color:var(--tbp-muted); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; text-align:left; padding:12px 16px; border-bottom:1px solid var(--tbp-line); }
-    .q-table tbody td { padding:12px 16px; border-bottom:1px solid #f3f4f6; color:var(--tbp-ink); vertical-align:middle; }
-    .q-table tbody tr:last-child td { border-bottom:none; }
-    .q-table tbody tr.hl td { background:#fffbeb; }
-    .q-table td.pos, .q-table span.pos { color:#15803d; font-weight:600; }
-    .q-table td.neg, .q-table span.neg { color:#b91c1c; font-weight:600; }
-    .q-tk { display:inline-block; font-family:'SFMono-Regular',Menlo,monospace; font-size:11px; background:#f3f4f6; color:var(--tbp-ink); padding:2px 7px; border-radius:4px; letter-spacing:.02em; }
-    .q-verdict { font-size:12px; font-weight:600; }
-    .q-verdict.acc { color:#15803d; }
-    .q-verdict.rej { color:#b91c1c; }
-    .q-regime { display:grid; grid-template-columns:1.4fr 1fr; gap:32px; background:var(--tbp-bg); border:1px solid var(--tbp-line); border-left:4px solid var(--tbp-muted); border-radius:12px; padding:26px 30px; }
-    .q-regime.q-bull { border-left-color:#15803d; background:#f0fdf4; }
-    .q-regime.q-contango { border-left-color:#b45309; background:#fffbeb; }
-    .q-regime.q-crisis { border-left-color:#b91c1c; background:#fef2f2; }
-    .q-conv-label { color:var(--tbp-muted); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; }
-    .q-regime-name { color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; font-size:2rem; font-weight:780; letter-spacing:-.015em; margin-bottom:8px; }
-    .q-regime-desc { color:var(--tbp-ink-2); font-size:14px; line-height:1.6; }
-    .q-conv-val { color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; font-size:2.5rem; font-weight:800; font-variant-numeric:tabular-nums; line-height:1; letter-spacing:-.02em; }
-    .q-meter { height:8px; background:var(--tbp-line); border-radius:4px; overflow:hidden; margin:12px 0; }
-    .q-meter i { display:block; height:100%; background:var(--tbp-ink); border-radius:4px; transition:width .4s ease; }
-    .q-conv-help { color:var(--tbp-muted); font-size:12px; line-height:1.5; }
-    .q-pill { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; padding:5px 12px; border-radius:100px; background:#fff; border:1px solid var(--tbp-line); color:var(--tbp-ink-2); }
-    .q-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--tbp-muted); }
-    .q-pill.on { background:#fef2f2; border-color:#fecaca; color:#b91c1c; }
-    .q-pill.on .dot { background:#b91c1c; }
-    .q-pill.off { background:#f0fdf4; border-color:#bbf7d0; color:#15803d; }
-    .q-pill.off .dot { background:#15803d; }
-    .q-chart { background:#fff; border:1px solid var(--tbp-line); border-radius:12px; padding:10px; }
-    .q-chart.med { min-height:340px; }
-    .q-chart.tall { min-height:440px; }
-    .q-btn { display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none; font-family:'Inter Tight',sans-serif; font-size:13px; font-weight:600; padding:9px 18px; border-radius:8px; border:1px solid var(--tbp-ink); transition:all .15s ease; }
-    .q-btn.primary { background:var(--tbp-ink); color:#fff; }
-    .q-btn.primary:hover { background:#2a2a2a; }
-    .q-btn.ghost { background:transparent; color:var(--tbp-ink); border-color:var(--tbp-line); }
-    .q-btn.ghost:hover { background:var(--tbp-bg); border-color:var(--tbp-ink); }
-    .q-btn:disabled { opacity:.5; cursor:not-allowed; }
-    .q-subnav { display:flex; flex-wrap:wrap; gap:6px; margin-top:24px; padding-top:18px; border-top:1px solid var(--tbp-line); }
-    .q-subnav a { color:var(--tbp-ink-2); text-decoration:none; font-size:13px; padding:7px 14px; border-radius:8px; border:1px solid transparent; transition:all .15s ease; }
-    .q-subnav a:hover { background:var(--tbp-bg); color:var(--tbp-ink); }
-    .q-subnav a.is-active { background:var(--tbp-ink); color:#fff; border-color:var(--tbp-ink); }
-    .q-note { color:var(--tbp-ink-2); font-size:13.5px; line-height:1.6; }
-    .q-note code { font-family:'SFMono-Regular',Menlo,monospace; background:#f3f4f6; padding:2px 6px; border-radius:4px; font-size:12px; }
-    .q-disclaimer { color:var(--tbp-muted); font-size:12.5px; line-height:1.6; padding:16px 18px; background:var(--tbp-bg); border-left:3px solid var(--tbp-line); border-radius:8px; }
-    .q-flex { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-    .q-row { display:grid; gap:28px; }
-    .q-row.two { grid-template-columns:1fr 1fr; }
-    .q-row.side { grid-template-columns:1.4fr 1fr; }
-    @media (max-width:880px) { .q-row.two, .q-row.side, .q-regime { grid-template-columns:1fr; } }
-    .q-form { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
-    .q-field { display:flex; flex-direction:column; gap:5px; flex:1; min-width:110px; }
-    .q-field label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--tbp-muted); }
-    .q-field input, .q-field select { background:#fff; border:1px solid var(--tbp-line); border-radius:8px; padding:9px 11px; font-size:14px; color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; }
-    .q-field input:focus, .q-field select:focus { outline:none; border-color:var(--tbp-ink); }
-    .q-empty { color:var(--tbp-muted); font-size:14px; font-style:italic; padding:18px 0; }
-    .q-rationale { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
-    .q-rcard { background:var(--tbp-bg); border:1px solid var(--tbp-line); border-radius:12px; padding:20px 22px; }
-    .q-rcard .tag { display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--tbp-muted); background:#f3f4f6; padding:4px 10px; border-radius:4px; margin-bottom:10px; }
-    .q-rcard h4 { font-family:'Inter Tight',sans-serif; color:var(--tbp-ink); font-weight:750; font-size:1.15rem; margin:0 0 8px; }
-    .q-rcard p { color:var(--tbp-ink-2); font-size:13.5px; line-height:1.6; }
-    .q-legend-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin:0 4px 0 10px; vertical-align:middle; }
-    .q-standard-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:5px 12px; border-radius:100px; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; }
-    .q-standard-badge .dot { width:6px; height:6px; border-radius:50%; background:#15803d; }
-    .q-gate { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:linear-gradient(135deg,#f0fdf4,#faf9f6); border:1px solid #bbf7d0; border-radius:12px; padding:14px 20px; margin-bottom:28px; }
-    .q-gate .lock { font-size:20px; }
-    .q-gate .text { flex:1; min-width:200px; }
-    .q-gate .text strong { color:var(--tbp-ink); }
-    .q-gate .text span { color:var(--tbp-muted); font-size:13px; }
-    .q-dev-notice { text-align:center; padding:56px 36px; background:var(--tbp-bg); border:1px solid var(--tbp-line); border-radius:16px; }
-    .q-dev-notice .ic { font-size:40px; color:#92400e; margin-bottom:16px; }
-    .q-dev-notice h2 { color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; font-weight:780; font-size:1.8rem; margin:16px 0 12px; letter-spacing:-.015em; }
-    .q-dev-notice p { color:var(--tbp-ink-2); font-size:15px; line-height:1.7; max-width:620px; margin:8px auto; }
-  </style>
 </head>
-
-<body class="tbp">
-  <header class="tbp-header" role="banner">
+<body class="tbp quant-dark" data-q-gated="1">
+  <header class="tbp-header" id="header">
     <div class="tbp-container tbp-header-inner">
-      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
-        <span class="mark">MB</span>
-        <span>The Market Brief Daily</span>
-      </a>
+      <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
       <nav class="tbp-nav" aria-label="Primary">
-        <a href="/">Home</a>
-        <a href="/investments.html">Model Portfolios</a>
-        <a href="/posts.html">Research</a>
-        <a class="is-active" href="/quant/">Quant</a>
-        <a href="/education.html">Education</a>
-        <a href="/about.html">About</a>
+        <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
+        <a class="is-active" href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
-      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
+      <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
     </div>
   </header>
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a>
-    <a href="/investments.html">Model Portfolios</a>
-    <a href="/posts.html">Research</a>
-    <a href="/quant/">Quant</a>
-    <a href="/education.html">Education</a>
-    <a href="/about.html">About</a>
-    <a href="/subscription.html">Subscribe ↗</a>
-  </div>  <!-- HERO -->
-  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 48px); padding-bottom:24px;">
-    <div class="q-wrap">
-      <div data-tbp-reveal style="max-width:820px;">
-        <div style="display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
-          <span class="q-standard-badge"><span class="dot"></span> Live · £19/mo</span>
-          <span class="tbp-eyebrow" style="margin:0;">v5c · SPY / GBP</span>
-        </div>
-        <h1 class="tbp-h1">Portfolio Tracker</h1>
-        <p class="tbp-lead" style="margin-top:18px;">Log your real v5c trades and cash. Everything is marked to live GBP prices, compared against the v5c target weights, and stored in your browser (localStorage). Your data persists between sessions and never leaves your device.</p>
-        <nav class="q-subnav" aria-label="v5c section"><a href="/quant/">&larr; Strategies</a><a href="/quant/v5c.html">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html" class="is-active">Portfolio Tracker</a><a href="/quant/research.html">Research</a></nav>
-      </div>
-    </div>
-  </section>    <div class="q-gate">
-      <span class="lock">✓</span>
-      <div class="text">
-        <strong>v5c is a subscriber strategy — £19/mo.</strong>
-        <span> The signal, backtest, risk analytics and tracker are available to subscribers. <a href="/subscription.html" style="color:#15803d; font-weight:600;">Subscribe to unlock</a> or <a href="/quant/vp-macd.html" style="color:var(--tbp-warm); font-weight:600;">upgrade to VP-MACD</a>.</span>
-      </div>
-      <a class="q-btn primary" href="/subscription.html">Subscribe →</a>
-    </div>
+    <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
+    <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
+  </div>
 
-  <main class="q-wrap" style="padding-bottom:80px;">
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
+    <div class="q-wrap">
+      <span class="q-eyebrow">Systematic Strategy · v5c</span>
+      <h1 class="q-h1">Portfolio Tracker</h1>
+      <p class="q-sub">Log your real trades and cash. Everything is marked to live GBP prices, compared against the v5c target weights, and stored in your browser (localStorage), it persists between sessions and never leaves your device.</p>
+      <nav class="q-subnav" aria-label="Quant section">
+        <a href="/quant/">&larr; Strategies</a> <a href="/quant/v5c.html">Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
+        <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html" class="is-active">Portfolio Tracker</a><a href="/quant/research.html">Research</a>
+      </nav>
+    </div>
+  </section>
+
+  <main class="q-wrap" style="padding-bottom:64px;">
     <div class="q-spread q-block">
       <span class="q-updated" id="updated">Loading…</span>
       <div class="q-flex">
@@ -165,21 +51,23 @@
       </div>
     </div>
 
+    <!-- SUMMARY -->
     <div class="q-block"><div class="q-cards" id="summary"></div></div>
 
+    <!-- INPUTS -->
     <div class="q-block q-row two">
       <div>
         <p class="q-section-label">Capital &amp; cash injections</p>
         <div class="q-form" style="margin-bottom:14px;">
           <div class="q-field"><label>Starting capital (£)</label><input type="number" id="capital" min="0" step="100" placeholder="10000"></div>
-          <button class="q-btn primary" id="saveCapital">Save</button>
+          <button class="q-btn" id="saveCapital">Save</button>
         </div>
         <div class="q-form">
           <div class="q-field"><label>Injection date</label><input type="date" id="injDate"></div>
           <div class="q-field"><label>Amount (£)</label><input type="number" id="injAmt" step="100" placeholder="1000"></div>
-          <button class="q-btn primary" id="addInj">+ Add cash</button>
+          <button class="q-btn" id="addInj">+ Add cash</button>
         </div>
-        <div id="injList" style="margin-top:14px;"></div>
+        <div id="injList" style="margin-top:12px;"></div>
       </div>
       <div>
         <p class="q-section-label">Log a trade</p>
@@ -190,40 +78,55 @@
           <div class="q-field"><label>Shares</label><input type="number" id="trShares" step="0.0001" placeholder="10"></div>
           <div class="q-field"><label>Price / share (£)</label><input type="number" id="trPrice" step="0.0001" placeholder="5.40"></div>
           <div class="q-field"><label>Fees (£)</label><input type="number" id="trFees" step="0.01" value="0"></div>
-          <button class="q-btn primary" id="addTrade">+ Add trade</button>
+          <button class="q-btn" id="addTrade">+ Add trade</button>
         </div>
-        <div id="tradeList" style="margin-top:14px;"></div>
+        <div id="tradeList" style="margin-top:12px;"></div>
       </div>
     </div>
 
+    <!-- HOLDINGS -->
     <div class="q-block">
       <p class="q-section-label">Current portfolio · marked to live GBP prices</p>
       <div id="holdings"></div>
     </div>
 
+    <!-- CURVES -->
     <div class="q-block q-row two">
       <div><p class="q-section-label">Portfolio equity curve vs benchmarks</p><div class="q-chart med" id="curve"></div></div>
       <div><p class="q-section-label">Portfolio drawdown</p><div class="q-chart med" id="ddchart"></div></div>
     </div>
 
+    <!-- DRIFT + REBALANCE -->
     <div class="q-block q-row two">
       <div>
         <p class="q-section-label">Allocation drift vs v5c target</p>
         <div id="drift"></div>
-        <p class="q-note" style="margin-top:10px;">Sleeves more than 5% off target are highlighted. The rebalance respects this 5% hysteresis band; sleeves within band are left untouched.</p>
+        <p class="q-note" style="margin-top:8px;">Sleeves more than 5% off target are highlighted. The rebalance respects this 5% hysteresis band, sleeves within band are left untouched.</p>
       </div>
       <div>
         <p class="q-section-label">Rebalance to target</p>
-        <button class="q-btn primary" id="rebalance">Compute rebalance trades</button>
-        <div id="rebalanceOut" style="margin-top:16px;"></div>
+        <button class="q-btn" id="rebalance">Compute rebalance trades</button>
+        <div id="rebalanceOut" style="margin-top:14px;"></div>
       </div>
     </div>
 
     <div class="q-block"><p class="q-disclaimer">This is a systematic research model and a personal bookkeeping tool, not financial advice. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Deploy capital at your own risk. Your data is stored only in this browser.</p></div>
   </main>
 
+  <footer class="tbp-footer"><div class="tbp-container">
+    <div class="tbp-footer-top">
+      <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div><p class="tbp-footer-blurb">Independent macro research, investment funds, and experimental trading tools, built for clarity, not clicks.</p></div>
+      <div><h4>Navigate</h4><div class="tbp-footer-links"><a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a><a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+      <div><h4>Quant</h4><div class="tbp-footer-links"><a href="/quant/">&larr; Strategies</a> <a href="/quant/v5c.html">Daily Signal</a><a href="/quant/backtest.html">Backtest</a><a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a><a href="/quant/research.html">Research</a></div></div>
+      <div><h4>Company</h4><div class="tbp-footer-links"><a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
+    </div>
+    <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
+    <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span><div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div></div>
+  </div></footer>
+
+  <script src="/assets/tbp.js" defer></script>
+  <script src="/assets/quant.js"></script>
   <script>
-  
   (function(){
     var Q = window.QUANT, C = Q.COLORS;
     var KEY = 'tmbd_quant_tracker_v1';
@@ -401,40 +304,6 @@
       render();
     }).catch(function(e){ document.getElementById('updated').textContent='Could not load price data, tracker runs in offline mode.'; render(); console.error(e); });
   })();
-  
   </script>
-  <footer class="tbp-footer">
-    <div class="tbp-container">
-      <div class="tbp-footer-top">
-        <div>
-          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
-          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only, not investment advice.</p>
-        </div>
-        <div><h4>Navigate</h4><div class="tbp-footer-links">
-          <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
-          <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
-        </div></div>
-        <div><h4>Quant</h4><div class="tbp-footer-links">
-          <a href="/quant/">&larr; Strategies</a>
-          <a href="/quant/v5c.html">v5c Signal</a><a href="/quant/backtest.html">v5c Backtest</a>
-          <a href="/quant/risk.html">v5c Risk</a><a href="/quant/tracker.html">v5c Tracker</a>
-          <a href="/quant/research.html">v5c Research</a>
-          <a href="/quant/vp-macd.html">VP-MACD Signal</a><a href="/quant/vp-macd-backtest.html">VP-MACD Backtest</a>
-          <a href="/quant/vp-macd-risk.html">VP-MACD Risk</a><a href="/quant/vp-macd-tracker.html">VP-MACD Tracker</a>
-          <a href="/quant/vp-macd-research.html">VP-MACD Research</a>
-        </div></div>
-        <div><h4>Company</h4><div class="tbp-footer-links">
-          <a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a>
-        </div></div>
-      </div>
-      <div class="tbp-footer-bottom" style="margin-top:48px;">
-        <span>&copy; 2026 The Market Brief Daily. All rights reserved.</span>
-        <div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/assets/tbp.js" defer></script>
-  <script src="/assets/quant.js"></script>
 </body>
 </html>
