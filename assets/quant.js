@@ -4,15 +4,15 @@
 (function (global) {
   "use strict";
 
-  // neon palette (matches quant.css)
-  var TXT = "#eef4ff", MUTED = "#aebfdd", GRID = "rgba(120,160,255,0.12)", LINE = "rgba(120,160,255,0.22)";
+  // light palette (matches quant.css)
+  var TXT = "#0f172a", MUTED = "#64748b", GRID = "rgba(15,23,42,0.10)", LINE = "rgba(15,23,42,0.20)";
   var COLORS = {
-    v5c: "#28e0f0", v5b: "#a98bff", v5: "#f7bd57", spy: "#5f769b",
-    bull: "#2ce8a6", contango: "#f7bd57", crisis: "#ff5d72",
-    pos: "#2ce8a6", neg: "#ff5d72", blue: "#28e0f0", gold: "#f7bd57", violet: "#a98bff",
+    v5c: "#0ea5e9", v5b: "#7c3aed", v5: "#b45309", spy: "#64748b",
+    bull: "#15803d", contango: "#b45309", crisis: "#b91c1c",
+    pos: "#15803d", neg: "#b91c1c", blue: "#0ea5e9", gold: "#b45309", violet: "#7c3aed",
   };
   var REGIME_FILL = {
-    Bull: "rgba(44,232,166,0.10)", Contango: "rgba(247,189,87,0.11)", Crisis: "rgba(255,93,114,0.13)",
+    Bull: "rgba(21,128,61,0.10)", Contango: "rgba(180,83,9,0.10)", Crisis: "rgba(185,28,28,0.10)",
   };
   var MONO = "'JetBrains Mono', ui-monospace, monospace";
 
@@ -30,8 +30,8 @@
       yaxis: { gridcolor: GRID, zerolinecolor: LINE, linecolor: LINE, tickfont: { color: MUTED } },
       legend: { orientation: "h", y: 1.14, x: 0, font: { size: 11, color: TXT }, bgcolor: "rgba(0,0,0,0)" },
       hovermode: "x unified",
-      hoverlabel: { bgcolor: "#0d1426", bordercolor: LINE, font: { color: TXT, size: 12, family: MONO } },
-      colorway: ["#28e0f0", "#a98bff", "#f7bd57", "#2ce8a6", "#ff5d72", "#5f769b"],
+      hoverlabel: { bgcolor: "#ffffff", bordercolor: LINE, font: { color: TXT, size: 12, family: MONO } },
+      colorway: ["#0ea5e9", "#7c3aed", "#b45309", "#15803d", "#b91c1c", "#64748b"],
       shapes: [], annotations: [],
     };
     return Object.assign(base, over || {});
