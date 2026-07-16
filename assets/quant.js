@@ -82,12 +82,13 @@
     gate.innerHTML =
       '<div class="lock">🔒</div>' +
       '<h2>Subscriber access</h2>' +
-      '<p>The live v5c terminal, signal, backtest, risk analytics and the portfolio tracker, is for Market Brief subscribers. Enter your access code to unlock it on this device.</p>' +
+      '<p>The live strategy terminals are subscriber-only. Enter your access code to unlock this device, or choose direct invest access for a 2%/anum fee.</p>' +
       '<div class="row"><input id="q-code" type="text" placeholder="ACCESS CODE" autocomplete="off" spellcheck="false" aria-label="Access code">' +
       '<button class="q-btn" id="q-unlock">Unlock</button></div>' +
       '<div class="err" id="q-err"></div>' +
       '<div class="sub">Subscribers get the code in the paid newsletter. ' +
-      '<a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe to get access →</a></div>';
+      '<a href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe monthly →</a> · ' +
+      '<a href="/investments.html">Direct invest (2%/anum) →</a></div>';
     var main = document.querySelector("main");
     (main && main.parentNode) ? main.parentNode.insertBefore(gate, main) : body.appendChild(gate);
     var input = gate.querySelector("#q-code"), err = gate.querySelector("#q-err");

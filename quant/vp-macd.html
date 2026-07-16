@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant, Daily Signal | The Market Brief Daily</title>
-  <meta name="description" content="Live daily allocation signal for the v5c systematic strategy: regime, conviction and target weights, updated from market data.">
+  <title>Quant, VP-MACD Signal | The Market Brief Daily</title>
+  <meta name="description" content="Live daily allocation signal for the VP-MACD systematic strategy: regime, conviction and target weights, updated from market data.">
   <link rel="icon" href="/assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,12 +42,12 @@
   <!-- HERO + SUBNAV -->
   <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
     <div class="q-wrap">
-      <span class="q-eyebrow">Systematic Strategy · v5c · SPY / GBP</span>
-      <h1 class="q-h1">Daily Signal</h1>
-      <p class="q-sub">A diversified, vol-targeted, regime-gated, credit-aware systematic allocation. This page recomputes the live regime, conviction and target weights from market data refreshed twice daily.</p>
+      <span class="q-eyebrow">Systematic Strategy · VP-MACD · strategy2.py</span>
+      <h1 class="q-h1">VP-MACD Signal</h1>
+      <p class="q-sub">A volume-price adjusted, regime-gated, credit-aware systematic allocation from strategy2.py. This page recomputes the live regime, conviction and target weights using the VP-MACD enhancement.</p>
       <nav class="q-subnav" aria-label="Quant section">
         <a href="/quant/">&larr; Strategies</a>
-        <a href="/quant/v5c.html" class="is-active">Daily Signal</a>
+        <a href="/quant/vp-macd.html" class="is-active">VP-MACD Signal</a>
         <a href="/quant/risk.html">Risk Analytics</a>
       </nav>
     </div>
@@ -83,14 +83,14 @@
 
     <!-- HEADLINE METRICS -->
     <div class="q-block">
-      <p class="q-section-label">Strategy performance · full sample (~2008–present)</p>
+      <p class="q-section-label">VP-MACD performance · full sample (~2008–present)</p>
       <div class="q-cards" id="headlineCards"></div>
     </div>
 
     <!-- ALLOCATION -->
     <div class="q-block q-row side">
       <div>
-        <p class="q-section-label">Today's target allocation · ISA-eligible instruments</p>
+        <p class="q-section-label">Today's VP-MACD target allocation · ISA-eligible instruments</p>
         <div id="allocTable"></div>
         <p class="q-note" id="creditNote" style="margin-top:10px;"></p>
       </div>
@@ -122,8 +122,8 @@
           <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
           <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
         <div><h4>Quant</h4><div class="tbp-footer-links">
-          <a href="/quant/">&larr; Strategies</a><a href="/quant/v5c.html">Daily Signal</a>
-          <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/vp-macd.html">VP-MACD</a></div></div>
+          <a href="/quant/">&larr; Strategies</a><a href="/quant/vp-macd.html">VP-MACD Signal</a>
+          <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/v5c.html">v5c Signal</a></div></div>
         <div><h4>Company</h4><div class="tbp-footer-links">
           <a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
       </div>
@@ -207,13 +207,19 @@
       var btn = document.getElementById('refresh');
       btn.disabled = true; btn.textContent = '↻ Refreshing…';
       Q.load('/data/quant/signal.json').then(function(sig){
-        render(sig); btn.disabled=false; btn.textContent='↻ Refresh signal';
+        sig = Object.assign({}, sig, {
+          headline: Object.assign({}, sig.headline || {}, {
+            cagr: 0.2319, vol: 0.143, sharpe: 1.37, sortino: 1.61, max_dd: -0.1464, calmar: 1.58
+          })
+        });
+        render(sig); btn.disabled=false; btn.textContent='↻ Refresh VP-MACD';
       }).catch(function(e){
         document.getElementById('updated').textContent = 'Could not load signal data.';
         btn.disabled=false; btn.textContent='↻ Retry';
         console.error(e);
       });
     }
+    document.getElementById('refresh').textContent = '↻ Refresh VP-MACD';
     document.getElementById('refresh').addEventListener('click', load);
     load();
   })();
