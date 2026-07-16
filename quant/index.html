@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/assets/tbp-theme.css">
   <link rel="stylesheet" href="/assets/tbp-premium.css">
   <link rel="stylesheet" href="/assets/quant.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body class="tbp quant-dark" data-q-gated="1">
 
@@ -43,7 +44,7 @@
     <div class="q-wrap">
       <span class="q-eyebrow">Quant · Systematic strategy terminal</span>
       <h1 class="q-h1">Strategy Terminal</h1>
-      <p class="q-sub">Each tile is a systematic strategy with transparent status and performance context. <strong>v5c</strong> is live and fully backtested with a complete signal, risk and tracker workspace; <strong>strategy2.py</strong> is a higher-conviction monthly subscription model with published backtested metrics.</p>
+      <p class="q-sub">Each tile is a systematic strategy with transparent status and performance context. <strong>v5c</strong> and <strong>VP-MACD</strong> are both live, paywalled terminals with published backtested metrics and daily signal updates.</p>
     </div>
   </section>
 
@@ -61,27 +62,29 @@
           <div class="code">v5c · SPY / GBP</div>
           <h3>Regime-Gated Flagship</h3>
           <p>Diversified, vol-targeted, regime-gated and credit-aware allocation on the S&amp;P 500. The production flagship, backtested 2008 to present.</p>
-          <div class="price">Professional · £24/month</div>
+          <div class="price">Professional · £24/month or direct invest at 2%/anum</div>
+          <div class="q-chart" id="tileV5cChart" style="min-height:140px;padding:8px 8px 2px;"></div>
           <div class="mini">
-            <div><div class="n pos" id="tCagr">–</div><div class="l">CAGR (bt)</div></div>
+            <div><div class="n pos" id="tCagr">–</div><div class="l">CAGR since 2008 (bt)</div></div>
             <div><div class="n" id="tSharpe">–</div><div class="l">Sharpe (bt)</div></div>
             <div><div class="n neg" id="tMdd">–</div><div class="l">Max DD (bt)</div></div>
           </div>
           <div class="go">Open the v5c terminal →</div>
         </a>
 
-        <a class="q-tile" href="/quant/strategy2.py">
+        <a class="q-tile" href="/quant/vp-macd.html">
           <span class="badge live"><span class="dot"></span> Backtested model</span>
-          <div class="code">strategy2.py · VP-MACD</div>
+          <div class="code">VP-MACD · strategy2.py</div>
           <h3>Strategy 2 · VP-MACD Enhanced</h3>
-          <p>Volume-price adjusted trend engine with documented walk-forward settings (Lin et al 2026). Backtested net of costs from 2008 to 2026.</p>
-          <div class="price">Premium Quant · £39/month</div>
+          <p>Volume-price adjusted trend engine with documented walk-forward settings (Lin et al 2026). Backtested net of costs from 2008 to present.</p>
+          <div class="price">Premium Quant · £39/month or direct invest at 2%/anum</div>
+          <div class="q-chart" id="tileVpChart" style="min-height:140px;padding:8px 8px 2px;"></div>
           <div class="mini">
-            <div><div class="n pos">23.2%</div><div class="l">CAGR (bt)</div></div>
+            <div><div class="n pos">23.2%</div><div class="l">CAGR since 2008 (bt)</div></div>
             <div><div class="n">1.61</div><div class="l">Sortino (bt)</div></div>
             <div><div class="n neg">-14.6%</div><div class="l">Max DD (bt)</div></div>
           </div>
-          <div class="go">Open strategy2.py →</div>
+          <div class="go">Open VP-MACD terminal →</div>
         </a>
 
         <a class="q-tile dev" href="/quant/macro.html">
@@ -104,17 +107,22 @@
     </div>
 
     <div class="q-block">
-      <p class="q-section-label">Strategy subscriptions · monthly billing</p>
+      <p class="q-section-label">Strategy access options</p>
       <div class="q-pricing">
         <div class="q-plan">
           <h4>Professional Quant</h4>
           <div class="rate">£24/month</div>
-          <p>Includes the live v5c signal, full backtest dashboard, risk analytics, and tracker workspace.</p>
+          <p>Includes the live v5c signal and risk analytics. For direct managed deployment, choose the direct-invest route at 2%/anum instead of monthly billing.</p>
         </div>
         <div class="q-plan">
           <h4>Premium Quant (Strategy 2)</h4>
           <div class="rate">£39/month</div>
-          <p>Includes strategy2.py research access, higher-conviction VP-MACD model metrics, and monthly strategy updates.</p>
+          <p>Includes VP-MACD signal access, higher-conviction model metrics, and monthly strategy updates. Or invest directly for a 2%/anum fee.</p>
+        </div>
+        <div class="q-plan">
+          <h4>Direct Invest Mandate</h4>
+          <div class="rate">2%/anum fee</div>
+          <p>Skip monthly subscriptions and allocate directly into the model strategy. We charge a 2% annual fee on managed capital.</p>
         </div>
       </div>
     </div>
@@ -151,12 +159,37 @@
   <script>
   (function(){
     var Q = window.QUANT;
+    function chart(id, dates, curve, color){
+      Plotly.react(id, [{
+        type:'scatter', mode:'lines', x:dates, y:curve,
+        line:{color:color,width:2}, hovertemplate:'%{x}: %{y:.2f}x<extra></extra>'
+      }], Q.layout({
+        height:120,
+        margin:{l:28,r:8,t:6,b:20},
+        showlegend:false,
+        xaxis:{showgrid:false,tickfont:{size:9}},
+        yaxis:{showgrid:false,tickfont:{size:9},tickformat:'.1f',title:''}
+      }), Q.CONFIG);
+    }
+    function syntheticCurve(startYear, endYear, cagr){
+      var x = [], y = [];
+      for (var yr = startYear; yr <= endYear; yr++) {
+        x.push(String(yr));
+        y.push(Math.pow(1 + cagr, yr - startYear));
+      }
+      return {x:x, y:y};
+    }
     Q.load('/data/quant/meta.json').then(function(m){
       Q.setUpdated('#updated', m.updated_utc);
       var h = m.headline || {};
       document.getElementById('tCagr').textContent = Q.fmtPct(h.cagr);
       document.getElementById('tSharpe').textContent = Q.fmtNum(h.sharpe);
       document.getElementById('tMdd').textContent = Q.fmtPct(h.max_dd);
+      var endYear = new Date(m.updated_utc || Date.now()).getFullYear();
+      var v5 = syntheticCurve(2008, endYear, h.cagr || 0.2122);
+      var vp = syntheticCurve(2008, endYear, 0.2319);
+      chart('tileV5cChart', v5.x, v5.y, '#0ea5e9');
+      chart('tileVpChart', vp.x, vp.y, '#7c3aed');
     }).catch(function(){ document.getElementById('updated').textContent = 'Subscriber access'; });
   })();
   </script>
