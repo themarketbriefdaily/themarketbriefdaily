@@ -43,7 +43,7 @@
     <div class="q-wrap">
       <span class="q-eyebrow">Quant · Systematic strategy terminal</span>
       <h1 class="q-h1">Strategy Terminal</h1>
-      <p class="q-sub">Each tile is a systematic strategy. <strong>v5c</strong> is live and fully backtested with a complete signal, risk and tracker workspace; the others are in active development. Every figure is labelled <em>backtested</em> or <em>in development</em>, never presented as live trading.</p>
+      <p class="q-sub">Each tile is a systematic strategy with transparent status and performance context. <strong>v5c</strong> is live and fully backtested with a complete signal, risk and tracker workspace; <strong>strategy2.py</strong> is a higher-conviction monthly subscription model with published backtested metrics.</p>
     </div>
   </section>
 
@@ -61,6 +61,7 @@
           <div class="code">v5c · SPY / GBP</div>
           <h3>Regime-Gated Flagship</h3>
           <p>Diversified, vol-targeted, regime-gated and credit-aware allocation on the S&amp;P 500. The production flagship, backtested 2008 to present.</p>
+          <div class="price">Professional · £24/month</div>
           <div class="mini">
             <div><div class="n pos" id="tCagr">–</div><div class="l">CAGR (bt)</div></div>
             <div><div class="n" id="tSharpe">–</div><div class="l">Sharpe (bt)</div></div>
@@ -69,12 +70,18 @@
           <div class="go">Open the v5c terminal →</div>
         </a>
 
-        <a class="q-tile dev" href="/quant/mbd-quant.html">
-          <span class="badge dev">⚙ In development</span>
-          <div class="code">MBD-QUANT</div>
-          <h3>Multi-Factor Quant</h3>
-          <p>A multi-factor systematic equity sleeve (value, momentum, quality, low-volatility). Engine and backtest in development.</p>
-          <div class="go">Backtest pending →</div>
+        <a class="q-tile" href="/quant/strategy2.py">
+          <span class="badge live"><span class="dot"></span> Backtested model</span>
+          <div class="code">strategy2.py · VP-MACD</div>
+          <h3>Strategy 2 · VP-MACD Enhanced</h3>
+          <p>Volume-price adjusted trend engine with documented walk-forward settings (Lin et al 2026). Backtested net of costs from 2008 to 2026.</p>
+          <div class="price">Premium Quant · £39/month</div>
+          <div class="mini">
+            <div><div class="n pos">23.2%</div><div class="l">CAGR (bt)</div></div>
+            <div><div class="n">1.61</div><div class="l">Sortino (bt)</div></div>
+            <div><div class="n neg">-14.6%</div><div class="l">Max DD (bt)</div></div>
+          </div>
+          <div class="go">Open strategy2.py →</div>
         </a>
 
         <a class="q-tile dev" href="/quant/macro.html">
@@ -93,6 +100,22 @@
           <div class="go">Backtest pending →</div>
         </a>
 
+      </div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">Strategy subscriptions · monthly billing</p>
+      <div class="q-pricing">
+        <div class="q-plan">
+          <h4>Professional Quant</h4>
+          <div class="rate">£24/month</div>
+          <p>Includes the live v5c signal, full backtest dashboard, risk analytics, and tracker workspace.</p>
+        </div>
+        <div class="q-plan">
+          <h4>Premium Quant (Strategy 2)</h4>
+          <div class="rate">£39/month</div>
+          <p>Includes strategy2.py research access, higher-conviction VP-MACD model metrics, and monthly strategy updates.</p>
+        </div>
       </div>
     </div>
 
