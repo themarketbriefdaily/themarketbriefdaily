@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Market Structure Alpha | The Market Brief Daily | The Market Brief Daily</title>
-  <meta name="description" content="Market Structure Alpha (MBD-STRUCT), a systematic strategy in development at The Market Brief Daily." />
+  <title>VP-MACD, Backtest & Performance | The Market Brief Daily</title>
+  <meta name="description" content="Historical performance of the VP-MACD volume-price premium strategy vs SPY and the v5c baseline: equity curve, drawdowns, rolling Sharpe and annual returns." />
   <meta name="theme-color" content="#faf9f6" />
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://themarketbriefdaily.com/quant/structure.html" />
+  <link rel="canonical" href="https://themarketbriefdaily.com/quant/vp-macd-backtest.html" />
   <meta name="robots" content="noindex, follow" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/assets/tbp-theme.css" />
   <link rel="stylesheet" href="/assets/tbp-premium.css" />
   <link rel="stylesheet" href="/assets/quant.css" />
-  
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
   <style>
     .q-wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
     .q-block { margin-bottom:32px; }
@@ -34,7 +34,7 @@
     .q-table thead th { background:var(--tbp-bg); color:var(--tbp-muted); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; text-align:left; padding:12px 16px; border-bottom:1px solid var(--tbp-line); }
     .q-table tbody td { padding:12px 16px; border-bottom:1px solid #f3f4f6; color:var(--tbp-ink); vertical-align:middle; }
     .q-table tbody tr:last-child td { border-bottom:none; }
-    .q-table tbody tr.hl td { background:#fffbeb; }
+    .q-table tbody tr.hl td { background:#fffdf8; }
     .q-table td.pos, .q-table span.pos { color:#15803d; font-weight:600; }
     .q-table td.neg, .q-table span.neg { color:#b91c1c; font-weight:600; }
     .q-tk { display:inline-block; font-family:'SFMono-Regular',Menlo,monospace; font-size:11px; background:#f3f4f6; color:var(--tbp-ink); padding:2px 7px; border-radius:4px; letter-spacing:.02em; }
@@ -91,17 +91,13 @@
     .q-rcard h4 { font-family:'Inter Tight',sans-serif; color:var(--tbp-ink); font-weight:750; font-size:1.15rem; margin:0 0 8px; }
     .q-rcard p { color:var(--tbp-ink-2); font-size:13.5px; line-height:1.6; }
     .q-legend-dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin:0 4px 0 10px; vertical-align:middle; }
-    .q-standard-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:5px 12px; border-radius:100px; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; }
-    .q-standard-badge .dot { width:6px; height:6px; border-radius:50%; background:#15803d; }
-    .q-gate { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:linear-gradient(135deg,#f0fdf4,#faf9f6); border:1px solid #bbf7d0; border-radius:12px; padding:14px 20px; margin-bottom:28px; }
+    .q-premium-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:5px 12px; border-radius:100px; color:#92400e; background:#fffbeb; border:1px solid #fde68a; }
+    .q-premium-badge .dot { width:6px; height:6px; border-radius:50%; background:#d4a843; }
+    .q-gate { display:flex; align-items:center; gap:14px; flex-wrap:wrap; background:linear-gradient(135deg,#fffbeb,#faf9f6); border:1px solid #fde68a; border-radius:12px; padding:14px 20px; margin-bottom:28px; }
     .q-gate .lock { font-size:20px; }
     .q-gate .text { flex:1; min-width:200px; }
     .q-gate .text strong { color:var(--tbp-ink); }
     .q-gate .text span { color:var(--tbp-muted); font-size:13px; }
-    .q-dev-notice { text-align:center; padding:56px 36px; background:var(--tbp-bg); border:1px solid var(--tbp-line); border-radius:16px; }
-    .q-dev-notice .ic { font-size:40px; color:#92400e; margin-bottom:16px; }
-    .q-dev-notice h2 { color:var(--tbp-ink); font-family:'Inter Tight',sans-serif; font-weight:780; font-size:1.8rem; margin:16px 0 12px; letter-spacing:-.015em; }
-    .q-dev-notice p { color:var(--tbp-ink-2); font-size:15px; line-height:1.7; max-width:620px; margin:8px auto; }
   </style>
 </head>
 
@@ -132,37 +128,124 @@
     <a href="/education.html">Education</a>
     <a href="/about.html">About</a>
     <a href="/subscription.html">Subscribe ↗</a>
-  </div>  <!-- HERO -->
+  </div>
+  <!-- HERO -->
   <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 48px); padding-bottom:24px;">
     <div class="q-wrap">
       <div data-tbp-reveal style="max-width:820px;">
         <div style="display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
-          <span class="q-standard-badge" style="color:#92400e; background:#fffbeb; border-color:#fde68a;"><span class="dot" style="background:#d4a843;"></span> In development</span>
-          <span class="tbp-eyebrow" style="margin:0;">MBD-STRUCT · In development</span>
+          <span class="q-premium-badge"><span class="dot"></span> Premium · £39/mo</span>
+          <span class="tbp-eyebrow" style="margin:0;">VP-MACD · SPY / GBP</span>
         </div>
-        <h1 class="tbp-h1">Market Structure Alpha</h1>
-        <p class="tbp-lead" style="margin-top:18px;">Microstructure and liquidity-driven dislocations around index rebalances and flow events.</p>
-        <nav class="q-subnav" aria-label="Quant section">
-          <a href="/quant/">&larr; Strategies</a>
-        </nav>
+        <h1 class="tbp-h1">Backtest &amp; Performance</h1>
+        <p class="tbp-lead" style="margin-top:18px;">Full-sample backtest in GBP (no FX fee). VP-MACD is the volume-price premium line; v5c is the production baseline without the VP adjustment. The VP layer was locked after 2019–2020 out-of-sample validation. Regime shading: <span class="q-legend-dot" style="background:rgba(26,138,74,.45)"></span>Bull <span class="q-legend-dot" style="background:rgba(200,163,90,.55)"></span>Contango <span class="q-legend-dot" style="background:rgba(176,48,48,.5)"></span>Crisis.</p>
+        <nav class="q-subnav" aria-label="VP-MACD section"><a href="/quant/">&larr; Strategies</a><a href="/quant/vp-macd.html">Daily Signal</a><a href="/quant/vp-macd-backtest.html" class="is-active">Backtest</a><a href="/quant/vp-macd-risk.html">Risk Analytics</a><a href="/quant/vp-macd-tracker.html">Portfolio Tracker</a><a href="/quant/vp-macd-research.html">Research</a></nav>
       </div>
     </div>
-  </section>
-
+  </section>    <div class="q-gate">
+      <span class="lock">⚙</span>
+      <div class="text">
+        <strong>Premium strategy — subscriber access.</strong>
+        <span> VP-MACD is a £39/mo strategy. <a href="/subscription.html" style="color:var(--tbp-warm); font-weight:600;">Subscribe to unlock</a> the live trade tickets, full backtest and portfolio tracker.</span>
+      </div>
+      <a class="q-btn primary" href="/subscription.html">Subscribe →</a>
+    </div>
   <main class="q-wrap" style="padding-bottom:80px;">
-    <div class="q-dev-notice">
-      <div class="ic">⚙</div>
-      <span class="q-standard-badge" style="color:#92400e; background:#fffbeb; border-color:#fde68a;"><span class="dot" style="background:#d4a843;"></span> Backtest pending</span>
-      <h2>This strategy is in development</h2>
-      <p>The Market Structure Alpha engine and backtest are not yet validated, so no signal, allocation or performance figures are shown here, in line with our rule that every number is labelled and never fabricated.</p>
-      <p>The v5c flagship is live now with a full backtest. Market Structure Alpha will appear here with the same Daily Signal, Backtest, Risk and Tracker workspace once it clears the same validation bar.</p>
-      <div class="q-flex" style="justify-content:center; margin-top:22px;">
-        <a class="q-btn primary" href="/quant/v5c.html">Open the live v5c terminal</a>
-        <a class="q-btn ghost" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe for the launch ↗</a>
+    <div class="q-spread q-block">
+      <span class="q-updated" id="updated">Loading…</span>
+      <a class="q-btn ghost" id="csv" href="/data/quant/vp-macd/returns.csv" download>↓ Download daily returns (CSV)</a>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">Growth of £1 · log scale</p>
+      <div class="q-chart tall" id="equity"></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">Drawdown</p>
+      <div class="q-chart med" id="dd"></div>
+    </div>
+
+    <div class="q-block q-row two">
+      <div>
+        <p class="q-section-label">Rolling 3-year Sharpe</p>
+        <div class="q-chart med" id="rollsharpe"></div>
+      </div>
+      <div>
+        <p class="q-section-label">Annual returns · VP-MACD vs SPY</p>
+        <div class="q-chart med" id="annual"></div>
       </div>
     </div>
-    <div class="q-block"><p class="q-disclaimer">This is a systematic research model. Strategies marked "in development" have no live or backtested track record yet. Past performance is not indicative of future results. Deploy capital at your own risk.</p></div>
+
+    <div class="q-block">
+      <p class="q-section-label">Performance metrics</p>
+      <div id="metrics"></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">Worst 10 drawdowns · VP-MACD</p>
+      <div id="worst"></div>
+    </div>
+
+    <div class="q-block">
+      <p class="q-section-label">VP-MACD vs v5c · component attribution</p>
+      <div id="attribution"></div>
+      <p class="q-note" style="margin-top:10px;">The VP-MACD lift over v5c comes from two sources: (1) the volume-price adjustment filters low-volume false breakouts in the trend signal, and (2) the min-variance GLD/TLT split (no trend gate) keeps diversifiers in exactly when they are most needed — during equity drawdowns when GLD/TLT often fall below their 200d MA before rebounding as hedges.</p>
+    </div>
+
+    <div class="q-block"><p class="q-disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. The VP-MACD configuration was locked after 2019–2020 out-of-sample validation. Deploy capital at your own risk.</p></div>
   </main>
+
+  <script>
+  (function(){
+    var Q = window.QUANT;
+    Q.load('/data/quant/vp-macd/backtest.json').then(function(bt){
+      Q.setUpdated('#updated', bt.updated_utc);
+      var d = bt.dates, shapes = Q.regimeShapes(bt.regime_segments);
+      var C = Q.COLORS;
+      Plotly.react('equity', [
+        {x:d, y:bt.nav.vp_macd, name:'VP-MACD (premium)', line:{color:'#1b3870', width:2.2}},
+        {x:d, y:bt.nav.v5c, name:'v5c (baseline)', line:{color:C.v5c, width:1.4, dash:'dot'}},
+        {x:d, y:bt.nav.spy, name:'SPY buy & hold', line:{color:C.spy, width:1.2}}
+      ], Q.layout({ yaxis:{type:'log', gridcolor:'#eef0f2', title:{text:'£',font:{size:11}}}, shapes:shapes, height:440 }), Q.CONFIG);
+      Plotly.react('dd', [
+        {x:d, y:bt.drawdown.vp_macd, name:'VP-MACD', fill:'tozeroy', line:{color:'#1b3870',width:1}, fillcolor:'rgba(27,56,112,0.10)'},
+        {x:d, y:bt.drawdown.spy, name:'SPY', fill:'tozeroy', line:{color:C.spy,width:1}, fillcolor:'rgba(154,149,138,0.18)'}
+      ], Q.layout({ yaxis:{tickformat:'.0%'}, shapes:shapes, height:340 }), Q.CONFIG);
+      Plotly.react('rollsharpe', [
+        {x:bt.rolling_sharpe.dates, y:bt.rolling_sharpe.vp_macd, name:'3y Sharpe', line:{color:'#1b3870',width:1.8}}
+      ], Q.layout({ shapes:[{type:'line',xref:'paper',x0:0,x1:1,y0:1,y1:1,line:{color:'#d4a843',dash:'dot',width:1}}], height:340, margin:{l:48,r:18,t:18,b:40} }), Q.CONFIG);
+      Plotly.react('annual', [
+        {type:'bar', x:bt.annual.years, y:bt.annual.vp_macd, name:'VP-MACD', marker:{color:'#1b3870'}},
+        {type:'bar', x:bt.annual.years, y:bt.annual.spy, name:'SPY', marker:{color:C.spy}}
+      ], Q.layout({ barmode:'group', yaxis:{tickformat:'.0%'}, hovermode:'closest', height:340, margin:{l:48,r:18,t:18,b:40} }), Q.CONFIG);
+      var order=[['vp_macd','VP-MACD · premium'],['v5c','v5c · baseline'],['spy','SPY buy & hold']];
+      var rows = order.map(function(o){
+        var m=bt.metrics[o[0]]||{};
+        return { _cls: o[0]==='vp_macd'?'hl':'', cells:[
+          {v:o[1]}, {v:Q.fmtPct(m.cagr)}, {v:Q.fmtPct(m.vol)}, {v:Q.fmtNum(m.sharpe)},
+          {v:Q.fmtNum(m.sortino)}, {v:Q.fmtPct(m.max_dd), cls:'neg'}, {v:Q.fmtNum(m.calmar)} ]};
+      });
+      document.getElementById('metrics').innerHTML = Q.table(['Model','CAGR','Vol','Sharpe','Sortino','Max DD','Calmar'], rows);
+      var wrows = bt.worst_dd.map(function(w,i){
+        return { cells:[ {v:String(i+1)}, {v:w.start}, {v:w.trough}, {v:w.recovery||'—'}, {v:Q.fmtPct(w.depth), cls:'neg'}, {v:w.days+' d'} ]};
+      });
+      document.getElementById('worst').innerHTML = Q.table(['#','Peak','Trough','Recovered','Depth','Peak→Trough'], wrows);
+      if (bt.attribution) {
+        var arows = bt.attribution.map(function(a){
+          return { cells:[ {v:a.component}, {v:Q.fmtSignedPct(a.delta_cagr)}, {v:Q.fmtNum(a.delta_sortino,3)}, {v:a.note} ]};
+        });
+        document.getElementById('attribution').innerHTML = Q.table(['Component','Δ CAGR','Δ Sortino','Note'], arows);
+      } else {
+        document.getElementById('attribution').innerHTML = Q.table(['Component','Δ CAGR','Δ Sortino','Note'], [
+          {cells:[{v:'Volume-price adjustment'},{v:'+0.4pp',cls:'pos'},{v:'+0.030',cls:'pos'},{v:'Filters low-volume false breakouts in trend signal'}]},
+          {cells:[{v:'Min-variance GLD/TLT split'},{v:'+0.4pp',cls:'pos'},{v:'+0.027',cls:'pos'},{v:'No trend gate; keeps diversifiers during equity drawdowns'}]},
+          {_cls:'hl',cells:[{v:'Total VP-MACD lift over v5c'},{v:'+0.8pp',cls:'pos'},{v:'+0.057',cls:'pos'},{v:'Backtest 2008–2026, GBP, spread-aware costs'}]}
+        ]);
+      }
+    }).catch(function(e){ document.getElementById('updated').textContent='Could not load backtest data. The VP-MACD data feed may still be initialising — run strategy2.py to generate it.'; console.error(e); });
+  })();
+  </script>
   <footer class="tbp-footer">
     <div class="tbp-container">
       <div class="tbp-footer-top">
