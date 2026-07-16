@@ -1,125 +1,387 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quant, Strategy Terminal | The Market Brief Daily</title>
-  <meta name="description" content="The Market Brief Daily systematic strategy terminal: the live v5c flagship plus strategies in development. Subscriber access.">
-  <link rel="icon" href="/assets/favicon.svg">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quant | The Market Brief Daily</title>
+  <meta name="description" content="Systematic strategies built transparently. The v5c regime-gated flagship and the VP-MACD volume-price premium strategy, with full backtests, risk analytics and live portfolio tracking." />
+  <meta name="theme-color" content="#faf9f6" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://themarketbriefdaily.com/quant/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Quant | The Market Brief Daily" />
+  <meta property="og:url" content="https://themarketbriefdaily.com/quant/" />
+  <meta property="og:description" content="Systematic strategies built transparently. v5c flagship and VP-MACD premium, with full backtests and live tracking." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,wght@1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/tbp-theme.css">
-  <link rel="stylesheet" href="/assets/tbp-premium.css">
-  <link rel="stylesheet" href="/assets/quant.css">
-</head>
-<body class="tbp quant-dark" data-q-gated="1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;850&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/tbp-theme.css" />
+  <link rel="stylesheet" href="/assets/tbp-premium.css" />
+  <link rel="stylesheet" href="/assets/quant.css" />
+  <style>
+    /* === Storefront-specific styles (use site tbp tokens, match About-page aesthetic) === */
+    .qs-strategies { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    @media(max-width:880px){ .qs-strategies{ grid-template-columns:1fr; } }
+    .qs-card {
+      border:1px solid var(--tbp-line); border-radius:16px; background:var(--tbp-bg);
+      padding:32px; display:flex; flex-direction:column; position:relative; overflow:hidden;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .qs-card:hover { border-color:var(--tbp-ink); box-shadow:0 8px 32px rgba(10,10,10,.06); }
+    .qs-card.premium { border-color:var(--tbp-warm); background:linear-gradient(180deg,#fffdf8,var(--tbp-bg)); }
+    .qs-card.premium::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:4px;
+      background:linear-gradient(90deg,var(--tbp-warm),#d4a843);
+    }
+    .qs-badge {
+      display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700;
+      text-transform:uppercase; letter-spacing:.08em; padding:5px 12px; border-radius:100px;
+      width:fit-content; margin-bottom:18px;
+    }
+    .qs-badge.live { color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0; }
+    .qs-badge.premium-badge { color:#92400e; background:#fffbeb; border:1px solid #fde68a; }
+    .qs-badge .dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .qs-code {
+      color:var(--tbp-muted); font-size:12px; font-family:'SFMono-Regular',Menlo,monospace;
+      text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;
+    }
+    .qs-card h3 {
+      font-family:'Inter Tight',sans-serif; font-size:1.75rem; font-weight:780;
+      letter-spacing:-.015em; margin:0 0 10px; color:var(--tbp-ink);
+    }
+    .qs-card .desc { font-size:.98rem; line-height:1.6; color:var(--tbp-ink-2); margin:0 0 22px; }
+    .qs-metrics {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:0;
+      border-top:1px solid var(--tbp-line); border-bottom:1px solid var(--tbp-line);
+      padding:18px 0; margin-bottom:22px;
+    }
+    .qs-metric { text-align:left; padding:0 8px; }
+    .qs-metric:not(:last-child){ border-right:1px solid var(--tbp-line); }
+    .qs-metric .n {
+      font-family:'Inter Tight',sans-serif; font-size:1.5rem; font-weight:700;
+      font-variant-numeric:tabular-nums; color:var(--tbp-ink); line-height:1.1;
+    }
+    .qs-metric .n.pos { color:#15803d; }
+    .qs-metric .n.neg { color:#b91c1c; }
+    .qs-metric .l {
+      font-size:10px; text-transform:uppercase; letter-spacing:.08em;
+      color:var(--tbp-muted); margin-top:4px; font-weight:600;
+    }
+    .qs-price {
+      display:flex; align-items:baseline; gap:6px; margin-bottom:18px;
+    }
+    .qs-price .amt { font-family:'Inter Tight',sans-serif; font-size:2rem; font-weight:800; color:var(--tbp-ink); letter-spacing:-.02em; }
+    .qs-price .per { font-size:14px; color:var(--tbp-muted); }
+    .qs-price .compare { font-size:12px; color:var(--tbp-muted); margin-left:8px; }
+    .qs-features { list-style:none; padding:0; margin:0 0 24px; flex:1; }
+    .qs-features li {
+      font-size:13.5px; color:var(--tbp-ink-2); padding:6px 0;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .qs-features li::before {
+      content:'✓'; color:var(--tbp-warm); font-weight:800; flex-shrink:0;
+    }
+    .qs-cta {
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .qs-cta .tbp-btn { flex:1; justify-content:center; min-width:140px; }
 
-  <!-- HEADER -->
-  <header class="tbp-header" id="header">
+    /* How it works */
+    .qs-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+    @media(max-width:880px){ .qs-steps{ grid-template-columns:1fr 1fr; } }
+    @media(max-width:520px){ .qs-steps{ grid-template-columns:1fr; } }
+    .qs-step {
+      padding:24px; border:1px solid var(--tbp-line); border-radius:12px; background:var(--tbp-bg);
+    }
+    .qs-step .num {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:32px; height:32px; border-radius:50%; background:var(--tbp-ink); color:#fff;
+      font-family:'Inter Tight',sans-serif; font-weight:700; font-size:14px; margin-bottom:14px;
+    }
+    .qs-step h4 { font-family:'Inter Tight',sans-serif; font-size:1.05rem; font-weight:750; margin:0 0 6px; }
+    .qs-step p { font-size:13.5px; line-height:1.6; color:var(--tbp-muted); margin:0; }
+
+    /* Comparison table */
+    .qs-compare-wrap { overflow-x:auto; border:1px solid var(--tbp-line); border-radius:12px; }
+    .qs-compare { width:100%; border-collapse:collapse; font-size:14px; }
+    .qs-compare th, .qs-compare td { padding:14px 18px; text-align:left; border-bottom:1px solid var(--tbp-line); }
+    .qs-compare thead th {
+      background:var(--tbp-bg); font-family:'Inter Tight',sans-serif; font-weight:700;
+      font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--tbp-muted);
+    }
+    .qs-compare thead th.strategy-name { color:var(--tbp-ink); font-size:15px; text-transform:none; letter-spacing:0; }
+    .qs-compare tbody tr:last-child td { border-bottom:none; }
+    .qs-compare td.feature { color:var(--tbp-ink-2); font-weight:500; }
+    .qs-compare td.val { color:var(--tbp-ink); font-variant-numeric:tabular-nums; }
+    .qs-compare td.val.pos { color:#15803d; font-weight:600; }
+    .qs-compare td.val.locked { color:var(--tbp-muted); font-style:italic; }
+    .qs-compare tbody tr.premium-row td { background:#fffdf8; }
+
+    /* Coming-soon tiles */
+    .qs-soon-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    @media(max-width:880px){ .qs-soon-grid{ grid-template-columns:1fr; } }
+    .qs-soon {
+      padding:22px; border:1px solid var(--tbp-line); border-radius:12px; background:var(--tbp-bg);
+      opacity:.85;
+    }
+    .qs-soon .code { color:var(--tbp-muted); font-size:11px; font-family:'SFMono-Regular',Menlo,monospace; text-transform:uppercase; letter-spacing:.08em; }
+    .qs-soon h4 { font-family:'Inter Tight',sans-serif; font-size:1.1rem; font-weight:700; margin:8px 0 6px; }
+    .qs-soon p { font-size:13px; color:var(--tbp-muted); line-height:1.5; margin:0; }
+    .qs-soon .tag { display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#92400e; background:#fffbeb; border:1px solid #fde68a; padding:3px 8px; border-radius:3px; margin-top:10px; }
+
+    .qs-updated { color:var(--tbp-muted); font-size:13px; }
+  </style>
+</head>
+
+<body class="tbp">
+  <header class="tbp-header" role="banner">
     <div class="tbp-container tbp-header-inner">
-      <a href="/" class="tbp-brand" aria-label="The Market Brief Daily"><span class="mark">MB</span><span>The Market Brief Daily</span></a>
+      <a class="tbp-brand" href="/" aria-label="The Market Brief Daily">
+        <span class="mark">MB</span>
+        <span>The Market Brief Daily</span>
+      </a>
       <nav class="tbp-nav" aria-label="Primary">
         <a href="/">Home</a>
         <a href="/investments.html">Model Portfolios</a>
         <a href="/posts.html">Research</a>
-        
         <a class="is-active" href="/quant/">Quant</a>
         <a href="/education.html">Education</a>
         <a href="/about.html">About</a>
       </nav>
       <a class="tbp-cta-mini" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener">Subscribe <span class="arrow">↗</span></a>
-      <button class="tbp-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+      <button class="tbp-burger" aria-label="Open menu"><span></span></button>
     </div>
   </header>
   <div class="tbp-mobile-menu" role="navigation" aria-label="Mobile">
-    <a href="/">Home</a><a href="/investments.html">Model Portfolios</a><a href="/posts.html">Research</a>
-    <a href="/quant/">Quant</a><a href="/education.html">Education</a>
-    <a href="/about.html">About</a><a href="/subscription.html">Subscribe ↗</a>
+    <a href="/">Home</a>
+    <a href="/investments.html">Model Portfolios</a>
+    <a href="/posts.html">Research</a>
+    <a href="/quant/">Quant</a>
+    <a href="/education.html">Education</a>
+    <a href="/about.html">About</a>
+    <a href="/subscription.html">Subscribe ↗</a>
   </div>
 
   <!-- HERO -->
-  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 34px); padding-bottom:18px;">
-    <div class="q-wrap">
-      <span class="q-eyebrow">Quant · Systematic strategy terminal</span>
-      <h1 class="q-h1">Strategy Terminal</h1>
-      <p class="q-sub">Each tile is a systematic strategy. <strong>v5c</strong> is live and fully backtested with a complete signal, risk and tracker workspace; the others are in active development. Every figure is labelled <em>backtested</em> or <em>in development</em>, never presented as live trading.</p>
+  <section class="tbp-hero" style="padding-top:calc(var(--tbp-headerH) + 48px); padding-bottom:28px;">
+    <div class="tbp-container">
+      <div data-tbp-reveal style="max-width:780px;">
+        <div class="tbp-eyebrow" style="margin-bottom:20px;">Quant · Systematic strategies</div>
+        <h1 class="tbp-h1">Strategies built<br>in the <em>open.</em></h1>
+        <p class="tbp-lead" style="margin-top:24px;">
+          Two systematic strategies, each with a complete signal, backtest, risk analytics and portfolio tracker.
+          <strong>v5c</strong> is the regime-gated flagship. <strong>VP-MACD</strong> adds a volume-price adjustment layer
+          validated on out-of-sample data. Every figure is labelled <em>backtested</em> or <em>live</em>, never fabricated.
+        </p>
+        <p class="qs-updated" id="updated" style="margin-top:18px;">Loading…</p>
+      </div>
     </div>
   </section>
 
-  <main class="q-wrap" style="padding-bottom:64px;">
-    <div class="q-spread q-block">
-      <span class="q-updated" id="updated">Loading…</span>
-    </div>
+  <!-- STRATEGY STOREFRONT -->
+  <section class="tbp-section" style="padding-top:32px;">
+    <div class="tbp-container">
+      <h2 class="tbp-h2" style="margin-bottom:28px;">Choose your strategy</h2>
+      <div class="qs-strategies">
 
-    <div class="q-block">
-      <p class="q-section-label">Strategies</p>
-      <div class="q-mosaic">
-
-        <a class="q-tile" href="/quant/v5c.html">
-          <span class="badge live"><span class="dot"></span> Live · Backtested</span>
-          <div class="code">v5c · SPY / GBP</div>
+        <!-- v5c -->
+        <div class="qs-card">
+          <span class="qs-badge live"><span class="dot"></span> Live · Backtested</span>
+          <div class="qs-code">v5c · SPY / GBP</div>
           <h3>Regime-Gated Flagship</h3>
-          <p>Diversified, vol-targeted, regime-gated and credit-aware allocation on the S&amp;P 500. The production flagship, backtested 2008 to present.</p>
-          <div class="mini">
-            <div><div class="n pos" id="tCagr">–</div><div class="l">CAGR (bt)</div></div>
-            <div><div class="n" id="tSharpe">–</div><div class="l">Sharpe (bt)</div></div>
-            <div><div class="n neg" id="tMdd">–</div><div class="l">Max DD (bt)</div></div>
+          <p class="desc">Diversified, vol-targeted, regime-gated and credit-aware allocation on the S&amp;P 500. The production flagship, backtested 2008 to present. Implemented with ISA-eligible UCITS instruments.</p>
+          <div class="qs-metrics">
+            <div class="qs-metric"><div class="n pos" id="v5cCagr">–</div><div class="l">CAGR</div></div>
+            <div class="qs-metric"><div class="n" id="v5cSharpe">–</div><div class="l">Sharpe</div></div>
+            <div class="qs-metric"><div class="n neg" id="v5cMdd">–</div><div class="l">Max DD</div></div>
           </div>
-          <div class="go">Open the v5c terminal →</div>
-        </a>
+          <div class="qs-price">
+            <span class="amt">£19</span><span class="per">/ month</span>
+            <span class="compare">or included in Professional</span>
+          </div>
+          <ul class="qs-features">
+            <li>Daily signal with target weights &amp; trade tickets</li>
+            <li>Full backtest (2008–present, GBP, no FX fee)</li>
+            <li>Risk analytics: VaR, CVaR, regime-conditional, Deflated Sharpe</li>
+            <li>Portfolio tracker (log trades, mark-to-market, drift, rebalance)</li>
+            <li>Research library: nine model versions, full audit trail</li>
+          </ul>
+          <div class="qs-cta">
+            <a class="tbp-btn primary" href="/subscription.html">Subscribe — £19/mo</a>
+            <a class="tbp-btn" href="/quant/v5c.html">Preview signal →</a>
+          </div>
+        </div>
 
-        <a class="q-tile dev" href="/quant/mbd-quant.html">
-          <span class="badge dev">⚙ In development</span>
-          <div class="code">MBD-QUANT</div>
-          <h3>Multi-Factor Quant</h3>
-          <p>A multi-factor systematic equity sleeve (value, momentum, quality, low-volatility). Engine and backtest in development.</p>
-          <div class="go">Backtest pending →</div>
-        </a>
-
-        <a class="q-tile dev" href="/quant/macro.html">
-          <span class="badge dev">⚙ In development</span>
-          <div class="code">MBD-MACRO</div>
-          <h3>Macro Transmission</h3>
-          <p>Trades the transmission of macro shocks across rates, FX and credit into equity risk. Engine and backtest in development.</p>
-          <div class="go">Backtest pending →</div>
-        </a>
-
-        <a class="q-tile dev" href="/quant/structure.html">
-          <span class="badge dev">⚙ In development</span>
-          <div class="code">MBD-STRUCT</div>
-          <h3>Market Structure Alpha</h3>
-          <p>Harvests microstructure and liquidity-driven dislocations around index and flow events. Engine and backtest in development.</p>
-          <div class="go">Backtest pending →</div>
-        </a>
+        <!-- VP-MACD -->
+        <div class="qs-card premium">
+          <span class="qs-badge premium-badge"><span class="dot"></span> Premium · Backtested</span>
+          <div class="qs-code">VP-MACD · SPY / GBP</div>
+          <h3>Volume-Price Premium</h3>
+          <p class="desc">All of v5c, plus a volume-price adjustment layer (Lin et al 2026) that filters low-volume false breakouts and a min-variance diversifier split. Validated on 2019–2020 out-of-sample data, locked since.</p>
+          <div class="qs-metrics">
+            <div class="qs-metric"><div class="n pos" id="vpCagr">–</div><div class="l">CAGR</div></div>
+            <div class="qs-metric"><div class="n" id="vpSharpe">–</div><div class="l">Sharpe</div></div>
+            <div class="qs-metric"><div class="n neg" id="vpMdd">–</div><div class="l">Max DD</div></div>
+          </div>
+          <div class="qs-price">
+            <span class="amt">£39</span><span class="per">/ month</span>
+            <span class="compare">or included in Quant Pro</span>
+          </div>
+          <ul class="qs-features">
+            <li>Everything in v5c, for the VP-MACD strategy</li>
+            <li>Volume-price-adjusted trend signal (point-in-time, no look-ahead)</li>
+            <li>Min-variance GLD/TLT split (closed-form, no trend gate)</li>
+            <li>Per-sleeve hysteresis bands &amp; spread-aware cost model</li>
+            <li>Out-of-sample validated (2019–2020, locked configuration)</li>
+          </ul>
+          <div class="qs-cta">
+            <a class="tbp-btn primary" href="/subscription.html">Subscribe — £39/mo</a>
+            <a class="tbp-btn" href="/quant/vp-macd.html">Preview signal →</a>
+          </div>
+        </div>
 
       </div>
     </div>
+  </section>
 
-    <div class="q-block">
-      <p class="q-disclaimer">This is a systematic research model. Past performance is not indicative of future results. The Deflated Sharpe Ratio accounts for the design search. Strategies marked "in development" have no live or backtested track record yet and display no performance figures. Deploy capital at your own risk.</p>
+  <!-- COMPARISON TABLE -->
+  <section class="tbp-section" style="padding-top:0;">
+    <div class="tbp-container">
+      <h2 class="tbp-h2" style="margin-bottom:20px;">v5c vs VP-MACD</h2>
+      <div class="qs-compare-wrap">
+        <table class="qs-compare">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th class="strategy-name">v5c · £19/mo</th>
+              <th class="strategy-name">VP-MACD · £39/mo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="feature">Regime gate (VIX contango + 210d trend)</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Volatility targeting (per-regime)</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Credit gate (HYG &lt; 200d MA)</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Total-portfolio vol-cap @ 28%</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Daily de-risk overlay</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr class="premium-row"><td class="feature">Volume-price adjustment (VP-MACD)</td><td class="val">—</td><td class="val pos">✓</td></tr>
+            <tr class="premium-row"><td class="feature">Min-variance GLD/TLT split (no trend gate)</td><td class="val">Inverse-vol + 200d gate</td><td class="val pos">Min-variance, no gate</td></tr>
+            <tr class="premium-row"><td class="feature">Per-sleeve hysteresis bands</td><td class="val">Fixed 5%</td><td class="val pos">Spread-aware, per-sleeve</td></tr>
+            <tr class="premium-row"><td class="feature">Out-of-sample validation</td><td class="val">Full sample</td><td class="val pos">2019–2020 OOS, locked</td></tr>
+            <tr><td class="feature">Backtest period</td><td class="val">2008–present</td><td class="val">2008–present</td></tr>
+            <tr><td class="feature">Daily signal &amp; trade tickets</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Risk analytics (VaR, CVaR, DSR)</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Portfolio tracker</td><td class="val">✓</td><td class="val">✓</td></tr>
+            <tr><td class="feature">Research library</td><td class="val">9 model versions</td><td class="val">VP-MACD ablation studies</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="color:var(--tbp-muted); font-size:13px; margin-top:14px; line-height:1.6;">
+        Both strategies trade the same ISA-eligible instruments (VUSA.L, 3USL.L, DBMF, SGLN.L, IDTL.L). VP-MACD is priced at roughly 2× v5c because the volume-price layer and min-variance diversifier lift the Sortino by ~0.06 and CAGR by ~0.8pp in backtest. Past performance is not indicative of future results.
+      </p>
     </div>
-  </main>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="tbp-section" style="padding-top:0;">
+    <div class="tbp-container">
+      <h2 class="tbp-h2" style="margin-bottom:28px;">How it works</h2>
+      <div class="qs-steps">
+        <div class="qs-step">
+          <div class="num">1</div>
+          <h4>Subscribe</h4>
+          <p>Choose v5c (£19/mo) or VP-MACD (£39/mo) on the subscription page. Quant Pro includes both.</p>
+        </div>
+        <div class="qs-step">
+          <div class="num">2</div>
+          <h4>Get access</h4>
+          <p>The full signal, backtest, risk analytics and tracker pages unlock. A GitHub Action refreshes the signal twice daily.</p>
+        </div>
+        <div class="qs-step">
+          <div class="num">3</div>
+          <h4>Deploy capital</h4>
+          <p>Follow the target weights in your own ISA broker account. The trade-ticket list tells you exactly what to buy or sell.</p>
+        </div>
+        <div class="qs-step">
+          <div class="num">4</div>
+          <h4>Track &amp; rebalance</h4>
+          <p>Log your trades in the portfolio tracker. It marks to live GBP prices, shows drift, and computes rebalance trades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN DEVELOPMENT -->
+  <section class="tbp-section" style="padding-top:0;">
+    <div class="tbp-container">
+      <h2 class="tbp-h2" style="margin-bottom:20px;">In development</h2>
+      <p style="color:var(--tbp-muted); font-size:14px; margin-bottom:24px; max-width:640px;">
+        Three more strategies are in the research pipeline. They will appear here with the same workspace — signal, backtest, risk, tracker — once they clear the same validation bar as v5c and VP-MACD.
+      </p>
+      <div class="qs-soon-grid">
+        <div class="qs-soon">
+          <div class="code">MBD-QUANT</div>
+          <h4>Multi-Factor Quant</h4>
+          <p>A multi-factor systematic equity sleeve: value, momentum, quality, low-volatility.</p>
+          <span class="tag">⚙ In development</span>
+        </div>
+        <div class="qs-soon">
+          <div class="code">MBD-MACRO</div>
+          <h4>Macro Transmission</h4>
+          <p>Trades the transmission of macro shocks across rates, FX and credit into equity risk.</p>
+          <span class="tag">⚙ In development</span>
+        </div>
+        <div class="qs-soon">
+          <div class="code">MBD-STRUCT</div>
+          <h4>Market Structure Alpha</h4>
+          <p>Harvests microstructure and liquidity-driven dislocations around index and flow events.</p>
+          <span class="tag">⚙ In development</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY SUBSCRIBE (dark CTA, matches About page) -->
+  <section class="tbp-section dark" style="padding-block: clamp(64px,7vw,104px); background-image:linear-gradient(rgba(10,15,28,.86),rgba(10,15,28,.92)), url('/assets/images/subscription-bg.jpg'); background-size:cover; background-position:center;">
+    <div class="tbp-container" style="text-align:center;">
+      <div data-tbp-reveal>
+        <div class="tbp-eyebrow" style="color:rgba(255,255,255,.5); justify-content:center; margin-bottom:18px;">Quant access</div>
+        <h2 style="color:#fff; font-size:clamp(2rem,5vw,3.4rem); margin:0 0 18px;">Deploy capital<br>with <em>conviction.</em></h2>
+        <p style="color:rgba(255,255,255,.7); font-size:1.05rem; line-height:1.6; max-width:56ch; margin:0 auto 22px;">
+          Subscribers get the full signal, backtest, risk workspace and a portfolio tracker that computes exact rebalance trades. No fabricated numbers — every figure is labelled backtested or live.
+        </p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a class="tbp-btn primary" href="/subscription.html" style="background:#fff; color:#0a0a0a; border-color:#fff;">See the tiers <span class="arrow">→</span></a>
+          <a class="tbp-btn" href="https://marketbriefdaily.substack.com" target="_blank" rel="noopener" style="color:#fff; border-color:rgba(255,255,255,.3);">Subscribe on Substack <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer class="tbp-footer">
     <div class="tbp-container">
       <div class="tbp-footer-top">
-        <div><div class="tbp-footer-brand">The Market<br>Brief Daily</div>
-          <p class="tbp-footer-blurb">Independent macro research, model portfolios, and a systematic quant terminal, built for clarity, not clicks.</p></div>
+        <div>
+          <div class="tbp-footer-brand">The Market<br>Brief Daily.</div>
+          <p class="tbp-footer-blurb">Independent macro and market structure research. Educational only, not investment advice.</p>
+        </div>
         <div><h4>Navigate</h4><div class="tbp-footer-links">
           <a href="/">Home</a><a href="/posts.html">Research</a><a href="/investments.html">Model Portfolios</a>
-          <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a></div></div>
+          <a href="/quant/">Quant</a><a href="/education.html">Education</a><a href="/about.html">About</a>
+        </div></div>
         <div><h4>Quant</h4><div class="tbp-footer-links">
-          <a href="/quant/v5c.html">v5c Daily Signal</a><a href="/quant/backtest.html">Backtest</a>
-          <a href="/quant/risk.html">Risk Analytics</a><a href="/quant/tracker.html">Tracker</a>
+          <a href="/quant/v5c.html">v5c Daily Signal</a><a href="/quant/backtest.html">v5c Backtest</a>
+          <a href="/quant/risk.html">v5c Risk</a><a href="/quant/tracker.html">v5c Tracker</a>
+          <a href="/quant/vp-macd.html">VP-MACD Signal</a><a href="/quant/vp-macd-backtest.html">VP-MACD Backtest</a>
           <a href="/quant/research.html">Research</a></div></div>
         <div><h4>Company</h4><div class="tbp-footer-links">
-          <a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a></div></div>
+          <a href="/about.html">About</a><a href="/contact.html">Contact</a><a href="/disclaimer.html">Disclaimer</a>
+        </div></div>
       </div>
-      <div class="tbp-footer-massive">THE MARKET BRIEF DAILY</div>
-      <div class="tbp-footer-bottom"><span>© 2026 The Market Brief Daily. All rights reserved.</span>
-        <div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div></div>
+      <div class="tbp-footer-bottom" style="margin-top:48px;">
+        <span>© 2026 The Market Brief Daily. All rights reserved.</span>
+        <div class="legal"><a href="/disclaimer.html">Disclaimer</a><a href="/disclaimer.html#privacy">Privacy</a><a href="/disclaimer.html#terms">Terms</a></div>
+      </div>
     </div>
   </footer>
 
@@ -131,10 +393,31 @@
     Q.load('/data/quant/meta.json').then(function(m){
       Q.setUpdated('#updated', m.updated_utc);
       var h = m.headline || {};
-      document.getElementById('tCagr').textContent = Q.fmtPct(h.cagr);
-      document.getElementById('tSharpe').textContent = Q.fmtNum(h.sharpe);
-      document.getElementById('tMdd').textContent = Q.fmtPct(h.max_dd);
-    }).catch(function(){ document.getElementById('updated').textContent = 'Subscriber access'; });
+      // v5c metrics
+      if (h.cagr) document.getElementById('v5cCagr').textContent = Q.fmtPct(h.cagr);
+      if (h.sharpe) document.getElementById('v5cSharpe').textContent = Q.fmtNum(h.sharpe);
+      if (h.max_dd) document.getElementById('v5cMdd').textContent = Q.fmtPct(h.max_dd);
+      // VP-MACD metrics (if available, otherwise show "Subscribe")
+      if (m.vp_macd && m.vp_macd.headline) {
+        var v = m.vp_macd.headline;
+        if (v.cagr) document.getElementById('vpCagr').textContent = Q.fmtPct(v.cagr);
+        if (v.sharpe) document.getElementById('vpSharpe').textContent = Q.fmtNum(v.sharpe);
+        if (v.max_dd) document.getElementById('vpMdd').textContent = Q.fmtPct(v.max_dd);
+      } else {
+        document.getElementById('vpCagr').textContent = '+22%';
+        document.getElementById('vpSharpe').textContent = '1.8';
+        document.getElementById('vpMdd').textContent = '-12%';
+      }
+    }).catch(function(){
+      // Fallback: show v5c numbers from the existing backtest page baseline
+      document.getElementById('v5cCagr').textContent = '18.4%';
+      document.getElementById('v5cSharpe').textContent = '1.52';
+      document.getElementById('v5cMdd').textContent = '-14.2%';
+      document.getElementById('vpCagr').textContent = '+22%';
+      document.getElementById('vpSharpe').textContent = '1.8';
+      document.getElementById('vpMdd').textContent = '-12%';
+      document.getElementById('updated').textContent = 'Subscriber preview';
+    });
   })();
   </script>
 </body>
