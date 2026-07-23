@@ -1,12 +1,12 @@
 {
-  "asOf": "2026-07-22T22:13:02.175277+00:00",
+  "asOf": "2026-07-23T08:42:36.623321+00:00",
   "source": "yahoo",
   "items": [
     {
       "sym": "FTSE 100",
-      "value": "10,717.0",
-      "change": "+1.24%",
-      "dir": "pos"
+      "value": "10,715.1",
+      "change": "-0.02%",
+      "dir": "neg"
     },
     {
       "sym": "S&P 500",
@@ -23,56 +23,56 @@
     {
       "sym": "DXY",
       "value": "101.14",
-      "change": "-0.04%",
-      "dir": "neg"
+      "change": "+0.00%",
+      "dir": "neut"
     },
     {
       "sym": "GBP/USD",
-      "value": "1.3370",
-      "change": "-0.07%",
+      "value": "1.3363",
+      "change": "-0.12%",
       "dir": "neg"
     },
     {
       "sym": "EUR/USD",
-      "value": "1.1410",
-      "change": "+0.06%",
+      "value": "1.1412",
+      "change": "+0.07%",
       "dir": "pos"
     },
     {
       "sym": "BRENT",
-      "value": "$94.96",
-      "change": "+4.34%",
-      "dir": "pos"
+      "value": "$86.30",
+      "change": "-8.26%",
+      "dir": "neg"
     },
     {
       "sym": "WTI",
-      "value": "$87.59",
-      "change": "+3.16%",
+      "value": "$89.47",
+      "change": "+3.04%",
       "dir": "pos"
     },
     {
       "sym": "GOLD",
-      "value": "$4,122.10",
-      "change": "+1.25%",
-      "dir": "pos"
+      "value": "$4,092.70",
+      "change": "-1.31%",
+      "dir": "neg"
     },
     {
       "sym": "SILVER",
-      "value": "$59.90",
-      "change": "+1.80%",
-      "dir": "pos"
+      "value": "$59.12",
+      "change": "-1.51%",
+      "dir": "neg"
     },
     {
       "sym": "COPPER",
-      "value": "$6.49",
-      "change": "-0.38%",
+      "value": "$6.45",
+      "change": "-0.05%",
       "dir": "neg"
     },
     {
       "sym": "VIX",
-      "value": "16.64",
-      "change": "-2.40%",
-      "dir": "neg"
+      "value": "17.57",
+      "change": "+5.59%",
+      "dir": "pos"
     }
   ]
 }
