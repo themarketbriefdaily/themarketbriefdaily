@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-07-23",
+  "as_of": "2026-07-27",
   "regime": "Bull",
-  "conviction": 0.394,
+  "conviction": 0.341,
   "credit_gate_active": false,
   "regime_duration_months": 41,
-  "regime_avg_ann_return": 0.2492,
+  "regime_avg_ann_return": 0.2494,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -38,47 +38,47 @@
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 738.18,
-    "3USL.L": 738.18,
-    "DBMF": 31.49,
-    "SGLN.L": 371.52,
-    "IDTL.L": 83.17
+    "VUSA.L": 739.09,
+    "3USL.L": 739.09,
+    "DBMF": 31.27,
+    "SGLN.L": 374.63,
+    "IDTL.L": 83.75
   },
   "headline": {
-    "cagr": 0.2124,
-    "ann": 0.2147,
+    "cagr": 0.2127,
+    "ann": 0.215,
     "vol": 0.2098,
-    "sharpe": 1.0235,
-    "sortino": 1.4481,
+    "sharpe": 1.0248,
+    "sortino": 1.4502,
     "max_dd": -0.2542,
-    "calmar": 0.8355
+    "calmar": 0.8366
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 106.445,
+      "price": 105.4,
       "native_ccy": "GBP",
       "asof": "2026-07-27"
     },
     "3USL.L": {
-      "price": 131.8454,
+      "price": 128.2263,
       "native_ccy": "USD",
       "asof": "2026-07-27"
     },
     "DBMF": {
-      "price": 23.654,
+      "price": 23.53,
       "native_ccy": "USD",
-      "asof": "2026-07-23"
+      "asof": "2026-07-27"
     },
     "SGLN.L": {
-      "price": 59.63,
+      "price": 59.4,
       "native_ccy": "GBp",
       "asof": "2026-07-27"
     },
     "IDTL.L": {
-      "price": 2.3253,
+      "price": 2.327,
       "native_ccy": "USD",
       "asof": "2026-07-27"
     }
   },
-  "updated_utc": "2026-07-27T10:13:06.906258+00:00"
+  "updated_utc": "2026-07-27T22:32:43.293912+00:00"
 }
