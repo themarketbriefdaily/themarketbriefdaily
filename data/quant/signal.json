@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-08-07",
+  "as_of": "2026-08-10",
   "regime": "Bull",
-  "conviction": 0.867,
+  "conviction": 0.885,
   "credit_gate_active": false,
   "regime_duration_months": 42,
-  "regime_avg_ann_return": 0.254,
+  "regime_avg_ann_return": 0.2538,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.0248
+      "weight": 0.0
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.65
+      "weight": 0.7
     },
     {
       "sleeve": "Managed futures",
       "ticker": "DBMF",
-      "weight": 0.2892
+      "weight": 0.3
     },
     {
       "sleeve": "Gold",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.036
+      "weight": 0.0
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 773.26,
-    "3USL.L": 773.26,
-    "DBMF": 30.93,
-    "SGLN.L": 398.47,
-    "IDTL.L": 82.76
+    "VUSA.L": 773.03,
+    "3USL.L": 773.03,
+    "DBMF": 31.32,
+    "SGLN.L": 402.54,
+    "IDTL.L": 82.06
   },
   "headline": {
-    "cagr": 0.2169,
-    "ann": 0.2185,
+    "cagr": 0.2168,
+    "ann": 0.2184,
     "vol": 0.21,
-    "sharpe": 1.0403,
-    "sortino": 1.4735,
+    "sharpe": 1.04,
+    "sortino": 1.473,
     "max_dd": -0.2542,
-    "calmar": 0.8532
+    "calmar": 0.8528
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 109.0975,
+      "price": 108.7275,
       "native_ccy": "GBP",
       "asof": "2026-08-10"
     },
     "3USL.L": {
-      "price": 144.593,
+      "price": 144.0702,
       "native_ccy": "USD",
       "asof": "2026-08-10"
     },
     "DBMF": {
-      "price": 22.9872,
+      "price": 23.1874,
       "native_ccy": "USD",
-      "asof": "2026-08-07"
+      "asof": "2026-08-10"
     },
     "SGLN.L": {
-      "price": 62.6098,
+      "price": 62.39,
       "native_ccy": "GBp",
       "asof": "2026-08-10"
     },
     "IDTL.L": {
-      "price": 2.2736,
+      "price": 2.2566,
       "native_ccy": "USD",
       "asof": "2026-08-10"
     }
   },
-  "updated_utc": "2026-08-10T08:09:21.925060+00:00"
+  "updated_utc": "2026-08-10T22:05:18.491633+00:00"
 }
