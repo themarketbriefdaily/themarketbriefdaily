@@ -1,77 +1,77 @@
 {
-  "asOf": "2026-09-11T11:12:29.640359+00:00",
+  "asOf": "2026-09-11T23:11:06.301245+00:00",
   "source": "yahoo",
   "items": [
     {
       "sym": "FTSE 100",
-      "value": "10,672.0",
-      "change": "+0.60%",
-      "dir": "pos"
+      "value": "10,608.9",
+      "change": "-0.57%",
+      "dir": "neg"
     },
     {
       "sym": "S&P 500",
-      "value": "7,591.7",
-      "change": "-0.58%",
-      "dir": "neg"
+      "value": "7,657.0",
+      "change": "+0.86%",
+      "dir": "pos"
     },
     {
       "sym": "NASDAQ 100",
-      "value": "29,103.5",
-      "change": "-1.08%",
-      "dir": "neg"
+      "value": "29,368.4",
+      "change": "+0.91%",
+      "dir": "pos"
     },
     {
       "sym": "DXY",
-      "value": "99.16",
-      "change": "+0.07%",
-      "dir": "pos"
-    },
-    {
-      "sym": "GBP/USD",
-      "value": "1.3509",
-      "change": "-0.32%",
-      "dir": "neg"
-    },
-    {
-      "sym": "EUR/USD",
-      "value": "1.1597",
-      "change": "-0.32%",
-      "dir": "neg"
-    },
-    {
-      "sym": "BRENT",
-      "value": "$103.72",
-      "change": "-3.63%",
-      "dir": "neg"
-    },
-    {
-      "sym": "WTI",
-      "value": "$98.82",
-      "change": "-3.57%",
-      "dir": "neg"
-    },
-    {
-      "sym": "GOLD",
-      "value": "$4,380.80",
-      "change": "+0.37%",
-      "dir": "pos"
-    },
-    {
-      "sym": "SILVER",
-      "value": "$64.29",
+      "value": "99.10",
       "change": "+0.01%",
       "dir": "neut"
     },
     {
+      "sym": "GBP/USD",
+      "value": "1.3529",
+      "change": "+0.14%",
+      "dir": "pos"
+    },
+    {
+      "sym": "EUR/USD",
+      "value": "1.1602",
+      "change": "-0.07%",
+      "dir": "neg"
+    },
+    {
+      "sym": "BRENT",
+      "value": "$104.42",
+      "change": "-2.98%",
+      "dir": "neg"
+    },
+    {
+      "sym": "WTI",
+      "value": "$99.99",
+      "change": "-2.43%",
+      "dir": "neg"
+    },
+    {
+      "sym": "GOLD",
+      "value": "$4,390.00",
+      "change": "+0.58%",
+      "dir": "pos"
+    },
+    {
+      "sym": "SILVER",
+      "value": "$65.02",
+      "change": "+1.14%",
+      "dir": "pos"
+    },
+    {
       "sym": "COPPER",
-      "value": "$6.53",
-      "change": "+0.94%",
+      "value": "$6.56",
+      "change": "+1.39%",
       "dir": "pos"
     },
     {
       "sym": "VIX",
-      "value": "17.24",
-      "change": "-3.36%",
+      "value": "15.84",
+      "change": "-11.21%",
       "dir": "neg"
     }
   ]
