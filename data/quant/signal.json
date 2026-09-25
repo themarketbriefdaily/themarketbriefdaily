@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-09-24",
+  "as_of": "2026-09-25",
   "regime": "Bull",
-  "conviction": 0.744,
+  "conviction": 0.798,
   "credit_gate_active": true,
   "regime_duration_months": 43,
-  "regime_avg_ann_return": 0.2532,
+  "regime_avg_ann_return": 0.2534,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.2969
+      "weight": 0.3046
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.4031
+      "weight": 0.3954
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 767.18,
-    "3USL.L": 767.18,
-    "DBMF": 32.77,
-    "SGLN.L": 391.69,
-    "IDTL.L": 79.42
+    "VUSA.L": 771.35,
+    "3USL.L": 771.35,
+    "DBMF": 32.49,
+    "SGLN.L": 393.41,
+    "IDTL.L": 79.32
   },
   "headline": {
-    "cagr": 0.2165,
-    "ann": 0.2181,
-    "vol": 0.2099,
-    "sharpe": 1.0395,
-    "sortino": 1.4734,
+    "cagr": 0.2167,
+    "ann": 0.2183,
+    "vol": 0.2098,
+    "sharpe": 1.0403,
+    "sortino": 1.4746,
     "max_dd": -0.2542,
-    "calmar": 0.8516
+    "calmar": 0.8523
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 110.5475,
+      "price": 109.9325,
       "native_ccy": "GBP",
-      "asof": "2026-09-25"
+      "asof": "2026-09-24"
     },
     "3USL.L": {
-      "price": 142.8269,
-      "native_ccy": "USD",
-      "asof": "2026-09-25"
-    },
-    "DBMF": {
-      "price": 24.7479,
+      "price": 140.1284,
       "native_ccy": "USD",
       "asof": "2026-09-24"
     },
-    "SGLN.L": {
-      "price": 62.93,
-      "native_ccy": "GBp",
-      "asof": "2026-09-25"
-    },
-    "IDTL.L": {
-      "price": 2.2367,
+    "DBMF": {
+      "price": 24.5274,
       "native_ccy": "USD",
       "asof": "2026-09-25"
+    },
+    "SGLN.L": {
+      "price": 62.35,
+      "native_ccy": "GBp",
+      "asof": "2026-09-24"
+    },
+    "IDTL.L": {
+      "price": 2.2485,
+      "native_ccy": "USD",
+      "asof": "2026-09-24"
     }
   },
-  "updated_utc": "2026-09-25T11:59:29.997005+00:00"
+  "updated_utc": "2026-09-25T23:59:50.737523+00:00"
 }
