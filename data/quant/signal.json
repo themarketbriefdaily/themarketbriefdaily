@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-09-28",
+  "as_of": "2026-09-29",
   "regime": "Bull",
-  "conviction": 0.635,
+  "conviction": 0.59,
   "credit_gate_active": true,
   "regime_duration_months": 43,
-  "regime_avg_ann_return": 0.2529,
+  "regime_avg_ann_return": 0.2526,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.2989
+      "weight": 0.313
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.4011
+      "weight": 0.387
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 765.61,
-    "3USL.L": 765.61,
-    "DBMF": 32.61,
-    "SGLN.L": 377.91,
-    "IDTL.L": 78.62
+    "VUSA.L": 764.2,
+    "3USL.L": 764.2,
+    "DBMF": 32.43,
+    "SGLN.L": 382.89,
+    "IDTL.L": 78.23
   },
   "headline": {
-    "cagr": 0.2162,
-    "ann": 0.2179,
+    "cagr": 0.216,
+    "ann": 0.2177,
     "vol": 0.2098,
-    "sharpe": 1.0387,
-    "sortino": 1.4723,
+    "sharpe": 1.0377,
+    "sortino": 1.4709,
     "max_dd": -0.2542,
-    "calmar": 0.8507
+    "calmar": 0.8497
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 109.7675,
+      "price": 109.7025,
       "native_ccy": "GBP",
-      "asof": "2026-09-28"
+      "asof": "2026-09-30"
     },
     "3USL.L": {
-      "price": 140.1805,
+      "price": 140.083,
       "native_ccy": "USD",
-      "asof": "2026-09-28"
+      "asof": "2026-09-30"
     },
     "DBMF": {
-      "price": 24.6033,
+      "price": 24.4675,
       "native_ccy": "USD",
-      "asof": "2026-09-28"
+      "asof": "2026-09-29"
     },
     "SGLN.L": {
-      "price": 60.29,
+      "price": 61.41,
       "native_ccy": "GBp",
-      "asof": "2026-09-28"
+      "asof": "2026-09-30"
     },
     "IDTL.L": {
       "price": 2.2012,
       "native_ccy": "USD",
-      "asof": "2026-09-28"
+      "asof": "2026-09-30"
     }
   },
-  "updated_utc": "2026-09-30T00:37:36.098046+00:00"
+  "updated_utc": "2026-09-30T12:46:47.957779+00:00"
 }
