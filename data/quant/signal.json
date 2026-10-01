@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-09-29",
+  "as_of": "2026-10-01",
   "regime": "Bull",
-  "conviction": 0.59,
+  "conviction": 0.536,
   "credit_gate_active": true,
-  "regime_duration_months": 43,
+  "regime_duration_months": 44,
   "regime_avg_ann_return": 0.2527,
   "allocation": [
     {
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.313
+      "weight": 0.3333
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.387
+      "weight": 0.3667
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 764.2,
-    "3USL.L": 764.2,
-    "DBMF": 32.43,
-    "SGLN.L": 382.89,
-    "IDTL.L": 78.23
+    "VUSA.L": 763.58,
+    "3USL.L": 763.58,
+    "DBMF": 32.76,
+    "SGLN.L": 382.075,
+    "IDTL.L": 76.99
   },
   "headline": {
-    "cagr": 0.216,
+    "cagr": 0.2161,
     "ann": 0.2178,
     "vol": 0.2098,
-    "sharpe": 1.038,
-    "sortino": 1.4713,
+    "sharpe": 1.0385,
+    "sortino": 1.472,
     "max_dd": -0.2542,
-    "calmar": 0.8499
+    "calmar": 0.8502
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 109.935,
+      "price": 109.96,
       "native_ccy": "GBP",
-      "asof": "2026-09-29"
+      "asof": "2026-10-01"
     },
     "3USL.L": {
-      "price": 139.5551,
+      "price": 140.3066,
       "native_ccy": "USD",
-      "asof": "2026-09-29"
+      "asof": "2026-10-01"
     },
     "DBMF": {
-      "price": 24.5074,
+      "price": 24.7787,
       "native_ccy": "USD",
-      "asof": "2026-09-29"
+      "asof": "2026-10-01"
     },
     "SGLN.L": {
-      "price": 61.04,
+      "price": 61.18,
       "native_ccy": "GBp",
-      "asof": "2026-09-29"
+      "asof": "2026-10-01"
     },
     "IDTL.L": {
-      "price": 2.1961,
+      "price": 2.1783,
       "native_ccy": "USD",
-      "asof": "2026-09-29"
+      "asof": "2026-10-01"
     }
   },
-  "updated_utc": "2026-10-01T00:39:21.184066+00:00"
+  "updated_utc": "2026-10-01T13:31:49.921644+00:00"
 }
