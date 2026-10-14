@@ -1,78 +1,78 @@
 {
-  "asOf": "2026-10-13T14:04:36.074747+00:00",
+  "asOf": "2026-10-14T00:14:52.961855+00:00",
   "source": "yahoo",
   "items": [
     {
       "sym": "FTSE 100",
-      "value": "10,680.5",
-      "change": "+0.23%",
+      "value": "10,656.3",
+      "change": "+0.99%",
       "dir": "pos"
     },
     {
       "sym": "S&P 500",
-      "value": "7,802.5",
-      "change": "-0.06%",
+      "value": "7,805.5",
+      "change": "-0.02%",
       "dir": "neg"
     },
     {
       "sym": "NASDAQ 100",
-      "value": "30,579.5",
-      "change": "-0.28%",
-      "dir": "neg"
-    },
-    {
-      "sym": "DXY",
-      "value": "102.26",
+      "value": "30,569.5",
       "change": "-0.31%",
       "dir": "neg"
     },
     {
+      "sym": "DXY",
+      "value": "102.20",
+      "change": "-0.37%",
+      "dir": "neg"
+    },
+    {
       "sym": "GBP/USD",
-      "value": "1.3242",
-      "change": "+0.10%",
+      "value": "1.3259",
+      "change": "+0.37%",
       "dir": "pos"
     },
     {
       "sym": "EUR/USD",
-      "value": "1.1192",
-      "change": "-0.19%",
-      "dir": "neg"
+      "value": "1.1207",
+      "change": "+0.42%",
+      "dir": "pos"
     },
     {
       "sym": "BRENT",
-      "value": "$105.60",
-      "change": "-0.98%",
+      "value": "$106.35",
+      "change": "-0.28%",
       "dir": "neg"
     },
     {
       "sym": "WTI",
-      "value": "$93.25",
-      "change": "-0.52%",
-      "dir": "neg"
-    },
-    {
-      "sym": "GOLD",
-      "value": "$4,198.60",
-      "change": "+0.19%",
+      "value": "$94.79",
+      "change": "+1.12%",
       "dir": "pos"
     },
     {
+      "sym": "GOLD",
+      "value": "$4,180.40",
+      "change": "-0.24%",
+      "dir": "neg"
+    },
+    {
       "sym": "SILVER",
-      "value": "$60.10",
-      "change": "-0.08%",
+      "value": "$59.27",
+      "change": "-1.45%",
       "dir": "neg"
     },
     {
       "sym": "COPPER",
-      "value": "$6.74",
-      "change": "+0.68%",
+      "value": "$6.72",
+      "change": "+0.33%",
       "dir": "pos"
     },
     {
       "sym": "VIX",
-      "value": "15.19",
-      "change": "-0.13%",
-      "dir": "neg"
+      "value": "15.27",
+      "change": "+0.39%",
+      "dir": "pos"
     }
   ]
 }
