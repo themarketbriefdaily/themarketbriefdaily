@@ -1,12 +1,12 @@
 {
-  "asOf": "2026-10-14T23:52:35.330244+00:00",
+  "asOf": "2026-10-15T11:20:08.945178+00:00",
   "source": "yahoo",
   "items": [
     {
       "sym": "FTSE 100",
-      "value": "10,650.3",
-      "change": "-0.06%",
-      "dir": "neg"
+      "value": "10,784.5",
+      "change": "+0.56%",
+      "dir": "pos"
     },
     {
       "sym": "S&P 500",
@@ -22,56 +22,56 @@
     },
     {
       "sym": "DXY",
-      "value": "102.39",
-      "change": "+0.21%",
-      "dir": "pos"
+      "value": "102.02",
+      "change": "-0.51%",
+      "dir": "neg"
     },
     {
       "sym": "GBP/USD",
-      "value": "1.3232",
-      "change": "-0.19%",
-      "dir": "neg"
-    },
-    {
-      "sym": "EUR/USD",
-      "value": "1.1199",
-      "change": "-0.04%",
-      "dir": "neg"
-    },
-    {
-      "sym": "BRENT",
-      "value": "$105.70",
+      "value": "1.3259",
       "change": "+0.01%",
-      "dir": "neut"
-    },
-    {
-      "sym": "WTI",
-      "value": "$94.81",
-      "change": "+0.71%",
       "dir": "pos"
     },
     {
-      "sym": "GOLD",
-      "value": "$4,124.10",
-      "change": "-1.27%",
+      "sym": "EUR/USD",
+      "value": "1.1222",
+      "change": "+0.16%",
+      "dir": "pos"
+    },
+    {
+      "sym": "BRENT",
+      "value": "$104.59",
+      "change": "-1.39%",
       "dir": "neg"
+    },
+    {
+      "sym": "WTI",
+      "value": "$93.91",
+      "change": "-1.24%",
+      "dir": "neg"
+    },
+    {
+      "sym": "GOLD",
+      "value": "$4,178.70",
+      "change": "+1.72%",
+      "dir": "pos"
     },
     {
       "sym": "SILVER",
-      "value": "$55.74",
-      "change": "-5.78%",
-      "dir": "neg"
+      "value": "$56.85",
+      "change": "+2.34%",
+      "dir": "pos"
     },
     {
       "sym": "COPPER",
-      "value": "$6.61",
-      "change": "-1.03%",
+      "value": "$6.56",
+      "change": "-0.84%",
       "dir": "neg"
     },
     {
       "sym": "VIX",
-      "value": "16.87",
-      "change": "+10.48%",
+      "value": "17.61",
+      "change": "+4.39%",
       "dir": "pos"
     }
   ]
