@@ -16,3 +16,6 @@ body.tbp.ai-research-page{background:#fff;margin:0}.ai-research-page .tbp-header
 @media(prefers-reduced-motion:reduce){.ai-terminal *{transition:none!important;scroll-behavior:auto!important}.ai-terminal.ai-motion-paused .ai-news-track{transform:none}}
 
 .ai-terminal .ai-proposal{display:flex;align-items:center;gap:15px;border:1px solid #dce7f5;padding:15px;width:100%;text-align:left;border-radius:8px;margin-top:15px;background:#fff}.ai-proposal small{color:#94a4ba;font-size:9px}.ai-proposal b{margin-left:auto;font-size:10px;color:#4284ce}
+
+/* Inherit panel contrast over the publication-wide heading theme. */
+body.ai-research-page .ai-terminal :is(h1,h2,h3,h4){font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-style:normal;color:inherit;font-weight:650}
