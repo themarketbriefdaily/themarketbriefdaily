@@ -3,6 +3,12 @@
    ================================================================ */
 (function () {
   'use strict';
+  // AI_RESEARCH_NAV: add one destination to shared desktop and mobile navigation.
+  document.querySelectorAll('.tbp-nav,.tbp-mobile-menu').forEach(nav => {
+    if(nav.querySelector('a[href="/ai-research.html"]')) return;
+    const link=document.createElement('a'); link.href='/ai-research.html'; link.textContent='AI Research';
+    nav.insertBefore(link,nav.querySelector('a[href="/education.html"]') || null);
+  });
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.body.classList.add('tbp');
