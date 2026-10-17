@@ -25,8 +25,12 @@
   const burger = document.querySelector('.tbp-burger');
   const mobile = document.querySelector('.tbp-mobile-menu');
   if (burger && mobile) {
-    burger.addEventListener('click', () => mobile.classList.toggle('open'));
-    mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobile.classList.remove('open')));
+    // AI_RESEARCH_MENU_STATE
+    mobile.id=mobile.id || 'tbp-mobile-navigation';
+    burger.setAttribute('aria-controls',mobile.id);
+    burger.setAttribute('aria-expanded','false');
+    burger.addEventListener('click', () => {const open=mobile.classList.toggle('open');burger.setAttribute('aria-expanded',String(open));});
+    mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {mobile.classList.remove('open');burger.setAttribute('aria-expanded','false');}));
   }
 
   // ── 3. Hero carousel ────────────────────────────────────────

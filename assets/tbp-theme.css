@@ -832,3 +832,6 @@ body.tbp em, body.tbp .tbp-it {
 
 /* AI_RESEARCH_NAV: keep the expanded header usable on tablet widths. */
 @media(max-width:1024px){.tbp-header .tbp-nav{display:none}.tbp-header .tbp-burger{display:inline-flex}.tbp-header .tbp-cta-mini{display:none}}
+
+/* AI_RESEARCH_MENU_CLIP: hidden menus stay hidden; expanded menus scroll. */
+.tbp-mobile-menu{overflow-y:auto}.tbp-mobile-menu:not(.open){visibility:hidden}
