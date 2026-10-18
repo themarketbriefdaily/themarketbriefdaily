@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "exported_at": "2026-10-18T13:33:20.393820+00:00",
+  "exported_at": "2026-10-18T13:38:57.905717+00:00",
   "source_snapshot_at": "2026-10-17T17:40:54.920488+00:00",
   "mode": "research_snapshot",
   "automatic_publication": false,
@@ -15339,34 +15339,16 @@
         ],
         "sources": [
           {
-            "title": "AAPL 8-K / requested filing_search",
-            "source": "SEC EDGAR",
-            "date": "2026-07-30",
-            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/aapl-20260730.htm"
-          },
-          {
-            "title": "Dated equity prices and session volume",
-            "source": "EODHD",
-            "date": "2026-10-16T20:44:00+00:00",
-            "url": "https://eodhd.com/financial-apis/live-ohlcv-stocks-api"
-          },
-          {
-            "title": "AAPL public discussion sample",
-            "source": "Reddit",
-            "date": "2026-10-18T13:18:07.720300+00:00",
-            "url": "https://www.reddit.com/r/stocks+investing+wallstreetbets/search.rss?q=%24AAPL&restrict_sr=on&sort=new&t=week&limit=50"
-          },
-          {
-            "title": "AAPL 10-K / requested filing_page",
+            "title": "AAPL 10-K / requested filing_search",
             "source": "SEC EDGAR",
             "date": "2025-10-31",
             "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm"
           },
           {
-            "title": "AAPL public discussion sample",
-            "source": "StockTwits",
-            "date": "2026-10-18T12:36:45+00:00",
-            "url": "https://api.stocktwits.com/api/2/streams/symbol/AAPL.json"
+            "title": "AAPL recent company-news search",
+            "source": "Massive company news",
+            "date": "2026-10-18T11:30:00Z",
+            "url": "https://massive.com/docs/rest/stocks/news"
           },
           {
             "title": "AAPL 10-K / requested filing_search",
@@ -15375,10 +15357,10 @@
             "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm"
           },
           {
-            "title": "Verified demo instrument identities",
-            "source": "MT5 contract verification",
-            "date": "2026-10-18T13:11:03.782488+00:00",
-            "url": "https://www.metatrader5.com/en/terminal/help/trading/market_watch"
+            "title": "AAPL public discussion sample",
+            "source": "Reddit",
+            "date": "2026-10-18T13:18:07.720300+00:00",
+            "url": "https://www.reddit.com/r/stocks+investing+wallstreetbets/search.rss?q=%24AAPL&restrict_sr=on&sort=new&t=week&limit=50"
           },
           {
             "title": "AAPL Yahoo company-news feed",
@@ -15387,10 +15369,28 @@
             "url": "https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US"
           },
           {
-            "title": "Macro event-price context / Federal Reserve",
-            "source": "Polymarket public context",
-            "date": "2026-10-18T13:18:07.325780+00:00",
-            "url": "https://gamma-api.polymarket.com/public-search?q=Federal+Reserve&limit_per_type=5&events_status=active"
+            "title": "AAPL 10-Q / requested filing_search",
+            "source": "SEC EDGAR",
+            "date": "2026-07-31",
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+          },
+          {
+            "title": "AAPL 10-Q / requested filing_search",
+            "source": "SEC EDGAR",
+            "date": "2026-07-31",
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+          },
+          {
+            "title": "AAPL 10-Q / requested filing_page",
+            "source": "SEC EDGAR",
+            "date": "2026-07-31",
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+          },
+          {
+            "title": "T10Y2Y",
+            "source": "FRED",
+            "date": "2026-10-16",
+            "url": "https://fred.stlouisfed.org/series/T10Y2Y"
           },
           {
             "title": "AAPL 10-K / requested filing_page",
@@ -15399,16 +15399,16 @@
             "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm"
           },
           {
-            "title": "AAPL 10-Q / risk factors",
+            "title": "AAPL 10-K / requested filing_page",
             "source": "SEC EDGAR",
-            "date": "2026-05-01",
-            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000013/aapl-20260328.htm"
+            "date": "2025-10-31",
+            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm"
           },
           {
-            "title": "AAPL 10-Q / financial statements",
-            "source": "SEC EDGAR",
-            "date": "2026-07-31",
-            "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm"
+            "title": "Macro event-price context / Federal Reserve",
+            "source": "Polymarket public context",
+            "date": "2026-10-18T13:18:07.325780+00:00",
+            "url": "https://gamma-api.polymarket.com/public-search?q=Federal+Reserve&limit_per_type=5&events_status=active"
           }
         ]
       },

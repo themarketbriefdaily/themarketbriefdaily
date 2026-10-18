@@ -2,7 +2,7 @@ THE MARKET BRIEF DAILY / AI RESEARCH
 
 # Two desks. One research briefing.
 
-Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T13:33:20.393820+00:00
+Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T13:38:57.905717+00:00
 
 AURORA: The captured 16 October equity session shows technology weakness, but its cause remains unresolved.
 
