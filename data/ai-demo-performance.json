@@ -1,16 +1,16 @@
 {
-  "at": "2026-10-18T14:47:50.405977+00:00",
+  "at": "2026-10-18T14:58:44.918083+00:00",
   "mode": "demo_only",
   "enrolled": true,
   "enabled": true,
   "paused": false,
   "health": {
-    "at": "2026-10-18T14:47:50.290089+00:00",
+    "at": "2026-10-18T14:58:44.628751+00:00",
     "algo_trading": false,
     "gaps": [
       "Turn on Algo Trading in the MT5 demo terminal"
     ],
-    "runtime_status": "updating"
+    "runtime_status": "running"
   },
   "strategies": [
     {
@@ -18,7 +18,7 @@
       "label": "TradingAgents · Megacap",
       "currency": "GBP",
       "started": "2026-10-18T14:35:13.140375+00:00",
-      "at": "2026-10-18T14:44:39.380755+00:00",
+      "at": "2026-10-18T14:58:44.789024+00:00",
       "return_percent": 0.0,
       "max_drawdown_percent": 0.0,
       "realized_pnl": 0,
@@ -96,6 +96,14 @@
         },
         {
           "at": "2026-10-18T14:44:39.380755+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:58:44.734416+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:58:44.789024+00:00",
           "value": 100.0
         }
       ],
@@ -123,7 +131,7 @@
       "label": "AURORA · Global",
       "currency": "GBP",
       "started": "2026-10-18T14:35:13.140375+00:00",
-      "at": "2026-10-18T14:44:39.380755+00:00",
+      "at": "2026-10-18T14:58:44.789024+00:00",
       "return_percent": 0.0,
       "max_drawdown_percent": 0.0,
       "realized_pnl": 0,
@@ -201,6 +209,14 @@
         },
         {
           "at": "2026-10-18T14:44:39.380755+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:58:44.734416+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:58:44.789024+00:00",
           "value": 100.0
         }
       ],
