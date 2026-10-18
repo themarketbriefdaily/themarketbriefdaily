@@ -1,0 +1,88 @@
+/* NeuralFX — 3D supernova neural web layering, keyword pops, node firing.
+   Loaded after standalone.css; extends the original cascade without replacing it. */
+
+.ai-brain-3d {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-brain-3d .ai-brain-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.ai-brain-3d .ai-brain-nodes {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* ---- keyword chips popping up as the agents work ---- */
+.ai-keyword-pop {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -100%);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font: 500 10px/1.5 system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  color: #d9f1ff;
+  background: rgba(8, 20, 40, 0.66);
+  border: 1px solid rgba(126, 200, 255, 0.4);
+  box-shadow: 0 0 12px rgba(60, 160, 255, 0.35), inset 0 0 8px rgba(60, 160, 255, 0.12);
+  text-shadow: 0 0 8px rgba(90, 180, 255, 0.8);
+  animation: ai-kw-pop 2.8s ease-out forwards;
+}
+
+.ai-keyword-pop.is-verb {
+  color: #ffe3b8;
+  border-color: rgba(255, 205, 130, 0.38);
+  background: rgba(30, 18, 6, 0.6);
+  box-shadow: 0 0 12px rgba(255, 180, 90, 0.28), inset 0 0 8px rgba(255, 180, 90, 0.1);
+  text-shadow: 0 0 8px rgba(255, 190, 110, 0.8);
+  font-style: italic;
+  font-weight: 400;
+}
+
+@keyframes ai-kw-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -42%) scale(0.82);
+    filter: blur(2px);
+  }
+  14% {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+    filter: blur(0);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-50%, -150%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -196%) scale(0.94);
+    filter: blur(1px);
+  }
+}
+
+/* ---- agent nodes are canvas-drawn (NeuralFX); SVG groups remain hit-areas ---- */
+.ai-brain-3d .ai-neuron:focus-visible {
+  outline: 2px solid #3498ff;
+  outline-offset: 4px;
+}
+
+/* ---- reduced motion: chips stay hidden, canvas renders a static frame ---- */
+@media (prefers-reduced-motion: reduce) {
+  .ai-keyword-pop {
+    display: none;
+  }
+}
+
+.ai-keyword-pop{max-width:calc(100% - 16px);overflow:hidden;text-overflow:ellipsis}

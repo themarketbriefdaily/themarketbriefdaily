@@ -1,0 +1,50 @@
+/* AgentFlowFX — deep-space neural-map window for the agent neural webs.
+   Loaded after flow-fx.css; the .ai-brain-3d container (position/overflow
+   from neural-fx.css) becomes a dark cosmic window matching the
+   investigation flow's .ai-flow-net look. Keyword chips keep their
+   neural-fx.css cascade. */
+
+.ai-brain-3d {
+  border-radius: 14px;
+  background:
+    radial-gradient(125% 100% at 30% 6%, #122240 0%, #0b1630 46%, #070d1d 78%, #05080f 100%);
+  border: 1px solid rgba(126, 168, 255, 0.16);
+  box-shadow:
+    inset 0 0 64px rgba(3, 8, 20, 0.72),
+    inset 0 1px 0 rgba(160, 200, 255, 0.08),
+    0 10px 30px rgba(8, 18, 40, 0.25);
+}
+
+.ai-brain-3d::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(92% 74% at 50% 46%, transparent 56%, rgba(2, 5, 12, 0.5) 100%);
+}
+
+.ai-brain-3d .ai-brain-canvas {
+  z-index: 1;
+}
+
+.ai-brain-3d .ai-brain-nodes {
+  z-index: 2;
+  max-height: 340px;
+}
+
+/* keyword chips float above the vignette */
+.ai-brain-3d .ai-keyword-pop {
+  z-index: 3;
+}
+
+@media (max-width: 850px) {
+  .ai-brain-3d {
+    border-radius: 12px;
+  }
+  .ai-brain-3d .ai-brain-nodes {
+    max-height: 260px;
+  }
+}
+
+.ai-network-panel .ai-brain-3d{min-height:300px;margin-bottom:16px;flex:1}.ai-brain-3d .ai-brain-nodes{height:300px;max-height:none}@media(max-width:700px){.ai-network-panel .ai-brain-3d{min-height:260px}.ai-brain-3d .ai-brain-nodes{height:260px}}

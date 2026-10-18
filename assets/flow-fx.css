@@ -1,0 +1,183 @@
+/* FlowFX — neural-net investigation flow layering.
+   Loaded after standalone.css; the stage buttons keep their original .ai-process-node cascade.
+   The net renders as a deep-space window (guide: black canvas + bloom), with dark-glass
+   source pills and stage chips floating over it. */
+
+.ai-flow-neural {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 14px;
+  align-items: stretch;
+  min-height: 520px;
+}
+
+/* ----- deep-space canvas window ----- */
+.ai-flow-net {
+  position: relative;
+  min-height: 460px;
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 90% at 26% 10%, #122240 0%, #0b1630 44%, #070d1d 74%, #05080f 100%);
+  border: 1px solid rgba(126, 168, 255, 0.17);
+  box-shadow:
+    inset 0 0 70px rgba(3, 8, 20, 0.75),
+    inset 0 1px 0 rgba(160, 200, 255, 0.08),
+    0 12px 38px rgba(10, 22, 48, 0.28);
+  overflow: hidden;
+}
+
+.ai-flow-net::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(90% 70% at 50% 46%, transparent 58%, rgba(2, 5, 12, 0.55) 100%);
+}
+
+.ai-flow-net-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ----- source pills: dark glass ----- */
+.ai-flow-sources {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 10px 0 66px;
+  min-width: 0;
+}
+
+.ai-flow-sources .ai-src {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #c3d3ee;
+  background: rgba(9, 17, 33, 0.82);
+  border: 1px solid rgba(126, 168, 255, 0.2);
+  border-radius: 11px;
+  padding: 8px 10px;
+  box-shadow: 0 3px 14px rgba(2, 8, 20, 0.45), inset 0 1px 0 rgba(170, 205, 255, 0.07);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.ai-src-0 { border-left: 3px solid #5bc9ff; }
+.ai-src-1 { border-left: 3px solid #7da7ff; }
+.ai-src-2 { border-left: 3px solid #b48cff; }
+.ai-src-3 { border-left: 3px solid #ffc78a; }
+
+/* ----- stage rail: dark glass chips over the canvas ----- */
+.ai-flow-stages {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ai-flow-stages .ai-process-node {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 3px 2px;
+}
+
+.ai-flow-stages .ai-process-node > span {
+  width: 30px;
+  height: 30px;
+  margin: 0 0 4px;
+  border-radius: 10px;
+  font-size: 14px;
+  background: rgba(9, 18, 35, 0.92);
+  border-color: rgba(126, 168, 255, 0.32);
+  color: #9fc3f7;
+  box-shadow: 0 3px 14px rgba(2, 8, 20, 0.6), inset 0 1px 0 rgba(170, 205, 255, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.ai-flow-stages .ai-process-node b {
+  font-size: 9px;
+  color: #8ea6c8;
+}
+
+.ai-flow-stages .ai-process-node.is-current > span {
+  border-color: rgba(91, 201, 255, 0.75);
+  color: #bfe6ff;
+  box-shadow: 0 0 0 5px rgba(91, 201, 255, 0.13), 0 0 24px rgba(91, 201, 255, 0.4);
+}
+
+.ai-flow-stages .ai-process-node.is-current b {
+  color: #cfe8ff;
+}
+
+.ai-flow-stages .ai-process-bull > span { color: #4fd8a4; border-color: rgba(79, 216, 164, 0.4); }
+.ai-flow-stages .ai-process-bear > span { color: #ff8ba0; border-color: rgba(255, 139, 160, 0.4); }
+.ai-flow-stages .ai-process-bull.is-current > span {
+  color: #7cf0c4;
+  border-color: rgba(79, 216, 164, 0.75);
+  box-shadow: 0 0 0 5px rgba(53, 212, 146, 0.13), 0 0 24px rgba(53, 212, 146, 0.4);
+}
+.ai-flow-stages .ai-process-bear.is-current > span {
+  color: #ffb3c2;
+  border-color: rgba(255, 139, 160, 0.75);
+  box-shadow: 0 0 0 5px rgba(255, 125, 146, 0.13), 0 0 24px rgba(255, 125, 146, 0.4);
+}
+
+.ai-investigation.is-paused .ai-flow-net-canvas {
+  opacity: 0.82;
+}
+
+@media (max-width: 760px) {
+  .ai-flow-neural {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 10px;
+  }
+  .ai-flow-sources {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .ai-flow-sources .ai-src {
+    flex: 1 1 42%;
+  }
+  .ai-flow-net {
+    min-height: 300px;
+    border-radius: 13px;
+  }
+  .ai-flow-stages {
+    height: 52px;
+  }
+  .ai-flow-stages .ai-process-node b {
+    font-size: 7.5px;
+    white-space: normal;
+    max-width: 52px;
+  }
+  .ai-flow-stages .ai-process-node > span {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+}
+
+/* Override the older seven-column flow scrolling layout on compact screens. */
+@media(max-width:760px){.ai-flow-canvas.ai-flow-neural{grid-template-columns:minmax(0,1fr);overflow-x:visible}.ai-flow-net{min-width:0}.ai-flow-stages .ai-process-node:last-child{left:auto!important;right:2px;transform:none}.ai-flow-stages .ai-process-node:last-child b{max-width:44px}}
