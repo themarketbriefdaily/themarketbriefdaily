@@ -1,0 +1,114 @@
+{
+  "at": "2026-10-18T14:37:30.884843+00:00",
+  "mode": "demo_only",
+  "enrolled": true,
+  "enabled": true,
+  "paused": false,
+  "health": {
+    "at": "2026-10-18T14:37:29.721044+00:00",
+    "algo_trading": false,
+    "gaps": [
+      "Turn on Algo Trading in the MT5 demo terminal"
+    ],
+    "runtime_status": "running"
+  },
+  "strategies": [
+    {
+      "key": "largecap",
+      "label": "TradingAgents · Megacap",
+      "currency": "GBP",
+      "started": "2026-10-18T14:35:13.140375+00:00",
+      "at": "2026-10-18T14:37:30.685720+00:00",
+      "return_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "realized_pnl": 0,
+      "floating_pnl": 0,
+      "open_positions": 0,
+      "recorded_deals": 0,
+      "curve": [
+        {
+          "at": "2026-10-18T14:35:13.140375+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:35:13.580447+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:37:30.609957+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:37:30.685720+00:00",
+          "value": 100.0
+        }
+      ],
+      "positions": [],
+      "last_decision": {
+        "at": null,
+        "symbol": null,
+        "action": null,
+        "summary": null,
+        "status": null,
+        "execution_status": null,
+        "execution_gap": null
+      },
+      "universe": [
+        "AAPL.NAS",
+        "AMZN.NAS",
+        "GOOG.NAS"
+      ]
+    },
+    {
+      "key": "aurora",
+      "label": "AURORA · Global",
+      "currency": "GBP",
+      "started": "2026-10-18T14:35:13.140375+00:00",
+      "at": "2026-10-18T14:37:30.685720+00:00",
+      "return_percent": 0.0,
+      "max_drawdown_percent": 0.0,
+      "realized_pnl": 0,
+      "floating_pnl": 0,
+      "open_positions": 0,
+      "recorded_deals": 0,
+      "curve": [
+        {
+          "at": "2026-10-18T14:35:13.140375+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:35:13.580447+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:37:30.609957+00:00",
+          "value": 100.0
+        },
+        {
+          "at": "2026-10-18T14:37:30.685720+00:00",
+          "value": 100.0
+        }
+      ],
+      "positions": [],
+      "last_decision": {
+        "at": null,
+        "symbol": null,
+        "action": null,
+        "summary": null,
+        "status": null,
+        "execution_status": null,
+        "execution_gap": null
+      },
+      "universe": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USTEC",
+        "US500",
+        "TLT.NAS",
+        "MU.NAS"
+      ]
+    }
+  ],
+  "basis": "Broker-recorded demo deals plus floating profit and accrued swap. Equal virtual starting allocations; no external cash flows. Curves start at 100. Pending/ambiguous orders or stale position quotes withhold new NAV. CFD demo results are not live returns. Stop losses may gap. Broker-unallocated balance charges are not attributed."
+}
