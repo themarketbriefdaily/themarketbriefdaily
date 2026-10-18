@@ -2,13 +2,13 @@ THE MARKET BRIEF DAILY / AI RESEARCH
 
 # Two desks. One research briefing.
 
-Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T13:38:57.905717+00:00
+Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T14:53:26.728265+00:00
 
 AURORA: The captured 16 October equity session shows technology weakness, but its cause remains unresolved.
 
 TradingAgents: Foldable demand/delivery-slip, CEO transition and Siri settlement are unverified publisher claims.
 
-Research status: saved review. No live monitoring or connected execution. Hypotheses and research proposals are not approved allocations.
+Research status: saved review. A separate, exact-account-bound MT5 demo supervisor may act only after its own proposal, risk review and broker checks. This report does not grant live-money execution permission. Hypotheses are not approved allocations.
 
 ## The macro dashboard
 
@@ -143,17 +143,17 @@ AAPL, GOOGL and AMZN are monitored through a separate fixed-company entry route.
 
 Research disposition only, not clearance. Verified Q3 FY26 fundamentals are strong (+16.4% revenue, 32.6% operating margin despite R&D +32%, deleveraging), but the margin beat partly reflects one-off IEEPA tariff refunds booked as products-cost reductions and MD&A warns costs will intensify. Foldable demand/delivery-slip, CEO transition and Siri settlement are unverified publisher claims. At a reported ~39x against a 5.10% 10Y, the multiple embeds both open disputes.
 
-Attention: Initial baseline investigation
+Attention: New captured news or filing references
 
-[The Motley Fool / Breakfast News: The Sunday Edition / 2026-10-18T11:30:00Z](https://www.fool.com/investing/breakfast-news/2026/10/18/breakfast-news/?source=iedfolrf0000001)
+[Yahoo Finance RSS / www.fool.com / Own VGT? Here's How Much of It Is Really Nvidia, Apple, Microsoft, and Broadcom. / 2026-10-18T13:28:00+00:00](https://www.fool.com/investing/2026/10/18/own-vgt-heres-how-much-of-it-is-really-nvidia-appl/?.tsrc=rss)
 
-[Yahoo Finance RSS / www.investopedia.com / What to Expect in Markets This Week: Meta, Tesla Report; Airlines, Streaming Giants’ Results Due / 2026-10-18T09:00:00+00:00](https://www.investopedia.com/what-to-expect-in-markets-this-week-meta-tesla-report-airlines-streaming-giants-results-also-due-earnings-12173877?.tsrc=rss)
+[Yahoo Finance RSS / www.tikr.com / iPhone Duo Preorders Sell Out Rapidly As Delivery Estimates Slip Into January / 2026-10-18T13:12:12+00:00](https://www.tikr.com/blog/apple-stock-iphone-duo-preorders-sell-out?ref=yahoofinance&.tsrc=rss)
 
-## GOOGL / not started
+## GOOG / not started
 
 News and filings are monitored separately from AURORA discovery; investigation remains pending.
 
-Attention: New captured news or filing references
+Attention: Initial baseline investigation
 
 [Yahoo Finance RSS / www.fool.com / Prediction: Alphabet Will Report Google Cloud Revenue Growth Exceeding 100% on Oct. 28. / 2026-10-18T12:05:00+00:00](https://www.fool.com/investing/2026/10/18/predict-alphabet-report-google-cloud-revenue/?.tsrc=rss)
 
@@ -471,6 +471,34 @@ Evidence gap: Foldable sellout/delivery slip, CEO transition and Siri settlement
 
 [SEC EDGAR / AAPL 10-Q / risk factors / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
+# MT5 demo / separately recorded results
+
+Broker-recorded demo deals plus floating profit and accrued swap. Equal virtual starting allocations; no external cash flows. Curves start at 100. Pending/ambiguous orders or stale position quotes withhold new NAV. CFD demo results are not live returns. Stop losses may gap. Broker-unallocated balance charges are not attributed.
+
+Demo runtime check: 2026-10-18T14:47:50.290089+00:00
+
+Runtime gap: Turn on Algo Trading in the MT5 demo terminal
+
+## TradingAgents · Megacap
+
+Recorded return: 0.0%. Broker deals: 0. Open owned positions: 0.
+
+Realized P&L: 0 GBP. Floating P&L and accrued swap: 0 GBP.
+
+Demo universe: AAPL.NAS, AMZN.NAS, GOOG.NAS
+
+## AURORA · Global
+
+Recorded return: 0.0%. Broker deals: 0. Open owned positions: 0.
+
+Realized P&L: 0 GBP. Floating P&L and accrued swap: 0 GBP.
+
+Demo universe: EURUSD, GBPUSD, USDJPY, USTEC, US500, TLT.NAS, MU.NAS
+
+The Windows MT5 runtime must remain running. Entries require Algo Trading, fresh quotes, current research, a structured proposal, a dedicated strategy risk approval and deterministic broker checks. The six-hour ordinary holding minimum does not force a timed exit. Protective broker stops may execute earlier.
+
+Demo risk settings: maximum 0.5% strategy risk per entry, 2% total stop risk, 25% account margin; two daily ATR stop, seven daily-equivalent financing debits and a 10% sizing reserve. New entries halt after a 2% daily strategy loss or 5% drawdown. These are experimental limits, not guarantees against gaps or losses.
+
 # Before an investment
 
 Establish the source-verified catalyst and what is already priced in.
@@ -491,7 +519,7 @@ Published research snapshot; observations have different dates.
 
 Bullish and bearish labels describe research cases, not orders or approved allocations.
 
-Price charts show vendor history, not fund performance.
+Market-price comparisons show vendor history; broker-recorded demo performance is displayed separately.
 
 Filing-page batch incomplete for AAPL, MPC, MU, XOM. Rejected page responses were not accepted as reading evidence; supporting excerpts or saved rejected responses need review. Accepted committee completion does not resolve those diligence gaps.
 
