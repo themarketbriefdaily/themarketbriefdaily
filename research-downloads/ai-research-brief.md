@@ -2,11 +2,11 @@ THE MARKET BRIEF DAILY / AI RESEARCH
 
 # Two desks. One research briefing.
 
-Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T11:45:42.969945+00:00
+Source cycle: 2026-10-17T17:40:54.920488+00:00 | Exported: 2026-10-18T13:33:20.393820+00:00
 
 AURORA: The captured 16 October equity session shows technology weakness, but its cause remains unresolved.
 
-TradingAgents: FY2026 10-K verifies a structural change: take-or-pay agreements, $134B RPO with price bands, $13B deposits, $7B LCs, 81% gross margin on +256% revenue.
+TradingAgents: Foldable demand/delivery-slip, CEO transition and Siri settlement are unverified publisher claims.
 
 Research status: saved review. No live monitoring or connected execution. Hypotheses and research proposals are not approved allocations.
 
@@ -27,11 +27,11 @@ Observation periods differ from release dates. Equity history is vendor-supplied
 
 # Shared research workflow
 
-AURORA discovery → shared data check → TradingAgents investigation → committee inbox → subsequent AURORA portfolio review.
+AURORA discovery or standing company watch → shared data check → TradingAgents investigation → committee inbox → subsequent AURORA portfolio review.
 
-Case MU / complete. Additional sources captured 2026-10-18T11:35:05.284579+00:00. AURORA source cycle 2026-10-17T17:40:54.920488+00:00. These are distinct snapshots; the earlier committee decision has not been revised.
+Case AAPL / complete. Additional sources captured 2026-10-18T13:18:10.963786+00:00. AURORA source cycle 2026-10-17T17:40:54.920488+00:00. These are distinct snapshots; the earlier committee decision has not been revised.
 
-197 case records captured; 90 distinct records logged in saved worker contexts. Delivery does not certify full-source reading or factual verification.
+189 case records captured; 83 distinct records logged in saved worker contexts. Delivery does not certify full-source reading or factual verification.
 
 ## Coverage and required follow-up
 
@@ -113,7 +113,9 @@ XOM / energy / Macro sector investigation + dated single-session capacity filter
 
 MSFT / technology / Macro sector investigation + dated single-session capacity filter; company thesis and valuation remain unverified.
 
-## Committee clearance
+## Committee clearance / preserved source cycle
+
+These are the recorded committee reasons from the fund source cycle. New broker identity verification below is a separate update; the committee has not been retroactively reapproved.
 
 DEFER: Watch/research file, not a paper candidate; no OIS strip, no verified FX mapping beyond demo history, and direction unresolvable before 20-21 Oct UK releases.
 
@@ -123,9 +125,61 @@ DEFER: MU gated on uncertified full-filing review and Agent 12's mid-cycle EPS b
 
 DEFER: TLT duration watch: rate path undecomposed, symbol mapping unverified, carry cost unmeasured; no paper candidate submitted.
 
+# Broker identities / current verification
+
+Read-only terminal verification: 2026-10-18T13:11:03.782488+00:00. Correct identity is separate from fresh quotes, measured financing, thesis diligence and position-risk approval.
+
+Equity, ETF and index contracts listed here are CFDs, not ownership of the referenced securities. GOOGL has no exact terminal contract in the verified catalogue. GOOG.NAS is an alternative Alphabet share class, requiring its own analysis and explicit choice. No proxy was substituted.
+
+Raw swap metadata is not a measured overnight cash cost. Historical deferrals also concern unresolved investment direction, expectations, filing reconciliation and risk. Correct mapping alone does not clear these issues.
+
+[MetaTrader 5 / Terminal symbol properties / 2026-10-18T13:11:03.782488+00:00](https://www.metatrader5.com/en/terminal/help/trading/market_watch)
+
+# Standing company watch
+
+AAPL, GOOGL and AMZN are monitored through a separate fixed-company entry route. No AURORA shortlist selection is required; shared macro context, portfolio governance and patient holding rules are retained. At most one queued deep case is routed per daily reporting cycle.
+
+## AAPL / complete
+
+Research disposition only, not clearance. Verified Q3 FY26 fundamentals are strong (+16.4% revenue, 32.6% operating margin despite R&D +32%, deleveraging), but the margin beat partly reflects one-off IEEPA tariff refunds booked as products-cost reductions and MD&A warns costs will intensify. Foldable demand/delivery-slip, CEO transition and Siri settlement are unverified publisher claims. At a reported ~39x against a 5.10% 10Y, the multiple embeds both open disputes.
+
+Attention: Initial baseline investigation
+
+[The Motley Fool / Breakfast News: The Sunday Edition / 2026-10-18T11:30:00Z](https://www.fool.com/investing/breakfast-news/2026/10/18/breakfast-news/?source=iedfolrf0000001)
+
+[Yahoo Finance RSS / www.investopedia.com / What to Expect in Markets This Week: Meta, Tesla Report; Airlines, Streaming Giants’ Results Due / 2026-10-18T09:00:00+00:00](https://www.investopedia.com/what-to-expect-in-markets-this-week-meta-tesla-report-airlines-streaming-giants-results-also-due-earnings-12173877?.tsrc=rss)
+
+## GOOGL / not started
+
+News and filings are monitored separately from AURORA discovery; investigation remains pending.
+
+Attention: New captured news or filing references
+
+[Yahoo Finance RSS / www.fool.com / Prediction: Alphabet Will Report Google Cloud Revenue Growth Exceeding 100% on Oct. 28. / 2026-10-18T12:05:00+00:00](https://www.fool.com/investing/2026/10/18/predict-alphabet-report-google-cloud-revenue/?.tsrc=rss)
+
+[The Motley Fool / Prediction: Alphabet Will Report Google Cloud Revenue Growth Exceeding 100% on Oct. 28. / 2026-10-18T11:45:00Z](https://www.fool.com/investing/2026/10/18/predict-alphabet-report-google-cloud-revenue/?source=iedfolrf0000001)
+
+## AMZN / not started
+
+News and filings are monitored separately from AURORA discovery; investigation remains pending.
+
+Attention: New captured news or filing references
+
+[The Motley Fool / Breakfast News: The Sunday Edition / 2026-10-18T11:30:00Z](https://www.fool.com/investing/breakfast-news/2026/10/18/breakfast-news/?source=iedfolrf0000001)
+
+[Yahoo Finance RSS / www.fool.com / 2 Retail Stocks to Buy Before the Holiday Shopping Season / 2026-10-18T10:39:01+00:00](https://www.fool.com/investing/2026/10/18/2-retail-stocks-to-buy-before-the-holiday-shopping-season/?.tsrc=rss)
+
+## Observed market comparison
+
+Observed security price history rebased to 100 on common sessions. Vendor adjustments are not independently reconciled. These are market-price returns, not TradingAgents returns, total shareholder returns or a simulated strategy. No fees, financing, dividends or trading signals are modeled.
+
+2026-04-20 to 2026-10-16 / 126 common completed sessions. Base 100.
+
+Strategy returns, annualized returns, Sharpe and strategy drawdown remain unmeasured: no verified strategy NAV series is available. The researchers’ published TradingAgents results are not performance of this implementation or account.
+
 # 02 / TradingAgents
 
-Independent company review with analyst research, bull/bear debate and risk challenge. Current case: MU.
+Independent company review with analyst research, bull/bear debate and risk challenge. Current case: AAPL.
 
 ## The idea-selection queue
 
@@ -179,243 +233,243 @@ Next check: Identify NVDA's disclosed customer and neocloud revenue concentratio
 
 ## Market analyst / WATCH
 
-MU closed 2026-10-16 at 878.84, -5.6% on the day and -14.6% over five sessions, with only 1.12x average volume - a sharp momentum breakdown within an intact longer uptrend (+67.5%/120 sessions, price still ~22% above the 200-day SMA at 718). RSI 34 and a deeply negative MACD mark oversold conditions, but no reversal signal exists yet.
+AAPL set a record close (~$343.46) with constructive momentum: RSI14 62.1, MACD above signal, price above rising 20/50/200-day averages. Trend is intact but stretched: press-cited P/E near 39 against a 5.1% 10-year yield leaves little valuation cushion. Foldable iPhone backlog slipping deliveries into January is a live earnings-transmission question ahead of the Nov 2 report.
 
-Trend: the intermediate structure has broken. Price sits below the 10-EMA (971), 50-day (983) and 20-day (1033), and pierced the lower Bollinger band (907) before closing under it - a statistically extended move, not yet a trend reversal since the 200-day (718) remains far below. Momentum: RSI14 at 34.0 and MACD at -17.3 with a -23.7 histogram confirm accelerating downside, though RSI above 30 means the oscillator is not yet washed out. Volume: the -5.6% session ran ~30.5M shares vs a 27.2M 20-day mean (1.12x) - elevated but far from panic capitulation, suggesting distribution into a five-day slide driven by the memory-sector/AI-slowdown narrative (news feed is unanimous on a punishing week; CXMT/China competition headlines recur). Volatility: 20-session annualized vol of 48% and ATR14 of ~49 points (~5.6% of price) mean daily noise alone can produce apparent 'support tests'. Insider context is neutral: parsed Form 4 activity on 2026-10-13 is dominated by code A/M grants and code F tax-withholding dispositions at 989.04, not discretionary open-market selling; one 40-share code S is immaterial. The 10-K confirms HBM/CMBU exposure and FY2026 revenue scale, and the May-quarter 10-Q ($41.5B revenue, ~85% gross margin) shows the fundamental boom the market is now re-rating; with the 10-year at 5.1% (DGS10) and VIX 16.5, the drawdown looks idiosyncratic/sector-driven rather than a broad risk-off event. Technically this is a high-volatility correction inside a major uptrend; price patterns do not establish the cycle has peaked.
+Trend (as of 2026-10-16 session): close ~343 sits above EMA10 339.9, SMA20 337.4, SMA50 325.7 and SMA200 292.5 — a stacked bullish alignment with price near the upper Bollinger band (345.6), signaling extended short-term positioning rather than a fresh breakout. RSI14 62.1 is strong but not overbought; MACD 4.13 vs signal 3.94 with a small positive histogram (+0.20) indicates momentum that is still improving but decelerating at the margin. ATR14 ~6.7 (~2% of price) implies a normal-day range that can move the stock through the mid-band quickly; the band top is a nearer reference than the 200-day (~15% below). Volume context is unavailable in my packet, so any accumulation/divergence read is unverified — VWMA20 (337.7) matching SMA20 suggests no obvious distortion, but that is weak evidence. Catalyst path: feeds report the $1,999 foldable sold out with deliveries slipping to late January, and a Nov 2 earnings date. Falsifiable question: does the January delivery slip push foldable revenue from the December quarter into the March quarter, reshaping two consecutive reports? That is checkable against segment/product disclosure and guidance, not headlines. Macro cross-check: DGS10 at 5.10% with a 2.35% 10-year breakeven leaves a ~2.75% real yield — a high hurdle for a 39x earnings mega-cap; VIX 16.5 shows no stress premium, consistent with complacent risk conditions. Fundamentals are genuinely strong (June-Q revenue $109.4B, +16% y/y; operating margin ~33%), supporting the trend, but the multiple embeds much of it. Rate direction is the key second-order risk: further long-end yield rise compresses the multiple independently of earnings.
 
-Countercase: The bearish read: a -5.6% day on rising volume after -14.6%/week, price below every short average and MACD still expanding negative, is consistent with the early stage of a memory-cycle de-rating, not a dip. China capacity headlines and a 5.1% 10-year could extend the decline well past the 200-day.
+Countercase: Bear case: RSI 62 with price pinned near the upper band after a record close is late-trend positioning; a foldable delivery slip into January could shift revenue out of the December quarter and disappoint at the Nov 2 print while the multiple is rich and the 10Y at 5.1% offers a competing risk-free yield. An earnings miss or cautious guidance could unwind gains fast given the thin valuation cushion.
 
-Next check: Next completed session: does MU hold above the lower Bollinger region (~907) with declining volume (selling exhaustion), or close below 875 on >1.3x volume (distribution continuation)? Also check a 10/16-10/17 VIX print above ~20 for regime confirmation.
+Next check: Read the FY Q4 (Sept-26) 10-K/press release on Nov 2 for foldable product revenue timing and December-quarter guidance; cross-check daily AAPL volume on rally days vs the 20-day average to confirm or refute accumulation behind the record close.
 
-Evidence gap: Broker-verified intraday/next-session tape and revised consensus strip unavailable; momentum verdict rests on vendor bars to 10-16.
+Evidence gap: No share-volume history delivered in my packet; accumulation/divergence reads are unverified.
 
-Evidence gap: Insider footnotes/derivative legs unreviewed; no confirmed discretionary open-market sale parsed.
+Evidence gap: Foldable revenue timing and December-quarter guidance are headline claims, not yet filing-verified ahead of the Nov 2 report.
 
-[Massive / MU completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
+[AURORA technical calculations / AAPL dated RSI, MACD and moving averages / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
-[AURORA technical calculations / MU dated RSI, MACD and moving averages / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
+[Yahoo Finance / AAPL Yahoo company-news feed / 2026-10-18T09:00:00+00:00](https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US)
 
-[SEC insider filings / MU insider filing references / 2026-10-15](https://data.sec.gov/submissions/CIK0000723125.json)
+[Massive company news / AAPL recent company-news search / 2026-10-18T11:30:00Z](https://massive.com/docs/rest/stocks/news)
 
 ## Fundamentals analyst / WATCH
 
-Micron's FY2026 (ended 9/3/26) shows an extraordinary AI-memory upcycle: revenue $133.2B (+256%), 74.6% operating margin, OCF $89.7B vs capex $30.7B, cash $38.4B. At ~$950 (insider-filed price), trailing P/E ~13x looks cheap, but quarterly ramp ($13.6B→$23.9B→$41.5B) is classic peak-cycle momentum. Balanced: cheap optically, cyclical durability unproven.
+AAPL's Q3 FY26 shows 16% sales growth, 50% gross margin, $101B nine-month net income, and net-cash balance sheet with $62B in buybacks. But the margin jump is partly tariff-refund accounting, and management explicitly warns intensifying component-cost inflation. Quality of the margin expansion is the open question; no valuation call without current price data.
 
-Facts from as-filed statements: Q3 FY26 revenue $41.5B with gross margin ~85% ($35.1B on $6.4B COGS) versus $9.3B revenue and ~38% gross margin a year earlier — an unprecedented pricing environment in DRAM/HBM. FY26 operating income $99.3B (74.6% margin), OCF $89.7B, PPE $30.7B, so OCF-minus-capex ~$59B; cash rose to $38.4B and equity to $138.4B. Cash conversion is strong and self-funding; interest expense is now nil and interest income positive. Hypothesis: earnings are dominated by memory spot/contract pricing, which historically mean-reverts; the market likely capitalizes a normalized through-cycle EPS far below $74.33, so a 13x trailing multiple is not obviously cheap. Market context: stock has pulled back (RSI 34, price ~$950-990 vs 20-SMA $1,033, MACD negative) while holding well above the 200-SMA $718 — consolidation, not breakdown, with QQQ also down 5.5% over five sessions. Insider reads show mostly code F (tax withholding) and M (exercises) at $989.04; one 40-share sale — no open-market selling signal, but no conviction buying either. Macro is a headwind for long-duration multiples: 10Y at 5.1%, real 10Y 2.78%, curve +35bps; credit spreads tight (HY 3.23%), so financing stress is not the risk — discount-rate-driven de-rating is. Unknowns: FY27 supply additions from Micron and rivals, HBM backlog visibility, and total debt (company-facts debt tags missing), which matters for the net-cash claim beyond the $38.4B cash line.
+Q3 FY26 (June 27): revenue $109.4B (+16.4% y/y), products +18%, services +12%. Nine-month gross margin 49.0% vs 46.8%; Q3 products gross margin ~40.1% vs ~34.5% a year ago — an unusually large expansion. Mechanisms: (1) Supreme Court struck down IEEPA tariffs in Feb 2026; Apple recognized refunds as reductions of products cost of sales, so part of the improvement is non-recurring; (2) services mix; (3) pricing. R&D is up 32% y/y ($34.0B nine months), consistent with the Siri AI/iOS 27 investment cycle flagged in MD&A, yet operating margin still expanded to 32.6%. Balance-sheet flags: inventories nearly doubled ($5.7B to $11.1B) — plausibly component pre-buying against the stated semiconductor/NAND/DRAM supply constraints, worth verifying; intangibles rose $9B. Debt reduced (commercial paper $8B to $2B, term repayments, no issuance) while buybacks continued from operating cash flow — financing activity is deleveraging plus capital return, not necessity. Macro context cuts both ways: fed funds 3.75-4.00% with the 10-year at 5.1% (largely real yield, 2.78% 10y TIPS) is a demanding discount-rate backdrop; credit spreads are tight (IG 105bp), so no funding stress. MD&A language — cost trends 'expected to intensify,' price increases may not fully mitigate — is a direct forward warning against extrapolating Q3 margin. Hypothesis to falsify: products margin expansion is mostly one-off refunds and will compress as Section 301 tariffs and memory costs bite in FY27.
 
-Countercase: Bulls argue HBM long-term agreements and constrained supply sustain pricing through FY27, making normalized EPS far above prior cycles and today's multiple a value trap inversion. That requires believing this cycle's contract structure differs from 2018/2022 peaks — unverified from supplied evidence.
+Countercase: Bulls can argue margin gains reflect durable pricing power and services mix, AI features could drive a hardware upgrade cycle, and the refund tailwind persists while claims are processed; R&D scaling may not compress operating margin given 16% revenue growth.
 
-Next check: Filing-search the FY26 10-K MD&A for total long-term debt, upcoming maturities, and segment/capex outlook; separately pull FY26 Q4 earnings materials for FY27 HBM pricing/supply commentary and any customer take-or-pay disclosures.
+Next check: Read the 10-Q MD&A gross-margin discussion (mda section, offset ~6000) to quantify tariff-refund recognition and product/services margin drivers, plus search 'refund' to size the one-off.
 
-Evidence gap: Debt fields missing from company facts (short-term, current and noncurrent long-term debt) — net-cash position unverified
+Evidence gap: No current price/valuation data in packet; P/E and implied expectations unassessable
 
-Evidence gap: No segment (DRAM/NAND/HBM) revenue mix or FY27 guidance reviewed; peak-vs-durable pricing cannot be separated from filed excerpts alone
+Evidence gap: Tariff-refund magnitude and inventory-build purpose not yet quantified in filing
 
-[SEC company facts detail / MU financial statements and balance-sheet metrics / 2026-10-09](https://data.sec.gov/api/xbrl/companyfacts/CIK0000723125.json)
+[SEC EDGAR / AAPL 10-Q / requested filing_page / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-Q / financial statements / 2026-06-25](https://www.sec.gov/Archives/edgar/data/723125/000072312526000015/mu-20260528.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_page / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-Q / financial statements / 2026-03-19](https://www.sec.gov/Archives/edgar/data/723125/000072312526000006/mu-20260226.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
 ## News analyst / WATCH
 
-MU fell ~15% in five sessions (close $878.84, 10/16) on China-competition and AI-sentiment fears, yet the FY2026 10-K shows revenue $133.2B (+256%), 81% gross margin, $89.7B operating cash flow, $73.45B cash, and $134B take-or-pay performance obligations with $12.75B customer deposits. Sell-off appears sentiment/multiple-driven; fundamentals unrefuted. Watch, pending YMTC/CXMT verification and Q1 FY27 guidance.
+AAPL news cycle is dominated by an unverified CEO transition to John Ternus, a $1,999 foldable iPhone selling out with January delivery slips, and a reported $250M Siri settlement. A record ~$343 close and ~39x P/E sit against a 5.1% 10-year yield and market-implied Fed hikes. Earnings Nov 2 is the next hard catalyst. Stance: watch, not act.
 
-Primary source (10-K, FY ended 2026-09-03) confirms a genuine earnings transformation: DRAM ASPs +~180%, NAND +~200%, gross margin 81% vs 40% prior year, net income $84.97B, OCF $89.7B. Structural change is real: strategic take-or-pay agreements with binding multi-year volumes, pricing in min/max bands, $134B remaining performance obligations (~$13B recognized as contract liabilities), $12.75B deposits received, LCs of $7B, and management claims floor pricing yields margins above any prior-cycle peak. HBM4 36GB is in volume production; HBM sold out through 2027 per secondary reports (unverified). The stock's drawdown (-5.6% one session, -14.6% five sessions, ~24-30% below peak, 48% annualized 20-day vol) coincides with three mechanisms: (1) YMTC's reported ~$20B profit funding capacity expansion — a plausible supply-side threat but one publisher claim, not verified against CXMT/YMTC node economics or HBM capability (HBM is a different product from commodity DRAM/NAND where CXMT/YMTC compete); (2) DGS10 rising from ~4.65 (late Aug) to 5.1-5.3 — higher discount rates compress multiples of AI-linked names, a market-wide effect not MU-specific; (3) positioning unwinds after a +358% 12-month run; VIX 16.46 suggests no broad risk-off. The CAC ban on Micron products in China infrastructure (2023) remains a tail risk per the 10-K. Market expectation embedded in the sell-off is cycle-peak pricing; the take-or-pay floors directly test that hypothesis — if floors hold, downside EPS scenarios are bounded far above past troughs. Fact vs hypothesis: contract economics are fact; 'China ends the AI memory boom' is hypothesis with weak current evidence.
+All company items are secondary publisher summaries, unverified against primary filings. Factual anchors: FY2025 10-K shows $112.0B net income, $90.7B buybacks, $15.4B dividends — capital-return machinery intact. The 'Ternus' literal search on the 2026-07-30 8-K returned zero matches; a literal miss does not disprove the appointment, but the transition, the foldable sell-out/backlog and the Siri settlement remain hypotheses, not facts. Economic transmission to test: (1) foldable demand at $1,999 shifts revenue mix toward high-ASP hardware and could pull December-quarter revenue forward or shift it into January deliveries — which of two consecutive quarters absorbs it matters for consensus; (2) the Siri settlement raises product-delay litigation as a recurring cost of AI execution; (3) paid/premium Siri AI would be a services-mix tailwind but is only analyst speculation. Valuation is the binding mechanism: ~39x earnings with the 10-year at 5.1% (real 10y ~2.78%) means the equity carries heavy duration risk; Polymarket prices ~68.5% on two 2026 hikes, so multiple compression, not earnings, is the main downside channel. VIX at 16.5 shows no stress; risk is complacency into a hiked-rate regime, not funding. The Nov 2 report tests whether foldable backlog and home-category launches show up in guidance; record-close positioning implies high expectations bar.
 
-Countercase: Bear case: YMTC/CXMT state-backed capacity adds commodity DRAM/NAND bits into 2027-2028, collapsing spot ASPs; take-or-pay floors could be renegotiated in a true downturn (10-K flags enforcement/litigation risk); deposits repaid 2029-31 remove that cushion later; rates near 5.1% keep de-rating pressure on.
+Countercase: Bulls argue ecosystem depth plus foldable supercycle justify 39x regardless of rates, and Ternus continuity plus Home/LG partnerships extend services growth. If the 10-year's rise reflects growth/term premium rather than policy surprise, duration drag on mega-cap cash generators is smaller than the hiking narrative implies.
 
-Next check: Verify YMTC/CXMT DRAM capacity, node maturity and any HBM roadmap via primary/industry data, not publisher claims; then confirm MU Q1 FY2027 guidance and contract-floor margin disclosures in the upcoming 10-Q (late December).
+Next check: Search latest 10-Q/8-K for 'Siri', 'foldable' and 'Ternus' to verify settlement, product and transition in primary text; confirm foldable delivery slip via Apple order/newsroom; pull Q4 guidance and earnings-date 8-K before Nov 2.
 
-Evidence gap: Chinese competitor capacity and HBM capability unverified — single publisher claim drives the bear narrative
+Evidence gap: CEO transition, foldable sell-out/backlog and $250M Siri settlement are unverified publisher claims absent from searched filing text so far
 
-Evidence gap: FY2027 quarterly guidance and HBM pricing terms not in supplied excerpts
+Evidence gap: No verified consensus or positioning data; multiple-compression risk at 39x is a hypothesis, not measured
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[Yahoo Finance / AAPL Yahoo company-news feed / 2026-10-18T09:00:00+00:00](https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[Massive company news / AAPL recent company-news search / 2026-10-18T11:30:00Z](https://massive.com/docs/rest/stocks/news)
 
-[Massive / MU completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
+[SEC EDGAR / AAPL 8-K / requested filing_search / 2026-07-30](https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/aapl-20260730.htm)
 
 ## Sentiment analyst / WATCH
 
-MU fell to 878.84 on 2026-10-16 (-5.6% session, -14.6% five-session) after a >350% year run; 20-session annualized volatility is ~48%. Publisher tone is mixed-to-negative near term ('bloodbath', China competition, Cramer), but several pieces argue the memory shortage persists and fundamentals are intact. Social samples are polarized and unrepresentative.
+Delivered social and news feeds show a mildly bullish tone around a record close (~$343.46, publisher-reported) and strong launch narrative (foldable iPhone sellout, HomeView, new CEO Ternus) ahead of the Nov 2 report. StockTwits sample is small, mixed and unrepresentative; the empty Reddit pull is not neutral sentiment. No representative positioning or verified consensus exists. Stance: watch, not trade-ready.
 
-Primary market facts: MU closed 878.84 on 2026-10-16 with volume ~1.12x its 20-session average; five-session decline of ~14.6% versus QQQ -5.5% and SPY -2.0%, so the move is sector- and idiosyncratic, not broad-market (VIX 16.46 is low; 10Y at 5.1% with a steep 35bp 10s2s curve is a duration/term-premium backdrop, not a confirmed tightening shock). Publisher claims requiring verification: Micron revenue up ~380% y/y, >75% of next-year output committed, a $35B buyback, and CXMT (state-backed Chinese rival) turning to ~$20B profits enabling capacity expansion. The Counterpoint expert's view (shortage unresolved; sell-off disconnect) is opinion; the Fool/Barchart pieces are opinion; the Trump-brokerage item is an unverified trade claim. SEC 10-Q risk factors confirm persistent issuer-acknowledged risks: ASP volatility, gross-margin sensitivity, geopolitical exposure, intense competition — consistent across the three supplied quarters, so the risk regime is not new. Social samples (StockTwits; Reddit returned empty) show extreme dispersion — bullish HBM4/structural-floor theses, bearish capitulation posts, and price calls spanning roughly 350-1010 — which measures attention and polarization, not representative sentiment; the empty Reddit feed is not a neutral reading. Transmission hypothesis: profit-taking in a crowded AI-memory trade amplified by a China-capacity narrative and rising long-end yields compressing long-duration growth multiples; competing hypothesis is a genuine cycle-inflection fear. Neither is verified; the packet contains no issuer guidance change, no consensus revision data, and no pricing/spot DRAM quotes. Sentiment from publishers is more fearful than fundamentals-first pieces suggest, but tone is not evidence of an inflection.
+Facts vs claims: (1) Yahoo ticker-feed headlines (publisher summaries, unverified) report a record close at $343.46, a $1,999 foldable iPhone that 'sold out' with January delivery slippage, a HomeView Siri AI device launch, CEO transition to John Ternus, and a Nov 2 earnings date. These are secondary publisher claims, not verified issuer disclosures; the sellout/demand claim in particular needs confirmation against Apple's own statements or channel checks. (2) SEC 10-Q risk factors (period ended 2026-06-27) confirm single/limited-source component dependence — a primary fact relevant to any launch-driven demand narrative. (3) Broker feed verifies the AAPL.NAS CFD identity but quotes are stale, so no intraday price evidence is admissible from it. Social: the StockTwits sample (~20 posts, 12-18 Oct) is dominated by unlabelled retail posts, Elliott Wave bullishness, and one bearish claim that 'iPhone sales down 18-20%' which is an unverified opinion, not issuer data. Labels themselves are user self-reported. Tone skews bullish-to-curious near highs with some mean-reversion anxiety; this is anecdote, not measured sentiment. Macro context is a headwind for duration-heavy mega-cap tech: DGS10 at 5.10% and DGS30 5.43% (15 Oct) with VIX 16.46 — calm volatility but elevated yields compress equity risk appetite; Fed funds target 3.75-4.00% means cuts are already priced into cash yields, so further disinflation is the transmission to watch. Second-order effect: if foldable backlog genuinely shifts revenue between quarters, Nov 2 guidance becomes the falsifiable event for the sellout claim. Empty Reddit feed reflects a bounded query failure, not sentiment.
 
-Countercase: If CXMT profitability genuinely funds leading-edge DRAM expansion, HBM pricing power could erode faster than bulls assume, and the 'structural floor' thesis repeats prior cycle errors. Alternatively, committed-supply contracts (if verified) could cap downside, making the sell-off sentiment-driven overreaction into 5%+ 10Y yields.
+Countercase: The bullish tone rests on publisher demand claims (sellout, record close) and retail hype at all-time highs — classic crowding risk. An unverified retail claim of 18-20% iPhone unit decline, if partially true, would contradict the launch euphoria; elevated 10-year yields (5.1%) can de-rate even calm-name mega-caps despite low VIX.
 
-Next check: Verify the >75% committed-output and buyback claims via Micron's latest earnings 8-K/call and search filings for 'committed' supply terms; check CXMT capacity disclosures and next completed MU session's price/volume.
+Next check: Search AAPL news feed for issuer-sourced confirmation of foldable sellout/delivery slippage and any pre-earnings guidance language before the Nov 2 report; retry filing_search with a short query ('foldable') if zero matches.
 
-Evidence gap: No primary issuer statement or verified consensus/DRAM pricing data explains the ~14.6% five-session drawdown; trigger remains unverified
+Evidence gap: No verified issuer confirmation of foldable iPhone demand or delivery-slip claims; all demand evidence is secondary publisher summary
 
-Evidence gap: Filing diligence partial: only risk-factor excerpts supplied; no MD&A or financial-statement reading in this packet
+Evidence gap: Small, unlabelled StockTwits sample and empty Reddit pull; no representative sentiment or consensus strip available
 
-[Massive / MU completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
+[Yahoo Finance / AAPL Yahoo company-news feed / 2026-10-18T09:00:00+00:00](https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US)
 
-[Yahoo Finance / MU Yahoo company-news feed / 2026-10-18T10:10:00+00:00](https://feeds.finance.yahoo.com/rss/2.0/headline?s=MU&region=US&lang=en-US)
+[StockTwits / AAPL public discussion sample / 2026-10-18T12:36:45+00:00](https://api.stocktwits.com/api/2/streams/symbol/AAPL.json)
 
-[StockTwits / MU public discussion sample / 2026-10-18T11:17:15+00:00](https://api.stocktwits.com/api/2/streams/symbol/MU.json)
+[Reddit / AAPL public discussion sample / 2026-10-18T13:18:07.720300+00:00](https://www.reddit.com/r/stocks+investing+wallstreetbets/search.rss?q=%24AAPL&restrict_sr=on&sort=new&t=week&limit=50)
 
 ## Bull researcher / BULLISH
 
-Micron's FY2026 10-K shows a structurally changed business: $133.2B revenue (+256%), 81% gross margin, $85B net income, and $134B of take-or-pay obligations with price floors management says yield margins above any prior cycle peak. The 14.6% five-session drop (~12x trailing EPS at $878.84) on unverified China-competition headlines appears sentiment- and multiple-driven, not fundamentals-driven. Bullish.
+Bull case on AAPL: verified Q3 FY26 fundamentals show 16.4% revenue growth to $109.4B, ~49-50% gross margin and 32.6% operating margin even while absorbing a 32% R&D increase — evidence of genuine pricing power, not just accounting. Record close $343.46 with intact stacked trend; valuation risk at ~39x vs 5.1% 10Y is real but partly offset by net cash, deleveraging and massive buybacks.
 
-Primary-source facts: the FY2026 10-K confirms DRAM ASPs +~180%, NAND +~200%, gross margin 81% (vs 40%), operating income $99.3B, and OCF of ~$90B against ~$31B capex. Critically, the business model has changed: strategic customer agreements are take-or-pay with binding multi-year volumes, pricing in min/max bands, backed by cash deposits and letters of credit ($12.9B noncurrent contract liabilities on the balance sheet), and $134B of remaining performance obligations. Management states even floor pricing yields gross margins meaningfully above any past-cycle peak — a directly falsifiable claim that bounds trough earnings far above 2018/2022-style collapses. HBM4 36GB is in volume production with HBM4E samples out, and 1γ is the majority DRAM node, supporting technology leadership. Balance sheet: long-term debt of only $4.7B versus $195.9B total assets — essentially unlevered and self-funding. The sell-off (-5.6% session, -14.6% week, 48% annualized vol) came on just 1.12x average volume with VIX at 16.5 — no broad risk-off — while QQQ fell 5.5% over five sessions, consistent with an AI-positioning unwind amplified by China-capacity headlines and the 10-year at 5.1%. The YMTC/CXMT 'cycle over' narrative rests on single-publisher claims about commodity DRAM/NAND, a different market from HBM where Micron is sold out and contracted. At $878.84, trailing P/E is roughly 12x for a company whose contracted floor margins exceed prior peaks — the market is pricing cycle-peak mean reversion that the contract structure explicitly tests. The take-or-pay floors are the crux: if honored, downside scenarios are bounded and the de-rating is overdone.
+Verified facts (Q3 FY26 10-Q, quarter ended 2026-06-27): revenue $109.4B, +16.4% y/y, products +18%, services +12%; nine-month gross margin 49.0% vs 46.8%; operating margin 32.6% despite R&D up 32% y/y to $34.0B — margin expanded while Apple funded the Siri/AI investment cycle, contradicting the bear claim that growth is bought. Balance sheet: commercial paper cut $8B to $2B, no debt issuance, buybacks funded from operating cash flow — capital return is not financed, and net cash cushions multiple-compression risk. Hypothesis vs fact: the margin beat is partly one-off tariff refunds (post-IEEPA ruling), so extrapolation is wrong; but even stripping that, mix shift to services and pricing power are durable. The foldable iPhone sellout/January backlog is an unverified publisher claim, yet its transmission is plausible and checkable: a $1,999 high-ASP product pulling demand into two consecutive quarters. Market context: AAPL +37.7% over 252 sessions, +28.3% over 120, above rising 20/50/200-day MAs, RSI14 62 — strong trend with room, not yet overbought; record close held on 1.56x average volume with QQQ -2.5% the same session, i.e., AAPL outperformed a tech drawdown — relative strength, not just beta. Rates: 10Y at 5.10% is a hurdle, but T10Y2Y +0.35 and breakevens ~2.35% mean much of the rise is real yield/term premium rather than policy shock; cash yields (3.75-4.00% target) already embed the hiking path, and VIX 16.46 with IG spreads 105bp shows no stress. A net-cash mega-cap with 16% growth and buyback support is less duration-sensitive than high-multiple growth peers. Weaknesses in bear reports: '39x with no cushion' ignores that earnings, not just price, moved (+37.7% price vs high-20s trailing EPS revision path); the inventory doubling ($5.7B to $11.1B) is consistent with disclosed single-source component pre-buying ahead of demand, not channel stuffing — falsifiable in cash flow.
 
-Countercase: If Chinese state-funded capacity adds commodity DRAM/NAND bits in 2027-28 and collapses spot ASPs, band renegotiation or customer distress could weaken floors; deposits repaid by 2029-31 remove support later. A 5.1% 10-year sustains multiple compression, and prior cycles show pricing can overshoot both ways.
+Countercase: If margin expansion is mostly tariff refunds and foldable revenue slips out of the December quarter, Nov 2 guidance disappoints at a rich multiple near the upper Bollinger band; component-cost warnings ('expected to intensify') and 5.1% 10Y could force both EPS and multiple cuts.
 
-Next check: MU's Q1 FY2027 10-Q/earnings (late December): confirm contract-floor margins are being realized, track quarterly RPO/deposit growth, and verify Chinese competitor DRAM capacity/node maturity from industry primary data rather than publisher claims.
+Next check: filing_search AAPL 10-Q for 'refund' to size the tariff-refund one-off in products margin, and read MD&A gross-margin discussion; then verify foldable demand/backlog against the Nov 2 earnings release and December-quarter guidance.
 
-Evidence gap: Chinese competitor (CXMT/YMTC) capacity and HBM capability unverified — single publisher claims drive the bear narrative
+Evidence gap: Tariff-refund magnitude in products gross margin not yet quantified from the MD&A; margin-quality conclusion is partly inference.
 
-Evidence gap: FY2027 guidance and HBM pricing terms not yet disclosed
+Evidence gap: Foldable sellout/backlog and CEO transition remain unverified publisher claims; no primary Apple confirmation in searched filings yet.
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / risk factors / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[Massive / AAPL completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[AURORA technical calculations / AAPL dated RSI, MACD and moving averages / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
 ## Bear researcher / BEARISH
 
-FY2026 is a textbook parabolic memory peak: revenue +256% to $133.2B, 81% gross margin, $85B net income, with quarterly revenue tripling into year-end. The take-or-pay 'floor' thesis is a management claim, not a verified trough-earnings bound; capex +94% and state-funded Chinese capacity set up a supply response. Peak-cycle earnings at 12x trailing is not cheap. Bearish.
+Bear case: AAPL at record ~$343 (~39x) faces a 5.10% 10Y (2.78% real). Q3 margin expansion is partly non-recurring tariff refunds, MD&A warns intensifying component costs, inventories doubled, and an unverified foldable delivery slip could push revenue out of the December quarter into the Nov 2 report. Rich multiple plus decelerating margin quality is the downside channel.
 
-Falsifiable question: do MU's contracted floor margins survive contact with FY2027 pricing, or is FY26 the peak? Facts: revenue $13.6B->$23.9B->$41.5B by quarter, operating margin 74.6% annual/80.4% in Q3, OCF $89.7B, capex $30.7B (+94%). This velocity of margin expansion is characteristic of memory cycle tops, which historically mean-revert violently. The bull's crux is the take-or-pay structure: $134B remaining performance obligations, price bands, cash deposits and letters of credit . But 'floor pricing yields margins above any past peak' is issuer assertion. Key nuances: pricing is 'fixed or periodically negotiated' — and a 'renegotiat' search returned zero matches , which is literal-text absence only, not proof contracts can't be walked away from in customer distress; deposits ($13B) are performance obligations that must eventually be repaid, removing that cushion in 2029-31; ~75% of output committed implies meaningful uncommitted exposure to spot. Second-order: capex +94% at MU plus YMTC's reported ~$20B profit funding expansion (publisher claim, unverified) means supply arrives exactly when AI demand decelerates; DRAM is 73% of revenue and HBM is a subset, so commodity-bit dilution can hit blended ASPs even if HBM stays sold out. Market expectations: -14.6% in five sessions below all short averages on only 1.12x volume with no capitulation is consistent with early distribution, not dip-buying exhaustion; DGS10 at 5.1% pressures long-duration cyclical multiples. Risk factors affirm ASP volatility and margin sensitivity are standing, not residual, risks. Hypothesis vs fact: contract structure is fact; floor durability in a genuine downturn is hypothesis.
+Facts (Q3 FY26 10-Q): revenue $109.4B (+16.4%), nine-month gross margin 49.0% vs 46.8%, operating margin 32.6%, R&D +32% y/y. But part of the margin jump is one-off tariff refunds after the IEEPA ruling, booked as cost reductions; the refund base makes FY27 comps mechanically harder. MD&A explicitly warns cost trends are 'expected to intensify' and price increases may not fully offset. The 10-Q discloses single/limited-source component dependence; inventories nearly doubled ($5.7B to $11.1B) — a pre-buy that unwinds as write-downs or demand risk if launches slip. Memory-price volatility is visible: MU fell 5.6% on Oct 16. Hypothesis: products margin compresses in FY27 as refunds exhaust and DRAM/NAND inflation bites — the market is not pricing this at 39x. Expectations: record close $343.46 near the upper Bollinger band (345.6), +37.7% over 252 sessions, RSI 62 — a high bar. Rates transmission: DGS10 5.10% with 2.78% real yield and funds at 3.75-4.00% with market-implied hikes compress the multiple independent of earnings; QQQ fell 5.5% over five sessions on 1.9x volume — a tech de-rate is underway. First-order effect: a foldable delivery slip into January shifts high-ASP revenue out of the December quarter, disappointing Nov 2 guidance. Second-order: refund-driven margin deceleration plus inventory normalization cut both EPS and the multiple — the classic double-hit for a duration-heavy mega-cap at cycle-high positioning.
 
-Countercase: What refutes me: if Q1 FY27 guidance shows contracted ASPs holding, RPO/deposit balances growing, and floor margins realized as management claims, trough EPS is bounded far above prior cycles and today's ~12x trailing is genuinely cheap. HBM sold out through 2027, if verified, decouples MU from commodity DRAM spot.
+Countercase: Net cash, deleveraging and ~$90B buybacks cushion multiple compression; pricing power and services mix may be durable, not refund-driven. If the 10Y rise is term premium rather than policy surprise, duration drag shrinks, and an AI/foldable upgrade cycle could lift both EPS and multiple.
 
-Next check: MU Q1 FY2027 earnings/10-Q (late December): quarterly ASP direction, blended gross margin versus the 81% FY26 print, RPO and contract-liability trends. Separately read 10-K risk_factors via filing_page full_document near offset ~320689 for contract-enforcement and customer-distress language, and verify CXMT/YMTC node maturity from primary data.
+Next check: Run filing_search on AAPL 10-Q for 'refund' and read the MD&A gross-margin discussion to quantify the one-off tariff-refund contribution; then verify foldable delivery timing against the Nov 2 earnings release and December-quarter guidance before judging the comp math.
 
-Evidence gap: Chinese competitor (CXMT/YMTC) capacity, node maturity and HBM capability rest on single publisher claims; unverified
+Evidence gap: Tariff-refund magnitude in products gross margin not yet quantified from filing text; margin-quality conclusion is partly inference.
 
-Evidence gap: Contract enforceability/renegotiation terms in a downturn not established — zero 'renegotiat' matches is literal-text absence only; total debt tags missing from company facts
+Evidence gap: Foldable sellout/backlog and December-quarter revenue timing are publisher claims, not issuer-verified.
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / risk factors / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / risk factors / 2026-05-01](https://www.sec.gov/Archives/edgar/data/320193/000032019326000013/aapl-20260328.htm)
 
-[SEC company facts detail / MU financial statements and balance-sheet metrics / 2026-10-09](https://data.sec.gov/api/xbrl/companyfacts/CIK0000723125.json)
+[Massive / AAPL completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
 ## Research manager / BALANCED
 
-Adjudication: the bull and bear cases agree on FY2026 facts (revenue $133.2B, 81% gross margin, $134B take-or-pay RPO, $13B customer deposits) but split irreconcilably on floor durability. The sell-off (-14.6% in five sessions) is sentiment/multiple-driven with fundamentals unrefuted, yet floor economics are management claims, not verified trough bounds. Neither side is forced into consensus.
+Adjudication: AAPL's Q3 FY26 fundamentals are verified and strong (revenue +16.4%, 49% nine-month gross margin, deleveraging, buybacks from operating cash flow), but the margin jump is partly non-recurring tariff refunds and management warns of intensifying component costs. Foldable sellout/backlog, CEO transition and Siri settlement remain unverified publisher claims. At ~39x vs a 5.10% 10Y, valuation embeds both debates.
 
-Primary-source facts from the FY2026 10-K (ended 9/3/26): strategic customer agreements are take-or-pay with binding multi-year volumes, pricing in fixed or min/max bands, cash deposits ($13B contract liabilities, repaid 2029-31) and $7B letters of credit. $134B remaining performance obligations; ~25% recognized as revenue within twelve months. Management asserts floor pricing yields gross margins meaningfully above any prior-cycle peak — a falsifiable claim, not yet evidence. Against this, the bear correctly notes: pricing is 'periodically negotiated', deposits are obligations to be repaid rather than permanent cushion, capex +94% plus state-funded Chinese capacity creates supply response timing risk, and DRAM at 73% of revenue leaves commodity-bit exposure even if HBM stays sold out. The drawdown context: close $878.84 (10/16), -5.6% session on 1.12x volume, VIX 16.5, 10Y at 5.1% — consistent with AI-positioning unwind plus China-competition headlines (single-publisher YMTC/CXMT claims, unverified) and discount-rate pressure, not broad risk-off. Trailing ~12x on peak-looking earnings is neither clearly cheap nor expensive. I preserve the disagreement: bull's contract-floor thesis versus bear's cycle-peak mean reversion cannot be resolved without FY2027 pricing data and competitor verification. No decisive new evidence favors either side this round; stance stays balanced rather than tipping bullish on unverified pullback logic or bearish on unverified supply fears.
+Verified facts: 10-Q (period 2026-06-27) confirms revenue $109.4B (+16.4% y/y), products +18%, services +12%, nine-month gross margin 49.0% vs 46.8%, R&D +32%, commercial paper cut $8B to $2B. The same 10-Q confirms a Supreme Court IEEPA ruling with tariff refunds booked as reductions of products cost of sales, and Section 301/232 tariff risk ahead; the FY25 10-K already showed tariff costs pressuring product margins. Hypotheses, not facts: (1) bull claim that pricing power and services mix alone drove margin gains; (2) bear claim that refunds dominate and FY27 comps compress as memory costs bite; the refund magnitude is not yet quantified, so margin quality is unresolved. Inventories doubling ($5.7B to $11.1B) is consistent with single-source component pre-buying but is falsifiable via cash flow and worth checking, not assuming channel stuffing. Market expectations: record ~$343 close, press-cited ~39x P/E, against DGS10 5.10% and a 2.78% 10-year real yield; VIX 16.5 and tight IG spreads show calm, not stress. The foldable story (sellout, January delivery slip) would shift high-ASP revenue between the December and March quarters — a transmission that changes two consecutive reports — but it appears only in secondary feeds, and the July 8-K 'foldable' search returned zero matches (a literal miss, not disproof). First-order effects: refund exhaustion and component inflation on gross margin; foldable timing on quarterly revenue. Second-order: multiple compression at a rich multiple if either lands badly, partially cushioned by net cash and buybacks. I preserve the bull/bear split rather than forcing consensus: the disagreement hinges on refund size and December-quarter guidance.
 
-Countercase: Against the balanced view: if Q1 FY27 shows contracted ASPs holding and floor margins realized, trough EPS is bounded far above prior cycles and today's multiple is a value-trap inversion. Alternatively, if customer distress or renegotiation weakens the floors and Chinese bits arrive into decelerating AI demand, the 81% margin print is the peak and the de-rating has further to run.
+Countercase: Bears could be wrong if refunds are small and margin strength is durable pricing power plus services mix; bulls could be wrong if the foldable backlog slips revenue out of the December quarter while 'intensifying' memory costs compress product margin, delivering an EPS and multiple double-hit at cycle-high positioning.
 
-Next check: MU Q1 FY2027 earnings/10-Q (late December): blended gross margin vs the 81% FY26 print, quarterly ASP direction, RPO and contract-liability trends, plus any floor-margin realization disclosure. Separately verify CXMT/YMTC capacity, node maturity and HBM roadmap from primary industry data rather than publisher claims.
+Next check: Quantify the tariff-refund contribution via filing_page on the 10-Q MD&A gross-margin discussion (full_document with match offsets around the 'refund' hits), and check cash-flow inventory build; then verify foldable demand and December-quarter guidance in the Nov 2 FY26 10-K/earnings release before resolving the margin-quality dispute.
 
-Evidence gap: Chinese competitor (CXMT/YMTC) capacity and HBM capability rest on single publisher claims, unverified against primary data
+Evidence gap: Tariff-refund magnitude in products gross margin is unquantified; margin-quality conclusion remains inference for both bull and bear cases.
 
-Evidence gap: Contract enforceability/renegotiation risk in a customer-distress downturn not established; FY27 guidance and HBM pricing terms not yet disclosed
+Evidence gap: Foldable sellout/delivery slip, CEO transition and Siri settlement are secondary publisher claims, absent from searched primary filing text so far.
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-K / requested filing_page / 2025-10-31](https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 8-K / requested filing_search / 2026-07-30](https://www.sec.gov/Archives/edgar/data/320193/000032019326000018/aapl-20260730.htm)
 
 ## Trader / WATCH
 
-MU FY2026 10-K confirms a real structural change: $133.2B revenue, 74.6% operating margin, $89.7B OCF, and $134B of take-or-pay remaining performance obligations backed by price bands, $12.75B customer deposits and $7B letters of credit. But floor-margin durability is a management assertion, and the -14.6% five-session drawdown reflects unverified China-capacity fears plus a 5.1% 10-year. Peak-cycle earnings at ~12x trailing is not decisive.
+AAPL watch, conditional on the Nov 2 FY26 Q4 report. Verified: strong Q3 FY26 fundamentals (+16.4% revenue, ~49% nine-month gross margin, deleveraging, buybacks from operating cash flow), but margin gains partly reflect one-off tariff refunds and MD&A warns of intensifying component costs. Unverified publisher claims (foldable sellout/January delivery slip, CEO transition, Siri settlement) are leads, not facts.
 
-Facts: the 10-K (ended 9/3/26) shows strategic customer agreements as take-or-pay with binding multi-year volumes, minimum/maximum price bands, cash deposits and letters of credit; RPO of ~$134B with ~25% recognized within twelve months, deposits repaid 2029-31, LCs of $7B. Cash $38.4B against ~$31B capex; OCF-minus-capex ~$59B means self-funding. The drawdown (close $878.84, -5.6% on 1.12x volume, RSI 34) occurred with VIX at 16.5 and tight credit spreads, so it is sector/idiosyncratic, not broad risk-off; the 10-year at 5.1% with 2.78% real yield pressures long-duration multiples, a market-wide mechanism rather than an MU-specific one. Hypothesis vs fact: contract structure is fact; 'floor pricing yields margins above any prior-cycle peak' is issuer assertion, untested against FY2027 pricing. Competing narratives: (1) positioning unwind plus China headlines on single-publisher YMTC/CXMT claims that commodity DRAM/NAND expansion dilutes blended ASPs even if HBM stays contracted; (2) genuine cycle-peak mean reversion given quarterly revenue tripling ($13.6B to $41.5B) and capex +94%. Neither is verified. Bands cap both downside and upside within contracts, and uncommitted output retains spot exposure; deposit repayment by 2029-31 removes that cushion later. Risk factors affirm ASP volatility as a standing risk. No evidence here forces either bull or bear resolution; a patient watch with defined falsification criteria is the correct expression.
+Research question: is Q3 FY26 margin expansion durable pricing power, or one-off tariff refunds that reverse in FY27? Primary filing confirms the mechanism: the 10-Q states the Supreme Court struck down IEEPA tariffs and refunds are recognized as reductions of products cost of sales, while Section 301/232 tariff risk persists; the FY25 10-K already showed tariff costs pressuring product margins. The refund magnitude is not yet quantified, so margin quality is unresolved — this is the core open dispute, not a reason to act. Hypothesis vs fact: foldable sellout and January delivery slip would shift high-ASP revenue between December and March quarters, reshaping two consecutive reports, but it appears only in secondary feeds (a 'foldable' filing search returned zero literal matches, which does not disprove anything). Market expectations: record ~$343 close with stacked bullish trend, RSI ~62 near the upper band — strong momentum with a high expectations bar. Valuation: ~39x vs DGS10 5.10% and ~2.78% real yield is a demanding discount-rate backdrop; VIX ~16.5 and tight IG spreads show calm, not stress, so risk is complacency at cycle-high positioning. First-order effects: refund exhaustion and memory-cost inflation on gross margin; foldable timing on quarterly revenue. Second-order: an EPS-and-multiple double-hit if both land badly, cushioned by net cash and ~$90B annual buybacks. Balanced stance: fundamentals are genuinely strong, but the rich multiple embeds both the margin-quality and foldable-timing debates. Resolution requires the Nov 2 release, not further extrapolation from headlines.
 
-Countercase: Against watching: if Q1 FY27 shows contracted ASPs holding and floor margins realized, trough EPS is bounded far above prior cycles and today's multiple is cheap. Alternatively, if Chinese state-funded bits arrive into decelerating demand and floors are renegotiated in customer distress, 81% gross margin is the peak and de-rating extends well past the 200-day.
+Countercase: Bears may be wrong: even stripping refunds, services mix and pricing power are durable, inventories doubling is consistent with disclosed single-source component pre-buying, and the 10Y rise is largely real yield/term premium rather than a policy shock — reducing duration drag on a net-cash cash generator.
 
-Next check: MU Q1 FY2027 10-Q/earnings (late December): blended gross margin vs 81% FY26, quarterly ASP direction, RPO and contract-liability trends, floor-margin realization. Before then, verify CXMT/YMTC DRAM capacity and HBM roadmap from primary data, and read 10-K contract-enforcement language near offset ~320689.
+Next check: On Nov 2, read the FY26 Q4 earnings release/10-K for quantified tariff-refund contribution, December-quarter guidance and foldable revenue timing; verify or retire the delivery-slip claim. Before then, quantify refunds via filing_page full_document offset ~35900 of the 10-Q.
 
-Evidence gap: CXMT/YMTC capacity, node maturity and HBM capability rest on single publisher claims, unverified against primary sources
+Evidence gap: Tariff-refund magnitude in products gross margin unquantified; margin-quality conclusion is inference.
 
-Evidence gap: Contract-floor durability in a downturn is management assertion; FY2027 pricing, guidance and HBM terms not yet disclosed
+Evidence gap: Foldable sellout/delivery slip, CEO transition and Siri settlement remain unverified publisher claims.
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-K / requested filing_page / 2025-10-31](https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[Yahoo Finance / AAPL Yahoo company-news feed / 2026-10-18T09:00:00+00:00](https://feeds.finance.yahoo.com/rss/2.0/headline?s=AAPL&region=US&lang=en-US)
 
 ## Opportunity risk analyst / WATCH
 
-Strongest exposure case: the 10-K confirms $134B take-or-pay remaining performance obligations with price bands, $13B customer deposits and $7B letters of credit, with ~25% recognized within twelve months — contracted downside if floors hold. Opportunity cost of waiting is low: the floor-margin thesis is untested until Q1 FY27 (late December), and catalysts arrive within weeks.
+Strongest exposure case rests on verified Q3 FY26 fundamentals (+16.4% revenue, 32.6% operating margin despite R&D +32%) and intact trend, not the unverified foldable hype. Opportunity cost of waiting is modest: the Nov 2 catalyst is hard-dated ~15 days out and cheaply resolves the two open disputes (refund magnitude, December guidance). Condition exposure on the print; do not pre-position on publisher demand claims.
 
-Fact versus hypothesis: the FY2026 10-K verifies take-or-pay strategic agreements with binding volumes, min/max pricing bands, cash deposits ($13B contract liabilities, repaid 2029-31) and $7B of letters of credit; $134B RPO with ~25% recognized over the next year. Management's claim that even floor pricing yields margins above any prior-cycle peak is an issuer assertion, falsifiable only against FY2027 pricing. Opportunity math: if floors hold, trough EPS is bounded far above 2018/2022-style troughs and ~12x trailing on peak-looking earnings is cheap; waiting until late December costs at most two months of a multi-year contracted stream — a modest opportunity cost, not a thesis-changing one. Against immediate exposure: 48% annualized vol, a -14.6% five-session slide below all short averages, and 1.12x volume with no capitulation mean the tape is still distributing; entering now buys sentiment risk that has not resolved. The information value of waiting is high because the decisive checks are weeks away, not quarters. Second-order considerations the bull case underweights: bands cap contracted upside as well as downside, uncommitted output retains spot exposure, and DRAM dominates revenue so commodity-bit dilution from Chinese capacity can compress blended ASPs even if HBM stays sold out. Macro context (10-year at 5.1%, VIX 16.5, tight credit spreads) frames the drawdown as sector de-rating rather than broad risk-off — permissive for eventual entry but no confirmation of a bottom. Expression challenge: full-size entry into this downtrend is the weakest expression of the bull thesis; a stabilization-gated staged entry (hold above the ~875-907 zone on non-elevated volume) captures most upside while respecting distribution risk. Missing the exact bottom is a smaller error than averaging into an unverified cycle-top narrative.
+Fact versus claim: the 10-Q verifies revenue $109.4B (+16.4% y/y), products +18%, services +12%, and operating margin 32.6% while absorbing a 32% R&D increase — evidence of genuine operating leverage, and commercial paper was cut $8B to $2B, so capital return is not financed. What is NOT verified: the foldable sellout/January delivery slip, CEO transition and Siri settlement; these appear only in secondary feeds and the 'foldable' filing search returned zero literal matches (a miss, not disproof). Exposure case built on launch euphoria is therefore resting on unassessed leads. The core bull case does not need the foldable story; the bear case does need the tariff refund to be large — that asymmetry favors some exposure, but timing matters. Opportunity cost of waiting: with a dated catalyst, the information purchase costs roughly two weeks; if guidance confirms durable margin and high-ASP mix, entry post-print will likely be dearer, and the 120-session +28.3%/252-session +37.7% advance shows momentum regimes can run into earnings. Against that: the record $343.46 close sits near the upper band on 1.56x average volume — one session of relative volume is not independent confirmation of accumulation — and ~39x against a 5.10% 10Y (2.78% real) means the current price already discounts delivery; the marginal buyer needs the bar cleared, not just held. The January-slip claim is sign-ambiguous (demand strength vs revenue timing) and must not be used either way until issuer-confirmed. First-order risks: refund exhaustion and 'intensifying' memory costs compressing products margin; second-order: multiple compression independent of earnings, only partly cushioned by net cash. My challenge to the proposed 'watch': waiting is correct, but only because the catalyst is near and dated — the same wait in February would carry far higher opportunity cost. If pre-print exposure is taken at all, it should be sized for a guidance disappointment, not scaled to the hype cycle.
 
-Countercase: Against waiting: if Q1 FY27 confirms contracted ASPs holding and floor margins realized, the re-rating off a still-cheap multiple could be violent, making two months of delay the dominant cost. Also, clean stabilization triggers may never print in a 48%-vol name, leaving a disciplined buyer permanently on the sidelines.
+Countercase: Waiting could cost real money if margin quality is durable: if refunds are small and pricing power/services mix drove the beat, the stock re-rates before Nov 2 and the watch stance pays 10-15% more for identical information. Momentum plus buyback support frequently carries verified-growth names through print dates.
 
-Next check: Watch the next completed sessions: stabilization above ~875-907 on sub-1.2x volume is the staged-entry trigger; a close below 875 on >1.3x volume extends distribution. Then MU Q1 FY27 earnings/10-Q in late December for blended gross margin versus 81% FY26, ASP direction and RPO/deposit trends; seek primary CXMT/YMTC capacity data before then.
+Next check: Before Nov 2: filing_page full_document offset ~35900 on the June-27 10-Q to size the tariff-refund contribution to products margin. On Nov 2: read December-quarter guidance and any foldable/revenue-timing disclosure; verify or retire the delivery-slip claim against issuer text.
 
-Evidence gap: CXMT/YMTC capacity, node maturity and HBM capability rest on single publisher claims, unverified against primary data
+Evidence gap: Tariff-refund magnitude in products gross margin is unquantified; the margin-durability dispute is unresolved inference.
 
-Evidence gap: Floor-margin realization, FY2027 guidance and downturn contract-renegotiation risk not yet established from disclosures
+Evidence gap: Foldable sellout/delivery slip, CEO transition and Siri settlement are secondary publisher claims with no issuer confirmation.
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[Massive / AAPL completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[FRED / DGS10 / 2026-10-15](https://fred.stlouisfed.org/series/DGS10)
 
 ## Defensive risk analyst / WATCH
 
-Defensive view: FY2026 take-or-pay floors are issuer assertions, not verified trough bounds. Counterparties are concentrated AI customers whose capex cycles correlate with MU's own revenue; a downturn would stress enforcement exactly when Chinese supply lands. The -14.6% five-session slide on only 1.12x volume shows distribution, not capitulation. No permanent-loss edge is established here; watch.
+Defensive challenge: AAPL's exposure case rests partly on unverified publisher claims (foldable sellout, CEO transition) and a margin beat inflated by one-off tariff refunds. The only verified tradable vehicle is an AAPL CFD with negative long carry and no execution eligibility. At ~39x versus a 5.10% 10Y and QQQ de-rating on 1.9x volume, the pre-earnings risk asymmetry is unfavorable; do not pre-position.
 
-Permanent-loss path: the bull case rests on 'floor pricing yields margins above any prior peak' — a management claim in the 10-K, untested against FY2027 pricing. The bear researcher's zero-match 'renegotiat' search proves only literal-text absence, not enforceability; risk factors affirm ASP volatility and margin sensitivity as standing risks . Correlation: $134B RPO concentrates counterparties in the same hyperscaler/AI complex whose demand and capex decisions are positively correlated with each other and with MU's spot exposure — the deposit and LC cushion ($13B/$7B) covers liquidity, not solvency of counterparties in a genuine downturn, and deposits are repaid 2029-31, shrinking the cushion later. ~25% of output uncommitted retains spot ASP risk. Macro: the 10-year at 5.1% with a 2.78% real yield is a duration/term-premium headwind for peak-multiple cyclicals; it is not, by itself, evidence of tightening expectations. Market context: MU fell 5.6% to 878.84 on 1.12x average volume while QQQ fell 2.5% with VIX at 16.5 — an idiosyncratic/sector de-rating, not broad risk-off; 48% annualized vol means a 'support test' is noise, and no capitulation print exists. Liquidity is ample (30.5M shares), but slippage risk in a 48%-vol name is real. Verification gaps: CXMT/YMTC capacity claims are single-publisher; segment mix and total debt are unverified from as-filed statements; the China CAC ban remains a live tail risk. The 2023 CAC action and 'periodically negotiated' pricing language both cut against treating floors as contractual bedrock. No control exists yet linking floor realization to reported margins.
+Source quality is the first defect: the foldable sellout/January slip, Ternus transition and Siri settlement appear only in secondary publisher feeds; the June-27 10-Q risk factors confirm single/limited-source component dependence — a primary fact that makes launch-dependent demand narratives structurally fragile. Permanent-loss channel: margin quality. Q3's 32.6% operating margin includes tariff refunds booked as cost reductions; MD&A explicitly warns costs will 'intensify' and price rises may not offset. If refunds dominate, FY27 comps force both EPS and multiple down — the double-hit. Inventories doubled ($5.7B to $11.1B); pre-buy inventory at cycle-high positioning unwinds as write-downs if demand slips. Valuation/discount-rate channel: DGS10 5.10% with 2.78% real yield is a severe hurdle for ~39x; a yield rise compresses the multiple independent of earnings. Correlation risk: QQQ fell 5.5% over five sessions on 1.9x volume while AAPL printed a record close — relative strength is one session, not an independent vote; AAPL remains the same duration trade and a tech de-rate would drag it. Liquidity/vehicle risk: the verified broker contract is AAPL.NAS, a share CFD — swap_long -5.98 per lot, stale quotes, execution not enabled; any hypothetical position carries financing drag, gap risk through the Nov 2 print, and broker counterparty exposure, not share ownership. Missing controls: coverage shows financials and filing diligence partial, identity evidence undelivered; the refund magnitude is unquantified, so margin-quality conclusions from both bull and bear camps remain inference. No position should precede quantification of the refund and December-quarter guidance.
 
-Countercase: What refutes the bear: if Q1 FY27 shows contracted ASPs holding, RPO/deposit balances growing and floor margins realized, trough EPS is bounded far above prior cycles and ~12x trailing is cheap; HBM sold out through 2027, if verified, decouples MU from commodity-bit dilution and makes the sell-off an overreaction.
+Countercase: If refunds prove small and services mix plus pricing power drove margins, the stock re-rates before Nov 2 and waiting costs 10-15%. Net cash and buybacks cushion compression, and the 10Y rise is largely real yield/term premium rather than a policy shock, shrinking duration drag.
 
-Next check: filing_search on MU 10-K for 'take-or-pay' and 'concentration' with match offsets, then filing_page full_document near the contract-terms offset for enforcement/renegotiation language; verify CXMT/YMTC capacity from primary industry data before the Q1 FY27 10-Q in late December.
+Next check: filing_page on the June-27 10-Q MD&A (full_document, offset near 'refund' hits) to size the tariff-refund contribution to products margin; then read the Nov 2 FY26 Q4 release for December-quarter guidance and foldable revenue timing before any exposure decision.
 
-Evidence gap: Counterparty concentration and contract enforceability in a customer-distress downturn not established from filings; floor margins are issuer assertions
+Evidence gap: Tariff-refund magnitude in products gross margin unquantified from filing text; margin-quality dispute unresolved.
 
-Evidence gap: CXMT/YMTC capacity, node maturity and HBM capability rest on single publisher claims; segment mix and total debt unverified from as-filed statements
+Evidence gap: Foldable sellout/delivery slip and CEO transition remain unverified secondary publisher claims with no issuer confirmation.
 
-[SEC EDGAR / MU 10-Q / risk factors / 2026-06-25](https://www.sec.gov/Archives/edgar/data/723125/000072312526000015/mu-20260528.htm)
+[SEC EDGAR / AAPL 10-Q / risk factors / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[Massive / MU completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
+[FRED / DGS10 / 2026-10-15](https://fred.stlouisfed.org/series/DGS10)
 
 [Massive / QQQ completed-session equity OHLCV history / 2026-10-16](https://massive.com/docs/rest/stocks/aggregates/custom-bars)
 
 ## Balanced risk analyst / BALANCED
 
-Both risk sides agree on FY2026 facts ($134B take-or-pay RPO, $13B deposits, $7B LCs, ~half of revenue from top-10 customers) and disagree only on floor durability. Neither the bull's contracted-downside thesis nor the bear's cycle-peak thesis is yet falsified; stance stays balanced pending FY2027 pricing data.
+Both bull and bear cases share the same verified anchor: Q3 FY26 revenue +16.4% and ~49% nine-month gross margin, but they split on margin QUALITY. The 10-Q confirms IEEPA tariff refunds were booked as reductions of products cost of sales — a non-recurring tailwind — while Section 301/232 tariff risk and 'intensifying' component costs persist. Refund magnitude is unquantified, so the margin-durability dispute is unresolved inference.
 
-Verified transmission: the 10-K confirms strategic agreements are take-or-pay with binding multi-year volumes, min/max price bands, cash deposits ($13B contract liabilities, repaid 2029-31) and $7B letters of credit; ~25% of the $134B RPO converts to revenue within twelve months. Management's claim that floor pricing yields margins above any prior-cycle peak is an issuer assertion, falsifiable only against FY2027 realized pricing. The bear's strongest point is counterparty concentration: top-10 customers are roughly half of revenue, so the customers backing the floors belong to the same AI capex cycle as MU's spot business — correlated distress would hit enforcement, litigation risk (explicitly flagged), and spot ASPs simultaneously. LCs are accessible only upon default events, and deposits repay in 2029-31, so the cushion shrinks exactly in the later contract years. Bull's strongest point: floors, if honored, bound trough earnings far above 2018/2022-style troughs, making ~12x trailing on peak-looking earnings a value trap inversion. Market context: -14.6% five-session slide to 878.84 on only 1.12x volume with VIX ~16.5 and QQQ down 5.5% is an idiosyncratic/sector de-rating, amplified by a 5.1% 10-year compressing long-duration multiples and unverified CXMT/YMTC supply claims — not broad risk-off, and not capitulation. The zero-match 'renegotiat' search is literal-text absence, not proof of enforceability either way. First-order risk is floor realization; second-order is commodity-bit dilution of blended ASPs (DRAM dominates revenue) even if HBM stays contracted, and deposit repayment removing support late-decade. The decisive assumptions separating the sides are (a) whether bands are honored under customer distress and (b) whether Chinese capacity dilutes commodity bits into FY27 deceleration. Both are testable within weeks, so the opportunity cost of waiting is low.
+The bull and bear cases disagree on three identifiable assumptions, not on facts. (1) Refund share of margin: the 10-Q mechanism is verified — the Supreme Court struck down IEEPA tariffs in February 2026 and refunds were recognized as reductions of products cost of sales; the FY25 10-K's zero matches for 'refund' confirm this is a FY26 phenomenon. If refunds are large, FY27 comps compress mechanically; if small, pricing power and services mix are durable. No filing text in the packet sizes the refund. (2) Inventory build: both sides accept inventories doubled ($5.7B to $11.1B), but interpret it oppositely — pre-buying against disclosed single/limited-source component dependence (bull) versus unwinding write-down risk (bear). Cash-flow disclosure settles this. (3) Foldable timing: the January delivery slip would shift high-ASP revenue from the December to March quarter, reshaping two consecutive reports, but it is an unverified publisher claim; zero 'foldable' matches in filings is a literal miss, not disproof. Neither side may use it until issuer-confirmed. Valuation context cuts through both: DGS10 5.10% with a ~2.78% 10-year real yield is a demanding hurdle for a ~39x mega-cap, but the bull is correct that most of the rise is real yield/term premium rather than an immediate policy shock, and net cash plus buybacks from operating cash flow cushion compression. VIX at 16.5 and tight IG spreads show calm, not stress — the risk is complacency at cycle-high positioning, and one strong AAPL session against a weak QQQ is relative strength but not an independent vote. First-order effects: refund exhaustion and memory-cost inflation on products margin; foldable timing on quarterly revenue. Second-order: an EPS-and-multiple double-hit if both land badly. My risk judgment: the asymmetry is genuinely two-sided and the dispute is cheaply settled by a dated catalyst ~15 days out; pre-positioning transfers either upside opportunity cost or downside gap risk through the print.
 
-Countercase: If Q1 FY27 shows contracted ASPs holding, RPO/deposit balances growing and floor margins realized, trough EPS is bounded far above prior cycles and the pullback is an overreaction; conversely, renegotiation under distress plus Chinese supply would make the 81% margin the peak.
+Countercase: If I am wrong to stay balanced: small refunds plus durable pricing power re-rate the stock before Nov 2 and waiting costs 10-15%. Conversely, if refunds dominate and the foldable slips, the double-hit lands at the upper Bollinger band with a 5.1% 10Y — larger than either single risk.
 
-Next check: MU Q1 FY2027 10-Q/earnings (late December): blended gross margin vs 81% FY26, quarterly ASP direction, RPO/contract-liability trends, floor-margin realization. Before then, verify CXMT/YMTC capacity and HBM roadmap from primary data, not publisher claims.
+Next check: filing_page full_document on the June-27 10-Q at offset ~35700 (the 'refund' match region) to quantify the tariff-refund contribution to products gross margin; then read cash-flow inventory detail. On Nov 2, verify December-quarter guidance and foldable revenue timing against issuer text.
 
-Evidence gap: CXMT/YMTC capacity, node maturity and HBM capability rest on single publisher claims, unverified against primary data
+Evidence gap: Tariff-refund magnitude in products gross margin unquantified; margin-quality conclusions remain inference for both camps.
 
-Evidence gap: Contract enforceability in customer-distress downturns and FY27 guidance/HBM pricing terms not yet disclosed
+Evidence gap: Foldable sellout/January delivery slip, CEO transition and Siri settlement are secondary publisher claims with no issuer confirmation.
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-K / requested filing_page / 2025-10-31](https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm)
 
 ## Portfolio manager / WATCH
 
-FY2026 10-K verifies a structural change: take-or-pay agreements, $134B RPO with price bands, $13B deposits, $7B LCs, 81% gross margin on +256% revenue. But floor-margin durability is issuer assertion, and CXMT/YMTC supply fears rest on single-publisher claims. The -14.6% five-session slide is sentiment/rates-driven, fundamentals unrefuted. Watch until Q1 FY27 pricing tests the floor thesis.
+Research disposition only, not clearance. Verified Q3 FY26 fundamentals are strong (+16.4% revenue, 32.6% operating margin despite R&D +32%, deleveraging), but the margin beat partly reflects one-off IEEPA tariff refunds booked as products-cost reductions and MD&A warns costs will intensify. Foldable demand/delivery-slip, CEO transition and Siri settlement are unverified publisher claims.
 
-Facts: the 10-K confirms binding multi-year take-or-pay volumes, min/max pricing bands, customer cash deposits and letters of credit, $134B remaining performance obligations (~25% recognized within twelve months), DRAM ASPs +180%, and self-funding cash generation. Hypothesis: management's claim that floor pricing yields margins above any prior-cycle peak is falsifiable only against FY2027 realized pricing; Chinese state-funded capacity eroding blended ASPs is a single-publisher claim, unverified. Market expectation: at ~12x trailing, the tape prices classic peak-cycle mean reversion; DGS10 at 5.1% compresses long-duration cyclical multiples, a market-wide mechanism, while VIX ~16.5 and 1.12x volume argue idiosyncratic de-rating, not capitulation or broad risk-off. My dissent from the bull: bands also cap contracted upside, deposits repaid 2029-31 shrink the cushion in later years, and counterparties concentrated in the same hyperscaler AI-capex cycle create correlated enforcement risk in a genuine downturn. My dissent from the bear: quarterly revenue tripling ($13.6B to $41.5B) with capex +94% is a supply response already underway, and the contract architecture — deposits, LCs, binding volumes — is verified mechanism, not narrative; prior cycles lacked it. Neither side is falsified this round. Valuation is roughly fair on peak-looking earnings; edge comes only if floors hold. Conditions to flip: Q1 FY27 blended gross margin near 81% with contracted ASPs holding and RPO/deposits growing shifts me to research_long; any disclosure of band renegotiation, customer distress, or verified CXMT leading-edge DRAM/HBM capability shifts me bearish.
+Fact base from primary filings: the June-27 10-Q confirms revenue $109.4B (+16.4% y/y), nine-month gross margin 49.0% vs 46.8%, commercial paper cut $8B to $2B, and — critically — that the Supreme Court struck down IEEPA tariffs with refunds recognized as reductions of products cost of sales, while Section 301/232 tariff exposure persists. The refund magnitude is unquantified, so the bull/bear split on margin durability is unresolved inference on both sides: bulls assume pricing power and services mix, bears assume refund dominance plus memory-cost inflation. Inventories doubling ($5.7B to $11.1B) is consistent with disclosed single/limited-source component dependence but is falsifiable via cash flow, not settled. The foldable sellout/January delivery slip is sign-ambiguous (demand strength vs revenue timing between December and March quarters) and appears only in secondary feeds; zero literal 'foldable' matches in filings is a miss, not disproof, and cannot be used either way. Market expectations: record ~$343 close, stacked trend, RSI ~62 near the upper band, and one session of AAPL relative strength against a QQQ 5-session -5.5% de-rate on ~1.9x volume — relative strength is context, not an independent vote. Discount-rate backdrop is demanding: DGS10 5.10% with ~2.78% real yield and a 3.75-4.00% funds target; VIX 16.5 and tight IG spreads show calm, so the risk is complacency at cycle-high positioning, with multiple compression as the main downside channel, partly cushioned by net cash and operating-cash-flow-funded buybacks. My PM dissent from the bull camp: do not treat momentum plus hype as evidence of durable margin; dissent from the bear camp: do not assume refunds dominate without quantification. The FY25 10-K search showing no refund disclosure confirms this is a FY26 phenomenon, but neither size nor FY27 comp math is established.
 
-Countercase: If FY27 spot ASPs collapse as Chinese bits arrive into decelerating AI demand, 'periodically negotiated' bands may not survive customer distress and 81% gross margin is the peak; de-rating extends far past the 200-day. Conversely, if floors are realized, trough EPS is bounded far above prior cycles and today's multiple is cheap — making patience the dominant error.
+Countercase: If refunds prove small and services mix plus pricing power drove the beat, the stock re-rates before Nov 2 and waiting costs real money. Conversely, if refunds dominate and the foldable slips, an EPS-plus-multiple double-hit lands at the upper band with a 5.1% 10Y.
 
-Next check: MU Q1 FY2027 10-Q/earnings (late December): blended gross margin versus 81%, quarterly ASP direction, RPO and contract-liability trends, floor-margin realization. Before then, read 10-K contract-security/enforcement language around offset ~320000 and tape behavior near the 875-907 zone.
+Next check: Quantify the tariff-refund contribution via filing_page full_document on the June-27 10-Q near the ~35900 refund-match offsets, plus cash-flow inventory detail; then read the Nov 2 FY26 Q4 release for December-quarter guidance and any foldable revenue-timing disclosure.
 
-Evidence gap: CXMT/YMTC capacity, node maturity and HBM capability rest on single publisher claims; unverified against primary data
+Evidence gap: Tariff-refund magnitude in products gross margin unquantified; margin-durability conclusion is inference for both camps.
 
-Evidence gap: Contract-floor durability under customer distress is management assertion; FY2027 guidance and HBM pricing terms not yet disclosed
+Evidence gap: Foldable sellout/delivery slip, CEO transition and Siri settlement remain secondary publisher claims with no issuer confirmation.
 
-[SEC EDGAR / MU 10-K / requested filing_page / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / requested filing_search / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-K / requested filing_page / 2025-10-31](https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm)
 
-[SEC EDGAR / MU 10-K / requested filing_search / 2026-10-09](https://www.sec.gov/Archives/edgar/data/723125/000072312526000023/mu-20260903.htm)
+[SEC EDGAR / AAPL 10-Q / risk factors / 2026-07-31](https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm)
 
 # Before an investment
 
