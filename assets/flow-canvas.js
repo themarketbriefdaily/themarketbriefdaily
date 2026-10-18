@@ -1,15 +1,15 @@
-/* FlowFX v2 — dense deep-field neural-net view of the investigation flow.
+/* FlowFX v3 — dense deep-field neural-net view of the investigation flow.
    Core layers: 4 sources × 10 = 40 → Evidence 10 → Analysts 4 → Bull 10 →
-   Bear 10 → Trader 10 → Risk 4 → Manager 1 (89 main nodes), plus ~260 minor
-   satellite / bridge / deep-field nodes on ~650 shimmering curved links.
-   Between every pair of connected nodes a light dwells and pulses for about
-   a minute before moving into the next node — resident link pulses traverse
-   each link in ~50-70s, and multi-hop information packets take ~a minute per
-   hop, pulsing the whole way. On top of that, fast directional light beams
-   (~1s per link) stream continuously from left to right along the spine and
-   bridge filaments — a rolling crowd of staggered streaks always crossing
-   the web toward the manager. Stage changes emit an expanding shockwave that
-   lights up links and nodes as it passes.
+   Bear 10 → Trader 10 → Risk 4 → Manager 1 (89 main neurons), plus ~260 minor
+   satellite / bridge / deep-field cells on ~650 shimmering curved links.
+   Neurons are shaded 3D somas (specular sphere sprites, dark limb rim,
+   depth-scaled, drawn far → near so they occlude the mesh) that float gently
+   in the tissue and FIRE RANDOMLY like real cells: each has an independent
+   pacemaker spike plus probabilistic synaptic transmission down its axons —
+   cascades emerge, leak away, and a signal reaching the manager detonates a
+   supernova. No choreographed sequences anywhere. Fast directional light
+   beams still stream left→right, a slow light dwells on every link, and
+   stage changes emit an expanding shockwave.
    Mounts into [data-flow-net] produced by components.js; purely decorative. */
 (() => {
 'use strict';
@@ -75,6 +75,32 @@ function makeBlob(r, g, b) {
 const SPRITES = LAYER_TINTS.map(t => (t ? makeGlow(t[0], t[1], t[2]) : null));
 const SRC_SPRITES = SRC_TINTS.map(t => makeGlow(t[0], t[1], t[2]));
 const FOG = [makeBlob(64, 150, 255), makeBlob(150, 110, 255), makeBlob(255, 170, 110)];
+
+/* shaded 3D soma sprite: specular highlight up-left, tinted body, dark limb
+   rim + ambient-occlusion shadow — drawn with source-over so the dark rim
+   actually reads (under 'lighter' it would vanish) */
+function makeSoma(r, g, b) {
+  const s = 128, c = document.createElement('canvas');
+  c.width = c.height = s;
+  const x = c.getContext('2d'), cx = s / 2, cy = s / 2, R0 = s / 2 - 2;
+  const li = v => Math.min(255, Math.round(v)), dk = v => Math.round(v * 0.42);
+  let gr = x.createRadialGradient(cx - R0 * 0.34, cy - R0 * 0.38, R0 * 0.05, cx, cy, R0);
+  gr.addColorStop(0, 'rgba(255,255,255,0.98)');
+  gr.addColorStop(0.2, `rgba(${li(r + 78)},${li(g + 78)},${li(b + 78)},0.96)`);
+  gr.addColorStop(0.52, `rgba(${r},${g},${b},0.95)`);
+  gr.addColorStop(0.82, `rgba(${dk(r)},${dk(g)},${dk(b)},0.94)`);
+  gr.addColorStop(1, `rgba(${dk(r * 0.55)},${dk(g * 0.55)},${dk(b * 0.55)},0.9)`);
+  x.fillStyle = gr;
+  x.beginPath(); x.arc(cx, cy, R0, 0, 6.2832); x.fill();
+  gr = x.createRadialGradient(cx + R0 * 0.5, cy + R0 * 0.55, R0 * 0.1, cx + R0 * 0.5, cy + R0 * 0.55, R0 * 0.98);
+  gr.addColorStop(0, 'rgba(2,4,24,0.4)');
+  gr.addColorStop(1, 'rgba(2,4,24,0)');
+  x.fillStyle = gr;
+  x.beginPath(); x.arc(cx, cy, R0, 0, 6.2832); x.fill();
+  return c;
+}
+const SOMAS = LAYER_TINTS.map(t => (t ? makeSoma(t[0], t[1], t[2]) : null));
+const SRC_SOMAS = SRC_TINTS.map(t => makeSoma(t[0], t[1], t[2]));
 const rgba = (tint, a) => `rgba(${tint[0]},${tint[1]},${tint[2]},${a})`;
 
 /* ---------- engines ---------- */
@@ -104,14 +130,14 @@ function createEngine(container) {
         const col = k % 2, row = Math.floor(k / 2);
         const fx = LAYER_FX[0] + (col === 0 ? -0.013 : 0.013);
         const fy = 0.08 + g * 0.198 + row * 0.032 + srnd(-0.005, 0.005);
-        addNode({ layer: 0, group: g, fx, fy, r: NODE_R[0], tint: SRC_TINTS[g], sp: SRC_SPRITES[g], ph: R() * 6.28, main: true, pulse: 0 });
+        addNode({ layer: 0, group: g, fx, fy, r: NODE_R[0], tint: SRC_TINTS[g], sp: SRC_SPRITES[g], somaSp: SRC_SOMAS[g], ph: R() * 6.28, main: true, pulse: 0 });
         continue;
       }
       const spread = L.n === 1 ? [0.44] : Array.from({ length: L.n }, (_, i2) => 0.07 + (i2 / (L.n - 1)) * 0.73);
       addNode({
         layer: li, group: -1, fx: LAYER_FX[li],
         fy: spread[i] + (L.n === 1 ? 0 : srnd(-0.012, 0.012)),
-        r: NODE_R[li], tint: LAYER_TINTS[li], sp: SPRITES[li], ph: R() * 6.28, main: true, pulse: 0
+        r: NODE_R[li], tint: LAYER_TINTS[li], sp: SPRITES[li], somaSp: SOMAS[li], ph: R() * 6.28, main: true, pulse: 0
       });
     }
   });
@@ -255,12 +281,23 @@ function createEngine(container) {
     fx: R(), fy: R() * 0.8 + 0.1, sp: FOG[i % 3], s: srnd(150, 320), ph: R() * 6.28, dx: srnd(9, 22), a: srnd(0.045, 0.085)
   }));
 
+  /* ----- neuron physiology: depth, drift, membrane state -----
+     Assigned AFTER every geometry RNG draw, so the network shape stays
+     byte-identical to the previous build. */
+  for (const n of nodes) {
+    n.z = R() * 2 - 1;          /* depth −1 (far) … 1 (near) */
+    n.df = 0.7 + R() * 0.6;     /* individual drift frequency */
+    n.bx = 0; n.by = 0;         /* layout baseline (drift rides on top) */
+    n.v = 0; n.refr = -1; n.nextSpike = 0;
+  }
+  const somaOrder = nodes.slice(0, mainEnd).sort((a, b) => a.z - b.z);
+
   const S = { w: 0, h: 0, visible: true, stage: 0, paused: false, static: false, density: 1, t: 4.2, bt: 4.2, dirty: true };
-  const packets = [];
+  const syn = [];   /* queued synaptic transmissions {at, ni, w} */
   const waves = [];
   const flashes = [];
   const rings = [];
-  let spawnCd = 0, lastNow = 0, lastDT = 1 / 60, raf = 0;
+  let lastNow = 0, lastDT = 1 / 60, raf = 0;
   const t0 = performance.now();
 
   function layout() {
@@ -276,7 +313,7 @@ function createEngine(container) {
     canvas.width = Math.max(1, Math.round(S.w * q));
     canvas.height = Math.max(1, Math.round(S.h * q));
     ctx.setTransform(q, 0, 0, q, 0, 0);
-    for (const n of nodes) { n.x = n.fx * S.w; n.y = n.fy * S.h; }
+    for (const n of nodes) { n.bx = n.fx * S.w; n.by = n.fy * S.h; n.x = n.bx; n.y = n.by; }
     for (const lk of links) {
       const A = nodes[lk.a], B = nodes[lk.b];
       const dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1;
@@ -290,38 +327,34 @@ function createEngine(container) {
 
   const activeLayer = () => S.stage + 1;
 
-  function buildPath(startLayer) {
-    let idx = layerStart[startLayer] + ((R() * LAYERS[startLayer].n) | 0);
-    const path = [idx];
-    for (let L = startLayer; L < LAYERS.length - 1; L++) {
-      const outs = next[idx];
-      if (!outs.length) break;
-      idx = outs[(R() * outs.length) | 0].b;
-      path.push(idx);
+  /* ----- neuron firing -----
+     Real cells don't light up in sequences: every neuron owns an independent
+     pacemaker (Poisson-ish nextSpike) and, when it fires, transmits
+     PROBABILISTICALLY down its axons — cascades emerge, branch, and die out
+     organically. v = membrane potential, refr = refractory window. */
+  function fire(ni) {
+    const n = nodes[ni];
+    n.v = 1;
+    n.refr = S.t + 0.9 + Math.random() * 1.4;
+    n.nextSpike = S.t + 2.2 - Math.log(1 - Math.random()) * 6.5;
+    if (syn.length < 500) {
+      const outs = next[ni];
+      for (const o of outs) {
+        if (Math.random() < 0.42) syn.push({ at: S.t + 0.12 + Math.random() * 0.38, ni: o.b, w: 0.26 + Math.random() * 0.24 });
+      }
     }
-    return path;
+    if (Math.random() < 0.3 || n.layer === 7) rings.push({ x: n.x, y: n.y, born: S.t, col: n.tint, big: false });
+    if (n.layer === 7) { flashes.push({ x: n.x, y: n.y, born: S.t }); rings.push({ x: n.x, y: n.y, born: S.t, col: [255, 217, 138], big: true }); }
   }
 
-  function spawnPacket(warm) {
-    const al = activeLayer();
-    const startLayer = al > 0 && Math.random() < 0.45 ? al - 1 : 0;
-    const path = buildPath(startLayer);
-    if (path.length < 2) return;
-    packets.push({
-      path,
-      seg: warm ? (R() * (path.length - 1)) | 0 : 0,
-      t: warm ? R() : 0,
-      dur: srnd(52, 68),            /* ~a minute of pulsing light per hop */
-      sp: nodes[path[0]].sp,
-      col: nodes[path[0]].tint,
-      ph: R() * 6.28, hz: srnd(1.5, 2.8)
-    });
-  }
-
-  /* pre-warm the web so light is already flowing everywhere on first paint */
+  /* pre-warm the tissue so somas already glow and fire on first paint */
   function prewarm() {
-    const cap = Math.round(64 * S.density);
-    for (let i = 0; i < cap; i++) spawnPacket(true);
+    for (let i = 0; i < mainEnd; i++) {
+      const n = nodes[i];
+      n.v = Math.random() * 0.35;
+      n.nextSpike = S.t + 0.3 + Math.random() * 5.5;
+    }
+    for (let k = 0; k < 9; k++) fire((Math.random() * mainEnd) | 0);
   }
 
   const qb = (A, B, lk, u) => {
@@ -334,6 +367,33 @@ function createEngine(container) {
     ctx.clearRect(0, 0, S.w, S.h);
     const al = activeLayer(), dens = S.density;
     S.bt += dtJ; /* beam clock: freezes on pause / static repaints */
+
+    /* organic drift — somas float in the tissue (depth-scaled parallax) */
+    for (const n of nodes) {
+      const amp = n.main ? 2.4 : 1.1;
+      n.x = n.bx + Math.sin(t * 0.19 * n.df + n.ph) * amp * (1 + n.z * 0.35);
+      n.y = n.by + Math.cos(t * 0.16 * n.df + n.ph * 1.7) * amp * 0.72;
+    }
+    /* firing engine — frozen on pause / static repaints (dtJ === 0) */
+    if (dtJ > 0) {
+      for (let i = 0; i < mainEnd; i++) {
+        const n = nodes[i];
+        n.v = Math.max(0, n.v - dtJ * 1.8);
+        if (S.t >= n.nextSpike) fire(i);
+      }
+      for (let i = syn.length - 1; i >= 0; i--) {
+        const e = syn[i];
+        if (e.at <= S.t) {
+          syn.splice(i, 1);
+          const n = nodes[e.ni];
+          if (S.t > n.refr) {
+            n.v += e.w;
+            if (n.v >= 1) fire(e.ni);
+          }
+        }
+      }
+    }
+
     ctx.globalCompositeOperation = 'lighter';
 
     /* nebula fog */
@@ -436,8 +496,10 @@ function createEngine(container) {
 
     /* stage-change shockwave — lights up links + nodes as it passes */
     for (let i = waves.length - 1; i >= 0; i--) {
-      const wv = waves[i], p = (t - wv.born) / 2.6;
-      if (p >= 1) { waves.splice(i, 1); continue; }
+      const wv = waves[i], rawP = (t - wv.born) / 2.6;
+      if (rawP >= 1) { waves.splice(i, 1); continue; }
+      if (rawP < 0) continue; /* not yet born — never let the clock skew invert it */
+      const p = rawP;
       const r = p * Math.max(S.w, S.h) * 0.62;
       const band = 26;
       for (const lk of links) {
@@ -468,113 +530,67 @@ function createEngine(container) {
       ctx.stroke();
     }
 
-    /* manager supernova flashes */
+    /* neurons — shaded 3D somas, far → near for depth (occlude the mesh like
+       real cell bodies). Firing neurons swell and flare; pulse = shockwave hit. */
+    ctx.globalCompositeOperation = 'source-over';
+    for (const n of somaOrder) {
+      n.pulse = Math.max(0, n.pulse - dt * 1.6);
+      const depth = 1 + n.z * 0.18;
+      const active = n.layer === al;
+      const size = n.r * (n.layer === 0 ? 1.28 : n.layer === 7 ? 1.85 : 1.52) * depth
+        * (1 + 0.05 * Math.sin(t * (0.9 + n.ph * 0.13) + n.ph))
+        * (1 + n.v * 0.5 + n.pulse * 0.6);
+      ctx.globalAlpha = clamp(0.8 + n.z * 0.2, 0, 1);
+      ctx.drawImage(n.somaSp, n.x - size * 1.06, n.y - size * 1.06, size * 2.12, size * 2.12);
+      if (active) {
+        ctx.strokeStyle = rgba(n.tint, 0.5 + 0.28 * Math.sin(t * 2.1 + n.ph));
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, size + 4.5 + Math.sin(t * 2.1 + n.ph) * 1.6, 0, 6.2832);
+        ctx.stroke();
+      }
+      if (n.layer === 7) { /* manager — slow rotating dashed crown */
+        ctx.save();
+        ctx.translate(n.x, n.y);
+        ctx.rotate(t * 0.35);
+        ctx.strokeStyle = rgba(n.tint, 0.55);
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 5]);
+        ctx.beginPath();
+        ctx.arc(0, 0, size + 10, 0, 6.2832);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'lighter';
+
+    /* halos — firing neurons flare (membrane v); minor cells glow as before */
+    for (const n of nodes) {
+      const depth = 1 + n.z * 0.18;
+      const gs = n.r * (n.main ? 4.1 : 2.9) * depth * (1 + (n.main ? n.v * 0.9 + n.pulse * 0.5 : 0));
+      const base = n.main ? (n.layer === al ? 0.9 : 0.5) : 0.34 * dens;
+      ctx.globalAlpha = clamp(base + (n.main ? n.v * 0.55 + n.pulse * 0.35 : 0), 0, 1);
+      ctx.drawImage(n.sp, n.x - gs, n.y - gs, gs * 2, gs * 2);
+    }
+    ctx.globalAlpha = 1;
+
+    /* manager supernova — a spike reaching the top detonates softly */
     for (let i = flashes.length - 1; i >= 0; i--) {
       const fl = flashes[i], p = (t - fl.born) / 1.1;
       if (p >= 1) { flashes.splice(i, 1); continue; }
+      if (p < 0) continue;
       const s = 90 * (0.4 + p);
       ctx.globalAlpha = (1 - p) * 0.55;
       ctx.drawImage(nodes[layerStart[7]].sp, fl.x - s, fl.y - s, s * 2, s * 2);
       ctx.globalAlpha = 1;
     }
 
-    /* information packets — each hop pulses for ~a minute before moving on.
-       dtJ freezes on pause: the light stops flowing but keeps shimmering. */
-    for (let i = packets.length - 1; i >= 0; i--) {
-      const p = packets[i];
-      p.t += dtJ / p.dur;
-      if (p.t >= 1) {
-        p.t -= 1;
-        p.seg++;
-        const arrived = nodes[p.path[p.seg]];
-        if (arrived) {
-          arrived.pulse = 1;
-          if (arrived.layer === al) rings.push({ x: arrived.x, y: arrived.y, born: t, col: p.col, big: false });
-        }
-        if (p.seg >= p.path.length - 1) {
-          packets.splice(i, 1);
-          const mgr = nodes[p.path[p.path.length - 1]];
-          if (mgr) { rings.push({ x: mgr.x, y: mgr.y, born: t, col: [255, 217, 138], big: true }); flashes.push({ x: mgr.x, y: mgr.y, born: t }); }
-          continue;
-        }
-        p.dur = srnd(52, 68);
-      }
-      const A = nodes[p.path[p.seg]], B = nodes[p.path[p.seg + 1]];
-      if (!A || !B) { packets.splice(i, 1); continue; }
-      const lk = next[p.path[p.seg]].find(o => o.b === p.path[p.seg + 1])?.lk;
-      if (!lk) { packets.splice(i, 1); continue; }
-      const u = clamp(p.t + 0.012 * Math.sin(t * 0.35 + p.ph * 9), 0, 1);
-      /* comet trail */
-      const tailT = Math.max(0, u - 0.055);
-      let px2 = qb(A, B, lk, tailT)[0], py2 = qb(A, B, lk, tailT)[1];
-      for (let s2 = 1; s2 <= 4; s2++) {
-        const uu = tailT + (u - tailT) * (s2 / 4);
-        const [x, y] = qb(A, B, lk, uu);
-        const fade = s2 / 4;
-        ctx.strokeStyle = rgba(p.col, fade * fade * 0.6);
-        ctx.lineWidth = 0.6 + fade * 1.5;
-        ctx.beginPath();
-        ctx.moveTo(px2, py2);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        px2 = x; py2 = y;
-      }
-      /* pulsing bead at the head */
-      const [hx, hy] = qb(A, B, lk, u);
-      const pulse = 0.6 + 0.4 * Math.sin(t * p.hz + p.ph);
-      const s = 3.4 + 1.4 * pulse;
-      ctx.globalAlpha = 0.55 + 0.4 * pulse;
-      ctx.drawImage(p.sp, hx - s * 2.1, hy - s * 2.1, s * 4.2, s * 4.2);
-      ctx.globalAlpha = 1;
-    }
-
-    /* nodes */
-    for (const n of nodes) {
-      n.pulse = Math.max(0, n.pulse - dt * 1.6);
-      const breath = n.main ? 1 + 0.09 * Math.sin(t * (0.9 + n.ph * 0.13) + n.ph) : 1;
-      const active = n.main && n.layer === al;
-      const size = n.r * (1 + n.pulse * 0.8) * (active ? 1.16 : 1) * breath;
-      const gs = size * (n.main ? 4.1 : 2.9);
-      const base = n.main ? (active ? 0.95 : 0.68) : 0.34 * dens;
-      ctx.globalAlpha = clamp(base + n.pulse * 0.4, 0, 1);
-      ctx.drawImage(n.sp, n.x - gs, n.y - gs, gs * 2, gs * 2);
-      if (n.main) {
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = rgba(n.tint, active || n.pulse > 0.35 ? 1 : 0.82);
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, size, 0, 6.2832);
-        ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.92)';
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, size * 0.38, 0, 6.2832);
-        ctx.fill();
-        if (active) {
-          ctx.strokeStyle = rgba(n.tint, 0.5 + 0.28 * Math.sin(t * 2.1 + n.ph));
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, size + 4.5 + Math.sin(t * 2.1 + n.ph) * 1.6, 0, 6.2832);
-          ctx.stroke();
-        }
-        if (n.layer === 7) { /* manager — slow rotating dashed crown */
-          ctx.save();
-          ctx.translate(n.x, n.y);
-          ctx.rotate(t * 0.35);
-          ctx.strokeStyle = rgba(n.tint, 0.55);
-          ctx.lineWidth = 1;
-          ctx.setLineDash([3, 5]);
-          ctx.beginPath();
-          ctx.arc(0, 0, size + 10, 0, 6.2832);
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-
-    /* arrival rings */
+    /* firing rings + arrival shock rings */
     for (let i = rings.length - 1; i >= 0; i--) {
       const g = rings[i], p = (t - g.born) / (g.big ? 1.3 : 0.8);
       if (p >= 1) { rings.splice(i, 1); continue; }
+      if (p < 0) continue;
       ctx.strokeStyle = rgba(g.col, (1 - p) * (g.big ? 0.85 : 0.55));
       ctx.lineWidth = g.big ? 1.8 : 1.1;
       ctx.beginPath();
@@ -593,7 +609,7 @@ function createEngine(container) {
     if (S.paused || reducedMotion()) {
       S.static = reducedMotion();
       if (!S.w) layout();
-      if (S.dirty && S.w) { S.dirty = false; drawScene(6.5, 0, 0); }
+      if (S.dirty && S.w) { S.dirty = false; drawScene(S.t, 0, 0); }
       return;
     }
     if (document.hidden || !S.visible) return;
@@ -601,11 +617,9 @@ function createEngine(container) {
     const now = performance.now();
     lastDT = clamp((now - (lastNow || now)) / 1000, 1 / 240, 0.05);
     lastNow = now;
-    if (!S.paused) {
-      S.jt += lastDT;
-      spawnCd -= lastDT;
-      const cap = Math.round(64 * S.density);
-      if (packets.length < cap && spawnCd <= 0) { spawnPacket(false); spawnCd = 0.5 + Math.random() * 1.2; }
+    if (S.paused) {
+      /* keep pacemakers due-safe through long pauses (S.t still shimmers) */
+      for (let i = 0; i < mainEnd; i++) nodes[i].nextSpike += lastDT;
     }
     S.t += lastDT;
     drawScene(S.t, lastDT, S.paused ? 0 : lastDT);
@@ -627,7 +641,7 @@ function createEngine(container) {
   prewarm();
   if (reducedMotion()) {
     S.static = true;
-    if (S.dirty && S.w) { S.dirty = false; drawScene(6.5, 0, 0); }
+    if (S.dirty && S.w) { S.dirty = false; drawScene(S.t, 0, 0); }
   }
   /* the loop always runs: in static mode it only repaints on dirty; in
      animated mode it drives the scene — and it guarantees recovery whenever
@@ -639,7 +653,7 @@ function createEngine(container) {
      static frame even if requestAnimationFrame is starved */
   const wd = setInterval(() => {
     if (!S.w) { layout(); return; }
-    if (S.static && S.dirty) { S.dirty = false; drawScene(6.5, 0, 0); }
+    if (S.static && S.dirty) { S.dirty = false; drawScene(S.t, 0, 0); }
   }, 500);
 
   return {
@@ -655,7 +669,7 @@ function createEngine(container) {
       if (ns === S.stage) return;
       S.stage = ns;
       const al = activeLayer();
-      waves.push({ x: LAYER_FX[al] * S.w, y: S.h * 0.44, born: S.t + 0.001, col: LAYER_TINTS[al] || SRC_TINTS[0] });
+      waves.push({ x: LAYER_FX[al] * S.w, y: S.h * 0.44, born: S.t, col: LAYER_TINTS[al] || SRC_TINTS[0] });
       if (waves.length > 3) waves.shift();
       if (S.static) S.dirty = true;
     },
