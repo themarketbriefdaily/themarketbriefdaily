@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-10-23",
+  "as_of": "2026-10-26",
   "regime": "Bull",
-  "conviction": 0.182,
+  "conviction": 0.326,
   "credit_gate_active": true,
   "regime_duration_months": 44,
-  "regime_avg_ann_return": 0.2508,
+  "regime_avg_ann_return": 0.2512,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.3138
+      "weight": 0.3071
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.3862
+      "weight": 0.3929
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 759.97,
-    "3USL.L": 759.97,
-    "DBMF": 32.73,
-    "SGLN.L": 366.61,
-    "IDTL.L": 81.34
+    "VUSA.L": 765.37,
+    "3USL.L": 765.37,
+    "DBMF": 32.68,
+    "SGLN.L": 367.82,
+    "IDTL.L": 81.68
   },
   "headline": {
-    "cagr": 0.2145,
-    "ann": 0.2165,
+    "cagr": 0.2149,
+    "ann": 0.2168,
     "vol": 0.2095,
-    "sharpe": 1.0332,
-    "sortino": 1.4643,
+    "sharpe": 1.0348,
+    "sortino": 1.4666,
     "max_dd": -0.2542,
-    "calmar": 0.844
+    "calmar": 0.8455
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 108.49,
+      "price": 109.5175,
       "native_ccy": "GBP",
-      "asof": "2026-10-23"
+      "asof": "2026-10-27"
     },
     "3USL.L": {
-      "price": 136.1206,
+      "price": 139.1644,
       "native_ccy": "USD",
-      "asof": "2026-10-23"
+      "asof": "2026-10-27"
     },
     "DBMF": {
-      "price": 24.4182,
+      "price": 24.4286,
       "native_ccy": "USD",
-      "asof": "2026-10-23"
+      "asof": "2026-10-26"
     },
     "SGLN.L": {
-      "price": 57.97,
+      "price": 58.4,
       "native_ccy": "GBp",
-      "asof": "2026-10-23"
+      "asof": "2026-10-27"
     },
     "IDTL.L": {
-      "price": 2.2706,
+      "price": 2.2934,
       "native_ccy": "USD",
-      "asof": "2026-10-23"
+      "asof": "2026-10-27"
     }
   },
-  "updated_utc": "2026-10-27T00:39:01.197030+00:00"
+  "updated_utc": "2026-10-27T12:26:40.990450+00:00"
 }
