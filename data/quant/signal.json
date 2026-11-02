@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-10-29",
+  "as_of": "2026-11-02",
   "regime": "Bull",
-  "conviction": 0.531,
+  "conviction": 0.262,
   "credit_gate_active": true,
-  "regime_duration_months": 44,
-  "regime_avg_ann_return": 0.2516,
+  "regime_duration_months": 45,
+  "regime_avg_ann_return": 0.2502,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.3327
+      "weight": 0.2613
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.3673
+      "weight": 0.4387
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 769.36,
-    "3USL.L": 769.36,
-    "DBMF": 32.7,
-    "SGLN.L": 368.57,
-    "IDTL.L": 81.49
+    "VUSA.L": 760.62,
+    "3USL.L": 760.62,
+    "DBMF": 32.125,
+    "SGLN.L": 363.07,
+    "IDTL.L": 81.87
   },
   "headline": {
-    "cagr": 0.2153,
-    "ann": 0.2171,
+    "cagr": 0.214,
+    "ann": 0.216,
     "vol": 0.2095,
-    "sharpe": 1.0365,
-    "sortino": 1.469,
+    "sharpe": 1.0312,
+    "sortino": 1.4613,
     "max_dd": -0.2542,
-    "calmar": 0.847
+    "calmar": 0.8418
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 109.405,
+      "price": 107.8775,
       "native_ccy": "GBP",
-      "asof": "2026-10-29"
+      "asof": "2026-11-02"
     },
     "3USL.L": {
-      "price": 140.0397,
+      "price": 135.0071,
       "native_ccy": "USD",
-      "asof": "2026-10-29"
+      "asof": "2026-11-02"
     },
     "DBMF": {
-      "price": 24.5348,
+      "price": 23.9372,
       "native_ccy": "USD",
-      "asof": "2026-10-29"
+      "asof": "2026-11-02"
     },
     "SGLN.L": {
-      "price": 58.23,
+      "price": 57.196,
       "native_ccy": "GBp",
-      "asof": "2026-10-29"
+      "asof": "2026-11-02"
     },
     "IDTL.L": {
-      "price": 2.2794,
+      "price": 2.2883,
       "native_ccy": "USD",
-      "asof": "2026-10-29"
+      "asof": "2026-11-02"
     }
   },
-  "updated_utc": "2026-10-31T00:54:53.502171+00:00"
+  "updated_utc": "2026-11-02T16:17:06.442623+00:00"
 }
