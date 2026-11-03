@@ -1,10 +1,10 @@
 {
   "as_of": "2026-11-02",
   "regime": "Bull",
-  "conviction": 0.262,
+  "conviction": 0.051,
   "credit_gate_active": true,
   "regime_duration_months": 45,
-  "regime_avg_ann_return": 0.2502,
+  "regime_avg_ann_return": 0.2495,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
@@ -14,7 +14,7 @@
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.2613
+      "weight": 0.2721
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.4387
+      "weight": 0.4279
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 760.62,
-    "3USL.L": 760.62,
-    "DBMF": 32.125,
-    "SGLN.L": 363.07,
-    "IDTL.L": 81.87
+    "VUSA.L": 752.1,
+    "3USL.L": 752.1,
+    "DBMF": 31.99,
+    "SGLN.L": 361.65,
+    "IDTL.L": 81.73
   },
   "headline": {
-    "cagr": 0.214,
-    "ann": 0.216,
+    "cagr": 0.2134,
+    "ann": 0.2155,
     "vol": 0.2095,
-    "sharpe": 1.0312,
-    "sortino": 1.4613,
+    "sharpe": 1.0287,
+    "sortino": 1.4577,
     "max_dd": -0.2542,
-    "calmar": 0.8418
+    "calmar": 0.8394
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 107.8775,
+      "price": 107.495,
       "native_ccy": "GBP",
-      "asof": "2026-11-02"
+      "asof": "2026-10-30"
     },
     "3USL.L": {
-      "price": 135.0071,
+      "price": 132.8536,
       "native_ccy": "USD",
-      "asof": "2026-11-02"
+      "asof": "2026-10-30"
     },
     "DBMF": {
-      "price": 23.9372,
+      "price": 23.8988,
       "native_ccy": "USD",
       "asof": "2026-11-02"
     },
     "SGLN.L": {
-      "price": 57.196,
+      "price": 56.45,
       "native_ccy": "GBp",
-      "asof": "2026-11-02"
+      "asof": "2026-10-30"
     },
     "IDTL.L": {
-      "price": 2.2883,
+      "price": 2.2798,
       "native_ccy": "USD",
-      "asof": "2026-11-02"
+      "asof": "2026-10-30"
     }
   },
-  "updated_utc": "2026-11-02T16:17:06.442623+00:00"
+  "updated_utc": "2026-11-03T02:58:58.427057+00:00"
 }
