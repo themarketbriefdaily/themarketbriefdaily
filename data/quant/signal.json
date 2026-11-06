@@ -1,20 +1,20 @@
 {
-  "as_of": "2026-11-05",
+  "as_of": "2026-11-04",
   "regime": "Bull",
-  "conviction": 0.264,
+  "conviction": 0.445,
   "credit_gate_active": true,
   "regime_duration_months": 45,
-  "regime_avg_ann_return": 0.249,
+  "regime_avg_ann_return": 0.2499,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.0192
+      "weight": 0.0
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.2141
+      "weight": 0.2347
     },
     {
       "sleeve": "Managed futures",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.4667
+      "weight": 0.4653
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 756.125,
-    "3USL.L": 756.125,
-    "DBMF": 31.44,
-    "SGLN.L": 375.6991,
-    "IDTL.L": 81.73
+    "VUSA.L": 766.81,
+    "3USL.L": 766.81,
+    "DBMF": 31.49,
+    "SGLN.L": 372.49,
+    "IDTL.L": 81.76
   },
   "headline": {
-    "cagr": 0.213,
-    "ann": 0.2152,
+    "cagr": 0.2138,
+    "ann": 0.2158,
     "vol": 0.2094,
-    "sharpe": 1.0274,
-    "sortino": 1.4556,
+    "sharpe": 1.0304,
+    "sortino": 1.4601,
     "max_dd": -0.2542,
-    "calmar": 0.8379
+    "calmar": 0.8409
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 107.9104,
+      "price": 108.1525,
       "native_ccy": "GBP",
-      "asof": "2026-11-05"
+      "asof": "2026-11-04"
     },
     "3USL.L": {
-      "price": 136.2485,
+      "price": 135.7247,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-04"
     },
     "DBMF": {
-      "price": 23.348,
+      "price": 23.4402,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-04"
     },
     "SGLN.L": {
-      "price": 59.47,
+      "price": 58.3,
       "native_ccy": "GBp",
-      "asof": "2026-11-05"
+      "asof": "2026-11-04"
     },
     "IDTL.L": {
-      "price": 2.278,
+      "price": 2.2737,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-04"
     }
   },
-  "updated_utc": "2026-11-05T14:47:22.252129+00:00"
+  "updated_utc": "2026-11-06T01:41:02.727585+00:00"
 }
