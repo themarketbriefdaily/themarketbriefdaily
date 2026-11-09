@@ -1,20 +1,20 @@
 {
-  "as_of": "2026-11-05",
+  "as_of": "2026-11-09",
   "regime": "Bull",
-  "conviction": 0.0,
+  "conviction": 0.048,
   "credit_gate_active": true,
   "regime_duration_months": 45,
-  "regime_avg_ann_return": 0.2483,
+  "regime_avg_ann_return": 0.249,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.1511
+      "weight": 0.1535
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.0822
+      "weight": 0.0798
     },
     {
       "sleeve": "Managed futures",
@@ -38,47 +38,47 @@
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 733.0,
-    "3USL.L": 733.0,
-    "DBMF": 31.08,
-    "SGLN.L": 375.49,
-    "IDTL.L": 81.93
+    "VUSA.L": 749.7,
+    "3USL.L": 749.7,
+    "DBMF": 31.32,
+    "SGLN.L": 377.06,
+    "IDTL.L": 81.95
   },
   "headline": {
-    "cagr": 0.2123,
-    "ann": 0.2146,
+    "cagr": 0.213,
+    "ann": 0.2152,
     "vol": 0.2095,
-    "sharpe": 1.0244,
-    "sortino": 1.4512,
+    "sharpe": 1.0273,
+    "sortino": 1.4553,
     "max_dd": -0.2542,
-    "calmar": 0.8351
+    "calmar": 0.8379
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 105.1675,
+      "price": 106.3025,
       "native_ccy": "GBP",
-      "asof": "2026-11-05"
+      "asof": "2026-11-09"
     },
     "3USL.L": {
-      "price": 124.8341,
+      "price": 127.2786,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-09"
     },
     "DBMF": {
-      "price": 23.0614,
+      "price": 23.3503,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-09"
     },
     "SGLN.L": {
-      "price": 59.24,
+      "price": 59.58,
       "native_ccy": "GBp",
-      "asof": "2026-11-05"
+      "asof": "2026-11-09"
     },
     "IDTL.L": {
-      "price": 2.2861,
+      "price": 2.2933,
       "native_ccy": "USD",
-      "asof": "2026-11-05"
+      "asof": "2026-11-09"
     }
   },
-  "updated_utc": "2026-11-07T01:00:27.640530+00:00"
+  "updated_utc": "2026-11-09T16:38:42.016918+00:00"
 }
