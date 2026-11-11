@@ -1,20 +1,20 @@
 {
-  "as_of": "2026-11-09",
+  "as_of": "2026-11-11",
   "regime": "Bull",
-  "conviction": 0.061,
+  "conviction": 0.213,
   "credit_gate_active": true,
   "regime_duration_months": 45,
-  "regime_avg_ann_return": 0.2492,
+  "regime_avg_ann_return": 0.2501,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.1602
+      "weight": 0.1459
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.0732
+      "weight": 0.0874
     },
     {
       "sleeve": "Managed futures",
@@ -38,47 +38,47 @@
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 752.69,
-    "3USL.L": 752.69,
-    "DBMF": 31.22,
-    "SGLN.L": 379.53,
-    "IDTL.L": 81.96
+    "VUSA.L": 757.8291,
+    "3USL.L": 757.8291,
+    "DBMF": 31.875,
+    "SGLN.L": 368.6627,
+    "IDTL.L": 80.625
   },
   "headline": {
-    "cagr": 0.2131,
-    "ann": 0.2153,
+    "cagr": 0.214,
+    "ann": 0.216,
     "vol": 0.2095,
-    "sharpe": 1.0279,
-    "sortino": 1.4561,
+    "sharpe": 1.0313,
+    "sortino": 1.4612,
     "max_dd": -0.2542,
-    "calmar": 0.8385
+    "calmar": 0.8419
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 106.2575,
+      "price": 108.43,
       "native_ccy": "GBP",
-      "asof": "2026-11-09"
+      "asof": "2026-11-11"
     },
     "3USL.L": {
-      "price": 127.5709,
+      "price": 132.1206,
       "native_ccy": "USD",
-      "asof": "2026-11-09"
+      "asof": "2026-11-11"
     },
     "DBMF": {
-      "price": 23.3675,
+      "price": 24.0223,
       "native_ccy": "USD",
-      "asof": "2026-11-09"
+      "asof": "2026-11-11"
     },
     "SGLN.L": {
-      "price": 59.54,
+      "price": 58.868,
       "native_ccy": "GBp",
-      "asof": "2026-11-09"
+      "asof": "2026-11-11"
     },
     "IDTL.L": {
-      "price": 2.3049,
+      "price": 2.2877,
       "native_ccy": "USD",
-      "asof": "2026-11-09"
+      "asof": "2026-11-11"
     }
   },
-  "updated_utc": "2026-11-11T01:20:42.165661+00:00"
+  "updated_utc": "2026-11-11T14:33:33.529836+00:00"
 }
