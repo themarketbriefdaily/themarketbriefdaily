@@ -1,25 +1,25 @@
 {
-  "as_of": "2026-11-18",
+  "as_of": "2026-11-19",
   "regime": "Bull",
   "conviction": 0.0,
   "credit_gate_active": true,
   "regime_duration_months": 45,
-  "regime_avg_ann_return": 0.2438,
+  "regime_avg_ann_return": 0.2439,
   "allocation": [
     {
       "sleeve": "1x S&P 500",
       "ticker": "VUSA.L",
-      "weight": 0.1062
+      "weight": 0.1002
     },
     {
       "sleeve": "3x S&P 500",
       "ticker": "3USL.L",
-      "weight": 0.1073
+      "weight": 0.1243
     },
     {
       "sleeve": "Managed futures",
       "ticker": "DBMF",
-      "weight": 0.2746
+      "weight": 0.2886
     },
     {
       "sleeve": "Gold",
@@ -34,51 +34,51 @@
     {
       "sleeve": "Cash (GBP)",
       "ticker": "CASH",
-      "weight": 0.5119
+      "weight": 0.4869
     }
   ],
   "proxy_prices": {
-    "VUSA.L": 730.2,
-    "3USL.L": 730.2,
-    "DBMF": 31.89,
-    "SGLN.L": 341.19,
-    "IDTL.L": 80.22
+    "VUSA.L": 727.5097,
+    "3USL.L": 727.5097,
+    "DBMF": 31.8774,
+    "SGLN.L": 337.21,
+    "IDTL.L": 80.225
   },
   "headline": {
-    "cagr": 0.208,
-    "ann": 0.2112,
-    "vol": 0.2102,
-    "sharpe": 1.005,
-    "sortino": 1.4182,
+    "cagr": 0.2081,
+    "ann": 0.2113,
+    "vol": 0.2101,
+    "sharpe": 1.0053,
+    "sortino": 1.4187,
     "max_dd": -0.2542,
-    "calmar": 0.8183
+    "calmar": 0.8185
   },
   "live_prices": {
     "VUSA.L": {
-      "price": 105.1125,
+      "price": 105.48,
       "native_ccy": "GBP",
-      "asof": "2026-11-17"
+      "asof": "2026-11-19"
     },
     "3USL.L": {
-      "price": 119.4044,
+      "price": 117.6457,
       "native_ccy": "USD",
-      "asof": "2026-11-17"
+      "asof": "2026-11-19"
     },
     "DBMF": {
-      "price": 24.15,
+      "price": 24.2985,
       "native_ccy": "USD",
-      "asof": "2026-11-18"
+      "asof": "2026-11-19"
     },
     "SGLN.L": {
-      "price": 56.76,
+      "price": 54.489,
       "native_ccy": "GBp",
-      "asof": "2026-11-17"
+      "asof": "2026-11-19"
     },
     "IDTL.L": {
-      "price": 2.2674,
+      "price": 2.2932,
       "native_ccy": "USD",
-      "asof": "2026-11-17"
+      "asof": "2026-11-19"
     }
   },
-  "updated_utc": "2026-11-19T02:41:36.674315+00:00"
+  "updated_utc": "2026-11-19T15:54:10.204678+00:00"
 }
