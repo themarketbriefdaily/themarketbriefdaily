@@ -1,69 +1,69 @@
 {
-  "asOf": "2026-11-24T17:33:32.860286+00:00",
+  "asOf": "2026-11-25T04:05:12.598845+00:00",
   "source": "yahoo",
   "markets": {
     "sp500": {
       "label": "S&P 500",
-      "value": "7,211.1",
-      "raw": 7211.1001,
-      "change_pct": -0.36,
+      "value": "7,201.1",
+      "raw": 7201.0898,
+      "change_pct": -0.5,
       "date": "2026-11-24"
     },
     "ftse100": {
       "label": "FTSE 100",
       "value": "10,467.1",
-      "raw": 10467.0703,
+      "raw": 10467.0996,
       "change_pct": -0.13,
       "date": "2026-11-24"
     },
     "dxy": {
       "label": "US Dollar Index",
-      "value": "103.84",
-      "raw": 103.839,
-      "change_pct": -0.46,
-      "date": "2026-11-24"
+      "value": "103.96",
+      "raw": 103.958,
+      "change_pct": 0.14,
+      "date": "2026-11-25"
     },
     "gold": {
       "label": "Gold",
-      "value": "$3,562.80",
-      "raw": 3562.8,
-      "change_pct": -2.43,
-      "date": "2026-11-24"
+      "value": "$3,548.10",
+      "raw": 3548.1001,
+      "change_pct": -0.39,
+      "date": "2026-11-25"
     },
     "silver": {
       "label": "Silver",
-      "value": "$40.72",
-      "raw": 40.715,
-      "change_pct": -5.64,
-      "date": "2026-11-24"
+      "value": "$40.63",
+      "raw": 40.635,
+      "change_pct": -0.31,
+      "date": "2026-11-25"
     },
     "brent": {
       "label": "Brent Crude",
-      "value": "$87.89",
-      "raw": 87.89,
-      "change_pct": -1.66,
-      "date": "2026-11-24"
+      "value": "$87.50",
+      "raw": 87.5,
+      "change_pct": -4.27,
+      "date": "2026-11-25"
     },
     "wti": {
       "label": "WTI Crude",
-      "value": "$81.28",
-      "raw": 81.28,
-      "change_pct": 1.38,
-      "date": "2026-11-24"
+      "value": "$80.77",
+      "raw": 80.77,
+      "change_pct": -1.56,
+      "date": "2026-11-25"
     },
     "copper": {
       "label": "Copper",
-      "value": "$5.44",
-      "raw": 5.4365,
-      "change_pct": -3.39,
-      "date": "2026-11-24"
+      "value": "$5.46",
+      "raw": 5.4565,
+      "change_pct": 1.75,
+      "date": "2026-11-25"
     },
     "gbpusd": {
       "label": "GBP/USD",
-      "value": "1.3118",
-      "raw": 1.3118,
-      "change_pct": 0.18,
-      "date": "2026-11-24"
+      "value": "1.3091",
+      "raw": 1.3091,
+      "change_pct": 0.43,
+      "date": "2026-11-25"
     }
   },
   "economic": {}
